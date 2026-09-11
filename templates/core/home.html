@@ -1,0 +1,805 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Smart BI | Business Intelligence & Decision Intelligence
+{% endblock %}
+
+{% block content %}
+
+<div class="smart-home">
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section class="hero-section">
+
+        <div class="hero-grid"></div>
+
+        <div class="hero-glow glow-one"></div>
+        <div class="hero-glow glow-two"></div>
+
+        <div class="hero-content">
+
+            <div class="hero-badge">
+                <span class="pulse-dot"></span>
+                AI-Powered Business Intelligence
+            </div>
+
+            <h1 class="hero-title">
+                Turn Business Data
+                <span>Into Better Decisions.</span>
+            </h1>
+
+            <p class="hero-description">
+                Smart BI transforms raw business data into clear
+                analytics, intelligent insights, forecasts and
+                actionable decisions.
+            </p>
+
+            <div class="hero-actions">
+
+                {% if user.is_authenticated %}
+
+                    <a href="{% url 'core:dashboard' %}"
+                       class="hero-btn primary">
+                        Open Dashboard
+                        <span>→</span>
+                    </a>
+
+                {% else %}
+
+                    <a href="{% url 'accounts:signup' %}"
+                       class="hero-btn primary">
+                        Get Started
+                        <span>→</span>
+                    </a>
+
+                    <a href="{% url 'core:how_it_works' %}"
+                       class="hero-btn secondary">
+                        Explore Platform
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+            <div class="hero-trust">
+
+                <span>Built with</span>
+
+                <div class="tech-pills">
+                    <span>Python</span>
+                    <span>Django</span>
+                    <span>SQL</span>
+                    <span>Pandas</span>
+                    <span>NumPy</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ANALYTICS VISUAL
+        ================================================== -->
+
+        <div class="hero-dashboard">
+
+            <div class="dashboard-window">
+
+                <div class="window-topbar">
+
+                    <div class="window-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    <div class="window-title">
+                        Smart Business Overview
+                    </div>
+
+                    <div class="live-indicator">
+                        <span></span>
+                        LIVE
+                    </div>
+
+                </div>
+
+
+                <div class="dashboard-inner">
+
+                    <div class="mini-header">
+
+                        <div>
+                            <small>BUSINESS HEALTH</small>
+                            <h3>Executive Overview</h3>
+                        </div>
+
+                        <div class="health-score">
+                            <span>82</span>
+                            <small>/100</small>
+                        </div>
+
+                    </div>
+
+
+                    <!-- KPI CARDS -->
+
+                    <div class="mini-kpis">
+
+                        <div class="mini-kpi">
+
+                            <span class="mini-label">
+                                Revenue
+                            </span>
+
+                            <strong>
+                                ₹8.42M
+                            </strong>
+
+                            <small class="positive">
+                                ↑ 18.4%
+                            </small>
+
+                        </div>
+
+
+                        <div class="mini-kpi">
+
+                            <span class="mini-label">
+                                Customers
+                            </span>
+
+                            <strong>
+                                24.8K
+                            </strong>
+
+                            <small class="positive">
+                                ↑ 12.8%
+                            </small>
+
+                        </div>
+
+
+                        <div class="mini-kpi">
+
+                            <span class="mini-label">
+                                Profit
+                            </span>
+
+                            <strong>
+                                26.7%
+                            </strong>
+
+                            <small class="positive">
+                                ↑ 4.6%
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CHART -->
+
+                    <div class="mini-chart-card">
+
+                        <div class="chart-heading">
+
+                            <div>
+                                <span>
+                                    Revenue Performance
+                                </span>
+
+                                <strong>
+                                    ₹8.42M
+                                </strong>
+                            </div>
+
+                            <span class="chart-period">
+                                6 Months
+                            </span>
+
+                        </div>
+
+
+                        <div class="chart-area">
+
+                            <div class="chart-lines">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+
+                            <svg
+                                class="revenue-chart"
+                                viewBox="0 0 600 220"
+                                preserveAspectRatio="none"
+                            >
+
+                                <defs>
+
+                                    <linearGradient
+                                        id="chartFill"
+                                        x1="0"
+                                        y1="0"
+                                        x2="0"
+                                        y2="1"
+                                    >
+
+                                        <stop
+                                            offset="0%"
+                                            stop-opacity=".35"
+                                        />
+
+                                        <stop
+                                            offset="100%"
+                                            stop-opacity="0"
+                                        />
+
+                                    </linearGradient>
+
+                                </defs>
+
+
+                                <path
+                                    class="chart-area-fill"
+                                    d="M0,175
+                                       C40,165 60,150 90,158
+                                       C120,166 135,125 170,132
+                                       C205,140 220,112 250,118
+                                       C280,124 300,90 330,100
+                                       C360,110 380,82 410,91
+                                       C440,100 460,65 490,72
+                                       C520,80 545,42 600,30
+                                       L600,220
+                                       L0,220 Z"
+                                />
+
+                                <path
+                                    class="chart-line"
+                                    d="M0,175
+                                       C40,165 60,150 90,158
+                                       C120,166 135,125 170,132
+                                       C205,140 220,112 250,118
+                                       C280,124 300,90 330,100
+                                       C360,110 380,82 410,91
+                                       C440,100 460,65 490,72
+                                       C520,80 545,42 600,30"
+                                />
+
+                                <circle
+                                    class="chart-point"
+                                    cx="600"
+                                    cy="30"
+                                    r="6"
+                                />
+
+                            </svg>
+
+                        </div>
+
+                        <div class="chart-months">
+                            <span>Jan</span>
+                            <span>Feb</span>
+                            <span>Mar</span>
+                            <span>Apr</span>
+                            <span>May</span>
+                            <span>Jun</span>
+                        </div>
+
+                    </div>
+
+
+                    <!-- BOTTOM INSIGHTS -->
+
+                    <div class="mini-bottom">
+
+                        <div class="insight-mini">
+
+                            <div class="insight-icon">
+                                ↗
+                            </div>
+
+                            <div>
+                                <small>TOP REGION</small>
+                                <strong>Bangalore</strong>
+                            </div>
+
+                        </div>
+
+
+                        <div class="insight-mini">
+
+                            <div class="insight-icon">
+                                ★
+                            </div>
+
+                            <div>
+                                <small>TOP PRODUCT</small>
+                                <strong>Laptop Pro</strong>
+                            </div>
+
+                        </div>
+
+
+                        <div class="insight-mini">
+
+                            <div class="insight-icon">
+                                !
+                            </div>
+
+                            <div>
+                                <small>ALERT</small>
+                                <strong>Return Rate ↑</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FLOATING ELEMENTS -->
+
+            <div class="floating-card floating-growth">
+
+                <div class="floating-icon">
+                    ↗
+                </div>
+
+                <div>
+                    <small>Revenue Growth</small>
+                    <strong>+18.4%</strong>
+                </div>
+
+            </div>
+
+
+            <div class="floating-card floating-ai">
+
+                <div class="ai-orb">
+                    ✦
+                </div>
+
+                <div>
+                    <small>Smart Insight</small>
+                    <strong>Opportunity detected</strong>
+                </div>
+
+            </div>
+
+
+            <div class="floating-card floating-alert">
+
+                <span class="alert-dot"></span>
+
+                <div>
+                    <small>Business Alert</small>
+                    <strong>Demand increasing</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         TRANSFORMATION SECTION
+    ====================================================== -->
+
+    <section class="transformation-section">
+
+        <div class="section-heading reveal">
+
+            <span class="section-label">
+                FROM DATA TO DECISIONS
+            </span>
+
+            <h2>
+                One platform.
+                <span>Complete business intelligence.</span>
+            </h2>
+
+            <p>
+                Smart BI connects your entire decision-making
+                process—from raw data to meaningful business action.
+            </p>
+
+        </div>
+
+
+        <div class="transformation-flow">
+
+            <div class="flow-card reveal">
+
+                <div class="flow-number">01</div>
+
+                <div class="flow-icon">
+                    ↑
+                </div>
+
+                <h3>Upload</h3>
+
+                <p>
+                    Bring your sales, customers, products,
+                    marketing, financial and operational data.
+                </p>
+
+                <div class="flow-line"></div>
+
+            </div>
+
+
+            <div class="flow-arrow">
+                →
+            </div>
+
+
+            <div class="flow-card reveal">
+
+                <div class="flow-number">02</div>
+
+                <div class="flow-icon">
+                    ◈
+                </div>
+
+                <h3>Analyze</h3>
+
+                <p>
+                    Clean, validate, profile and transform
+                    your datasets automatically.
+                </p>
+
+                <div class="flow-line"></div>
+
+            </div>
+
+
+            <div class="flow-arrow">
+                →
+            </div>
+
+
+            <div class="flow-card reveal">
+
+                <div class="flow-number">03</div>
+
+                <div class="flow-icon">
+                    ✦
+                </div>
+
+                <h3>Discover</h3>
+
+                <p>
+                    Find trends, anomalies, patterns,
+                    opportunities and future possibilities.
+                </p>
+
+                <div class="flow-line"></div>
+
+            </div>
+
+
+            <div class="flow-arrow">
+                →
+            </div>
+
+
+            <div class="flow-card reveal">
+
+                <div class="flow-number">04</div>
+
+                <div class="flow-icon">
+                    ◎
+                </div>
+
+                <h3>Decide</h3>
+
+                <p>
+                    Turn intelligence into recommendations,
+                    scenarios and business actions.
+                </p>
+
+                <div class="flow-line"></div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CAPABILITIES
+    ====================================================== -->
+
+    <section class="capabilities-section">
+
+        <div class="section-heading reveal">
+
+            <span class="section-label">
+                THE SMART BI ECOSYSTEM
+            </span>
+
+            <h2>
+                Everything your business needs
+                <span>to understand what happens next.</span>
+            </h2>
+
+        </div>
+
+
+        <div class="capability-grid">
+
+            <div class="capability-card large reveal">
+
+                <div class="capability-number">
+                    01
+                </div>
+
+                <div class="capability-icon">
+                    ◫
+                </div>
+
+                <h3>Data Management</h3>
+
+                <p>
+                    Manage, validate, clean, profile and
+                    transform your business datasets.
+                </p>
+
+                <div class="capability-tags">
+                    <span>Upload</span>
+                    <span>Quality</span>
+                    <span>Validation</span>
+                    <span>Profiling</span>
+                </div>
+
+                <div class="card-orbit orbit-one"></div>
+                <div class="card-orbit orbit-two"></div>
+
+            </div>
+
+
+            <div class="capability-card reveal">
+
+                <div class="capability-number">
+                    02
+                </div>
+
+                <div class="capability-icon">
+                    ◒
+                </div>
+
+                <h3>Business Analytics</h3>
+
+                <p>
+                    Understand revenue, customers, products,
+                    regions and business performance.
+                </p>
+
+                <div class="capability-tags">
+                    <span>KPIs</span>
+                    <span>Charts</span>
+                    <span>Trends</span>
+                </div>
+
+            </div>
+
+
+            <div class="capability-card reveal">
+
+                <div class="capability-number">
+                    03
+                </div>
+
+                <div class="capability-icon">
+                    ✦
+                </div>
+
+                <h3>Advanced Insights</h3>
+
+                <p>
+                    Discover anomalies, forecasts,
+                    customer risks and hidden opportunities.
+                </p>
+
+                <div class="capability-tags">
+                    <span>Forecasting</span>
+                    <span>AI Insights</span>
+                </div>
+
+            </div>
+
+
+            <div class="capability-card reveal">
+
+                <div class="capability-number">
+                    04
+                </div>
+
+                <div class="capability-icon">
+                    ◎
+                </div>
+
+                <h3>Decision Intelligence</h3>
+
+                <p>
+                    Simulate scenarios and convert insights
+                    into recommended business actions.
+                </p>
+
+                <div class="capability-tags">
+                    <span>What-If</span>
+                    <span>Recommendations</span>
+                </div>
+
+            </div>
+
+
+            <div class="capability-card large reveal">
+
+                <div class="capability-number">
+                    05
+                </div>
+
+                <div class="capability-icon">
+                    ▣
+                </div>
+
+                <h3>Reporting</h3>
+
+                <p>
+                    Generate professional reports and
+                    transform analytics into management-ready
+                    business information.
+                </p>
+
+                <div class="capability-tags">
+                    <span>Reports</span>
+                    <span>PDF</span>
+                    <span>Excel</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         BUSINESS QUESTIONS
+    ====================================================== -->
+
+    <section class="questions-section">
+
+        <div class="question-content reveal">
+
+            <span class="section-label">
+                FROM QUESTIONS TO ANSWERS
+            </span>
+
+            <h2>
+                Your business asks the questions.
+                <span>Smart BI finds the answers.</span>
+            </h2>
+
+        </div>
+
+
+        <div class="question-list">
+
+            <div class="question-item reveal">
+                <span>01</span>
+                <div>
+                    <small>WHAT HAPPENED?</small>
+                    <strong>Understand your business performance.</strong>
+                </div>
+                <b>→</b>
+            </div>
+
+
+            <div class="question-item reveal">
+                <span>02</span>
+                <div>
+                    <small>WHY DID IT HAPPEN?</small>
+                    <strong>Discover the factors behind changes.</strong>
+                </div>
+                <b>→</b>
+            </div>
+
+
+            <div class="question-item reveal">
+                <span>03</span>
+                <div>
+                    <small>WHAT WILL HAPPEN?</small>
+                    <strong>Identify trends and future possibilities.</strong>
+                </div>
+                <b>→</b>
+            </div>
+
+
+            <div class="question-item reveal">
+                <span>04</span>
+                <div>
+                    <small>WHAT SHOULD WE DO?</small>
+                    <strong>Turn intelligence into action.</strong>
+                </div>
+                <b>→</b>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         FINAL CTA
+    ====================================================== -->
+
+    <section class="home-cta reveal">
+
+        <div class="cta-glow"></div>
+
+        <span class="section-label">
+            READY TO BEGIN?
+        </span>
+
+        <h2>
+            Your data already knows
+            <span>more than you think.</span>
+        </h2>
+
+        <p>
+            Upload your first dataset and start discovering
+            what is happening inside your business.
+        </p>
+
+        {% if user.is_authenticated %}
+
+            <a href="{% url 'core:dashboard' %}"
+               class="hero-btn primary">
+                Open Smart BI
+                <span>→</span>
+            </a>
+
+        {% else %}
+
+            <a href="{% url 'accounts:signup' %}"
+               class="hero-btn primary">
+                Start Building Intelligence
+                <span>→</span>
+            </a>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+
+<link rel="stylesheet"
+      href="{% static 'css/smart_home.css' %}">
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script src="{% static 'js/smart_home.js' %}"></script>
+
+{% endblock %}

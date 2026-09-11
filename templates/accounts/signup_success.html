@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}
+Registration Submitted | Smart BI
+{% endblock %}
+
+{% block content %}
+
+<section class="auth-page">
+
+    <div class="approval-card">
+
+        <div class="approval-icon">
+            ✓
+        </div>
+
+        <span class="section-label">
+            REGISTRATION SUCCESSFUL
+        </span>
+
+        <h1>
+            Your account is
+            <span>pending approval</span>
+        </h1>
+
+        <p>
+            Thank you for registering with Smart BI.
+            Your account has been created successfully.
+        </p>
+
+        <p>
+            An administrator must approve your account
+            before you can access the platform.
+        </p>
+
+        <div class="approval-status">
+            <span class="status-dot"></span>
+            Waiting for Administrator Approval
+        </div>
+
+        <a
+            href="{% url 'accounts:login' %}"
+            class="primary-btn"
+        >
+            Go to Login →
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

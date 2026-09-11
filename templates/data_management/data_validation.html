@@ -1,0 +1,729 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+Data Validation | Smart BI
+{% endblock %}
+
+
+{% block content %}
+
+<div class="validation-page">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="validation-header">
+
+        <div>
+
+            <span class="section-label">
+                DATA MANAGEMENT
+            </span>
+
+            <h1>
+                Data <span>Validation</span>
+            </h1>
+
+            <p>
+                Check your dataset for structural,
+                numerical and logical data errors.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'data_management:upload' %}"
+            class="validation-upload-btn"
+        >
+            + Upload Dataset
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         DATASET SELECTOR
+    ====================================================== -->
+
+    <div class="validation-selector-card">
+
+        <div class="selector-left">
+
+            <div class="selector-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <span class="selector-label">
+                    SELECT DATASET
+                </span>
+
+                <h3>
+                    Choose a dataset to validate
+                </h3>
+
+            </div>
+
+        </div>
+
+
+        <form
+            method="GET"
+            action="{% url 'data_management:data_validation' %}"
+            class="dataset-selector-form"
+        >
+
+            <select
+                name="dataset"
+                onchange="this.form.submit()"
+            >
+
+                {% for dataset in datasets %}
+
+                    <option
+                        value="{{ dataset.id }}"
+                        {% if selected_dataset.id == dataset.id %}
+                            selected
+                        {% endif %}
+                    >
+
+                        {{ dataset.name }}
+                        — {{ dataset.dataset_type }}
+
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </form>
+
+    </div>
+
+
+    {% if selected_dataset and validation %}
+
+
+    <!-- =====================================================
+         DATASET INFORMATION
+    ====================================================== -->
+
+    <div class="dataset-info-bar">
+
+        <div>
+
+            <span>
+                DATASET
+            </span>
+
+            <strong>
+                {{ selected_dataset.name }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                TYPE
+            </span>
+
+            <strong>
+                {{ selected_dataset.dataset_type }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                FILE
+            </span>
+
+            <strong>
+                {{ selected_dataset.original_filename }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                ROWS
+            </span>
+
+            <strong>
+                {{ validation.total_rows }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SCORE + SUMMARY
+    ====================================================== -->
+
+    <div class="validation-overview">
+
+
+        <!-- SCORE CARD -->
+
+        <div class="validation-score-card">
+
+            <span class="card-label">
+                VALIDATION SCORE
+            </span>
+
+
+            <div
+                class="score-circle {{ validation.validation_class }}"
+            >
+
+                <div class="score-number">
+                    {{ validation.validation_score }}
+                </div>
+
+                <div class="score-out-of">
+                    / 100
+                </div>
+
+            </div>
+
+
+            <div
+                class="validation-status {{ validation.validation_class }}"
+            >
+                {{ validation.validation_status }}
+            </div>
+
+
+            <p>
+                Overall dataset validation result
+            </p>
+
+        </div>
+
+
+        <!-- KPI CARDS -->
+
+        <div class="validation-kpis">
+
+
+            <div class="validation-kpi">
+
+                <div class="kpi-icon passed">
+                    ✓
+                </div>
+
+                <div>
+
+                    <span>
+                        PASSED RECORDS
+                    </span>
+
+                    <strong>
+                        {{ validation.passed_rows }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="validation-kpi">
+
+                <div class="kpi-icon failed">
+                    !
+                </div>
+
+                <div>
+
+                    <span>
+                        FAILED RECORDS
+                    </span>
+
+                    <strong>
+                        {{ validation.failed_rows }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="validation-kpi">
+
+                <div class="kpi-icon duplicate">
+                    ↔
+                </div>
+
+                <div>
+
+                    <span>
+                        DUPLICATE ROWS
+                    </span>
+
+                    <strong>
+                        {{ validation.duplicate_rows }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="validation-kpi">
+
+                <div class="kpi-icon rules">
+                    #
+                </div>
+
+                <div>
+
+                    <span>
+                        RULES CHECKED
+                    </span>
+
+                    <strong>
+                        {{ validation.validation_rules }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         REQUIRED COLUMN WARNING
+    ====================================================== -->
+
+    {% if validation.missing_required_columns %}
+
+    <div class="validation-warning">
+
+        <div class="warning-icon">
+            !
+        </div>
+
+        <div>
+
+            <strong>
+                Required columns are missing
+            </strong>
+
+            <p>
+                The following expected columns were not
+                detected in this dataset:
+            </p>
+
+            <div class="missing-column-list">
+
+                {% for column in validation.missing_required_columns %}
+
+                    <span>
+                        {{ column }}
+                    </span>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         DETECTED DATA RULES
+    ====================================================== -->
+
+    <div class="validation-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-label">
+                    VALIDATION ENGINE
+                </span>
+
+                <h2>
+                    Detected Data Rules
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="rule-grid">
+
+
+            <div class="rule-card">
+
+                <div class="rule-check">
+                    ✓
+                </div>
+
+                <div>
+
+                    <strong>
+                        Missing Values
+                    </strong>
+
+                    <span>
+                        Checked
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="rule-card">
+
+                <div class="rule-check">
+                    ✓
+                </div>
+
+                <div>
+
+                    <strong>
+                        Duplicate Records
+                    </strong>
+
+                    <span>
+                        Checked
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            {% if validation.date_column %}
+
+            <div class="rule-card">
+
+                <div class="rule-check">
+                    ✓
+                </div>
+
+                <div>
+
+                    <strong>
+                        Date Validation
+                    </strong>
+
+                    <span>
+                        {{ validation.date_column }}
+                    </span>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+            {% if validation.sales_column %}
+
+            <div class="rule-card">
+
+                <div class="rule-check">
+                    ✓
+                </div>
+
+                <div>
+
+                    <strong>
+                        Sales Validation
+                    </strong>
+
+                    <span>
+                        {{ validation.sales_column }}
+                    </span>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+            {% if validation.quantity_column %}
+
+            <div class="rule-card">
+
+                <div class="rule-check">
+                    ✓
+                </div>
+
+                <div>
+
+                    <strong>
+                        Quantity Validation
+                    </strong>
+
+                    <span>
+                        {{ validation.quantity_column }}
+                    </span>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+            {% if validation.discount_column %}
+
+            <div class="rule-card">
+
+                <div class="rule-check">
+                    ✓
+                </div>
+
+                <div>
+
+                    <strong>
+                        Discount Validation
+                    </strong>
+
+                    <span>
+                        0 – 100
+                    </span>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ERROR TABLE
+    ====================================================== -->
+
+    <div class="validation-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-label">
+                    VALIDATION RESULTS
+                </span>
+
+                <h2>
+                    Data Issues Detected
+                </h2>
+
+            </div>
+
+
+            <div class="result-count">
+
+                {{ validation.total_errors }}
+                issue(s)
+
+            </div>
+
+        </div>
+
+
+        {% if validation.validation_errors %}
+
+        <div class="validation-table-wrapper">
+
+            <table class="validation-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ROW
+                        </th>
+
+                        <th>
+                            STATUS
+                        </th>
+
+                        <th>
+                            ISSUE / REASON
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for error in validation.validation_errors %}
+
+                    <tr>
+
+                        <td>
+                            #{{ error.row_number }}
+                        </td>
+
+                        <td>
+
+                            <span class="failed-badge">
+                                FAILED
+                            </span>
+
+                        </td>
+
+                        <td class="reason-cell">
+                            {{ error.reason }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+        <div class="validation-success">
+
+            <div class="success-icon">
+                ✓
+            </div>
+
+            <h3>
+                No validation errors found
+            </h3>
+
+            <p>
+                All records passed the current validation
+                rules successfully.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- =====================================================
+         ACTION AREA
+    ====================================================== -->
+
+    <div class="validation-actions">
+
+        <div>
+
+            <span class="section-label">
+                NEXT STEP
+            </span>
+
+            <h3>
+                Dataset validation completed
+            </h3>
+
+            <p>
+                Your original dataset has not been modified.
+                Download the validation report for further
+                review.
+            </p>
+
+        </div>
+
+
+        <div class="action-buttons">
+
+            <a
+                href="{% url 'data_management:data_cleaning' %}?dataset={{ selected_dataset.id }}"
+                class="secondary-action"
+            >
+                Open Data Cleaning
+            </a>
+
+
+            <a
+                href="{% url 'data_management:download_validation_report' selected_dataset.id %}"
+                class="primary-action"
+            >
+                ↓ Download Validation Report
+            </a>
+
+        </div>
+
+    </div>
+
+
+    {% elif not datasets %}
+
+
+    <!-- =====================================================
+         EMPTY STATE
+    ====================================================== -->
+
+    <div class="validation-empty">
+
+        <div class="empty-icon">
+            ✓
+        </div>
+
+        <span class="section-label">
+            NO DATASET AVAILABLE
+        </span>
+
+        <h2>
+            Upload a dataset to begin validation
+        </h2>
+
+        <p>
+            Data Validation requires at least one
+            uploaded business dataset.
+        </p>
+
+        <a
+            href="{% url 'data_management:upload' %}"
+            class="primary-action"
+        >
+            Upload Your First Dataset →
+        </a>
+
+    </div>
+
+
+    {% endif %}
+
+
+</div>
+
+{% endblock %}

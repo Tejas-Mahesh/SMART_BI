@@ -1,0 +1,1187 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/data_management_workspace.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="data-workspace">
+
+    <!-- =========================================================
+         HEADER
+    ========================================================== -->
+
+    <section class="workspace-header">
+
+        <div>
+            <div class="workspace-eyebrow">
+                SMART BI · DATA MANAGEMENT
+            </div>
+
+            <h1>Your Business Data</h1>
+
+            <p>
+                Upload your business data and Smart BI automatically
+                validates, profiles, checks quality, cleans and prepares
+                it for analytics.
+            </p>
+        </div>
+
+        <a
+            href="{% url 'data_management:upload' %}"
+            class="upload-btn"
+        >
+            <span class="upload-icon">＋</span>
+            Upload Dataset
+        </a>
+
+    </section>
+
+
+    <!-- =========================================================
+         AUTOMATIC PROCESS FLOW
+    ========================================================== -->
+
+    <section class="smart-flow-card">
+
+        <div class="flow-heading">
+
+            <div>
+                <span class="flow-label">
+                    AUTOMATIC PROCESSING
+                </span>
+
+                <h2>
+                    From raw data to analytics-ready data
+                </h2>
+            </div>
+
+            <div class="flow-status">
+                <span class="status-dot"></span>
+                Smart BI Processing
+            </div>
+
+        </div>
+
+
+        <div class="flow-steps">
+
+            <div class="flow-step">
+                <div class="flow-number">01</div>
+                <div>
+                    <strong>Upload</strong>
+                    <small>Your business file</small>
+                </div>
+            </div>
+
+            <div class="flow-line"></div>
+
+            <div class="flow-step">
+                <div class="flow-number">02</div>
+                <div>
+                    <strong>Validate</strong>
+                    <small>Structure & records</small>
+                </div>
+            </div>
+
+            <div class="flow-line"></div>
+
+            <div class="flow-step">
+                <div class="flow-number">03</div>
+                <div>
+                    <strong>Profile</strong>
+                    <small>Understand the data</small>
+                </div>
+            </div>
+
+            <div class="flow-line"></div>
+
+            <div class="flow-step">
+                <div class="flow-number">04</div>
+                <div>
+                    <strong>Quality</strong>
+                    <small>Find data issues</small>
+                </div>
+            </div>
+
+            <div class="flow-line"></div>
+
+            <div class="flow-step">
+                <div class="flow-number">05</div>
+                <div>
+                    <strong>Clean</strong>
+                    <small>Prepare the dataset</small>
+                </div>
+            </div>
+
+            <div class="flow-line"></div>
+
+            <div class="flow-step final-flow">
+                <div class="flow-number">✓</div>
+                <div>
+                    <strong>Analytics Ready</strong>
+                    <small>Ready for intelligence</small>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         DATASET SUMMARY
+    ========================================================== -->
+
+    <section class="workspace-summary">
+
+        <div class="summary-card">
+
+            <div class="summary-icon purple">
+                ◈
+            </div>
+
+            <div>
+                <span>Total Datasets</span>
+                <strong>{{ datasets|length }}</strong>
+            </div>
+
+        </div>
+
+        <div class="summary-card">
+
+            <div class="summary-icon blue">
+                ↗
+            </div>
+
+            <div>
+                <span>Analytics Pipeline</span>
+                <strong>Automatic</strong>
+            </div>
+
+        </div>
+
+        <div class="summary-card">
+
+            <div class="summary-icon green">
+                ✓
+            </div>
+
+            <div>
+                <span>Processing</span>
+                <strong>Smart BI</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         DATASETS
+    ========================================================== -->
+
+    <section class="datasets-section">
+
+        <div class="section-heading">
+
+            <div>
+                <span class="section-label">
+                    DATASETS
+                </span>
+
+                <h2>
+                    Uploaded Business Data
+                </h2>
+            </div>
+
+            <div class="dataset-count">
+                {{ datasets|length }}
+                dataset{{ datasets|length|pluralize }}
+            </div>
+
+        </div>
+
+
+        {% if datasets %}
+
+        <div class="dataset-list">
+
+            {% for dataset in datasets %}
+
+            <article
+                class="dataset-card"
+                data-dataset-card
+            >
+
+                <!-- =================================================
+                     DATASET HEADER
+                ================================================== -->
+
+                <div class="dataset-main">
+
+                    <div class="dataset-file-icon">
+
+                        {% if dataset.dataset_type == "Sales" %}
+                            $
+                        {% elif dataset.dataset_type == "Customers" %}
+                            C
+                        {% elif dataset.dataset_type == "Products" %}
+                            P
+                        {% elif dataset.dataset_type == "Marketing" %}
+                            M
+                        {% elif dataset.dataset_type == "Financial" %}
+                            F
+                        {% elif dataset.dataset_type == "Returns" %}
+                            R
+                        {% else %}
+                            D
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="dataset-info">
+
+                        <div class="dataset-title-row">
+
+                            <h3>
+                                {{ dataset.name }}
+                            </h3>
+
+                            <span class="dataset-type">
+                                {{ dataset.dataset_type }}
+                            </span>
+
+                        </div>
+
+                        <p class="dataset-file">
+                            {{ dataset.original_filename }}
+                        </p>
+
+                        <div class="dataset-meta">
+
+                            <span>
+                                Uploaded:
+                                <b>
+                                    {{ dataset.uploaded_at|date:"d M Y, h:i A" }}
+                                </b>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CURRENT QUALITY -->
+
+                    <div class="quality-block">
+
+                        <div
+                            class="quality-ring"
+                            style="--quality: {{ dataset.quality_score }}%;"
+                        >
+
+                            <div class="quality-inner">
+
+                                <strong>
+                                    {{ dataset.quality_score|floatformat:0 }}
+                                </strong>
+
+                                <small>
+                                    QUALITY
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- STATUS -->
+
+                    <div class="dataset-status">
+
+                        {% if dataset.cleaned_version %}
+
+                            <span class="ready-badge">
+                                <span></span>
+                                Analytics Ready
+                            </span>
+
+                            <small>
+                                Cleaned version available
+                            </small>
+
+                        {% else %}
+
+                            <span class="ready-badge processing-badge">
+                                <span></span>
+                                Processing
+                            </span>
+
+                            <small>
+                                Preparing dataset
+                            </small>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- ACTION -->
+
+                    <div class="dataset-actions">
+
+                        {% if dataset.cleaned_version %}
+
+                            <a
+                                href="{% url 'data_management:dataset_preview' dataset.id %}?version={{ dataset.cleaned_version.id }}"
+                                class="view-btn"
+                            >
+                                View Cleaned Data
+                            </a>
+
+                        {% else %}
+
+                            <a
+                                href="{% url 'data_management:dataset_preview' dataset.id %}"
+                                class="view-btn"
+                            >
+                                View Data
+                            </a>
+
+                        {% endif %}
+
+                        <button
+                            type="button"
+                            class="expand-btn"
+                            data-expand-button
+                            aria-expanded="false"
+                        >
+                            <span>Compare Data</span>
+                            <b>⌄</b>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     ORIGINAL VS CLEANED
+                ================================================== -->
+
+                <div
+                    class="processing-panel"
+                    data-processing-panel
+                >
+
+                    <div class="processing-header">
+
+                        <div>
+
+                            <span class="section-label">
+                                DATA TRANSFORMATION
+                            </span>
+
+                            <h4>
+                                Original Data vs Current Cleaned Data
+                            </h4>
+
+                            <p class="comparison-description">
+                                Smart BI keeps the original upload unchanged
+                                and creates a separate cleaned version for
+                                analytics.
+                            </p>
+
+                        </div>
+
+
+                        {% if dataset.cleaned_version %}
+
+                        <span class="pipeline-complete">
+                            ✓ Analytics Ready
+                        </span>
+
+                        {% else %}
+
+                        <span class="pipeline-complete">
+                            Processing
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- =================================================
+                         COMPARISON CARDS
+                    ================================================== -->
+
+                    <div class="data-comparison-grid">
+
+
+                        <!-- ORIGINAL -->
+
+                        <div class="data-state-card original-data">
+
+                            <div class="data-state-header">
+
+                                <div>
+
+                                    <span class="data-state-label">
+                                        ORIGINAL UPLOADED DATA
+                                    </span>
+
+                                    <h5>
+                                        Raw Dataset
+                                    </h5>
+
+                                </div>
+
+                                <div class="data-state-icon">
+                                    ↑
+                                </div>
+
+                            </div>
+
+
+                            {% if dataset.original_version %}
+
+                            <div class="data-metrics-grid">
+
+                                <div class="data-metric">
+
+                                    <span>Rows</span>
+
+                                    <strong>
+                                        {{ dataset.original_version.total_rows }}
+                                    </strong>
+
+                                </div>
+
+                                <div class="data-metric">
+
+                                    <span>Columns</span>
+
+                                    <strong>
+                                        {{ dataset.original_version.total_columns }}
+                                    </strong>
+
+                                </div>
+
+                                <div class="data-metric">
+
+                                    <span>Missing</span>
+
+                                    <strong>
+                                        {{ dataset.original_version.missing_values }}
+                                    </strong>
+
+                                </div>
+
+                                <div class="data-metric">
+
+                                    <span>Duplicates</span>
+
+                                    <strong>
+                                        {{ dataset.original_version.duplicate_rows }}
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="data-quality-line">
+
+                                <span>
+                                    Original Quality
+                                </span>
+
+                                <strong>
+                                    {{ dataset.original_version.quality_score|floatformat:2 }}%
+                                </strong>
+
+                            </div>
+
+
+                            <div class="data-state-actions">
+
+                                <a
+                                    href="{% url 'data_management:dataset_preview' dataset.id %}?version={{ dataset.original_version.id }}"
+                                    class="secondary-action"
+                                >
+                                    View Original
+                                </a>
+
+                                <a
+                                    href="{% url 'data_management:download_version' dataset.original_version.id %}"
+                                    class="secondary-action"
+                                >
+                                    Download Original
+                                </a>
+
+                            </div>
+
+                            {% else %}
+
+                            <div class="version-unavailable">
+                                Original version information is unavailable.
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- TRANSFORMATION ARROW -->
+
+                        <div class="data-transform-arrow">
+
+                            <div class="transform-line"></div>
+
+                            <div class="transform-icon">
+                                →
+                            </div>
+
+                            <span>
+                                SMART BI<br>
+                                CLEANING
+                            </span>
+
+                        </div>
+
+
+                        <!-- CLEANED -->
+
+                        <div class="data-state-card cleaned-data">
+
+                            <div class="data-state-header">
+
+                                <div>
+
+                                    <span class="data-state-label">
+                                        CURRENT CLEANED DATA
+                                    </span>
+
+                                    <h5>
+                                        Analytics Ready Dataset
+                                    </h5>
+
+                                </div>
+
+                                <div class="data-state-icon">
+                                    ✓
+                                </div>
+
+                            </div>
+
+
+                            {% if dataset.cleaned_version %}
+
+                            <div class="data-metrics-grid">
+
+                                <div class="data-metric">
+
+                                    <span>Rows</span>
+
+                                    <strong>
+                                        {{ dataset.cleaned_version.total_rows }}
+                                    </strong>
+
+                                </div>
+
+                                <div class="data-metric">
+
+                                    <span>Columns</span>
+
+                                    <strong>
+                                        {{ dataset.cleaned_version.total_columns }}
+                                    </strong>
+
+                                </div>
+
+                                <div class="data-metric">
+
+                                    <span>Missing</span>
+
+                                    <strong>
+                                        {{ dataset.cleaned_version.missing_values }}
+                                    </strong>
+
+                                </div>
+
+                                <div class="data-metric">
+
+                                    <span>Duplicates</span>
+
+                                    <strong>
+                                        {{ dataset.cleaned_version.duplicate_rows }}
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="data-quality-line">
+
+                                <span>
+                                    Current Quality
+                                </span>
+
+                                <strong>
+                                    {{ dataset.cleaned_version.quality_score|floatformat:2 }}%
+                                </strong>
+
+                            </div>
+
+
+                            <div class="data-state-actions">
+
+                                <a
+                                    href="{% url 'data_management:dataset_preview' dataset.id %}?version={{ dataset.cleaned_version.id }}"
+                                    class="primary-action"
+                                >
+                                    View Cleaned Data
+                                </a>
+
+                                <a
+                                    href="{% url 'data_management:download_version' dataset.cleaned_version.id %}"
+                                    class="secondary-action"
+                                >
+                                    Download Cleaned
+                                </a>
+
+                            </div>
+
+
+                            <div class="analytics-ready-note">
+                                <span>✓</span>
+                                This version is used for Business Analytics.
+                            </div>
+
+                            {% else %}
+
+                            <div class="cleaning-pending">
+
+                                <div class="pending-icon">
+                                    ◌
+                                </div>
+
+                                <strong>
+                                    Cleaning in progress
+                                </strong>
+
+                                <p>
+                                    Smart BI has not created the cleaned
+                                    analytics-ready version yet.
+                                </p>
+
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         PROCESSING HISTORY
+                    ================================================== -->
+
+                    <div class="history-section">
+
+                        <div class="history-heading">
+
+                            <div>
+
+                                <span class="section-label">
+                                    PROCESSING HISTORY
+                                </span>
+
+                                <h4>
+                                    What Smart BI did with this dataset
+                                </h4>
+
+                            </div>
+
+                            {% if dataset.cleaned_version %}
+
+                            <span class="pipeline-complete">
+                                ✓ Complete
+                            </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="activity-timeline">
+
+                            {% for activity in dataset.activities.all %}
+
+                            <div
+                                class="
+                                    activity-item
+                                    {% if activity.status == 'Warning' %}
+                                        warning
+                                    {% elif activity.status == 'Failed' %}
+                                        failed
+                                    {% else %}
+                                        success
+                                    {% endif %}
+                                "
+                            >
+
+                                <div class="activity-marker">
+
+                                    {% if activity.status == "Success" %}
+                                        ✓
+                                    {% elif activity.status == "Warning" %}
+                                        !
+                                    {% else %}
+                                        ×
+                                    {% endif %}
+
+                                </div>
+
+
+                                <div class="activity-content">
+
+                                    <div class="activity-title-row">
+
+                                        <strong>
+                                            {{ activity.title }}
+                                        </strong>
+
+                                        <span>
+                                            {{ activity.created_at|date:"d M Y · h:i A" }}
+                                        </span>
+
+                                    </div>
+
+
+                                    <p>
+                                        {{ activity.description }}
+                                    </p>
+
+
+                                    <!-- VALIDATION DETAILS -->
+
+                                    {% if activity.activity_type == "Validated" %}
+
+                                        {% if activity.details.issues %}
+
+                                        <div class="activity-details warning-details">
+
+                                            <strong>
+                                                Issues detected
+                                            </strong>
+
+                                            <ul>
+
+                                                {% for issue in activity.details.issues %}
+
+                                                <li>
+                                                    {{ issue }}
+                                                </li>
+
+                                                {% endfor %}
+
+                                            </ul>
+
+                                        </div>
+
+                                        {% else %}
+
+                                        <div class="activity-details">
+
+                                            <span>
+                                                ✓ File structure valid
+                                            </span>
+
+                                            <span>
+                                                ✓ {{ activity.details.rows }}
+                                                rows checked
+                                            </span>
+
+                                            <span>
+                                                ✓ {{ activity.details.columns }}
+                                                columns detected
+                                            </span>
+
+                                        </div>
+
+                                        {% endif %}
+
+                                    {% endif %}
+
+
+                                    <!-- PROFILE DETAILS -->
+
+                                    {% if activity.activity_type == "Profiled" %}
+
+                                    <div class="activity-details">
+
+                                        <span>
+                                            Numeric:
+                                            <b>
+                                                {{ activity.details.numeric_columns|length }}
+                                            </b>
+                                        </span>
+
+                                        <span>
+                                            Categorical:
+                                            <b>
+                                                {{ activity.details.categorical_columns|length }}
+                                            </b>
+                                        </span>
+
+                                        <span>
+                                            Datetime:
+                                            <b>
+                                                {{ activity.details.datetime_columns|length }}
+                                            </b>
+                                        </span>
+
+                                    </div>
+
+                                    {% endif %}
+
+
+                                    <!-- QUALITY DETAILS -->
+
+                                    {% if activity.activity_type == "Quality Checked" %}
+
+                                    <div class="activity-details">
+
+                                        <span>
+                                            Quality Score:
+                                            <b>
+                                                {{ activity.details.quality_score }}%
+                                            </b>
+                                        </span>
+
+                                        <span>
+                                            Missing:
+                                            <b>
+                                                {{ activity.details.missing_values }}
+                                            </b>
+                                        </span>
+
+                                        <span>
+                                            Duplicates:
+                                            <b>
+                                                {{ activity.details.duplicate_rows }}
+                                            </b>
+                                        </span>
+
+                                    </div>
+
+                                    {% endif %}
+
+
+                                    <!-- CLEANING DETAILS -->
+
+                                    {% if activity.activity_type == "Cleaned" %}
+
+                                    <div class="activity-details cleaning-details">
+
+                                        <span>
+                                            Missing values:
+                                            <b>
+                                                {{ activity.details.missing_before }}
+                                            </b>
+                                            →
+                                            <b>
+                                                {{ activity.details.missing_after }}
+                                            </b>
+                                        </span>
+
+                                        <span>
+                                            Duplicate rows:
+                                            <b>
+                                                {{ activity.details.duplicates_before }}
+                                            </b>
+                                            →
+                                            <b>
+                                                {{ activity.details.duplicates_after }}
+                                            </b>
+                                        </span>
+
+                                    </div>
+
+                                    {% endif %}
+
+
+                                    <!-- ANALYTICS READY -->
+
+                                    {% if activity.activity_type == "Analytics Ready" %}
+
+                                    <div class="activity-details">
+
+                                        <span>
+                                            ✓ Final cleaned dataset created
+                                        </span>
+
+                                        {% if dataset.cleaned_version %}
+
+                                        <span>
+                                            ✓
+                                            {{ dataset.cleaned_version.total_rows }}
+                                            rows ready
+                                        </span>
+
+                                        <span>
+                                            ✓
+                                            {{ dataset.cleaned_version.total_columns }}
+                                            columns ready
+                                        </span>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                            {% empty %}
+
+                            <div class="no-activity">
+                                Processing history is not available for this dataset.
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         READY BANNER
+                    ================================================== -->
+
+                    {% if dataset.cleaned_version %}
+
+                    <div class="dataset-ready-banner">
+
+                        <div class="ready-symbol">
+                            ✦
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Current cleaned data is ready for Business Analytics
+                            </strong>
+
+                            <p>
+                                Smart BI keeps the original upload unchanged.
+                                The cleaned version above is the active dataset
+                                that will be used by the Business Analytics
+                                modules.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </article>
+
+            {% endfor %}
+
+        </div>
+
+
+        {% else %}
+
+        <!-- =========================================================
+             EMPTY STATE
+        ========================================================== -->
+
+        <div class="empty-datasets">
+
+            <div class="empty-animation">
+
+                <div class="empty-orbit orbit-one"></div>
+                <div class="empty-orbit orbit-two"></div>
+
+                <div class="empty-center">
+                    ◈
+                </div>
+
+            </div>
+
+            <span class="section-label">
+                NO DATASETS YET
+            </span>
+
+            <h2>
+                Start with your business data
+            </h2>
+
+            <p>
+                Upload a CSV, XLS or XLSX file and Smart BI will
+                automatically validate, profile, check quality,
+                clean and prepare it for analytics.
+            </p>
+
+            <a
+                href="{% url 'data_management:upload' %}"
+                class="upload-btn"
+            >
+                <span class="upload-icon">＋</span>
+                Upload Your First Dataset
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const buttons = document.querySelectorAll(
+        "[data-expand-button]"
+    );
+
+
+    buttons.forEach(function (button) {
+
+        button.addEventListener("click", function () {
+
+            const card = button.closest(
+                "[data-dataset-card]"
+            );
+
+            const panel = card.querySelector(
+                "[data-processing-panel]"
+            );
+
+            const isOpen =
+                card.classList.contains("expanded");
+
+
+            /*
+             * Close other dataset panels
+             */
+
+            document
+                .querySelectorAll(
+                    "[data-dataset-card].expanded"
+                )
+                .forEach(function (otherCard) {
+
+                    if (otherCard !== card) {
+
+                        otherCard.classList.remove(
+                            "expanded"
+                        );
+
+                        const otherButton =
+                            otherCard.querySelector(
+                                "[data-expand-button]"
+                            );
+
+                        if (otherButton) {
+
+                            otherButton.setAttribute(
+                                "aria-expanded",
+                                "false"
+                            );
+
+                            const otherText =
+                                otherButton.querySelector(
+                                    "span"
+                                );
+
+                            if (otherText) {
+                                otherText.textContent =
+                                    "Compare Data";
+                            }
+
+                        }
+
+                    }
+
+                });
+
+
+            /*
+             * Toggle current panel
+             */
+
+            if (isOpen) {
+
+                card.classList.remove(
+                    "expanded"
+                );
+
+                button.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+                const text =
+                    button.querySelector("span");
+
+                if (text) {
+                    text.textContent =
+                        "Compare Data";
+                }
+
+            } else {
+
+                card.classList.add(
+                    "expanded"
+                );
+
+                button.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+
+                const text =
+                    button.querySelector("span");
+
+                if (text) {
+                    text.textContent =
+                        "Hide Comparison";
+                }
+
+            }
+
+        });
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}
+Access Restricted | Smart BI
+{% endblock %}
+
+
+{% block content %}
+
+<section class="auth-page">
+
+    <div class="approval-card">
+
+        <div class="approval-icon">
+            !
+        </div>
+
+        <span class="section-label">
+            ACCESS RESTRICTED
+        </span>
+
+        <h1>
+            Administrator
+            <span>Approval Required</span>
+        </h1>
+
+        <p>
+            {{ message }}
+        </p>
+
+        <p>
+            Please wait until an administrator approves
+            your Smart BI account.
+        </p>
+
+        <a href="{% url 'accounts:logout' %}"
+           class="primary-btn">
+
+            Return to Login →
+
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

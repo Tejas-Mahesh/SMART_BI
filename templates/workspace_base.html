@@ -1,0 +1,496 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Smart BI Decision Intelligence Workspace">
+
+    <meta name="theme-color"
+          content="#06111f">
+
+    <title>
+        {% block title %}
+            Smart BI | Workspace
+        {% endblock %}
+    </title>
+
+
+    <!-- GLOBAL CSS -->
+
+    <link rel="stylesheet"
+          href="{% static 'css/main.css' %}">
+
+    <link rel="stylesheet"
+          href="{% static 'css/global_ui.css' %}">
+
+
+    <!-- WORKSPACE CSS -->
+
+    <link rel="stylesheet"
+          href="{% static 'css/bi_workspace.css' %}">
+
+
+    {% block extra_css %}
+    {% endblock %}
+
+</head>
+
+
+<body class="smart-workspace-body">
+
+
+<!-- =========================================================
+     WORKSPACE
+========================================================= -->
+
+<div class="smart-workspace">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="workspace-sidebar"
+           id="workspaceSidebar">
+
+
+        <!-- BRAND -->
+
+        <div class="workspace-brand">
+
+            <div class="workspace-brand-icon">
+                S
+            </div>
+
+            <div class="workspace-brand-text">
+
+                <strong>
+                    Smart BI
+                </strong>
+
+                <span>
+                    Decision Intelligence
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- USER -->
+
+        <div class="workspace-user">
+
+            <div class="workspace-avatar">
+
+                {{ user.username|first|upper }}
+
+            </div>
+
+            <div class="workspace-user-info">
+
+                <strong>
+                    {{ user.username }}
+                </strong>
+
+                <span>
+                    {{ user.user_type }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="workspace-navigation">
+
+
+            <div class="workspace-nav-label">
+                MAIN
+            </div>
+
+
+            <!-- DASHBOARD -->
+
+            <a href="{% url 'core:dashboard' %}"
+               class="workspace-nav-item">
+
+                <span class="workspace-nav-icon">
+                    ⌂
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <!-- DATA MANAGEMENT -->
+
+            <a href="{% url 'data_management:dataset_management' %}"
+               class="workspace-nav-item
+               {% if request.resolver_match.url_name == 'dataset_management' or request.resolver_match.url_name == 'upload' or request.resolver_match.url_name == 'dataset_preview' %}
+                   active
+               {% endif %}">
+
+                <span class="workspace-nav-icon">
+                    ▣
+                </span>
+
+                <span>
+                    Data Management
+                </span>
+
+                <span class="workspace-nav-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- BUSINESS ANALYTICS -->
+
+            <a href="#"
+               class="workspace-nav-item workspace-coming-soon">
+
+                <span class="workspace-nav-icon">
+                    ◫
+                </span>
+
+                <span>
+                    Business Analytics
+                </span>
+
+                <small>
+                    Soon
+                </small>
+
+            </a>
+
+
+            <!-- ADVANCED INSIGHTS -->
+
+            <a href="#"
+               class="workspace-nav-item workspace-coming-soon">
+
+                <span class="workspace-nav-icon">
+                    ◈
+                </span>
+
+                <span>
+                    Advanced Insights
+                </span>
+
+                <small>
+                    Soon
+                </small>
+
+            </a>
+
+
+            <!-- DECISION INTELLIGENCE -->
+
+            <a href="#"
+               class="workspace-nav-item workspace-coming-soon">
+
+                <span class="workspace-nav-icon">
+                    ✦
+                </span>
+
+                <span>
+                    Decision Intelligence
+                </span>
+
+                <small>
+                    Soon
+                </small>
+
+            </a>
+
+
+            <!-- REPORTS -->
+
+            <a href="#"
+               class="workspace-nav-item workspace-coming-soon">
+
+                <span class="workspace-nav-icon">
+                    ▤
+                </span>
+
+                <span>
+                    Reports
+                </span>
+
+                <small>
+                    Soon
+                </small>
+
+            </a>
+
+
+            <div class="workspace-nav-divider"></div>
+
+
+            <!-- SETTINGS -->
+
+            <a href="#"
+               class="workspace-nav-item workspace-coming-soon">
+
+                <span class="workspace-nav-icon">
+                    ⚙
+                </span>
+
+                <span>
+                    Settings
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <!-- SIDEBAR FOOTER -->
+
+        <div class="workspace-sidebar-footer">
+
+
+            <div class="workspace-system-status">
+
+                <span class="workspace-status-dot"></span>
+
+                <span>
+                    Intelligence Engine Online
+                </span>
+
+            </div>
+
+
+            <a href="{% url 'accounts:logout' %}"
+               class="workspace-logout">
+
+                <span>
+                    ↪
+                </span>
+
+                Logout
+
+            </a>
+
+        </div>
+
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="workspace-main">
+
+
+        <!-- MOBILE TOPBAR -->
+
+        <header class="workspace-mobile-header">
+
+            <button type="button"
+                    class="workspace-menu-button"
+                    id="workspaceMenuButton">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+
+            <div class="workspace-mobile-brand">
+
+                <div>
+                    S
+                </div>
+
+                <strong>
+                    Smart BI
+                </strong>
+
+            </div>
+
+        </header>
+
+
+        <!-- TOPBAR -->
+
+        <header class="workspace-topbar">
+
+
+            <div class="workspace-topbar-left">
+
+                <div class="workspace-breadcrumb">
+
+                    <a href="{% url 'core:dashboard' %}">
+                        Dashboard
+                    </a>
+
+                    <span>
+                        /
+                    </span>
+
+                    <strong>
+                        {% block breadcrumb %}
+                            Workspace
+                        {% endblock %}
+                    </strong>
+
+                </div>
+
+
+                <div class="workspace-heading-row">
+
+                    <div>
+
+                        <span class="workspace-eyebrow">
+                            SMART BUSINESS INTELLIGENCE
+                        </span>
+
+                        <h1>
+                            {% block page_heading %}
+                                Workspace
+                            {% endblock %}
+                        </h1>
+
+                        <p>
+                            {% block page_description %}
+                                Turn business data into intelligent decisions.
+                            {% endblock %}
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="workspace-topbar-right">
+
+
+                <div class="workspace-live-indicator">
+
+                    <span></span>
+
+                    System Online
+
+                </div>
+
+
+                <div class="workspace-topbar-user">
+
+                    <div class="workspace-topbar-avatar">
+
+                        {{ user.username|first|upper }}
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            {{ user.username }}
+                        </strong>
+
+                        <span>
+                            {{ user.user_type }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </header>
+
+
+        <!-- MESSAGES -->
+
+        {% if messages %}
+
+        <div class="workspace-messages">
+
+            {% for message in messages %}
+
+            <div class="workspace-message
+                        workspace-message-{{ message.tags }}">
+
+                <span class="workspace-message-icon">
+
+                    {% if message.tags == "success" %}
+                        ✓
+                    {% elif message.tags == "error" %}
+                        !
+                    {% elif message.tags == "warning" %}
+                        !
+                    {% else %}
+                        i
+                    {% endif %}
+
+                </span>
+
+                <span>
+                    {{ message }}
+                </span>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- PAGE CONTENT -->
+
+        <div class="workspace-content">
+
+            {% block workspace_content %}
+            {% endblock %}
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+<!-- MOBILE OVERLAY -->
+
+<div class="workspace-overlay"
+     id="workspaceOverlay">
+</div>
+
+
+<script src="{% static 'js/bi_workspace.js' %}"></script>
+
+
+{% block extra_js %}
+{% endblock %}
+
+
+</body>
+
+</html>

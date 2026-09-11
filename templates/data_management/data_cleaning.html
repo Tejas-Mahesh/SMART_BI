@@ -1,0 +1,512 @@
+{% extends "base.html" %}
+
+{% block title %}
+Data Cleaning | Smart BI
+{% endblock %}
+
+{% block content %}
+
+<div class="cleaning-page">
+
+    <!-- HEADER -->
+
+    <div class="cleaning-header">
+
+        <div>
+
+            <span class="section-label">
+                DATA MANAGEMENT
+            </span>
+
+            <h1>
+                Data <span>Cleaning</span>
+            </h1>
+
+            <p>
+                Detect and remove common data quality issues
+                while preserving your original dataset.
+            </p>
+
+        </div>
+
+        <div class="header-actions">
+
+            <a
+                href="{% url 'data_management:data_quality' %}"
+                class="secondary-btn"
+            >
+                Data Quality
+            </a>
+
+            <a
+                href="{% url 'data_management:dataset_management' %}"
+                class="secondary-btn"
+            >
+                Dataset Management
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- DATASET SELECTOR -->
+
+    <div class="cleaning-selector">
+
+        <div>
+
+            <label>
+                Select Dataset
+            </label>
+
+            <p>
+                Choose the dataset you want to clean.
+            </p>
+
+        </div>
+
+        <form method="GET">
+
+            <select
+                name="dataset"
+                onchange="this.form.submit()"
+            >
+
+                {% for dataset in datasets %}
+
+                    <option
+                        value="{{ dataset.id }}"
+                        {% if selected_dataset.id == dataset.id %}
+                            selected
+                        {% endif %}
+                    >
+
+                        {{ dataset.name }}
+                        — {{ dataset.dataset_type }}
+
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </form>
+
+    </div>
+
+
+    {% if selected_dataset and cleaning %}
+
+
+    <!-- SAFETY NOTICE -->
+
+    <div class="cleaning-notice">
+
+        <div class="notice-icon">
+            ✓
+        </div>
+
+        <div>
+
+            <strong>
+                Original Dataset Protected
+            </strong>
+
+            <p>
+                Smart BI does not modify your uploaded
+                original file. Cleaning is performed
+                in memory and the cleaned version can
+                be downloaded separately.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- BEFORE / AFTER -->
+
+    <div class="comparison-grid">
+
+        <div class="comparison-card before">
+
+            <div class="comparison-title">
+
+                <span class="comparison-icon">
+                    B
+                </span>
+
+                <div>
+
+                    <span class="section-label">
+                        BEFORE
+                    </span>
+
+                    <h3>
+                        Original Dataset
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <div class="comparison-stats">
+
+                <div>
+
+                    <span>Rows</span>
+
+                    <strong>
+                        {{ cleaning.before_rows }}
+                    </strong>
+
+                </div>
+
+                <div>
+
+                    <span>Columns</span>
+
+                    <strong>
+                        {{ cleaning.before_columns }}
+                    </strong>
+
+                </div>
+
+                <div>
+
+                    <span>Missing Values</span>
+
+                    <strong>
+                        {{ cleaning.before_missing }}
+                    </strong>
+
+                </div>
+
+                <div>
+
+                    <span>Duplicates</span>
+
+                    <strong>
+                        {{ cleaning.before_duplicates }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="comparison-card after">
+
+            <div class="comparison-title">
+
+                <span class="comparison-icon">
+                    A
+                </span>
+
+                <div>
+
+                    <span class="section-label">
+                        AFTER
+                    </span>
+
+                    <h3>
+                        Cleaned Dataset
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <div class="comparison-stats">
+
+                <div>
+
+                    <span>Rows</span>
+
+                    <strong>
+                        {{ cleaning.after_rows }}
+                    </strong>
+
+                </div>
+
+                <div>
+
+                    <span>Columns</span>
+
+                    <strong>
+                        {{ cleaning.after_columns }}
+                    </strong>
+
+                </div>
+
+                <div>
+
+                    <span>Missing Values</span>
+
+                    <strong>
+                        {{ cleaning.after_missing }}
+                    </strong>
+
+                </div>
+
+                <div>
+
+                    <span>Duplicates</span>
+
+                    <strong>
+                        {{ cleaning.after_duplicates }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CLEANING ACTIONS -->
+
+    <div class="cleaning-panel">
+
+        <div class="panel-heading">
+
+            <div>
+
+                <span class="section-label">
+                    CLEANING ENGINE
+                </span>
+
+                <h3>
+                    Cleaning Actions Performed
+                </h3>
+
+            </div>
+
+            <div class="action-count">
+                {{ cleaning.total_actions }}
+                actions
+            </div>
+
+        </div>
+
+
+        <div class="cleaning-actions-grid">
+
+            <div class="cleaning-action">
+
+                <div class="action-icon orange">
+                    ⬇
+                </div>
+
+                <div>
+
+                    <strong>
+                        Empty Rows Removed
+                    </strong>
+
+                    <span>
+                        Completely empty rows
+                    </span>
+
+                </div>
+
+                <b>
+                    {{ cleaning.empty_rows }}
+                </b>
+
+            </div>
+
+
+            <div class="cleaning-action">
+
+                <div class="action-icon red">
+                    ⧉
+                </div>
+
+                <div>
+
+                    <strong>
+                        Duplicates Removed
+                    </strong>
+
+                    <span>
+                        Duplicate records
+                    </span>
+
+                </div>
+
+                <b>
+                    {{ cleaning.duplicates_removed }}
+                </b>
+
+            </div>
+
+
+            <div class="cleaning-action">
+
+                <div class="action-icon blue">
+                    T
+                </div>
+
+                <div>
+
+                    <strong>
+                        Text Columns Cleaned
+                    </strong>
+
+                    <span>
+                        Whitespace normalization
+                    </span>
+
+                </div>
+
+                <b>
+                    {{ cleaning.text_columns_cleaned }}
+                </b>
+
+            </div>
+
+
+            <div class="cleaning-action">
+
+                <div class="action-icon green">
+                    ↓
+                </div>
+
+                <div>
+
+                    <strong>
+                        Missing Values Reduced
+                    </strong>
+
+                    <span>
+                        Difference after cleaning
+                    </span>
+
+                </div>
+
+                <b>
+                    {{ cleaning.missing_reduction }}
+                </b>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- IMPACT -->
+
+    <div class="impact-panel">
+
+        <div>
+
+            <span class="section-label">
+                CLEANING IMPACT
+            </span>
+
+            <h3>
+                Dataset Improvement
+            </h3>
+
+            <p>
+                {{ cleaning.rows_removed }}
+                problematic rows were removed or
+                normalized during the cleaning process.
+            </p>
+
+        </div>
+
+        <div class="impact-number">
+
+            <strong>
+                {{ cleaning.rows_removed }}
+            </strong>
+
+            <span>
+                Rows Removed
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- DOWNLOAD -->
+
+    <div class="download-panel">
+
+        <div>
+
+            <span class="section-label">
+                READY FOR ANALYSIS
+            </span>
+
+            <h3>
+                Download Cleaned Dataset
+            </h3>
+
+            <p>
+                Download a cleaned CSV while keeping
+                the original uploaded dataset unchanged.
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'data_management:download_cleaned_dataset' selected_dataset.id %}"
+            class="primary-btn"
+        >
+            Download Cleaned CSV ↓
+        </a>
+
+    </div>
+
+
+    {% elif not datasets %}
+
+
+    <!-- EMPTY STATE -->
+
+    <div class="empty-cleaning">
+
+        <div class="empty-icon">
+            ◫
+        </div>
+
+        <span class="section-label">
+            DATA CLEANING
+        </span>
+
+        <h2>
+            No Dataset Available
+        </h2>
+
+        <p>
+            Upload a dataset before starting
+            the cleaning process.
+        </p>
+
+        <a
+            href="{% url 'data_management:upload' %}"
+            class="primary-btn"
+        >
+            Upload Dataset →
+        </a>
+
+    </div>
+
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

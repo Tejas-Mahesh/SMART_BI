@@ -1,0 +1,737 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+Data Profiling | Smart BI
+{% endblock %}
+
+
+{% block content %}
+
+<div class="profiling-page">
+
+    <!-- HEADER -->
+
+    <div class="profiling-header">
+
+        <div>
+
+            <span class="section-label">
+                DATA MANAGEMENT
+            </span>
+
+            <h1>
+                Data <span>Profiling</span>
+            </h1>
+
+            <p>
+                Understand the structure, statistics and
+                distribution of your business dataset.
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'data_management:upload' %}"
+            class="profiling-upload-btn"
+        >
+            + Upload Dataset
+        </a>
+
+    </div>
+
+
+    <!-- DATASET SELECTOR -->
+
+    <div class="profiling-selector">
+
+        <div class="selector-information">
+
+            <div class="selector-icon">
+                ◉
+            </div>
+
+            <div>
+
+                <span>
+                    SELECT DATASET
+                </span>
+
+                <h3>
+                    Choose dataset to profile
+                </h3>
+
+            </div>
+
+        </div>
+
+
+        {% if datasets %}
+
+        <form
+            method="GET"
+            action="{% url 'data_management:data_profiling' %}"
+            class="profiling-form"
+        >
+
+            <select
+                name="dataset"
+                onchange="this.form.submit()"
+            >
+
+                {% for dataset in datasets %}
+
+                    <option
+                        value="{{ dataset.id }}"
+                        {% if selected_dataset.id == dataset.id %}
+                            selected
+                        {% endif %}
+                    >
+
+                        {{ dataset.name }}
+                        — {{ dataset.dataset_type }}
+
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </form>
+
+        {% endif %}
+
+    </div>
+
+
+    {% if selected_dataset and profiling %}
+
+
+    <!-- DATASET INFO -->
+
+    <div class="profiling-info">
+
+        <div>
+
+            <span>
+                DATASET
+            </span>
+
+            <strong>
+                {{ selected_dataset.name }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                TYPE
+            </span>
+
+            <strong>
+                {{ selected_dataset.dataset_type }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                FILE
+            </span>
+
+            <strong>
+                {{ selected_dataset.original_filename }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                SIZE
+            </span>
+
+            <strong>
+                {{ profiling.total_cells }}
+                cells
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- OVERVIEW CARDS -->
+
+    <div class="profiling-overview">
+
+
+        <div class="profile-card">
+
+            <div class="profile-card-icon purple">
+                #
+            </div>
+
+            <span>
+                TOTAL ROWS
+            </span>
+
+            <strong>
+                {{ profiling.total_rows }}
+            </strong>
+
+        </div>
+
+
+        <div class="profile-card">
+
+            <div class="profile-card-icon blue">
+                ▦
+            </div>
+
+            <span>
+                TOTAL COLUMNS
+            </span>
+
+            <strong>
+                {{ profiling.total_columns }}
+            </strong>
+
+        </div>
+
+
+        <div class="profile-card">
+
+            <div class="profile-card-icon green">
+                ✓
+            </div>
+
+            <span>
+                COMPLETENESS
+            </span>
+
+            <strong>
+                {{ profiling.completeness }}%
+            </strong>
+
+        </div>
+
+
+        <div class="profile-card">
+
+            <div class="profile-card-icon orange">
+                ◇
+            </div>
+
+            <span>
+                NUMERIC COLUMNS
+            </span>
+
+            <strong>
+                {{ profiling.numeric_count }}
+            </strong>
+
+        </div>
+
+
+        <div class="profile-card">
+
+            <div class="profile-card-icon red">
+                !
+            </div>
+
+            <span>
+                MISSING VALUES
+            </span>
+
+            <strong>
+                {{ profiling.missing_values }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- DATASET HEALTH -->
+
+    <div class="health-panel">
+
+        <div class="health-left">
+
+            <div class="health-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <span class="section-label">
+                    DATASET HEALTH
+                </span>
+
+                <h2>
+                    {{ profiling.health_status }}
+                </h2>
+
+                <p>
+                    Based on overall data completeness
+                    and missing-value analysis.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="health-meter">
+
+            <div class="meter-background">
+
+                <div
+                    class="meter-progress {{ profiling.health_class }}"
+                    style="width: {{ profiling.completeness }}%;"
+                ></div>
+
+            </div>
+
+            <strong>
+                {{ profiling.completeness }}%
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- COLUMN PROFILE -->
+
+    <div class="profiling-section">
+
+        <div class="profiling-section-heading">
+
+            <div>
+
+                <span class="section-label">
+                    COLUMN ANALYSIS
+                </span>
+
+                <h2>
+                    Column Profile
+                </h2>
+
+            </div>
+
+            <span class="column-count">
+                {{ profiling.total_columns }}
+                columns
+            </span>
+
+        </div>
+
+
+        <div class="profile-table-wrapper">
+
+            <table class="profile-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            COLUMN
+                        </th>
+
+                        <th>
+                            TYPE
+                        </th>
+
+                        <th>
+                            NON-NULL
+                        </th>
+
+                        <th>
+                            MISSING
+                        </th>
+
+                        <th>
+                            UNIQUE
+                        </th>
+
+                        <th>
+                            MIN
+                        </th>
+
+                        <th>
+                            MAX
+                        </th>
+
+                        <th>
+                            MEAN
+                        </th>
+
+                        <th>
+                            MEDIAN
+                        </th>
+
+                        <th>
+                            HEALTH
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for column in profiling.column_profiles %}
+
+                    <tr>
+
+                        <td class="column-name">
+                            {{ column.name }}
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="type-badge {{ column.type_class }}"
+                            >
+                                {{ column.column_type }}
+                            </span>
+
+                        </td>
+
+                        <td>
+                            {{ column.non_null }}
+                        </td>
+
+                        <td>
+
+                            <div class="missing-cell">
+
+                                <span>
+                                    {{ column.missing }}
+                                </span>
+
+                                <small>
+                                    {{ column.missing_percentage }}%
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            {{ column.unique }}
+                        </td>
+
+                        <td>
+                            {{ column.minimum }}
+                        </td>
+
+                        <td>
+                            {{ column.maximum }}
+                        </td>
+
+                        <td>
+                            {{ column.mean }}
+                        </td>
+
+                        <td>
+                            {{ column.median }}
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="health-badge {{ column.health_class }}"
+                            >
+                                {{ column.health }}
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- NUMERIC SUMMARY -->
+
+    {% if profiling.numeric_summary %}
+
+    <div class="profiling-section">
+
+        <div class="profiling-section-heading">
+
+            <div>
+
+                <span class="section-label">
+                    STATISTICAL ANALYSIS
+                </span>
+
+                <h2>
+                    Numeric Column Statistics
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="numeric-grid">
+
+            {% for item in profiling.numeric_summary %}
+
+            <div class="numeric-card">
+
+                <div class="numeric-card-header">
+
+                    <h3>
+                        {{ item.name }}
+                    </h3>
+
+                    <span>
+                        NUMERIC
+                    </span>
+
+                </div>
+
+
+                <div class="stat-row">
+
+                    <div>
+                        <span>MINIMUM</span>
+                        <strong>{{ item.minimum }}</strong>
+                    </div>
+
+                    <div>
+                        <span>MAXIMUM</span>
+                        <strong>{{ item.maximum }}</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-row">
+
+                    <div>
+                        <span>MEAN</span>
+                        <strong>{{ item.mean }}</strong>
+                    </div>
+
+                    <div>
+                        <span>MEDIAN</span>
+                        <strong>{{ item.median }}</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="std-stat">
+
+                    <span>
+                        STANDARD DEVIATION
+                    </span>
+
+                    <strong>
+                        {{ item.std }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- CATEGORICAL SUMMARY -->
+
+    {% if profiling.categorical_summary %}
+
+    <div class="profiling-section">
+
+        <div class="profiling-section-heading">
+
+            <div>
+
+                <span class="section-label">
+                    CATEGORY ANALYSIS
+                </span>
+
+                <h2>
+                    Top Categorical Values
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="category-grid">
+
+            {% for item in profiling.categorical_summary %}
+
+            <div class="category-card">
+
+                <div class="category-header">
+
+                    <h3>
+                        {{ item.name }}
+                    </h3>
+
+                    <span>
+                        TOP 5
+                    </span>
+
+                </div>
+
+
+                {% if item.values %}
+
+                    {% for value in item.values %}
+
+                    <div class="category-row">
+
+                        <span>
+                            {{ value.value }}
+                        </span>
+
+                        <strong>
+                            {{ value.count }}
+                        </strong>
+
+                    </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <p class="no-values">
+                        No categorical values available.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- NEXT ACTION -->
+
+    <div class="profiling-actions">
+
+        <div>
+
+            <span class="section-label">
+                DATA MANAGEMENT
+            </span>
+
+            <h3>
+                Profiling completed successfully
+            </h3>
+
+            <p>
+                Use the profiling results to understand
+                your data before beginning business analytics.
+            </p>
+
+        </div>
+
+
+        <div class="action-links">
+
+            <a
+                href="{% url 'data_management:data_quality' %}?dataset={{ selected_dataset.id }}"
+                class="secondary-action"
+            >
+                Data Quality
+            </a>
+
+
+            <a
+                href="{% url 'data_management:data_validation' %}?dataset={{ selected_dataset.id }}"
+                class="secondary-action"
+            >
+                Data Validation
+            </a>
+
+
+            <a
+                href="{% url 'data_management:data_cleaning' %}?dataset={{ selected_dataset.id }}"
+                class="primary-action"
+            >
+                Data Cleaning →
+            </a>
+
+        </div>
+
+    </div>
+
+
+    {% elif not datasets %}
+
+
+    <!-- EMPTY -->
+
+    <div class="profiling-empty">
+
+        <div class="empty-icon">
+            ◉
+        </div>
+
+        <span class="section-label">
+            NO DATASET AVAILABLE
+        </span>
+
+        <h2>
+            Upload a dataset to begin profiling
+        </h2>
+
+        <p>
+            Data Profiling analyzes the structure and
+            statistical characteristics of your uploaded data.
+        </p>
+
+        <a
+            href="{% url 'data_management:upload' %}"
+            class="primary-action"
+        >
+            Upload Your First Dataset →
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,6 @@
+Date,Product,Region,Sales,Quantity,Discount
+2026-01-01,Laptop,Bangalore,75000.0,2.0,5
+2026-01-02,Phone,Chennai,45000.0,3.0,10
+2026-01-03,Tablet,Hyderabad,63500.0,2.0,5
+2026-01-04,Laptop,Bangalore,82000.0,2.0,8
+2026-01-05,Phone,Mumbai,52000.0,2.0,12

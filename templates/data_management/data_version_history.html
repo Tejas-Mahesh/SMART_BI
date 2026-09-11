@@ -1,0 +1,463 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block title %}
+Data Version History | Smart BI
+{% endblock %}
+
+
+{% block content %}
+
+<div class="version-page">
+
+
+    <!-- HEADER -->
+
+    <div class="version-header">
+
+        <div>
+
+            <span class="section-label">
+                DATA MANAGEMENT
+            </span>
+
+            <h1>
+                Data Version <span>History</span>
+            </h1>
+
+            <p>
+                Track dataset versions and maintain
+                a reliable history of your business data.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'data_management:upload' %}"
+            class="primary-version-btn"
+        >
+            + Upload Dataset
+        </a>
+
+    </div>
+
+
+    {% if datasets %}
+
+
+    <!-- DATASET SELECTOR -->
+
+    <div class="version-selector">
+
+        <div class="version-selector-info">
+
+            <div class="version-icon">
+                ↻
+            </div>
+
+            <div>
+
+                <span>
+                    SELECT DATASET
+                </span>
+
+                <h3>
+                    {{ selected_dataset.name }}
+                </h3>
+
+            </div>
+
+        </div>
+
+
+        <form method="GET">
+
+            <select
+                name="dataset"
+                onchange="this.form.submit()"
+            >
+
+                {% for dataset in datasets %}
+
+                <option
+                    value="{{ dataset.id }}"
+                    {% if selected_dataset.id == dataset.id %}
+                        selected
+                    {% endif %}
+                >
+                    {{ dataset.name }}
+                    — {{ dataset.dataset_type }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </form>
+
+    </div>
+
+
+    <!-- CURRENT DATASET -->
+
+    {% if selected_dataset %}
+
+    <div class="current-dataset">
+
+        <div class="current-main">
+
+            <div class="dataset-symbol">
+                DB
+            </div>
+
+            <div>
+
+                <span>
+                    CURRENT DATASET
+                </span>
+
+                <h2>
+                    {{ selected_dataset.name }}
+                </h2>
+
+                <p>
+                    {{ selected_dataset.original_filename }}
+                    ·
+                    {{ selected_dataset.dataset_type }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="current-stats">
+
+            <div>
+                <span>ROWS</span>
+                <strong>
+                    {{ selected_dataset.total_rows }}
+                </strong>
+            </div>
+
+            <div>
+                <span>COLUMNS</span>
+                <strong>
+                    {{ selected_dataset.total_columns }}
+                </strong>
+            </div>
+
+            <div>
+                <span>QUALITY</span>
+                <strong>
+                    {{ selected_dataset.quality_score }}%
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- VERSION TIMELINE -->
+
+    <div class="version-section">
+
+        <div class="version-section-heading">
+
+            <div>
+
+                <span class="section-label">
+                    VERSION CONTROL
+                </span>
+
+                <h2>
+                    Dataset History
+                </h2>
+
+            </div>
+
+            <span class="version-count">
+                {{ versions|length }} versions
+            </span>
+
+        </div>
+
+
+        {% if versions %}
+
+
+        <div class="version-timeline">
+
+            {% for version in versions %}
+
+            <div class="version-card">
+
+                <div class="timeline-line"></div>
+
+                <div class="version-number">
+
+                    <span>
+                        V{{ version.version_number }}
+                    </span>
+
+                </div>
+
+
+                <div class="version-content">
+
+                    <div class="version-top">
+
+                        <div>
+
+                            <div class="version-title">
+
+                                <h3>
+                                    Version
+                                    {{ version.version_number }}
+                                </h3>
+
+                                <span
+                                    class="version-type {{ version.version_type|lower }}"
+                                >
+                                    {{ version.version_type }}
+                                </span>
+
+                                {% if version.is_current %}
+
+                                <span class="current-badge">
+                                    CURRENT
+                                </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <p>
+                                {{ version.notes }}
+                            </p>
+
+                        </div>
+
+
+                        <div class="version-date">
+
+                            <span>
+                                CREATED
+                            </span>
+
+                            <strong>
+                                {{ version.created_at|date:"d M Y" }}
+                            </strong>
+
+                            <small>
+                                {{ version.created_at|date:"h:i A" }}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="version-metrics">
+
+                        <div>
+
+                            <span>
+                                ROWS
+                            </span>
+
+                            <strong>
+                                {{ version.total_rows }}
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                COLUMNS
+                            </span>
+
+                            <strong>
+                                {{ version.total_columns }}
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                MISSING
+                            </span>
+
+                            <strong>
+                                {{ version.missing_values }}
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                DUPLICATES
+                            </span>
+
+                            <strong>
+                                {{ version.duplicate_rows }}
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                QUALITY
+                            </span>
+
+                            <strong>
+                                {{ version.quality_score }}%
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="version-footer">
+
+                        <div>
+
+                            <span class="file-name">
+                                {{ version.file_name }}
+                            </span>
+
+                            <span class="file-size">
+                                {{ version.file_size|filesizeformat }}
+                            </span>
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'data_management:download_dataset_version' version.id %}"
+                            class="download-version"
+                        >
+                            ↓ Download
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        {% else %}
+
+
+        <div class="no-version">
+
+            <div class="no-version-icon">
+                ↻
+            </div>
+
+            <h3>
+                No version history yet
+            </h3>
+
+            <p>
+                Upload a dataset to create its
+                first version.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- INFORMATION -->
+
+    <div class="version-information">
+
+        <div class="information-icon">
+            i
+        </div>
+
+        <div>
+
+            <span class="section-label">
+                VERSION CONTROL
+            </span>
+
+            <h3>
+                Your original dataset is preserved
+            </h3>
+
+            <p>
+                Smart BI keeps the original uploaded
+                dataset separate from future processing
+                stages so your source data remains protected.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    {% endif %}
+
+
+    {% else %}
+
+
+    <!-- EMPTY -->
+
+    <div class="version-empty">
+
+        <div class="empty-icon">
+            ↻
+        </div>
+
+        <span class="section-label">
+            NO DATASETS
+        </span>
+
+        <h2>
+            No dataset versions available
+        </h2>
+
+        <p>
+            Upload your first business dataset to
+            begin tracking its versions.
+        </p>
+
+        <a
+            href="{% url 'data_management:upload' %}"
+            class="primary-version-btn"
+        >
+            Upload Dataset →
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

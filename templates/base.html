@@ -1,0 +1,1255 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Smart BI - Business Decision Intelligence and Forecasting Platform">
+
+    <meta name="author"
+          content="Smart Business Decision Intelligence System">
+
+    <meta name="theme-color"
+          content="#06111f">
+
+    <title>
+        {% block title %}
+            Smart BI | Decision Intelligence
+        {% endblock %}
+    </title>
+
+
+    <!-- =====================================================
+         GLOBAL STYLES
+    ====================================================== -->
+
+    <link rel="stylesheet"
+          href="{% static 'css/main.css' %}">
+
+    <link rel="stylesheet"
+          href="{% static 'css/accdash.css' %}">
+
+
+    <!-- =====================================================
+         DATA MANAGEMENT STYLES
+         Keep these because they are currently used by
+         Data Management pages.
+    ====================================================== -->
+
+    <link rel="stylesheet"
+          href="{% static 'css/home.css' %}">
+    <link rel="stylesheet"
+      href="{% static 'css/global_ui.css' %}">
+
+    <link rel="stylesheet"
+          href="{% static 'css/data_quality.css' %}">
+
+    <link rel="stylesheet"
+          href="{% static 'css/data_cleaning.css' %}">
+
+    <link rel="stylesheet"
+          href="{% static 'css/data_validation.css' %}">
+
+    <link rel="stylesheet"
+          href="{% static 'css/data_profiling.css' %}">
+
+    <link rel="stylesheet"
+          href="{% static 'css/data_transformation.css' %}">
+
+    <link rel="stylesheet"
+          href="{% static 'css/data_version.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'css/data_management_workspace.css' %}">
+    
+
+
+    <!-- =====================================================
+         PAGE SPECIFIC CSS
+    ====================================================== -->
+
+    {% block extra_css %}
+    {% endblock %}
+
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     GLOBAL PAGE LOADER
+========================================================= -->
+
+<div class="smart-page-loader"
+     id="smartPageLoader">
+
+    <div class="loader-content">
+
+        <div class="loader-logo">
+            S
+        </div>
+
+        <div class="loader-name">
+            Smart BI
+        </div>
+
+        <div class="loader-line">
+            <span></span>
+        </div>
+
+        <small>
+            Decision Intelligence
+        </small>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     CURSOR GLOW
+========================================================= -->
+
+<div class="cursor-glow"
+     id="cursorGlow">
+</div>
+
+
+<!-- =========================================================
+     SCROLL PROGRESS
+========================================================= -->
+
+<div class="scroll-progress"
+     id="scrollProgress">
+</div>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<header class="navbar"
+        id="smartNavbar">
+
+
+    <!-- =====================================================
+         BRAND
+    ====================================================== -->
+
+    <a href="{% url 'core:home' %}"
+       class="brand"
+       aria-label="Smart BI Home">
+
+
+        <div class="brand-icon">
+
+            <span>
+                S
+            </span>
+
+        </div>
+
+
+        <div class="brand-text">
+
+            <span class="brand-name">
+                Smart BI
+            </span>
+
+            <span class="brand-subtitle">
+                Decision Intelligence
+            </span>
+
+        </div>
+
+    </a>
+
+
+    <!-- =====================================================
+         DESKTOP NAVIGATION
+    ====================================================== -->
+
+    <nav class="nav-links"
+         id="mainNavigation"
+         aria-label="Main navigation">
+
+
+        <a href="{% url 'core:home' %}"
+           class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+
+            <span>
+                Home
+            </span>
+
+        </a>
+
+
+        <a href="{% url 'core:about' %}"
+           class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">
+
+            <span>
+                About
+            </span>
+
+        </a>
+
+
+        <a href="{% url 'core:how_it_works' %}"
+           class="{% if request.resolver_match.url_name == 'how_it_works' %}active{% endif %}">
+
+            <span>
+                How It Works
+            </span>
+
+        </a>
+
+
+        <a href="{% url 'core:contact' %}"
+           class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}">
+
+            <span>
+                Contact
+            </span>
+
+        </a>
+
+    </nav>
+
+
+    <!-- =====================================================
+         NAV ACTIONS
+    ====================================================== -->
+
+    <div class="nav-actions">
+
+
+        {% if user.is_authenticated %}
+
+
+            <a href="{% url 'core:dashboard' %}"
+               class="login-btn">
+
+                Dashboard
+
+            </a>
+
+
+            <a href="{% url 'accounts:logout' %}"
+               class="signup-btn">
+
+                Logout
+
+            </a>
+
+
+        {% else %}
+
+
+            <a href="{% url 'accounts:login' %}"
+               class="login-btn">
+
+                Login
+
+            </a>
+
+
+            <a href="{% url 'accounts:signup' %}"
+               class="signup-btn">
+
+                Get Started
+
+            </a>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+    <!-- =====================================================
+         MOBILE MENU BUTTON
+    ====================================================== -->
+
+    <button type="button"
+            class="mobile-menu-btn"
+            id="mobileMenuButton"
+            onclick="toggleMenu()"
+            aria-label="Toggle navigation"
+            aria-expanded="false">
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </button>
+
+
+</header>
+
+
+<!-- =========================================================
+     MOBILE NAVIGATION
+========================================================= -->
+
+<div class="mobile-navigation"
+     id="mobileNavigation">
+
+
+    <div class="mobile-nav-inner">
+
+
+        <a href="{% url 'core:home' %}"
+           class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+
+            <span class="mobile-nav-number">
+                01
+            </span>
+
+            <span>
+                Home
+            </span>
+
+            <b>
+                →
+            </b>
+
+        </a>
+
+
+        <a href="{% url 'core:about' %}"
+           class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">
+
+            <span class="mobile-nav-number">
+                02
+            </span>
+
+            <span>
+                About
+            </span>
+
+            <b>
+                →
+            </b>
+
+        </a>
+
+
+        <a href="{% url 'core:how_it_works' %}"
+           class="{% if request.resolver_match.url_name == 'how_it_works' %}active{% endif %}">
+
+            <span class="mobile-nav-number">
+                03
+            </span>
+
+            <span>
+                How It Works
+            </span>
+
+            <b>
+                →
+            </b>
+
+        </a>
+
+
+        <a href="{% url 'core:contact' %}"
+           class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}">
+
+            <span class="mobile-nav-number">
+                04
+            </span>
+
+            <span>
+                Contact
+            </span>
+
+            <b>
+                →
+            </b>
+
+        </a>
+
+
+        <div class="mobile-nav-divider">
+        </div>
+
+
+        {% if user.is_authenticated %}
+
+
+            <a href="{% url 'core:dashboard' %}"
+               class="mobile-dashboard-link">
+
+                <span>
+                    Dashboard
+                </span>
+
+                <b>
+                    →
+                </b>
+
+            </a>
+
+
+            <a href="{% url 'accounts:logout' %}"
+               class="mobile-logout-link">
+
+                <span>
+                    Logout
+                </span>
+
+                <b>
+                    →
+                </b>
+
+            </a>
+
+
+        {% else %}
+
+
+            <a href="{% url 'accounts:login' %}"
+               class="mobile-dashboard-link">
+
+                <span>
+                    Login
+                </span>
+
+                <b>
+                    →
+                </b>
+
+            </a>
+
+
+            <a href="{% url 'accounts:signup' %}"
+               class="mobile-signup-link">
+
+                <span>
+                    Get Started
+                </span>
+
+                <b>
+                    →
+                </b>
+
+            </a>
+
+
+        {% endif %}
+
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     MAIN CONTENT
+========================================================= -->
+
+<main id="main-content">
+
+
+    <!-- =====================================================
+         GLOBAL DJANGO MESSAGES
+    ====================================================== -->
+
+    {% if messages %}
+
+        <div class="messages-container"
+             id="messagesContainer">
+
+
+            {% for message in messages %}
+
+
+                <div class="message message-{{ message.tags }}"
+                     role="alert">
+
+
+                    <div class="message-icon">
+
+
+                        {% if message.tags == "success" %}
+
+                            ✓
+
+                        {% elif message.tags == "error" %}
+
+                            !
+
+                        {% elif message.tags == "warning" %}
+
+                            !
+
+                        {% else %}
+
+                            i
+
+                        {% endif %}
+
+
+                    </div>
+
+
+                    <div class="message-content">
+
+                        <span>
+                            {{ message }}
+                        </span>
+
+                    </div>
+
+
+                    <button type="button"
+                            class="message-close"
+                            onclick="closeMessage(this)"
+                            aria-label="Close notification">
+
+                        ×
+
+                    </button>
+
+
+                </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         PAGE CONTENT
+    ====================================================== -->
+
+    <div class="page-transition"
+         id="pageTransition">
+
+        {% block content %}
+        {% endblock %}
+
+    </div>
+
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="footer">
+
+
+    <div class="footer-main">
+
+
+        <!-- =================================================
+             FOOTER BRAND
+        ================================================== -->
+
+        <div class="footer-brand">
+
+
+            <a href="{% url 'core:home' %}"
+               class="brand footer-logo">
+
+
+                <div class="brand-icon">
+
+                    <span>
+                        S
+                    </span>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <span class="brand-name">
+                        Smart BI
+                    </span>
+
+                    <span class="brand-subtitle">
+                        Decision Intelligence
+                    </span>
+
+                </div>
+
+
+            </a>
+
+
+            <p>
+
+                Transform business data into
+                meaningful insights, predictions
+                and better business decisions.
+
+            </p>
+
+
+            <div class="footer-status">
+
+                <span class="status-pulse"></span>
+
+                <span>
+                    Intelligence Engine Online
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             PLATFORM
+        ================================================== -->
+
+        <div class="footer-column">
+
+
+            <h4>
+                Platform
+            </h4>
+
+
+            {% if user.is_authenticated %}
+
+                <a href="{% url 'core:dashboard' %}">
+                    Dashboard
+                </a>
+
+            {% else %}
+
+                <a href="{% url 'accounts:login' %}">
+                    Dashboard
+                </a>
+
+            {% endif %}
+
+
+            <a href="{% url 'core:how_it_works' %}">
+                Analytics
+            </a>
+
+
+            <a href="{% url 'core:how_it_works' %}">
+                Forecasting
+            </a>
+
+
+            <a href="{% url 'core:how_it_works' %}">
+                Decision Intelligence
+            </a>
+
+
+        </div>
+
+
+        <!-- =================================================
+             COMPANY
+        ================================================== -->
+
+        <div class="footer-column">
+
+
+            <h4>
+                Company
+            </h4>
+
+
+            <a href="{% url 'core:about' %}">
+                About Us
+            </a>
+
+
+            <a href="{% url 'core:how_it_works' %}">
+                How It Works
+            </a>
+
+
+            <a href="{% url 'core:contact' %}">
+                Contact
+            </a>
+
+
+            {% if not user.is_authenticated %}
+
+                <a href="{% url 'accounts:signup' %}">
+                    Get Started
+                </a>
+
+            {% endif %}
+
+
+        </div>
+
+
+        <!-- =================================================
+             TECHNOLOGY
+        ================================================== -->
+
+        <div class="footer-column">
+
+
+            <h4>
+                Technology
+            </h4>
+
+
+            <span>
+                Python
+            </span>
+
+
+            <span>
+                Django
+            </span>
+
+
+            <span>
+                Pandas
+            </span>
+
+
+            <span>
+                NumPy
+            </span>
+
+
+            <span>
+                Scikit-Learn
+            </span>
+
+
+            <span>
+                SQL
+            </span>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOTER BOTTOM
+    ====================================================== -->
+
+    <div class="footer-bottom">
+
+
+        <span>
+            © 2026 Smart Business Decision Intelligence System
+        </span>
+
+
+        <span class="footer-tagline">
+            Data
+            <b>→</b>
+            Insight
+            <b>→</b>
+            Decision
+        </span>
+
+
+    </div>
+
+
+</footer>
+
+
+<!-- =========================================================
+     GLOBAL JAVASCRIPT
+========================================================= -->
+
+<script src="{% static 'js/main.js' %}"></script>
+
+
+<script>
+
+
+/* =========================================================
+   PAGE LOADER
+========================================================= */
+
+window.addEventListener("load", function () {
+
+    const loader =
+        document.getElementById("smartPageLoader");
+
+    if (!loader) {
+        return;
+    }
+
+    setTimeout(function () {
+
+        loader.classList.add("loaded");
+
+    }, 350);
+
+});
+
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+function toggleMenu() {
+
+    const navigation =
+        document.getElementById("mobileNavigation");
+
+    const button =
+        document.getElementById("mobileMenuButton");
+
+
+    if (!navigation || !button) {
+        return;
+    }
+
+
+    navigation.classList.toggle("active");
+
+
+    const isActive =
+        navigation.classList.contains("active");
+
+
+    button.classList.toggle(
+        "active",
+        isActive
+    );
+
+
+    button.setAttribute(
+        "aria-expanded",
+        isActive
+    );
+
+
+    document.body.classList.toggle(
+        "menu-open",
+        isActive
+    );
+
+}
+
+
+/* =========================================================
+   CLOSE MOBILE MENU
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        const navigation =
+            document.getElementById(
+                "mobileNavigation"
+            );
+
+
+        if (!navigation) {
+            return;
+        }
+
+
+        const links =
+            navigation.querySelectorAll("a");
+
+
+        links.forEach(function (link) {
+
+
+            link.addEventListener(
+                "click",
+                function () {
+
+
+                    navigation.classList.remove(
+                        "active"
+                    );
+
+
+                    const button =
+                        document.getElementById(
+                            "mobileMenuButton"
+                        );
+
+
+                    if (button) {
+
+                        button.classList.remove(
+                            "active"
+                        );
+
+                        button.setAttribute(
+                            "aria-expanded",
+                            "false"
+                        );
+
+                    }
+
+
+                    document.body.classList.remove(
+                        "menu-open"
+                    );
+
+
+                }
+            );
+
+
+        });
+
+
+    }
+);
+
+
+/* =========================================================
+   SCROLL PROGRESS
+========================================================= */
+
+window.addEventListener(
+    "scroll",
+    function () {
+
+
+        const progress =
+            document.getElementById(
+                "scrollProgress"
+            );
+
+
+        if (!progress) {
+            return;
+        }
+
+
+        const scrollTop =
+            window.scrollY;
+
+
+        const documentHeight =
+            document.documentElement.scrollHeight
+            - window.innerHeight;
+
+
+        if (documentHeight <= 0) {
+            return;
+        }
+
+
+        const percentage =
+            (scrollTop / documentHeight) * 100;
+
+
+        progress.style.width =
+            percentage + "%";
+
+
+    },
+    {
+        passive: true
+    }
+);
+
+
+/* =========================================================
+   NAVBAR TRANSFORMATION ON SCROLL
+========================================================= */
+
+window.addEventListener(
+    "scroll",
+    function () {
+
+
+        const navbar =
+            document.getElementById(
+                "smartNavbar"
+            );
+
+
+        if (!navbar) {
+            return;
+        }
+
+
+        if (window.scrollY > 25) {
+
+            navbar.classList.add(
+                "navbar-scrolled"
+            );
+
+        } else {
+
+            navbar.classList.remove(
+                "navbar-scrolled"
+            );
+
+        }
+
+
+    },
+    {
+        passive: true
+    }
+);
+
+
+/* =========================================================
+   CURSOR GLOW
+========================================================= */
+
+document.addEventListener(
+    "mousemove",
+    function (event) {
+
+
+        const glow =
+            document.getElementById(
+                "cursorGlow"
+            );
+
+
+        if (!glow) {
+            return;
+        }
+
+
+        if (window.innerWidth < 900) {
+            return;
+        }
+
+
+        glow.style.left =
+            event.clientX + "px";
+
+
+        glow.style.top =
+            event.clientY + "px";
+
+
+    }
+);
+
+
+/* =========================================================
+   MESSAGE CLOSE
+========================================================= */
+
+function closeMessage(button) {
+
+    if (!button) {
+        return;
+    }
+
+
+    const message =
+        button.closest(".message");
+
+
+    if (!message) {
+        return;
+    }
+
+
+    message.classList.add(
+        "message-closing"
+    );
+
+
+    setTimeout(function () {
+
+        message.remove();
+
+    }, 300);
+
+}
+
+
+/* =========================================================
+   AUTOMATIC MESSAGE DISMISS
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        const messages =
+            document.querySelectorAll(
+                ".message"
+            );
+
+
+        messages.forEach(function (message) {
+
+
+            setTimeout(function () {
+
+
+                if (
+                    message &&
+                    document.body.contains(message)
+                ) {
+
+
+                    message.classList.add(
+                        "message-closing"
+                    );
+
+
+                    setTimeout(function () {
+
+                        if (
+                            message &&
+                            document.body.contains(message)
+                        ) {
+
+                            message.remove();
+
+                        }
+
+                    }, 300);
+
+
+                }
+
+
+            }, 6000);
+
+
+        });
+
+
+    }
+);
+
+
+/* =========================================================
+   PAGE ENTER ANIMATION
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        const page =
+            document.getElementById(
+                "pageTransition"
+            );
+
+
+        if (!page) {
+            return;
+        }
+
+
+        requestAnimationFrame(function () {
+
+            page.classList.add(
+                "page-visible"
+            );
+
+        });
+
+
+    }
+);
+
+
+/* =========================================================
+   ESCAPE KEY
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+
+        if (event.key !== "Escape") {
+            return;
+        }
+
+
+        const navigation =
+            document.getElementById(
+                "mobileNavigation"
+            );
+
+
+        const button =
+            document.getElementById(
+                "mobileMenuButton"
+            );
+
+
+        if (navigation) {
+
+            navigation.classList.remove(
+                "active"
+            );
+
+        }
+
+
+        if (button) {
+
+            button.classList.remove(
+                "active"
+            );
+
+            button.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+
+        document.body.classList.remove(
+            "menu-open"
+        );
+
+
+    }
+);
+
+
+</script>
+
+
+<!-- =========================================================
+     PAGE SPECIFIC JAVASCRIPT
+========================================================= -->
+
+{% block extra_js %}
+{% endblock %}
+
+
+</body>
+
+</html>

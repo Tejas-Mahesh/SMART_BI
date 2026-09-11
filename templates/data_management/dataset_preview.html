@@ -1,0 +1,1175 @@
+{% extends "base.html" %}
+{% load static %}
+{% load data_filters %}
+
+{% block title %}
+Smart BI | Dataset Preview
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link rel="stylesheet"
+      href="{% static 'css/data_preview.css' %}">
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="preview-page">
+
+
+    <!-- =========================================================
+         HEADER
+    ========================================================== -->
+
+    <section class="preview-header">
+
+        <div class="preview-header-left">
+
+            <div class="preview-breadcrumb">
+
+                <a href="{% url 'core:dashboard' %}">
+                    Dashboard
+                </a>
+
+                <span>/</span>
+
+                <a href="{% url 'data_management:dataset_management' %}">
+                    Data Management
+                </a>
+
+                <span>/</span>
+
+                <strong>
+                    Dataset Preview
+                </strong>
+
+            </div>
+
+
+            <div class="preview-eyebrow">
+
+                <span class="eyebrow-dot"></span>
+
+                DATASET EXPLORER
+
+            </div>
+
+
+            <h1>
+                {{ dataset.name }}
+            </h1>
+
+
+            <p>
+                Explore your uploaded business dataset,
+                inspect its structure and continue with
+                data preparation.
+            </p>
+
+        </div>
+
+
+
+        <div class="preview-header-actions">
+
+
+            <a
+                href="{% url 'data_management:dataset_management' %}"
+                class="preview-secondary-btn">
+
+                <span>←</span>
+
+                Dataset Management
+
+            </a>
+
+
+            <a
+                href="{% url 'data_management:upload' %}"
+                class="preview-primary-btn">
+
+                <span>+</span>
+
+                Upload Another
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         DATASET HERO
+    ========================================================== -->
+
+    <section class="dataset-hero">
+
+
+        <div class="dataset-hero-main">
+
+
+            <div class="dataset-large-icon">
+
+                {% if ".xlsx" in dataset.original_filename|lower %}
+
+                    XLSX
+
+                {% elif ".xls" in dataset.original_filename|lower %}
+
+                    XLS
+
+                {% else %}
+
+                    CSV
+
+                {% endif %}
+
+            </div>
+
+
+
+            <div class="dataset-hero-info">
+
+
+                <div class="dataset-title-row">
+
+                    <h2>
+                        {{ dataset.name }}
+                    </h2>
+
+
+                    {% if quality_score >= 90 %}
+
+                        <span class="hero-status ready">
+                            <i></i>
+                            Ready
+                        </span>
+
+                    {% elif quality_score >= 70 %}
+
+                        <span class="hero-status review">
+                            <i></i>
+                            Review Required
+                        </span>
+
+                    {% else %}
+
+                        <span class="hero-status attention">
+                            <i></i>
+                            Attention Required
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <p class="dataset-original-name">
+                    {{ version_label }}
+                    {% if version_badge %}
+                        · {{ version_badge }}
+                    {% endif %}
+                </p>
+
+
+                <div class="dataset-meta">
+
+
+                    <span>
+
+                        <b>Type</b>
+
+                        {{ dataset.dataset_type }}
+
+                    </span>
+
+
+                    <span>
+
+                        <b>Uploaded</b>
+
+                        {{ dataset.uploaded_at|date:"d M Y, H:i" }}
+
+                    </span>
+
+
+                    <span>
+
+                        <b>Size</b>
+
+                        {% if dataset.file_size %}
+
+                            {{ dataset.file_size|filesizeformat }}
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
+                    </span>
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- QUALITY SCORE -->
+
+        <div class="quality-score-card">
+
+
+            <div class="quality-ring"
+                 style="--score: {{ quality_score|default:0 }};">
+
+                <div class="quality-ring-inner">
+
+                    <strong>
+                        {{ quality_score|floatformat:0 }}%
+                    </strong>
+
+                    <span>
+                        Quality
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="quality-score-info">
+
+                <strong>
+                    Data Health
+                </strong>
+
+                <p>
+
+                    {% if quality_score >= 90 %}
+
+                        Excellent dataset quality.
+
+                    {% elif quality_score >= 70 %}
+
+                        Dataset requires some review.
+
+                    {% else %}
+
+                        Dataset requires cleaning before analysis.
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =========================================================
+         VERSION INDICATOR
+    ========================================================== -->
+
+    <section class="preview-version-banner">
+
+        <div class="version-banner-icon">
+
+            {% if is_cleaned %}
+                ✓
+            {% elif is_original %}
+                ◉
+            {% else %}
+                ●
+            {% endif %}
+
+        </div>
+
+
+        <div class="version-banner-content">
+
+            <span>
+                CURRENTLY VIEWING
+            </span>
+
+            <strong>
+                {{ version_label }}
+            </strong>
+
+            <p>
+
+                {% if is_cleaned %}
+
+                    This is the cleaned dataset currently used
+                    as the analytics-ready input.
+
+                {% elif is_original %}
+
+                    This is the original uploaded dataset.
+                    The original file remains unchanged.
+
+                {% else %}
+
+                    This is a dataset version stored in Smart BI.
+
+                {% endif %}
+
+            </p>
+
+        </div>
+
+
+        <div class="version-banner-actions">
+
+            {% if is_original and cleaned_version %}
+
+                <a
+                    href="{% url 'data_management:dataset_preview' dataset.id %}?version={{ cleaned_version.id }}"
+                    class="preview-primary-btn">
+
+                    View Cleaned Data
+
+                    <span>→</span>
+
+                </a>
+
+            {% elif is_cleaned and original_version %}
+
+                <a
+                    href="{% url 'data_management:dataset_preview' dataset.id %}?version={{ original_version.id }}"
+                    class="preview-secondary-btn">
+
+                    View Original
+
+                    <span>→</span>
+
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         DATASET METRICS
+    ========================================================== -->
+
+    <section class="preview-metrics">
+
+
+        <!-- ROWS -->
+
+        <div class="preview-metric-card">
+
+            <div class="metric-icon blue">
+                #
+            </div>
+
+            <div>
+
+                <span>
+                    Total Rows
+                </span>
+
+                <strong>
+                    {{ total_rows }}
+                </strong>
+
+                <small>
+                    Records detected
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- COLUMNS -->
+
+        <div class="preview-metric-card">
+
+            <div class="metric-icon purple">
+                ▦
+            </div>
+
+            <div>
+
+                <span>
+                    Total Columns
+                </span>
+
+                <strong>
+                    {{ total_columns }}
+                </strong>
+
+                <small>
+                    Fields detected
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- MISSING -->
+
+        <div class="preview-metric-card">
+
+            <div class="metric-icon orange">
+                !
+            </div>
+
+            <div>
+
+                <span>
+                    Missing Values
+                </span>
+
+                <strong>
+                    {{ missing_values }}
+                </strong>
+
+                <small>
+                    Values requiring review
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- DUPLICATES -->
+
+        <div class="preview-metric-card">
+
+            <div class="metric-icon red">
+                ≋
+            </div>
+
+            <div>
+
+                <span>
+                    Duplicate Rows
+                </span>
+
+                <strong>
+                    {{ duplicate_rows }}
+                </strong>
+
+                <small>
+                    Potential duplicates
+                </small>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =========================================================
+         DATA PREPARATION OPERATIONS
+    ========================================================== -->
+
+    <section class="preview-section">
+
+
+        <div class="section-heading">
+
+
+            <div>
+
+                <span class="section-eyebrow">
+                    DATA PREPARATION
+                </span>
+
+                <h2>
+                    Dataset Operations
+                </h2>
+
+                <p>
+                    Inspect or prepare this dataset for
+                    business analysis.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="operation-grid">
+
+
+            <!-- QUALITY -->
+
+            <a
+                href="{% url 'data_management:quality' %}?dataset={{ dataset.id }}"
+                class="operation-card">
+
+
+                <div class="operation-icon quality">
+                    ◉
+                </div>
+
+
+                <div class="operation-content">
+
+                    <span>
+                        DATA QUALITY
+                    </span>
+
+                    <h3>
+                        Quality Analysis
+                    </h3>
+
+                    <p>
+                        Measure completeness, missing values,
+                        duplicates and overall data health.
+                    </p>
+
+                </div>
+
+
+                <div class="operation-arrow">
+                    →
+                </div>
+
+
+            </a>
+
+
+
+            <!-- CLEANING -->
+
+            <a
+                href="{% url 'data_management:cleaning' %}?dataset={{ dataset.id }}"
+                class="operation-card">
+
+
+                <div class="operation-icon cleaning">
+                    ✦
+                </div>
+
+
+                <div class="operation-content">
+
+                    <span>
+                        DATA CLEANING
+                    </span>
+
+                    <h3>
+                        Clean Dataset
+                    </h3>
+
+                    <p>
+                        Handle missing values, duplicates
+                        and inconsistent records.
+                    </p>
+
+                </div>
+
+
+                <div class="operation-arrow">
+                    →
+                </div>
+
+
+            </a>
+
+
+
+            <!-- VALIDATION -->
+
+            <a
+                href="{% url 'data_management:validation' %}?dataset={{ dataset.id }}"
+                class="operation-card">
+
+
+                <div class="operation-icon validation">
+                    ✓
+                </div>
+
+
+                <div class="operation-content">
+
+                    <span>
+                        DATA VALIDATION
+                    </span>
+
+                    <h3>
+                        Validate Dataset
+                    </h3>
+
+                    <p>
+                        Check schema, data types, required
+                        fields and invalid records.
+                    </p>
+
+                </div>
+
+
+                <div class="operation-arrow">
+                    →
+                </div>
+
+
+            </a>
+
+
+
+            <!-- PROFILING -->
+
+            <a
+                href="{% url 'data_management:profiling' %}?dataset={{ dataset.id }}"
+                class="operation-card">
+
+
+                <div class="operation-icon profiling">
+                    ◎
+                </div>
+
+
+                <div class="operation-content">
+
+                    <span>
+                        DATA PROFILING
+                    </span>
+
+                    <h3>
+                        Profile Dataset
+                    </h3>
+
+                    <p>
+                        Understand distributions, data types,
+                        unique values and patterns.
+                    </p>
+
+                </div>
+
+
+                <div class="operation-arrow">
+                    →
+                </div>
+
+
+            </a>
+
+
+
+            <!-- TRANSFORMATION -->
+
+            <a
+                href="{% url 'data_management:transformation' %}?dataset={{ dataset.id }}"
+                class="operation-card">
+
+
+                <div class="operation-icon transformation">
+                    ◆
+                </div>
+
+
+                <div class="operation-content">
+
+                    <span>
+                        DATA TRANSFORMATION
+                    </span>
+
+                    <h3>
+                        Transform Dataset
+                    </h3>
+
+                    <p>
+                        Convert, normalize and prepare
+                        fields for downstream analysis.
+                    </p>
+
+                </div>
+
+
+                <div class="operation-arrow">
+                    →
+                </div>
+
+
+            </a>
+
+
+
+            <!-- VERSION HISTORY -->
+
+            <a
+                href="{% url 'data_management:version_history' %}?dataset={{ dataset.id }}"
+                class="operation-card">
+
+
+                <div class="operation-icon versions">
+                    ◷
+                </div>
+
+
+                <div class="operation-content">
+
+                    <span>
+                        VERSION CONTROL
+                    </span>
+
+                    <h3>
+                        Version History
+                    </h3>
+
+                    <p>
+                        Track original, cleaned, validated
+                        and transformed dataset versions.
+                    </p>
+
+                </div>
+
+
+                <div class="operation-arrow">
+                    →
+                </div>
+
+
+            </a>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =========================================================
+         DATA PREVIEW TABLE
+    ========================================================== -->
+
+    <section class="preview-section">
+
+
+        <div class="section-heading preview-table-heading">
+
+
+            <div>
+
+                <span class="section-eyebrow">
+                    DATA EXPLORER
+                </span>
+
+                <h2>
+                    Dataset Preview
+                </h2>
+
+                <p>
+
+                    Showing the first
+                    {{ preview_rows }}
+                    rows of
+                    {{ version_label|lower }}.
+
+                </p>
+
+            </div>
+
+
+            <div class="preview-count-badge">
+
+                {{ preview_rows }}
+
+                preview rows
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="preview-table-card">
+
+
+            {% if rows %}
+
+
+                <div class="table-scroll">
+
+
+                    <table class="preview-data-table">
+
+
+                        <thead>
+
+
+                            <tr>
+
+
+                                <th class="row-number-column">
+                                    #
+                                </th>
+
+
+                                {% for column in columns %}
+
+                                    <th>
+                                        {{ column }}
+                                    </th>
+
+                                {% endfor %}
+
+
+                            </tr>
+
+
+                        </thead>
+
+
+
+                        <tbody>
+
+
+                            {% for row in rows %}
+
+
+                            <tr>
+
+
+                                <td class="row-number">
+                                    {{ forloop.counter }}
+                                </td>
+
+
+                                {% for value in row %}
+
+
+                                    <td>
+
+
+                                        {% if value == "" %}
+
+                                            <span class="null-value">
+                                                EMPTY
+                                            </span>
+
+                                        {% elif value == "nan" %}
+
+                                            <span class="null-value">
+                                                NULL
+                                            </span>
+
+                                        {% elif value == "NaT" %}
+
+                                            <span class="null-value">
+                                                NULL
+                                            </span>
+
+                                        {% else %}
+
+                                            {{ value }}
+
+                                        {% endif %}
+
+
+                                    </td>
+
+
+                                {% endfor %}
+
+
+                            </tr>
+
+
+                            {% endfor %}
+
+
+                        </tbody>
+
+
+                    </table>
+
+
+                </div>
+
+
+            {% else %}
+
+
+                <div class="no-preview-data">
+
+
+                    <div class="no-data-icon">
+                        ◫
+                    </div>
+
+
+                    <h3>
+                        No preview data available
+                    </h3>
+
+
+                    <p>
+
+                        The dataset does not currently contain
+                        previewable records.
+
+                    </p>
+
+
+                    {% if selected_version %}
+
+                        <small>
+
+                            Viewing:
+                            {{ selected_version.file_name }}
+
+                        </small>
+
+                    {% endif %}
+
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =========================================================
+         FILE INFORMATION
+    ========================================================== -->
+
+    <section class="file-info-section">
+
+
+        <div class="file-info-card">
+
+
+            <div class="file-info-header">
+
+                <div class="file-info-icon">
+                    ▣
+                </div>
+
+
+                <div>
+
+                    <span>
+                        FILE INFORMATION
+                    </span>
+
+                    <h3>
+
+                        {% if selected_version %}
+
+                            {{ selected_version.file_name }}
+
+                        {% else %}
+
+                            {{ dataset.original_filename }}
+
+                        {% endif %}
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="file-info-grid">
+
+
+                <div>
+
+                    <span>
+                        Dataset Type
+                    </span>
+
+                    <strong>
+                        {{ dataset.dataset_type }}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        File Size
+                    </span>
+
+                    <strong>
+
+                        {% if selected_version and selected_version.file_size %}
+
+                            {{ selected_version.file_size|filesizeformat }}
+
+                        {% elif dataset.file_size %}
+
+                            {{ dataset.file_size|filesizeformat }}
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Rows
+                    </span>
+
+                    <strong>
+                        {{ total_rows }}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Columns
+                    </span>
+
+                    <strong>
+                        {{ total_columns }}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Uploaded
+                    </span>
+
+                    <strong>
+                        {{ dataset.uploaded_at|date:"d M Y" }}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Last Updated
+                    </span>
+
+                    <strong>
+                        {{ dataset.updated_at|date:"d M Y" }}
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =========================================================
+         NEXT STEP
+    ========================================================== -->
+
+    <section class="next-step-banner">
+
+
+        <div class="next-step-icon">
+            →
+        </div>
+
+
+        <div class="next-step-content">
+
+            <span>
+                RECOMMENDED NEXT STEP
+            </span>
+
+            <h2>
+                Check your dataset quality
+            </h2>
+
+            <p>
+
+                Run the Data Quality analysis before continuing
+                to cleaning, validation and business analytics.
+
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'data_management:quality' %}?dataset={{ dataset.id }}"
+            class="next-step-btn">
+
+            Analyze Quality
+
+            <span>
+                →
+            </span>
+
+        </a>
+
+
+    </section>
+
+
+
+</div>
+
+{% endblock %}
+
+
+
+{% block extra_js %}
+
+<script src="{% static 'js/data_preview.js' %}"></script>
+
+{% endblock %}

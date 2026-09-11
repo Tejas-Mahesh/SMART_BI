@@ -1,0 +1,739 @@
+{% extends "base.html" %}
+
+{% load static data_filters %}
+
+{% block title %}
+Data Transformation | Smart BI
+{% endblock %}
+
+
+{% block content %}
+
+<div class="transformation-page">
+
+    <!-- HEADER -->
+
+    <div class="transformation-header">
+
+        <div>
+
+            <span class="section-label">
+                DATA MANAGEMENT
+            </span>
+
+            <h1>
+                Data <span>Transformation</span>
+            </h1>
+
+            <p>
+                Prepare your dataset for advanced analytics
+                without changing the original uploaded file.
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'data_management:data_profiling' %}"
+            class="outline-btn"
+        >
+            ← Data Profiling
+        </a>
+
+    </div>
+
+
+    <!-- DATASET SELECTOR -->
+
+    {% if datasets %}
+
+    <div class="transformation-selector">
+
+        <div class="selector-title">
+
+            <div class="selector-icon">
+                ⇄
+            </div>
+
+            <div>
+
+                <span>
+                    ACTIVE DATASET
+                </span>
+
+                <h3>
+                    {{ selected_dataset.name }}
+                </h3>
+
+            </div>
+
+        </div>
+
+
+        <form method="GET">
+
+            <select
+                name="dataset"
+                onchange="this.form.submit()"
+            >
+
+                {% for dataset in datasets %}
+
+                <option
+                    value="{{ dataset.id }}"
+                    {% if selected_dataset.id == dataset.id %}
+                        selected
+                    {% endif %}
+                >
+                    {{ dataset.name }}
+                    — {{ dataset.dataset_type }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </form>
+
+    </div>
+
+
+    {% if transformation %}
+
+
+    <!-- DATASET SUMMARY -->
+
+    <div class="transformation-summary">
+
+        <div class="summary-card">
+
+            <span>
+                ROWS
+            </span>
+
+            <strong>
+                {{ transformation.total_rows }}
+            </strong>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <span>
+                COLUMNS
+            </span>
+
+            <strong>
+                {{ transformation.total_columns }}
+            </strong>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <span>
+                NUMERIC
+            </span>
+
+            <strong>
+                {{ transformation.numeric_columns|length }}
+            </strong>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <span>
+                CATEGORICAL
+            </span>
+
+            <strong>
+                {{ transformation.categorical_columns|length }}
+            </strong>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <span>
+                DATE / TIME
+            </span>
+
+            <strong>
+                {{ transformation.date_columns|length }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- MAIN WORKSPACE -->
+
+    <div class="transformation-workspace">
+
+
+        <!-- TRANSFORMATION CONTROLS -->
+
+        <div class="transform-panel">
+
+            <div class="panel-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        TRANSFORMATION ENGINE
+                    </span>
+
+                    <h2>
+                        Prepare Your Data
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <form
+                method="POST"
+                action="{% url 'data_management:transform_dataset' selected_dataset.id %}"
+            >
+
+                {% csrf_token %}
+
+
+                <!-- TEXT -->
+
+                <div class="transform-group">
+
+                    <div class="group-heading">
+
+                        <div class="group-icon purple">
+                            Aa
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Text Transformation
+                            </h3>
+
+                            <p>
+                                Clean and standardize text fields.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <label class="transform-option">
+
+                        <input
+                            type="checkbox"
+                            name="trim_text"
+                            checked
+                        >
+
+                        <span class="custom-checkbox"></span>
+
+                        <div>
+
+                            <strong>
+                                Trim Text
+                            </strong>
+
+                            <small>
+                                Remove unnecessary spaces
+                                around text values.
+                            </small>
+
+                        </div>
+
+                    </label>
+
+
+                    <label class="transform-option">
+
+                        <input
+                            type="checkbox"
+                            name="lowercase_text"
+                        >
+
+                        <span class="custom-checkbox"></span>
+
+                        <div>
+
+                            <strong>
+                                Convert to Lowercase
+                            </strong>
+
+                            <small>
+                                Convert text values to lowercase.
+                            </small>
+
+                        </div>
+
+                    </label>
+
+
+                    <label class="transform-option">
+
+                        <input
+                            type="checkbox"
+                            name="uppercase_text"
+                        >
+
+                        <span class="custom-checkbox"></span>
+
+                        <div>
+
+                            <strong>
+                                Convert to Uppercase
+                            </strong>
+
+                            <small>
+                                Convert text values to uppercase.
+                            </small>
+
+                        </div>
+
+                    </label>
+
+                </div>
+
+
+                <!-- MISSING VALUES -->
+
+                <div class="transform-group">
+
+                    <div class="group-heading">
+
+                        <div class="group-icon green">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Missing Value Transformation
+                            </h3>
+
+                            <p>
+                                Fill missing values intelligently.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <label class="transform-option">
+
+                        <input
+                            type="checkbox"
+                            name="fill_numeric"
+                        >
+
+                        <span class="custom-checkbox"></span>
+
+                        <div>
+
+                            <strong>
+                                Fill Numeric Values
+                            </strong>
+
+                            <small>
+                                Replace missing numeric values
+                                with the column median.
+                            </small>
+
+                        </div>
+
+                    </label>
+
+
+                    <label class="transform-option">
+
+                        <input
+                            type="checkbox"
+                            name="fill_categorical"
+                        >
+
+                        <span class="custom-checkbox"></span>
+
+                        <div>
+
+                            <strong>
+                                Fill Categorical Values
+                            </strong>
+
+                            <small>
+                                Replace missing categories
+                                with the most frequent value.
+                            </small>
+
+                        </div>
+
+                    </label>
+
+                </div>
+
+
+                <!-- NUMERIC -->
+
+                <div class="transform-group">
+
+                    <div class="group-heading">
+
+                        <div class="group-icon blue">
+                            #
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Numeric Transformation
+                            </h3>
+
+                            <p>
+                                Prepare numerical variables
+                                for statistical and ML analysis.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <label class="transform-option">
+
+                        <input
+                            type="checkbox"
+                            name="normalize"
+                        >
+
+                        <span class="custom-checkbox"></span>
+
+                        <div>
+
+                            <strong>
+                                Normalize
+                            </strong>
+
+                            <small>
+                                Scale numeric values between
+                                0 and 1.
+                            </small>
+
+                        </div>
+
+                    </label>
+
+
+                    <label class="transform-option">
+
+                        <input
+                            type="checkbox"
+                            name="standardize"
+                        >
+
+                        <span class="custom-checkbox"></span>
+
+                        <div>
+
+                            <strong>
+                                Standardize
+                            </strong>
+
+                            <small>
+                                Apply Z-score standardization
+                                to numeric columns.
+                            </small>
+
+                        </div>
+
+                    </label>
+
+                </div>
+
+
+                <!-- DATE -->
+
+                <div class="transform-group">
+
+                    <div class="group-heading">
+
+                        <div class="group-icon orange">
+                            ◷
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Date Transformation
+                            </h3>
+
+                            <p>
+                                Standardize detected date columns.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <label class="transform-option">
+
+                        <input
+                            type="checkbox"
+                            name="convert_dates"
+                        >
+
+                        <span class="custom-checkbox"></span>
+
+                        <div>
+
+                            <strong>
+                                Standardize Date Columns
+                            </strong>
+
+                            <small>
+                                Convert detected date/time fields
+                                to YYYY-MM-DD format.
+                            </small>
+
+                        </div>
+
+                    </label>
+
+                </div>
+
+
+                <div class="transform-submit">
+
+                    <div>
+
+                        <span class="section-label">
+                            ORIGINAL FILE PROTECTED
+                        </span>
+
+                        <p>
+                            Transformations are applied to a
+                            generated copy only.
+                        </p>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="apply-button"
+                    >
+                        Apply & Download →
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- COLUMN INFORMATION -->
+
+        <div class="columns-panel">
+
+            <div class="panel-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        DATA STRUCTURE
+                    </span>
+
+                    <h2>
+                        Available Columns
+                    </h2>
+
+                </div>
+
+                <span class="column-count">
+                    {{ transformation.total_columns }}
+                </span>
+
+            </div>
+
+
+            <div class="columns-list">
+
+                {% for column in transformation.columns %}
+
+                <div class="column-item">
+
+                    <div class="column-main">
+
+                        <div class="column-symbol">
+                            #
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                {{ column.name }}
+                            </strong>
+
+                            <small>
+                                {{ column.dtype }}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="column-stats">
+
+                        <span>
+                            {{ column.unique }}
+                            unique
+                        </span>
+
+                        <span
+                            {% if column.missing > 0 %}
+                                class="has-missing"
+                            {% endif %}
+                        >
+                            {{ column.missing }}
+                            missing
+                        </span>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- PREVIEW -->
+
+    <div class="preview-panel">
+
+        <div class="panel-heading">
+
+            <div>
+
+                <span class="section-label">
+                    DATA PREVIEW
+                </span>
+
+                <h2>
+                    Current Dataset Preview
+                </h2>
+
+            </div>
+
+            <span class="preview-label">
+                FIRST 10 ROWS
+            </span>
+
+        </div>
+
+
+        <div class="preview-wrapper">
+
+            <table class="preview-table">
+
+                <thead>
+
+                    <tr>
+
+                        {% for column in transformation.preview_columns %}
+
+                        <th>
+                            {{ column }}
+                        </th>
+
+                        {% endfor %}
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for row in transformation.preview %}
+
+                    <tr>
+
+                        {% for column in transformation.preview_columns %}
+
+                        <td>
+                            {{ row|get_item:column }}
+                        </td>
+
+                        {% endfor %}
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    {% endif %}
+
+
+    {% else %}
+
+
+    <!-- EMPTY STATE -->
+
+    <div class="transformation-empty">
+
+        <div class="empty-icon">
+            ⇄
+        </div>
+
+        <span class="section-label">
+            NO DATASET
+        </span>
+
+        <h2>
+            Upload a dataset to begin transformation
+        </h2>
+
+        <p>
+            Upload your business data before applying
+            transformations.
+        </p>
+
+        <a
+            href="{% url 'data_management:upload' %}"
+            class="apply-button"
+        >
+            Upload Dataset →
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

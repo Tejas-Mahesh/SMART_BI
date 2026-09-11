@@ -1,0 +1,460 @@
+{% extends "workspace_base.html" %}
+
+{% load static %}
+
+
+{% block title %}
+Smart BI | Upload Data
+{% endblock %}
+
+
+{% block breadcrumb %}
+Data Management / Upload
+{% endblock %}
+
+
+{% block page_heading %}
+Upload New Data
+{% endblock %}
+
+
+{% block page_description %}
+Upload your business data and Smart BI will automatically prepare it for analysis.
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link rel="stylesheet"
+      href="{% static 'css/data_upload.css' %}">
+
+{% endblock %}
+
+
+{% block workspace_content %}
+
+
+<div class="upload-page">
+
+
+    <!-- =====================================================
+         UPLOAD INTRO
+    ====================================================== -->
+
+    <section class="upload-intro">
+
+
+        <div>
+
+            <span class="upload-section-label">
+                SMART DATA INGESTION
+            </span>
+
+            <h2>
+                Give Smart BI your data.
+            </h2>
+
+            <p>
+                Upload your business dataset once.
+                Smart BI will automatically validate, profile,
+                clean, transform and prepare it for analytics.
+            </p>
+
+        </div>
+
+
+        <div class="upload-flow-badge">
+
+            <span class="upload-flow-dot"></span>
+
+            Automatic Processing
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         MAIN UPLOAD
+    ====================================================== -->
+
+    <section class="upload-main-grid">
+
+
+        <!-- UPLOAD FORM -->
+
+        <div class="upload-panel">
+
+
+            <div class="upload-panel-header">
+
+                <div>
+
+                    <span>
+                        STEP 01
+                    </span>
+
+                    <h3>
+                        Upload Dataset
+                    </h3>
+
+                </div>
+
+                <div class="upload-format-badge">
+                    CSV / XLS / XLSX
+                </div>
+
+            </div>
+
+
+            <form method="POST"
+                  enctype="multipart/form-data"
+                  class="smart-upload-form">
+
+                {% csrf_token %}
+
+
+                <!-- DATASET NAME -->
+
+                <div class="upload-field">
+
+                    <label for="{{ form.name.id_for_label }}">
+                        Dataset Name
+                    </label>
+
+                    {{ form.name }}
+
+                    {% if form.name.errors %}
+
+                    <div class="upload-error">
+                        {{ form.name.errors }}
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- DATASET TYPE -->
+
+                <div class="upload-field">
+
+                    <label for="{{ form.dataset_type.id_for_label }}">
+                        Data Category
+                    </label>
+
+                    {{ form.dataset_type }}
+
+                    <small>
+                        Choose the category that best describes
+                        this dataset.
+                    </small>
+
+                    {% if form.dataset_type.errors %}
+
+                    <div class="upload-error">
+                        {{ form.dataset_type.errors }}
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- FILE -->
+
+                <div class="upload-field">
+
+                    <label>
+                        Business Data File
+                    </label>
+
+
+                    <div class="smart-file-dropzone">
+
+
+                        {{ form.file }}
+
+
+                        <div class="smart-file-content">
+
+
+                            <div class="smart-file-icon">
+                                ↑
+                            </div>
+
+
+                            <strong>
+                                Drop your dataset here
+                            </strong>
+
+
+                            <span>
+                                or click to browse files
+                            </span>
+
+
+                            <small>
+                                CSV, XLS or XLSX · Maximum 20 MB
+                            </small>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="selected-file-name"
+                         id="selectedFileName">
+                    </div>
+
+
+                    {% if form.file.errors %}
+
+                    <div class="upload-error">
+                        {{ form.file.errors }}
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                {% if form.non_field_errors %}
+
+                <div class="upload-form-error">
+
+                    {{ form.non_field_errors }}
+
+                </div>
+
+                {% endif %}
+
+
+                <!-- SUBMIT -->
+
+                <button type="submit"
+                        class="smart-upload-submit"
+                        id="uploadSubmitButton">
+
+                    <span>
+                        Upload & Process
+                    </span>
+
+                    <span>
+                        →
+                    </span>
+
+                </button>
+
+
+            </form>
+
+
+        </div>
+
+
+        <!-- AUTOMATIC PROCESSING -->
+
+        <div class="automatic-processing-panel">
+
+
+            <div class="automatic-panel-header">
+
+                <span>
+                    WHAT HAPPENS NEXT
+                </span>
+
+                <h3>
+                    Smart Data Processing
+                </h3>
+
+                <p>
+                    You don't need to run these steps manually.
+                    Smart BI handles them automatically.
+                </p>
+
+            </div>
+
+
+            <div class="automatic-steps">
+
+
+                <div class="automatic-step">
+
+                    <div class="automatic-step-number">
+                        01
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            File Validation
+                        </strong>
+
+                        <span>
+                            Check format and structure
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="automatic-step">
+
+                    <div class="automatic-step-number">
+                        02
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Data Profiling
+                        </strong>
+
+                        <span>
+                            Understand columns and patterns
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="automatic-step">
+
+                    <div class="automatic-step-number">
+                        03
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Quality Analysis
+                        </strong>
+
+                        <span>
+                            Detect missing and duplicate data
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="automatic-step">
+
+                    <div class="automatic-step-number">
+                        04
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Smart Cleaning
+                        </strong>
+
+                        <span>
+                            Fix supported data issues
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="automatic-step">
+
+                    <div class="automatic-step-number">
+                        05
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Validation & Transformation
+                        </strong>
+
+                        <span>
+                            Prepare data for analytics
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="automatic-step final">
+
+                    <div class="automatic-step-number">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Analytics Ready
+                        </strong>
+
+                        <span>
+                            Dataset appears in Data Management
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         SIMPLE EXPLANATION
+    ====================================================== -->
+
+    <section class="upload-bottom-info">
+
+
+        <div class="upload-bottom-icon">
+            ✦
+        </div>
+
+
+        <div>
+
+            <strong>
+                You upload once. Smart BI does the preparation.
+            </strong>
+
+            <p>
+                After processing, Data Management will show the
+                dataset's quality score, records, processing summary
+                and exactly what Smart BI changed.
+            </p>
+
+        </div>
+
+
+    </section>
+
+
+</div>
+
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script src="{% static 'js/data_upload.js' %}"></script>
+
+{% endblock %}

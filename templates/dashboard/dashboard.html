@@ -1,0 +1,1379 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Smart BI | Executive Dashboard
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link rel="stylesheet"
+      href="{% static 'css/accdash.css' %}">
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="dashboard-layout">
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar" id="smartSidebar">
+
+        <!-- BRAND -->
+
+        <div class="sidebar-brand">
+
+            <a href="{% url 'core:dashboard' %}"
+               class="sidebar-logo">
+
+                <div class="sidebar-logo-icon">
+                    <span>S</span>
+                </div>
+
+                <div class="sidebar-brand-text">
+
+                    <strong>Smart BI</strong>
+
+                    <small>
+                        Decision Intelligence
+                    </small>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <!-- USER -->
+
+        <div class="sidebar-user">
+
+            <div class="sidebar-avatar">
+                {{ user.username|first|upper }}
+            </div>
+
+            <div class="sidebar-user-info">
+
+                <strong>
+                    {{ user.get_full_name|default:user.username }}
+                </strong>
+
+                <span>
+                    {{ user.user_type }}
+                </span>
+
+            </div>
+
+            <span class="online-dot"></span>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="sidebar-navigation">
+
+
+            <!-- OVERVIEW -->
+
+            <div class="sidebar-section">
+
+                <div class="sidebar-section-title">
+                    OVERVIEW
+                </div>
+
+
+                <a href="{% url 'core:dashboard' %}"
+                   class="sidebar-link active">
+
+                    <span class="sidebar-link-icon">
+                        ⌂
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Dashboard
+                    </span>
+
+                    <span class="sidebar-link-arrow">
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- PLATFORM -->
+
+            <div class="sidebar-section">
+
+                <div class="sidebar-section-title">
+                    PLATFORM
+                </div>
+
+
+                <!-- DATA MANAGEMENT -->
+
+                <a href="{% url 'data_management:dataset_management' %}"
+                   class="sidebar-link">
+
+                    <span class="sidebar-link-icon">
+                        ▣
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Data Management
+                    </span>
+
+                    <span class="sidebar-link-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <!-- BUSINESS ANALYTICS -->
+
+                <a href="#"
+                   class="sidebar-link">
+
+                    <span class="sidebar-link-icon">
+                        ◈
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Business Analytics
+                    </span>
+
+                    <span class="sidebar-link-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <!-- ADVANCED INSIGHTS -->
+
+                <a href="#"
+                   class="sidebar-link">
+
+                    <span class="sidebar-link-icon">
+                        ✦
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Advanced Insights
+                    </span>
+
+                    <span class="sidebar-link-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <!-- DECISION INTELLIGENCE -->
+
+                <a href="#"
+                   class="sidebar-link">
+
+                    <span class="sidebar-link-icon">
+                        ◎
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Decision Intelligence
+                    </span>
+
+                    <span class="sidebar-link-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <!-- REPORTS -->
+
+                <a href="#"
+                   class="sidebar-link">
+
+                    <span class="sidebar-link-icon">
+                        ▤
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Reports
+                    </span>
+
+                    <span class="sidebar-link-arrow">
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- SYSTEM -->
+
+            <div class="sidebar-section">
+
+                <div class="sidebar-section-title">
+                    SYSTEM
+                </div>
+
+
+                <a href="#"
+                   class="sidebar-link">
+
+                    <span class="sidebar-link-icon">
+                        ⚙
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Settings
+                    </span>
+
+                    <span class="sidebar-link-arrow">
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+        </nav>
+
+
+
+        <!-- SIDEBAR BOTTOM -->
+
+        <div class="sidebar-bottom">
+
+
+            <div class="sidebar-system-status">
+
+                <span class="system-status-indicator"></span>
+
+                <div>
+
+                    <strong>
+                        System Online
+                    </strong>
+
+                    <small>
+                        Intelligence Engine
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <a href="{% url 'accounts:logout' %}"
+               class="sidebar-logout">
+
+                <span>
+                    ↪
+                </span>
+
+                <span>
+                    Logout
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN DASHBOARD
+    ====================================================== -->
+
+    <main class="dashboard-main">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        <header class="dashboard-topbar">
+
+
+            <div class="dashboard-heading">
+
+                <span class="dashboard-label">
+                    EXECUTIVE OVERVIEW
+                </span>
+
+                <h1>
+                    Business Dashboard
+                </h1>
+
+                <p>
+                    Welcome back,
+                    <strong>{{ user.username }}</strong>.
+                    Here's your business intelligence overview.
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-actions">
+
+
+                <button
+                    type="button"
+                    class="date-button">
+
+                    <span class="button-icon">
+                        ◷
+                    </span>
+
+                    Last 30 Days
+
+                    <span>
+                        ▾
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="refresh-button"
+                    onclick="window.location.reload();">
+
+                    <span>
+                        ↻
+                    </span>
+
+                    Refresh
+
+                </button>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             WELCOME / HERO
+        ================================================== -->
+
+        <section class="dashboard-welcome">
+
+
+            <div class="welcome-background-grid"></div>
+
+
+            <div class="welcome-orb orb-one"></div>
+            <div class="welcome-orb orb-two"></div>
+
+
+            <div class="welcome-content">
+
+
+                <div class="welcome-label">
+
+                    <span class="pulse-dot"></span>
+
+                    SMART BUSINESS INTELLIGENCE
+
+                </div>
+
+
+                <h2>
+
+                    Turn your data into
+
+                    <span>
+                        better decisions.
+                    </span>
+
+                </h2>
+
+
+                <p>
+
+                    Upload your business datasets to unlock
+                    analytics, forecasting, anomaly detection,
+                    recommendations and decision intelligence.
+
+                </p>
+
+
+                <div class="welcome-actions">
+
+                    <a
+                        href="{% url 'data_management:dataset_management' %}"
+                        class="primary-dashboard-btn">
+
+                        <span>
+                            Explore Data Management
+                        </span>
+
+                        <b>
+                            →
+                        </b>
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'data_management:upload' %}"
+                        class="secondary-dashboard-btn">
+
+                        + Upload Data
+
+                    </a>
+
+                </div>
+
+
+                <div class="welcome-tech">
+
+                    <span>
+                        Python
+                    </span>
+
+                    <span>
+                        Django
+                    </span>
+
+                    <span>
+                        Pandas
+                    </span>
+
+                    <span>
+                        SQL
+                    </span>
+
+                    <span>
+                        ML
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- VISUAL -->
+
+            <div class="welcome-visual">
+
+
+                <div class="analytics-orbit orbit-large"></div>
+
+                <div class="analytics-orbit orbit-small"></div>
+
+
+                <div class="analytics-core">
+
+                    <div class="core-glow"></div>
+
+                    <span class="core-icon">
+                        BI
+                    </span>
+
+                    <strong>
+                        Intelligence
+                    </strong>
+
+                    <small>
+                        Engine
+                    </small>
+
+                </div>
+
+
+                <!-- FLOATING METRIC -->
+
+                <div class="floating-metric metric-growth">
+
+                    <span class="metric-mini-icon">
+                        ↗
+                    </span>
+
+                    <div>
+
+                        <small>
+                            Growth
+                        </small>
+
+                        <strong>
+                            +24.8%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="floating-metric metric-ai">
+
+                    <span class="metric-mini-icon">
+                        ✦
+                    </span>
+
+                    <div>
+
+                        <small>
+                            AI Insights
+                        </small>
+
+                        <strong>
+                            Ready
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="floating-metric metric-alert">
+
+                    <span class="metric-mini-icon">
+                        !
+                    </span>
+
+                    <div>
+
+                        <small>
+                            Alerts
+                        </small>
+
+                        <strong>
+                            03
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SNAPSHOT HEADER
+        ================================================== -->
+
+        <div class="dashboard-section-header">
+
+
+            <div>
+
+                <span>
+                    BUSINESS SNAPSHOT
+                </span>
+
+                <h2>
+                    Key Performance Indicators
+                </h2>
+
+            </div>
+
+
+            <div class="section-status">
+
+                <span></span>
+
+                Waiting for business data
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             KPI GRID
+        ================================================== -->
+
+        <section class="kpi-grid">
+
+
+            <!-- REVENUE -->
+
+            <div class="kpi-card kpi-purple">
+
+                <div class="kpi-top">
+
+                    <div class="kpi-icon">
+                        ₹
+                    </div>
+
+                    <span class="kpi-status">
+                        DATA
+                    </span>
+
+                </div>
+
+
+                <div class="kpi-content">
+
+                    <span>
+                        Total Revenue
+                    </span>
+
+                    <strong>
+                        —
+                    </strong>
+
+                    <small>
+                        Upload Sales data
+                    </small>
+
+                </div>
+
+
+                <div class="kpi-line">
+                    <span></span>
+                </div>
+
+            </div>
+
+
+
+            <!-- PROFIT -->
+
+            <div class="kpi-card kpi-green">
+
+                <div class="kpi-top">
+
+                    <div class="kpi-icon">
+                        %
+                    </div>
+
+                    <span class="kpi-status">
+                        DATA
+                    </span>
+
+                </div>
+
+
+                <div class="kpi-content">
+
+                    <span>
+                        Profit Margin
+                    </span>
+
+                    <strong>
+                        —
+                    </strong>
+
+                    <small>
+                        Requires profit / cost data
+                    </small>
+
+                </div>
+
+
+                <div class="kpi-line">
+                    <span></span>
+                </div>
+
+            </div>
+
+
+
+            <!-- GROWTH -->
+
+            <div class="kpi-card kpi-blue">
+
+                <div class="kpi-top">
+
+                    <div class="kpi-icon">
+                        ↗
+                    </div>
+
+                    <span class="kpi-status">
+                        DATA
+                    </span>
+
+                </div>
+
+
+                <div class="kpi-content">
+
+                    <span>
+                        Revenue Growth
+                    </span>
+
+                    <strong>
+                        —
+                    </strong>
+
+                    <small>
+                        Requires Sales history
+                    </small>
+
+                </div>
+
+
+                <div class="kpi-line">
+                    <span></span>
+                </div>
+
+            </div>
+
+
+
+            <!-- CUSTOMERS -->
+
+            <div class="kpi-card kpi-orange">
+
+                <div class="kpi-top">
+
+                    <div class="kpi-icon">
+                        ♙
+                    </div>
+
+                    <span class="kpi-status">
+                        DATA
+                    </span>
+
+                </div>
+
+
+                <div class="kpi-content">
+
+                    <span>
+                        Customers
+                    </span>
+
+                    <strong>
+                        —
+                    </strong>
+
+                    <small>
+                        Upload Customer data
+                    </small>
+
+                </div>
+
+
+                <div class="kpi-line">
+                    <span></span>
+                </div>
+
+            </div>
+
+
+
+            <!-- HEALTH -->
+
+            <div class="kpi-card kpi-red">
+
+                <div class="kpi-top">
+
+                    <div class="kpi-icon">
+                        ★
+                    </div>
+
+                    <span class="kpi-status">
+                        AI
+                    </span>
+
+                </div>
+
+
+                <div class="kpi-content">
+
+                    <span>
+                        Business Health
+                    </span>
+
+                    <strong>
+                        —
+                    </strong>
+
+                    <small>
+                        Activate analytics
+                    </small>
+
+                </div>
+
+
+                <div class="kpi-line">
+                    <span></span>
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             ANALYTICS AREA
+        ================================================== -->
+
+        <section class="dashboard-grid">
+
+
+            <!-- REVENUE -->
+
+            <div class="dashboard-card large-card">
+
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span>
+                            REVENUE INTELLIGENCE
+                        </span>
+
+                        <h3>
+                            Revenue Performance
+                        </h3>
+
+                    </div>
+
+
+                    <span class="locked-badge">
+                        <i></i>
+                        Data Required
+                    </span>
+
+                </div>
+
+
+                <div class="empty-chart">
+
+
+                    <div class="chart-decoration">
+
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+
+                    </div>
+
+
+                    <div class="empty-chart-content">
+
+                        <div class="chart-icon">
+                            ↗
+                        </div>
+
+                        <h3>
+                            Revenue analytics will appear here
+                        </h3>
+
+                        <p>
+                            Upload Sales data to generate
+                            interactive revenue trends,
+                            growth analysis and performance charts.
+                        </p>
+
+
+                        <a
+                            href="{% url 'data_management:upload' %}">
+
+                            Upload Sales Data →
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CUSTOMER -->
+
+            <div class="dashboard-card">
+
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span>
+                            CUSTOMER INTELLIGENCE
+                        </span>
+
+                        <h3>
+                            Customer Overview
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="customer-empty">
+
+
+                    <div class="customer-visual">
+
+                        <div class="customer-ring ring-one"></div>
+                        <div class="customer-ring ring-two"></div>
+
+                        <span>
+                            ♙
+                        </span>
+
+                    </div>
+
+
+                    <h3>
+                        No customer data
+                    </h3>
+
+                    <p>
+                        Upload Customer data to activate
+                        customer analytics and segmentation.
+                    </p>
+
+
+                    <a
+                        href="{% url 'data_management:upload' %}">
+
+                        Upload Customer Data
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             INTELLIGENCE READINESS
+        ================================================== -->
+
+        <section class="dashboard-card readiness-card">
+
+
+            <div class="card-header">
+
+                <div>
+
+                    <span>
+                        PLATFORM READINESS
+                    </span>
+
+                    <h3>
+                        Intelligence Activation
+                    </h3>
+
+                </div>
+
+
+                <span class="readiness-badge">
+                    0 / 4 Active
+                </span>
+
+            </div>
+
+
+
+            <div class="readiness-grid">
+
+
+                <!-- DATA -->
+
+                <div class="readiness-item">
+
+                    <div class="readiness-number">
+                        01
+                    </div>
+
+                    <div class="readiness-icon">
+                        ↑
+                    </div>
+
+                    <div class="readiness-content">
+
+                        <strong>
+                            Upload Data
+                        </strong>
+
+                        <p>
+                            Import your business
+                            CSV or Excel datasets.
+                        </p>
+
+                    </div>
+
+                    <span class="readiness-state">
+                        Pending
+                    </span>
+
+                </div>
+
+
+
+                <!-- QUALITY -->
+
+                <div class="readiness-item">
+
+                    <div class="readiness-number">
+                        02
+                    </div>
+
+                    <div class="readiness-icon">
+                        ✓
+                    </div>
+
+                    <div class="readiness-content">
+
+                        <strong>
+                            Validate & Clean
+                        </strong>
+
+                        <p>
+                            Check quality, missing
+                            values and duplicates.
+                        </p>
+
+                    </div>
+
+                    <span class="readiness-state">
+                        Pending
+                    </span>
+
+                </div>
+
+
+
+                <!-- ANALYTICS -->
+
+                <div class="readiness-item">
+
+                    <div class="readiness-number">
+                        03
+                    </div>
+
+                    <div class="readiness-icon">
+                        ◈
+                    </div>
+
+                    <div class="readiness-content">
+
+                        <strong>
+                            Analyze
+                        </strong>
+
+                        <p>
+                            Generate business intelligence
+                            and visual analytics.
+                        </p>
+
+                    </div>
+
+                    <span class="readiness-state">
+                        Locked
+                    </span>
+
+                </div>
+
+
+
+                <!-- DECISION -->
+
+                <div class="readiness-item">
+
+                    <div class="readiness-number">
+                        04
+                    </div>
+
+                    <div class="readiness-icon">
+                        ✦
+                    </div>
+
+                    <div class="readiness-content">
+
+                        <strong>
+                            Decide
+                        </strong>
+
+                        <p>
+                            Get forecasts, insights
+                            and recommendations.
+                        </p>
+
+                    </div>
+
+                    <span class="readiness-state">
+                        Locked
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             DATA FLOW
+        ================================================== -->
+
+        <section class="data-flow-section">
+
+
+            <div class="flow-header">
+
+                <div>
+
+                    <span>
+                        SMART BI PIPELINE
+                    </span>
+
+                    <h2>
+                        From Data to Decision
+                    </h2>
+
+                </div>
+
+                <p>
+                    Every stage builds on the previous one,
+                    transforming raw business data into
+                    actionable intelligence.
+                </p>
+
+            </div>
+
+
+
+            <div class="data-flow">
+
+
+                <div class="flow-step">
+
+                    <span class="flow-number">
+                        01
+                    </span>
+
+                    <div class="flow-icon">
+                        ↑
+                    </div>
+
+                    <strong>
+                        Data
+                    </strong>
+
+                    <small>
+                        Upload
+                    </small>
+
+                </div>
+
+
+                <div class="flow-connector">
+                    <span></span>
+                </div>
+
+
+                <div class="flow-step">
+
+                    <span class="flow-number">
+                        02
+                    </span>
+
+                    <div class="flow-icon">
+                        ◉
+                    </div>
+
+                    <strong>
+                        Analyze
+                    </strong>
+
+                    <small>
+                        Understand
+                    </small>
+
+                </div>
+
+
+                <div class="flow-connector">
+                    <span></span>
+                </div>
+
+
+                <div class="flow-step">
+
+                    <span class="flow-number">
+                        03
+                    </span>
+
+                    <div class="flow-icon">
+                        ✦
+                    </div>
+
+                    <strong>
+                        Discover
+                    </strong>
+
+                    <small>
+                        Insights
+                    </small>
+
+                </div>
+
+
+                <div class="flow-connector">
+                    <span></span>
+                </div>
+
+
+                <div class="flow-step">
+
+                    <span class="flow-number">
+                        04
+                    </span>
+
+                    <div class="flow-icon">
+                        ◎
+                    </div>
+
+                    <strong>
+                        Decide
+                    </strong>
+
+                    <small>
+                        Actions
+                    </small>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const cards =
+            document.querySelectorAll(
+                ".kpi-card, .dashboard-card, .readiness-item, .flow-step"
+            );
+
+
+        cards.forEach(
+            function (card, index) {
+
+                card.style.opacity = "0";
+
+                card.style.transform =
+                    "translateY(18px)";
+
+
+                setTimeout(
+                    function () {
+
+                        card.style.transition =
+                            "opacity .55s ease, transform .55s ease";
+
+                        card.style.opacity = "1";
+
+                        card.style.transform =
+                            "translateY(0)";
+
+                    },
+                    100 + (index * 55)
+                );
+
+            }
+        );
+
+
+        /* KPI hover movement */
+
+        document
+            .querySelectorAll(".kpi-card")
+            .forEach(
+                function (card) {
+
+                    card.addEventListener(
+                        "mousemove",
+                        function (event) {
+
+                            const rect =
+                                card.getBoundingClientRect();
+
+                            const x =
+                                event.clientX - rect.left;
+
+                            const y =
+                                event.clientY - rect.top;
+
+                            const rotateY =
+                                ((x / rect.width) - 0.5) * 4;
+
+                            const rotateX =
+                                ((y / rect.height) - 0.5) * -4;
+
+
+                            card.style.transform =
+                                `translateY(-5px)
+                                 perspective(700px)
+                                 rotateX(${rotateX}deg)
+                                 rotateY(${rotateY}deg)`;
+
+                        }
+                    );
+
+
+                    card.addEventListener(
+                        "mouseleave",
+                        function () {
+
+                            card.style.transform =
+                                "";
+
+                        }
+                    );
+
+                }
+            );
+
+    }
+);
+
+</script>
+
+
+{% endblock %}

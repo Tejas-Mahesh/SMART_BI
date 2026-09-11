@@ -1,0 +1,648 @@
+{% extends "base.html" %}
+
+{% block title %}
+Data Quality | Smart BI
+{% endblock %}
+
+{% block content %}
+
+<div class="quality-page">
+
+    <!-- PAGE HEADER -->
+
+    <div class="quality-header">
+
+        <div>
+
+            <span class="section-label">
+                DATA MANAGEMENT
+            </span>
+
+            <h1>
+                Data <span>Quality</span>
+            </h1>
+
+            <p>
+                Analyze the accuracy, completeness and
+                consistency of your business dataset.
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'data_management:dataset_management' %}"
+            class="secondary-btn"
+        >
+            ← Dataset Management
+        </a>
+
+    </div>
+
+
+    <!-- DATASET SELECTOR -->
+
+    <div class="dataset-selector-card">
+
+        <div>
+
+            <label for="dataset-select">
+                Select Dataset
+            </label>
+
+            <p>
+                Choose a dataset to perform quality analysis.
+            </p>
+
+        </div>
+
+        <form method="GET">
+
+            <select
+                id="dataset-select"
+                name="dataset"
+                onchange="this.form.submit()"
+            >
+
+                {% for dataset in datasets %}
+
+                    <option
+                        value="{{ dataset.id }}"
+                        {% if selected_dataset.id == dataset.id %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ dataset.name }}
+                        — {{ dataset.dataset_type }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </form>
+
+    </div>
+
+
+    {% if selected_dataset and quality %}
+
+
+    <!-- DATASET INFORMATION -->
+
+    <div class="dataset-info">
+
+        <div>
+            <span>Dataset</span>
+            <strong>
+                {{ selected_dataset.name }}
+            </strong>
+        </div>
+
+        <div>
+            <span>Type</span>
+            <strong>
+                {{ selected_dataset.dataset_type }}
+            </strong>
+        </div>
+
+        <div>
+            <span>File</span>
+            <strong>
+                {{ selected_dataset.original_filename }}
+            </strong>
+        </div>
+
+    </div>
+
+
+    <!-- MAIN QUALITY SCORE -->
+
+    <div class="quality-score-section">
+
+        <div class="quality-score-card">
+
+            <div class="score-circle {{ quality.quality_class }}">
+
+                <div>
+
+                    <strong>
+                        {{ quality.quality_score }}
+                    </strong>
+
+                    <span>
+                        /100
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="score-content">
+
+                <span class="section-label">
+                    OVERALL DATA QUALITY
+                </span>
+
+                <h2>
+                    {{ quality.quality_status }}
+                </h2>
+
+                <p>
+                    Your dataset currently has a
+                    <strong>
+                        {{ quality.quality_score }}/100
+                    </strong>
+                    quality score based on completeness
+                    and duplicate analysis.
+                </p>
+
+                <div class="quality-progress">
+
+                    <div
+                        class="quality-progress-bar {{ quality.quality_class }}"
+                        style="width: {{ quality.quality_score }}%;"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- KPI CARDS -->
+
+    <div class="quality-kpi-grid">
+
+        <div class="quality-kpi">
+
+            <div class="kpi-icon blue">
+                #
+            </div>
+
+            <div>
+
+                <span>
+                    TOTAL ROWS
+                </span>
+
+                <strong>
+                    {{ quality.total_rows }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="quality-kpi">
+
+            <div class="kpi-icon purple">
+                ▦
+            </div>
+
+            <div>
+
+                <span>
+                    TOTAL COLUMNS
+                </span>
+
+                <strong>
+                    {{ quality.total_columns }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="quality-kpi">
+
+            <div class="kpi-icon orange">
+                !
+            </div>
+
+            <div>
+
+                <span>
+                    MISSING VALUES
+                </span>
+
+                <strong>
+                    {{ quality.missing_values }}
+                </strong>
+
+                <small>
+                    {{ quality.missing_percentage }}%
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="quality-kpi">
+
+            <div class="kpi-icon red">
+                ⧉
+            </div>
+
+            <div>
+
+                <span>
+                    DUPLICATE ROWS
+                </span>
+
+                <strong>
+                    {{ quality.duplicate_rows }}
+                </strong>
+
+                <small>
+                    {{ quality.duplicate_percentage }}%
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- COMPLETENESS -->
+
+    <div class="quality-two-column">
+
+        <div class="quality-panel">
+
+            <div class="panel-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        COMPLETENESS
+                    </span>
+
+                    <h3>
+                        Row Completeness
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <div class="completion-grid">
+
+                <div class="completion-item complete">
+
+                    <strong>
+                        {{ quality.complete_rows }}
+                    </strong>
+
+                    <span>
+                        Complete Rows
+                    </span>
+
+                    <div class="mini-bar">
+                        <div
+                            style="
+                                width:
+                                {% if quality.total_rows %}
+                                    {% widthratio quality.complete_rows quality.total_rows 100 %}
+                                {% else %}
+                                    0
+                                {% endif %}%;
+                            "
+                        ></div>
+                    </div>
+
+                </div>
+
+
+                <div class="completion-item incomplete">
+
+                    <strong>
+                        {{ quality.incomplete_rows }}
+                    </strong>
+
+                    <span>
+                        Incomplete Rows
+                    </span>
+
+                    <div class="mini-bar">
+                        <div
+                            style="
+                                width:
+                                {% if quality.total_rows %}
+                                    {% widthratio quality.incomplete_rows quality.total_rows 100 %}
+                                {% else %}
+                                    0
+                                {% endif %}%;
+                            "
+                        ></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- QUALITY RULES -->
+
+        <div class="quality-panel">
+
+            <div class="panel-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        QUALITY CHECKS
+                    </span>
+
+                    <h3>
+                        Dataset Health
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <div class="health-list">
+
+                <div class="health-row">
+
+                    <span>
+                        Missing Values
+                    </span>
+
+                    <strong>
+                        {{ quality.missing_percentage }}%
+                    </strong>
+
+                </div>
+
+
+                <div class="health-row">
+
+                    <span>
+                        Duplicate Rows
+                    </span>
+
+                    <strong>
+                        {{ quality.duplicate_percentage }}%
+                    </strong>
+
+                </div>
+
+
+                <div class="health-row">
+
+                    <span>
+                        Complete Rows
+                    </span>
+
+                    <strong>
+                        {{ quality.complete_rows }}
+                    </strong>
+
+                </div>
+
+
+                <div class="health-row">
+
+                    <span>
+                        Incomplete Rows
+                    </span>
+
+                    <strong>
+                        {{ quality.incomplete_rows }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- COLUMN QUALITY -->
+
+    <div class="quality-panel column-panel">
+
+        <div class="panel-heading">
+
+            <div>
+
+                <span class="section-label">
+                    COLUMN ANALYSIS
+                </span>
+
+                <h3>
+                    Column-Level Data Quality
+                </h3>
+
+                <p>
+                    Detailed quality information for
+                    every dataset column.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="quality-table-wrapper">
+
+            <table class="quality-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Column
+                        </th>
+
+                        <th>
+                            Data Type
+                        </th>
+
+                        <th>
+                            Non-Null
+                        </th>
+
+                        <th>
+                            Missing
+                        </th>
+
+                        <th>
+                            Missing %
+                        </th>
+
+                        <th>
+                            Duplicates
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for column in quality.column_quality %}
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                {{ column.name }}
+                            </strong>
+                        </td>
+
+                        <td>
+                            <span class="datatype">
+                                {{ column.data_type }}
+                            </span>
+                        </td>
+
+                        <td>
+                            {{ column.non_null }}
+                        </td>
+
+                        <td>
+                            {{ column.missing }}
+                        </td>
+
+                        <td>
+
+                            <div class="percentage-cell">
+
+                                <div class="tiny-progress">
+
+                                    <div
+                                        class="{{ column.status_class }}"
+                                        style="
+                                            width:
+                                            {{ column.missing_percentage }}%;
+                                        "
+                                    ></div>
+
+                                </div>
+
+                                <span>
+                                    {{ column.missing_percentage }}%
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            {{ column.duplicates }}
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="
+                                    quality-status
+                                    {{ column.status_class }}
+                                "
+                            >
+                                {{ column.status }}
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="7">
+                            No columns found.
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    {% elif not datasets %}
+
+
+    <!-- NO DATASET -->
+
+    <div class="empty-quality">
+
+        <div class="empty-icon">
+            ◫
+        </div>
+
+        <span class="section-label">
+            DATA QUALITY
+        </span>
+
+        <h2>
+            No Dataset Available
+        </h2>
+
+        <p>
+            Upload a business dataset first to activate
+            Data Quality analysis.
+        </p>
+
+        <a
+            href="{% url 'data_management:upload' %}"
+            class="primary-btn"
+        >
+            Upload Dataset →
+        </a>
+
+    </div>
+
+
+    {% else %}
+
+
+    <div class="empty-quality">
+
+        <div class="empty-icon">
+            !
+        </div>
+
+        <h2>
+            Select a Dataset
+        </h2>
+
+        <p>
+            Choose a dataset above to begin quality analysis.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Login | Smart BI
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="auth-page">
+
+    <div class="auth-background-grid"></div>
+
+    <div class="auth-orb auth-orb-one"></div>
+    <div class="auth-orb auth-orb-two"></div>
+
+
+    <div class="auth-card">
+
+
+        <!-- BRAND -->
+
+        <div class="auth-brand">
+
+            <div class="auth-brand-icon">
+                S
+            </div>
+
+            <div>
+
+                <strong>
+                    Smart BI
+                </strong>
+
+                <span>
+                    Decision Intelligence
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- HEADER -->
+
+        <div class="auth-header">
+
+            <span class="section-label">
+                SMART BI PLATFORM
+            </span>
+
+            <h1>
+                Welcome <span>Back</span>
+            </h1>
+
+            <p>
+                Login to access your Business Intelligence
+                dashboard and decision intelligence workspace.
+            </p>
+
+        </div>
+
+
+        <!-- MESSAGES -->
+
+        {% if messages %}
+
+        <div class="auth-messages">
+
+            {% for message in messages %}
+
+            <div class="auth-message {{ message.tags }}">
+
+                <span class="auth-message-icon">
+
+                    {% if message.tags == "success" %}
+                        ✓
+                    {% elif message.tags == "error" %}
+                        !
+                    {% elif message.tags == "warning" %}
+                        !
+                    {% else %}
+                        i
+                    {% endif %}
+
+                </span>
+
+                <span>
+                    {{ message }}
+                </span>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- LOGIN FORM -->
+
+        <form method="POST"
+              action="{% url 'accounts:login' %}"
+              class="auth-form">
+
+            {% csrf_token %}
+
+
+            <div class="form-group">
+
+                <label for="{{ form.username.id_for_label }}">
+                    Username
+                </label>
+
+                <div class="auth-input-wrap">
+
+                    <span class="input-icon">
+                        ◉
+                    </span>
+
+                    {{ form.username }}
+
+                </div>
+
+                {% if form.username.errors %}
+
+                <div class="field-error">
+                    {{ form.username.errors }}
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="{{ form.password.id_for_label }}">
+                    Password
+                </label>
+
+                <div class="auth-input-wrap">
+
+                    <span class="input-icon">
+                        ◈
+                    </span>
+
+                    {{ form.password }}
+
+                </div>
+
+                {% if form.password.errors %}
+
+                <div class="field-error">
+                    {{ form.password.errors }}
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            {% if form.non_field_errors %}
+
+            <div class="form-error">
+                {{ form.non_field_errors }}
+            </div>
+
+            {% endif %}
+
+
+            <button type="submit"
+                    class="auth-submit">
+
+                <span>
+                    Login to Smart BI
+                </span>
+
+                <span class="auth-submit-arrow">
+                    →
+                </span>
+
+            </button>
+
+        </form>
+
+
+        <!-- FOOTER -->
+
+        <div class="auth-footer">
+
+            <p>
+                Don't have an account?
+                <a href="{% url 'accounts:signup' %}">
+                    Create Account
+                </a>
+            </p>
+
+        </div>
+
+
+        <!-- SECURITY -->
+
+        <div class="auth-security">
+
+            <span>
+                ✓
+            </span>
+
+            Secure Business Intelligence Workspace
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
