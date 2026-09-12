@@ -18,6 +18,21 @@ from .date_filters import (
     get_previous_period,
     calculate_percentage_change,
 )
+import json
+import numpy as np
+import pandas as pd
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+from data_management.models import Dataset, DatasetVersion
+
+from .date_filters import (
+    DATE_RANGE_OPTIONS,
+    apply_date_filter,
+    get_previous_period,
+    calculate_percentage_change,
+)
 
 from data_management.models import Dataset, DatasetVersion
 # ==========================================================
@@ -9030,5 +9045,1458 @@ def financial_intelligence(request):
     return render(
         request,
         "analytics/financial_intelligence.html",
+        context,
+    )
+
+@login_required
+def marketing_intelligence(request):
+    datasets = Dataset.objects.filter(
+        owner=request.user
+    ).order_by("-uploaded_at")
+
+    selected_dataset = None
+    selected_version = None
+
+    has_data = False
+    error_message = ""
+
+    total_marketing_spend = 0
+    total_revenue = 0
+    marketing_roi = 0
+    marketing_roas = 0
+
+    current_period_spend = 0
+    previous_period_spend = 0
+    spend_change = 0
+
+    current_period_revenue = 0
+    previous_period_revenue = 0
+    revenue_change = 0
+
+    comparison_available = False
+
+    peak_period = "-"
+    lowest_period = "-"
+
+    campaign_rows = []
+    marketing_insights = []
+
+    marketing_labels = []
+    marketing_spend_values = []
+    marketing_revenue_values = []
+
+    channel_labels = []
+    channel_spend_values = []
+    channel_revenue_values = []
+
+    campaign_column = ""
+    spend_column = ""
+    revenue_column = ""
+    channel_column = ""
+    date_column = ""
+
+    selected_range = request.GET.get("range", "all")
+    custom_start = request.GET.get("start", "")
+    custom_end = request.GET.get("end", "")
+
+    if selected_range not in DATE_RANGE_OPTIONS and selected_range != "custom":
+        selected_range = "all"
+
+    dataset_id = request.GET.get("dataset")
+
+    if dataset_id:
+        selected_dataset = datasets.filter(
+            id=dataset_id
+        ).first()
+    else:
+        selected_dataset = datasets.first()
+
+    try:
+        if not selected_dataset:
+            raise ValueError(
+                "No dataset is available. Please upload a dataset first."
+            )
+
+        selected_version = (
+            DatasetVersion.objects
+            .filter(
+                dataset=selected_dataset,
+                version_type="Cleaned",
+            )
+            .order_by(
+                "-version_number",
+                "-created_at",
+            )
+            .first()
+        )
+
+        if not selected_version:
+            selected_version = (
+                DatasetVersion.objects
+                .filter(
+                    dataset=selected_dataset,
+                    is_current=True,
+                )
+                .order_by(
+                    "-version_number",
+                    "-created_at",
+                )
+                .first()
+            )
+
+        if not selected_version:
+            raise ValueError(
+                "No cleaned dataset is available for analysis."
+            )
+
+        file_path = selected_version.file.path
+
+        if file_path.lower().endswith(".csv"):
+            df = pd.read_csv(file_path)
+
+        elif file_path.lower().endswith(
+            (".xlsx", ".xls")
+        ):
+            df = pd.read_excel(file_path)
+
+        else:
+            raise ValueError(
+                "Unsupported file format."
+            )
+
+        if df.empty:
+            raise ValueError(
+                "The selected dataset contains no records."
+            )
+
+        df.columns = [
+            str(column).strip()
+            for column in df.columns
+        ]
+
+        def find_column(candidates):
+            normalized = {
+                str(column).strip().lower(): column
+                for column in df.columns
+            }
+
+            # Exact match
+            for candidate in candidates:
+                candidate_lower = candidate.lower()
+
+                if candidate_lower in normalized:
+                    return normalized[candidate_lower]
+
+            # Partial match
+            for column in df.columns:
+                column_lower = str(column).lower()
+
+                for candidate in candidates:
+                    if candidate.lower() in column_lower:
+                        return column
+
+            return None
+
+        # -------------------------------------------------
+        # Detect columns
+        # -------------------------------------------------
+
+        date_column = find_column([
+            "date",
+            "order_date",
+            "transaction_date",
+            "campaign_date",
+            "marketing_date",
+            "created_at",
+        ])
+
+        spend_column = find_column([
+            "marketing_spend",
+            "marketing_expense",
+            "ad_spend",
+            "advertising_spend",
+            "campaign_spend",
+            "marketing_cost",
+            "advertising_cost",
+            "campaign_cost",
+            "marketing_expense",
+            "ad_cost",
+        ])
+
+        revenue_column = find_column([
+            "revenue",
+            "sales",
+            "sale",
+            "total_sales",
+            "total_revenue",
+            "net_sales",
+            "order_value",
+            "sales_amount",
+        ])
+
+        campaign_column = find_column([
+            "campaign",
+            "campaign_name",
+            "campaign_id",
+            "marketing_campaign",
+        ])
+
+        channel_column = find_column([
+            "channel",
+            "marketing_channel",
+            "campaign_channel",
+            "ad_channel",
+            "source",
+            "medium",
+        ])
+
+        if not spend_column:
+            raise ValueError(
+                "Marketing spend column was not found. "
+                "Expected columns such as marketing_spend, "
+                "ad_spend, campaign_spend or marketing_cost."
+            )
+
+        if not revenue_column:
+            raise ValueError(
+                "Revenue/Sales column was not found."
+            )
+
+        if not date_column:
+            raise ValueError(
+                "Date column was not found."
+            )
+
+        # -------------------------------------------------
+        # Preserve original cleaned data
+        # -------------------------------------------------
+
+        df[date_column] = pd.to_datetime(
+            df[date_column],
+            errors="coerce",
+        )
+
+        df[spend_column] = pd.to_numeric(
+            df[spend_column],
+            errors="coerce",
+        )
+
+        df[revenue_column] = pd.to_numeric(
+            df[revenue_column],
+            errors="coerce",
+        )
+
+        df = df.dropna(
+            subset=[
+                date_column,
+                spend_column,
+                revenue_column,
+            ]
+        )
+
+        if df.empty:
+            raise ValueError(
+                "No valid marketing records were found."
+            )
+
+        df = df.sort_values(date_column)
+
+        df_original = df.copy()
+
+        # -------------------------------------------------
+        # Date range
+        # -------------------------------------------------
+
+        df, date_range = apply_date_filter(
+            df,
+            date_column,
+            range_key=selected_range,
+            start_date=custom_start,
+            end_date=custom_end,
+        )
+
+        if df.empty:
+            raise ValueError(
+                "No marketing records exist for "
+                "the selected date range."
+            )
+
+        # -------------------------------------------------
+        # Current period
+        # -------------------------------------------------
+
+        total_marketing_spend = float(
+            df[spend_column].sum()
+        )
+
+        total_revenue = float(
+            df[revenue_column].sum()
+        )
+
+        marketing_profit = (
+            total_revenue -
+            total_marketing_spend
+        )
+
+        if total_marketing_spend > 0:
+            marketing_roi = (
+                marketing_profit /
+                total_marketing_spend
+            ) * 100
+
+            marketing_roas = (
+                total_revenue /
+                total_marketing_spend
+            )
+        else:
+            marketing_roi = 0
+            marketing_roas = 0
+
+        # -------------------------------------------------
+        # Previous period comparison
+        # -------------------------------------------------
+
+        previous_df = get_previous_period(
+            df_original,
+            date_column,
+            date_range["start_date"],
+            date_range["end_date"],
+        )
+
+        if not previous_df.empty:
+
+            previous_period_spend = float(
+                previous_df[spend_column].sum()
+            )
+
+            previous_period_revenue = float(
+                previous_df[revenue_column].sum()
+            )
+
+            spend_change = calculate_percentage_change(
+                total_marketing_spend,
+                previous_period_spend,
+            )
+
+            revenue_change = calculate_percentage_change(
+                total_revenue,
+                previous_period_revenue,
+            )
+
+            comparison_available = True
+
+        # -------------------------------------------------
+        # Daily marketing trend
+        # -------------------------------------------------
+
+        daily = (
+            df.groupby(
+                df[date_column].dt.date
+            )
+            .agg({
+                spend_column: "sum",
+                revenue_column: "sum",
+            })
+            .reset_index()
+        )
+
+        daily.columns = [
+            "date",
+            "spend",
+            "revenue",
+        ]
+
+        daily["date"] = daily[
+            "date"
+        ].astype(str)
+
+        marketing_labels = (
+            daily["date"].tolist()
+        )
+
+        marketing_spend_values = [
+            round(float(value), 2)
+            for value in daily["spend"]
+        ]
+
+        marketing_revenue_values = [
+            round(float(value), 2)
+            for value in daily["revenue"]
+        ]
+
+        # -------------------------------------------------
+        # Campaign analysis
+        # -------------------------------------------------
+
+        if campaign_column:
+
+            campaign_df = (
+                df.groupby(campaign_column)
+                .agg({
+                    spend_column: "sum",
+                    revenue_column: "sum",
+                })
+                .reset_index()
+            )
+
+            campaign_df.columns = [
+                "campaign",
+                "spend",
+                "revenue",
+            ]
+
+            campaign_df["roi"] = np.where(
+                campaign_df["spend"] > 0,
+                (
+                    (
+                        campaign_df["revenue"]
+                        - campaign_df["spend"]
+                    )
+                    /
+                    campaign_df["spend"]
+                ) * 100,
+                0,
+            )
+
+            campaign_df["roas"] = np.where(
+                campaign_df["spend"] > 0,
+                campaign_df["revenue"]
+                / campaign_df["spend"],
+                0,
+            )
+
+            median_roi = campaign_df[
+                "roi"
+            ].median()
+
+            for _, row in campaign_df.iterrows():
+
+                roi = float(row["roi"])
+
+                if roi >= max(
+                    100,
+                    median_roi,
+                ):
+                    status = "High Performer"
+
+                elif roi < 0:
+                    status = "Loss Making"
+
+                elif roi < 30:
+                    status = "Low Performer"
+
+                else:
+                    status = "Moderate"
+
+                campaign_rows.append({
+                    "campaign": str(
+                        row["campaign"]
+                    ),
+                    "spend": float(
+                        row["spend"]
+                    ),
+                    "revenue": float(
+                        row["revenue"]
+                    ),
+                    "roi": roi,
+                    "roas": float(
+                        row["roas"]
+                    ),
+                    "status": status,
+                })
+
+            campaign_rows = sorted(
+                campaign_rows,
+                key=lambda x: x["roi"],
+                reverse=True,
+            )[:50]
+
+        # -------------------------------------------------
+        # Channel analysis
+        # -------------------------------------------------
+
+        if channel_column:
+
+            channel_df = (
+                df.groupby(channel_column)
+                .agg({
+                    spend_column: "sum",
+                    revenue_column: "sum",
+                })
+                .reset_index()
+            )
+
+            channel_df.columns = [
+                "channel",
+                "spend",
+                "revenue",
+            ]
+
+            channel_df = channel_df.sort_values(
+                "revenue",
+                ascending=False,
+            )
+
+            channel_labels = [
+                str(value)
+                for value in channel_df["channel"]
+            ]
+
+            channel_spend_values = [
+                round(float(value), 2)
+                for value in channel_df["spend"]
+            ]
+
+            channel_revenue_values = [
+                round(float(value), 2)
+                for value in channel_df["revenue"]
+            ]
+
+        # -------------------------------------------------
+        # Monthly performance
+        # -------------------------------------------------
+
+        monthly = (
+            df.assign(
+                month=df[date_column]
+                .dt.to_period("M")
+                .astype(str)
+            )
+            .groupby("month")
+            .agg({
+                spend_column: "sum",
+                revenue_column: "sum",
+            })
+            .reset_index()
+        )
+
+        monthly["profit"] = (
+            monthly[revenue_column]
+            - monthly[spend_column]
+        )
+
+        if not monthly.empty:
+
+            peak_row = monthly.loc[
+                monthly["profit"].idxmax()
+            ]
+
+            lowest_row = monthly.loc[
+                monthly["profit"].idxmin()
+            ]
+
+            peak_period = (
+                peak_row["month"]
+            )
+
+            lowest_period = (
+                lowest_row["month"]
+            )
+
+        # -------------------------------------------------
+        # Automatic insights
+        # -------------------------------------------------
+
+        if marketing_roi > 100:
+            marketing_insights.append(
+                f"Marketing generated a strong "
+                f"overall ROI of "
+                f"{marketing_roi:.1f}%."
+            )
+
+        elif marketing_roi < 0:
+            marketing_insights.append(
+                "Marketing spend is currently "
+                "higher than the revenue generated."
+            )
+
+        else:
+            marketing_insights.append(
+                f"Marketing ROI is "
+                f"{marketing_roi:.1f}%, indicating "
+                f"positive campaign contribution."
+            )
+
+        if spend_change > 20:
+            marketing_insights.append(
+                f"Marketing spend increased by "
+                f"{spend_change:.1f}% versus the "
+                f"previous comparable period."
+            )
+
+        if revenue_change > spend_change:
+            marketing_insights.append(
+                "Revenue is growing faster than "
+                "marketing spend, indicating improving "
+                "marketing efficiency."
+            )
+
+        elif spend_change > revenue_change:
+            marketing_insights.append(
+                "Marketing spend is growing faster "
+                "than revenue. Campaign efficiency "
+                "should be reviewed."
+            )
+
+        if campaign_rows:
+
+            best_campaign = campaign_rows[0]
+
+            marketing_insights.append(
+                f"Top campaign by ROI is "
+                f"{best_campaign['campaign']} "
+                f"with {best_campaign['roi']:.1f}% ROI."
+            )
+
+            loss_campaigns = [
+                row for row in campaign_rows
+                if row["roi"] < 0
+            ]
+
+            if loss_campaigns:
+                marketing_insights.append(
+                    f"{len(loss_campaigns)} campaign(s) "
+                    f"are currently loss making."
+                )
+
+        has_data = True
+
+    except Exception as exc:
+        error_message = str(exc)
+
+    context = {
+        "datasets": datasets,
+        "selected_dataset": selected_dataset,
+        "selected_version": selected_version,
+
+        "has_data": has_data,
+        "error_message": error_message,
+
+        "total_marketing_spend":
+            total_marketing_spend,
+
+        "total_revenue":
+            total_revenue,
+
+        "marketing_roi":
+            marketing_roi,
+
+        "marketing_roas":
+            marketing_roas,
+
+        "comparison_available":
+            comparison_available,
+
+        "current_period_spend":
+            total_marketing_spend,
+
+        "previous_period_spend":
+            previous_period_spend,
+
+        "spend_change":
+            spend_change,
+
+        "current_period_revenue":
+            total_revenue,
+
+        "previous_period_revenue":
+            previous_period_revenue,
+
+        "revenue_change":
+            revenue_change,
+
+        "peak_period":
+            peak_period,
+
+        "lowest_period":
+            lowest_period,
+
+        "campaign_rows":
+            campaign_rows,
+
+        "marketing_insights":
+            marketing_insights,
+
+        "marketing_labels":
+            json.dumps(marketing_labels),
+
+        "marketing_spend_values":
+            json.dumps(marketing_spend_values),
+
+        "marketing_revenue_values":
+            json.dumps(marketing_revenue_values),
+
+        "channel_labels":
+            json.dumps(channel_labels),
+
+        "channel_spend_values":
+            json.dumps(channel_spend_values),
+
+        "channel_revenue_values":
+            json.dumps(channel_revenue_values),
+
+        "campaign_column":
+            campaign_column or "",
+
+        "spend_column":
+            spend_column or "",
+
+        "revenue_column":
+            revenue_column or "",
+
+        "channel_column":
+            channel_column or "",
+
+        "date_column":
+            date_column or "",
+
+        "date_range_options":
+            DATE_RANGE_OPTIONS,
+
+        "selected_range":
+            selected_range,
+
+        "custom_start":
+            custom_start,
+
+        "custom_end":
+            custom_end,
+
+        "date_range":
+            date_range if has_data else {
+                "range_key": selected_range,
+                "range_label": DATE_RANGE_OPTIONS.get(
+                    selected_range,
+                    "All Data",
+                ),
+                "start_date": None,
+                "end_date": None,
+                "days": None,
+            },
+    }
+
+    return render(
+        request,
+        "analytics/marketing_intelligence.html",
+        context,
+    )
+
+@login_required
+def returns_intelligence(request):
+    datasets = Dataset.objects.filter(
+        owner=request.user
+    ).order_by("-uploaded_at")
+
+    selected_dataset = None
+    selected_version = None
+
+    has_data = False
+    error_message = ""
+
+    total_returns = 0
+    total_revenue = 0
+    returned_revenue = 0
+    return_rate = 0
+
+    current_period_returns = 0
+    previous_period_returns = 0
+    returns_change = 0
+
+    current_period_revenue = 0
+    previous_period_revenue = 0
+    revenue_change = 0
+
+    comparison_available = False
+
+    return_rows = []
+    product_return_rows = []
+    regional_return_rows = []
+    return_insights = []
+
+    trend_labels = []
+    trend_values = []
+
+    product_labels = []
+    product_return_values = []
+
+    region_labels = []
+    region_return_values = []
+
+    date_column = ""
+    returns_column = ""
+    revenue_column = ""
+    product_column = ""
+    region_column = ""
+
+    selected_range = request.GET.get("range", "all")
+    custom_start = request.GET.get("start", "")
+    custom_end = request.GET.get("end", "")
+
+    if selected_range not in DATE_RANGE_OPTIONS and selected_range != "custom":
+        selected_range = "all"
+
+    dataset_id = request.GET.get("dataset")
+
+    if dataset_id:
+        selected_dataset = datasets.filter(
+            id=dataset_id
+        ).first()
+    else:
+        selected_dataset = datasets.first()
+
+    try:
+        if not selected_dataset:
+            raise ValueError(
+                "No dataset is available. Please upload a dataset first."
+            )
+
+        # -----------------------------------------
+        # Get cleaned dataset
+        # -----------------------------------------
+
+        selected_version = (
+            DatasetVersion.objects
+            .filter(
+                dataset=selected_dataset,
+                version_type="Cleaned",
+            )
+            .order_by(
+                "-version_number",
+                "-created_at",
+            )
+            .first()
+        )
+
+        if not selected_version:
+            selected_version = (
+                DatasetVersion.objects
+                .filter(
+                    dataset=selected_dataset,
+                    is_current=True,
+                )
+                .order_by(
+                    "-version_number",
+                    "-created_at",
+                )
+                .first()
+            )
+
+        if not selected_version:
+            raise ValueError(
+                "No cleaned dataset is available for analysis."
+            )
+
+        file_path = selected_version.file.path
+
+        if file_path.lower().endswith(".csv"):
+            df = pd.read_csv(file_path)
+
+        elif file_path.lower().endswith(
+            (".xlsx", ".xls")
+        ):
+            df = pd.read_excel(file_path)
+
+        else:
+            raise ValueError(
+                "Unsupported file format."
+            )
+
+        if df.empty:
+            raise ValueError(
+                "The selected dataset contains no records."
+            )
+
+        df.columns = [
+            str(column).strip()
+            for column in df.columns
+        ]
+
+        # -----------------------------------------
+        # Column detector
+        # -----------------------------------------
+
+        def find_column(candidates):
+
+            normalized = {
+                str(column).strip().lower(): column
+                for column in df.columns
+            }
+
+            # Exact match
+            for candidate in candidates:
+
+                if candidate.lower() in normalized:
+                    return normalized[
+                        candidate.lower()
+                    ]
+
+            # Partial match
+            for column in df.columns:
+
+                column_lower = str(
+                    column
+                ).lower()
+
+                for candidate in candidates:
+
+                    if candidate.lower() in column_lower:
+                        return column
+
+            return None
+
+        date_column = find_column([
+            "date",
+            "order_date",
+            "transaction_date",
+            "return_date",
+            "created_at",
+        ])
+
+        returns_column = find_column([
+            "returns",
+            "return",
+            "returned",
+            "return_count",
+            "returned_quantity",
+            "refund_count",
+        ])
+
+        revenue_column = find_column([
+            "revenue",
+            "sales",
+            "sale",
+            "total_sales",
+            "total_revenue",
+            "net_sales",
+            "order_value",
+        ])
+
+        product_column = find_column([
+            "product",
+            "product_name",
+            "product_id",
+            "item",
+            "item_name",
+        ])
+
+        region_column = find_column([
+            "region",
+            "region_name",
+            "area",
+            "territory",
+            "location",
+        ])
+
+        if not returns_column:
+            raise ValueError(
+                "Returns column was not found. "
+                "Expected columns such as returns, "
+                "return_count or returned_quantity."
+            )
+
+        if not date_column:
+            raise ValueError(
+                "Date column was not found."
+            )
+
+        # -----------------------------------------
+        # Clean numeric/date data
+        # -----------------------------------------
+
+        df[date_column] = pd.to_datetime(
+            df[date_column],
+            errors="coerce",
+        )
+
+        df[returns_column] = pd.to_numeric(
+            df[returns_column],
+            errors="coerce",
+        )
+
+        if revenue_column:
+            df[revenue_column] = pd.to_numeric(
+                df[revenue_column],
+                errors="coerce",
+            )
+
+        df = df.dropna(
+            subset=[
+                date_column,
+                returns_column,
+            ]
+        )
+
+        if df.empty:
+            raise ValueError(
+                "No valid return records were found."
+            )
+
+        df = df.sort_values(
+            date_column
+        )
+
+        # Keep complete cleaned dataset
+        df_original = df.copy()
+
+        # -----------------------------------------
+        # Date filter
+        # -----------------------------------------
+
+        df, date_range = apply_date_filter(
+            df,
+            date_column,
+            range_key=selected_range,
+            start_date=custom_start,
+            end_date=custom_end,
+        )
+
+        if df.empty:
+            raise ValueError(
+                "No return records exist for "
+                "the selected date range."
+            )
+
+        # -----------------------------------------
+        # Overall return metrics
+        # -----------------------------------------
+
+        total_returns = int(
+            df[returns_column].sum()
+        )
+
+        if revenue_column:
+
+            total_revenue = float(
+                df[revenue_column].sum()
+            )
+
+            # Approximate returned revenue
+            # using return proportion where
+            # return quantity exists.
+            total_units = len(df)
+
+            if total_units > 0:
+                returned_revenue = (
+                    total_revenue
+                    *
+                    min(
+                        total_returns / total_units,
+                        1
+                    )
+                )
+
+            return_rate = (
+                total_returns
+                /
+                total_units
+            ) * 100 if total_units else 0
+
+        else:
+
+            total_revenue = 0
+            returned_revenue = 0
+
+            total_records = len(df)
+
+            return_rate = (
+                total_returns
+                /
+                total_records
+            ) * 100 if total_records else 0
+
+        # -----------------------------------------
+        # Previous period
+        # -----------------------------------------
+
+        current_period_returns = total_returns
+        current_period_revenue = total_revenue
+
+        previous_df = get_previous_period(
+            df_original,
+            date_column,
+            date_range["start_date"],
+            date_range["end_date"],
+        )
+
+        if not previous_df.empty:
+
+            previous_period_returns = int(
+                previous_df[
+                    returns_column
+                ].sum()
+            )
+
+            if revenue_column:
+                previous_period_revenue = float(
+                    previous_df[
+                        revenue_column
+                    ].sum()
+                )
+
+            returns_change = calculate_percentage_change(
+                current_period_returns,
+                previous_period_returns,
+            )
+
+            revenue_change = calculate_percentage_change(
+                current_period_revenue,
+                previous_period_revenue,
+            )
+
+            comparison_available = True
+
+        # -----------------------------------------
+        # Daily return trend
+        # -----------------------------------------
+
+        daily = (
+            df.groupby(
+                df[date_column].dt.date
+            )[returns_column]
+            .sum()
+            .reset_index()
+        )
+
+        daily.columns = [
+            "date",
+            "returns",
+        ]
+
+        trend_labels = [
+            str(value)
+            for value in daily["date"]
+        ]
+
+        trend_values = [
+            int(value)
+            for value in daily["returns"]
+        ]
+
+        # -----------------------------------------
+        # Product return analysis
+        # -----------------------------------------
+
+        if product_column:
+
+            product_df = (
+                df.groupby(product_column)
+                .agg({
+                    returns_column: "sum",
+                })
+                .reset_index()
+            )
+
+            product_df.columns = [
+                "product",
+                "returns",
+            ]
+
+            product_df = product_df.sort_values(
+                "returns",
+                ascending=False,
+            )
+
+            product_labels = [
+                str(value)
+                for value in product_df.head(15)["product"]
+            ]
+
+            product_return_values = [
+                int(value)
+                for value in product_df.head(15)["returns"]
+            ]
+
+            for _, row in product_df.head(50).iterrows():
+
+                returns = int(
+                    row["returns"]
+                )
+
+                if returns >= max(
+                    5,
+                    product_df["returns"].median()
+                ):
+                    status = "High Return Risk"
+
+                else:
+                    status = "Normal"
+
+                product_return_rows.append({
+                    "product": str(
+                        row["product"]
+                    ),
+                    "returns": returns,
+                    "status": status,
+                })
+
+        # -----------------------------------------
+        # Regional return analysis
+        # -----------------------------------------
+
+        if region_column:
+
+            region_df = (
+                df.groupby(region_column)
+                .agg({
+                    returns_column: "sum",
+                })
+                .reset_index()
+            )
+
+            region_df.columns = [
+                "region",
+                "returns",
+            ]
+
+            region_df = region_df.sort_values(
+                "returns",
+                ascending=False,
+            )
+
+            region_labels = [
+                str(value)
+                for value in region_df["region"]
+            ]
+
+            region_return_values = [
+                int(value)
+                for value in region_df["returns"]
+            ]
+
+            for _, row in region_df.iterrows():
+
+                regional_return_rows.append({
+                    "region": str(
+                        row["region"]
+                    ),
+                    "returns": int(
+                        row["returns"]
+                    ),
+                })
+
+        # -----------------------------------------
+        # Return status
+        # -----------------------------------------
+
+        if return_rate >= 10:
+
+            overall_status = "Critical"
+
+        elif return_rate >= 5:
+
+            overall_status = "High Risk"
+
+        elif return_rate >= 2:
+
+            overall_status = "Moderate"
+
+        else:
+
+            overall_status = "Healthy"
+
+        # -----------------------------------------
+        # Insights
+        # -----------------------------------------
+
+        if return_rate >= 10:
+
+            return_insights.append(
+                f"Return rate is {return_rate:.1f}%, "
+                "which requires immediate investigation."
+            )
+
+        elif return_rate >= 5:
+
+            return_insights.append(
+                f"Return rate is {return_rate:.1f}%. "
+                "Review high-return products and regions."
+            )
+
+        else:
+
+            return_insights.append(
+                f"Return rate is {return_rate:.1f}%, "
+                "indicating relatively controlled returns."
+            )
+
+        if returns_change > 20:
+
+            return_insights.append(
+                f"Returns increased by "
+                f"{returns_change:.1f}% "
+                "versus the previous comparable period."
+            )
+
+        elif returns_change < -10:
+
+            return_insights.append(
+                f"Returns decreased by "
+                f"{abs(returns_change):.1f}%, "
+                "indicating improving return performance."
+            )
+
+        if product_return_rows:
+
+            highest_product = (
+                product_return_rows[0]
+            )
+
+            return_insights.append(
+                f"{highest_product['product']} "
+                f"has the highest number of returns "
+                f"with {highest_product['returns']}."
+            )
+
+        if region_labels:
+
+            highest_region = (
+                regional_return_rows[0]
+            )
+
+            return_insights.append(
+                f"{highest_region['region']} "
+                f"has the highest return volume "
+                f"with {highest_region['returns']}."
+            )
+
+        if revenue_column and returned_revenue > 0:
+
+            return_insights.append(
+                f"Estimated revenue affected by "
+                f"returns is approximately "
+                f"₹{returned_revenue:,.0f}."
+            )
+
+        has_data = True
+
+    except Exception as exc:
+
+        error_message = str(exc)
+
+    context = {
+
+        "datasets": datasets,
+
+        "selected_dataset":
+            selected_dataset,
+
+        "selected_version":
+            selected_version,
+
+        "has_data":
+            has_data,
+
+        "error_message":
+            error_message,
+
+        "total_returns":
+            total_returns,
+
+        "total_revenue":
+            total_revenue,
+
+        "returned_revenue":
+            returned_revenue,
+
+        "return_rate":
+            return_rate,
+
+        "overall_status":
+            locals().get(
+                "overall_status",
+                "Unknown"
+            ),
+
+        "comparison_available":
+            comparison_available,
+
+        "current_period_returns":
+            current_period_returns,
+
+        "previous_period_returns":
+            previous_period_returns,
+
+        "returns_change":
+            returns_change,
+
+        "current_period_revenue":
+            current_period_revenue,
+
+        "previous_period_revenue":
+            previous_period_revenue,
+
+        "revenue_change":
+            revenue_change,
+
+        "product_return_rows":
+            product_return_rows,
+
+        "regional_return_rows":
+            regional_return_rows,
+
+        "return_insights":
+            return_insights,
+
+        "trend_labels":
+            json.dumps(trend_labels),
+
+        "trend_values":
+            json.dumps(trend_values),
+
+        "product_labels":
+            json.dumps(product_labels),
+
+        "product_return_values":
+            json.dumps(product_return_values),
+
+        "region_labels":
+            json.dumps(region_labels),
+
+        "region_return_values":
+            json.dumps(region_return_values),
+
+        "date_column":
+            date_column or "",
+
+        "returns_column":
+            returns_column or "",
+
+        "revenue_column":
+            revenue_column or "",
+
+        "product_column":
+            product_column or "",
+
+        "region_column":
+            region_column or "",
+
+        "date_range_options":
+            DATE_RANGE_OPTIONS,
+
+        "selected_range":
+            selected_range,
+
+        "custom_start":
+            custom_start,
+
+        "custom_end":
+            custom_end,
+
+        "date_range":
+            date_range if has_data else {
+                "range_key": selected_range,
+                "range_label": DATE_RANGE_OPTIONS.get(
+                    selected_range,
+                    "All Data",
+                ),
+                "start_date": None,
+                "end_date": None,
+                "days": None,
+            },
+    }
+
+    return render(
+        request,
+        "analytics/returns_intelligence.html",
         context,
     )

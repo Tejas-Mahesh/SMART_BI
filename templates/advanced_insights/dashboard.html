@@ -1,0 +1,325 @@
+{% extends "base.html" %}
+
+{% block title %}
+Advanced Insights | Smart BI
+{% endblock %}
+
+{% block content %}
+
+<div class="advanced-insights-page">
+
+    <div class="page-header">
+
+        <div>
+            <div class="eyebrow">
+                SMART BI · ADVANCED INTELLIGENCE
+            </div>
+
+            <h1>
+                Advanced Insights
+            </h1>
+
+            <p>
+                Discover what is likely to happen next,
+                identify unusual business behavior,
+                and uncover opportunities hidden inside your data.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="insight-introduction">
+
+        <div class="intro-icon">
+            🧠
+        </div>
+
+        <div>
+            <h2>
+                From Analysis to Intelligence
+            </h2>
+
+            <p>
+                Business Analytics explains what happened.
+                Advanced Insights goes further by identifying
+                patterns, risks, anomalies, trends and future possibilities.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="insight-modules">
+
+        <div class="insight-card">
+            <div class="card-icon">📈</div>
+            <h3>Future Trends</h3>
+            <p>
+                Detect emerging business trends and understand
+                how important metrics are changing over time.
+            </p>
+            <span>Coming next</span>
+        </div>
+
+
+        <a
+    href="{% url 'advanced_insights:forecasting' %}"
+    class="insight-card"
+>
+    <div class="card-icon">🔮</div>
+
+    <h3>
+        Forecasting
+    </h3>
+
+    <p>
+        Forecast future sales, revenue and
+        other time-dependent business metrics.
+    </p>
+
+    <span>
+        Open Forecasting →
+    </span>
+</a>
+
+
+       <a
+    href="{% url 'advanced_insights:anomaly_detection' %}"
+    class="insight-card"
+>
+    <div class="card-icon">⚠️</div>
+
+    <h3>Anomaly Detection</h3>
+
+    <p>
+        Detect unusual sales spikes, sudden drops and
+        abnormal business activity using statistical analysis.
+    </p>
+
+    <span>
+        Open Anomaly Detection →
+    </span>
+</a>
+<a
+    href="{% url 'advanced_insights:root_cause_analysis' %}"
+    class="insight-card"
+>
+    <div class="card-icon">🔍</div>
+
+    <h3>Root Cause Analysis</h3>
+
+    <p>
+        Investigate which products, regions, customers,
+        channels or categories contributed to business changes.
+    </p>
+
+    <span>
+        Open Root Cause Analysis →
+    </span>
+</a>
+
+        <div class="insight-card">
+            <div class="card-icon">🔍</div>
+            <h3>Root Cause Analysis</h3>
+            <p>
+                Investigate the possible drivers behind
+                significant business changes.
+            </p>
+            <span>Coming next</span>
+        </div>
+
+
+        <div class="insight-card">
+            <div class="card-icon">⚠️</div>
+            <h3>Risk Analysis</h3>
+            <p>
+                Detect customers, products and business areas
+                that may require attention.
+            </p>
+            <span>Coming next</span>
+        </div>
+
+
+        <div class="insight-card">
+            <div class="card-icon">💡</div>
+            <h3>Opportunity Detection</h3>
+            <p>
+                Discover growth opportunities and high-potential
+                areas from existing business data.
+            </p>
+            <span>Coming next</span>
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+  .insight-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.advanced-insights-page {
+    padding: 28px;
+    color: #f5f7fb;
+    animation: insightsPageIn .55s ease;
+}
+
+@keyframes insightsPageIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.page-header {
+    margin-bottom: 25px;
+}
+
+.eyebrow {
+    color: #7567f8;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.page-header p {
+    color: #8fa4b8;
+    max-width: 720px;
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+.insight-introduction {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    padding: 22px;
+    border: 1px solid rgba(117,103,248,.18);
+    border-radius: 17px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(117,103,248,.10),
+            rgba(13,32,51,.95)
+        );
+    margin-bottom: 25px;
+}
+
+.intro-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 27px;
+    background: rgba(117,103,248,.14);
+}
+
+.insight-introduction h2 {
+    margin: 0 0 5px;
+    font-size: 18px;
+}
+
+.insight-introduction p {
+    margin: 0;
+    color: #8fa4b8;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.insight-modules {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 17px;
+}
+
+.insight-card {
+    background: #0d2033;
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 16px;
+    padding: 21px;
+    min-height: 190px;
+    transition: .3s ease;
+}
+
+.insight-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(117,103,248,.35);
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.22);
+}
+
+.card-icon {
+    font-size: 26px;
+    margin-bottom: 15px;
+}
+
+.insight-card h3 {
+    margin: 0 0 8px;
+    font-size: 16px;
+}
+
+.insight-card p {
+    color: #8fa4b8;
+    font-size: 12px;
+    line-height: 1.65;
+    margin: 0 0 15px;
+}
+
+.insight-card span {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: rgba(117,103,248,.10);
+    color: #a99fff;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+@media (max-width: 1000px) {
+
+    .insight-modules {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+@media (max-width: 650px) {
+
+    .advanced-insights-page {
+        padding: 16px;
+    }
+
+    .insight-modules {
+        grid-template-columns: 1fr;
+    }
+
+    .insight-introduction {
+        align-items: flex-start;
+    }
+
+}
+
+</style>
+
+{% endblock %}

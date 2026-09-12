@@ -1,0 +1,1468 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Decision Intelligence | Smart BI</title>
+
+    <!-- Smart BI Main CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- Recommendations CSS -->
+    <link rel="stylesheet" href="{% static 'css/recommendations.css' %}">
+</head>
+
+
+<body>
+
+<div class="smart-bi-layout">
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                ◈
+            </div>
+
+            <div>
+                <h2>Smart BI</h2>
+                <span>Decision Intelligence</span>
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <div class="nav-section-title">
+                OVERVIEW
+            </div>
+
+            <a href="{% url 'core:dashboard' %}"
+               class="nav-link">
+
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <div class="nav-section-title">
+                DATA
+            </div>
+
+           <a href="{% url 'data_management:dataset_management' %}" class="nav-link">
+
+                <span class="nav-icon">▣</span>
+                <span>Data Management</span>
+
+            </a>
+
+
+            <div class="nav-section-title">
+                INTELLIGENCE
+            </div>
+
+            <a href="{% url 'analytics:business_intelligence' %}"
+               class="nav-link">
+
+                <span class="nav-icon">◫</span>
+                <span>Business Analytics</span>
+
+            </a>
+
+            <a href="{% url 'advanced_insights:dashboard' %}"
+               class="nav-link">
+
+                <span class="nav-icon">◉</span>
+                <span>Advanced Insights</span>
+
+            </a>
+
+
+            <div class="nav-section-title">
+                DECISION INTELLIGENCE
+            </div>
+
+            <a href="{% url 'decision_intelligence:dashboard' %}"
+               class="nav-link active">
+
+                <span class="nav-icon">🎯</span>
+                <span>Recommendations</span>
+
+            </a>
+
+            <a href="#"
+               class="nav-link disabled-link">
+
+                <span class="nav-icon">🔬</span>
+                <span>What-If Simulator</span>
+
+                <small>SOON</small>
+
+            </a>
+
+            <a href="#"
+               class="nav-link disabled-link">
+
+                <span class="nav-icon">📋</span>
+                <span>Scenario Planning</span>
+
+                <small>SOON</small>
+
+            </a>
+
+            <a href="#"
+               class="nav-link disabled-link">
+
+                <span class="nav-icon">🚨</span>
+                <span>Business Alerts</span>
+
+                <small>SOON</small>
+
+            </a>
+
+            <a href="#"
+               class="nav-link disabled-link">
+
+                <span class="nav-icon">⚡</span>
+                <span>Action Center</span>
+
+                <small>SOON</small>
+
+            </a>
+
+            <a href="#"
+               class="nav-link disabled-link">
+
+                <span class="nav-icon">📈</span>
+                <span>Decision Impact</span>
+
+                <small>SOON</small>
+
+            </a>
+
+
+            <div class="nav-section-title">
+                REPORTING
+            </div>
+
+            <a href="#"
+               class="nav-link disabled-link">
+
+                <span class="nav-icon">▤</span>
+                <span>Reports</span>
+
+                <small>SOON</small>
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="system-status">
+
+                <span class="status-dot"></span>
+
+                <div>
+                    <strong>System Online</strong>
+                    <small>Smart BI Engine</small>
+                </div>
+
+            </div>
+
+            <a href="{% url 'accounts:logout' %}"
+               class="logout-link">
+
+                <span>↪</span>
+                Logout
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button class="mobile-menu-btn"
+                        onclick="toggleSidebar()">
+                    ☰
+                </button>
+
+                <div>
+
+                    <div class="breadcrumb">
+                        Decision Intelligence
+                        <span>/</span>
+                        Recommendations
+                    </div>
+
+                    <h1>
+                        Business Recommendations
+                    </h1>
+
+                </div>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <div class="engine-status">
+
+                    <span class="engine-dot"></span>
+
+                    <div>
+                        <strong>AI Engine Active</strong>
+                        <small>Insights connected</small>
+                    </div>
+
+                </div>
+
+                <div class="user-avatar">
+                    {{ request.user.username|first|upper }}
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             PAGE
+        ================================================== -->
+
+        <section class="page-content">
+
+
+            <!-- PAGE INTRO -->
+
+            <div class="page-intro">
+
+                <div>
+
+                    <div class="eyebrow">
+                        DECISION INTELLIGENCE
+                    </div>
+
+                    <h2>
+                        Turn business signals into action
+                    </h2>
+
+                    <p>
+                        Smart BI combines forecasting, anomaly
+                        detection, opportunity detection, customer
+                        risk and root-cause analysis to identify
+                        decisions that deserve management attention.
+                    </p>
+
+                </div>
+
+
+                <div class="intelligence-badge">
+
+                    <span class="pulse-dot"></span>
+
+                    Advanced Insights Connected
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 DATASET SELECTOR
+            ================================================== -->
+
+            <div class="dataset-selection-panel">
+
+                <div class="dataset-selection-info">
+
+                    <div class="dataset-selection-icon">
+                        🎯
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Choose Analysis Dataset
+                        </h3>
+
+                        <p>
+                            Select a cleaned business dataset.
+                            Smart BI will generate recommendations
+                            from the actual Advanced Insights engines.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                {% if datasets %}
+
+                <div class="dataset-selection-control">
+
+                    <label for="datasetSelector">
+                        Recommendation Dataset
+                    </label>
+
+                    <select id="datasetSelector"
+                            onchange="changeDataset(this.value)">
+
+                        {% for dataset in datasets %}
+
+                        <option value="{{ dataset.id }}"
+                            {% if selected_dataset and selected_dataset.id == dataset.id %}
+                                selected
+                            {% endif %}>
+
+                            {{ dataset.name }}
+                            — {{ dataset.dataset_type }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+
+                    {% if selected_dataset %}
+
+                    <div class="dataset-category-hint">
+
+                        <span>Analysis:</span>
+
+                        <strong>
+                            {{ selected_dataset.dataset_type }}
+                        </strong>
+
+                        <span>•</span>
+
+                        <span>
+                            {{ category_description }}
+                        </span>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+                {% else %}
+
+                <div class="dataset-empty-message">
+
+                    No recommendation-ready datasets found.
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            {% if error_message %}
+
+            <!-- ERROR -->
+
+            <div class="alert-card error-card">
+
+                <div class="alert-icon">
+                    !
+                </div>
+
+                <div>
+
+                    <strong>
+                        Recommendation Engine
+                    </strong>
+
+                    <p>
+                        {{ error_message }}
+                    </p>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+            {% if selected_dataset %}
+
+
+            <!-- =================================================
+                 DATASET STATUS
+            ================================================== -->
+
+            <div class="dataset-status-bar">
+
+                <div class="dataset-status-left">
+
+                    <div class="dataset-status-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            {{ selected_dataset.name }}
+                        </strong>
+
+                        <span>
+                            {{ selected_dataset.dataset_type }}
+                            dataset
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="engine-pipeline">
+
+                    <span class="pipeline-step completed">
+                        ✓ Data
+                    </span>
+
+                    <span class="pipeline-arrow">
+                        →
+                    </span>
+
+                    <span class="pipeline-step completed">
+                        ✓ Insights
+                    </span>
+
+                    <span class="pipeline-arrow">
+                        →
+                    </span>
+
+                    <span class="pipeline-step active">
+                        🎯 Decisions
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 KPI CARDS
+            ================================================== -->
+
+            <div class="decision-kpi-grid">
+
+
+                <div class="decision-kpi total">
+
+                    <div class="kpi-top">
+
+                        <span>
+                            Total Decisions
+                        </span>
+
+                        <div class="kpi-icon">
+                            🎯
+                        </div>
+
+                    </div>
+
+                    <strong class="counter"
+                            data-value="{{ total_recommendations }}">
+                        0
+                    </strong>
+
+                    <small>
+                        Actionable signals identified
+                    </small>
+
+                </div>
+
+
+                <div class="decision-kpi critical">
+
+                    <div class="kpi-top">
+
+                        <span>
+                            Critical
+                        </span>
+
+                        <div class="kpi-icon">
+                            🚨
+                        </div>
+
+                    </div>
+
+                    <strong class="counter"
+                            data-value="{{ critical_recommendations }}">
+                        0
+                    </strong>
+
+                    <small>
+                        Immediate attention
+                    </small>
+
+                </div>
+
+
+                <div class="decision-kpi high">
+
+                    <div class="kpi-top">
+
+                        <span>
+                            High Priority
+                        </span>
+
+                        <div class="kpi-icon">
+                            ⚠
+                        </div>
+
+                    </div>
+
+                    <strong class="counter"
+                            data-value="{{ high_recommendations }}">
+                        0
+                    </strong>
+
+                    <small>
+                        Action recommended
+                    </small>
+
+                </div>
+
+
+                <div class="decision-kpi medium">
+
+                    <div class="kpi-top">
+
+                        <span>
+                            Medium
+                        </span>
+
+                        <div class="kpi-icon">
+                            ◐
+                        </div>
+
+                    </div>
+
+                    <strong class="counter"
+                            data-value="{{ medium_recommendations }}">
+                        0
+                    </strong>
+
+                    <small>
+                        Monitor and evaluate
+                    </small>
+
+                </div>
+
+
+                <div class="decision-kpi score">
+
+                    <div class="kpi-top">
+
+                        <span>
+                            Decision Score
+                        </span>
+
+                        <div class="kpi-icon">
+                            ◎
+                        </div>
+
+                    </div>
+
+                    <strong>
+                        {{ average_recommendation_score }}
+                    </strong>
+
+                    <small>
+                        Average priority score / 100
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 INSIGHT SUMMARY
+            ================================================== -->
+
+            {% if recommendation_insights %}
+
+            <section class="insight-summary">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            MANAGEMENT VIEW
+                        </span>
+
+                        <h2>
+                            What Smart BI is telling you
+                        </h2>
+
+                    </div>
+
+                    <span class="source-label">
+                        Advanced Insights → Decision Engine
+                    </span>
+
+                </div>
+
+
+                <div class="insight-grid">
+
+                    {% for insight in recommendation_insights %}
+
+                    <div class="management-insight">
+
+                        <div class="insight-number">
+                            {{ forloop.counter|stringformat:"02d" }}
+                        </div>
+
+                        <p>
+                            {{ insight }}
+                        </p>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </section>
+
+            {% endif %}
+
+
+            <!-- =================================================
+                 RECOMMENDATION LIST
+            ================================================== -->
+
+            <section class="recommendations-section">
+
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            ACTIONABLE DECISIONS
+                        </span>
+
+                        <h2>
+                            Recommended Actions
+                        </h2>
+
+                        <p>
+                            Prioritized recommendations generated
+                            from the selected dataset.
+                        </p>
+
+                    </div>
+
+
+                    <div class="recommendation-filter">
+
+                        <button class="filter-btn active"
+                                data-filter="all"
+                                onclick="filterRecommendations('all', this)">
+                            All
+                        </button>
+
+                        <button class="filter-btn critical-filter"
+                                data-filter="Critical"
+                                onclick="filterRecommendations('Critical', this)">
+                            Critical
+                        </button>
+
+                        <button class="filter-btn"
+                                data-filter="High"
+                                onclick="filterRecommendations('High', this)">
+                            High
+                        </button>
+
+                        <button class="filter-btn"
+                                data-filter="Medium"
+                                onclick="filterRecommendations('Medium', this)">
+                            Medium
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                {% if recommendations %}
+
+                <div class="recommendation-list"
+                     id="recommendationList">
+
+
+                    {% for recommendation in recommendations %}
+
+                    <article class="recommendation-card priority-{{ recommendation.priority|lower }}"
+                             data-priority="{{ recommendation.priority }}"
+                             data-category="{{ recommendation.category }}">
+
+
+                        <!-- CARD HEADER -->
+
+                        <div class="recommendation-header">
+
+
+                            <div class="recommendation-title-area">
+
+                                <div class="recommendation-source">
+
+                                    {% if recommendation.category == "Opportunity" %}
+
+                                    <span class="source-badge opportunity">
+                                        📈 Opportunity Detection
+                                    </span>
+
+                                    {% elif recommendation.category == "Customer Risk" %}
+
+                                    <span class="source-badge risk">
+                                        👥 Customer Risk
+                                    </span>
+
+                                    {% elif recommendation.category == "Anomaly" %}
+
+                                    <span class="source-badge anomaly">
+                                        ⚡ Anomaly Detection
+                                    </span>
+
+                                    {% elif recommendation.category == "Forecast" %}
+
+                                    <span class="source-badge forecast">
+                                        🔮 Forecasting
+                                    </span>
+
+                                    {% elif recommendation.category == "Root Cause" %}
+
+                                    <span class="source-badge root-cause">
+                                        🧠 Root Cause Analysis
+                                    </span>
+
+                                    {% else %}
+
+                                    <span class="source-badge">
+                                        Smart BI Insight
+                                    </span>
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <h3>
+                                    {{ recommendation.title }}
+                                </h3>
+
+                            </div>
+
+
+                            <div class="recommendation-priority">
+
+                                <span class="priority-badge">
+
+                                    {% if recommendation.priority == "Critical" %}
+                                        🚨
+                                    {% elif recommendation.priority == "High" %}
+                                        ⚠
+                                    {% elif recommendation.priority == "Medium" %}
+                                        ◐
+                                    {% else %}
+                                        ○
+                                    {% endif %}
+
+                                    {{ recommendation.priority }}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- SCORE -->
+
+                        <div class="recommendation-score-row">
+
+                            <div class="score-label">
+                                Decision confidence
+                            </div>
+
+                            <div class="score-track">
+
+                                <div class="score-fill"
+                                     style="width: {{ recommendation.score }}%;">
+                                </div>
+
+                            </div>
+
+                            <strong>
+                                {{ recommendation.score }}
+                            </strong>
+
+                        </div>
+
+
+                        <!-- TRIGGER -->
+
+                        <div class="recommendation-trigger">
+
+                            <span class="trigger-icon">
+                                ◉
+                            </span>
+
+                            <div>
+
+                                <span class="trigger-label">
+                                    WHAT SMART BI DETECTED
+                                </span>
+
+                                <p>
+                                    {{ recommendation.trigger }}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- BODY -->
+
+                        <div class="recommendation-body">
+
+
+                            <div class="recommendation-column">
+
+                                <span class="content-label">
+                                    WHY IT MATTERS
+                                </span>
+
+                                <p>
+                                    {{ recommendation.reason }}
+                                </p>
+
+                            </div>
+
+
+                            <div class="recommendation-column action-column">
+
+                                <span class="content-label">
+                                    RECOMMENDED ACTION
+                                </span>
+
+                                <p>
+                                    {{ recommendation.recommendation }}
+                                </p>
+
+                            </div>
+
+
+                            <div class="recommendation-column impact-column">
+
+                                <span class="content-label">
+                                    EXPECTED IMPACT
+                                </span>
+
+                                <p>
+                                    {{ recommendation.expected_impact }}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- FOOTER -->
+
+                        <div class="recommendation-footer">
+
+                            <div class="action-type">
+
+                                <span>
+                                    Action Type
+                                </span>
+
+                                <strong>
+                                    {{ recommendation.action_type }}
+                                </strong>
+
+                            </div>
+
+
+                            <button class="action-button"
+                                    onclick="showActionMessage(this)">
+
+                                <span>
+                                    Review Decision
+                                </span>
+
+                                <b>
+                                    →
+                                </b>
+
+                            </button>
+
+                        </div>
+
+                    </article>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <!-- EMPTY FILTER -->
+
+                <div class="filter-empty"
+                     id="filterEmpty"
+                     style="display:none;">
+
+                    <div>
+                        ◌
+                    </div>
+
+                    <h3>
+                        No decisions in this priority
+                    </h3>
+
+                    <p>
+                        Try another priority filter.
+                    </p>
+
+                </div>
+
+
+                {% else %}
+
+                <!-- =================================================
+                     NO RECOMMENDATIONS
+                ================================================== -->
+
+                <div class="no-recommendations">
+
+                    <div class="no-rec-icon">
+                        ◌
+                    </div>
+
+                    <h3>
+                        No significant decisions detected
+                    </h3>
+
+                    <p>
+                        Smart BI did not identify strong actionable
+                        signals in this dataset. Continue monitoring
+                        the business and return when more data becomes
+                        available.
+                    </p>
+
+                    <div class="no-rec-pipeline">
+
+                        <span>Data</span>
+                        <b>→</b>
+                        <span>Analyze</span>
+                        <b>→</b>
+                        <span>Monitor</span>
+                        <b>→</b>
+                        <span>Decide</span>
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+            </section>
+
+
+            <!-- =================================================
+                 INTELLIGENCE SOURCES
+            ================================================== -->
+
+            <section class="sources-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            INTELLIGENCE SOURCES
+                        </span>
+
+                        <h2>
+                            How Smart BI generated these decisions
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="source-grid">
+
+
+                    <div class="source-card">
+
+                        <div class="source-card-icon">
+                            📈
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Opportunity Detection
+                            </h3>
+
+                            <p>
+                                Finds products, customers, regions
+                                and marketing areas with strong
+                                growth potential.
+                            </p>
+
+                        </div>
+
+                        <span class="source-status">
+                            Connected
+                        </span>
+
+                    </div>
+
+
+                    <div class="source-card">
+
+                        <div class="source-card-icon">
+                            👥
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Customer Risk
+                            </h3>
+
+                            <p>
+                                Uses customer behavior and RFM
+                                signals to identify retention risks.
+                            </p>
+
+                        </div>
+
+                        <span class="source-status">
+                            Connected
+                        </span>
+
+                    </div>
+
+
+                    <div class="source-card">
+
+                        <div class="source-card-icon">
+                            ⚡
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Anomaly Detection
+                            </h3>
+
+                            <p>
+                                Detects unusual spikes and drops
+                                that require investigation.
+                            </p>
+
+                        </div>
+
+                        <span class="source-status">
+                            Connected
+                        </span>
+
+                    </div>
+
+
+                    <div class="source-card">
+
+                        <div class="source-card-icon">
+                            🔮
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Forecasting
+                            </h3>
+
+                            <p>
+                                Projects future business performance
+                                and identifies potential growth or decline.
+                            </p>
+
+                        </div>
+
+                        <span class="source-status">
+                            Connected
+                        </span>
+
+                    </div>
+
+
+                    <div class="source-card">
+
+                        <div class="source-card-icon">
+                            🧠
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Root Cause Analysis
+                            </h3>
+
+                            <p>
+                                Identifies the dimensions contributing
+                                most to business performance changes.
+                            </p>
+
+                        </div>
+
+                        <span class="source-status">
+                            Connected
+                        </span>
+
+                    </div>
+
+
+                    <div class="source-card decision-source">
+
+                        <div class="source-card-icon">
+                            🎯
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Decision Engine
+                            </h3>
+
+                            <p>
+                                Combines the signals and prioritizes
+                                them into practical business actions.
+                            </p>
+
+                        </div>
+
+                        <span class="source-status active">
+                            Active
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            {% endif %}
+
+
+        </section>
+
+
+        <!-- FOOTER -->
+
+        <footer class="page-footer">
+
+            <span>
+                Smart Business Decision Intelligence System
+            </span>
+
+            <span>
+                Decision Engine v1.0
+            </span>
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================== -->
+
+<script>
+
+function changeDataset(datasetId) {
+
+    if (!datasetId) {
+        return;
+    }
+
+    const url = new URL(
+        window.location.href
+    );
+
+    url.searchParams.set(
+        "dataset",
+        datasetId
+    );
+
+    window.location.href =
+        url.toString();
+}
+
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+function filterRecommendations(
+    priority,
+    button
+) {
+
+    const cards =
+        document.querySelectorAll(
+            ".recommendation-card"
+        );
+
+    const buttons =
+        document.querySelectorAll(
+            ".filter-btn"
+        );
+
+    const empty =
+        document.getElementById(
+            "filterEmpty"
+        );
+
+    buttons.forEach(
+        btn => btn.classList.remove(
+            "active"
+        )
+    );
+
+    button.classList.add(
+        "active"
+    );
+
+    let visible = 0;
+
+    cards.forEach(
+        card => {
+
+            const cardPriority =
+                card.dataset.priority;
+
+            if (
+                priority === "all"
+                ||
+                cardPriority === priority
+            ) {
+
+                card.style.display =
+                    "block";
+
+                visible++;
+
+            } else {
+
+                card.style.display =
+                    "none";
+            }
+
+        }
+    );
+
+    if (empty) {
+
+        empty.style.display =
+            visible === 0
+                ? "block"
+                : "none";
+    }
+}
+
+
+/* =========================================================
+   KPI COUNTERS
+========================================================= */
+
+function animateCounters() {
+
+    const counters =
+        document.querySelectorAll(
+            ".counter"
+        );
+
+    counters.forEach(
+        counter => {
+
+            const target =
+                parseInt(
+                    counter.dataset.value
+                ) || 0;
+
+            let current = 0;
+
+            const duration = 800;
+
+            const start =
+                performance.now();
+
+            function update(time) {
+
+                const progress =
+                    Math.min(
+                        (time - start) /
+                        duration,
+                        1
+                    );
+
+                current =
+                    Math.floor(
+                        progress * target
+                    );
+
+                counter.textContent =
+                    current.toLocaleString();
+
+                if (progress < 1) {
+
+                    requestAnimationFrame(
+                        update
+                    );
+
+                } else {
+
+                    counter.textContent =
+                        target.toLocaleString();
+                }
+
+            }
+
+            requestAnimationFrame(
+                update
+            );
+
+        }
+    );
+}
+
+
+/* =========================================================
+   ACTION BUTTON
+========================================================= */
+
+function showActionMessage(
+    button
+) {
+
+    const original =
+        button.innerHTML;
+
+    button.innerHTML =
+        "<span>Decision noted</span><b>✓</b>";
+
+    button.classList.add(
+        "action-complete"
+    );
+
+    setTimeout(
+        () => {
+
+            button.innerHTML =
+                original;
+
+            button.classList.remove(
+                "action-complete"
+            );
+
+        },
+        1800
+    );
+}
+
+
+/* =========================================================
+   MOBILE SIDEBAR
+========================================================= */
+
+function toggleSidebar() {
+
+    const sidebar =
+        document.querySelector(
+            ".sidebar"
+        );
+
+    sidebar.classList.toggle(
+        "mobile-open"
+    );
+}
+
+
+/* =========================================================
+   PAGE LOAD
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        animateCounters();
+
+        const cards =
+            document.querySelectorAll(
+                ".recommendation-card"
+            );
+
+        cards.forEach(
+            (card, index) => {
+
+                card.style.animationDelay =
+                    `${index * 70}ms`;
+
+            }
+        );
+
+    }
+);
+
+</script>
+
+</body>
+</html>

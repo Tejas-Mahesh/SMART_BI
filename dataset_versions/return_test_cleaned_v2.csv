@@ -1,0 +1,29 @@
+date,sales,returns,product,region
+2026-06-01,185000,4.0,Laptop Pro X,North
+2026-06-02,210000,7.0,Smartphone Z,South
+2026-06-03,195000,2.0,Wireless Headphones,East
+2026-06-04,240000,9.0,Monitor 27,West
+2026-06-05,260000,3.0,Office Chair,North
+2026-06-06,272000,5.0,Laptop Pro X,North
+2026-06-07,290000,5.0,Smartphone Z,South
+2026-06-08,308000,5.0,Wireless Headphones,East
+2026-06-09,326000,5.0,Monitor 28,West
+2026-06-10,344000,5.0,Office Chair,North
+2026-06-11,362000,5.0,Laptop Pro X,North
+2026-06-12,380000,5.0,Smartphone Z,South
+2026-06-13,398000,5.0,Wireless Headphones,East
+2026-06-14,416000,5.0,Monitor 29,West
+2026-06-15,434000,5.0,Office Chair,North
+2026-06-16,452000,5.0,Laptop Pro X,North
+2026-06-17,470000,5.0,Smartphone Z,South
+2026-06-18,488000,5.0,Wireless Headphones,East
+2026-06-19,506000,5.0,Monitor 30,West
+2026-06-20,524000,5.0,Office Chair,North
+2026-06-21,542000,5.0,Laptop Pro X,North
+2026-06-22,560000,5.0,Smartphone Z,South
+2026-06-23,578000,5.0,Wireless Headphones,East
+2026-06-24,596000,5.0,Monitor 31,West
+2026-06-25,614000,5.0,Office Chair,North
+2026-06-26,632000,5.0,Laptop Pro X,North
+2026-06-27,650000,5.0,Smartphone Z,South
+2026-06-28,668000,5.0,Wireless Headphones,Unknown

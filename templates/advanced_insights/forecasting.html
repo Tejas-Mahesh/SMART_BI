@@ -1,0 +1,1006 @@
+{% extends "base.html" %}
+
+{% block title %}
+Forecasting | Advanced Insights
+{% endblock %}
+
+{% block content %}
+
+<div class="forecast-page">
+
+    <div class="forecast-header">
+
+        <div>
+            <div class="eyebrow">
+                ADVANCED INSIGHTS · PREDICTIVE INTELLIGENCE
+            </div>
+
+            <h1>
+                Future Trends & Forecasting
+            </h1>
+
+            <p>
+                Analyze historical business performance and
+                estimate what may happen over the next 30 days.
+            </p>
+        </div>
+
+        {% if datasets %}
+
+        <div class="dataset-selector">
+
+            <label>
+                Analysis Dataset
+            </label>
+
+            <select
+                onchange="changeDataset(this.value)"
+            >
+
+                {% for dataset in datasets %}
+
+                <option
+                    value="{{ dataset.id }}"
+                    {% if selected_dataset.id == dataset.id %}
+                        selected
+                    {% endif %}
+                >
+                    {{ dataset.name }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    {% if error_message %}
+
+    <div class="error-box">
+        ⚠️ {{ error_message }}
+    </div>
+
+    {% endif %}
+
+
+    {% if not datasets %}
+
+    <div class="empty-state">
+
+        <div class="empty-icon">
+            🔮
+        </div>
+
+        <h2>
+            No Dataset Available
+        </h2>
+
+        <p>
+            Upload and clean a business dataset from
+            Data Management before running forecasting.
+        </p>
+
+    </div>
+
+    {% elif has_data %}
+
+
+    <!-- KPI SECTION -->
+
+    <div class="kpi-grid">
+
+        <div class="kpi-card">
+
+            <span>
+                Historical Total
+            </span>
+
+            <strong>
+                ₹{{ total_historical|floatformat:0 }}
+            </strong>
+
+            <small>
+                Historical sales / revenue
+            </small>
+
+        </div>
+
+
+        <div class="kpi-card forecast-card">
+
+            <span>
+                30-Day Forecast
+            </span>
+
+            <strong>
+                ₹{{ forecast_total|floatformat:0 }}
+            </strong>
+
+            <small>
+                Expected total
+            </small>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <span>
+                Forecast Change
+            </span>
+
+            <strong
+                class="{% if forecast_change >= 0 %}
+                    positive
+                {% else %}
+                    negative
+                {% endif %}"
+            >
+
+                {% if forecast_change >= 0 %}
+                    +
+                {% endif %}
+
+                {{ forecast_change|floatformat:1 }}%
+
+            </strong>
+
+            <small>
+                Forecast vs recent average
+            </small>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <span>
+                Model Confidence
+            </span>
+
+            <strong>
+                {{ confidence }}
+            </strong>
+
+            <small>
+                {{ model_name }}
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <!-- TREND STATUS -->
+
+    <div class="status-grid">
+
+        <div class="status-card">
+
+            <div class="status-icon">
+                📈
+            </div>
+
+            <div>
+                <span>
+                    Historical Trend
+                </span>
+
+                <strong>
+                    {{ trend_direction }}
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="status-card">
+
+            <div class="status-icon">
+                🔮
+            </div>
+
+            <div>
+                <span>
+                    Expected Future Trend
+                </span>
+
+                <strong>
+                    {{ forecast_direction }}
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="status-card">
+
+            <div class="status-icon">
+                🧠
+            </div>
+
+            <div>
+                <span>
+                    Forecast Model
+                </span>
+
+                <strong>
+                    {{ model_name }}
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MAIN CHART -->
+
+    <div class="chart-card">
+
+        <div class="section-heading">
+
+            <div>
+                <h2>
+                    Historical Performance & Future Forecast
+                </h2>
+
+                <p>
+                    Actual historical values are shown together
+                    with the projected 30-day future period.
+                </p>
+            </div>
+
+            <div class="legend">
+
+                <span>
+                    <i class="actual"></i>
+                    Historical
+                </span>
+
+                <span>
+                    <i class="forecast"></i>
+                    Forecast
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="large-chart">
+            <canvas id="forecastChart"></canvas>
+        </div>
+
+    </div>
+
+
+    <!-- ANALYSIS -->
+
+    <div class="two-column">
+
+        <div class="info-card">
+
+            <h2>
+                📊 Forecast Summary
+            </h2>
+
+            <div class="summary-row">
+
+                <span>
+                    Recent Daily Average
+                </span>
+
+                <strong>
+                    ₹{{ historical_average|floatformat:0 }}
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Forecast Daily Average
+                </span>
+
+                <strong>
+                    ₹{{ forecast_average|floatformat:0 }}
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Expected Change
+                </span>
+
+                <strong
+                    class="{% if forecast_change >= 0 %}
+                        positive
+                    {% else %}
+                        negative
+                    {% endif %}"
+                >
+                    {% if forecast_change >= 0 %}+{% endif %}
+                    {{ forecast_change|floatformat:1 }}%
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Forecast Horizon
+                </span>
+
+                <strong>
+                    30 Days
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h2>
+                🧠 Business Interpretation
+            </h2>
+
+            {% for insight in insights %}
+
+            <div class="insight">
+                {{ insight }}
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+    <!-- DATA INFORMATION -->
+
+    <div class="data-info">
+
+        <h2>
+            Analysis Information
+        </h2>
+
+        <div class="data-grid">
+
+            <div>
+                <span>Dataset</span>
+                <strong>
+                    {{ selected_dataset.name }}
+                </strong>
+            </div>
+
+            <div>
+                <span>Date Column</span>
+                <strong>
+                    {{ date_column }}
+                </strong>
+            </div>
+
+            <div>
+                <span>Forecast Metric</span>
+                <strong>
+                    {{ metric_column }}
+                </strong>
+            </div>
+
+            <div>
+                <span>Forecast Horizon</span>
+                <strong>
+                    30 Days
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+
+function changeDataset(datasetId) {
+
+    const url =
+        new URL(window.location.href);
+
+    url.searchParams.set(
+        "dataset",
+        datasetId
+    );
+
+    window.location.href =
+        url.toString();
+}
+
+
+const historicalLabels =
+    {{ historical_labels|default:"[]"|safe }};
+
+const historicalValues =
+    {{ historical_values|default:"[]"|safe }};
+
+const forecastLabels =
+    {{ forecast_labels|default:"[]"|safe }};
+
+const forecastValues =
+    {{ forecast_values|default:"[]"|safe }};
+
+
+const allLabels = [
+    ...historicalLabels,
+    ...forecastLabels
+];
+
+
+const historicalData = [
+    ...historicalValues,
+    ...Array(
+        forecastValues.length
+    ).fill(null)
+];
+
+
+const forecastData = [
+    ...Array(
+        historicalValues.length - 1
+    ).fill(null),
+
+    historicalValues.length
+        ? historicalValues[
+            historicalValues.length - 1
+        ]
+        : null,
+
+    ...forecastValues
+];
+
+
+const canvas =
+    document.getElementById(
+        "forecastChart"
+    );
+
+
+if (
+    canvas &&
+    allLabels.length
+) {
+
+    new Chart(
+        canvas,
+        {
+            type: "line",
+
+            data: {
+
+                labels:
+                    allLabels,
+
+                datasets: [
+
+                    {
+                        label:
+                            "Historical",
+
+                        data:
+                            historicalData,
+
+                        borderColor:
+                            "#3fa9f5",
+
+                        backgroundColor:
+                            "rgba(63,169,245,.08)",
+
+                        fill: true,
+
+                        tension: .35,
+
+                        pointRadius: 2,
+
+                        borderWidth: 2
+                    },
+
+                    {
+                        label:
+                            "Forecast",
+
+                        data:
+                            forecastData,
+
+                        borderColor:
+                            "#7567f8",
+
+                        backgroundColor:
+                            "rgba(117,103,248,.08)",
+
+                        fill: true,
+
+                        tension: .35,
+
+                        borderDash: [
+                            7,
+                            5
+                        ],
+
+                        pointRadius: 2,
+
+                        borderWidth: 2
+                    }
+
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                interaction: {
+                    mode: "index",
+                    intersect: false
+                },
+
+                plugins: {
+
+                    legend: {
+                        display: false
+                    }
+
+                },
+
+                scales: {
+
+                    x: {
+
+                        grid: {
+                            display: false
+                        },
+
+                        ticks: {
+                            maxTicksLimit: 12
+                        }
+
+                    },
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        grid: {
+                            color:
+                                "rgba(255,255,255,.05)"
+                        },
+
+                        ticks: {
+
+                            callback:
+                                function(value) {
+
+                                    return "₹" +
+                                        Number(value)
+                                        .toLocaleString(
+                                            "en-IN"
+                                        );
+
+                                }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+</script>
+
+
+<style>
+
+.forecast-page {
+    padding: 28px;
+    color: #f5f7fb;
+    animation: forecastIn .55s ease;
+}
+
+@keyframes forecastIn {
+
+    from {
+        opacity: 0;
+        transform:
+            translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform:
+            translateY(0);
+    }
+
+}
+
+.forecast-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.eyebrow {
+    color: #7567f8;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+}
+
+.forecast-header h1 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.forecast-header p {
+    color: #8fa4b8;
+    font-size: 14px;
+    max-width: 720px;
+    line-height: 1.7;
+}
+
+.dataset-selector {
+    min-width: 260px;
+}
+
+.dataset-selector label {
+    display: block;
+    color: #8fa4b8;
+    font-size: 11px;
+    margin-bottom: 7px;
+    text-transform: uppercase;
+}
+
+.dataset-selector select {
+    width: 100%;
+    padding: 11px;
+    border-radius: 9px;
+    background: #0d2033;
+    color: white;
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+.error-box {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    color: #ffb1bc;
+    background: rgba(255,92,112,.09);
+    border: 1px solid rgba(255,92,112,.2);
+}
+
+.empty-state {
+    padding: 70px 30px;
+    text-align: center;
+    border-radius: 17px;
+    background: #0d2033;
+    border: 1px solid rgba(255,255,255,.07);
+}
+
+.empty-icon {
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+.empty-state p {
+    color: #8fa4b8;
+}
+
+.kpi-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.kpi-card {
+    background: #0d2033;
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 15px;
+    padding: 19px;
+    transition: .3s;
+}
+
+.kpi-card:hover {
+    transform:
+        translateY(-4px);
+    border-color:
+        rgba(117,103,248,.35);
+}
+
+.kpi-card span {
+    display: block;
+    color: #8fa4b8;
+    font-size: 11px;
+    margin-bottom: 10px;
+}
+
+.kpi-card strong {
+    display: block;
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.kpi-card small {
+    display: block;
+    margin-top: 7px;
+    color: #70879d;
+    font-size: 10px;
+}
+
+.forecast-card {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(117,103,248,.14),
+            #0d2033
+        );
+}
+
+.positive {
+    color: #39d98a;
+}
+
+.negative {
+    color: #ff5c70;
+}
+
+.status-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.status-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #0d2033;
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 14px;
+    padding: 16px;
+}
+
+.status-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: rgba(117,103,248,.10);
+    font-size: 20px;
+}
+
+.status-card span {
+    display: block;
+    color: #8fa4b8;
+    font-size: 10px;
+    margin-bottom: 4px;
+}
+
+.status-card strong {
+    font-size: 13px;
+}
+
+.chart-card,
+.info-card,
+.data-info {
+    background: #0d2033;
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 17px;
+    padding: 21px;
+    margin-bottom: 20px;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.section-heading h2,
+.info-card h2,
+.data-info h2 {
+    margin: 0 0 5px;
+    font-size: 16px;
+}
+
+.section-heading p {
+    margin: 0;
+    color: #8fa4b8;
+    font-size: 12px;
+}
+
+.legend {
+    display: flex;
+    gap: 15px;
+    font-size: 11px;
+    color: #8fa4b8;
+}
+
+.legend span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.legend i {
+    width: 9px;
+    height: 9px;
+    display: inline-block;
+    border-radius: 50%;
+}
+
+.legend .actual {
+    background: #3fa9f5;
+}
+
+.legend .forecast {
+    background: #7567f8;
+}
+
+.large-chart {
+    height: 390px;
+}
+
+.two-column {
+    display: grid;
+    grid-template-columns:
+        1fr 1fr;
+    gap: 20px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 13px 0;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+}
+
+.summary-row span {
+    color: #8fa4b8;
+    font-size: 12px;
+}
+
+.summary-row strong {
+    font-size: 13px;
+}
+
+.insight {
+    padding: 13px;
+    margin-top: 10px;
+    border-left: 3px solid #7567f8;
+    border-radius: 8px;
+    background: rgba(117,103,248,.05);
+    color: #cbd7e2;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.data-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(4, 1fr);
+    gap: 12px;
+}
+
+.data-grid div {
+    background: rgba(255,255,255,.025);
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.data-grid span {
+    display: block;
+    color: #70879d;
+    text-transform: uppercase;
+    font-size: 9px;
+    margin-bottom: 5px;
+}
+
+.data-grid strong {
+    font-size: 12px;
+    word-break: break-word;
+}
+
+@media (max-width: 1000px) {
+
+    .kpi-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .status-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+    .data-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    .forecast-page {
+        padding: 16px;
+    }
+
+    .forecast-header {
+        flex-direction: column;
+    }
+
+    .dataset-selector {
+        width: 100%;
+    }
+
+    .kpi-grid,
+    .two-column {
+        grid-template-columns:
+            1fr;
+    }
+
+    .section-heading {
+        flex-direction: column;
+    }
+
+    .large-chart {
+        height: 300px;
+    }
+
+    .data-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+}
+
+</style>
+
+{% endblock %}

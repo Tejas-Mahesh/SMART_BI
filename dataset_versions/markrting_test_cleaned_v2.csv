@@ -1,0 +1,31 @@
+date,revenue,marketing_spend,campaign,channel
+2026-06-01,185000,25000,Campaign A,Google
+2026-06-02,210000,30000,Campaign A,Instagram
+2026-06-03,195000,18000,Campaign A,Facebook
+2026-06-04,240000,28000,Campaign A,Google
+2026-06-05,260000,35000,Campaign A,Instagram
+2026-06-06,272000,32600,Campaign A,Google
+2026-06-07,290000,34400,Campaign A,Instagram
+2026-06-08,308000,36200,Campaign A,Facebook
+2026-06-09,326000,38000,Campaign A,Google
+2026-06-10,344000,39800,Campaign A,Instagram
+2026-06-11,362000,41600,Campaign A,Google
+2026-06-12,380000,43400,Campaign A,Instagram
+2026-06-13,398000,45200,Campaign A,Facebook
+2026-06-14,416000,47000,Unknown,Google
+2026-06-15,434000,48800,Unknown,Instagram
+2026-06-16,452000,50600,Unknown,Google
+2026-06-17,470000,52400,Unknown,Instagram
+2026-06-18,488000,54200,Unknown,Facebook
+2026-06-19,506000,56000,Unknown,Google
+2026-06-20,524000,57800,Unknown,Unknown
+2026-06-21,542000,59600,Unknown,Unknown
+2026-06-22,560000,61400,Unknown,Unknown
+2026-06-23,578000,63200,Unknown,Unknown
+2026-06-24,596000,65000,Unknown,Unknown
+2026-06-25,614000,66800,Unknown,Unknown
+2026-06-26,632000,68600,Unknown,Unknown
+2026-06-27,650000,70400,Unknown,Unknown
+2026-06-28,668000,72200,Unknown,Unknown
+2026-06-29,686000,74000,Unknown,Unknown
+2026-06-30,704000,75800,Unknown,Unknown

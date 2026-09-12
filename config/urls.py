@@ -33,4 +33,12 @@ urlpatterns = [
         "admin-dashboard/",
         include("admin_dashboard.urls")
     ),
+    path(
+    "insights/",
+    include("advanced_insights.urls"),
+),
+path(
+    "decisions/",
+    include("decision_intelligence.urls"),
+),
 ]
