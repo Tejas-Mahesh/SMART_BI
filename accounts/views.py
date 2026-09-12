@@ -6,9 +6,13 @@ from django.shortcuts import redirect, render
 from .forms import SignupForm, LoginForm
 
 
-def signup(request):
+def signup_view(request):
 
     if request.user.is_authenticated:
+
+        if request.user.is_superuser or request.user.is_staff:
+            return redirect("admin_dashboard:dashboard")
+
         return redirect("core:dashboard")
 
     if request.method == "POST":
@@ -17,15 +21,16 @@ def signup(request):
 
         if form.is_valid():
 
-            form.save()
+            user = form.save()
 
             messages.success(
                 request,
-                "Your account has been created successfully. "
-                "Please wait for administrator approval before logging in."
+                "Your account has been created and is waiting for admin approval."
             )
 
-            return redirect("accounts:signup_success")
+            return redirect(
+                "accounts:signup_success"
+            )
 
     else:
         form = SignupForm()
@@ -33,11 +38,14 @@ def signup(request):
     return render(
         request,
         "accounts/signup.html",
-        {"form": form}
+        {
+            "form": form
+        }
     )
 
 
 def signup_success(request):
+
     return render(
         request,
         "accounts/signup_success.html"
@@ -47,11 +55,30 @@ def signup_success(request):
 def login_view(request):
 
     if request.user.is_authenticated:
-        return redirect("core:dashboard")
 
-    form = LoginForm(request.POST or None)
+        # ---------------------------------------------
+        # ADMIN / SUPERUSER
+        # ---------------------------------------------
+
+        if (
+            request.user.is_superuser
+            or request.user.is_staff
+        ):
+            return redirect(
+                "admin_dashboard:dashboard"
+            )
+
+        # ---------------------------------------------
+        # NORMAL USER
+        # ---------------------------------------------
+
+        return redirect(
+            "core:dashboard"
+        )
 
     if request.method == "POST":
+
+        form = LoginForm(request.POST)
 
         if form.is_valid():
 
@@ -59,14 +86,14 @@ def login_view(request):
             password = form.cleaned_data["password"]
 
             user = authenticate(
-                request=request,
+                request,
                 username=username,
                 password=password
             )
 
-            # -----------------------------------------
+            # ---------------------------------------------
             # INVALID LOGIN
-            # -----------------------------------------
+            # ---------------------------------------------
 
             if user is None:
 
@@ -78,47 +105,54 @@ def login_view(request):
                 return render(
                     request,
                     "accounts/login.html",
-                    {"form": form}
+                    {
+                        "form": form
+                    }
                 )
 
-            # -----------------------------------------
-            # PENDING APPROVAL
-            # -----------------------------------------
+            # ---------------------------------------------
+            # ADMIN / SUPERUSER
+            #
+            # Admin does NOT need Smart BI approval.
+            # ---------------------------------------------
 
-            if user.approval_status == "Pending":
+            if (
+                user.is_superuser
+                or user.is_staff
+            ):
 
-                messages.warning(
+                if not user.is_active:
+
+                    messages.error(
+                        request,
+                        "This administrator account is inactive."
+                    )
+
+                    return render(
+                        request,
+                        "accounts/login.html",
+                        {
+                            "form": form
+                        }
+                    )
+
+                login(
                     request,
-                    "Admin has not approved your account yet. "
-                    "Please wait for administrator approval."
+                    user
                 )
 
-                return render(
+                messages.success(
                     request,
-                    "accounts/login.html",
-                    {"form": form}
+                    f"Welcome back, {user.username}."
                 )
 
-            # -----------------------------------------
-            # REJECTED
-            # -----------------------------------------
-
-            if user.approval_status == "Rejected":
-
-                messages.error(
-                    request,
-                    "Your account has been rejected by the administrator."
+                return redirect(
+                    "admin_dashboard:dashboard"
                 )
 
-                return render(
-                    request,
-                    "accounts/login.html",
-                    {"form": form}
-                )
-
-            # -----------------------------------------
-            # INACTIVE
-            # -----------------------------------------
+            # ---------------------------------------------
+            # NORMAL SMART BI USER
+            # ---------------------------------------------
 
             if not user.is_active:
 
@@ -130,47 +164,91 @@ def login_view(request):
                 return render(
                     request,
                     "accounts/login.html",
-                    {"form": form}
+                    {
+                        "form": form
+                    }
                 )
 
-            # -----------------------------------------
-            # APPROVED
-            # -----------------------------------------
+            # ---------------------------------------------
+            # PENDING USER
+            # ---------------------------------------------
+
+            if user.approval_status == "Pending":
+
+                messages.warning(
+                    request,
+                    "Your account is waiting for administrator approval."
+                )
+
+                return render(
+                    request,
+                    "accounts/login.html",
+                    {
+                        "form": form
+                    }
+                )
+
+            # ---------------------------------------------
+            # REJECTED USER
+            # ---------------------------------------------
+
+            if user.approval_status == "Rejected":
+
+                messages.error(
+                    request,
+                    "Your account has been rejected by the administrator."
+                )
+
+                return render(
+                    request,
+                    "accounts/login.html",
+                    {
+                        "form": form
+                    }
+                )
+
+            # ---------------------------------------------
+            # APPROVED USER
+            # ---------------------------------------------
 
             if user.approval_status == "Approved":
 
-                login(request, user)
+                login(
+                    request,
+                    user
+                )
 
                 messages.success(
                     request,
-                    f"Welcome back, {user.username}!"
+                    f"Welcome back, {user.username}."
                 )
 
-                return redirect("core:dashboard")
+                return redirect(
+                    "core:dashboard"
+                )
 
-            # -----------------------------------------
-            # UNKNOWN STATUS
-            # -----------------------------------------
+            # ---------------------------------------------
+            # FALLBACK
+            # ---------------------------------------------
 
             messages.error(
                 request,
-                "Your account status is invalid. Please contact the administrator."
+                "Your account cannot access the system."
             )
 
-            return render(
-                request,
-                "accounts/login.html",
-                {"form": form}
-            )
+    else:
+
+        form = LoginForm()
 
     return render(
         request,
         "accounts/login.html",
-        {"form": form}
+        {
+            "form": form
+        }
     )
 
 
-@login_required
 def logout_view(request):
 
     logout(request)
@@ -180,4 +258,6 @@ def logout_view(request):
         "You have been logged out successfully."
     )
 
-    return redirect("core:home")
+    return redirect(
+        "core:home"
+    )

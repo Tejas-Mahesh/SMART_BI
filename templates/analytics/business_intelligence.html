@@ -1,185 +1,1414 @@
-{% extends "base.html" %}
 {% load static %}
 
-{% block title %}
-Smart BI | Business Intelligence
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block extra_css %}
+<head>
 
-<style>
+    <meta charset="UTF-8">
 
-.analytics-page {
-    padding: 30px;
-    max-width: 1600px;
-    margin: auto;
-}
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-.analytics-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 20px;
-    margin-bottom: 30px;
-}
+    <title>
+        Business Intelligence | Smart BI
+    </title>
 
-.analytics-eyebrow {
-    color: #7567f8;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 2px;
-}
+    <link
+        rel="stylesheet"
+        href="{% static 'css/data_management_workspace.css' %}"
+    >
 
-.analytics-header h1 {
-    margin: 8px 0;
-    font-size: 32px;
-}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-.analytics-header p {
-    color: #8fa3b8;
-    margin: 0;
-}
+    <style>
 
-.dataset-selector {
-    padding: 12px 16px;
-    background: #0d2033;
-    border: 1px solid rgba(255,255,255,.08);
-    color: white;
-    border-radius: 10px;
-}
+        /* =====================================================
+           SMART BI ANALYTICS WORKSPACE
+        ===================================================== */
 
-.analytics-kpis {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-    margin-bottom: 25px;
-}
+        :root {
+            --bg: #06111f;
+            --panel: #0b1b2c;
+            --panel-2: #0d2033;
+            --border: rgba(255,255,255,0.08);
 
-.analytics-kpi {
-    background: #0d2033;
-    border: 1px solid rgba(255,255,255,.06);
-    border-radius: 16px;
-    padding: 22px;
-}
+            --purple: #7567f8;
+            --purple-light: #9389ff;
 
-.analytics-kpi span {
-    display: block;
-    color: #8fa3b8;
-    font-size: 13px;
-    margin-bottom: 10px;
-}
+            --green: #39d98a;
+            --orange: #ff9f43;
+            --red: #ff5c70;
+            --blue: #3fa9f5;
 
-.analytics-kpi strong {
-    font-size: 27px;
-}
+            --text: #f4f7fb;
+            --muted: #8fa4b8;
 
-.analytics-kpi small {
-    display: block;
-    margin-top: 8px;
-    color: #647b91;
-}
-
-.analytics-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 20px;
-}
-
-.analytics-card {
-    background: #0d2033;
-    border: 1px solid rgba(255,255,255,.06);
-    border-radius: 16px;
-    padding: 22px;
-}
-
-.analytics-card h2 {
-    margin: 0 0 5px;
-    font-size: 18px;
-}
-
-.analytics-card p {
-    color: #71879c;
-    font-size: 13px;
-}
-
-.chart-container {
-    position: relative;
-    height: 330px;
-    margin-top: 20px;
-}
-
-.summary-card {
-    margin-top: 20px;
-}
-
-.summary-list {
-    display: grid;
-    gap: 12px;
-}
-
-.summary-item {
-    padding: 14px;
-    border-radius: 10px;
-    background: rgba(117,103,248,.08);
-    border-left: 3px solid #7567f8;
-    color: #c8d4df;
-}
-
-@media (max-width: 1000px) {
-
-    .analytics-kpis {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .analytics-grid {
-        grid-template-columns: 1fr;
-    }
-
-}
-
-@media (max-width: 600px) {
-
-    .analytics-page {
-        padding: 18px;
-    }
-
-    .analytics-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .analytics-kpis {
-        grid-template-columns: 1fr;
-    }
-
-}
-
-</style>
-
-{% endblock %}
+            --shadow:
+                0 20px 50px rgba(0,0,0,0.25);
+        }
 
 
-{% block content %}
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(117,103,248,0.10),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 85% 15%,
+                    rgba(63,169,245,0.08),
+                    transparent 25%
+                ),
+                var(--bg);
+
+            color: var(--text);
+
+            font-family:
+                Inter,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+        }
+
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .analytics-page {
+            padding: 30px;
+            min-height: 100vh;
+        }
+
+
+        .analytics-container {
+            max-width: 1700px;
+            margin: auto;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .analytics-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 25px;
+
+            margin-bottom: 28px;
+        }
+
+
+        .analytics-title {
+            margin: 0;
+
+            font-size: 30px;
+            font-weight: 800;
+
+            letter-spacing: -0.8px;
+        }
+
+
+        .analytics-subtitle {
+            margin: 8px 0 0;
+
+            color: var(--muted);
+
+            font-size: 14px;
+        }
+
+
+        .dataset-selector {
+            min-width: 260px;
+
+            background: var(--panel);
+
+            border: 1px solid var(--border);
+
+            border-radius: 14px;
+
+            padding: 12px 15px;
+
+            color: var(--text);
+
+            outline: none;
+        }
+
+
+        /* =====================================================
+           DATE CONTROL
+        ===================================================== */
+
+        .period-panel {
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(117,103,248,0.10),
+                    rgba(13,32,51,0.92)
+                );
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            padding: 20px;
+
+            margin-bottom: 25px;
+
+            box-shadow: var(--shadow);
+        }
+
+
+        .period-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 20px;
+        }
+
+
+        .period-title {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+
+        .period-range {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+
+        .period-buttons {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            margin-top: 15px;
+        }
+
+
+        .period-button {
+            border: 1px solid var(--border);
+
+            background: rgba(255,255,255,0.035);
+
+            color: var(--muted);
+
+            padding: 9px 15px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            transition:
+                transform .25s ease,
+                background .25s ease,
+                color .25s ease;
+        }
+
+
+        .period-button:hover {
+            transform: translateY(-2px);
+
+            color: white;
+
+            background:
+                rgba(117,103,248,0.16);
+        }
+
+
+        .period-button.active {
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--purple),
+                    #5e52dc
+                );
+
+            color: white;
+
+            border-color: transparent;
+
+            box-shadow:
+                0 8px 25px rgba(117,103,248,0.25);
+        }
+
+
+        .custom-range {
+            display: none;
+
+            gap: 12px;
+
+            margin-top: 15px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .custom-range.show {
+            display: flex;
+        }
+
+
+        .date-input {
+            background: #081827;
+
+            color: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 10px;
+
+            padding: 10px 12px;
+        }
+
+
+        .apply-button {
+            background: var(--green);
+
+            border: 0;
+
+            border-radius: 10px;
+
+            padding: 10px 18px;
+
+            cursor: pointer;
+
+            font-weight: 700;
+
+            color: #041521;
+        }
+
+
+        /* =====================================================
+           KPI GRID
+        ===================================================== */
+
+        .kpi-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, minmax(0, 1fr));
+
+            gap: 16px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .kpi-card {
+            position: relative;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(13,32,51,0.98),
+                    rgba(8,24,39,0.98)
+                );
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            padding: 20px;
+
+            transition:
+                transform .3s ease,
+                border-color .3s ease,
+                box-shadow .3s ease;
+
+            animation:
+                cardEnter .6s ease both;
+        }
+
+
+        .kpi-card:hover {
+            transform: translateY(-5px);
+
+            border-color:
+                rgba(117,103,248,0.35);
+
+            box-shadow:
+                0 20px 45px rgba(0,0,0,0.28);
+        }
+
+
+        .kpi-card::after {
+            content: "";
+
+            position: absolute;
+
+            width: 100px;
+            height: 100px;
+
+            right: -35px;
+            bottom: -45px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(117,103,248,0.10);
+
+            filter: blur(2px);
+        }
+
+
+        .kpi-label {
+            color: var(--muted);
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: .7px;
+        }
+
+
+        .kpi-value {
+            margin-top: 10px;
+
+            font-size: 25px;
+
+            font-weight: 800;
+        }
+
+
+        .kpi-meta {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-top: 14px;
+
+            font-size: 12px;
+        }
+
+
+        .kpi-growth.good {
+            color: var(--green);
+        }
+
+
+        .kpi-growth.warning {
+            color: var(--orange);
+        }
+
+
+        .kpi-growth.critical {
+            color: var(--red);
+        }
+
+
+        .kpi-status {
+            padding: 4px 8px;
+
+            border-radius: 20px;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+
+        .kpi-status.good {
+            background: rgba(57,217,138,.12);
+            color: var(--green);
+        }
+
+
+        .kpi-status.warning {
+            background: rgba(255,159,67,.12);
+            color: var(--orange);
+        }
+
+
+        .kpi-status.critical {
+            background: rgba(255,92,112,.12);
+            color: var(--red);
+        }
+
+
+        /* =====================================================
+           HEALTH PANEL
+        ===================================================== */
+
+        .health-grid {
+            display: grid;
+
+            grid-template-columns:
+                1.15fr .85fr;
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .health-card {
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(13,32,51,.98),
+                    rgba(7,21,35,.98)
+                );
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            padding: 25px;
+
+            box-shadow: var(--shadow);
+        }
+
+
+        .section-heading {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .section-heading h2 {
+            margin: 0;
+
+            font-size: 18px;
+        }
+
+
+        .section-heading p {
+            margin: 5px 0 0;
+
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+
+        .health-main {
+            display: flex;
+
+            align-items: center;
+
+            gap: 25px;
+        }
+
+
+        .health-orb {
+            width: 125px;
+            height: 125px;
+
+            min-width: 125px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            border:
+                8px solid rgba(57,217,138,.12);
+
+            box-shadow:
+                0 0 40px rgba(57,217,138,.08);
+
+            animation:
+                healthPulse 3s ease-in-out infinite;
+        }
+
+
+        .health-orb.healthy {
+            border-color:
+                rgba(57,217,138,.28);
+        }
+
+
+        .health-orb.warning {
+            border-color:
+                rgba(255,159,67,.28);
+        }
+
+
+        .health-orb.critical {
+            border-color:
+                rgba(255,92,112,.28);
+        }
+
+
+        .health-signal {
+            font-size: 18px;
+
+            font-weight: 800;
+        }
+
+
+        .health-caption {
+            color: var(--muted);
+
+            font-size: 10px;
+
+            margin-top: 5px;
+        }
+
+
+        .signal-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 10px;
+
+            flex: 1;
+        }
+
+
+        .signal-box {
+            background:
+                rgba(255,255,255,.035);
+
+            border: 1px solid var(--border);
+
+            border-radius: 13px;
+
+            padding: 15px;
+        }
+
+
+        .signal-number {
+            font-size: 24px;
+
+            font-weight: 800;
+        }
+
+
+        .signal-label {
+            color: var(--muted);
+
+            font-size: 11px;
+
+            margin-top: 4px;
+        }
+
+
+        .signal-box.positive .signal-number {
+            color: var(--green);
+        }
+
+
+        .signal-box.warning .signal-number {
+            color: var(--orange);
+        }
+
+
+        .signal-box.critical .signal-number {
+            color: var(--red);
+        }
+
+
+        /* =====================================================
+           DRIVER CARDS
+        ===================================================== */
+
+        .driver-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+
+        .driver-card {
+            padding: 16px;
+
+            border-radius: 14px;
+
+            background:
+                rgba(255,255,255,.035);
+
+            border: 1px solid var(--border);
+
+            transition:
+                transform .25s ease;
+        }
+
+
+        .driver-card:hover {
+            transform: translateY(-3px);
+        }
+
+
+        .driver-label {
+            color: var(--muted);
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: .5px;
+        }
+
+
+        .driver-name {
+            font-size: 17px;
+
+            font-weight: 800;
+
+            margin-top: 7px;
+        }
+
+
+        .driver-value {
+            color: var(--green);
+
+            font-size: 12px;
+
+            margin-top: 4px;
+        }
+
+
+        .driver-card.warning .driver-value {
+            color: var(--orange);
+        }
+
+
+        /* =====================================================
+           CHART GRID
+        ===================================================== */
+
+        .chart-grid {
+            display: grid;
+
+            grid-template-columns:
+                1.55fr .85fr;
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .chart-card {
+            background:
+                rgba(13,32,51,.96);
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            padding: 22px;
+
+            box-shadow: var(--shadow);
+        }
+
+
+        .chart-wrapper {
+            position: relative;
+
+            height: 320px;
+        }
+
+
+        .chart-small {
+            height: 290px;
+        }
+
+
+        /* =====================================================
+           ADVANCED INSIGHTS
+        ===================================================== */
+
+        .insights-card {
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(117,103,248,.08),
+                    rgba(13,32,51,.98)
+                );
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            padding: 22px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .insight-list {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+
+        .insight-item {
+            display: flex;
+
+            gap: 13px;
+
+            padding: 15px;
+
+            border-radius: 14px;
+
+            background:
+                rgba(255,255,255,.035);
+
+            border: 1px solid var(--border);
+
+            animation:
+                insightEnter .5s ease both;
+
+            transition:
+                transform .25s ease,
+                background .25s ease;
+        }
+
+
+        .insight-item:hover {
+            transform: translateX(4px);
+
+            background:
+                rgba(255,255,255,.055);
+        }
+
+
+        .insight-icon {
+            width: 34px;
+            height: 34px;
+
+            min-width: 34px;
+
+            border-radius: 10px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                rgba(117,103,248,.14);
+
+            color: var(--purple-light);
+
+            font-size: 16px;
+        }
+
+
+        .insight-item.positive .insight-icon {
+            background:
+                rgba(57,217,138,.12);
+
+            color: var(--green);
+        }
+
+
+        .insight-item.warning .insight-icon {
+            background:
+                rgba(255,159,67,.12);
+
+            color: var(--orange);
+        }
+
+
+        .insight-item.negative .insight-icon {
+            background:
+                rgba(255,92,112,.12);
+
+            color: var(--red);
+        }
+
+
+        .insight-title {
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+
+        .insight-description {
+            margin-top: 5px;
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+            line-height: 1.55;
+        }
+
+
+        /* =====================================================
+           CONTRIBUTION
+        ===================================================== */
+
+        .contribution-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .contribution-card {
+            background:
+                rgba(13,32,51,.96);
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            padding: 22px;
+        }
+
+
+        .contribution-row {
+            margin-bottom: 18px;
+        }
+
+
+        .contribution-top {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 7px;
+        }
+
+
+        .contribution-name {
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .contribution-percent {
+            color: var(--purple-light);
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .contribution-track {
+            height: 7px;
+
+            background:
+                rgba(255,255,255,.07);
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+
+        .contribution-bar {
+            height: 100%;
+
+            width: 0;
+
+            border-radius: inherit;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--purple),
+                    var(--blue)
+                );
+
+            animation:
+                barGrow 1.1s ease forwards;
+        }
+
+
+        .contribution-revenue {
+            margin-top: 5px;
+
+            color: var(--muted);
+
+            font-size: 10px;
+        }
+
+
+        /* =====================================================
+           MOMENTUM
+        ===================================================== */
+
+        .momentum-grid {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .momentum-card {
+            background:
+                rgba(13,32,51,.96);
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            padding: 22px;
+        }
+
+
+        .momentum-row {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 11px 0;
+
+            border-bottom:
+                1px solid rgba(255,255,255,.05);
+        }
+
+
+        .momentum-row:last-child {
+            border-bottom: 0;
+        }
+
+
+        .momentum-month {
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+
+        .momentum-growth {
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+
+        .growth-positive {
+            color: var(--green);
+        }
+
+
+        .growth-negative {
+            color: var(--red);
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ===================================================== */
+
+        .summary-card {
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(117,103,248,.12),
+                    rgba(13,32,51,.98)
+                );
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            padding: 22px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .summary-list {
+            display: grid;
+
+            gap: 9px;
+        }
+
+
+        .summary-item {
+            color: #cbd7e4;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+
+            padding-left: 20px;
+
+            position: relative;
+        }
+
+
+        .summary-item::before {
+            content: "→";
+
+            position: absolute;
+
+            left: 0;
+
+            color: var(--purple-light);
+
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           DATASET INFO
+        ===================================================== */
+
+        .dataset-info {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+
+        .info-pill {
+            background:
+                rgba(255,255,255,.035);
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 20px;
+
+            padding: 7px 11px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+
+        .info-pill strong {
+            color: white;
+        }
+
+
+        /* =====================================================
+           EMPTY STATE
+        ===================================================== */
+
+        .empty-state {
+            min-height: 60vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            text-align: center;
+        }
+
+
+        .empty-box {
+            max-width: 500px;
+
+            padding: 45px;
+
+            border-radius: 25px;
+
+            background:
+                rgba(13,32,51,.9);
+
+            border: 1px solid var(--border);
+        }
+
+
+        .empty-icon {
+            font-size: 50px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .empty-box h2 {
+            margin: 0 0 8px;
+        }
+
+
+        .empty-box p {
+            color: var(--muted);
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+
+        .upload-link {
+            display: inline-block;
+
+            margin-top: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--purple),
+                    #5e52dc
+                );
+
+            padding: 11px 18px;
+
+            border-radius: 10px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           ANIMATIONS
+        ===================================================== */
+
+        @keyframes cardEnter {
+
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        @keyframes insightEnter {
+
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+
+        @keyframes barGrow {
+
+            from {
+                width: 0;
+            }
+
+            to {
+                width: var(--bar-width);
+            }
+        }
+
+
+        @keyframes healthPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.035);
+            }
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1250px) {
+
+            .kpi-grid {
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+
+            .chart-grid,
+            .health-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 900px) {
+
+            .analytics-page {
+                padding: 18px;
+            }
+
+            .contribution-grid,
+            .momentum-grid,
+            .insight-list {
+                grid-template-columns: 1fr;
+            }
+
+            .kpi-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .analytics-header {
+                flex-direction: column;
+            }
+
+            .dataset-selector {
+                width: 100%;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .health-main {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .health-orb {
+                margin: auto;
+            }
+
+            .signal-grid {
+                width: 100%;
+            }
+
+            .period-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
 
 <div class="analytics-page">
 
+<div class="analytics-container">
 
-    <!-- HEADER -->
 
-    <div class="analytics-header">
+{% if not has_data %}
+
+    <!-- =====================================================
+         EMPTY STATE
+    ====================================================== -->
+
+    <div class="empty-state">
+
+        <div class="empty-box">
+
+            <div class="empty-icon">
+                📊
+            </div>
+
+            <h2>
+                No Analytics Data Available
+            </h2>
+
+            <p>
+                Upload and process a business dataset first.
+                Smart BI will automatically clean the data
+                and prepare it for business intelligence.
+            </p>
+
+            <a
+                href="{% url 'data_management:upload' %}"
+                class="upload-link"
+            >
+                Upload Dataset
+            </a>
+
+        </div>
+
+    </div>
+
+
+{% else %}
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="analytics-header">
 
         <div>
 
-            <div class="analytics-eyebrow">
-                BUSINESS INTELLIGENCE
-            </div>
-
-            <h1>
-                Business Analytics
+            <h1 class="analytics-title">
+                Business Intelligence
             </h1>
 
-            <p>
-                Understand what is happening across your business.
+            <p class="analytics-subtitle">
+                Understand what happened, why it happened,
+                and where the business is moving.
             </p>
 
         </div>
@@ -190,15 +1419,17 @@ Smart BI | Business Intelligence
             <select
                 name="dataset"
                 class="dataset-selector"
-                onchange="this.form.submit()">
+                onchange="this.form.submit()"
+            >
 
                 {% for item in datasets %}
 
                     <option
                         value="{{ item.id }}"
-                        {% if item.id == dataset.id %}
+                        {% if item.id == selected_dataset.id %}
                             selected
-                        {% endif %}>
+                        {% endif %}
+                    >
 
                         {{ item.name }}
 
@@ -210,146 +1441,572 @@ Smart BI | Business Intelligence
 
         </form>
 
-    </div>
+    </header>
 
 
+    <!-- =====================================================
+         PERIOD CONTROL
+    ====================================================== -->
 
-    <!-- DATA SOURCE -->
+    <section class="period-panel">
 
-    <div class="analytics-card"
-         style="margin-bottom:20px;">
+        <div class="period-top">
 
-        <strong>
-            Analytics Source:
-        </strong>
+            <div>
 
-        {{ cleaned_version.file_name }}
+                <div class="period-title">
+                    Analysis Period
+                </div>
 
-        <span style="color:#39d98a; margin-left:10px;">
-            ✓ Analytics Ready
-        </span>
+                <div class="period-range">
 
-    </div>
+                    {{ display_start }}
 
+                    {% if display_end %}
+                        → {{ display_end }}
+                    {% endif %}
 
-
-    <!-- KPI CARDS -->
-
-    <div class="analytics-kpis">
-
-
-        <div class="analytics-kpi">
-
-            <span>
-                TOTAL REVENUE
-            </span>
-
-            <strong>
-                ₹{{ total_revenue|floatformat:2 }}
-            </strong>
-
-            <small>
-                Revenue generated
-            </small>
-
-        </div>
-
-
-        <div class="analytics-kpi">
-
-            <span>
-                TOTAL ORDERS
-            </span>
-
-            <strong>
-                {{ total_orders }}
-            </strong>
-
-            <small>
-                Records / transactions
-            </small>
-
-        </div>
-
-
-        <div class="analytics-kpi">
-
-            <span>
-                AVERAGE ORDER VALUE
-            </span>
-
-            <strong>
-                ₹{{ average_order_value|floatformat:2 }}
-            </strong>
-
-            <small>
-                Revenue per order
-            </small>
-
-        </div>
-
-
-        <div class="analytics-kpi">
-
-            <span>
-                REVENUE GROWTH
-            </span>
-
-            <strong>
-                {{ growth_percentage|floatformat:1 }}%
-            </strong>
-
-            <small>
-                Latest period comparison
-            </small>
-
-        </div>
-
-
-    </div>
-
-
-
-    <!-- CHART AREA -->
-
-    <div class="analytics-grid">
-
-
-        <!-- REVENUE TREND -->
-
-        <div class="analytics-card">
-
-            <h2>
-                Revenue Trend
-            </h2>
-
-            <p>
-                Revenue performance over time
-            </p>
-
-            <div class="chart-container">
-
-                <canvas id="revenueTrendChart"></canvas>
+                </div>
 
             </div>
 
         </div>
 
 
+        <div class="period-buttons">
 
-        <!-- REGION -->
+            <button
+                type="button"
+                class="period-button {% if selected_period == '30d' %}active{% endif %}"
+                onclick="selectPeriod('30d')"
+            >
+                30 Days
+            </button>
 
-        <div class="analytics-card">
 
-            <h2>
-                Revenue by Region
-            </h2>
+            <button
+                type="button"
+                class="period-button {% if selected_period == '3m' %}active{% endif %}"
+                onclick="selectPeriod('3m')"
+            >
+                3 Months
+            </button>
 
-            <p>
-                Highest revenue regions
-            </p>
 
-            <div class="chart-container">
+            <button
+                type="button"
+                class="period-button {% if selected_period == '6m' %}active{% endif %}"
+                onclick="selectPeriod('6m')"
+            >
+                6 Months
+            </button>
+
+
+            <button
+                type="button"
+                class="period-button {% if selected_period == '12m' %}active{% endif %}"
+                onclick="selectPeriod('12m')"
+            >
+                12 Months
+            </button>
+
+
+            <button
+                type="button"
+                class="period-button {% if selected_period == 'all' %}active{% endif %}"
+                onclick="selectPeriod('all')"
+            >
+                All Data
+            </button>
+
+
+            <button
+                type="button"
+                class="period-button {% if selected_period == 'custom' %}active{% endif %}"
+                onclick="toggleCustomRange()"
+            >
+                Custom
+            </button>
+
+        </div>
+
+
+        <form
+            method="get"
+            class="custom-range {% if selected_period == 'custom' %}show{% endif %}"
+            id="customRange"
+        >
+
+            <input
+                type="hidden"
+                name="dataset"
+                value="{{ selected_dataset.id }}"
+            >
+
+            <input
+                type="hidden"
+                name="period"
+                value="custom"
+            >
+
+            <input
+                type="date"
+                name="start_date"
+                value="{{ custom_start }}"
+                class="date-input"
+            >
+
+            <input
+                type="date"
+                name="end_date"
+                value="{{ custom_end }}"
+                class="date-input"
+            >
+
+            <button
+                type="submit"
+                class="apply-button"
+            >
+                Apply Range
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- =====================================================
+         KPI CARDS
+    ====================================================== -->
+
+    <section class="kpi-grid">
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Total Revenue
+            </div>
+
+            <div class="kpi-value">
+                ₹{{ total_revenue|floatformat:0 }}
+            </div>
+
+            <div class="kpi-meta">
+
+                <span class="kpi-growth {{ revenue_status_class }}">
+
+                    {% if revenue_growth >= 0 %}
+                        ↑
+                    {% else %}
+                        ↓
+                    {% endif %}
+
+                    {{ revenue_growth|floatformat:1 }}%
+
+                </span>
+
+                <span class="kpi-status {{ revenue_status_class }}">
+                    {{ revenue_status }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Orders
+            </div>
+
+            <div class="kpi-value">
+                {{ total_orders }}
+            </div>
+
+            <div class="kpi-meta">
+
+                <span class="kpi-growth {{ order_status_class }}">
+
+                    {% if order_growth >= 0 %}
+                        ↑
+                    {% else %}
+                        ↓
+                    {% endif %}
+
+                    {{ order_growth|floatformat:1 }}%
+
+                </span>
+
+                <span class="kpi-status {{ order_status_class }}">
+                    {{ order_status }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Quantity Sold
+            </div>
+
+            <div class="kpi-value">
+                {{ total_quantity|floatformat:0 }}
+            </div>
+
+            <div class="kpi-meta">
+
+                <span class="kpi-growth {{ quantity_status_class }}">
+
+                    {% if quantity_growth >= 0 %}
+                        ↑
+                    {% else %}
+                        ↓
+                    {% endif %}
+
+                    {{ quantity_growth|floatformat:1 }}%
+
+                </span>
+
+                <span class="kpi-status {{ quantity_status_class }}">
+                    {{ quantity_status }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Average Order Value
+            </div>
+
+            <div class="kpi-value">
+                ₹{{ average_order_value|floatformat:0 }}
+            </div>
+
+            <div class="kpi-meta">
+
+                <span class="kpi-growth {{ aov_status_class }}">
+
+                    {% if aov_growth >= 0 %}
+                        ↑
+                    {% else %}
+                        ↓
+                    {% endif %}
+
+                    {{ aov_growth|floatformat:1 }}%
+
+                </span>
+
+                <span class="kpi-status {{ aov_status_class }}">
+                    {{ aov_status }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Average Discount
+            </div>
+
+            <div class="kpi-value">
+                {{ average_discount|floatformat:1 }}%
+            </div>
+
+            <div class="kpi-meta">
+
+                <span class="kpi-growth {{ discount_status_class }}">
+
+                    {% if discount_change >= 0 %}
+                        ↑
+                    {% else %}
+                        ↓
+                    {% endif %}
+
+                    {{ discount_change|floatformat:1 }}%
+
+                </span>
+
+                <span class="kpi-status {{ discount_status_class }}">
+                    {{ discount_status }}
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         BUSINESS HEALTH + DRIVER SUMMARY
+    ====================================================== -->
+
+    <section class="health-grid">
+
+
+        <div class="health-card">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Business Health
+                    </h2>
+
+                    <p>
+                        Current intelligence signal generated
+                        from multiple business indicators.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="health-main">
+
+
+                <div class="health-orb
+                    {% if business_signal == 'Healthy' %}
+                        healthy
+                    {% elif business_signal == 'Needs Attention' %}
+                        warning
+                    {% else %}
+                        critical
+                    {% endif %}
+                ">
+
+                    <div class="health-signal">
+
+                        {{ business_signal }}
+
+                    </div>
+
+                    <div class="health-caption">
+                        BUSINESS SIGNAL
+                    </div>
+
+                </div>
+
+
+                <div class="signal-grid">
+
+
+                    <div class="signal-box positive">
+
+                        <div class="signal-number">
+                            {{ positive_signals }}
+                        </div>
+
+                        <div class="signal-label">
+                            Positive Signals
+                        </div>
+
+                    </div>
+
+
+                    <div class="signal-box warning">
+
+                        <div class="signal-number">
+                            {{ warning_signals }}
+                        </div>
+
+                        <div class="signal-label">
+                            Warnings
+                        </div>
+
+                    </div>
+
+
+                    <div class="signal-box critical">
+
+                        <div class="signal-number">
+                            {{ critical_signals }}
+                        </div>
+
+                        <div class="signal-label">
+                            Critical
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="health-card">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Key Business Drivers
+                    </h2>
+
+                    <p>
+                        Highest and lowest performing dimensions.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="driver-grid">
+
+
+                <div class="driver-card">
+
+                    <div class="driver-label">
+                        Top Product
+                    </div>
+
+                    <div class="driver-name">
+                        {{ best_product|default:"N/A" }}
+                    </div>
+
+                    <div class="driver-value">
+                        ₹{{ best_product_revenue|floatformat:0 }}
+                    </div>
+
+                </div>
+
+
+                <div class="driver-card warning">
+
+                    <div class="driver-label">
+                        Lowest Product
+                    </div>
+
+                    <div class="driver-name">
+                        {{ worst_product|default:"N/A" }}
+                    </div>
+
+                    <div class="driver-value">
+                        ₹{{ worst_product_revenue|floatformat:0 }}
+                    </div>
+
+                </div>
+
+
+                <div class="driver-card">
+
+                    <div class="driver-label">
+                        Leading Region
+                    </div>
+
+                    <div class="driver-name">
+                        {{ best_region|default:"N/A" }}
+                    </div>
+
+                    <div class="driver-value">
+                        ₹{{ best_region_revenue|floatformat:0 }}
+                    </div>
+
+                </div>
+
+
+                <div class="driver-card warning">
+
+                    <div class="driver-label">
+                        Lowest Region
+                    </div>
+
+                    <div class="driver-name">
+                        {{ worst_region|default:"N/A" }}
+                    </div>
+
+                    <div class="driver-value">
+                        ₹{{ worst_region_revenue|floatformat:0 }}
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CORE CHARTS
+    ====================================================== -->
+
+    <section class="chart-grid">
+
+
+        <div class="chart-card">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Revenue Trend
+                    </h2>
+
+                    <p>
+                        Monthly revenue movement across
+                        the selected analysis period.
+                    </p>
+
+                </div>
+
+                <span class="info-pill">
+                    {{ trend_direction }}
+                </span>
+
+            </div>
+
+
+            <div class="chart-wrapper">
+
+                <canvas id="revenueChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <div class="chart-card">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Regional Revenue
+                    </h2>
+
+                    <p>
+                        Revenue distribution by region.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="chart-wrapper chart-small">
 
                 <canvas id="regionChart"></canvas>
 
@@ -357,28 +2014,275 @@ Smart BI | Business Intelligence
 
         </div>
 
-
-    </div>
-
+    </section>
 
 
-    <!-- PRODUCT + SUMMARY -->
+    <!-- =====================================================
+         WHY DID REVENUE CHANGE?
+    ====================================================== -->
 
-    <div class="analytics-grid"
-         style="margin-top:20px;">
+    <section class="insights-card">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    🔎 Why Did Revenue Change?
+                </h2>
+
+                <p>
+                    Smart BI automatically interprets
+                    important business signals behind the numbers.
+                </p>
+
+            </div>
+
+        </div>
 
 
-        <div class="analytics-card">
+        <div class="insight-list">
 
-            <h2>
-                Top Products
-            </h2>
 
-            <p>
-                Products generating the most revenue
-            </p>
+            {% for insight in advanced_insights %}
 
-            <div class="chart-container">
+                <div
+                    class="insight-item {{ insight.type }}"
+                    style="animation-delay: {{ forloop.counter0 }}00ms;"
+                >
+
+                    <div class="insight-icon">
+
+                        {% if insight.type == "positive" %}
+                            ↑
+                        {% elif insight.type == "warning" %}
+                            !
+                        {% else %}
+                            ↓
+                        {% endif %}
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="insight-title">
+                            {{ insight.title }}
+                        </div>
+
+                        <div class="insight-description">
+                            {{ insight.description }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <div class="insight-item">
+
+                    <div class="insight-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <div class="insight-title">
+                            No major changes detected
+                        </div>
+
+                        <div class="insight-description">
+                            Current business indicators are
+                            relatively stable for the selected period.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PRODUCT + REGION CONTRIBUTION
+    ====================================================== -->
+
+    <section class="contribution-grid">
+
+
+        <div class="contribution-card">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        📦 Product Contribution
+                    </h2>
+
+                    <p>
+                        Share of total revenue generated
+                        by each product.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% for item in product_contribution %}
+
+                <div class="contribution-row">
+
+                    <div class="contribution-top">
+
+                        <span class="contribution-name">
+                            {{ item.name }}
+                        </span>
+
+                        <span class="contribution-percent">
+                            {{ item.contribution|floatformat:1 }}%
+                        </span>
+
+                    </div>
+
+
+                    <div class="contribution-track">
+
+                        <div
+                            class="contribution-bar"
+                            style="
+                                --bar-width: {{ item.contribution }}%;
+                            "
+                        ></div>
+
+                    </div>
+
+
+                    <div class="contribution-revenue">
+
+                        ₹{{ item.revenue|floatformat:0 }}
+
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <p class="period-range">
+                    Product information is unavailable.
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+
+        <div class="contribution-card">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        🌍 Regional Contribution
+                    </h2>
+
+                    <p>
+                        Share of total revenue generated
+                        by each region.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% for item in region_contribution %}
+
+                <div class="contribution-row">
+
+                    <div class="contribution-top">
+
+                        <span class="contribution-name">
+                            {{ item.name }}
+                        </span>
+
+                        <span class="contribution-percent">
+                            {{ item.contribution|floatformat:1 }}%
+                        </span>
+
+                    </div>
+
+
+                    <div class="contribution-track">
+
+                        <div
+                            class="contribution-bar"
+                            style="
+                                --bar-width: {{ item.contribution }}%;
+                            "
+                        ></div>
+
+                    </div>
+
+
+                    <div class="contribution-revenue">
+
+                        ₹{{ item.revenue|floatformat:0 }}
+
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <p class="period-range">
+                    Regional information is unavailable.
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         PRODUCT CHART + MOMENTUM
+    ====================================================== -->
+
+    <section class="chart-grid">
+
+
+        <div class="chart-card">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Product Performance
+                    </h2>
+
+                    <p>
+                        Highest revenue products in the
+                        selected period.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="chart-wrapper">
 
                 <canvas id="productChart"></canvas>
 
@@ -387,201 +2291,639 @@ Smart BI | Business Intelligence
         </div>
 
 
-        <div class="analytics-card summary-card">
+        <div class="momentum-card">
 
-            <h2>
-                Executive Summary
-            </h2>
+            <div class="section-heading">
 
-            <p>
-                Automatic business observations
-            </p>
+                <div>
+
+                    <h2>
+                        📈 Monthly Momentum
+                    </h2>
+
+                    <p>
+                        Month-over-month revenue movement.
+                    </p>
+
+                </div>
+
+            </div>
 
 
-            <div class="summary-list">
+            {% for item in monthly_growth %}
 
-                {% for item in summary %}
+                <div class="momentum-row">
 
-                    <div class="summary-item">
+                    <span class="momentum-month">
+                        {{ item.month }}
+                    </span>
 
-                        {{ item }}
+                    <span
+                        class="
+                            momentum-growth
+                            {% if item.growth >= 0 %}
+                                growth-positive
+                            {% else %}
+                                growth-negative
+                            {% endif %}
+                        "
+                    >
 
-                    </div>
+                        {% if item.growth >= 0 %}
+                            ↑
+                        {% else %}
+                            ↓
+                        {% endif %}
 
-                {% endfor %}
+                        {{ item.growth|floatformat:1 }}%
+
+                    </span>
+
+                </div>
+
+            {% empty %}
+
+                <p class="period-range">
+                    Monthly trend requires at least
+                    two months of data.
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         EXECUTIVE SUMMARY
+    ====================================================== -->
+
+    <section class="summary-card">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    Executive Summary
+                </h2>
+
+                <p>
+                    Concise business interpretation generated
+                    from the selected dataset and period.
+                </p>
 
             </div>
 
         </div>
 
 
-    </div>
+        <div class="summary-list">
+
+            {% for item in summary %}
+
+                <div class="summary-item">
+                    {{ item }}
+                </div>
+
+            {% empty %}
+
+                <div class="summary-item">
+                    No executive summary is available
+                    for the current dataset.
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <div class="dataset-info">
+
+            <div class="info-pill">
+                Dataset:
+                <strong>
+                    {{ selected_dataset.name }}
+                </strong>
+            </div>
+
+            <div class="info-pill">
+                Rows:
+                <strong>
+                    {{ total_rows }}
+                </strong>
+            </div>
+
+            <div class="info-pill">
+                Columns:
+                <strong>
+                    {{ total_columns }}
+                </strong>
+            </div>
+
+            <div class="info-pill">
+                Version:
+                <strong>
+                    Cleaned
+                </strong>
+            </div>
+
+            <div class="info-pill">
+                Trend:
+                <strong>
+                    {{ trend_direction }}
+                </strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+{% endif %}
 
 
 </div>
 
-{% endblock %}
+</div>
 
-
-
-{% block extra_js %}
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 
-const revenueLabels = {{ revenue_labels|safe }};
-const revenueValues = {{ revenue_values|safe }};
+    /* =====================================================
+       PERIOD NAVIGATION
+    ====================================================== */
 
-const regionLabels = {{ region_labels|safe }};
-const regionValues = {{ region_values|safe }};
+    function selectPeriod(period) {
 
-const productLabels = {{ product_labels|safe }};
-const productValues = {{ product_values|safe }};
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        params.set(
+            "period",
+            period
+        );
+
+        params.delete(
+            "start_date"
+        );
+
+        params.delete(
+            "end_date"
+        );
+
+        window.location.href =
+            window.location.pathname
+            + "?"
+            + params.toString();
+    }
 
 
-// ---------------------------------------------------------
-// Revenue Trend
-// ---------------------------------------------------------
+    function toggleCustomRange() {
 
-new Chart(
-    document.getElementById("revenueTrendChart"),
-    {
-        type: "line",
+        const custom =
+            document.getElementById(
+                "customRange"
+            );
 
-        data: {
-
-            labels: revenueLabels,
-
-            datasets: [
-
-                {
-                    label: "Revenue",
-                    data: revenueValues,
-                    tension: 0.35,
-                    fill: true
-                }
-
-            ]
-
-        },
-
-        options: {
-
-            responsive: true,
-
-            maintainAspectRatio: false,
-
-            plugins: {
-
-                legend: {
-                    display: false
-                }
-
-            }
-
+        if (!custom) {
+            return;
         }
 
+        custom.classList.toggle(
+            "show"
+        );
     }
-);
 
 
-// ---------------------------------------------------------
-// Region
-// ---------------------------------------------------------
+    /* =====================================================
+       CHART DATA
+    ====================================================== */
 
-new Chart(
-    document.getElementById("regionChart"),
-    {
-        type: "doughnut",
+    const monthlyLabels =
+        {{ monthly_labels|safe }};
 
-        data: {
+    const monthlyValues =
+        {{ monthly_values|safe }};
 
-            labels: regionLabels,
+    const regionLabels =
+        {{ region_labels|safe }};
 
-            datasets: [
+    const regionValues =
+        {{ region_values|safe }};
 
-                {
-                    data: regionValues
-                }
+    const productLabels =
+        {{ product_labels|safe }};
 
-            ]
-
-        },
-
-        options: {
-
-            responsive: true,
-
-            maintainAspectRatio: false,
-
-            plugins: {
-
-                legend: {
-                    position: "bottom"
-                }
-
-            }
-
-        }
-
-    }
-);
+    const productValues =
+        {{ product_values|safe }};
 
 
-// ---------------------------------------------------------
-// Products
-// ---------------------------------------------------------
+    /* =====================================================
+       CHART DEFAULTS
+    ====================================================== */
 
-new Chart(
-    document.getElementById("productChart"),
-    {
-        type: "bar",
+    Chart.defaults.font.family =
+        "Inter, system-ui, sans-serif";
 
-        data: {
+    Chart.defaults.color =
+        "#8fa4b8";
 
-            labels: productLabels,
 
-            datasets: [
+    /* =====================================================
+       REVENUE TREND
+    ====================================================== */
 
-                {
-                    label: "Revenue",
-                    data: productValues
-                }
+    const revenueCanvas =
+        document.getElementById(
+            "revenueChart"
+        );
 
-            ]
 
-        },
+    if (revenueCanvas) {
 
-        options: {
+        new Chart(
+            revenueCanvas,
+            {
+                type: "line",
 
-            responsive: true,
+                data: {
+                    labels: monthlyLabels,
 
-            maintainAspectRatio: false,
+                    datasets: [
+                        {
+                            label: "Revenue",
 
-            plugins: {
+                            data: monthlyValues,
 
-                legend: {
-                    display: false
-                }
+                            tension: 0.4,
 
-            },
+                            fill: true,
 
-            scales: {
+                            borderWidth: 3,
 
-                x: {
-                    ticks: {
-                        autoSkip: false
+                            borderColor:
+                                "#7567f8",
+
+                            backgroundColor:
+                                "rgba(117,103,248,0.10)",
+
+                            pointRadius: 4,
+
+                            pointHoverRadius: 7,
+
+                            pointBackgroundColor:
+                                "#7567f8"
+                        }
+                    ]
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    interaction: {
+                        intersect: false,
+                        mode: "index"
+                    },
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        },
+
+                        tooltip: {
+
+                            callbacks: {
+
+                                label: function(context) {
+
+                                    return (
+                                        " Revenue: ₹"
+                                        +
+                                        Number(
+                                            context.raw
+                                        ).toLocaleString(
+                                            "en-IN"
+                                        )
+                                    );
+
+                                }
+
+                            }
+
+                        }
+
+                    },
+
+                    scales: {
+
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        },
+
+                        y: {
+
+                            grid: {
+                                color:
+                                    "rgba(255,255,255,0.05)"
+                            },
+
+                            ticks: {
+
+                                callback:
+                                    function(value) {
+
+                                        return "₹"
+                                            +
+                                            Number(
+                                                value
+                                            ).toLocaleString(
+                                                "en-IN"
+                                            );
+
+                                    }
+
+                            }
+
+                        }
+
                     }
+
                 }
 
             }
-
-        }
+        );
 
     }
-);
+
+
+    /* =====================================================
+       REGION CHART
+    ====================================================== */
+
+    const regionCanvas =
+        document.getElementById(
+            "regionChart"
+        );
+
+
+    if (regionCanvas) {
+
+        new Chart(
+            regionCanvas,
+            {
+                type: "doughnut",
+
+                data: {
+
+                    labels:
+                        regionLabels,
+
+                    datasets: [
+                        {
+                            data:
+                                regionValues,
+
+                            borderWidth: 0,
+
+                            backgroundColor: [
+                                "#7567f8",
+                                "#3fa9f5",
+                                "#39d98a",
+                                "#ff9f43",
+                                "#ff5c70",
+                                "#8d7fff",
+                                "#62b8f5",
+                                "#54e0a0"
+                            ]
+                        }
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    cutout: "68%",
+
+                    plugins: {
+
+                        legend: {
+
+                            position: "bottom",
+
+                            labels: {
+                                padding: 15,
+                                boxWidth: 10
+                            }
+
+                        },
+
+                        tooltip: {
+
+                            callbacks: {
+
+                                label: function(context) {
+
+                                    return (
+                                        " "
+                                        +
+                                        context.label
+                                        +
+                                        ": ₹"
+                                        +
+                                        Number(
+                                            context.raw
+                                        ).toLocaleString(
+                                            "en-IN"
+                                        )
+                                    );
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       PRODUCT CHART
+    ====================================================== */
+
+    const productCanvas =
+        document.getElementById(
+            "productChart"
+        );
+
+
+    if (productCanvas) {
+
+        new Chart(
+            productCanvas,
+            {
+                type: "bar",
+
+                data: {
+
+                    labels:
+                        productLabels,
+
+                    datasets: [
+                        {
+
+                            label:
+                                "Revenue",
+
+                            data:
+                                productValues,
+
+                            borderRadius: 8,
+
+                            backgroundColor:
+                                "rgba(117,103,248,0.75)",
+
+                            hoverBackgroundColor:
+                                "rgba(117,103,248,1)"
+
+                        }
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        },
+
+                        tooltip: {
+
+                            callbacks: {
+
+                                label: function(context) {
+
+                                    return (
+                                        " Revenue: ₹"
+                                        +
+                                        Number(
+                                            context.raw
+                                        ).toLocaleString(
+                                            "en-IN"
+                                        )
+                                    );
+
+                                }
+
+                            }
+
+                        }
+
+                    },
+
+                    scales: {
+
+                        x: {
+
+                            grid: {
+                                display: false
+                            }
+
+                        },
+
+                        y: {
+
+                            grid: {
+                                color:
+                                    "rgba(255,255,255,0.05)"
+                            },
+
+                            ticks: {
+
+                                callback:
+                                    function(value) {
+
+                                        return "₹"
+                                            +
+                                            Number(
+                                                value
+                                            ).toLocaleString(
+                                                "en-IN"
+                                            );
+
+                                    }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       SIMPLE NUMBER ANIMATION
+    ====================================================== */
+
+    document
+        .querySelectorAll(".kpi-value")
+        .forEach(
+            function(element) {
+
+                element.style.opacity = "0";
+
+                setTimeout(
+                    function() {
+
+                        element.style.transition =
+                            "opacity .5s ease";
+
+                        element.style.opacity =
+                            "1";
+
+                    },
+                    150
+                );
+
+            }
+        );
 
 </script>
 
-{% endblock %}
+
+</body>
+
+</html>

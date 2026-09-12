@@ -1,0 +1,67 @@
+product,sales,quantity,date,returns
+Laptop Pro X,185000,5,2026-07-05,0
+Laptop Pro X,222000,6,2026-07-18,1
+Laptop Pro X,259000,7,2026-08-03,0
+Laptop Pro X,296000,8,2026-08-16,1
+Laptop Pro X,333000,9,2026-08-28,0
+Laptop Pro X,370000,10,2026-09-03,0
+Smartphone Z,48000,12,2026-07-04,1
+Smartphone Z,56000,14,2026-07-16,1
+Smartphone Z,64000,16,2026-08-02,1
+Smartphone Z,72000,18,2026-08-15,1
+Smartphone Z,80000,20,2026-08-27,1
+Smartphone Z,88000,22,2026-09-04,1
+Wireless Headphones,18000,10,2026-07-06,0
+Wireless Headphones,21600,12,2026-07-19,0
+Wireless Headphones,25200,14,2026-08-04,1
+Wireless Headphones,28800,16,2026-08-17,0
+Wireless Headphones,32400,18,2026-08-29,1
+Wireless Headphones,36000,20,2026-09-05,0
+Smart Watch,15000,10,2026-07-07,0
+Smart Watch,18000,12,2026-07-20,0
+Smart Watch,21000,14,2026-08-05,1
+Smart Watch,24000,16,2026-08-18,0
+Smart Watch,27000,18,2026-08-30,1
+Smart Watch,30000,20,2026-09-06,0
+Office Chair,12000,8,2026-07-08,0
+Office Chair,13500,9,2026-07-21,0
+Office Chair,15000,10,2026-08-06,1
+Office Chair,16500,11,2026-08-19,0
+Office Chair,18000,12,2026-08-31,0
+Office Chair,19500,13,2026-09-07,0
+Mechanical Keyboard,7000,10,2026-07-09,0
+Mechanical Keyboard,7700,11,2026-07-22,0
+Mechanical Keyboard,8400,12,2026-08-07,0
+Mechanical Keyboard,9100,13,2026-08-20,0
+Mechanical Keyboard,9800,14,2026-09-01,1
+Mechanical Keyboard,10500,15,2026-09-08,0
+Monitor 27,22000,10,2026-07-10,2
+Monitor 27,22000,10,2026-07-23,2
+Monitor 27,22000,10,2026-08-08,2
+Monitor 27,22000,10,2026-08-21,2
+Monitor 27,22000,10,2026-09-02,2
+Monitor 27,22000,10,2026-09-09,2
+Tablet Air,30000,20,2026-07-11,0
+Tablet Air,24000,16,2026-07-24,0
+Tablet Air,18000,12,2026-08-09,0
+Tablet Air,12000,8,2026-08-22,1
+Tablet Air,6000,4,2026-09-03,0
+Tablet Air,4500,3,2026-09-10,0
+Bluetooth Speaker,9000,15,2026-07-12,0
+Bluetooth Speaker,10800,18,2026-07-25,0
+Bluetooth Speaker,12600,21,2026-08-10,1
+Bluetooth Speaker,14400,24,2026-08-23,0
+Bluetooth Speaker,16200,27,2026-09-04,1
+Bluetooth Speaker,18000,30,2026-09-10,0
+Budget Earbuds,5000,20,2026-07-13,3
+Budget Earbuds,5500,22,2026-07-26,3
+Budget Earbuds,6000,24,2026-08-11,3
+Budget Earbuds,6500,26,2026-08-24,3
+Budget Earbuds,7000,28,2026-09-05,3
+Budget Earbuds,7500,30,2026-09-10,3
+Printer,16000,8,2026-07-14,0
+Printer,14000,7,2026-07-27,0
+Printer,12000,6,2026-08-12,0
+Printer,10000,5,2026-08-25,0
+Printer,8000,4,2026-09-06,0
+Printer,6000,3,2026-09-10,0

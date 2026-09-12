@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "accounts",
     "data_management",
     "analytics",
+    "admin_dashboard",
 ]
 
 MIDDLEWARE = [

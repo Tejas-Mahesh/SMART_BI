@@ -1,0 +1,331 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}User Management | Smart BI{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}">
+
+<div class="admin-page">
+
+    <div class="page-header">
+        <div>
+            <span class="page-eyebrow">ADMINISTRATION</span>
+            <h1>User Management</h1>
+            <p>Review, approve and manage Smart BI users.</p>
+        </div>
+
+        <a href="{% url 'admin_dashboard:dashboard' %}" class="back-btn">
+            ← Dashboard
+        </a>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-card">
+
+        <form method="get" class="filter-form">
+
+            <div class="filter-group">
+                <label>Search</label>
+                <input
+                    type="text"
+                    name="search"
+                    value="{{ search }}"
+                    placeholder="Username, email or company..."
+                >
+            </div>
+
+            <div class="filter-group">
+                <label>Approval Status</label>
+                <select name="status">
+                    <option value="">All Status</option>
+                    <option value="Pending" {% if current_status == "Pending" %}selected{% endif %}>
+                        Pending
+                    </option>
+                    <option value="Approved" {% if current_status == "Approved" %}selected{% endif %}>
+                        Approved
+                    </option>
+                    <option value="Rejected" {% if current_status == "Rejected" %}selected{% endif %}>
+                        Rejected
+                    </option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>User Type</label>
+                <select name="user_type">
+                    <option value="">All Types</option>
+                    <option value="Business User" {% if current_user_type == "Business User" %}selected{% endif %}>
+                        Business User
+                    </option>
+                    <option value="Analyst" {% if current_user_type == "Analyst" %}selected{% endif %}>
+                        Analyst
+                    </option>
+                </select>
+            </div>
+
+            <div class="filter-actions">
+                <button type="submit" class="primary-btn">
+                    Apply Filters
+                </button>
+
+                <a href="{% url 'admin_dashboard:users' %}" class="reset-btn">
+                    Reset
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- User Table -->
+    <div class="table-card">
+
+        <div class="table-header">
+            <div>
+                <h2>Registered Users</h2>
+                <span>{{ users|length }} users shown</span>
+            </div>
+        </div>
+
+        {% if users %}
+
+        <div class="table-wrapper">
+
+            <table class="admin-table">
+
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Company</th>
+                        <th>Type</th>
+                        <th>Approval</th>
+                        <th>Account</th>
+                        <th>Registered</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                {% for user in users %}
+
+                    <tr>
+
+                        <!-- User -->
+                        <td>
+
+                            <div class="user-cell">
+
+                                <div class="user-avatar">
+                                    {{ user.username|first|upper }}
+                                </div>
+
+                                <div>
+                                    <strong>{{ user.get_full_name|default:user.username }}</strong>
+                                    <small>@{{ user.username }}</small>
+                                    <small>{{ user.email }}</small>
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- Company -->
+                        <td>
+                            {% if user.company_name %}
+                                {{ user.company_name }}
+                            {% else %}
+                                <span class="muted">Not provided</span>
+                            {% endif %}
+                        </td>
+
+
+                        <!-- Type -->
+                        <td>
+                            <span class="type-badge">
+                                {{ user.user_type }}
+                            </span>
+                        </td>
+
+
+                        <!-- Approval -->
+                        <td>
+
+                            {% if user.approval_status == "Approved" %}
+
+                                <span class="status-badge approved">
+                                    ● Approved
+                                </span>
+
+                            {% elif user.approval_status == "Rejected" %}
+
+                                <span class="status-badge rejected">
+                                    ● Rejected
+                                </span>
+
+                            {% else %}
+
+                                <span class="status-badge pending">
+                                    ● Pending
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- Account -->
+                        <td>
+
+                            {% if user.is_active %}
+
+                                <span class="status-badge active">
+                                    ● Active
+                                </span>
+
+                            {% else %}
+
+                                <span class="status-badge inactive">
+                                    ● Inactive
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- Date -->
+                        <td>
+                            <span class="date-text">
+                                {{ user.date_joined|date:"d M Y" }}
+                            </span>
+                        </td>
+
+
+                        <!-- Actions -->
+                        <td>
+
+                            <div class="action-buttons">
+
+                                <a
+                                    href="{% url 'admin_dashboard:user_detail' user.id %}"
+                                    class="action-btn view"
+                                >
+                                    View
+                                </a>
+
+
+                                {% if not user.is_staff and not user.is_superuser %}
+
+                                    {% if user.approval_status == "Pending" %}
+
+                                        <form
+                                            method="post"
+                                            action="{% url 'admin_dashboard:approve_user' user.id %}"
+                                        >
+                                            {% csrf_token %}
+                                            <button class="action-btn approve">
+                                                Approve
+                                            </button>
+                                        </form>
+
+                                        <form
+                                            method="post"
+                                            action="{% url 'admin_dashboard:reject_user' user.id %}"
+                                        >
+                                            {% csrf_token %}
+                                            <button class="action-btn reject">
+                                                Reject
+                                            </button>
+                                        </form>
+
+                                    {% elif user.approval_status == "Approved" %}
+
+                                        {% if user.is_active %}
+
+                                            <form
+                                                method="post"
+                                                action="{% url 'admin_dashboard:deactivate_user' user.id %}"
+                                            >
+                                                {% csrf_token %}
+                                                <button class="action-btn deactivate">
+                                                    Deactivate
+                                                </button>
+                                            </form>
+
+                                        {% else %}
+
+                                            <form
+                                                method="post"
+                                                action="{% url 'admin_dashboard:activate_user' user.id %}"
+                                            >
+                                                {% csrf_token %}
+                                                <button class="action-btn activate">
+                                                    Activate
+                                                </button>
+                                            </form>
+
+                                        {% endif %}
+
+                                    {% elif user.approval_status == "Rejected" %}
+
+                                        <form
+                                            method="post"
+                                            action="{% url 'admin_dashboard:approve_user' user.id %}"
+                                        >
+                                            {% csrf_token %}
+                                            <button class="action-btn approve">
+                                                Approve
+                                            </button>
+                                        </form>
+
+                                    {% endif %}
+
+                                {% endif %}
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <div class="empty-icon">👥</div>
+
+            <h3>No users found</h3>
+
+            <p>
+                No users match the current filters.
+            </p>
+
+            <a
+                href="{% url 'admin_dashboard:users' %}"
+                class="primary-btn"
+            >
+                Show All Users
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

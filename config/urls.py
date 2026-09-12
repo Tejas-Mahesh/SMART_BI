@@ -23,5 +23,14 @@ urlpatterns = [
         "data/",
         include("data_management.urls")
     ),
-path("analytics/", include("analytics.urls")),
+
+    path(
+        "analytics/",
+        include("analytics.urls")
+    ),
+
+    path(
+        "admin-dashboard/",
+        include("admin_dashboard.urls")
+    ),
 ]

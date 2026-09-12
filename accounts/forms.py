@@ -123,6 +123,10 @@ from django import forms
 
 from .models import CustomUser
 
+from django import forms
+
+from .models import CustomUser
+
 
 class LoginForm(forms.Form):
 
@@ -130,8 +134,7 @@ class LoginForm(forms.Form):
         max_length=150,
         widget=forms.TextInput(
             attrs={
-                "class": "form-control",
-                "placeholder": "Enter your username",
+                "placeholder": "Enter username",
                 "autocomplete": "username",
             }
         )
@@ -140,8 +143,7 @@ class LoginForm(forms.Form):
     password = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
-                "class": "form-control",
-                "placeholder": "Enter your password",
+                "placeholder": "Enter password",
                 "autocomplete": "current-password",
             }
         )

@@ -1,0 +1,347 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}User Details | Smart BI{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}">
+
+<div class="admin-page">
+
+    <div class="page-header">
+
+        <div>
+            <span class="page-eyebrow">USER PROFILE</span>
+            <h1>{{ selected_user.username }}</h1>
+            <p>Detailed account information and management controls.</p>
+        </div>
+
+        <a
+            href="{% url 'admin_dashboard:users' %}"
+            class="back-btn"
+        >
+            ← Users
+        </a>
+
+    </div>
+
+
+    <!-- Profile Header -->
+
+    <div class="profile-card">
+
+        <div class="profile-avatar">
+            {{ selected_user.username|first|upper }}
+        </div>
+
+        <div class="profile-main">
+
+            <h2>
+                {{ selected_user.get_full_name|default:selected_user.username }}
+            </h2>
+
+            <p>{{ selected_user.email }}</p>
+
+            <div class="profile-tags">
+
+                <span class="type-badge">
+                    {{ selected_user.user_type }}
+                </span>
+
+                {% if selected_user.approval_status == "Approved" %}
+                    <span class="status-badge approved">
+                        ● Approved
+                    </span>
+                {% elif selected_user.approval_status == "Rejected" %}
+                    <span class="status-badge rejected">
+                        ● Rejected
+                    </span>
+                {% else %}
+                    <span class="status-badge pending">
+                        ● Pending
+                    </span>
+                {% endif %}
+
+                {% if selected_user.is_active %}
+                    <span class="status-badge active">
+                        ● Active
+                    </span>
+                {% else %}
+                    <span class="status-badge inactive">
+                        ● Inactive
+                    </span>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Information Grid -->
+
+    <div class="detail-grid">
+
+        <div class="detail-card">
+
+            <div class="detail-card-header">
+                <span class="detail-icon">👤</span>
+                <h3>Personal Information</h3>
+            </div>
+
+            <div class="detail-list">
+
+                <div>
+                    <span>First Name</span>
+                    <strong>
+                        {{ selected_user.first_name|default:"Not provided" }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Last Name</span>
+                    <strong>
+                        {{ selected_user.last_name|default:"Not provided" }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Username</span>
+                    <strong>
+                        {{ selected_user.username }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Email</span>
+                    <strong>
+                        {{ selected_user.email }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Phone</span>
+                    <strong>
+                        {{ selected_user.phone_number|default:"Not provided" }}
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="detail-card">
+
+            <div class="detail-card-header">
+                <span class="detail-icon">🏢</span>
+                <h3>Business Information</h3>
+            </div>
+
+            <div class="detail-list">
+
+                <div>
+                    <span>Company</span>
+                    <strong>
+                        {{ selected_user.company_name|default:"Not provided" }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>User Type</span>
+                    <strong>
+                        {{ selected_user.user_type }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Approval</span>
+                    <strong>
+                        {{ selected_user.approval_status }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Datasets</span>
+                    <strong>
+                        {{ dataset_count }}
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="detail-card">
+
+            <div class="detail-card-header">
+                <span class="detail-icon">⚙️</span>
+                <h3>Account Information</h3>
+            </div>
+
+            <div class="detail-list">
+
+                <div>
+                    <span>Account Status</span>
+
+                    <strong>
+                        {% if selected_user.is_active %}
+                            Active
+                        {% else %}
+                            Inactive
+                        {% endif %}
+                    </strong>
+
+                </div>
+
+                <div>
+                    <span>Staff Access</span>
+
+                    <strong>
+                        {% if selected_user.is_staff %}
+                            Enabled
+                        {% else %}
+                            Disabled
+                        {% endif %}
+                    </strong>
+
+                </div>
+
+                <div>
+                    <span>Superuser</span>
+
+                    <strong>
+                        {% if selected_user.is_superuser %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+                    </strong>
+
+                </div>
+
+                <div>
+                    <span>Registered</span>
+
+                    <strong>
+                        {{ selected_user.date_joined|date:"d M Y, h:i A" }}
+                    </strong>
+
+                </div>
+
+                <div>
+                    <span>Last Login</span>
+
+                    <strong>
+                        {% if selected_user.last_login %}
+                            {{ selected_user.last_login|date:"d M Y, h:i A" }}
+                        {% else %}
+                            Never
+                        {% endif %}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Management -->
+
+    {% if not selected_user.is_superuser and not selected_user.is_staff %}
+
+    <div class="management-card">
+
+        <div>
+
+            <span class="page-eyebrow">ACCOUNT CONTROL</span>
+
+            <h2>Manage User</h2>
+
+            <p>
+                Change this user's approval and account status.
+            </p>
+
+        </div>
+
+
+        <div class="management-actions">
+
+            {% if selected_user.approval_status == "Pending" %}
+
+                <form
+                    method="post"
+                    action="{% url 'admin_dashboard:approve_user' selected_user.id %}"
+                >
+                    {% csrf_token %}
+                    <button class="primary-btn">
+                        ✓ Approve User
+                    </button>
+                </form>
+
+                <form
+                    method="post"
+                    action="{% url 'admin_dashboard:reject_user' selected_user.id %}"
+                >
+                    {% csrf_token %}
+                    <button class="danger-btn">
+                        ✕ Reject User
+                    </button>
+                </form>
+
+            {% elif selected_user.approval_status == "Rejected" %}
+
+                <form
+                    method="post"
+                    action="{% url 'admin_dashboard:approve_user' selected_user.id %}"
+                >
+                    {% csrf_token %}
+                    <button class="primary-btn">
+                        ✓ Approve User
+                    </button>
+                </form>
+
+            {% endif %}
+
+
+            {% if selected_user.is_active %}
+
+                <form
+                    method="post"
+                    action="{% url 'admin_dashboard:deactivate_user' selected_user.id %}"
+                >
+                    {% csrf_token %}
+                    <button class="warning-btn">
+                        Deactivate Account
+                    </button>
+                </form>
+
+            {% else %}
+
+                <form
+                    method="post"
+                    action="{% url 'admin_dashboard:activate_user' selected_user.id %}"
+                >
+                    {% csrf_token %}
+                    <button class="primary-btn">
+                        Activate Account
+                    </button>
+                </form>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

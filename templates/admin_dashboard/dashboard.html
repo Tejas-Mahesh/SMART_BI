@@ -1,0 +1,372 @@
+{% extends "base.html" %}
+
+{% block title %}
+Smart BI Admin Dashboard
+{% endblock %}
+
+
+{% block content %}
+
+<div class="admin-page">
+
+    <div class="admin-header">
+
+        <div>
+            <span class="admin-eyebrow">
+                SYSTEM ADMINISTRATION
+            </span>
+
+            <h1>
+                Admin Dashboard
+            </h1>
+
+            <p>
+                Manage Smart BI users, approvals and system access.
+            </p>
+        </div>
+
+        <div class="admin-header-actions">
+
+            <a
+                href="{% url 'admin_dashboard:users' %}"
+                class="admin-btn primary"
+            >
+                Manage Users
+            </a>
+
+            <a
+                href="/admin/"
+                class="admin-btn secondary"
+            >
+                Django Admin
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- KPI CARDS -->
+
+    <div class="admin-kpi-grid">
+
+        <div class="admin-kpi-card">
+
+            <div class="admin-kpi-icon">
+                👥
+            </div>
+
+            <div>
+                <span>Total Users</span>
+
+                <strong>
+                    {{ total_users }}
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="admin-kpi-card warning">
+
+            <div class="admin-kpi-icon">
+                ⏳
+            </div>
+
+            <div>
+                <span>Pending Approval</span>
+
+                <strong>
+                    {{ pending_users }}
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="admin-kpi-card success">
+
+            <div class="admin-kpi-icon">
+                ✓
+            </div>
+
+            <div>
+                <span>Approved Users</span>
+
+                <strong>
+                    {{ approved_users }}
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="admin-kpi-card danger">
+
+            <div class="admin-kpi-icon">
+                !
+            </div>
+
+            <div>
+                <span>Rejected Users</span>
+
+                <strong>
+                    {{ rejected_users }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="admin-kpi-card blue">
+
+            <div class="admin-kpi-icon">
+                📊
+            </div>
+
+            <div>
+                <span>Active Datasets</span>
+
+                <strong>
+                    {{ total_datasets }}
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- PENDING APPROVAL -->
+
+    <section class="admin-section">
+
+        <div class="section-heading">
+
+            <div>
+                <span class="section-label">
+                    ACTION REQUIRED
+                </span>
+
+                <h2>
+                    Pending User Approvals
+                </h2>
+            </div>
+
+            <a
+                href="{% url 'admin_dashboard:users' %}?status=Pending"
+                class="view-all"
+            >
+                View All
+            </a>
+
+        </div>
+
+
+        {% if pending_user_list %}
+
+        <div class="admin-table-wrapper">
+
+            <table class="admin-table">
+
+                <thead>
+
+                    <tr>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Company</th>
+                        <th>Type</th>
+                        <th>Registered</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                {% for user in pending_user_list %}
+
+                    <tr>
+
+                        <td>
+
+                            <div class="user-cell">
+
+                                <div class="user-avatar">
+                                    {{ user.username|first|upper }}
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        {{ user.get_full_name|default:user.username }}
+                                    </strong>
+
+                                    <small>
+                                        @{{ user.username }}
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+                            {{ user.email }}
+                        </td>
+
+
+                        <td>
+                            {{ user.company_name|default:"—" }}
+                        </td>
+
+
+                        <td>
+                            {{ user.user_type }}
+                        </td>
+
+
+                        <td>
+                            {{ user.date_joined|date:"d M Y" }}
+                        </td>
+
+
+                        <td>
+
+                            <div class="table-actions">
+
+                                <a
+                                    href="{% url 'admin_dashboard:user_detail' user.id %}"
+                                    class="action-view"
+                                >
+                                    View
+                                </a>
+
+
+                                <form
+                                    method="post"
+                                    action="{% url 'admin_dashboard:approve_user' user.id %}"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="action-approve"
+                                    >
+                                        Approve
+                                    </button>
+
+                                </form>
+
+
+                                <form
+                                    method="post"
+                                    action="{% url 'admin_dashboard:reject_user' user.id %}"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="action-reject"
+                                    >
+                                        Reject
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-admin">
+
+            <div class="empty-icon">
+                ✓
+            </div>
+
+            <h3>
+                No Pending Approvals
+            </h3>
+
+            <p>
+                All registered users have been processed.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- SYSTEM SUMMARY -->
+
+    <section class="admin-section">
+
+        <div class="section-heading">
+
+            <div>
+                <span class="section-label">
+                    SYSTEM OVERVIEW
+                </span>
+
+                <h2>
+                    User Status
+                </h2>
+            </div>
+
+        </div>
+
+
+        <div class="status-grid">
+
+            <div class="status-card">
+                <span>Approved</span>
+                <strong>{{ approved_users }}</strong>
+            </div>
+
+            <div class="status-card">
+                <span>Pending</span>
+                <strong>{{ pending_users }}</strong>
+            </div>
+
+            <div class="status-card">
+                <span>Rejected</span>
+                <strong>{{ rejected_users }}</strong>
+            </div>
+
+            <div class="status-card">
+                <span>Active</span>
+                <strong>{{ active_users }}</strong>
+            </div>
+
+            <div class="status-card">
+                <span>Inactive</span>
+                <strong>{{ inactive_users }}</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}
