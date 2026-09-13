@@ -279,6 +279,11 @@ class BusinessAction(models.Model):
     title = models.CharField(max_length=255)
 
     description = models.TextField(blank=True)
+    recommendation_category = models.CharField(
+    max_length=50,
+    blank=True,
+    default="",
+)
 
     action_type = models.CharField(
         max_length=30,
@@ -399,3 +404,104 @@ class DecisionImpact(models.Model):
 
     def __str__(self):
         return f"Impact - {self.action.title}"
+class RecommendationFeedback(models.Model):
+    """
+    Stores explicit user feedback for a generated recommendation.
+
+    This is separate from DecisionImpact because feedback represents
+    the user's immediate assessment, while DecisionImpact represents
+    the measurable business outcome after an action is completed.
+    """
+
+    FEEDBACK_CHOICES = [
+        ("Useful", "Useful"),
+        ("Not Useful", "Not Useful"),
+        ("Partially Useful", "Partially Useful"),
+    ]
+
+    RATING_CHOICES = [
+        (1, "1 - Very Poor"),
+        (2, "2 - Poor"),
+        (3, "3 - Average"),
+        (4, "4 - Good"),
+        (5, "5 - Excellent"),
+    ]
+
+    recommendation_title = models.CharField(
+        max_length=255,
+    )
+
+    recommendation_category = models.CharField(
+        max_length=50,
+        blank=True,
+        default="",
+    )
+
+    recommendation_source = models.CharField(
+        max_length=100,
+        blank=True,
+        default="",
+    )
+
+    dataset = models.ForeignKey(
+        "data_management.Dataset",
+        on_delete=models.CASCADE,
+        related_name="recommendation_feedback",
+    )
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="recommendation_feedback",
+    )
+
+    action = models.ForeignKey(
+        "decision_intelligence.BusinessAction",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="feedback_records",
+    )
+
+    feedback = models.CharField(
+        max_length=30,
+        choices=FEEDBACK_CHOICES,
+    )
+
+    rating = models.PositiveSmallIntegerField(
+        choices=RATING_CHOICES,
+        default=3,
+    )
+
+    comment = models.TextField(
+        blank=True,
+    )
+
+    recommendation_score = models.FloatField(
+        default=0,
+    )
+
+    priority = models.CharField(
+        max_length=20,
+        blank=True,
+        default="",
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
+
+    class Meta:
+        ordering = [
+            "-created_at",
+        ]
+
+    def __str__(self):
+        return (
+            f"{self.recommendation_title} - "
+            f"{self.feedback}"
+        )

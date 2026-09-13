@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "admin_dashboard",
     "advanced_insights",
     "decision_intelligence",
+    "reporting",
 ]
 
 MIDDLEWARE = [

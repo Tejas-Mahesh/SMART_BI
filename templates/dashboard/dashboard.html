@@ -8,613 +8,1305 @@ Smart BI | Executive Dashboard
 
 {% block extra_css %}
 
-<link rel="stylesheet"
-      href="{% static 'css/accdash.css' %}">
+<link
+    rel="stylesheet"
+    href="{% static 'css/accdash.css' %}"
+>
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/sidebar.css' %}"
+>
+
+
+<style>
+
+/* =========================================================
+   DATASET SELECTOR
+========================================================= */
+
+.dashboard-dataset-bar {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 18px;
+
+    margin-bottom: 22px;
+
+    padding: 16px 20px;
+
+    background:
+        rgba(13, 32, 51, .82);
+
+    border:
+        1px solid rgba(255,255,255,.07);
+
+    border-radius: 16px;
+
+    backdrop-filter: blur(14px);
+
+}
+
+
+.dataset-selector-info {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+}
+
+
+.dataset-selector-icon {
+
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 12px;
+
+    background:
+        rgba(117,103,248,.14);
+
+    color:
+        #7567f8;
+
+    font-size: 20px;
+
+}
+
+
+.dataset-selector-info strong {
+
+    display: block;
+
+    font-size: 14px;
+
+    color: #f4f7fb;
+
+}
+
+
+.dataset-selector-info span {
+
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 11px;
+
+    color: #8293a8;
+
+}
+
+
+.dataset-selector-form {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+
+.dataset-selector-form select {
+
+    min-width: 250px;
+
+    padding: 11px 14px;
+
+    border-radius: 10px;
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    background:
+        #081827;
+
+    color:
+        #eaf0f7;
+
+    outline: none;
+
+}
+
+
+.dataset-selector-form select:focus {
+
+    border-color:
+        rgba(117,103,248,.55);
+
+    box-shadow:
+        0 0 0 3px rgba(117,103,248,.08);
+
+}
+
+
+.dataset-selector-form button {
+
+    padding: 11px 17px;
+
+    border: 0;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7567f8,
+            #5f51e8
+        );
+
+    color: #fff;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+
+}
+
+
+.dataset-selector-form button:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(117,103,248,.20);
+
+}
+
+
+/* =========================================================
+   DATA SOURCE BADGE
+========================================================= */
+
+.data-source-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-top: 6px;
+
+    padding: 5px 9px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(57,217,138,.09);
+
+    color:
+        #39d98a;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: .5px;
+
+}
+
+
+.data-source-badge.original {
+
+    background:
+        rgba(255,159,67,.09);
+
+    color:
+        #ff9f43;
+
+}
+
+
+.data-source-dot {
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background:
+        currentColor;
+
+}
+
+
+/* =========================================================
+   DATE CONTROL
+========================================================= */
+
+.dashboard-date-form {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+}
+
+
+.dashboard-date-form select {
+
+    min-width: 145px;
+
+    padding: 10px 12px;
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    border-radius: 10px;
+
+    background:
+        #081827;
+
+    color:
+        #dce5ef;
+
+    outline: none;
+
+    cursor: pointer;
+
+    font-size: 11px;
+
+}
+
+
+.dashboard-date-form select:focus {
+
+    border-color:
+        rgba(117,103,248,.5);
+
+}
+
+
+/* =========================================================
+   KPI
+========================================================= */
+
+.kpi-value {
+
+    letter-spacing:
+        -.5px;
+
+}
+
+
+.kpi-trend {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    margin-left: 7px;
+
+    font-size: 11px;
+
+    color:
+        #39d98a;
+
+}
+
+
+.kpi-trend.negative {
+
+    color:
+        #ff5c70;
+
+}
+
+
+/* =========================================================
+   REAL CHART
+========================================================= */
+
+.real-chart-wrapper {
+
+    position: relative;
+
+    height: 330px;
+
+    padding:
+        10px 5px 0;
+
+}
+
+
+.real-chart-wrapper canvas {
+
+    width: 100% !important;
+
+    height: 100% !important;
+
+}
+
+
+/* =========================================================
+   CUSTOMER SUMMARY
+========================================================= */
+
+.customer-real {
+
+    min-height: 330px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+}
+
+
+.customer-stat-main {
+
+    text-align: center;
+
+    margin-bottom: 22px;
+
+}
+
+
+.customer-stat-main strong {
+
+    display: block;
+
+    font-size: 42px;
+
+    line-height: 1;
+
+    color:
+        #fff;
+
+}
+
+
+.customer-stat-main span {
+
+    display: block;
+
+    margin-top: 9px;
+
+    color:
+        #8394aa;
+
+    font-size: 12px;
+
+}
+
+
+.customer-mini-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap: 10px;
+
+}
+
+
+.customer-mini-item {
+
+    padding: 14px;
+
+    border-radius: 12px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    border:
+        1px solid rgba(255,255,255,.05);
+
+}
+
+
+.customer-mini-item span {
+
+    display: block;
+
+    font-size: 10px;
+
+    color:
+        #8191a6;
+
+    text-transform:
+        uppercase;
+
+}
+
+
+.customer-mini-item strong {
+
+    display: block;
+
+    margin-top: 5px;
+
+    color:
+        #fff;
+
+    font-size: 18px;
+
+}
+
+
+/* =========================================================
+   HEALTH
+========================================================= */
+
+.health-score {
+
+    position: relative;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    width: 100%;
+
+    margin:
+        5px 0 18px;
+
+}
+
+
+.health-circle {
+
+    width: 150px;
+    height: 150px;
+
+    border-radius: 50%;
+
+    display: grid;
+
+    place-items: center;
+
+    background:
+
+        radial-gradient(
+            circle at center,
+            #0d2033 57%,
+            transparent 58%
+        ),
+
+        conic-gradient(
+            #7567f8
+            calc(var(--health) * 1%),
+            rgba(255,255,255,.06) 0
+        );
+
+    box-shadow:
+
+        0 0 35px
+        rgba(117,103,248,.12),
+
+        inset 0 0 25px
+        rgba(0,0,0,.2);
+
+}
+
+
+.health-circle strong {
+
+    font-size: 36px;
+
+    color:
+        #fff;
+
+}
+
+
+/* =========================================================
+   PERFORMANCE
+========================================================= */
+
+.performance-section {
+
+    margin-top:
+        22px;
+
+}
+
+
+.performance-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap: 14px;
+
+}
+
+
+.performance-item {
+
+    padding: 18px;
+
+    border-radius: 14px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    border:
+        1px solid rgba(255,255,255,.06);
+
+    transition:
+        transform .25s ease,
+        border-color .25s ease;
+
+}
+
+
+.performance-item:hover {
+
+    transform:
+        translateY(-3px);
+
+    border-color:
+        rgba(117,103,248,.20);
+
+}
+
+
+.performance-item span {
+
+    display: block;
+
+    color:
+        #7e8fa4;
+
+    font-size: 10px;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        .5px;
+
+}
+
+
+.performance-item strong {
+
+    display: block;
+
+    margin-top: 8px;
+
+    color:
+        #fff;
+
+    font-size: 22px;
+
+}
+
+
+/* =========================================================
+   TOP LISTS
+========================================================= */
+
+.top-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+}
+
+
+.top-list-item {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding:
+        12px 14px;
+
+    border-radius:
+        11px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    border:
+        1px solid transparent;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .2s ease;
+
+}
+
+
+.top-list-item:hover {
+
+    background:
+        rgba(117,103,248,.06);
+
+    border-color:
+        rgba(117,103,248,.10);
+
+    transform:
+        translateX(3px);
+
+}
+
+
+.top-list-name {
+
+    min-width: 0;
+
+    color:
+        #dce4ee;
+
+    font-size: 12px;
+
+    overflow:
+        hidden;
+
+    text-overflow:
+        ellipsis;
+
+    white-space:
+        nowrap;
+
+}
+
+
+.top-list-value {
+
+    color:
+        #7567f8;
+
+    font-weight:
+        700;
+
+    font-size:
+        12px;
+
+    white-space:
+        nowrap;
+
+}
+
+
+/* =========================================================
+   READINESS
+========================================================= */
+
+.readiness-state.ready {
+
+    color:
+        #39d98a;
+
+}
+
+
+.readiness-state.pending {
+
+    color:
+        #ff9f43;
+
+}
+
+
+.readiness-state.locked {
+
+    color:
+        #718298;
+
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.dashboard-empty-state {
+
+    padding:
+        60px 30px;
+
+    text-align:
+        center;
+
+}
+
+
+.dashboard-empty-state .empty-icon {
+
+    width: 70px;
+    height: 70px;
+
+    display: grid;
+
+    place-items: center;
+
+    margin:
+        0 auto 18px;
+
+    border-radius:
+        22px;
+
+    background:
+        rgba(117,103,248,.1);
+
+    color:
+        #7567f8;
+
+    font-size:
+        30px;
+
+}
+
+
+.dashboard-empty-state h3 {
+
+    margin:
+        0;
+
+    color:
+        #fff;
+
+    font-size:
+        20px;
+
+}
+
+
+.dashboard-empty-state p {
+
+    max-width:
+        500px;
+
+    margin:
+        10px auto 20px;
+
+    color:
+        #7f90a5;
+
+    line-height:
+        1.7;
+
+    font-size:
+        13px;
+
+}
+
+
+.dashboard-empty-state a {
+
+    display:
+        inline-flex;
+
+    padding:
+        11px 18px;
+
+    border-radius:
+        10px;
+
+    background:
+        #7567f8;
+
+    color:
+        #fff;
+
+    text-decoration:
+        none;
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
+}
+
+
+/* =========================================================
+   CUSTOMER EMPTY
+========================================================= */
+
+.customer-empty {
+
+    min-height:
+        330px;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    text-align:
+        center;
+
+}
+
+
+.customer-visual {
+
+    position:
+        relative;
+
+    width:
+        90px;
+
+    height:
+        90px;
+
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    margin-bottom:
+        18px;
+
+}
+
+
+.customer-visual > span {
+
+    position:
+        relative;
+
+    z-index:
+        3;
+
+    width:
+        52px;
+
+    height:
+        52px;
+
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(117,103,248,.15);
+
+    color:
+        #7567f8;
+
+    font-size:
+        25px;
+
+}
+
+
+.customer-ring {
+
+    position:
+        absolute;
+
+    border:
+        1px solid rgba(117,103,248,.20);
+
+    border-radius:
+        50%;
+
+    animation:
+        customerPulse 2.5s infinite ease-in-out;
+
+}
+
+
+.ring-one {
+
+    width:
+        65px;
+
+    height:
+        65px;
+
+}
+
+
+.ring-two {
+
+    width:
+        90px;
+
+    height:
+        90px;
+
+    animation-delay:
+        .5s;
+
+}
+
+
+.customer-empty h3 {
+
+    margin:
+        0;
+
+    color:
+        #fff;
+
+    font-size:
+        17px;
+
+}
+
+
+.customer-empty p {
+
+    max-width:
+        280px;
+
+    margin:
+        9px 0 17px;
+
+    color:
+        #7f90a5;
+
+    font-size:
+        12px;
+
+    line-height:
+        1.6;
+
+}
+
+
+.customer-empty a {
+
+    padding:
+        10px 15px;
+
+    border-radius:
+        9px;
+
+    background:
+        rgba(117,103,248,.12);
+
+    border:
+        1px solid rgba(117,103,248,.20);
+
+    color:
+        #9b92ff;
+
+    text-decoration:
+        none;
+
+    font-size:
+        11px;
+
+    font-weight:
+        700;
+
+}
+
+
+@keyframes customerPulse {
+
+    0%,
+    100% {
+
+        transform:
+            scale(.95);
+
+        opacity:
+            .5;
+
+    }
+
+    50% {
+
+        transform:
+            scale(1.08);
+
+        opacity:
+            1;
+
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .performance-grid {
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+}
+
+
+@media (max-width: 900px) {
+
+    .dashboard-dataset-bar {
+
+        align-items:
+            stretch;
+
+        flex-direction:
+            column;
+
+    }
+
+    .dataset-selector-form {
+
+        width:
+            100%;
+
+    }
+
+    .dataset-selector-form select {
+
+        flex:
+            1;
+
+        min-width:
+            0;
+
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .performance-grid {
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .performance-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .customer-mini-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .dataset-selector-form {
+
+        flex-direction:
+            column;
+
+    }
+
+    .dataset-selector-form select,
+    .dataset-selector-form button {
+
+        width:
+            100%;
+
+    }
+
+    .dashboard-date-form select {
+
+        min-width:
+            120px;
+
+    }
+
+}
+
+</style>
+
 
 {% endblock %}
 
 
+
 {% block content %}
 
-<div class="dashboard-layout">
+<!-- =========================================================
+     APPLICATION SHELL
+========================================================= -->
+
+<div class="app-shell">
 
 
     <!-- =====================================================
-         SIDEBAR
+         REUSABLE SIDEBAR
     ====================================================== -->
 
-    <aside class="sidebar"
-           id="smartSidebar">
+    
+{% load static %}
 
+<aside class="sidebar" id="smartBISidebar">
 
-        <!-- BRAND -->
+    <!-- =====================================================
+         BRAND
+    ====================================================== -->
 
-        <div class="sidebar-brand">
+    <div class="sidebar-brand">
 
-            <a href="{% url 'core:dashboard' %}"
-               class="sidebar-logo">
+        <a href="{% url 'core:dashboard' %}" class="sidebar-brand-link">
 
-                <div class="sidebar-logo-icon">
-                    <span>S</span>
-                </div>
-
-                <div class="sidebar-brand-text">
-
-                    <strong>
-                        Smart BI
-                    </strong>
-
-                    <small>
-                        Decision Intelligence
-                    </small>
-
-                </div>
-
-            </a>
-
-        </div>
-
-
-        <!-- USER -->
-
-        <div class="sidebar-user">
-
-            <div class="sidebar-avatar">
-                {{ user.username|first|upper }}
+            <div class="sidebar-logo">
+                <span>BI</span>
             </div>
 
-            <div class="sidebar-user-info">
+            <div class="sidebar-brand-text">
 
                 <strong>
-                    {{ user.get_full_name|default:user.username }}
+                    Smart BI
                 </strong>
 
                 <span>
-                    {{ user.user_type }}
+                    Decision Intelligence
                 </span>
 
             </div>
 
-            <span class="online-dot"></span>
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         USER PROFILE
+    ====================================================== -->
+
+    <div class="sidebar-user">
+
+        <div class="sidebar-user-avatar">
+
+            {% if user.first_name %}
+                {{ user.first_name|first|upper }}
+            {% else %}
+                {{ user.username|first|upper }}
+            {% endif %}
 
         </div>
 
 
-        <!-- =================================================
-             NAVIGATION
-        ================================================== -->
+        <div class="sidebar-user-info">
 
-        <nav class="sidebar-navigation">
+            <strong>
+                {% if user.first_name %}
+                    {{ user.first_name }}
+                {% else %}
+                    {{ user.username }}
+                {% endif %}
+            </strong>
 
+            <span>
+                {% if user.is_superuser %}
+                    Administrator
+                {% elif user.is_staff %}
+                    Staff
+                {% else %}
+                    {{ user.user_type|default:"Business User" }}
+                {% endif %}
+            </span>
 
-            <!-- OVERVIEW -->
+        </div>
 
-            <div class="sidebar-section">
 
-                <div class="sidebar-section-title">
-                    OVERVIEW
-                </div>
+        <span class="sidebar-user-online"></span>
 
+    </div>
 
-                <a href="{% url 'core:dashboard' %}"
-                   class="sidebar-link active">
 
-                    <span class="sidebar-link-icon">
-                        ⌂
-                    </span>
+    <!-- =====================================================
+         NAVIGATION
+    ====================================================== -->
 
-                    <span class="sidebar-link-text">
-                        Dashboard
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-
-            </div>
-
-
-            <!-- =================================================
-                 DATA
-            ================================================== -->
-
-            <div class="sidebar-section">
-
-                <div class="sidebar-section-title">
-                    DATA
-                </div>
-
-
-                <a href="{% url 'data_management:dataset_management' %}"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        ▣
-                    </span>
-
-                    <span class="sidebar-link-text">
-                        Data Management
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-
-            </div>
-
-
-            <!-- =================================================
-                 INTELLIGENCE
-            ================================================== -->
-
-            <div class="sidebar-section">
-
-                <div class="sidebar-section-title">
-                    INTELLIGENCE
-                </div>
-
-
-                <!-- BUSINESS ANALYTICS -->
-
-                <a href="{% url 'analytics:business_intelligence' %}"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        ◈
-                    </span>
-
-                    <span class="sidebar-link-text">
-                        Business Analytics
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-
-
-                <!-- CUSTOMER INTELLIGENCE -->
-
-                <a href="{% url 'analytics:customer_intelligence' %}"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        ♙
-                    </span>
-
-                    <span class="sidebar-link-text">
-                        Customer Intelligence
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-                <a href="{% url 'analytics:product_intelligence' %}"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        ♙
-                    </span>
-
-                    <span class="sidebar-link-text">
-                        Product Intelligence
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-                <a href="{% url 'analytics:regional_intelligence' %}"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        ♙
-                    </span>
-
-                    <span class="sidebar-link-text">
-                        Regional Intelligence
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-                <a href="{% url 'analytics:sales_intelligence' %}"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        ♙
-                    </span>
-
-                    <span class="sidebar-link-text">
-                        Sales Intelligence
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-                <a href="{% url 'analytics:financial_intelligence' %}"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        ♙
-                    </span>
-
-                    <span class="sidebar-link-text">
-                         Financial Intelligence
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-                <a href="{% url 'analytics:marketing_intelligence' %}"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        ♙
-                    </span>
-
-                    <span class="sidebar-link-text">
-                         Marketing Intelligence
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-                <a href="{% url 'analytics:returns_intelligence' %}"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        ♙
-                    </span>
-
-                    <span class="sidebar-link-text">
-                         Returns Intelligence
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-                
-                
-                
-
-<div class="sidebar-section-title">
-                    INSIGHTS
-                </div>
-                <!-- ADVANCED INSIGHTS -->
-
-                <a href="{% url 'advanced_insights:dashboard' %}"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        ✦
-                    </span>
-
-                    <span class="sidebar-link-text">
-                        Advanced Insights
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-                <a href="{% url 'advanced_insights:anomaly_detection' %}"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        ✦
-                    </span>
-
-                    <span class="sidebar-link-text">
-                        Anomaly Insights
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-                <a href="{% url 'advanced_insights:root_cause_analysis' %}"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        ✦
-                    </span>
-
-                    <span class="sidebar-link-text">
-                        Root Cause Analysis
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-                
-                <a href="{% url 'advanced_insights:customer_risk_analysis' %}"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        ✦
-                    </span>
-
-                    <span class="sidebar-link-text">
-                        Customer Risk Analysis
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-                <a href="{% url 'advanced_insights:opportunity_detection' %}"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        ✦
-                    </span>
-
-                    <span class="sidebar-link-text">
-                        Opportunity Detection
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-                
-<div class="sidebar-section-title">
-                    DECISION INTELLIGENCE
-                </div>
-
-                
-                <a href="{% url 'decision_intelligence:recommendations' %}"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        ✦
-                    </span>
-
-                    <span class="sidebar-link-text">
-                         Recommendations
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-                <a href="{% url 'decision_intelligence:what_if' %}"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        ✦
-                    </span>
-
-                    <span class="sidebar-link-text">
-                         What-If Simulator
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-
-
-                <!-- DECISION INTELLIGENCE -->
-
-                <a href="#"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        ◎
-                    </span>
-
-                    <span class="sidebar-link-text">
-                        Decision Intelligence
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-
-            </div>
-
-
-
-            <!-- =================================================
-                 REPORTING
-            ================================================== -->
-
-            <div class="sidebar-section">
-
-                <div class="sidebar-section-title">
-                    REPORTING
-                </div>
-
-
-                <a href="#"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        ▤
-                    </span>
-
-                    <span class="sidebar-link-text">
-                        Reports
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-
-            </div>
-
-
-            <!-- =================================================
-                 ADMINISTRATION
-            ================================================== -->
-
-            {% if user.is_staff or user.is_superuser %}
-
-            <div class="sidebar-section">
-
-                <div class="sidebar-section-title">
-                    ADMINISTRATION
-                </div>
-
-
-                <a href="{% url 'admin_dashboard:dashboard' %}"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        🛡
-                    </span>
-
-                    <span class="sidebar-link-text">
-                        Admin Dashboard
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-
-
-                <a href="{% url 'admin_dashboard:users' %}"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        👥
-                    </span>
-
-                    <span class="sidebar-link-text">
-                        User Management
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-
-
-                <a href="/admin/"
-                   target="_blank"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        ⚙
-                    </span>
-
-                    <span class="sidebar-link-text">
-                        Django Admin
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        ↗
-                    </span>
-
-                </a>
-
-            </div>
-
-            {% endif %}
-
-
-            <!-- SYSTEM -->
-
-            <div class="sidebar-section">
-
-                <div class="sidebar-section-title">
-                    SYSTEM
-                </div>
-
-
-                <a href="#"
-                   class="sidebar-link">
-
-                    <span class="sidebar-link-icon">
-                        ⚙
-                    </span>
-
-                    <span class="sidebar-link-text">
-                        Settings
-                    </span>
-
-                    <span class="sidebar-link-arrow">
-                        →
-                    </span>
-
-                </a>
-
-            </div>
-
-
-        </nav>
+    <nav class="sidebar-navigation">
 
 
         <!-- =================================================
-             SIDEBAR BOTTOM
+             OVERVIEW
         ================================================== -->
 
-        <div class="sidebar-bottom">
+        <div class="sidebar-section">
 
-
-            <div class="sidebar-system-status">
-
-                <span class="system-status-indicator"></span>
-
-                <div>
-
-                    <strong>
-                        System Online
-                    </strong>
-
-                    <small>
-                        Intelligence Engine
-                    </small>
-
-                </div>
-
+            <div class="sidebar-section-title">
+                OVERVIEW
             </div>
 
 
-            <a href="{% url 'accounts:logout' %}"
-               class="sidebar-logout">
+            <a
+                href="{% url 'core:dashboard' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'core' and request.resolver_match.url_name == 'dashboard' %}
+                    active
+                {% endif %}"
+            >
 
-                <span>
-                    ↪
+                <span class="sidebar-link-icon">
+                    ⌂
                 </span>
 
-                <span>
-                    Logout
+                <span class="sidebar-link-text">
+                    Dashboard
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
                 </span>
 
             </a>
@@ -622,17 +1314,788 @@ Smart BI | Executive Dashboard
         </div>
 
 
-    </aside>
+
+        <!-- =================================================
+             DATA
+        ================================================== -->
+
+        <div class="sidebar-section">
+
+            <div class="sidebar-section-title">
+                DATA
+            </div>
+
+
+            <a
+                href="{% url 'data_management:dataset_management' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'dataset_management' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    ▣
+                </span>
+
+                <span class="sidebar-link-text">
+                    Data Management
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+        </div>
+
+
+
+        <!-- =================================================
+             INTELLIGENCE
+        ================================================== -->
+
+        <div class="sidebar-section">
+
+            <div class="sidebar-section-title">
+                INTELLIGENCE
+            </div>
+
+
+            <!-- BUSINESS ANALYTICS -->
+
+            <a
+                href="{% url 'analytics:business_intelligence' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'business_intelligence' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    ◈
+                </span>
+
+                <span class="sidebar-link-text">
+                    Business Analytics
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- CUSTOMER -->
+
+            <a
+                href="{% url 'analytics:customer_intelligence' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'customer_intelligence' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    ♙
+                </span>
+
+                <span class="sidebar-link-text">
+                    Customer Intelligence
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- PRODUCT -->
+
+            <a
+                href="{% url 'analytics:product_intelligence' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'product_intelligence' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    ◉
+                </span>
+
+                <span class="sidebar-link-text">
+                    Product Intelligence
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- REGIONAL -->
+
+            <a
+                href="{% url 'analytics:regional_intelligence' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'regional_intelligence' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    ◎
+                </span>
+
+                <span class="sidebar-link-text">
+                    Regional Intelligence
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- SALES -->
+
+            <a
+                href="{% url 'analytics:sales_intelligence' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'sales_intelligence' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    ↗
+                </span>
+
+                <span class="sidebar-link-text">
+                    Sales Intelligence
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- FINANCIAL -->
+
+            <a
+                href="{% url 'analytics:financial_intelligence' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'financial_intelligence' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    ₹
+                </span>
+
+                <span class="sidebar-link-text">
+                    Financial Intelligence
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- MARKETING -->
+
+            <a
+                href="{% url 'analytics:marketing_intelligence' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'marketing_intelligence' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    ✦
+                </span>
+
+                <span class="sidebar-link-text">
+                    Marketing Intelligence
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- RETURNS -->
+
+            <a
+                href="{% url 'analytics:returns_intelligence' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'returns_intelligence' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    ↩
+                </span>
+
+                <span class="sidebar-link-text">
+                    Returns Intelligence
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+        </div>
+
+
+
+        <!-- =================================================
+             ADVANCED INSIGHTS
+        ================================================== -->
+
+        <div class="sidebar-section">
+
+            <div class="sidebar-section-title">
+                INSIGHTS
+            </div>
+
+
+            <!-- ADVANCED INSIGHTS -->
+
+            <a
+                href="{% url 'advanced_insights:dashboard' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'advanced_insights' and request.resolver_match.url_name == 'dashboard' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    ✦
+                </span>
+
+                <span class="sidebar-link-text">
+                    Advanced Insights
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- ANOMALY -->
+
+            <a
+                href="{% url 'advanced_insights:anomaly_detection' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'advanced_insights' and request.resolver_match.url_name == 'anomaly_detection' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    !
+                </span>
+
+                <span class="sidebar-link-text">
+                    Anomaly Insights
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- ROOT CAUSE -->
+
+            <a
+                href="{% url 'advanced_insights:root_cause_analysis' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'advanced_insights' and request.resolver_match.url_name == 'root_cause_analysis' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    ⌕
+                </span>
+
+                <span class="sidebar-link-text">
+                    Root Cause Analysis
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- CUSTOMER RISK -->
+
+            <a
+                href="{% url 'advanced_insights:customer_risk_analysis' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'advanced_insights' and request.resolver_match.url_name == 'customer_risk_analysis' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    ⚠
+                </span>
+
+                <span class="sidebar-link-text">
+                    Customer Risk Analysis
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- OPPORTUNITY -->
+
+            <a
+                href="{% url 'advanced_insights:opportunity_detection' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'advanced_insights' and request.resolver_match.url_name == 'opportunity_detection' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    ◎
+                </span>
+
+                <span class="sidebar-link-text">
+                    Opportunity Detection
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+        </div>
+
+
+
+        <!-- =================================================
+             DECISION INTELLIGENCE
+        ================================================== -->
+
+        <div class="sidebar-section">
+
+            <div class="sidebar-section-title">
+                DECISION INTELLIGENCE
+            </div>
+
+
+            <!-- RECOMMENDATIONS -->
+
+            <a
+                href="{% url 'decision_intelligence:recommendations' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'decision_intelligence' and request.resolver_match.url_name == 'recommendations' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    🎯
+                </span>
+
+                <span class="sidebar-link-text">
+                    Recommendations
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- WHAT IF -->
+
+            <a
+                href="{% url 'decision_intelligence:what_if' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'decision_intelligence' and request.resolver_match.url_name == 'what_if' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    🔬
+                </span>
+
+                <span class="sidebar-link-text">
+                    What-If Simulator
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- SCENARIO -->
+
+            <a
+                href="{% url 'decision_intelligence:scenario_planning' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'decision_intelligence' and request.resolver_match.url_name == 'scenario_planning' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    📋
+                </span>
+
+                <span class="sidebar-link-text">
+                    Scenario Planning
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- ALERTS -->
+
+            <a
+                href="{% url 'decision_intelligence:business_alerts' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'decision_intelligence' and request.resolver_match.url_name == 'business_alerts' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    🚨
+                </span>
+
+                <span class="sidebar-link-text">
+                    Business Alerts
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- ACTION CENTER -->
+
+            <a
+                href="{% url 'decision_intelligence:action_center' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'decision_intelligence' and request.resolver_match.url_name == 'action_center' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    ⚡
+                </span>
+
+                <span class="sidebar-link-text">
+                    Action Center
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- DECISION IMPACT -->
+
+            <a
+                href="{% url 'decision_intelligence:decision_impact' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'decision_intelligence' and request.resolver_match.url_name == 'decision_impact' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    📈
+                </span>
+
+                <span class="sidebar-link-text">
+                    Decision Impact
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+        </div>
+
+
+
+        <!-- =================================================
+             REPORTING
+        ================================================== -->
+
+        <div class="sidebar-section">
+
+            <div class="sidebar-section-title">
+                REPORTING
+            </div>
+
+
+            <a
+                href="{% url 'reporting:dashboard' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'reporting' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    ▤
+                </span>
+
+                <span class="sidebar-link-text">
+                    Reports
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+        </div>
+
+
+
+        <!-- =================================================
+             ADMINISTRATION
+        ================================================== -->
+
+        {% if user.is_staff or user.is_superuser %}
+
+        <div class="sidebar-section">
+
+            <div class="sidebar-section-title">
+                ADMINISTRATION
+            </div>
+
+
+            <!-- ADMIN DASHBOARD -->
+
+            <a
+                href="{% url 'admin_dashboard:dashboard' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'admin_dashboard' and request.resolver_match.url_name == 'dashboard' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    ◫
+                </span>
+
+                <span class="sidebar-link-text">
+                    Admin Dashboard
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- USER MANAGEMENT -->
+
+            <a
+                href="{% url 'admin_dashboard:users' %}"
+                class="sidebar-link
+                {% if request.resolver_match.app_name == 'admin_dashboard' and request.resolver_match.url_name == 'users' %}
+                    active
+                {% endif %}"
+            >
+
+                <span class="sidebar-link-icon">
+                    ♙
+                </span>
+
+                <span class="sidebar-link-text">
+                    User Management
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- DJANGO ADMIN -->
+
+            <a
+                href="/admin/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="sidebar-link"
+            >
+
+                <span class="sidebar-link-icon">
+                    ⚙
+                </span>
+
+                <span class="sidebar-link-text">
+                    Django Admin
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    ↗
+                </span>
+
+            </a>
+
+        </div>
+
+        {% endif %}
+
+
+
+        <!-- =================================================
+             SYSTEM
+        ================================================== -->
+
+        <div class="sidebar-section">
+
+            <div class="sidebar-section-title">
+                SYSTEM
+            </div>
+
+
+            <!-- Settings will be connected when settings module is created -->
+
+            <a
+                href="#"
+                class="sidebar-link sidebar-settings-link"
+            >
+
+                <span class="sidebar-link-icon">
+                    ⚙
+                </span>
+
+                <span class="sidebar-link-text">
+                    Settings
+                </span>
+
+                <span class="sidebar-link-arrow">
+                    →
+                </span>
+
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =====================================================
+         SIDEBAR BOTTOM
+    ====================================================== -->
+
+    <div class="sidebar-bottom">
+
+
+        <!-- SYSTEM STATUS -->
+
+        <div class="sidebar-system-status">
+
+            <span class="system-status-indicator"></span>
+
+            <div>
+
+                <strong>
+                    System Online
+                </strong>
+
+                <small>
+                    Intelligence Engine
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- LOGOUT -->
+
+        <a
+            href="{% url 'accounts:logout' %}"
+            class="sidebar-logout"
+        >
+
+            <span class="sidebar-logout-icon">
+                ↪
+            </span>
+
+            <span>
+                Logout
+            </span>
+
+        </a>
+
+    </div>
+
+</aside>
 
 
     <!-- =====================================================
          MAIN DASHBOARD
     ====================================================== -->
 
-    <main class="dashboard-main">
+    <main class="main-content dashboard-main">
 
 
-        <!-- TOPBAR -->
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
 
         <header class="dashboard-topbar">
 
@@ -643,46 +2106,149 @@ Smart BI | Executive Dashboard
                     EXECUTIVE OVERVIEW
                 </span>
 
+
                 <h1>
                     Business Dashboard
                 </h1>
 
+
                 <p>
 
                     Welcome back,
-                    <strong>{{ user.username }}</strong>.
+
+                    <strong>
+                        {{ user.username }}
+                    </strong>.
 
                     Here's your business intelligence overview.
 
                 </p>
 
+
+                {% if has_data %}
+
+                <span
+                    class="data-source-badge
+                    {% if data_source == 'original' %}
+                        original
+                    {% endif %}"
+                >
+
+                    <span
+                        class="data-source-dot"
+                    ></span>
+
+
+                    {% if data_source == "cleaned" %}
+
+                        Cleaned Dataset Active
+
+                    {% elif data_source == "original" %}
+
+                        Original Dataset Active
+
+                    {% else %}
+
+                        Dataset Connected
+
+                    {% endif %}
+
+                </span>
+
+                {% endif %}
+
             </div>
 
+
+
+            <!-- =================================================
+                 DASHBOARD ACTIONS
+            ================================================== -->
 
             <div class="dashboard-actions">
 
 
-                <button
-                    type="button"
-                    class="date-button">
+                <form
+                    method="get"
+                    class="dashboard-date-form"
+                >
 
-                    <span class="button-icon">
-                        ◷
-                    </span>
+                    {% if selected_dataset %}
 
-                    Last 30 Days
+                    <input
+                        type="hidden"
+                        name="dataset"
+                        value="{{ selected_dataset.id }}"
+                    >
 
-                    <span>
-                        ▾
-                    </span>
+                    {% endif %}
 
-                </button>
+
+                    <select
+                        name="range"
+                        onchange="this.form.submit()"
+                        aria-label="Date range"
+                    >
+
+                        <option
+                            value="30"
+                            {% if selected_range == "30" %}
+                                selected
+                            {% endif %}
+                        >
+                            Last 30 Days
+                        </option>
+
+
+                        <option
+                            value="90"
+                            {% if selected_range == "90" %}
+                                selected
+                            {% endif %}
+                        >
+                            Last 3 Months
+                        </option>
+
+
+                        <option
+                            value="180"
+                            {% if selected_range == "180" %}
+                                selected
+                            {% endif %}
+                        >
+                            Last 6 Months
+                        </option>
+
+
+                        <option
+                            value="365"
+                            {% if selected_range == "365" %}
+                                selected
+                            {% endif %}
+                        >
+                            Last 12 Months
+                        </option>
+
+
+                        <option
+                            value="all"
+                            {% if selected_range == "all" %}
+                                selected
+                            {% endif %}
+                        >
+                            All Data
+                        </option>
+
+                    </select>
+
+                </form>
 
 
                 <button
                     type="button"
                     class="refresh-button"
-                    onclick="window.location.reload();">
+                    onclick="window.location.reload();"
+                >
 
                     <span>
                         ↻
@@ -697,8 +2263,114 @@ Smart BI | Executive Dashboard
         </header>
 
 
+
         <!-- =================================================
-             WELCOME
+             DATASET SELECTOR
+        ================================================== -->
+
+        <div class="dashboard-dataset-bar">
+
+
+            <div class="dataset-selector-info">
+
+                <div class="dataset-selector-icon">
+                    ◫
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Dashboard Dataset
+                    </strong>
+
+
+                    {% if selected_dataset %}
+
+                    <span>
+
+                        {{ selected_dataset.name }}
+
+                        ·
+
+                        {{ selected_dataset.dataset_type }}
+
+                        {% if selected_version %}
+
+                            · Version
+                            {{ selected_version.version_number }}
+
+                        {% endif %}
+
+                    </span>
+
+                    {% else %}
+
+                    <span>
+                        No business dataset selected
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+
+            {% if datasets %}
+
+            <form
+                method="get"
+                class="dataset-selector-form"
+            >
+
+
+                <input
+                    type="hidden"
+                    name="range"
+                    value="{{ selected_range }}"
+                >
+
+
+                <select name="dataset">
+
+                    {% for dataset in datasets %}
+
+                    <option
+                        value="{{ dataset.id }}"
+                        {% if selected_dataset and dataset.id == selected_dataset.id %}
+                            selected
+                        {% endif %}
+                    >
+
+                        {{ dataset.name }}
+
+                        —
+                        
+                        {{ dataset.dataset_type }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+
+                <button type="submit">
+                    Apply Dataset
+                </button>
+
+            </form>
+
+            {% endif %}
+
+        </div>
+
+
+
+        <!-- =================================================
+             WELCOME / HERO
         ================================================== -->
 
         <section class="dashboard-welcome">
@@ -706,9 +2378,11 @@ Smart BI | Executive Dashboard
 
             <div class="welcome-background-grid"></div>
 
+
             <div class="welcome-orb orb-one"></div>
 
             <div class="welcome-orb orb-two"></div>
+
 
 
             <div class="welcome-content">
@@ -723,6 +2397,7 @@ Smart BI | Executive Dashboard
                 </div>
 
 
+
                 <h2>
 
                     Turn your data into
@@ -734,13 +2409,16 @@ Smart BI | Executive Dashboard
                 </h2>
 
 
+
                 <p>
 
-                    Upload your business datasets to unlock
-                    analytics, forecasting, anomaly detection,
-                    recommendations and decision intelligence.
+                    Your Executive Dashboard combines
+                    business analytics, advanced insights,
+                    forecasting and decision intelligence
+                    into one management view.
 
                 </p>
+
 
 
                 <div class="welcome-actions">
@@ -748,7 +2426,8 @@ Smart BI | Executive Dashboard
 
                     <a
                         href="{% url 'data_management:dataset_management' %}"
-                        class="primary-dashboard-btn">
+                        class="primary-dashboard-btn"
+                    >
 
                         <span>
                             Explore Data Management
@@ -761,9 +2440,11 @@ Smart BI | Executive Dashboard
                     </a>
 
 
+
                     <a
-                        href="{% url 'data_management:upload' %}"
-                        class="secondary-dashboard-btn">
+                        href="{% url 'data_management:upload_data' %}s"
+                        class="secondary-dashboard-btn"
+                    >
 
                         + Upload Data
 
@@ -772,41 +2453,67 @@ Smart BI | Executive Dashboard
                 </div>
 
 
+
                 <div class="welcome-tech">
 
-                    <span>Python</span>
-                    <span>Django</span>
-                    <span>Pandas</span>
-                    <span>SQL</span>
-                    <span>ML</span>
+                    <span>
+                        Python
+                    </span>
+
+                    <span>
+                        Django
+                    </span>
+
+                    <span>
+                        Pandas
+                    </span>
+
+                    <span>
+                        SQL
+                    </span>
+
+                    <span>
+                        ML
+                    </span>
 
                 </div>
-
 
             </div>
 
 
-            <!-- VISUAL -->
+
+            <!-- =================================================
+                 HERO VISUAL
+            ================================================== -->
 
             <div class="welcome-visual">
 
 
-                <div class="analytics-orbit orbit-large"></div>
+                <div
+                    class="analytics-orbit orbit-large"
+                ></div>
 
-                <div class="analytics-orbit orbit-small"></div>
+
+                <div
+                    class="analytics-orbit orbit-small"
+                ></div>
+
 
 
                 <div class="analytics-core">
 
                     <div class="core-glow"></div>
 
+
                     <span class="core-icon">
                         BI
                     </span>
 
+
                     <strong>
                         Intelligence
                     </strong>
+
 
                     <small>
                         Engine
@@ -815,11 +2522,17 @@ Smart BI | Executive Dashboard
                 </div>
 
 
-                <div class="floating-metric metric-growth">
+
+                <!-- GROWTH -->
+
+                <div
+                    class="floating-metric metric-growth"
+                >
 
                     <span class="metric-mini-icon">
                         ↗
                     </span>
+
 
                     <div>
 
@@ -827,8 +2540,19 @@ Smart BI | Executive Dashboard
                             Growth
                         </small>
 
+
                         <strong>
-                            +24.8%
+
+                            {% if has_data %}
+
+                                {{ revenue_growth|floatformat:1 }}%
+
+                            {% else %}
+
+                                —
+
+                            {% endif %}
+
                         </strong>
 
                     </div>
@@ -836,11 +2560,17 @@ Smart BI | Executive Dashboard
                 </div>
 
 
-                <div class="floating-metric metric-ai">
+
+                <!-- AI -->
+
+                <div
+                    class="floating-metric metric-ai"
+                >
 
                     <span class="metric-mini-icon">
                         ✦
                     </span>
+
 
                     <div>
 
@@ -848,8 +2578,23 @@ Smart BI | Executive Dashboard
                             AI Insights
                         </small>
 
+
                         <strong>
-                            Ready
+
+                            {% if ai_insight_count %}
+
+                                {{ ai_insight_count }}
+
+                            {% elif has_data %}
+
+                                Ready
+
+                            {% else %}
+
+                                Waiting
+
+                            {% endif %}
+
                         </strong>
 
                     </div>
@@ -857,34 +2602,51 @@ Smart BI | Executive Dashboard
                 </div>
 
 
-                <div class="floating-metric metric-alert">
+
+                <!-- QUALITY -->
+
+                <div
+                    class="floating-metric metric-alert"
+                >
 
                     <span class="metric-mini-icon">
                         !
                     </span>
 
+
                     <div>
 
                         <small>
-                            Alerts
+                            Data Quality
                         </small>
 
+
                         <strong>
-                            03
+
+                            {% if has_data %}
+
+                                {{ quality_score|floatformat:0 }}%
+
+                            {% else %}
+
+                                —
+
+                            {% endif %}
+
                         </strong>
 
                     </div>
 
                 </div>
-
 
             </div>
 
         </section>
 
 
+
         <!-- =================================================
-             SNAPSHOT
+             BUSINESS SNAPSHOT
         ================================================== -->
 
         <div class="dashboard-section-header">
@@ -896,6 +2658,7 @@ Smart BI | Executive Dashboard
                     BUSINESS SNAPSHOT
                 </span>
 
+
                 <h2>
                     Key Performance Indicators
                 </h2>
@@ -903,23 +2666,39 @@ Smart BI | Executive Dashboard
             </div>
 
 
+
             <div class="section-status">
 
                 <span></span>
 
-                Waiting for business data
+
+                {% if has_data %}
+
+                    {{ selected_range_label|default:"Live dataset analysis" }}
+
+                {% else %}
+
+                    Waiting for business data
+
+                {% endif %}
 
             </div>
 
         </div>
 
 
-        <!-- KPI -->
+
+        <!-- =================================================
+             KPI GRID
+        ================================================== -->
 
         <section class="kpi-grid">
 
 
+            <!-- REVENUE -->
+
             <div class="kpi-card kpi-purple">
+
 
                 <div class="kpi-top">
 
@@ -927,11 +2706,13 @@ Smart BI | Executive Dashboard
                         ₹
                     </div>
 
+
                     <span class="kpi-status">
-                        DATA
+                        REVENUE
                     </span>
 
                 </div>
+
 
 
                 <div class="kpi-content">
@@ -940,12 +2721,34 @@ Smart BI | Executive Dashboard
                         Total Revenue
                     </span>
 
-                    <strong>
-                        —
+
+                    <strong class="kpi-value">
+
+                        {% if has_data and total_revenue %}
+
+                            ₹{{ total_revenue|floatformat:0 }}
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
                     </strong>
 
+
                     <small>
-                        Upload Sales data
+
+                        {% if has_data %}
+
+                            {{ selected_range_label }}
+
+                        {% else %}
+
+                            Upload Sales data
+
+                        {% endif %}
+
                     </small>
 
                 </div>
@@ -958,7 +2761,11 @@ Smart BI | Executive Dashboard
             </div>
 
 
+
+            <!-- PROFIT -->
+
             <div class="kpi-card kpi-green">
+
 
                 <div class="kpi-top">
 
@@ -966,11 +2773,13 @@ Smart BI | Executive Dashboard
                         %
                     </div>
 
+
                     <span class="kpi-status">
-                        DATA
+                        PROFIT
                     </span>
 
                 </div>
+
 
 
                 <div class="kpi-content">
@@ -979,12 +2788,34 @@ Smart BI | Executive Dashboard
                         Profit Margin
                     </span>
 
-                    <strong>
-                        —
+
+                    <strong class="kpi-value">
+
+                        {% if has_data and profit_margin %}
+
+                            {{ profit_margin|floatformat:1 }}%
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
                     </strong>
 
+
                     <small>
-                        Requires profit / cost data
+
+                        {% if profit_margin_available %}
+
+                            Revenue profitability
+
+                        {% else %}
+
+                            Requires profit / cost data
+
+                        {% endif %}
+
                     </small>
 
                 </div>
@@ -997,7 +2828,11 @@ Smart BI | Executive Dashboard
             </div>
 
 
+
+            <!-- GROWTH -->
+
             <div class="kpi-card kpi-blue">
+
 
                 <div class="kpi-top">
 
@@ -1005,11 +2840,13 @@ Smart BI | Executive Dashboard
                         ↗
                     </div>
 
+
                     <span class="kpi-status">
-                        DATA
+                        GROWTH
                     </span>
 
                 </div>
+
 
 
                 <div class="kpi-content">
@@ -1018,12 +2855,49 @@ Smart BI | Executive Dashboard
                         Revenue Growth
                     </span>
 
-                    <strong>
-                        —
+
+                    <strong class="kpi-value">
+
+                        {% if has_data %}
+
+                            {{ revenue_growth|floatformat:1 }}%
+
+
+                            {% if revenue_growth >= 0 %}
+
+                            <span class="kpi-trend">
+                                ↗ Positive
+                            </span>
+
+                            {% else %}
+
+                            <span class="kpi-trend negative">
+                                ↘ Declining
+                            </span>
+
+                            {% endif %}
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
                     </strong>
 
+
                     <small>
-                        Requires Sales history
+
+                        {% if has_data %}
+
+                            Current vs previous period
+
+                        {% else %}
+
+                            Requires Sales history
+
+                        {% endif %}
+
                     </small>
 
                 </div>
@@ -1036,7 +2910,11 @@ Smart BI | Executive Dashboard
             </div>
 
 
+
+            <!-- CUSTOMERS -->
+
             <div class="kpi-card kpi-orange">
+
 
                 <div class="kpi-top">
 
@@ -1044,11 +2922,13 @@ Smart BI | Executive Dashboard
                         ♙
                     </div>
 
+
                     <span class="kpi-status">
-                        DATA
+                        CUSTOMERS
                     </span>
 
                 </div>
+
 
 
                 <div class="kpi-content">
@@ -1057,12 +2937,34 @@ Smart BI | Executive Dashboard
                         Customers
                     </span>
 
-                    <strong>
-                        —
+
+                    <strong class="kpi-value">
+
+                        {% if customer_count %}
+
+                            {{ customer_count }}
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
                     </strong>
 
+
                     <small>
-                        Upload Customer data
+
+                        {% if customer_count %}
+
+                            Unique customers detected
+
+                        {% else %}
+
+                            Upload Customer data
+
+                        {% endif %}
+
                     </small>
 
                 </div>
@@ -1075,7 +2977,11 @@ Smart BI | Executive Dashboard
             </div>
 
 
+
+            <!-- HEALTH -->
+
             <div class="kpi-card kpi-red">
+
 
                 <div class="kpi-top">
 
@@ -1083,11 +2989,13 @@ Smart BI | Executive Dashboard
                         ★
                     </div>
 
+
                     <span class="kpi-status">
-                        AI
+                        INTELLIGENCE
                     </span>
 
                 </div>
+
 
 
                 <div class="kpi-content">
@@ -1096,12 +3004,50 @@ Smart BI | Executive Dashboard
                         Business Health
                     </span>
 
-                    <strong>
-                        —
+
+                    <strong class="kpi-value">
+
+                        {% if has_data %}
+
+                            {{ business_health|floatformat:0 }}/100
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
                     </strong>
 
+
                     <small>
-                        Activate analytics
+
+                        {% if has_data %}
+
+                            {% if business_health >= 80 %}
+
+                                Excellent business condition
+
+                            {% elif business_health >= 60 %}
+
+                                Good business condition
+
+                            {% elif business_health >= 40 %}
+
+                                Needs attention
+
+                            {% else %}
+
+                                Critical attention required
+
+                            {% endif %}
+
+                        {% else %}
+
+                            Activate analytics
+
+                        {% endif %}
+
                     </small>
 
                 </div>
@@ -1113,16 +3059,21 @@ Smart BI | Executive Dashboard
 
             </div>
 
-
         </section>
 
 
+
+        {% if has_data %}
+
+
         <!-- =================================================
-             ANALYTICS
+             REVENUE + CUSTOMER
         ================================================== -->
 
         <section class="dashboard-grid">
 
+
+            <!-- REVENUE -->
 
             <div class="dashboard-card large-card">
 
@@ -1135,6 +3086,7 @@ Smart BI | Executive Dashboard
                             REVENUE INTELLIGENCE
                         </span>
 
+
                         <h3>
                             Revenue Performance
                         </h3>
@@ -1143,60 +3095,51 @@ Smart BI | Executive Dashboard
 
 
                     <span class="locked-badge">
-
-                        <i></i>
-
-                        Data Required
-
+                        Live
                     </span>
 
                 </div>
 
 
-                <div class="empty-chart">
 
+                {% if revenue_chart_labels %}
 
-                    <div class="chart-decoration">
+                <div class="real-chart-wrapper">
 
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-
-                    </div>
-
-
-                    <div class="empty-chart-content">
-
-                        <div class="chart-icon">
-                            ↗
-                        </div>
-
-                        <h3>
-                            Revenue analytics will appear here
-                        </h3>
-
-                        <p>
-
-                            Upload Sales data to generate
-                            interactive revenue trends,
-                            growth analysis and performance charts.
-
-                        </p>
-
-
-                        <a href="{% url 'data_management:upload' %}">
-
-                            Upload Sales Data →
-
-                        </a>
-
-                    </div>
+                    <canvas
+                        id="revenueChart"
+                    ></canvas>
 
                 </div>
 
+                {% else %}
+
+                <div class="dashboard-empty-state">
+
+                    <div class="empty-icon">
+                        ↗
+                    </div>
+
+
+                    <h3>
+                        Revenue trend unavailable
+                    </h3>
+
+
+                    <p>
+
+                        A date column and revenue/sales
+                        column are required to create
+                        the trend.
+
+                    </p>
+
+                </div>
+
+                {% endif %}
+
             </div>
+
 
 
             <!-- CUSTOMER -->
@@ -1212,6 +3155,7 @@ Smart BI | Executive Dashboard
                             CUSTOMER INTELLIGENCE
                         </span>
 
+
                         <h3>
                             Customer Overview
                         </h3>
@@ -1221,14 +3165,111 @@ Smart BI | Executive Dashboard
                 </div>
 
 
+
+                {% if customer_count %}
+
+
+                <div class="customer-real">
+
+
+                    <div class="customer-stat-main">
+
+                        <strong>
+                            {{ customer_count }}
+                        </strong>
+
+
+                        <span>
+                            Unique customers detected
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="customer-mini-grid">
+
+
+                        <div class="customer-mini-item">
+
+                            <span>
+                                Orders
+                            </span>
+
+
+                            <strong>
+                                {{ total_orders }}
+                            </strong>
+
+                        </div>
+
+
+
+                        <div class="customer-mini-item">
+
+                            <span>
+                                Units
+                            </span>
+
+
+                            <strong>
+                                {{ total_units|floatformat:0 }}
+                            </strong>
+
+                        </div>
+
+
+
+                        <div class="customer-mini-item">
+
+                            <span>
+                                Returns
+                            </span>
+
+
+                            <strong>
+                                {{ total_returns|floatformat:0 }}
+                            </strong>
+
+                        </div>
+
+
+
+                        <div class="customer-mini-item">
+
+                            <span>
+                                Return Rate
+                            </span>
+
+
+                            <strong>
+                                {{ return_rate|floatformat:1 }}%
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                {% else %}
+
+
                 <div class="customer-empty">
 
 
                     <div class="customer-visual">
 
-                        <div class="customer-ring ring-one"></div>
+                        <div
+                            class="customer-ring ring-one"
+                        ></div>
 
-                        <div class="customer-ring ring-two"></div>
+
+                        <div
+                            class="customer-ring ring-two"
+                        ></div>
+
 
                         <span>
                             ♙
@@ -1238,34 +3279,394 @@ Smart BI | Executive Dashboard
 
 
                     <h3>
-                        No customer data
+                        No customer identifier
                     </h3>
 
 
                     <p>
 
-                        Upload Customer data to activate
-                        customer analytics and segmentation.
+                        Add a customer ID or customer
+                        field to activate customer metrics.
 
                     </p>
 
 
-                    <a href="{% url 'data_management:upload' %}">
-
+                    <a
+                        href="{% url 'data_management:upload_data' %}"
+                    >
                         Upload Customer Data
-
                     </a>
+
+                </div>
+
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             BUSINESS PERFORMANCE
+        ================================================== -->
+
+        <section
+            class="dashboard-card performance-section"
+        >
+
+
+            <div class="card-header">
+
+                <div>
+
+                    <span>
+                        BUSINESS PERFORMANCE
+                    </span>
+
+
+                    <h3>
+                        Operational Snapshot
+                    </h3>
 
                 </div>
 
             </div>
 
 
+
+            <div class="performance-grid">
+
+
+                <div class="performance-item">
+
+                    <span>
+                        Orders
+                    </span>
+
+
+                    <strong>
+                        {{ total_orders }}
+                    </strong>
+
+                </div>
+
+
+
+                <div class="performance-item">
+
+                    <span>
+                        Units Sold
+                    </span>
+
+
+                    <strong>
+                        {{ total_units|floatformat:0 }}
+                    </strong>
+
+                </div>
+
+
+
+                <div class="performance-item">
+
+                    <span>
+                        Returns
+                    </span>
+
+
+                    <strong>
+                        {{ total_returns|floatformat:0 }}
+                    </strong>
+
+                </div>
+
+
+
+                <div class="performance-item">
+
+                    <span>
+                        Data Quality
+                    </span>
+
+
+                    <strong>
+                        {{ quality_score|floatformat:1 }}%
+                    </strong>
+
+                </div>
+
+            </div>
+
         </section>
 
 
+
         <!-- =================================================
-             READINESS
+             TOP PRODUCTS + REGIONS
+        ================================================== -->
+
+        <section class="dashboard-grid">
+
+
+            <!-- PRODUCTS -->
+
+            <div class="dashboard-card">
+
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span>
+                            PRODUCT INTELLIGENCE
+                        </span>
+
+
+                        <h3>
+                            Top Products
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+
+                {% if top_products %}
+
+
+                <div class="top-list">
+
+                    {% for product in top_products %}
+
+                    <div class="top-list-item">
+
+                        <span class="top-list-name">
+
+                            {{ product.name }}
+
+                        </span>
+
+
+                        <span class="top-list-value">
+
+                            ₹{{ product.revenue|floatformat:0 }}
+
+                        </span>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+                {% else %}
+
+
+                <div class="dashboard-empty-state">
+
+                    <div class="empty-icon">
+                        ◉
+                    </div>
+
+
+                    <h3>
+                        Product data unavailable
+                    </h3>
+
+
+                    <p>
+
+                        Product performance will appear
+                        when product and revenue columns
+                        are available.
+
+                    </p>
+
+                </div>
+
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- REGIONS -->
+
+            <div class="dashboard-card">
+
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span>
+                            REGIONAL INTELLIGENCE
+                        </span>
+
+
+                        <h3>
+                            Top Regions
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+
+                {% if top_regions %}
+
+
+                <div class="top-list">
+
+                    {% for region in top_regions %}
+
+                    <div class="top-list-item">
+
+                        <span class="top-list-name">
+
+                            {{ region.name }}
+
+                        </span>
+
+
+                        <span class="top-list-value">
+
+                            ₹{{ region.revenue|floatformat:0 }}
+
+                        </span>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+                {% else %}
+
+
+                <div class="dashboard-empty-state">
+
+                    <div class="empty-icon">
+                        ◎
+                    </div>
+
+
+                    <h3>
+                        Regional data unavailable
+                    </h3>
+
+
+                    <p>
+
+                        Regional performance will appear
+                        when regional and revenue columns
+                        are available.
+
+                    </p>
+
+                </div>
+
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             BUSINESS HEALTH
+        ================================================== -->
+
+        <section class="dashboard-card">
+
+
+            <div class="card-header">
+
+                <div>
+
+                    <span>
+                        BUSINESS HEALTH
+                    </span>
+
+
+                    <h3>
+                        Overall Business Condition
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="health-score">
+
+
+                <div
+                    class="health-circle"
+                    style="--health: {{ business_health }};"
+                >
+
+                    <strong>
+                        {{ business_health|floatformat:0 }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div
+                style="
+                    text-align:center;
+                    color:#8293a8;
+                    font-size:12px;
+                "
+            >
+
+                {% if business_health >= 80 %}
+
+                    Strong business performance with
+                    healthy operating indicators.
+
+                {% elif business_health >= 60 %}
+
+                    Business performance is healthy,
+                    with opportunities for improvement.
+
+                {% elif business_health >= 40 %}
+
+                    Several business indicators require
+                    management attention.
+
+                {% else %}
+
+                    Critical indicators require immediate
+                    investigation.
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        {% endif %}
+
+
+
+        <!-- =================================================
+             PLATFORM READINESS
         ================================================== -->
 
         <section class="dashboard-card readiness-card">
@@ -1279,6 +3680,7 @@ Smart BI | Executive Dashboard
                         PLATFORM READINESS
                     </span>
 
+
                     <h3>
                         Intelligence Activation
                     </h3>
@@ -1287,24 +3689,32 @@ Smart BI | Executive Dashboard
 
 
                 <span class="readiness-badge">
-                    0 / 4 Active
+
+                    {{ active_readiness }} / 4 Active
+
                 </span>
 
             </div>
 
 
+
             <div class="readiness-grid">
 
 
+                <!-- 01 -->
+
                 <div class="readiness-item">
+
 
                     <div class="readiness-number">
                         01
                     </div>
 
+
                     <div class="readiness-icon">
                         ↑
                     </div>
+
 
                     <div class="readiness-content">
 
@@ -1312,29 +3722,49 @@ Smart BI | Executive Dashboard
                             Upload Data
                         </strong>
 
+
                         <p>
+
                             Import your business
                             CSV or Excel datasets.
+
                         </p>
 
                     </div>
 
-                    <span class="readiness-state">
+
+                    {% if readiness_uploaded %}
+
+                    <span class="readiness-state ready">
+                        Ready
+                    </span>
+
+                    {% else %}
+
+                    <span class="readiness-state pending">
                         Pending
                     </span>
+
+                    {% endif %}
 
                 </div>
 
 
+
+                <!-- 02 -->
+
                 <div class="readiness-item">
+
 
                     <div class="readiness-number">
                         02
                     </div>
 
+
                     <div class="readiness-icon">
                         ✓
                     </div>
+
 
                     <div class="readiness-content">
 
@@ -1342,29 +3772,49 @@ Smart BI | Executive Dashboard
                             Validate & Clean
                         </strong>
 
+
                         <p>
+
                             Check quality, missing
                             values and duplicates.
+
                         </p>
 
                     </div>
 
-                    <span class="readiness-state">
+
+                    {% if readiness_cleaned %}
+
+                    <span class="readiness-state ready">
+                        Ready
+                    </span>
+
+                    {% else %}
+
+                    <span class="readiness-state pending">
                         Pending
                     </span>
+
+                    {% endif %}
 
                 </div>
 
 
+
+                <!-- 03 -->
+
                 <div class="readiness-item">
+
 
                     <div class="readiness-number">
                         03
                     </div>
 
+
                     <div class="readiness-icon">
                         ◈
                     </div>
+
 
                     <div class="readiness-content">
 
@@ -1372,29 +3822,49 @@ Smart BI | Executive Dashboard
                             Analyze
                         </strong>
 
+
                         <p>
+
                             Generate business intelligence
                             and visual analytics.
+
                         </p>
 
                     </div>
 
-                    <span class="readiness-state">
+
+                    {% if readiness_analyzed %}
+
+                    <span class="readiness-state ready">
+                        Active
+                    </span>
+
+                    {% else %}
+
+                    <span class="readiness-state locked">
                         Locked
                     </span>
+
+                    {% endif %}
 
                 </div>
 
 
+
+                <!-- 04 -->
+
                 <div class="readiness-item">
+
 
                     <div class="readiness-number">
                         04
                     </div>
 
+
                     <div class="readiness-icon">
                         ✦
                     </div>
+
 
                     <div class="readiness-content">
 
@@ -1402,23 +3872,37 @@ Smart BI | Executive Dashboard
                             Decide
                         </strong>
 
+
                         <p>
+
                             Get forecasts, insights
                             and recommendations.
+
                         </p>
 
                     </div>
 
-                    <span class="readiness-state">
+
+                    {% if readiness_decision %}
+
+                    <span class="readiness-state ready">
+                        Active
+                    </span>
+
+                    {% else %}
+
+                    <span class="readiness-state locked">
                         Locked
                     </span>
 
-                </div>
+                    {% endif %}
 
+                </div>
 
             </div>
 
         </section>
+
 
 
         <!-- =================================================
@@ -1435,6 +3919,7 @@ Smart BI | Executive Dashboard
                     <span>
                         SMART BI PIPELINE
                     </span>
+
 
                     <h2>
                         From Data to Decision
@@ -1454,8 +3939,11 @@ Smart BI | Executive Dashboard
             </div>
 
 
+
             <div class="data-flow">
 
+
+                <!-- DATA -->
 
                 <div class="flow-step">
 
@@ -1463,13 +3951,16 @@ Smart BI | Executive Dashboard
                         01
                     </span>
 
+
                     <div class="flow-icon">
                         ↑
                     </div>
 
+
                     <strong>
                         Data
                     </strong>
+
 
                     <small>
                         Upload
@@ -1478,10 +3969,14 @@ Smart BI | Executive Dashboard
                 </div>
 
 
+
                 <div class="flow-connector">
                     <span></span>
                 </div>
 
+
+
+                <!-- ANALYZE -->
 
                 <div class="flow-step">
 
@@ -1489,13 +3984,16 @@ Smart BI | Executive Dashboard
                         02
                     </span>
 
+
                     <div class="flow-icon">
                         ◉
                     </div>
 
+
                     <strong>
                         Analyze
                     </strong>
+
 
                     <small>
                         Understand
@@ -1504,10 +4002,14 @@ Smart BI | Executive Dashboard
                 </div>
 
 
+
                 <div class="flow-connector">
                     <span></span>
                 </div>
 
+
+
+                <!-- DISCOVER -->
 
                 <div class="flow-step">
 
@@ -1515,13 +4017,16 @@ Smart BI | Executive Dashboard
                         03
                     </span>
 
+
                     <div class="flow-icon">
                         ✦
                     </div>
 
+
                     <strong>
                         Discover
                     </strong>
+
 
                     <small>
                         Insights
@@ -1530,10 +4035,14 @@ Smart BI | Executive Dashboard
                 </div>
 
 
+
                 <div class="flow-connector">
                     <span></span>
                 </div>
 
+
+
+                <!-- DECIDE -->
 
                 <div class="flow-step">
 
@@ -1541,20 +4050,22 @@ Smart BI | Executive Dashboard
                         04
                     </span>
 
+
                     <div class="flow-icon">
                         ◎
                     </div>
 
+
                     <strong>
                         Decide
                     </strong>
+
 
                     <small>
                         Actions
                     </small>
 
                 </div>
-
 
             </div>
 
@@ -1566,24 +4077,38 @@ Smart BI | Executive Dashboard
 </div>
 
 
+
 <!-- =========================================================
-     DASHBOARD JAVASCRIPT
+     CHART.JS
 ========================================================= -->
 
+<script
+    src="https://cdn.jsdelivr.net/npm/chart.js"
+></script>
+
+
+
 <script>
+
+/* =========================================================
+   SMART BI DASHBOARD JAVASCRIPT
+========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
     function () {
 
 
-        /* =============================================
+        /* =================================================
            CARD ENTRANCE ANIMATION
-        ============================================== */
+        ================================================= */
 
         const cards =
             document.querySelectorAll(
-                ".kpi-card, .dashboard-card, .readiness-item, .flow-step"
+                ".kpi-card, " +
+                ".dashboard-card, " +
+                ".readiness-item, " +
+                ".flow-step"
             );
 
 
@@ -1600,7 +4125,9 @@ document.addEventListener(
                     function () {
 
                         card.style.transition =
-                            "opacity .55s ease, transform .55s ease";
+                            "opacity .55s ease, " +
+                            "transform .55s ease";
+
 
                         card.style.opacity = "1";
 
@@ -1608,16 +4135,17 @@ document.addEventListener(
                             "translateY(0)";
 
                     },
-                    100 + (index * 55)
+                    100 + (index * 45)
                 );
 
             }
         );
 
 
-        /* =============================================
-           KPI HOVER MOVEMENT
-        ============================================== */
+
+        /* =================================================
+           KPI CARD 3D HOVER
+        ================================================= */
 
         document
             .querySelectorAll(".kpi-card")
@@ -1634,11 +4162,13 @@ document.addEventListener(
 
 
                             const x =
-                                event.clientX - rect.left;
+                                event.clientX -
+                                rect.left;
 
 
                             const y =
-                                event.clientY - rect.top;
+                                event.clientY -
+                                rect.top;
 
 
                             const rotateY =
@@ -1663,8 +4193,7 @@ document.addEventListener(
                         "mouseleave",
                         function () {
 
-                            card.style.transform =
-                                "";
+                            card.style.transform = "";
 
                         }
                     );
@@ -1673,10 +4202,266 @@ document.addEventListener(
             );
 
 
+
+        /* =================================================
+           REVENUE CHART
+        ================================================= */
+
+        const revenueCanvas =
+            document.getElementById(
+                "revenueChart"
+            );
+
+
+        if (
+            revenueCanvas &&
+            typeof Chart !== "undefined"
+        ) {
+
+
+            const labels =
+                {{ revenue_chart_labels|safe }};
+
+
+            const values =
+                {{ revenue_chart_values|safe }};
+
+
+            new Chart(
+                revenueCanvas,
+                {
+
+                    type: "line",
+
+
+                    data: {
+
+                        labels: labels,
+
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    "Revenue",
+
+                                data:
+                                    values,
+
+                                tension:
+                                    0.35,
+
+                                fill:
+                                    true,
+
+                                borderWidth:
+                                    2,
+
+                                pointRadius:
+                                    2,
+
+                                pointHoverRadius:
+                                    5
+
+                            }
+
+                        ]
+
+                    },
+
+
+                    options: {
+
+                        responsive:
+                            true,
+
+                        maintainAspectRatio:
+                            false,
+
+
+                        interaction: {
+
+                            intersect:
+                                false,
+
+                            mode:
+                                "index"
+
+                        },
+
+
+                        plugins: {
+
+                            legend: {
+
+                                display:
+                                    false
+
+                            },
+
+
+                            tooltip: {
+
+                                callbacks: {
+
+                                    label:
+                                        function(context) {
+
+                                            const value =
+                                                Number(
+                                                    context.raw || 0
+                                                );
+
+
+                                            return (
+                                                "Revenue: ₹" +
+                                                value.toLocaleString(
+                                                    "en-IN"
+                                                )
+                                            );
+
+                                        }
+
+                                }
+
+                            }
+
+                        },
+
+
+                        scales: {
+
+                            x: {
+
+                                grid: {
+
+                                    display:
+                                        false
+
+                                },
+
+
+                                ticks: {
+
+                                    color:
+                                        "#71839a",
+
+                                    maxTicksLimit:
+                                        8
+
+                                }
+
+                            },
+
+
+                            y: {
+
+                                beginAtZero:
+                                    true,
+
+
+                                grid: {
+
+                                    color:
+                                        "rgba(255,255,255,.05)"
+
+                                },
+
+
+                                ticks: {
+
+                                    color:
+                                        "#71839a",
+
+
+                                    callback:
+                                        function(value) {
+
+                                            return (
+                                                "₹" +
+                                                Number(value)
+                                                    .toLocaleString(
+                                                        "en-IN"
+                                                    )
+                                            );
+
+                                        }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           AUTO DATASET CHANGE
+        ================================================= */
+
+        const datasetSelect =
+            document.querySelector(
+                ".dataset-selector-form select"
+            );
+
+
+        if (datasetSelect) {
+
+            datasetSelect.addEventListener(
+                "change",
+                function () {
+
+                    const form =
+                        this.closest("form");
+
+
+                    if (form) {
+
+                        form.submit();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           SMOOTH SIDEBAR LINKS
+        ================================================= */
+
+        document
+            .querySelectorAll(
+                ".sidebar-link"
+            )
+            .forEach(
+                function (link) {
+
+                    link.addEventListener(
+                        "click",
+                        function () {
+
+                            this.classList.add(
+                                "sidebar-link-clicked"
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
     }
 );
 
 </script>
-
 
 {% endblock %}

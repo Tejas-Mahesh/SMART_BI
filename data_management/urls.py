@@ -6,10 +6,10 @@ app_name = "data_management"
 urlpatterns = [
 
     # Upload
-    path(
+        path(
         "upload/",
         views.upload_dataset,
-        name="upload"
+        name="upload_data",
     ),
 
     # Dataset preview

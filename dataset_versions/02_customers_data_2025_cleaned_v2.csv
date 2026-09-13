@@ -1,0 +1,501 @@
+Customer_ID,Customer_Name,Gender,Age,City,Region,Customer_Segment,Signup_Date,Acquisition_Channel
+C00001,Customer 0001,Female,27,Bhubaneswar,East,New,2025-02-25,Social Media
+C00002,Customer 0002,Female,57,Guwahati,East,New,2025-06-22,Referral
+C00003,Customer 0003,Male,58,Chennai,South,High Value,2025-02-15,Referral
+C00004,Customer 0004,Male,57,Jaipur,North,At Risk,2025-08-06,Referral
+C00005,Customer 0005,Female,56,Pune,West,Loyal,2025-09-01,Referral
+C00006,Customer 0006,Male,59,Chennai,South,Low Value,2025-04-14,Organic
+C00007,Customer 0007,Female,35,Bhubaneswar,East,New,2025-09-01,Email
+C00008,Customer 0008,Female,25,Indore,Central,Low Value,2025-09-15,Google Ads
+C00009,Customer 0009,Male,58,Chandigarh,North,Low Value,2025-10-07,Email
+C00010,Customer 0010,Female,21,Mumbai,West,High Value,2025-02-10,Referral
+C00011,Customer 0011,Male,53,Jaipur,North,New,2025-08-27,Google Ads
+C00012,Customer 0012,Female,50,Kolkata,East,High Value,2025-04-10,Referral
+C00013,Customer 0013,Male,56,Hyderabad,South,Low Value,2025-01-15,Organic
+C00014,Customer 0014,Female,25,Jaipur,North,High Value,2025-11-26,Referral
+C00015,Customer 0015,Male,21,Ahmedabad,West,Loyal,2025-10-12,Unknown
+C00016,Customer 0016,Female,31,Ahmedabad,West,High Value,2025-03-07,Referral
+C00017,Customer 0017,Female,22,Delhi,North,Low Value,2025-02-21,Email
+C00018,Customer 0018,Male,47,Bengaluru,South,Low Value,2025-10-08,Email
+C00019,Customer 0019,Female,48,Chandigarh,North,High Value,2025-10-07,Social Media
+C00020,Customer 0020,Female,42,Bengaluru,South,At Risk,2025-02-11,Referral
+C00021,Customer 0021,Female,26,Chandigarh,North,Loyal,2025-05-29,Organic
+C00022,Customer 0022,Other,50,Bengaluru,South,High Value,2025-08-23,Referral
+C00023,Customer 0023,Female,21,Jaipur,North,At Risk,2025-01-02,Social Media
+C00024,Customer 0024,Male,35,Jaipur,North,New,2025-01-31,Email
+C00025,Customer 0025,Female,46,Guwahati,East,Loyal,2025-03-25,Google Ads
+C00026,Customer 0026,Female,42,Indore,Central,At Risk,2025-04-10,Referral
+C00027,Customer 0027,Female,26,Guwahati,East,New,2025-02-22,Email
+C00028,Customer 0028,Male,58,Kolkata,East,Loyal,2025-02-09,Google Ads
+C00029,Customer 0029,Female,45,Pune,West,New,2025-09-17,Organic
+C00030,Customer 0030,Female,44,Guwahati,East,High Value,2025-03-13,Google Ads
+C00031,Customer 0031,Male,39,Chennai,South,New,2025-06-07,Google Ads
+C00032,Customer 0032,Female,44,Bhubaneswar,East,Loyal,2025-08-20,Referral
+C00033,Customer 0033,Male,42,Hyderabad,South,At Risk,2025-04-24,Social Media
+C00034,Customer 0034,Female,42,Hyderabad,South,Low Value,2025-06-19,Email
+C00035,Customer 0035,Female,41,Indore,Central,Loyal,2025-08-31,Social Media
+C00036,Customer 0036,Male,22,Unknown,Central,Low Value,2025-06-13,Organic
+C00037,Customer 0037,Male,31,Bhopal,Central,Loyal,2025-01-26,Referral
+C00038,Customer 0038,Male,37,Bengaluru,South,Low Value,2025-09-03,Email
+C00039,Customer 0039,Female,26,Bhubaneswar,East,High Value,2025-08-23,Social Media
+C00040,Customer 0040,Other,38,Chennai,South,Loyal,2025-11-13,Referral
+C00041,Customer 0041,Male,48,Ahmedabad,West,At Risk,2025-02-17,Google Ads
+C00042,Customer 0042,Female,39,Chandigarh,North,Loyal,2025-03-10,Organic
+C00043,Customer 0043,Female,60,Guwahati,East,Low Value,2025-10-31,Email
+C00044,Customer 0044,Male,54,Indore,Central,High Value,2025-02-16,Google Ads
+C00045,Customer 0045,Male,37,Nagpur,Central,Loyal,2025-01-14,Google Ads
+C00046,Customer 0046,Male,45,Delhi,North,Loyal,2025-10-27,Google Ads
+C00047,Customer 0047,Female,44,Jaipur,North,High Value,2025-11-25,Google Ads
+C00048,Customer 0048,Female,42,Hyderabad,South,At Risk,2025-10-06,Referral
+C00049,Customer 0049,Male,22,Ahmedabad,West,New,2025-07-22,Email
+C00050,Customer 0050,Female,41,Hyderabad,South,Low Value,2025-10-06,Referral
+C00051,Customer 0051,Female,57,Chennai,South,Low Value,2025-05-23,Google Ads
+C00052,Customer 0052,Female,41,Chennai,South,Loyal,2025-06-14,Organic
+C00053,Customer 0053,Male,45,Nagpur,Central,Loyal,2025-07-27,Google Ads
+C00054,Customer 0054,Female,48,Delhi,North,Loyal,2025-01-09,Social Media
+C00055,Customer 0055,Male,20,Jaipur,North,At Risk,2025-07-06,Social Media
+C00056,Customer 0056,Female,56,Ahmedabad,West,At Risk,2025-11-20,Social Media
+C00057,Customer 0057,Other,49,Ahmedabad,West,Low Value,2025-06-19,Social Media
+C00058,Customer 0058,Female,53,Bhopal,Central,New,2025-02-07,Social Media
+C00059,Customer 0059,Other,59,Indore,Central,Loyal,2025-05-18,Email
+C00060,Customer 0060,Male,20,Ahmedabad,West,High Value,2025-09-05,Organic
+C00061,Customer 0061,Other,40,Guwahati,East,New,2025-11-14,Google Ads
+C00062,Customer 0062,Female,46,Bhopal,Central,New,2025-05-16,Organic
+C00063,Customer 0063,Female,57,Guwahati,East,High Value,2025-03-29,Organic
+C00064,Customer 0064,Male,58,Hyderabad,South,At Risk,2025-01-17,Referral
+C00065,Customer 0065,Unknown,55,Unknown,West,Low Value,2025-01-03,Google Ads
+C00066,Customer 0066,Female,29,Chandigarh,North,High Value,2025-03-19,Email
+C00067,Customer 0067,Male,47,Indore,Central,New,2025-03-28,Referral
+C00068,Customer 0068,Male,37,Indore,Central,Loyal,2025-08-10,Email
+C00069,Customer 0069,Female,32,Ahmedabad,West,Loyal,2025-10-25,Unknown
+C00070,Customer 0070,Male,47,Chennai,South,Loyal,2025-10-20,Organic
+C00071,Customer 0071,Other,53,Guwahati,East,Loyal,2025-05-21,Referral
+C00072,Customer 0072,Female,27,Bhubaneswar,East,At Risk,2025-02-15,Email
+C00073,Customer 0073,Female,36,Pune,West,New,2025-01-20,Google Ads
+C00074,Customer 0074,Male,34,Unknown,North,High Value,2025-05-01,Google Ads
+C00075,Customer 0075,Male,46,Chennai,South,New,2025-11-14,Email
+C00076,Customer 0076,Female,60,Nagpur,Central,Low Value,2025-09-06,Google Ads
+C00077,Customer 0077,Female,33,Bengaluru,South,New,2025-07-04,Email
+C00078,Customer 0078,Female,21,Mumbai,West,Loyal,2025-07-14,Google Ads
+C00079,Customer 0079,Female,26,Bengaluru,South,Loyal,2025-02-28,Organic
+C00080,Customer 0080,Female,46,Kolkata,East,New,2025-09-19,Social Media
+C00081,Customer 0081,Female,47,Nagpur,Central,Low Value,2025-07-14,Google Ads
+C00082,Customer 0082,Female,33,Pune,West,At Risk,2025-03-03,Organic
+C00083,Customer 0083,Male,41,Hyderabad,South,High Value,2025-09-15,Email
+C00084,Customer 0084,Male,22,Nagpur,Central,High Value,2025-02-03,Google Ads
+C00085,Customer 0085,Male,41,Indore,Central,High Value,2025-03-29,Email
+C00086,Customer 0086,Male,56,Jaipur,North,Loyal,2025-05-07,Referral
+C00087,Customer 0087,Male,36,Bhopal,Central,High Value,2025-06-11,Google Ads
+C00088,Customer 0088,Male,24,Jaipur,North,New,2025-10-12,Social Media
+C00089,Customer 0089,Female,37,Delhi,North,Low Value,2025-05-16,Social Media
+C00090,Customer 0090,Male,57,Bengaluru,South,At Risk,2025-04-17,Social Media
+C00091,Customer 0091,Female,33,Bengaluru,South,High Value,2025-09-03,Social Media
+C00092,Customer 0092,Male,44,Guwahati,East,Loyal,2025-08-23,Organic
+C00093,Customer 0093,Male,20,Chandigarh,North,High Value,2025-01-30,Organic
+C00094,Customer 0094,Male,23,Chandigarh,North,New,2025-07-24,Social Media
+C00095,Customer 0095,Female,20,Ahmedabad,West,At Risk,2025-06-13,Social Media
+C00096,Customer 0096,Female,31,Chandigarh,North,Low Value,2025-09-13,Google Ads
+C00097,Customer 0097,Other,44,Bhubaneswar,East,Loyal,2025-11-16,Referral
+C00098,Customer 0098,Female,24,Bhopal,Central,Loyal,2025-04-16,Referral
+C00099,Customer 0099,Male,33,Bhubaneswar,East,High Value,2025-07-29,Referral
+C00100,Customer 0100,Male,47,Chennai,South,At Risk,2025-01-07,Referral
+C00101,Customer 0101,Female,33,Hyderabad,South,New,2025-09-30,Google Ads
+C00102,Customer 0102,Female,22,Chandigarh,North,New,2025-02-17,Organic
+C00103,Customer 0103,Male,20,Chandigarh,North,Low Value,2025-03-29,Social Media
+C00104,Customer 0104,Female,23,Bhubaneswar,East,New,2025-02-11,Email
+C00105,Customer 0105,Male,31,Jaipur,North,New,2025-03-02,Organic
+C00106,Customer 0106,Female,27,Chennai,South,New,2025-08-07,Organic
+C00107,Customer 0107,Male,55,Delhi,North,At Risk,2025-10-07,Organic
+C00108,Customer 0108,Female,41,Bhubaneswar,East,New,2025-05-11,Referral
+C00109,Customer 0109,Male,60,Hyderabad,South,New,2025-08-25,Email
+C00110,Customer 0110,Female,37,Delhi,North,High Value,2025-09-20,Social Media
+C00111,Customer 0111,Female,36,Ahmedabad,West,Loyal,2025-08-05,Google Ads
+C00112,Customer 0112,Male,57,Bhopal,Central,Low Value,2025-02-28,Email
+C00113,Customer 0113,Female,39,Bengaluru,South,Low Value,2025-04-24,Referral
+C00114,Customer 0114,Female,46,Chennai,South,Low Value,2025-06-20,Referral
+C00115,Customer 0115,Female,24,Indore,Central,Low Value,2025-05-27,Email
+C00116,Customer 0116,Male,37,Pune,West,High Value,2025-02-02,Referral
+C00117,Customer 0117,Female,35,Hyderabad,South,Low Value,2025-11-23,Referral
+C00118,Customer 0118,Female,43,Chennai,South,New,2025-04-16,Social Media
+C00119,Customer 0119,Male,58,Jaipur,North,Loyal,2025-07-10,Google Ads
+C00120,Customer 0120,Male,33,Chennai,South,At Risk,2025-05-11,Organic
+C00121,Customer 0121,Male,59,Jaipur,North,High Value,2025-01-08,Social Media
+C00122,Customer 0122,Male,39,Pune,West,Loyal,2025-10-18,Google Ads
+C00123,Customer 0123,Male,39,Bhubaneswar,East,High Value,2025-01-19,Organic
+C00124,Customer 0124,Female,47,Kolkata,East,High Value,2025-11-13,Social Media
+C00125,Customer 0125,Female,32,Bengaluru,South,Low Value,2025-02-14,Referral
+C00126,Customer 0126,Other,34,Bhopal,Central,High Value,2025-11-21,Email
+C00127,Customer 0127,Female,32,Kolkata,East,High Value,2025-11-07,Email
+C00128,Customer 0128,Female,41,Nagpur,Central,Loyal,2025-07-23,Organic
+C00129,Customer 0129,Female,54,Kolkata,East,At Risk,2025-02-05,Referral
+C00130,Customer 0130,Male,24,Hyderabad,South,At Risk,2025-05-03,Referral
+C00131,Customer 0131,Male,58,Delhi,North,Low Value,2025-07-19,Referral
+C00132,Customer 0132,Female,45,Jaipur,North,New,2025-03-29,Organic
+C00133,Customer 0133,Female,30,Jaipur,North,Low Value,2025-03-03,Social Media
+C00134,Customer 0134,Female,49,Nagpur,Central,Loyal,2025-04-22,Google Ads
+C00135,Customer 0135,Female,58,Bengaluru,South,At Risk,2025-01-13,Google Ads
+C00136,Customer 0136,Female,36,Kolkata,East,New,2025-06-11,Social Media
+C00137,Customer 0137,Other,25,Bengaluru,South,New,2025-04-29,Email
+C00138,Customer 0138,Female,59,Bhopal,Central,Loyal,2025-02-23,Unknown
+C00139,Customer 0139,Female,24,Bhopal,Central,Loyal,2025-05-06,Email
+C00140,Customer 0140,Male,41,Mumbai,West,Loyal,2025-06-03,Social Media
+C00141,Customer 0141,Female,53,Nagpur,Central,New,2025-02-17,Email
+C00142,Customer 0142,Male,42,Chandigarh,North,Loyal,2025-10-31,Organic
+C00143,Customer 0143,Female,45,Chandigarh,North,Low Value,2025-08-05,Email
+C00144,Customer 0144,Male,31,Bengaluru,South,High Value,2025-11-01,Referral
+C00145,Customer 0145,Male,31,Guwahati,East,New,2025-04-03,Referral
+C00146,Customer 0146,Female,40,Jaipur,North,Low Value,2025-02-20,Google Ads
+C00147,Customer 0147,Male,49,Mumbai,West,At Risk,2025-05-17,Referral
+C00148,Customer 0148,Other,41,Kolkata,East,Loyal,2025-06-06,Google Ads
+C00149,Customer 0149,Male,54,Chandigarh,North,New,2025-11-22,Google Ads
+C00150,Customer 0150,Other,38,Nagpur,Central,At Risk,2025-09-05,Social Media
+C00151,Customer 0151,Male,58,Delhi,North,At Risk,2025-04-30,Google Ads
+C00152,Customer 0152,Female,44,Guwahati,East,Low Value,2025-07-05,Social Media
+C00153,Customer 0153,Male,46,Chennai,South,New,2025-03-04,Social Media
+C00154,Customer 0154,Male,33,Kolkata,East,At Risk,2025-02-11,Referral
+C00155,Customer 0155,Male,20,Pune,West,Loyal,2025-04-11,Organic
+C00156,Customer 0156,Male,57,Ahmedabad,West,Loyal,2025-10-12,Referral
+C00157,Customer 0157,Male,25,Bhopal,Central,At Risk,2025-09-10,Email
+C00158,Customer 0158,Female,42,Nagpur,Central,Low Value,2025-03-08,Referral
+C00159,Customer 0159,Female,30,Bhubaneswar,East,Loyal,2025-09-04,Referral
+C00160,Customer 0160,Female,42,Indore,Central,New,2025-05-12,Organic
+C00161,Customer 0161,Male,45,Ahmedabad,West,Low Value,2025-11-14,Email
+C00162,Customer 0162,Female,48,Bhopal,Central,At Risk,2025-04-17,Social Media
+C00163,Customer 0163,Female,30,Indore,Central,Low Value,2025-09-25,Google Ads
+C00164,Customer 0164,Female,60,Nagpur,Central,At Risk,2025-11-19,Referral
+C00165,Customer 0165,Male,38,Jaipur,North,At Risk,2025-07-26,Referral
+C00166,Customer 0166,Female,34,Bengaluru,South,Loyal,2025-03-27,Social Media
+C00167,Customer 0167,Male,55,Ahmedabad,West,High Value,2025-04-06,Organic
+C00168,Customer 0168,Female,29,Chennai,South,At Risk,2025-09-21,Organic
+C00169,Customer 0169,Other,35,Mumbai,West,Loyal,2025-02-08,Email
+C00170,Customer 0170,Female,55,Delhi,North,Low Value,2025-05-20,Email
+C00171,Customer 0171,Female,25,Mumbai,West,Loyal,2025-11-06,Social Media
+C00172,Customer 0172,Male,49,Bhopal,Central,Loyal,2025-08-07,Email
+C00173,Customer 0173,Female,42,Jaipur,North,At Risk,2025-06-17,Referral
+C00174,Customer 0174,Other,21,Mumbai,West,High Value,2025-11-24,Social Media
+C00175,Customer 0175,Male,60,Ahmedabad,West,New,2025-02-09,Organic
+C00176,Customer 0176,Female,51,Kolkata,East,Low Value,2025-01-17,Google Ads
+C00177,Customer 0177,Male,53,Ahmedabad,West,Loyal,2025-10-27,Google Ads
+C00178,Customer 0178,Female,29,Ahmedabad,West,Loyal,2025-09-22,Email
+C00179,Customer 0179,Male,23,Guwahati,East,New,2025-10-30,Google Ads
+C00180,Customer 0180,Male,23,Jaipur,North,At Risk,2025-01-18,Social Media
+C00181,Customer 0181,Female,46,Delhi,North,Loyal,2025-04-22,Organic
+C00182,Customer 0182,Female,42,Delhi,North,Low Value,2025-10-12,Social Media
+C00183,Customer 0183,Female,36,Delhi,North,Loyal,2025-05-20,Google Ads
+C00184,Customer 0184,Female,49,Mumbai,West,Loyal,2025-06-16,Social Media
+C00185,Customer 0185,Female,28,Kolkata,East,High Value,2025-07-26,Unknown
+C00186,Customer 0186,Male,21,Jaipur,North,Loyal,2025-02-28,Email
+C00187,Customer 0187,Female,25,Ahmedabad,West,New,2025-10-09,Email
+C00188,Customer 0188,Other,59,Bengaluru,South,Loyal,2025-10-16,Email
+C00189,Customer 0189,Male,46,Mumbai,West,At Risk,2025-06-06,Organic
+C00190,Customer 0190,Female,35,Guwahati,East,High Value,2025-07-01,Referral
+C00191,Customer 0191,Female,44,Kolkata,East,Loyal,2025-11-04,Google Ads
+C00192,Customer 0192,Female,34,Kolkata,East,Loyal,2025-09-08,Social Media
+C00193,Customer 0193,Male,41,Mumbai,West,New,2025-02-13,Referral
+C00194,Customer 0194,Male,20,Ahmedabad,West,Low Value,2025-01-22,Google Ads
+C00195,Customer 0195,Female,27,Pune,West,New,2025-09-14,Email
+C00196,Customer 0196,Male,33,Guwahati,East,New,2025-11-05,Google Ads
+C00197,Customer 0197,Male,47,Kolkata,East,High Value,2025-04-10,Social Media
+C00198,Customer 0198,Male,23,Bengaluru,South,Low Value,2025-05-20,Organic
+C00199,Customer 0199,Male,34,Delhi,North,Loyal,2025-04-24,Google Ads
+C00200,Customer 0200,Male,52,Hyderabad,South,Low Value,2025-07-21,Email
+C00201,Customer 0201,Male,24,Mumbai,West,At Risk,2025-09-06,Social Media
+C00202,Customer 0202,Female,24,Delhi,North,New,2025-10-09,Email
+C00203,Customer 0203,Male,21,Chandigarh,North,Loyal,2025-05-27,Social Media
+C00204,Customer 0204,Female,57,Bhopal,Central,Low Value,2025-07-10,Organic
+C00205,Customer 0205,Other,40,Chennai,South,Loyal,2025-06-25,Email
+C00206,Customer 0206,Male,46,Hyderabad,South,Loyal,2025-07-12,Google Ads
+C00207,Customer 0207,Female,55,Bhopal,Central,Loyal,2025-09-21,Referral
+C00208,Customer 0208,Female,35,Bhubaneswar,East,Low Value,2025-05-23,Email
+C00209,Customer 0209,Male,33,Pune,West,New,2025-09-13,Google Ads
+C00210,Customer 0210,Female,35,Kolkata,East,Loyal,2025-08-06,Google Ads
+C00211,Customer 0211,Male,23,Jaipur,North,At Risk,2025-06-25,Email
+C00212,Customer 0212,Female,51,Hyderabad,South,Loyal,2025-03-12,Referral
+C00213,Customer 0213,Female,58,Guwahati,East,At Risk,2025-11-17,Email
+C00214,Customer 0214,Male,24,Jaipur,North,New,2025-11-09,Email
+C00215,Customer 0215,Female,21,Bhopal,Central,New,2025-07-23,Organic
+C00216,Customer 0216,Female,29,Jaipur,North,New,2025-09-03,Social Media
+C00217,Customer 0217,Male,52,Kolkata,East,Low Value,2025-07-07,Email
+C00218,Customer 0218,Male,47,Hyderabad,South,At Risk,2025-07-06,Organic
+C00219,Customer 0219,Other,41,Jaipur,North,Low Value,2025-03-12,Referral
+C00220,Customer 0220,Female,59,Nagpur,Central,Loyal,2025-03-03,Email
+C00221,Customer 0221,Female,53,Delhi,North,New,2025-05-09,Referral
+C00222,Customer 0222,Male,58,Nagpur,Central,New,2025-07-20,Google Ads
+C00223,Customer 0223,Female,52,Delhi,North,Loyal,2025-10-18,Referral
+C00224,Customer 0224,Male,58,Hyderabad,South,New,2025-10-16,Social Media
+C00225,Customer 0225,Female,26,Guwahati,East,Loyal,2025-07-11,Referral
+C00226,Customer 0226,Male,59,Mumbai,West,Loyal,2025-01-14,Social Media
+C00227,Customer 0227,Male,27,Kolkata,East,High Value,2025-07-09,Social Media
+C00228,Customer 0228,Female,37,Bhopal,Central,High Value,2025-05-14,Email
+C00229,Customer 0229,Female,55,Bhubaneswar,East,New,2025-11-23,Organic
+C00230,Customer 0230,Female,35,Bhubaneswar,East,Low Value,2025-01-12,Email
+C00231,Customer 0231,Male,48,Mumbai,West,Low Value,2025-03-09,Google Ads
+C00232,Customer 0232,Female,57,Delhi,North,High Value,2025-11-05,Organic
+C00233,Customer 0233,Female,26,Chandigarh,North,Low Value,2025-11-06,Email
+C00234,Customer 0234,Male,60,Guwahati,East,Low Value,2025-05-12,Organic
+C00235,Customer 0235,Male,27,Bengaluru,South,Low Value,2025-09-19,Organic
+C00236,Customer 0236,Female,42,Chandigarh,North,Low Value,2025-10-14,Email
+C00237,Customer 0237,Male,58,Ahmedabad,West,Low Value,2025-04-30,Google Ads
+C00238,Customer 0238,Female,28,Bhubaneswar,East,At Risk,2025-06-29,Email
+C00239,Customer 0239,Male,38,Pune,West,Loyal,2025-05-31,Organic
+C00240,Customer 0240,Male,43,Bengaluru,South,New,2025-01-30,Referral
+C00241,Customer 0241,Male,45,Chandigarh,North,Loyal,2025-10-03,Email
+C00242,Customer 0242,Male,35,Bengaluru,South,Low Value,2025-11-18,Social Media
+C00243,Customer 0243,Male,29,Nagpur,Central,Loyal,2025-01-14,Email
+C00244,Customer 0244,Female,34,Delhi,North,New,2025-03-06,Email
+C00245,Customer 0245,Female,28,Pune,West,At Risk,2025-09-20,Referral
+C00246,Customer 0246,Male,24,Indore,Central,Loyal,2025-11-10,Organic
+C00247,Customer 0247,Male,58,Bhubaneswar,East,At Risk,2025-07-24,Organic
+C00248,Customer 0248,Male,27,Bhubaneswar,East,At Risk,2025-03-02,Referral
+C00249,Customer 0249,Female,29,Jaipur,North,Loyal,2025-09-24,Referral
+C00250,Customer 0250,Male,44,Nagpur,Central,New,2025-03-04,Unknown
+C00251,Customer 0251,Other,37,Jaipur,North,New,2025-11-06,Social Media
+C00252,Customer 0252,Male,50,Guwahati,East,Loyal,2025-05-20,Social Media
+C00253,Customer 0253,Other,22,Pune,West,New,2025-07-21,Social Media
+C00254,Customer 0254,Male,52,Bhopal,Central,At Risk,2025-06-06,Email
+C00255,Customer 0255,Female,37,Ahmedabad,West,Low Value,2025-10-26,Referral
+C00256,Customer 0256,Unknown,51,Mumbai,West,Low Value,2025-04-25,Referral
+C00257,Customer 0257,Female,37,Unknown,West,New,2025-07-17,Organic
+C00258,Customer 0258,Male,44,Pune,West,Loyal,2025-06-01,Referral
+C00259,Customer 0259,Female,45,Bengaluru,South,Low Value,2025-05-04,Referral
+C00260,Customer 0260,Other,52,Chennai,South,Loyal,2025-02-06,Organic
+C00261,Customer 0261,Female,41,Bengaluru,South,At Risk,2025-04-19,Organic
+C00262,Customer 0262,Male,52,Ahmedabad,West,Loyal,2025-02-27,Social Media
+C00263,Customer 0263,Male,32,Bengaluru,South,New,2025-03-23,Email
+C00264,Customer 0264,Female,29,Mumbai,West,At Risk,2025-01-24,Referral
+C00265,Customer 0265,Female,38,Chandigarh,North,Loyal,2025-03-10,Google Ads
+C00266,Customer 0266,Male,34,Bengaluru,South,Loyal,2025-02-28,Google Ads
+C00267,Customer 0267,Male,32,Nagpur,Central,Loyal,2025-02-27,Organic
+C00268,Customer 0268,Male,56,Guwahati,East,At Risk,2025-04-10,Google Ads
+C00269,Customer 0269,Female,40,Chandigarh,North,Low Value,2025-05-01,Referral
+C00270,Customer 0270,Female,54,Indore,Central,Low Value,2025-07-22,Email
+C00271,Customer 0271,Male,23,Chennai,South,New,2025-09-08,Social Media
+C00272,Customer 0272,Female,51,Bhubaneswar,East,Low Value,2025-05-15,Social Media
+C00273,Customer 0273,Female,29,Bhopal,Central,Low Value,2025-08-24,Referral
+C00274,Customer 0274,Female,26,Nagpur,Central,New,2025-10-16,Google Ads
+C00275,Customer 0275,Female,44,Mumbai,West,Loyal,2025-09-29,Email
+C00276,Customer 0276,Male,29,Bhubaneswar,East,High Value,2025-04-08,Organic
+C00277,Customer 0277,Female,36,Ahmedabad,West,At Risk,2025-09-10,Referral
+C00278,Customer 0278,Female,60,Chandigarh,North,Low Value,2025-02-27,Google Ads
+C00279,Customer 0279,Female,47,Mumbai,West,Loyal,2025-04-09,Email
+C00280,Customer 0280,Male,20,Chennai,South,New,2025-11-15,Social Media
+C00281,Customer 0281,Female,51,Mumbai,West,Loyal,2025-09-13,Referral
+C00282,Customer 0282,Male,43,Nagpur,Central,Low Value,2025-03-12,Social Media
+C00283,Customer 0283,Female,28,Bhopal,Central,Low Value,2025-03-10,Referral
+C00284,Customer 0284,Female,26,Delhi,North,Loyal,2025-05-11,Google Ads
+C00285,Customer 0285,Female,36,Delhi,North,Low Value,2025-07-06,Social Media
+C00286,Customer 0286,Other,26,Ahmedabad,West,New,2025-08-16,Social Media
+C00287,Customer 0287,Female,30,Hyderabad,South,At Risk,2025-01-24,Email
+C00288,Customer 0288,Male,27,Jaipur,North,New,2025-06-04,Organic
+C00289,Customer 0289,Female,52,Bengaluru,South,Low Value,2025-03-05,Referral
+C00290,Customer 0290,Male,31,Chennai,South,Low Value,2025-04-01,Organic
+C00291,Customer 0291,Female,29,Bhubaneswar,East,Loyal,2025-11-03,Google Ads
+C00292,Customer 0292,Female,37,Delhi,North,Loyal,2025-02-23,Referral
+C00293,Customer 0293,Female,54,Hyderabad,South,Loyal,2025-07-22,Social Media
+C00294,Customer 0294,Male,24,Chandigarh,North,At Risk,2025-10-14,Referral
+C00295,Customer 0295,Female,52,Mumbai,West,At Risk,2025-02-10,Email
+C00296,Customer 0296,Female,60,Kolkata,East,Low Value,2025-10-17,Referral
+C00297,Customer 0297,Male,31,Chandigarh,North,Loyal,2025-07-24,Google Ads
+C00298,Customer 0298,Female,55,Guwahati,East,Low Value,2025-06-16,Google Ads
+C00299,Customer 0299,Female,30,Nagpur,Central,At Risk,2025-09-21,Google Ads
+C00300,Customer 0300,Female,38,Guwahati,East,At Risk,2025-03-04,Email
+C00301,Customer 0301,Male,60,Unknown,Central,At Risk,2025-02-21,Referral
+C00302,Customer 0302,Male,44,Kolkata,East,Low Value,2025-11-22,Social Media
+C00303,Customer 0303,Male,52,Delhi,North,Low Value,2025-06-20,Social Media
+C00304,Customer 0304,Female,28,Nagpur,Central,At Risk,2025-04-10,Google Ads
+C00305,Customer 0305,Male,54,Chennai,South,Loyal,2025-11-05,Email
+C00306,Customer 0306,Female,39,Mumbai,West,Loyal,2025-07-05,Organic
+C00307,Customer 0307,Male,21,Nagpur,Central,Low Value,2025-09-05,Email
+C00308,Customer 0308,Male,41,Jaipur,North,At Risk,2025-09-05,Email
+C00309,Customer 0309,Female,28,Ahmedabad,West,At Risk,2025-04-09,Referral
+C00310,Customer 0310,Male,33,Hyderabad,South,At Risk,2025-03-18,Email
+C00311,Customer 0311,Female,50,Jaipur,North,New,2025-05-03,Unknown
+C00312,Customer 0312,Male,20,Kolkata,East,Low Value,2025-07-31,Email
+C00313,Customer 0313,Male,43,Jaipur,North,Low Value,2025-11-17,Organic
+C00314,Customer 0314,Male,53,Nagpur,Central,Loyal,2025-11-01,Organic
+C00315,Customer 0315,Male,24,Delhi,North,Low Value,2025-03-03,Organic
+C00316,Customer 0316,Female,50,Delhi,North,At Risk,2025-02-13,Social Media
+C00317,Customer 0317,Female,56,Jaipur,North,New,2025-05-16,Email
+C00318,Customer 0318,Male,26,Pune,West,Loyal,2025-05-28,Social Media
+C00319,Customer 0319,Male,30,Guwahati,East,Loyal,2025-09-15,Referral
+C00320,Customer 0320,Female,46,Nagpur,Central,High Value,2025-04-19,Email
+C00321,Customer 0321,Male,32,Nagpur,Central,At Risk,2025-03-10,Referral
+C00322,Customer 0322,Female,30,Bhopal,Central,New,2025-04-08,Google Ads
+C00323,Customer 0323,Female,45,Chennai,South,Loyal,2025-05-27,Google Ads
+C00324,Customer 0324,Female,44,Pune,West,New,2025-08-11,Organic
+C00325,Customer 0325,Male,23,Jaipur,North,New,2025-05-24,Email
+C00326,Customer 0326,Female,39,Ahmedabad,West,At Risk,2025-03-20,Social Media
+C00327,Customer 0327,Female,40,Indore,Central,Low Value,2025-06-28,Email
+C00328,Customer 0328,Female,60,Guwahati,East,High Value,2025-06-24,Referral
+C00329,Customer 0329,Female,39,Bhubaneswar,East,New,2025-08-09,Social Media
+C00330,Customer 0330,Male,44,Guwahati,East,Loyal,2025-11-14,Organic
+C00331,Customer 0331,Male,20,Delhi,North,At Risk,2025-07-13,Social Media
+C00332,Customer 0332,Female,59,Unknown,West,Low Value,2025-01-11,Organic
+C00333,Customer 0333,Male,45,Bhopal,Central,At Risk,2025-05-13,Google Ads
+C00334,Customer 0334,Male,30,Kolkata,East,New,2025-09-08,Email
+C00335,Customer 0335,Other,54,Chandigarh,North,Loyal,2025-06-12,Referral
+C00336,Customer 0336,Unknown,46,Chennai,South,Low Value,2025-03-24,Social Media
+C00337,Customer 0337,Female,41,Chandigarh,North,Low Value,2025-02-06,Social Media
+C00338,Customer 0338,Female,47,Bhopal,Central,Loyal,2025-03-09,Email
+C00339,Customer 0339,Other,60,Indore,Central,Low Value,2025-03-21,Social Media
+C00340,Customer 0340,Male,46,Ahmedabad,West,New,2025-03-30,Social Media
+C00341,Customer 0341,Male,46,Jaipur,North,At Risk,2025-07-09,Email
+C00342,Customer 0342,Male,37,Chennai,South,Low Value,2025-04-20,Organic
+C00343,Customer 0343,Female,29,Indore,Central,New,2025-01-19,Organic
+C00344,Customer 0344,Male,30,Chandigarh,North,Loyal,2025-04-15,Referral
+C00345,Customer 0345,Female,22,Mumbai,West,High Value,2025-01-04,Organic
+C00346,Customer 0346,Female,29,Bhopal,Central,New,2025-02-21,Social Media
+C00347,Customer 0347,Female,52,Bengaluru,South,High Value,2025-05-30,Social Media
+C00348,Customer 0348,Female,47,Jaipur,North,Loyal,2025-10-26,Organic
+C00349,Customer 0349,Female,49,Indore,Central,Low Value,2025-02-16,Email
+C00350,Customer 0350,Female,51,Bhubaneswar,East,Loyal,2025-04-10,Google Ads
+C00351,Customer 0351,Female,34,Mumbai,West,High Value,2025-02-04,Google Ads
+C00352,Customer 0352,Female,45,Bhubaneswar,East,Low Value,2025-08-01,Referral
+C00353,Customer 0353,Female,24,Hyderabad,South,At Risk,2025-01-16,Referral
+C00354,Customer 0354,Male,43,Bengaluru,South,New,2025-01-15,Social Media
+C00355,Customer 0355,Female,53,Delhi,North,Loyal,2025-02-16,Referral
+C00356,Customer 0356,Female,41,Indore,Central,High Value,2025-01-06,Email
+C00357,Customer 0357,Female,59,Nagpur,Central,Low Value,2025-08-25,Organic
+C00358,Customer 0358,Female,22,Guwahati,East,At Risk,2025-01-26,Referral
+C00359,Customer 0359,Male,43,Bhubaneswar,East,At Risk,2025-07-30,Referral
+C00360,Customer 0360,Female,41,Chandigarh,North,New,2025-08-29,Social Media
+C00361,Customer 0361,Female,59,Kolkata,East,Loyal,2025-11-03,Email
+C00362,Customer 0362,Male,44,Jaipur,North,At Risk,2025-03-14,Email
+C00363,Customer 0363,Male,55,Delhi,North,Low Value,2025-11-09,Referral
+C00364,Customer 0364,Female,25,Chennai,South,At Risk,2025-07-24,Google Ads
+C00365,Customer 0365,Male,26,Ahmedabad,West,At Risk,2025-06-28,Email
+C00366,Customer 0366,Female,50,Bengaluru,South,Loyal,2025-01-24,Referral
+C00367,Customer 0367,Female,54,Bhubaneswar,East,Low Value,2025-01-09,Organic
+C00368,Customer 0368,Female,27,Guwahati,East,Low Value,2025-11-11,Organic
+C00369,Customer 0369,Male,25,Pune,West,At Risk,2025-04-04,Organic
+C00370,Customer 0370,Male,28,Jaipur,North,New,2025-04-05,Social Media
+C00371,Customer 0371,Male,31,Bhubaneswar,East,At Risk,2025-03-30,Google Ads
+C00372,Customer 0372,Male,36,Bengaluru,South,Loyal,2025-08-03,Organic
+C00373,Customer 0373,Female,36,Chennai,South,Loyal,2025-04-17,Email
+C00374,Customer 0374,Male,45,Kolkata,East,Loyal,2025-07-15,Social Media
+C00375,Customer 0375,Female,24,Indore,Central,Low Value,2025-09-01,Google Ads
+C00376,Customer 0376,Female,57,Chandigarh,North,Low Value,2025-07-18,Google Ads
+C00377,Customer 0377,Other,58,Bhubaneswar,East,High Value,2025-03-30,Google Ads
+C00378,Customer 0378,Male,52,Guwahati,East,Low Value,2025-06-30,Google Ads
+C00379,Customer 0379,Female,38,Delhi,North,Loyal,2025-01-26,Organic
+C00380,Customer 0380,Female,20,Kolkata,East,High Value,2025-11-19,Organic
+C00381,Customer 0381,Female,30,Ahmedabad,West,High Value,2025-11-22,Social Media
+C00382,Customer 0382,Female,60,Kolkata,East,Loyal,2025-11-03,Email
+C00383,Customer 0383,Male,55,Indore,Central,Loyal,2025-08-28,Social Media
+C00384,Customer 0384,Female,57,Nagpur,Central,Loyal,2025-05-09,Email
+C00385,Customer 0385,Male,21,Mumbai,West,Loyal,2025-03-07,Referral
+C00386,Customer 0386,Female,35,Pune,West,Loyal,2025-03-01,Google Ads
+C00387,Customer 0387,Male,49,Bhubaneswar,East,Loyal,2025-04-11,Organic
+C00388,Customer 0388,Male,21,Bhopal,Central,Loyal,2025-07-08,Email
+C00389,Customer 0389,Male,40,Mumbai,West,Loyal,2025-07-06,Referral
+C00390,Customer 0390,Female,57,Pune,West,At Risk,2025-02-13,Email
+C00391,Customer 0391,Other,49,Chandigarh,North,Loyal,2025-05-18,Social Media
+C00392,Customer 0392,Female,52,Delhi,North,At Risk,2025-06-21,Organic
+C00393,Customer 0393,Male,58,Bengaluru,South,High Value,2025-01-25,Email
+C00394,Customer 0394,Male,53,Chandigarh,North,Loyal,2025-03-21,Organic
+C00395,Customer 0395,Male,35,Unknown,South,Loyal,2025-10-29,Google Ads
+C00396,Customer 0396,Male,29,Bengaluru,South,At Risk,2025-01-30,Google Ads
+C00397,Customer 0397,Female,58,Guwahati,East,New,2025-04-26,Email
+C00398,Customer 0398,Female,50,Bengaluru,South,Low Value,2025-09-13,Email
+C00399,Customer 0399,Female,51,Jaipur,North,Loyal,2025-02-10,Organic
+C00400,Customer 0400,Other,38,Indore,Central,High Value,2025-02-01,Referral
+C00401,Customer 0401,Female,21,Chennai,South,Low Value,2025-02-14,Email
+C00402,Customer 0402,Male,50,Pune,West,New,2025-10-10,Google Ads
+C00403,Customer 0403,Male,38,Bhopal,Central,Loyal,2025-08-06,Email
+C00404,Customer 0404,Male,55,Kolkata,East,New,2025-10-18,Email
+C00405,Customer 0405,Male,40,Mumbai,West,Loyal,2025-09-02,Google Ads
+C00406,Customer 0406,Male,44,Kolkata,East,New,2025-02-20,Social Media
+C00407,Customer 0407,Other,30,Guwahati,East,Low Value,2025-11-15,Social Media
+C00408,Customer 0408,Male,57,Indore,Central,Loyal,2025-10-04,Social Media
+C00409,Customer 0409,Male,43,Hyderabad,South,Low Value,2025-04-11,Email
+C00410,Customer 0410,Female,30,Jaipur,North,New,2025-07-06,Organic
+C00411,Customer 0411,Female,22,Chandigarh,North,Loyal,2025-01-05,Organic
+C00412,Customer 0412,Female,30,Pune,West,Loyal,2025-02-09,Email
+C00413,Customer 0413,Female,44,Bengaluru,South,New,2025-02-09,Social Media
+C00414,Customer 0414,Other,51,Chandigarh,North,Low Value,2025-02-04,Social Media
+C00415,Customer 0415,Male,57,Chennai,South,High Value,2025-09-12,Social Media
+C00416,Customer 0416,Male,33,Indore,Central,New,2025-11-09,Google Ads
+C00417,Customer 0417,Female,27,Pune,West,Loyal,2025-04-12,Social Media
+C00418,Customer 0418,Male,24,Pune,West,Loyal,2025-01-23,Referral
+C00419,Customer 0419,Other,23,Bhubaneswar,East,At Risk,2025-05-28,Social Media
+C00420,Customer 0420,Male,58,Indore,Central,New,2025-02-15,Google Ads
+C00421,Customer 0421,Male,22,Kolkata,East,Loyal,2025-10-03,Referral
+C00422,Customer 0422,Male,32,Bengaluru,South,Loyal,2025-03-06,Referral
+C00423,Customer 0423,Female,41,Chennai,South,Loyal,2025-08-17,Google Ads
+C00424,Customer 0424,Female,25,Kolkata,East,Low Value,2025-11-15,Email
+C00425,Customer 0425,Female,37,Bengaluru,South,Low Value,2025-08-23,Email
+C00426,Customer 0426,Female,21,Kolkata,East,At Risk,2025-01-31,Organic
+C00427,Customer 0427,Female,49,Jaipur,North,At Risk,2025-01-27,Email
+C00428,Customer 0428,Female,41,Pune,West,High Value,2025-09-07,Email
+C00429,Customer 0429,Female,28,Jaipur,North,At Risk,2025-08-22,Social Media
+C00430,Customer 0430,Male,48,Kolkata,East,Loyal,2025-03-04,Referral
+C00431,Customer 0431,Female,56,Mumbai,West,Loyal,2025-06-13,Google Ads
+C00432,Customer 0432,Female,44,Bengaluru,South,Loyal,2025-11-17,Referral
+C00433,Customer 0433,Female,21,Mumbai,West,High Value,2025-08-18,Email
+C00434,Customer 0434,Other,32,Chandigarh,North,New,2025-08-29,Referral
+C00435,Customer 0435,Male,37,Chennai,South,New,2025-10-15,Social Media
+C00436,Customer 0436,Female,45,Kolkata,East,High Value,2025-07-17,Email
+C00437,Customer 0437,Male,27,Chennai,South,Loyal,2025-01-01,Google Ads
+C00438,Customer 0438,Female,45,Delhi,North,High Value,2025-09-10,Email
+C00439,Customer 0439,Male,36,Bhopal,Central,Loyal,2025-01-09,Google Ads
+C00440,Customer 0440,Male,25,Bhopal,Central,New,2025-03-10,Social Media
+C00441,Customer 0441,Female,35,Indore,Central,Loyal,2025-02-21,Referral
+C00442,Customer 0442,Female,54,Kolkata,East,New,2025-08-16,Google Ads
+C00443,Customer 0443,Male,26,Mumbai,West,At Risk,2025-04-18,Email
+C00444,Customer 0444,Male,60,Bengaluru,South,Low Value,2025-08-27,Email
+C00445,Customer 0445,Male,20,Delhi,North,Low Value,2025-04-10,Referral
+C00446,Customer 0446,Male,31,Chennai,South,New,2025-06-30,Referral
+C00447,Customer 0447,Male,60,Jaipur,North,Low Value,2025-10-21,Email
+C00448,Customer 0448,Female,24,Delhi,North,At Risk,2025-06-07,Referral
+C00449,Customer 0449,Male,37,Mumbai,West,New,2025-10-01,Google Ads
+C00450,Customer 0450,Male,51,Bhubaneswar,East,Loyal,2025-04-18,Google Ads
+C00451,Customer 0451,Female,55,Delhi,North,Loyal,2025-09-24,Social Media
+C00452,Customer 0452,Male,37,Ahmedabad,West,High Value,2025-10-07,Organic
+C00453,Customer 0453,Other,51,Delhi,North,High Value,2025-04-08,Google Ads
+C00454,Customer 0454,Female,34,Mumbai,West,Loyal,2025-01-24,Referral
+C00455,Customer 0455,Other,44,Kolkata,East,Loyal,2025-04-12,Google Ads
+C00456,Customer 0456,Female,45,Jaipur,North,Low Value,2025-02-10,Social Media
+C00457,Customer 0457,Female,56,Ahmedabad,West,Loyal,2025-06-04,Social Media
+C00458,Customer 0458,Male,41,Guwahati,East,At Risk,2025-04-09,Email
+C00459,Customer 0459,Female,37,Nagpur,Central,New,2025-06-14,Google Ads
+C00460,Customer 0460,Female,25,Jaipur,North,Low Value,2025-03-20,Organic
+C00461,Customer 0461,Female,28,Mumbai,West,High Value,2025-02-02,Organic
+C00462,Customer 0462,Male,22,Nagpur,Central,At Risk,2025-08-28,Referral
+C00463,Customer 0463,Female,53,Hyderabad,South,New,2025-01-20,Social Media
+C00464,Customer 0464,Other,22,Hyderabad,South,At Risk,2025-08-19,Social Media
+C00465,Customer 0465,Other,51,Unknown,East,Loyal,2025-08-10,Organic
+C00466,Customer 0466,Female,54,Hyderabad,South,High Value,2025-06-28,Social Media
+C00467,Customer 0467,Female,43,Bhubaneswar,East,At Risk,2025-10-08,Referral
+C00468,Customer 0468,Female,52,Mumbai,West,New,2025-07-31,Referral
+C00469,Customer 0469,Male,24,Jaipur,North,New,2025-09-14,Email
+C00470,Customer 0470,Male,36,Indore,Central,Loyal,2025-08-13,Social Media
+C00471,Customer 0471,Female,53,Chandigarh,North,New,2025-10-24,Google Ads
+C00472,Customer 0472,Female,21,Hyderabad,South,New,2025-05-28,Referral
+C00473,Customer 0473,Male,22,Chennai,South,Loyal,2025-04-20,Organic
+C00474,Customer 0474,Female,60,Hyderabad,South,High Value,2025-11-08,Google Ads
+C00475,Customer 0475,Male,53,Chennai,South,At Risk,2025-01-13,Unknown
+C00476,Customer 0476,Female,56,Indore,Central,New,2025-02-06,Email
+C00477,Customer 0477,Female,57,Delhi,North,New,2025-11-15,Email
+C00478,Customer 0478,Female,47,Bhubaneswar,East,High Value,2025-03-11,Social Media
+C00479,Customer 0479,Female,58,Ahmedabad,West,Loyal,2025-09-12,Email
+C00480,Customer 0480,Female,22,Jaipur,North,At Risk,2025-11-07,Social Media
+C00481,Customer 0481,Male,37,Indore,Central,High Value,2025-08-14,Referral
+C00482,Customer 0482,Male,20,Bengaluru,South,New,2025-10-04,Google Ads
+C00483,Customer 0483,Female,26,Bhopal,Central,Loyal,2025-04-26,Referral
+C00484,Customer 0484,Male,59,Mumbai,West,Low Value,2025-10-29,Email
+C00485,Customer 0485,Female,45,Nagpur,Central,At Risk,2025-03-26,Social Media
+C00486,Customer 0486,Other,57,Pune,West,Low Value,2025-01-06,Social Media
+C00487,Customer 0487,Female,20,Jaipur,North,New,2025-04-19,Organic
+C00488,Customer 0488,Male,25,Bhubaneswar,East,Loyal,2025-04-23,Social Media
+C00489,Customer 0489,Male,27,Chandigarh,North,Loyal,2025-05-27,Social Media
+C00490,Customer 0490,Female,51,Kolkata,East,Loyal,2025-06-14,Email
+C00491,Customer 0491,Male,21,Guwahati,East,New,2025-11-24,Email
+C00492,Customer 0492,Female,24,Chandigarh,North,New,2025-07-23,Referral
+C00493,Customer 0493,Male,36,Pune,West,High Value,2025-04-17,Social Media
+C00494,Customer 0494,Male,47,Mumbai,West,At Risk,2025-11-25,Social Media
+C00495,Customer 0495,Female,42,Guwahati,East,At Risk,2025-05-03,Email
+C00496,Customer 0496,Female,35,Nagpur,Central,Low Value,2025-02-10,Organic
+C00497,Customer 0497,Male,27,Bengaluru,South,New,2025-08-27,Email
+C00498,Customer 0498,Male,23,Bengaluru,South,At Risk,2025-02-24,Social Media
+C00499,Customer 0499,Male,46,Ahmedabad,West,Loyal,2025-09-15,Referral
+C00500,Customer 0500,Male,58,Indore,Central,Low Value,2025-01-30,Email

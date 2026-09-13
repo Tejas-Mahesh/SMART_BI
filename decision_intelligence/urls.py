@@ -66,4 +66,9 @@ urlpatterns = [
     views.decision_impact,
     name="decision_impact",
 ),
+path(
+    "recommendations/<int:feedback_action_id>/feedback/",
+    views.submit_recommendation_feedback,
+    name="submit_recommendation_feedback",
+),
 ]

@@ -41,4 +41,8 @@ path(
     "decisions/",
     include("decision_intelligence.urls"),
 ),
+path(
+    "reports/",
+    include("reporting.urls"),
+),
 ]

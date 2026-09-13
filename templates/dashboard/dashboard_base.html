@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="app-shell">
+
+    <!-- =====================================================
+         REUSABLE SMART BI SIDEBAR
+    ====================================================== -->
+    {% include "dashboard/sidebar.html" %}
+
+
+    <!-- MOBILE SIDEBAR OVERLAY -->
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         MAIN DASHBOARD AREA
+    ====================================================== -->
+    <main class="main-content dashboard-main">
+
+        <!-- MOBILE MENU BUTTON -->
+        <button
+            type="button"
+            class="mobile-sidebar-toggle"
+            id="sidebarToggle"
+            aria-label="Toggle navigation"
+        >
+            ☰
+        </button>
+
+        {% block dashboard_content %}
+        {% endblock %}
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     SIDEBAR MOBILE JAVASCRIPT
+====================================================== -->
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const sidebar = document.querySelector(".sidebar");
+    const toggle = document.getElementById("sidebarToggle");
+    const overlay = document.getElementById("sidebarOverlay");
+
+    function openSidebar() {
+
+        if (sidebar) {
+            sidebar.classList.add("sidebar-open");
+        }
+
+        if (overlay) {
+            overlay.classList.add("show");
+        }
+
+        document.body.classList.add("sidebar-mobile-open");
+    }
+
+
+    function closeSidebar() {
+
+        if (sidebar) {
+            sidebar.classList.remove("sidebar-open");
+        }
+
+        if (overlay) {
+            overlay.classList.remove("show");
+        }
+
+        document.body.classList.remove("sidebar-mobile-open");
+    }
+
+
+    if (toggle) {
+
+        toggle.addEventListener("click", function () {
+
+            if (
+                sidebar &&
+                sidebar.classList.contains("sidebar-open")
+            ) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+
+        });
+
+    }
+
+
+    if (overlay) {
+
+        overlay.addEventListener(
+            "click",
+            closeSidebar
+        );
+
+    }
+
+
+    document
+        .querySelectorAll(".sidebar-link")
+        .forEach(function (link) {
+
+            link.addEventListener(
+                "click",
+                closeSidebar
+            );
+
+        });
+
+});
+
+</script>
+
+{% endblock %}
