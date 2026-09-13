@@ -1,0 +1,3172 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>What-If Simulator | Smart BI</title>
+
+<link rel="stylesheet" href="{% static 'css/what_if.css' %}">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+```
+
+</head>
+
+<body>
+
+<div class="smart-bi-layout">
+
+```
+<!-- =====================================================
+     SIDEBAR
+====================================================== -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+
+        <div class="brand-logo">
+            <span>SB</span>
+        </div>
+
+        <div class="brand-text">
+            <strong>Smart BI</strong>
+            <small>Decision Intelligence</small>
+        </div>
+
+    </div>
+
+    <div class="sidebar-scroll">
+
+        <!-- MAIN -->
+
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                MAIN
+            </div>
+
+            <a href="{% url 'core:dashboard' %}"
+               class="nav-item">
+
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- DATA -->
+
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                DATA
+            </div>
+
+            <a href="{% url 'data_management:dataset_management' %}"
+               class="nav-item">
+
+                <span class="nav-icon">▣</span>
+                <span>Data Management</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- INTELLIGENCE -->
+
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                INTELLIGENCE
+            </div>
+
+            <a href="{% url 'analytics:business_intelligence' %}"
+               class="nav-item">
+
+                <span class="nav-icon">◈</span>
+                <span>Business Analytics</span>
+
+            </a>
+
+
+            <a href="{% url 'advanced_insights:dashboard' %}"
+               class="nav-item">
+
+                <span class="nav-icon">✦</span>
+                <span>Advanced Insights</span>
+
+            </a>
+
+
+            <a href="{% url 'decision_intelligence:dashboard' %}"
+               class="nav-item">
+
+                <span class="nav-icon">◎</span>
+                <span>Decision Intelligence</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- DECISIONS -->
+
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                DECISIONS
+            </div>
+
+
+            <a href="{% url 'decision_intelligence:recommendations' %}"
+               class="nav-item">
+
+                <span class="nav-icon">🎯</span>
+                <span>Recommendations</span>
+
+            </a>
+
+
+            <a href="{% url 'decision_intelligence:what_if' %}"
+               class="nav-item active">
+
+                <span class="nav-icon">🔬</span>
+                <span>What-If Simulator</span>
+
+                <span class="active-dot"></span>
+
+            </a>
+
+
+            <a href="{% url 'decision_intelligence:scenario_planning' %}"
+               class="nav-item">
+
+                <span class="nav-icon">▤</span>
+                <span>Scenario Planning</span>
+
+            </a>
+
+
+            <a href="#"
+               class="nav-item disabled-item">
+
+                <span class="nav-icon">🚨</span>
+                <span>Business Alerts</span>
+                <span class="coming-soon">Soon</span>
+
+            </a>
+
+
+            <a href="#"
+               class="nav-item disabled-item">
+
+                <span class="nav-icon">⚡</span>
+                <span>Action Center</span>
+                <span class="coming-soon">Soon</span>
+
+            </a>
+
+
+            <a href="#"
+               class="nav-item disabled-item">
+
+                <span class="nav-icon">📈</span>
+                <span>Decision Impact</span>
+                <span class="coming-soon">Soon</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- REPORTING -->
+
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                REPORTING
+            </div>
+
+            <a href="#"
+               class="nav-item disabled-item">
+
+                <span class="nav-icon">▤</span>
+                <span>Reports</span>
+                <span class="coming-soon">Soon</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- SYSTEM -->
+
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                SYSTEM
+            </div>
+
+
+            <a href="#"
+               class="nav-item">
+
+                <span class="nav-icon">⚙</span>
+                <span>Settings</span>
+
+            </a>
+
+
+            <a href="{% url 'accounts:logout' %}"
+               class="nav-item logout-item">
+
+                <span class="nav-icon">↪</span>
+                <span>Logout</span>
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- SIDEBAR FOOTER -->
+
+    <div class="sidebar-footer">
+
+        <div class="system-status">
+
+            <span class="status-dot"></span>
+
+            <div>
+
+                <strong>System Online</strong>
+                <small>Smart BI Engine</small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+====================================================== -->
+
+<main class="main-content">
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+        <div class="topbar-left">
+
+            <button type="button"
+                    class="mobile-menu"
+                    onclick="toggleSidebar()">
+
+                ☰
+
+            </button>
+
+
+            <div>
+
+                <div class="breadcrumb">
+
+                    Decision Intelligence
+
+                    <span>/</span>
+
+                    What-If Simulator
+
+                </div>
+
+                <h2>
+                    What-If Simulator
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="topbar-right">
+
+            <div class="engine-status">
+
+                <span class="engine-dot"></span>
+
+                Intelligence Engine
+
+            </div>
+
+
+            {% if request.user.is_authenticated %}
+
+            <div class="user-profile">
+
+                <div class="user-avatar">
+
+                    {{ request.user.username|first|upper }}
+
+                </div>
+
+
+                <div class="user-info">
+
+                    <strong>
+                        {{ request.user.username }}
+                    </strong>
+
+                    <small>
+                        {{ request.user.user_type|default:"Business User" }}
+                    </small>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         PAGE CONTENT
+    ====================================================== -->
+
+    <section class="page-content">
+
+
+        <!-- INTRO -->
+
+        <div class="page-intro">
+
+            <div class="intro-content">
+
+                <div class="intro-icon">
+                    🔬
+                </div>
+
+                <div>
+
+                    <span class="eyebrow">
+                        DECISION INTELLIGENCE
+                    </span>
+
+                    <h1>
+                        What-If Simulator
+                    </h1>
+
+                    <p>
+                        Test business scenarios before taking action.
+                        Adjust pricing, discounts, marketing investment
+                        and demand assumptions to understand their
+                        potential impact on revenue, profit and units.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="intro-badge">
+
+                <span class="pulse"></span>
+
+                Scenario Engine Ready
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             DATASET
+        ================================================== -->
+
+        <div class="dataset-panel">
+
+            <div class="dataset-panel-left">
+
+                <div class="dataset-icon">
+                    ◉
+                </div>
+
+                <div>
+
+                    <span class="eyebrow">
+                        ANALYSIS DATASET
+                    </span>
+
+                    <h3>
+                        Choose Business Dataset
+                    </h3>
+
+                    <p>
+                        The simulator uses the current cleaned
+                        dataset as the business baseline whenever
+                        a cleaned version is available.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="dataset-panel-right">
+
+                {% if datasets %}
+
+                <label for="datasetSelector">
+                    Selected Dataset
+                </label>
+
+
+                <select id="datasetSelector"
+                        class="dataset-select">
+
+                    {% for dataset in datasets %}
+
+                    <option
+                        value="{{ dataset.id }}"
+                        {% if selected_dataset and selected_dataset.id == dataset.id %}
+                            selected
+                        {% endif %}
+                    >
+
+                        {{ dataset.name }} — {{ dataset.dataset_type }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+
+                {% if selected_dataset %}
+
+                <div class="dataset-meta">
+
+                    <span class="dataset-type">
+                        {{ selected_dataset.dataset_type }}
+                    </span>
+
+                    <span>•</span>
+
+                    <span>
+                        {{ selected_dataset.name }}
+                    </span>
+
+                </div>
+
+                {% endif %}
+
+
+                {% else %}
+
+                <div class="dataset-empty">
+
+                    <span>⚠</span>
+
+                    <div>
+
+                        <strong>
+                            No datasets available
+                        </strong>
+
+                        <small>
+                            Upload a dataset from Data Management
+                            before running scenarios.
+                        </small>
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- ERROR -->
+
+        {% if error_message %}
+
+        <div class="dataset-empty">
+
+            <span>⚠</span>
+
+            <div>
+
+                <strong>
+                    Scenario analysis unavailable
+                </strong>
+
+                <small>
+                    {{ error_message }}
+                </small>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             BASELINE
+        ================================================== -->
+
+        {% if baseline %}
+
+        <section class="baseline-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="eyebrow">
+                        REAL DATA BASELINE
+                    </span>
+
+                    <h2>
+                        Current Business Baseline
+                    </h2>
+
+                    <p>
+                        Starting values calculated from your
+                        selected dataset.
+                    </p>
+
+                </div>
+
+
+                <div class="source-badge">
+
+                    <span class="source-dot"></span>
+
+                    {{ baseline.baseline_source|default:"Dataset" }}
+
+                </div>
+
+            </div>
+
+
+            <div class="baseline-grid">
+
+
+                <!-- REVENUE -->
+
+                <div class="baseline-card">
+
+                    <div class="metric-top">
+
+                        <span class="metric-label">
+                            Baseline Revenue
+                        </span>
+
+                        <span class="metric-icon revenue-icon">
+                            ₹
+                        </span>
+
+                    </div>
+
+                    <strong class="metric-value">
+
+                        ₹{{ base_revenue|floatformat:2 }}
+
+                    </strong>
+
+
+                    {% if baseline.revenue_column %}
+
+                    <div class="metric-source">
+
+                        Source:
+
+                        <strong>
+                            {{ baseline.revenue_column }}
+                        </strong>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- PROFIT -->
+
+                <div class="baseline-card">
+
+                    <div class="metric-top">
+
+                        <span class="metric-label">
+                            Baseline Profit
+                        </span>
+
+                        <span class="metric-icon profit-icon">
+                            ↗
+                        </span>
+
+                    </div>
+
+                    <strong class="metric-value">
+
+                        ₹{{ base_profit|floatformat:2 }}
+
+                    </strong>
+
+
+                    {% if baseline.profit_column %}
+
+                    <div class="metric-source">
+
+                        Source:
+
+                        <strong>
+                            {{ baseline.profit_column }}
+                        </strong>
+
+                    </div>
+
+
+                    {% elif baseline.cost_column %}
+
+                    <div class="metric-source">
+                        Calculated from Revenue − Cost
+                    </div>
+
+
+                    {% else %}
+
+                    <div class="metric-source">
+                        Estimated baseline
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- UNITS -->
+
+                <div class="baseline-card">
+
+                    <div class="metric-top">
+
+                        <span class="metric-label">
+                            Business Units
+                        </span>
+
+                        <span class="metric-icon units-icon">
+                            ◫
+                        </span>
+
+                    </div>
+
+                    <strong class="metric-value">
+
+                        {{ base_units|floatformat:0 }}
+
+                    </strong>
+
+
+                    <div class="metric-source">
+
+                        {% if baseline.quantity_column %}
+
+                        Source:
+
+                        <strong>
+                            {{ baseline.quantity_column }}
+                        </strong>
+
+                        {% else %}
+
+                        Based on dataset rows
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- DATASET SIZE -->
+
+                <div class="baseline-card">
+
+                    <div class="metric-top">
+
+                        <span class="metric-label">
+                            Dataset Size
+                        </span>
+
+                        <span class="metric-icon data-icon">
+                            ◈
+                        </span>
+
+                    </div>
+
+                    <strong class="metric-value">
+
+                        {{ baseline.rows|default:0|floatformat:0 }}
+
+                    </strong>
+
+                    <div class="metric-source">
+
+                        Rows · {{ baseline.columns|default:0 }} columns
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             SCENARIO PRESETS
+        ================================================== -->
+
+        <section class="preset-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="eyebrow">
+                        QUICK SCENARIOS
+                    </span>
+
+                    <h2>
+                        Scenario Presets
+                    </h2>
+
+                    <p>
+                        Start with a predefined business scenario,
+                        then adjust the assumptions before running
+                        the simulation.
+                    </p>
+
+                </div>
+
+
+                <div class="preset-hint">
+
+                    <span class="preset-hint-icon">
+                        ⚡
+                    </span>
+
+                    <span>
+                        One-click simulation setup
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="preset-grid">
+
+
+                <!-- INCREASE SALES -->
+
+                <button
+                    type="button"
+                    class="preset-card preset-growth"
+                    data-preset="increase-sales"
+                    onclick="applyPreset('increase-sales')">
+
+                    <div class="preset-card-top">
+
+                        <div class="preset-icon">
+                            📈
+                        </div>
+
+                        <span class="preset-badge">
+                            GROWTH
+                        </span>
+
+                    </div>
+
+
+                    <div class="preset-content">
+
+                        <h3>
+                            Increase Sales
+                        </h3>
+
+                        <p>
+                            Increase demand through moderate
+                            pricing, promotions and marketing
+                            investment.
+                        </p>
+
+                    </div>
+
+
+                    <div class="preset-values">
+
+                        <span>
+                            Price
+                            <strong>+5%</strong>
+                        </span>
+
+                        <span>
+                            Discount
+                            <strong>+5%</strong>
+                        </span>
+
+                        <span>
+                            Marketing
+                            <strong>+20%</strong>
+                        </span>
+
+                        <span>
+                            Demand
+                            <strong>+15%</strong>
+                        </span>
+
+                    </div>
+
+
+                    <div class="preset-action">
+                        Apply Scenario
+                        <span>→</span>
+                    </div>
+
+                </button>
+
+
+                <!-- PREMIUM PRICING -->
+
+                <button
+                    type="button"
+                    class="preset-card preset-premium"
+                    data-preset="premium-pricing"
+                    onclick="applyPreset('premium-pricing')">
+
+                    <div class="preset-card-top">
+
+                        <div class="preset-icon">
+                            💎
+                        </div>
+
+                        <span class="preset-badge">
+                            PREMIUM
+                        </span>
+
+                    </div>
+
+
+                    <div class="preset-content">
+
+                        <h3>
+                            Premium Pricing
+                        </h3>
+
+                        <p>
+                            Test whether higher pricing with fewer
+                            discounts can improve business
+                            performance.
+                        </p>
+
+                    </div>
+
+
+                    <div class="preset-values">
+
+                        <span>
+                            Price
+                            <strong>+15%</strong>
+                        </span>
+
+                        <span>
+                            Discount
+                            <strong>-10%</strong>
+                        </span>
+
+                        <span>
+                            Marketing
+                            <strong>+10%</strong>
+                        </span>
+
+                        <span>
+                            Demand
+                            <strong>-5%</strong>
+                        </span>
+
+                    </div>
+
+
+                    <div class="preset-action">
+                        Apply Scenario
+                        <span>→</span>
+                    </div>
+
+                </button>
+
+
+                <!-- AGGRESSIVE MARKETING -->
+
+                <button
+                    type="button"
+                    class="preset-card preset-marketing"
+                    data-preset="aggressive-marketing"
+                    onclick="applyPreset('aggressive-marketing')">
+
+                    <div class="preset-card-top">
+
+                        <div class="preset-icon">
+                            📣
+                        </div>
+
+                        <span class="preset-badge">
+                            MARKETING
+                        </span>
+
+                    </div>
+
+
+                    <div class="preset-content">
+
+                        <h3>
+                            Aggressive Marketing
+                        </h3>
+
+                        <p>
+                            Increase marketing investment to test
+                            potential demand and revenue expansion.
+                        </p>
+
+                    </div>
+
+
+                    <div class="preset-values">
+
+                        <span>
+                            Price
+                            <strong>0%</strong>
+                        </span>
+
+                        <span>
+                            Discount
+                            <strong>+5%</strong>
+                        </span>
+
+                        <span>
+                            Marketing
+                            <strong>+50%</strong>
+                        </span>
+
+                        <span>
+                            Demand
+                            <strong>+20%</strong>
+                        </span>
+
+                    </div>
+
+
+                    <div class="preset-action">
+                        Apply Scenario
+                        <span>→</span>
+                    </div>
+
+                </button>
+
+
+                <!-- MARGIN PROTECTION -->
+
+                <button
+                    type="button"
+                    class="preset-card preset-protection"
+                    data-preset="margin-protection"
+                    onclick="applyPreset('margin-protection')">
+
+                    <div class="preset-card-top">
+
+                        <div class="preset-icon">
+                            🛡️
+                        </div>
+
+                        <span class="preset-badge">
+                            PROTECTION
+                        </span>
+
+                    </div>
+
+
+                    <div class="preset-content">
+
+                        <h3>
+                            Margin Protection
+                        </h3>
+
+                        <p>
+                            Reduce promotional pressure and
+                            marketing spend while protecting
+                            pricing power.
+                        </p>
+
+                    </div>
+
+
+                    <div class="preset-values">
+
+                        <span>
+                            Price
+                            <strong>+3%</strong>
+                        </span>
+
+                        <span>
+                            Discount
+                            <strong>-5%</strong>
+                        </span>
+
+                        <span>
+                            Marketing
+                            <strong>-10%</strong>
+                        </span>
+
+                        <span>
+                            Demand
+                            <strong>0%</strong>
+                        </span>
+
+                    </div>
+
+
+                    <div class="preset-action">
+                        Apply Scenario
+                        <span>→</span>
+                    </div>
+
+                </button>
+
+
+                <!-- DEMAND SHOCK -->
+
+                <button
+                    type="button"
+                    class="preset-card preset-shock"
+                    data-preset="demand-shock"
+                    onclick="applyPreset('demand-shock')">
+
+                    <div class="preset-card-top">
+
+                        <div class="preset-icon">
+                            ⚠️
+                        </div>
+
+                        <span class="preset-badge">
+                            RISK
+                        </span>
+
+                    </div>
+
+
+                    <div class="preset-content">
+
+                        <h3>
+                            Demand Shock
+                        </h3>
+
+                        <p>
+                            Simulate a sudden reduction in market
+                            demand without changing pricing or
+                            marketing.
+                        </p>
+
+                    </div>
+
+
+                    <div class="preset-values">
+
+                        <span>
+                            Price
+                            <strong>0%</strong>
+                        </span>
+
+                        <span>
+                            Discount
+                            <strong>0%</strong>
+                        </span>
+
+                        <span>
+                            Marketing
+                            <strong>0%</strong>
+                        </span>
+
+                        <span>
+                            Demand
+                            <strong>-25%</strong>
+                        </span>
+
+                    </div>
+
+
+                    <div class="preset-action">
+                        Apply Scenario
+                        <span>→</span>
+                    </div>
+
+                </button>
+
+            </div>
+
+
+            <div id="presetStatus"
+                 class="preset-status">
+
+                Select a preset to automatically load its assumptions.
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SIMULATOR
+        ================================================== -->
+
+        <div class="simulator-layout">
+
+
+            <!-- CONTROLS -->
+
+            <section class="panel scenario-panel"
+                     id="scenarioControls">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            SCENARIO INPUT
+                        </span>
+
+                        <h2>
+                            Scenario Assumptions
+                        </h2>
+
+                        <p>
+                            Adjust the business variables and
+                            simulate a potential future state.
+                        </p>
+
+                    </div>
+
+                    <div class="panel-number">
+                        01
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     IMPORTANT CSRF-SAFE DJANGO FORM
+                ================================================== -->
+
+                <form
+                    method="POST"
+                    action="{% url 'decision_intelligence:what_if' %}{% if selected_dataset %}?dataset={{ selected_dataset.id }}{% endif %}"
+                    id="scenarioForm"
+                    autocomplete="off"
+                >
+
+                    {% csrf_token %}
+
+
+                    {% if selected_dataset %}
+
+                    <input
+                        type="hidden"
+                        name="dataset"
+                        value="{{ selected_dataset.id }}"
+                    >
+
+                    {% endif %}
+
+
+                    <!-- PRICE -->
+
+                    <div class="control-group">
+
+                        <div class="control-header">
+
+                            <label for="priceRange">
+
+                                <span class="control-icon">
+                                    ₹
+                                </span>
+
+                                Price Change
+
+                            </label>
+
+
+                            <span
+                                class="range-value"
+                                id="priceValue">
+
+                                {{ price_change|default:0 }}%
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="range-description">
+
+                            Adjust selling price relative to
+                            the current baseline.
+
+                        </div>
+
+
+                        <input
+                            id="priceRange"
+                            type="range"
+                            name="price_change"
+                            min="-30"
+                            max="30"
+                            step="1"
+                            value="{{ price_change|default:0 }}"
+                        >
+
+
+                        <div class="range-scale">
+
+                            <span>-30%</span>
+                            <span>0%</span>
+                            <span>+30%</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DISCOUNT -->
+
+                    <div class="control-group">
+
+                        <div class="control-header">
+
+                            <label for="discountRange">
+
+                                <span class="control-icon">
+                                    %
+                                </span>
+
+                                Discount Change
+
+                            </label>
+
+
+                            <span
+                                class="range-value"
+                                id="discountValue">
+
+                                {{ discount_change|default:0 }}%
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="range-description">
+
+                            Increase or decrease promotional
+                            discount intensity.
+
+                        </div>
+
+
+                        <input
+                            id="discountRange"
+                            type="range"
+                            name="discount_change"
+                            min="-30"
+                            max="30"
+                            step="1"
+                            value="{{ discount_change|default:0 }}"
+                        >
+
+
+                        <div class="range-scale">
+
+                            <span>-30%</span>
+                            <span>0%</span>
+                            <span>+30%</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- MARKETING -->
+
+                    <div class="control-group">
+
+                        <div class="control-header">
+
+                            <label for="marketingRange">
+
+                                <span class="control-icon">
+                                    M
+                                </span>
+
+                                Marketing Change
+
+                            </label>
+
+
+                            <span
+                                class="range-value"
+                                id="marketingValue">
+
+                                {{ marketing_change|default:0 }}%
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="range-description">
+
+                            Simulate changes in marketing
+                            investment.
+
+                        </div>
+
+
+                        <input
+                            id="marketingRange"
+                            type="range"
+                            name="marketing_change"
+                            min="-50"
+                            max="100"
+                            step="1"
+                            value="{{ marketing_change|default:0 }}"
+                        >
+
+
+                        <div class="range-scale">
+
+                            <span>-50%</span>
+                            <span>0%</span>
+                            <span>+100%</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DEMAND -->
+
+                    <div class="control-group">
+
+                        <div class="control-header">
+
+                            <label for="demandRange">
+
+                                <span class="control-icon">
+                                    ↗
+                                </span>
+
+                                Demand Change
+
+                            </label>
+
+
+                            <span
+                                class="range-value"
+                                id="demandValue">
+
+                                {{ demand_change|default:0 }}%
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="range-description">
+
+                            Simulate expected demand growth
+                            or decline.
+
+                        </div>
+
+
+                        <input
+                            id="demandRange"
+                            type="range"
+                            name="demand_change"
+                            min="-50"
+                            max="100"
+                            step="1"
+                            value="{{ demand_change|default:0 }}"
+                        >
+
+
+                        <div class="range-scale">
+
+                            <span>-50%</span>
+                            <span>0%</span>
+                            <span>+100%</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- RUN -->
+
+                    <button
+                        type="submit"
+                        class="scenario-button"
+                        id="scenarioButton"
+                    >
+
+                        <span class="button-icon">
+                            ⚡
+                        </span>
+
+                        <span>
+                            Run Scenario Analysis
+                        </span>
+
+                        <span class="button-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+                </form>
+
+            </section>
+
+
+            <!-- =================================================
+                 RESULTS
+            ================================================== -->
+
+            {% if result %}
+
+            <section class="panel impact-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            SIMULATION OUTPUT
+                        </span>
+
+                        <h2>
+                            Scenario Impact
+                        </h2>
+
+                        <p>
+                            Estimated change compared with
+                            the current business baseline.
+                        </p>
+
+                    </div>
+
+                    <div class="panel-number">
+                        02
+                    </div>
+
+                </div>
+
+
+                <!-- IMPACT CARDS -->
+
+                <div class="impact-grid">
+
+
+                    <!-- REVENUE -->
+
+                    <div class="impact-card">
+
+                        <div class="impact-label">
+                            Revenue Impact
+                        </div>
+
+
+                        <div class="impact-value
+                            {% if result.changes.revenue >= 0 %}
+                                positive
+                            {% else %}
+                                negative
+                            {% endif %}"
+                        >
+
+                            {% if result.changes.revenue >= 0 %}
+                                ↗
+                            {% else %}
+                                ↘
+                            {% endif %}
+
+                            {{ result.changes.revenue|floatformat:1 }}%
+
+                        </div>
+
+
+                        <div class="impact-bar">
+
+                            <span
+                                class="{% if result.changes.revenue >= 0 %}bar-positive{% else %}bar-negative{% endif %}"
+                                data-impact="{{ result.changes.revenue }}"
+                            ></span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PROFIT -->
+
+                    <div class="impact-card">
+
+                        <div class="impact-label">
+                            Profit Impact
+                        </div>
+
+
+                        <div class="impact-value
+                            {% if result.changes.profit >= 0 %}
+                                positive
+                            {% else %}
+                                negative
+                            {% endif %}"
+                        >
+
+                            {% if result.changes.profit >= 0 %}
+                                ↗
+                            {% else %}
+                                ↘
+                            {% endif %}
+
+                            {{ result.changes.profit|floatformat:1 }}%
+
+                        </div>
+
+
+                        <div class="impact-bar">
+
+                            <span
+                                class="{% if result.changes.profit >= 0 %}bar-positive{% else %}bar-negative{% endif %}"
+                                data-impact="{{ result.changes.profit }}"
+                            ></span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- UNITS -->
+
+                    <div class="impact-card">
+
+                        <div class="impact-label">
+                            Units Impact
+                        </div>
+
+
+                        <div class="impact-value
+                            {% if result.changes.units >= 0 %}
+                                positive
+                            {% else %}
+                                negative
+                            {% endif %}"
+                        >
+
+                            {% if result.changes.units >= 0 %}
+                                ↗
+                            {% else %}
+                                ↘
+                            {% endif %}
+
+                            {{ result.changes.units|floatformat:1 }}%
+
+                        </div>
+
+
+                        <div class="impact-bar">
+
+                            <span
+                                class="{% if result.changes.units >= 0 %}bar-positive{% else %}bar-negative{% endif %}"
+                                data-impact="{{ result.changes.units }}"
+                            ></span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MAIN COMPARISON CHART -->
+
+                <div class="chart-section">
+
+                    <div class="chart-header">
+
+                        <div>
+
+                            <span class="eyebrow">
+                                VISUAL ANALYSIS
+                            </span>
+
+                            <h3>
+                                Baseline vs Scenario
+                            </h3>
+
+                            <p>
+                                Compare the current business
+                                state against the simulated outcome.
+                            </p>
+
+                        </div>
+
+
+                        <div class="chart-legend">
+
+                            <span>
+                                <i class="legend-dot baseline-dot"></i>
+                                Baseline
+                            </span>
+
+                            <span>
+                                <i class="legend-dot scenario-dot"></i>
+                                Scenario
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="chart-container">
+
+                        <canvas id="scenarioComparisonChart"></canvas>
+
+                    </div>
+
+                </div>
+
+
+                <!-- IMPACT CHART -->
+
+                <div class="scenario-chart-section">
+
+                    <div class="chart-card">
+
+                        <div class="chart-card-header">
+
+                            <div>
+
+                                <span class="section-label">
+                                    SCENARIO IMPACT
+                                </span>
+
+                                <h3>
+                                    Expected Business Impact
+                                </h3>
+
+                                <p>
+                                    Percentage change compared
+                                    with the current baseline.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="chart-container">
+
+                            <canvas id="scenarioImpactChart"></canvas>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SCENARIO VALUES -->
+
+                <div class="scenario-values">
+
+
+                    <div class="value-card">
+
+                        <span>
+                            Scenario Revenue
+                        </span>
+
+                        <strong>
+                            ₹{{ result.scenario.revenue|floatformat:0 }}
+                        </strong>
+
+                        <small>
+                            Baseline:
+                            ₹{{ base_revenue|floatformat:0 }}
+                        </small>
+
+                    </div>
+
+
+                    <div class="value-card">
+
+                        <span>
+                            Scenario Profit
+                        </span>
+
+                        <strong>
+                            ₹{{ result.scenario.profit|floatformat:0 }}
+                        </strong>
+
+                        <small>
+                            Baseline:
+                            ₹{{ base_profit|floatformat:0 }}
+                        </small>
+
+                    </div>
+
+
+                    <div class="value-card">
+
+                        <span>
+                            Scenario Units
+                        </span>
+
+                        <strong>
+                            {{ result.scenario.units|floatformat:0 }}
+                        </strong>
+
+                        <small>
+                            Baseline:
+                            {{ base_units|floatformat:0 }}
+                        </small>
+
+                    </div>
+
+
+                    <div class="value-card score-card">
+
+                        <span>
+                            Business Score
+                        </span>
+
+                        <strong>
+                            {{ result.score }}
+                            <small>/100</small>
+                        </strong>
+
+                        <div class="score-track">
+
+                            <span
+                                style="width: {{ result.score }}%"
+                            ></span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DECISION -->
+
+                <div
+                    class="decision-box
+                    {% if result.decision == 'Recommended' %}
+                        decision-positive
+                    {% elif result.decision == 'Not Recommended' %}
+                        decision-negative
+                    {% else %}
+                        decision-neutral
+                    {% endif %}"
+                >
+
+                    <div class="decision-icon">
+
+                        {% if result.decision == "Recommended" %}
+                            ✓
+                        {% elif result.decision == "Not Recommended" %}
+                            !
+                        {% else %}
+                            ◈
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="decision-content">
+
+                        <span class="decision-label">
+                            DECISION ASSESSMENT
+                        </span>
+
+                        <strong>
+                            {{ result.decision }}
+                        </strong>
+
+                        <p>
+                            Based on simulated revenue,
+                            profit, unit movement and
+                            business score.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- INSIGHTS -->
+
+                <div class="insights-section">
+
+                    <div class="insights-title">
+
+                        <span>
+                            ✦
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Scenario Insights
+                            </strong>
+
+                            <small>
+                                Key observations from this simulation
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    {% if result.insights %}
+
+                    <div class="insight-list">
+
+                        {% for insight in result.insights %}
+
+                        <div class="insight-item">
+
+                            <span class="insight-number">
+
+                                {{ forloop.counter|stringformat:"02d" }}
+
+                            </span>
+
+                            <span class="insight-text">
+
+                                {{ insight }}
+
+                            </span>
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="no-insights">
+
+                        No additional insights were generated
+                        for this scenario.
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </section>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- =================================================
+             EXPLANATION
+        ================================================== -->
+
+        <section class="how-it-works">
+
+            <div class="how-icon">
+                💡
+            </div>
+
+
+            <div>
+
+                <span class="eyebrow">
+                    HOW SMART BI DECIDES
+                </span>
+
+                <h3>
+                    From business assumptions to decisions
+                </h3>
+
+                <p>
+                    Smart BI starts with the selected dataset,
+                    applies your scenario assumptions, estimates
+                    the resulting business impact, and converts
+                    the results into a decision assessment.
+                </p>
+
+            </div>
+
+
+            <div class="process-flow">
+
+                <div class="process-step">
+
+                    <span>01</span>
+
+                    <strong>
+                        Baseline
+                    </strong>
+
+                </div>
+
+
+                <div class="process-arrow">
+                    →
+                </div>
+
+
+                <div class="process-step">
+
+                    <span>02</span>
+
+                    <strong>
+                        Scenario
+                    </strong>
+
+                </div>
+
+
+                <div class="process-arrow">
+                    →
+                </div>
+
+
+                <div class="process-step">
+
+                    <span>03</span>
+
+                    <strong>
+                        Impact
+                    </strong>
+
+                </div>
+
+
+                <div class="process-arrow">
+                    →
+                </div>
+
+
+                <div class="process-step">
+
+                    <span>04</span>
+
+                    <strong>
+                        Decision
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+
+        <footer class="page-footer">
+
+            <span>
+                Smart Business Decision Intelligence System
+            </span>
+
+            <span>
+                Decision Intelligence Engine
+            </span>
+
+        </footer>
+
+    </section>
+
+</main>
+```
+
+</div>
+
+<!-- MOBILE OVERLAY -->
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+    onclick="toggleSidebar()">
+</div>
+
+<script>
+
+/* =========================================================
+   SMART BI WHAT-IF SIMULATOR
+========================================================= */
+
+
+/* =========================================================
+   RANGE VALUE
+========================================================= */
+
+function updateValue(elementId, value) {
+
+    const element = document.getElementById(elementId);
+
+    if (!element) {
+        return;
+    }
+
+    const number = Number(value);
+
+    if (number > 0) {
+
+        element.textContent = "+" + number + "%";
+
+    } else {
+
+        element.textContent = number + "%";
+
+    }
+
+}
+
+
+/* =========================================================
+   DATASET CHANGE
+========================================================= */
+
+function changeDataset(datasetId) {
+
+    if (!datasetId) {
+        return;
+    }
+
+    const baseUrl =
+        "{% url 'decision_intelligence:what_if' %}";
+
+    window.location.href =
+        baseUrl +
+        "?dataset=" +
+        encodeURIComponent(datasetId);
+
+}
+
+
+/* =========================================================
+   MOBILE SIDEBAR
+========================================================= */
+
+function toggleSidebar() {
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+    const overlay =
+        document.getElementById("sidebarOverlay");
+
+    if (!sidebar || !overlay) {
+        return;
+    }
+
+    sidebar.classList.toggle("mobile-open");
+
+    overlay.classList.toggle("show");
+
+}
+
+
+/* =========================================================
+   SCENARIO PRESETS
+========================================================= */
+
+const scenarioPresets = {
+
+    "increase-sales": {
+
+        price: 5,
+        discount: 5,
+        marketing: 20,
+        demand: 15,
+        name: "Increase Sales"
+
+    },
+
+
+    "premium-pricing": {
+
+        price: 15,
+        discount: -10,
+        marketing: 10,
+        demand: -5,
+        name: "Premium Pricing"
+
+    },
+
+
+    "aggressive-marketing": {
+
+        price: 0,
+        discount: 5,
+        marketing: 50,
+        demand: 20,
+        name: "Aggressive Marketing"
+
+    },
+
+
+    "margin-protection": {
+
+        price: 3,
+        discount: -5,
+        marketing: -10,
+        demand: 0,
+        name: "Margin Protection"
+
+    },
+
+
+    "demand-shock": {
+
+        price: 0,
+        discount: 0,
+        marketing: 0,
+        demand: -25,
+        name: "Demand Shock"
+
+    }
+
+};
+
+
+/* =========================================================
+   APPLY PRESET
+========================================================= */
+
+function applyPreset(presetName) {
+
+    const preset =
+        scenarioPresets[presetName];
+
+    if (!preset) {
+        return;
+    }
+
+
+    const priceSlider =
+        document.getElementById("priceRange");
+
+    const discountSlider =
+        document.getElementById("discountRange");
+
+    const marketingSlider =
+        document.getElementById("marketingRange");
+
+    const demandSlider =
+        document.getElementById("demandRange");
+
+
+    if (priceSlider) {
+        priceSlider.value = preset.price;
+    }
+
+    if (discountSlider) {
+        discountSlider.value = preset.discount;
+    }
+
+    if (marketingSlider) {
+        marketingSlider.value = preset.marketing;
+    }
+
+    if (demandSlider) {
+        demandSlider.value = preset.demand;
+    }
+
+
+    updateValue(
+        "priceValue",
+        preset.price
+    );
+
+    updateValue(
+        "discountValue",
+        preset.discount
+    );
+
+    updateValue(
+        "marketingValue",
+        preset.marketing
+    );
+
+    updateValue(
+        "demandValue",
+        preset.demand
+    );
+
+
+    document
+        .querySelectorAll(".preset-card")
+        .forEach(function(card) {
+
+            card.classList.remove(
+                "preset-selected"
+            );
+
+        });
+
+
+    const selectedCard =
+        document.querySelector(
+            '[data-preset="' +
+            presetName +
+            '"]'
+        );
+
+
+    if (selectedCard) {
+
+        selectedCard.classList.add(
+            "preset-selected"
+        );
+
+    }
+
+
+    const status =
+        document.getElementById(
+            "presetStatus"
+        );
+
+
+    if (status) {
+
+        status.innerHTML =
+            '<span class="preset-status-icon">✓</span> ' +
+            '<strong>' +
+            preset.name +
+            '</strong> preset loaded. ' +
+            'Review the assumptions and click ' +
+            '<strong>Run Scenario</strong> ' +
+            'to calculate the impact.';
+
+        status.classList.add("active");
+
+    }
+
+
+    const controls =
+        document.getElementById(
+            "scenarioControls"
+        );
+
+
+    if (controls) {
+
+        setTimeout(function() {
+
+            controls.scrollIntoView({
+
+                behavior: "smooth",
+                block: "center"
+
+            });
+
+        }, 150);
+
+    }
+
+}
+
+
+/* =========================================================
+   SAFE IMPACT BAR
+========================================================= */
+
+function updateImpactBars() {
+
+    document
+        .querySelectorAll("[data-impact]")
+        .forEach(function(bar) {
+
+            const impact =
+                Number(
+                    bar.dataset.impact || 0
+                );
+
+            let width =
+                Math.abs(impact);
+
+
+            if (width > 100) {
+                width = 100;
+            }
+
+
+            if (impact < 0 && width < 20) {
+                width = 20;
+            }
+
+
+            bar.style.width =
+                width + "%";
+
+        });
+
+}
+
+
+/* =========================================================
+   PAGE INITIALIZATION
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+
+        /* =====================================================
+           SLIDERS
+        ====================================================== */
+
+        const priceSlider =
+            document.getElementById(
+                "priceRange"
+            );
+
+        const discountSlider =
+            document.getElementById(
+                "discountRange"
+            );
+
+        const marketingSlider =
+            document.getElementById(
+                "marketingRange"
+            );
+
+        const demandSlider =
+            document.getElementById(
+                "demandRange"
+            );
+
+
+        if (priceSlider) {
+
+            updateValue(
+                "priceValue",
+                priceSlider.value
+            );
+
+        }
+
+
+        if (discountSlider) {
+
+            updateValue(
+                "discountValue",
+                discountSlider.value
+            );
+
+        }
+
+
+        if (marketingSlider) {
+
+            updateValue(
+                "marketingValue",
+                marketingSlider.value
+            );
+
+        }
+
+
+        if (demandSlider) {
+
+            updateValue(
+                "demandValue",
+                demandSlider.value
+            );
+
+        }
+
+
+        /* =====================================================
+           MANUAL SLIDER CHANGES
+        ====================================================== */
+
+        [
+            priceSlider,
+            discountSlider,
+            marketingSlider,
+            demandSlider
+        ].forEach(function(slider) {
+
+            if (!slider) {
+                return;
+            }
+
+
+            slider.addEventListener(
+                "input",
+                function() {
+
+
+                    if (slider === priceSlider) {
+
+                        updateValue(
+                            "priceValue",
+                            slider.value
+                        );
+
+                    }
+
+
+                    if (slider === discountSlider) {
+
+                        updateValue(
+                            "discountValue",
+                            slider.value
+                        );
+
+                    }
+
+
+                    if (slider === marketingSlider) {
+
+                        updateValue(
+                            "marketingValue",
+                            slider.value
+                        );
+
+                    }
+
+
+                    if (slider === demandSlider) {
+
+                        updateValue(
+                            "demandValue",
+                            slider.value
+                        );
+
+                    }
+
+
+                    document
+                        .querySelectorAll(".preset-card")
+                        .forEach(function(card) {
+
+                            card.classList.remove(
+                                "preset-selected"
+                            );
+
+                        });
+
+
+                    const status =
+                        document.getElementById(
+                            "presetStatus"
+                        );
+
+
+                    if (status) {
+
+                        status.textContent =
+                            "Custom scenario values selected.";
+
+                        status.classList.remove(
+                            "active"
+                        );
+
+                    }
+
+                }
+            );
+
+        });
+
+
+        /* =====================================================
+           DATASET SELECTOR
+        ====================================================== */
+
+        const datasetSelector =
+            document.getElementById(
+                "datasetSelector"
+            );
+
+
+        if (datasetSelector) {
+
+            datasetSelector.addEventListener(
+                "change",
+                function() {
+
+                    changeDataset(
+                        this.value
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           SCENARIO FORM
+        ====================================================== */
+
+        const form =
+            document.getElementById(
+                "scenarioForm"
+            );
+
+        const button =
+            document.getElementById(
+                "scenarioButton"
+            );
+
+
+        if (form && button) {
+
+            form.addEventListener(
+                "submit",
+                function() {
+
+                    /*
+                     * IMPORTANT:
+                     * Do NOT use preventDefault().
+                     * Let Django receive the normal POST request.
+                     */
+
+                    button.classList.add(
+                        "loading"
+                    );
+
+                    button.disabled = true;
+
+
+                    const text =
+                        button.querySelector(
+                            "span:nth-child(2)"
+                        );
+
+
+                    if (text) {
+
+                        text.textContent =
+                            "Running Scenario...";
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           IMPACT BARS
+        ====================================================== */
+
+        updateImpactBars();
+
+
+        /* =====================================================
+           DJANGO DATA
+        ====================================================== */
+
+        const baselineRevenue =
+            Number(
+                "{{ base_revenue|default:0 }}"
+            );
+
+
+        const baselineProfit =
+            Number(
+                "{{ base_profit|default:0 }}"
+            );
+
+
+        const baselineUnits =
+            Number(
+                "{{ base_units|default:0 }}"
+            );
+
+
+        const scenarioRevenue =
+            Number(
+                "{% if result %}{{ result.scenario.revenue|default:0 }}{% else %}0{% endif %}"
+            );
+
+
+        const scenarioProfit =
+            Number(
+                "{% if result %}{{ result.scenario.profit|default:0 }}{% else %}0{% endif %}"
+            );
+
+
+        const scenarioUnits =
+            Number(
+                "{% if result %}{{ result.scenario.units|default:0 }}{% else %}0{% endif %}"
+            );
+
+
+        /* =====================================================
+           CHART DEFAULTS
+        ====================================================== */
+
+        if (typeof Chart !== "undefined") {
+
+            Chart.defaults.font.family =
+                "Inter, Arial, sans-serif";
+
+            Chart.defaults.color =
+                "#8195aa";
+
+        }
+
+
+        /* =====================================================
+           COMPARISON CHART
+        ====================================================== */
+
+        const comparisonCanvas =
+            document.getElementById(
+                "scenarioComparisonChart"
+            );
+
+
+        if (
+            comparisonCanvas &&
+            typeof Chart !== "undefined" &&
+            baselineRevenue > 0
+        ) {
+
+            new Chart(
+                comparisonCanvas,
+                {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels: [
+                            "Revenue",
+                            "Profit",
+                            "Units"
+                        ],
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    "Current Business",
+
+                                data: [
+                                    baselineRevenue,
+                                    baselineProfit,
+                                    baselineUnits
+                                ],
+
+                                backgroundColor:
+                                    "rgba(117, 103, 248, 0.30)",
+
+                                borderColor:
+                                    "#7567f8",
+
+                                borderWidth: 1,
+
+                                borderRadius: 8,
+
+                                maxBarThickness: 48
+
+                            },
+
+
+                            {
+
+                                label:
+                                    "What-If Scenario",
+
+                                data: [
+                                    scenarioRevenue,
+                                    scenarioProfit,
+                                    scenarioUnits
+                                ],
+
+                                backgroundColor:
+                                    "rgba(57, 217, 138, 0.28)",
+
+                                borderColor:
+                                    "#39d98a",
+
+                                borderWidth: 1,
+
+                                borderRadius: 8,
+
+                                maxBarThickness: 48
+
+                            }
+
+                        ]
+
+                    },
+
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        interaction: {
+
+                            intersect: false,
+
+                            mode: "index"
+
+                        },
+
+
+                        plugins: {
+
+                            legend: {
+
+                                display: true,
+
+                                labels: {
+
+                                    color:
+                                        "#a9b8c8",
+
+                                    font: {
+
+                                        size: 11,
+
+                                        weight: "600"
+
+                                    },
+
+                                    usePointStyle: true,
+
+                                    padding: 18
+
+                                }
+
+                            },
+
+
+                            tooltip: {
+
+                                backgroundColor:
+                                    "#081827",
+
+                                borderColor:
+                                    "rgba(255,255,255,0.08)",
+
+                                borderWidth: 1,
+
+                                titleColor:
+                                    "#f2f7fc",
+
+                                bodyColor:
+                                    "#aab9c9",
+
+                                padding: 12,
+
+                                callbacks: {
+
+                                    label:
+                                        function(context) {
+
+                                            const value =
+                                                Number(
+                                                    context.raw
+                                                );
+
+
+                                            if (
+                                                context.dataIndex === 2
+                                            ) {
+
+                                                return (
+                                                    context.dataset.label +
+                                                    ": " +
+                                                    value.toLocaleString()
+                                                );
+
+                                            }
+
+
+                                            return (
+                                                context.dataset.label +
+                                                ": ₹" +
+                                                value.toLocaleString(
+                                                    undefined,
+                                                    {
+                                                        maximumFractionDigits: 0
+                                                    }
+                                                )
+                                            );
+
+                                        }
+
+                                }
+
+                            }
+
+                        },
+
+
+                        scales: {
+
+                            x: {
+
+                                grid: {
+                                    display: false
+                                },
+
+                                ticks: {
+                                    color: "#8195aa"
+                                }
+
+                            },
+
+
+                            y: {
+
+                                beginAtZero: true,
+
+                                grid: {
+
+                                    color:
+                                        "rgba(255,255,255,0.05)"
+
+                                },
+
+                                ticks: {
+
+                                    color:
+                                        "#8195aa",
+
+                                    callback:
+                                        function(value) {
+
+                                            return Number(
+                                                value
+                                            ).toLocaleString();
+
+                                        }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           IMPACT CHART
+        ====================================================== */
+
+        const impactCanvas =
+            document.getElementById(
+                "scenarioImpactChart"
+            );
+
+
+        if (
+            impactCanvas &&
+            typeof Chart !== "undefined" &&
+            baselineRevenue > 0
+        ) {
+
+
+            const revenueImpact =
+                (
+                    (
+                        scenarioRevenue -
+                        baselineRevenue
+                    ) /
+                    baselineRevenue
+                ) * 100;
+
+
+            const profitImpact =
+                baselineProfit !== 0
+
+                    ?
+
+                    (
+                        (
+                            scenarioProfit -
+                            baselineProfit
+                        ) /
+                        Math.abs(
+                            baselineProfit
+                        )
+                    ) * 100
+
+                    :
+
+                    0;
+
+
+            const unitsImpact =
+                baselineUnits !== 0
+
+                    ?
+
+                    (
+                        (
+                            scenarioUnits -
+                            baselineUnits
+                        ) /
+                        baselineUnits
+                    ) * 100
+
+                    :
+
+                    0;
+
+
+            new Chart(
+                impactCanvas,
+                {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels: [
+                            "Revenue",
+                            "Profit",
+                            "Units"
+                        ],
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    "Impact %",
+
+                                data: [
+                                    revenueImpact,
+                                    profitImpact,
+                                    unitsImpact
+                                ],
+
+                                backgroundColor: [
+
+                                    revenueImpact >= 0
+                                        ? "rgba(57, 217, 138, 0.28)"
+                                        : "rgba(255, 92, 112, 0.28)",
+
+                                    profitImpact >= 0
+                                        ? "rgba(57, 217, 138, 0.28)"
+                                        : "rgba(255, 92, 112, 0.28)",
+
+                                    unitsImpact >= 0
+                                        ? "rgba(63, 169, 245, 0.28)"
+                                        : "rgba(255, 92, 112, 0.28)"
+
+                                ],
+
+                                borderColor: [
+
+                                    revenueImpact >= 0
+                                        ? "#39d98a"
+                                        : "#ff5c70",
+
+                                    profitImpact >= 0
+                                        ? "#39d98a"
+                                        : "#ff5c70",
+
+                                    unitsImpact >= 0
+                                        ? "#3fa9f5"
+                                        : "#ff5c70"
+
+                                ],
+
+                                borderWidth: 1,
+
+                                borderRadius: 8,
+
+                                maxBarThickness: 52
+
+                            }
+
+                        ]
+
+                    },
+
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+
+                        plugins: {
+
+                            legend: {
+
+                                display: false
+
+                            },
+
+
+                            tooltip: {
+
+                                backgroundColor:
+                                    "#081827",
+
+                                borderColor:
+                                    "rgba(255,255,255,0.08)",
+
+                                borderWidth: 1,
+
+                                titleColor:
+                                    "#f2f7fc",
+
+                                bodyColor:
+                                    "#aab9c9",
+
+                                padding: 12,
+
+                                callbacks: {
+
+                                    label:
+                                        function(context) {
+
+                                            return (
+                                                Number(
+                                                    context.raw
+                                                ).toFixed(1) +
+                                                "%"
+                                            );
+
+                                        }
+
+                                }
+
+                            }
+
+                        },
+
+
+                        scales: {
+
+                            x: {
+
+                                grid: {
+                                    display: false
+                                },
+
+                                ticks: {
+                                    color: "#8195aa"
+                                }
+
+                            },
+
+
+                            y: {
+
+                                grid: {
+
+                                    color:
+                                        "rgba(255,255,255,0.05)"
+
+                                },
+
+                                ticks: {
+
+                                    color:
+                                        "#8195aa",
+
+                                    callback:
+                                        function(value) {
+
+                                            return value + "%";
+
+                                        }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>

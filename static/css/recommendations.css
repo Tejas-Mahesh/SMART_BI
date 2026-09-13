@@ -2592,3 +2592,226 @@ body {
         flex-wrap: wrap;
     }
 }
+/* =========================================================
+   DECISION LEARNING
+========================================================= */
+
+.learning-section {
+    margin-top: 32px;
+    margin-bottom: 36px;
+}
+
+.learning-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.learning-card {
+    position: relative;
+    padding: 22px;
+    border-radius: 18px;
+    background: #0d2033;
+    border: 1px solid rgba(117, 103, 248, 0.12);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.learning-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(117, 103, 248, 0.35);
+}
+
+.learning-primary {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(117, 103, 248, 0.20),
+            rgba(13, 32, 51, 0.95)
+        );
+}
+
+.learning-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.learning-card-top span:first-child {
+    color: #a9b8ca;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.learning-icon {
+    font-size: 20px;
+}
+
+.learning-card strong {
+    display: block;
+    font-size: 30px;
+    line-height: 1;
+    margin-bottom: 12px;
+}
+
+.learning-card small {
+    color: #7f92a8;
+    font-size: 12px;
+}
+
+.learning-progress {
+    height: 6px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.learning-progress-fill {
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(
+        90deg,
+        #7567f8,
+        #39d98a
+    );
+    transition: width 1s ease;
+}
+
+
+/* =========================================================
+   LEARNING MESSAGE
+========================================================= */
+
+.learning-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-top: 18px;
+    padding: 20px 22px;
+    border-radius: 16px;
+    background: rgba(117, 103, 248, 0.07);
+    border: 1px solid rgba(117, 103, 248, 0.15);
+}
+
+.learning-message-icon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(117, 103, 248, 0.14);
+    font-size: 20px;
+}
+
+.learning-message strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.learning-message p {
+    margin: 0;
+    color: #8ea1b5;
+    line-height: 1.6;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   RECOMMENDATION LEARNING SIGNAL
+========================================================= */
+
+.learning-signal {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 18px 0;
+    padding: 14px 16px;
+    border-radius: 13px;
+    background: rgba(57, 217, 138, 0.06);
+    border: 1px solid rgba(57, 217, 138, 0.13);
+}
+
+.learning-signal-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: rgba(57, 217, 138, 0.10);
+}
+
+.learning-signal > div:nth-child(2) {
+    flex: 1;
+}
+
+.learning-signal span {
+    display: block;
+    color: #748ba2;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.learning-signal strong {
+    display: block;
+    font-size: 13px;
+}
+
+.learning-signal p {
+    margin: 4px 0 0;
+    color: #8498ad;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.learning-adjustment {
+    min-width: 54px;
+    text-align: center;
+    padding: 7px 9px;
+    border-radius: 9px;
+    background: rgba(57, 217, 138, 0.10);
+    color: #39d98a;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   RESPONSIVE LEARNING
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .learning-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .learning-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+    .learning-message {
+        flex-direction: column;
+    }
+
+    .learning-signal {
+        align-items: flex-start;
+    }
+
+}

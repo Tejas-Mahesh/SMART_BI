@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Decision Intelligence | Smart BI</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #06111f;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .page {
+            padding: 45px;
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        .header {
+            margin-bottom: 40px;
+        }
+
+        .eyebrow {
+            color: #7567f8;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: #8fa4b8;
+            max-width: 750px;
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .card {
+            background: #0d2033;
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 20px;
+            padding: 28px;
+            min-height: 210px;
+            transition: .3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(117,103,248,.6);
+            box-shadow: 0 18px 45px rgba(0,0,0,.25);
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: rgba(117,103,248,.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #8fa4b8;
+            line-height: 1.6;
+            font-size: 14px;
+            margin-bottom: 22px;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            color: white;
+            background: #7567f8;
+            padding: 11px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: .25s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            opacity: .9;
+        }
+
+        .disabled {
+            background: #172b3e;
+            color: #71879b;
+            cursor: default;
+        }
+
+        .flow {
+            margin-top: 35px;
+            background: #0d2033;
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,.07);
+        }
+
+        .flow h2 {
+            margin-bottom: 25px;
+        }
+
+        .flow-items {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .flow-item {
+            flex: 1;
+            min-width: 130px;
+            text-align: center;
+            padding: 18px;
+            background: #081827;
+            border-radius: 14px;
+        }
+
+        .flow-item strong {
+            display: block;
+            margin-bottom: 7px;
+        }
+
+        .flow-item span {
+            color: #8fa4b8;
+            font-size: 12px;
+        }
+
+        .arrow {
+            color: #7567f8;
+            font-size: 22px;
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .page {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .arrow {
+                display: none;
+            }
+
+            .flow-items {
+                flex-direction: column;
+            }
+
+            .flow-item {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="header">
+        <div class="eyebrow">Smart BI</div>
+
+        <h1>Decision Intelligence</h1>
+
+        <p class="subtitle">
+            Transform business analytics into actionable decisions.
+            Smart BI combines insights, scenarios, alerts and recommendations
+            to help businesses understand what action should be taken next.
+        </p>
+    </div>
+
+
+    <div class="grid">
+
+        <div class="card">
+            <div class="icon">🎯</div>
+
+            <h2>Recommendations</h2>
+
+            <p>
+                Convert forecasting, anomalies, customer risk and
+                opportunities into prioritized business recommendations.
+            </p>
+
+            <a href="{% url 'decision_intelligence:recommendations' %}"
+               class="btn">
+                Open Recommendations
+            </a>
+        </div>
+
+
+        <div class="card">
+            <div class="icon">🔬</div>
+
+            <h2>What-If Simulator</h2>
+
+            <p>
+                Test changes in price, discount, marketing and demand
+                before making a business decision.
+            </p>
+
+            <a href="{% url 'decision_intelligence:what_if' %}"
+               class="btn">
+                Open Simulator
+            </a>
+        </div>
+
+
+        <div class="card">
+            <div class="icon">📋</div>
+
+            <h2>Scenario Planning</h2>
+
+            <p>
+                Build and compare multiple business scenarios and
+                identify the scenario with the strongest expected impact.
+            </p>
+
+            <a href="{% url 'decision_intelligence:scenario_planning' %}"
+               class="btn">
+                Open Scenarios
+            </a>
+        </div>
+
+
+        <div class="card">
+            <div class="icon">🚨</div>
+
+            <h2>Business Alerts</h2>
+
+            <p>
+                Monitor important business events such as anomalies,
+                declining forecasts, customer risk and opportunities.
+            </p>
+
+            <a href="{% url 'decision_intelligence:business_alerts' %}"
+               class="btn">
+                Open Alerts
+            </a>
+        </div>
+
+
+        <div class="card">
+            <div class="icon">⚡</div>
+
+            <h2>Action Center</h2>
+
+            <p>
+                Centralize recommended actions and track what needs
+                attention across the business.
+            </p>
+
+            <span class="btn disabled">
+                Coming Next
+            </span>
+        </div>
+
+
+        <div class="card">
+            <div class="icon">📈</div>
+
+            <h2>Decision Impact</h2>
+
+            <p>
+                Measure the business impact of decisions and compare
+                expected results with actual outcomes.
+            </p>
+
+            <span class="btn disabled">
+                Coming Next
+            </span>
+        </div>
+
+    </div>
+
+
+    <div class="flow">
+
+        <h2>Decision Intelligence Flow</h2>
+
+        <div class="flow-items">
+
+            <div class="flow-item">
+                <strong>Analytics</strong>
+                <span>Understand the business</span>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="flow-item">
+                <strong>Insights</strong>
+                <span>Discover important signals</span>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="flow-item">
+                <strong>Scenarios</strong>
+                <span>Evaluate possibilities</span>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="flow-item">
+                <strong>Decision</strong>
+                <span>Select the best action</span>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="flow-item">
+                <strong>Impact</strong>
+                <span>Measure the result</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

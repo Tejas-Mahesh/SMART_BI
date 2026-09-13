@@ -1,0 +1,957 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Business Alerts | Smart BI</title>
+
+    <style>
+        :root {
+            --bg: #06111f;
+            --sidebar: #081827;
+            --card: #0d2033;
+            --card-2: #10283f;
+            --border: rgba(255,255,255,.08);
+
+            --purple: #7567f8;
+            --green: #39d98a;
+            --orange: #ff9f43;
+            --red: #ff5c70;
+            --blue: #3fa9f5;
+
+            --text: #eef5ff;
+            --muted: #8fa4bb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Inter, Arial, sans-serif;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(117,103,248,.10),
+                    transparent 30%
+                ),
+                var(--bg);
+            color: var(--text);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        select {
+            font: inherit;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            inset: 0 auto 0 0;
+            width: 260px;
+            padding: 24px 16px;
+            background: rgba(8,24,39,.96);
+            border-right: 1px solid var(--border);
+            z-index: 20;
+        }
+
+        .brand {
+            padding: 8px 12px 28px;
+        }
+
+        .brand-title {
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .brand-title span {
+            color: var(--purple);
+        }
+
+        .brand-subtitle {
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        .nav-label {
+            margin: 18px 12px 8px;
+            color: #60788f;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            margin: 4px 0;
+            border-radius: 10px;
+            color: #9db1c6;
+            transition: .25s ease;
+        }
+
+        .nav-link:hover {
+            color: white;
+            background: rgba(255,255,255,.05);
+            transform: translateX(3px);
+        }
+
+        .nav-link.active {
+            color: white;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(117,103,248,.9),
+                    rgba(94,78,210,.65)
+                );
+            box-shadow: 0 8px 25px rgba(117,103,248,.18);
+        }
+
+        .nav-icon {
+            width: 24px;
+            text-align: center;
+        }
+
+        .system-status {
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            bottom: 20px;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: rgba(255,255,255,.025);
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            margin-right: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 10px rgba(57,217,138,.7);
+        }
+
+        /* MAIN */
+
+        .main {
+            width: calc(100% - 260px);
+            margin-left: 260px;
+            padding: 28px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 26px;
+        }
+
+        .eyebrow {
+            color: var(--purple);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin-top: 6px;
+            font-size: 30px;
+        }
+
+        .subtitle {
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .dataset-select {
+            min-width: 270px;
+            padding: 12px 14px;
+            color: white;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            outline: none;
+        }
+
+        /* KPI */
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .kpi {
+            padding: 20px;
+            background: rgba(13,32,51,.86);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            transition: .25s ease;
+        }
+
+        .kpi:hover {
+            transform: translateY(-4px);
+            border-color: rgba(117,103,248,.3);
+        }
+
+        .kpi-label {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .kpi-value {
+            margin-top: 10px;
+            font-size: 30px;
+            font-weight: 800;
+        }
+
+        .critical-value {
+            color: var(--red);
+        }
+
+        .high-value {
+            color: var(--orange);
+        }
+
+        .medium-value {
+            color: #ffd166;
+        }
+
+        .low-value {
+            color: var(--green);
+        }
+
+        /* CONTENT */
+
+        .panel {
+            padding: 22px;
+            margin-bottom: 22px;
+            background: rgba(13,32,51,.86);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .panel-title {
+            font-size: 18px;
+            font-weight: 750;
+        }
+
+        .panel-description {
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        /* ALERT */
+
+        .alert-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .alert-card {
+            padding: 18px;
+            background: rgba(16,40,63,.75);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--blue);
+            border-radius: 12px;
+            transition: .25s ease;
+        }
+
+        .alert-card:hover {
+            transform: translateY(-2px);
+            background: rgba(18,45,70,.9);
+        }
+
+        .alert-card.critical {
+            border-left-color: var(--red);
+        }
+
+        .alert-card.high {
+            border-left-color: var(--orange);
+        }
+
+        .alert-card.medium {
+            border-left-color: #ffd166;
+        }
+
+        .alert-card.low {
+            border-left-color: var(--green);
+        }
+
+        .alert-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .alert-title {
+            font-size: 16px;
+            font-weight: 750;
+        }
+
+        .badge {
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .badge-critical {
+            color: #ffdce1;
+            background: rgba(255,92,112,.16);
+        }
+
+        .badge-high {
+            color: #ffe0bd;
+            background: rgba(255,159,67,.16);
+        }
+
+        .badge-medium {
+            color: #fff0b8;
+            background: rgba(255,209,102,.14);
+        }
+
+        .badge-low {
+            color: #baffdf;
+            background: rgba(57,217,138,.13);
+        }
+
+        .alert-message {
+            margin-top: 10px;
+            color: #c3d0de;
+            line-height: 1.6;
+            font-size: 13px;
+        }
+
+        .alert-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .meta-item {
+            padding: 5px 9px;
+            color: var(--muted);
+            background: rgba(255,255,255,.035);
+            border-radius: 7px;
+            font-size: 10px;
+        }
+
+        .recommendation {
+            margin-top: 14px;
+            padding: 12px;
+            color: #cdd8e5;
+            background: rgba(117,103,248,.07);
+            border: 1px solid rgba(117,103,248,.12);
+            border-radius: 9px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .recommendation strong {
+            color: #a99fff;
+        }
+
+        .alert-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .action-btn {
+            padding: 8px 12px;
+            color: #dce8f5;
+            background: rgba(255,255,255,.04);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: .2s;
+            font-size: 11px;
+        }
+
+        .action-btn:hover {
+            background: rgba(255,255,255,.09);
+        }
+
+        .action-btn.resolve {
+            border-color: rgba(57,217,138,.25);
+        }
+
+        /* EMPTY */
+
+        .empty {
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .empty-icon {
+            font-size: 42px;
+            margin-bottom: 14px;
+        }
+
+        .empty h3 {
+            color: white;
+            margin-bottom: 7px;
+        }
+
+        .error-box {
+            padding: 13px;
+            margin-bottom: 16px;
+            color: #ffd7dc;
+            background: rgba(255,92,112,.08);
+            border: 1px solid rgba(255,92,112,.18);
+            border-radius: 10px;
+            font-size: 12px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 1200px) {
+            .kpi-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 220px;
+            }
+
+            .main {
+                width: calc(100% - 220px);
+                margin-left: 220px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .dataset-select {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .system-status {
+                position: relative;
+                left: auto;
+                right: auto;
+                bottom: auto;
+                margin-top: 20px;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            .main {
+                width: 100%;
+                margin-left: 0;
+                padding: 18px;
+            }
+
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 450px) {
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .alert-top {
+                flex-direction: column;
+            }
+
+            .alert-actions {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-title">
+                Smart <span>BI</span>
+            </div>
+
+            <div class="brand-subtitle">
+                DECISION INTELLIGENCE
+            </div>
+        </div>
+
+        <div class="nav-label">
+            WORKSPACE
+        </div>
+
+        <a
+            href="{% url 'core:dashboard' %}"
+            class="nav-link"
+        >
+            <span class="nav-icon">📊</span>
+            Dashboard
+        </a>
+
+        <div class="nav-label">
+            DATA
+        </div>
+
+        <a
+            href="{% url 'data_management:dataset_management' %}"
+            class="nav-link"
+        >
+            <span class="nav-icon">📂</span>
+            Data Management
+        </a>
+
+        <div class="nav-label">
+            INTELLIGENCE
+        </div>
+
+        <a
+            href="{% url 'analytics:business_intelligence' %}"
+            class="nav-link"
+        >
+            <span class="nav-icon">📈</span>
+            Business Analytics
+        </a>
+
+        <a
+            href="{% url 'advanced_insights:dashboard' %}"
+            class="nav-link"
+        >
+            <span class="nav-icon">🧠</span>
+            Advanced Insights
+        </a>
+
+        <div class="nav-label">
+            DECISION INTELLIGENCE
+        </div>
+
+        <a
+            href="{% url 'decision_intelligence:recommendations' %}"
+            class="nav-link"
+        >
+            <span class="nav-icon">🎯</span>
+            Recommendations
+        </a>
+
+        <a
+            href="{% url 'decision_intelligence:what_if' %}"
+            class="nav-link"
+        >
+            <span class="nav-icon">🔬</span>
+            What-If Simulator
+        </a>
+
+        <a
+            href="{% url 'decision_intelligence:scenario_planning' %}"
+            class="nav-link"
+        >
+            <span class="nav-icon">📋</span>
+            Scenario Planning
+        </a>
+
+        <a
+            href="{% url 'decision_intelligence:business_alerts' %}"
+            class="nav-link active"
+        >
+            <span class="nav-icon">🚨</span>
+            Business Alerts
+        </a>
+
+        <div class="nav-label">
+            REPORTING
+        </div>
+
+        <a href="#" class="nav-link">
+            <span class="nav-icon">📑</span>
+            Reports
+        </a>
+
+        <div class="system-status">
+            <span class="status-dot"></span>
+            Intelligence engine active
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <div>
+                <div class="eyebrow">
+                    Decision Intelligence
+                </div>
+
+                <h1>
+                    Business Alerts
+                </h1>
+
+                <p class="subtitle">
+                    Automatically detected business risks,
+                    opportunities and strategic signals.
+                </p>
+            </div>
+
+            {% if datasets %}
+
+            <select
+                class="dataset-select"
+                id="datasetSelector"
+                onchange="changeDataset(this.value)"
+            >
+
+                {% for dataset in datasets %}
+
+                <option
+                    value="{{ dataset.id }}"
+                    {% if selected_dataset and selected_dataset.id == dataset.id %}
+                        selected
+                    {% endif %}
+                >
+                    {{ dataset.name }} —
+                    {{ dataset.dataset_type }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            {% endif %}
+
+        </div>
+
+
+        {% for error in error_messages %}
+
+        <div class="error-box">
+            {{ error }}
+        </div>
+
+        {% endfor %}
+
+
+        <!-- KPI -->
+
+        <section class="kpi-grid">
+
+            <div class="kpi">
+                <div class="kpi-label">
+                    Total Alerts
+                </div>
+
+                <div class="kpi-value">
+                    {{ alert_summary.total }}
+                </div>
+            </div>
+
+            <div class="kpi">
+                <div class="kpi-label">
+                    Critical
+                </div>
+
+                <div class="kpi-value critical-value">
+                    {{ alert_summary.critical }}
+                </div>
+            </div>
+
+            <div class="kpi">
+                <div class="kpi-label">
+                    High Priority
+                </div>
+
+                <div class="kpi-value high-value">
+                    {{ alert_summary.high }}
+                </div>
+            </div>
+
+            <div class="kpi">
+                <div class="kpi-label">
+                    Medium
+                </div>
+
+                <div class="kpi-value medium-value">
+                    {{ alert_summary.medium }}
+                </div>
+            </div>
+
+            <div class="kpi">
+                <div class="kpi-label">
+                    Low
+                </div>
+
+                <div class="kpi-value low-value">
+                    {{ alert_summary.low }}
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- ALERT LIST -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <div class="panel-title">
+                        Active Intelligence Signals
+                    </div>
+
+                    <div class="panel-description">
+                        Alerts generated from your business intelligence
+                        and advanced analytics.
+                    </div>
+                </div>
+
+            </div>
+
+
+            {% if alerts %}
+
+            <div class="alert-list">
+
+                {% for alert in alerts %}
+
+                <article
+                    class="alert-card {{ alert.severity|lower }}"
+                >
+
+                    <div class="alert-top">
+
+                        <div class="alert-title">
+                            {{ alert.title }}
+                        </div>
+
+                        <span
+                            class="badge badge-{{ alert.severity|lower }}"
+                        >
+                            {{ alert.severity }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="alert-message">
+                        {{ alert.message }}
+                    </div>
+
+
+                    <div class="alert-meta">
+
+                        {% if alert.source %}
+                        <span class="meta-item">
+                            Source: {{ alert.source }}
+                        </span>
+                        {% endif %}
+
+                        {% if alert.category %}
+                        <span class="meta-item">
+                            {{ alert.category }}
+                        </span>
+                        {% endif %}
+
+                        {% if alert.metric_name %}
+                        <span class="meta-item">
+                            {{ alert.metric_name }}
+                        </span>
+                        {% endif %}
+
+                        {% if alert.metric_value is not None %}
+                        <span class="meta-item">
+                            Value:
+                            {{ alert.metric_value|floatformat:2 }}
+                        </span>
+                        {% endif %}
+
+                        <span class="meta-item">
+                            Status: {{ alert.status }}
+                        </span>
+
+                    </div>
+
+
+                    {% if alert.recommendation %}
+
+                    <div class="recommendation">
+
+                        <strong>
+                            Recommended Action:
+                        </strong>
+
+                        {{ alert.recommendation }}
+
+                    </div>
+
+                    {% endif %}
+
+
+                    {% if alert.status != "Resolved" %}
+
+                    <div class="alert-actions">
+
+                        {% if alert.status == "New" %}
+
+                        <form
+                            method="post"
+                            action="{% url 'decision_intelligence:acknowledge_alert' alert.id %}"
+                        >
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="action-btn"
+                            >
+                                ✓ Acknowledge
+                            </button>
+
+                        </form>
+
+                        {% endif %}
+
+
+                        <form
+                            method="post"
+                            action="{% url 'decision_intelligence:resolve_alert' alert.id %}"
+                        >
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="action-btn resolve"
+                            >
+                                ✓ Resolve
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                    {% endif %}
+
+                </article>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    🎉
+                </div>
+
+                <h3>
+                    No business alerts
+                </h3>
+
+                <p>
+                    Smart BI has not detected any significant
+                    risks or opportunities for this dataset.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+function changeDataset(datasetId) {
+
+    if (!datasetId) {
+        return;
+    }
+
+    const url = new URL(
+        "{% url 'decision_intelligence:business_alerts' %}",
+        window.location.origin
+    );
+
+    url.searchParams.set(
+        "dataset",
+        datasetId
+    );
+
+    window.location.href = url.toString();
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Action Center | Smart BI</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #06111f;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .page {
+            max-width: 1450px;
+            margin: auto;
+            padding: 35px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .eyebrow {
+            color: #7567f8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #8fa4b8;
+            line-height: 1.6;
+        }
+
+        .toolbar {
+            background: #0d2033;
+            border: 1px solid rgba(255,255,255,.07);
+            padding: 18px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        select {
+            background: #081827;
+            border: 1px solid #263d52;
+            color: white;
+            padding: 11px 14px;
+            border-radius: 9px;
+            min-width: 180px;
+        }
+
+        .filter-btn {
+            border: 0;
+            background: #7567f8;
+            color: white;
+            border-radius: 9px;
+            padding: 11px 20px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .kpis {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .kpi {
+            background: #0d2033;
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 16px;
+            padding: 22px;
+        }
+
+        .kpi-label {
+            color: #8fa4b8;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .kpi-value {
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .critical {
+            color: #ff5c70;
+        }
+
+        .high {
+            color: #ff9f43;
+        }
+
+        .medium {
+            color: #7567f8;
+        }
+
+        .low {
+            color: #39d98a;
+        }
+
+        .section-title {
+            margin: 30px 0 15px;
+            font-size: 20px;
+        }
+
+        .actions {
+            display: grid;
+            gap: 16px;
+        }
+
+        .action-card {
+            background: #0d2033;
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 18px;
+            padding: 23px;
+            transition: .25s;
+        }
+
+        .action-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(117,103,248,.5);
+        }
+
+        .action-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .action-title {
+            font-size: 19px;
+            margin-bottom: 8px;
+        }
+
+        .action-description {
+            color: #8fa4b8;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .badge-critical {
+            background: rgba(255,92,112,.15);
+            color: #ff5c70;
+        }
+
+        .badge-high {
+            background: rgba(255,159,67,.15);
+            color: #ff9f43;
+        }
+
+        .badge-medium {
+            background: rgba(117,103,248,.15);
+            color: #7567f8;
+        }
+
+        .badge-low {
+            background: rgba(57,217,138,.15);
+            color: #39d98a;
+        }
+
+        .action-meta {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,.06);
+            color: #7890a5;
+            font-size: 12px;
+        }
+
+        .action-meta strong {
+            color: #d9e4ee;
+        }
+
+        .action-footer {
+            margin-top: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .status {
+            color: #fff;
+            background: #172b3e;
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+
+        .status.completed {
+            color: #39d98a;
+        }
+
+        .status.progress {
+            color: #7567f8;
+        }
+
+        .status.dismissed {
+            color: #8fa4b8;
+        }
+
+        .actions-form {
+            display: flex;
+            gap: 8px;
+        }
+
+        .status-btn {
+            background: #172b3e;
+            color: white;
+            border: 1px solid #263d52;
+            border-radius: 8px;
+            padding: 8px 11px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .status-btn:hover {
+            border-color: #7567f8;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 70px 20px;
+            background: #0d2033;
+            border-radius: 18px;
+            color: #8fa4b8;
+        }
+
+        @media (max-width: 1100px) {
+
+            .kpis {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .page {
+                padding: 20px;
+            }
+
+            .kpis {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .action-top {
+                flex-direction: column;
+            }
+
+            .action-footer {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="header">
+
+        <div class="eyebrow">
+            Smart BI / Decision Intelligence
+        </div>
+
+        <h1>⚡ Action Center</h1>
+
+        <p class="subtitle">
+            Turn business recommendations and alerts into trackable actions.
+        </p>
+
+    </div>
+
+
+    <form method="get" class="toolbar">
+
+        <select name="dataset">
+
+            <option value="">
+                All Datasets
+            </option>
+
+            {% for dataset in datasets %}
+
+                <option
+                    value="{{ dataset.id }}"
+                    {% if selected_dataset and selected_dataset.id == dataset.id %}
+                        selected
+                    {% endif %}
+                >
+                    {{ dataset.name }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+
+        <select name="priority">
+
+            <option value="">
+                All Priorities
+            </option>
+
+            <option value="Critical"
+                {% if priority_filter == "Critical" %}selected{% endif %}>
+                Critical
+            </option>
+
+            <option value="High"
+                {% if priority_filter == "High" %}selected{% endif %}>
+                High
+            </option>
+
+            <option value="Medium"
+                {% if priority_filter == "Medium" %}selected{% endif %}>
+                Medium
+            </option>
+
+            <option value="Low"
+                {% if priority_filter == "Low" %}selected{% endif %}>
+                Low
+            </option>
+
+        </select>
+
+
+        <select name="status">
+
+            <option value="">
+                All Statuses
+            </option>
+
+            <option value="Open"
+                {% if status_filter == "Open" %}selected{% endif %}>
+                Open
+            </option>
+
+            <option value="In Progress"
+                {% if status_filter == "In Progress" %}selected{% endif %}>
+                In Progress
+            </option>
+
+            <option value="Completed"
+                {% if status_filter == "Completed" %}selected{% endif %}>
+                Completed
+            </option>
+
+            <option value="Dismissed"
+                {% if status_filter == "Dismissed" %}selected{% endif %}>
+                Dismissed
+            </option>
+
+        </select>
+
+
+        <button class="filter-btn" type="submit">
+            Apply Filters
+        </button>
+
+    </form>
+
+
+    <div class="kpis">
+
+        <div class="kpi">
+            <div class="kpi-label">Total Actions</div>
+            <div class="kpi-value">
+                {{ total_actions }}
+            </div>
+        </div>
+
+        <div class="kpi">
+            <div class="kpi-label">Critical</div>
+            <div class="kpi-value critical">
+                {{ critical_count }}
+            </div>
+        </div>
+
+        <div class="kpi">
+            <div class="kpi-label">High Priority</div>
+            <div class="kpi-value high">
+                {{ high_count }}
+            </div>
+        </div>
+
+        <div class="kpi">
+            <div class="kpi-label">In Progress</div>
+            <div class="kpi-value medium">
+                {{ in_progress_count }}
+            </div>
+        </div>
+
+        <div class="kpi">
+            <div class="kpi-label">Completed</div>
+            <div class="kpi-value low">
+                {{ completed_count }}
+            </div>
+        </div>
+
+    </div>
+
+
+    <h2 class="section-title">
+        Business Actions
+    </h2>
+
+
+    <div class="actions">
+
+        {% for action in actions %}
+
+        <div class="action-card">
+
+            <div class="action-top">
+
+                <div>
+
+                    <h3 class="action-title">
+                        {{ action.title }}
+                    </h3>
+
+                    <p class="action-description">
+                        {{ action.description|default:action.recommendation }}
+                    </p>
+
+                </div>
+
+
+                <span class="badge
+                    {% if action.priority == 'Critical' %}
+                        badge-critical
+                    {% elif action.priority == 'High' %}
+                        badge-high
+                    {% elif action.priority == 'Medium' %}
+                        badge-medium
+                    {% else %}
+                        badge-low
+                    {% endif %}
+                ">
+                    {{ action.priority }}
+                </span>
+
+            </div>
+
+
+            <div class="action-meta">
+
+                <span>
+                    Type:
+                    <strong>{{ action.action_type }}</strong>
+                </span>
+
+                <span>
+                    Expected Impact:
+                    <strong>
+                        {{ action.expected_impact|default:"Not specified" }}
+                    </strong>
+                </span>
+
+                <span>
+                    Score:
+                    <strong>
+                        {{ action.impact_score|floatformat:0 }}
+                    </strong>
+                </span>
+
+                <span>
+                    Created:
+                    <strong>
+                        {{ action.created_at|date:"d M Y" }}
+                    </strong>
+                </span>
+
+            </div>
+
+
+            <div class="action-footer">
+
+                <span class="status
+                    {% if action.status == 'Completed' %}
+                        completed
+                    {% elif action.status == 'In Progress' %}
+                        progress
+                    {% elif action.status == 'Dismissed' %}
+                        dismissed
+                    {% endif %}
+                ">
+                    {{ action.status }}
+                </span>
+
+
+                <form
+                    method="post"
+                    action="{% url 'decision_intelligence:update_action_status' action.id %}"
+                    class="actions-form"
+                >
+
+                    {% csrf_token %}
+
+                    {% if action.status != "In Progress" %}
+                    <button
+                        class="status-btn"
+                        name="status"
+                        value="In Progress"
+                    >
+                        Start
+                    </button>
+                    {% endif %}
+
+                    {% if action.status != "Completed" %}
+                    <button
+                        class="status-btn"
+                        name="status"
+                        value="Completed"
+                    >
+                        Complete
+                    </button>
+                    {% endif %}
+
+                    {% if action.status != "Dismissed" %}
+                    <button
+                        class="status-btn"
+                        name="status"
+                        value="Dismissed"
+                    >
+                        Dismiss
+                    </button>
+                    {% endif %}
+
+                </form>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty">
+
+            <h2>No business actions yet</h2>
+
+            <p style="margin-top:10px;">
+                Actions generated from recommendations and alerts
+                will appear here.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

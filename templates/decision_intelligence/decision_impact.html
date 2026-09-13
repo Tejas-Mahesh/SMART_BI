@@ -1,0 +1,2085 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Decision Impact | Smart BI</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, Arial, sans-serif;
+            background: #06111f;
+            color: #eef4ff;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 260px;
+            background: #081827;
+            border-right: 1px solid rgba(255,255,255,.06);
+            padding: 24px 16px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 20;
+        }
+
+        .brand {
+            padding: 8px 12px 28px;
+        }
+
+        .brand-title {
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: .3px;
+        }
+
+        .brand-title span {
+            color: #7567f8;
+        }
+
+        .brand-subtitle {
+            margin-top: 5px;
+            color: #7f94aa;
+            font-size: 11px;
+            letter-spacing: 1.3px;
+            text-transform: uppercase;
+        }
+
+        .nav-section {
+            margin: 22px 8px 9px;
+            color: #627a91;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 13px;
+            margin: 4px 0;
+            border-radius: 11px;
+            color: #91a5ba;
+            font-size: 13px;
+            transition: .25s ease;
+        }
+
+        .nav-link:hover {
+            color: white;
+            background: rgba(117,103,248,.10);
+            transform: translateX(3px);
+        }
+
+        .nav-link.active {
+            color: white;
+            background: linear-gradient(
+                135deg,
+                rgba(117,103,248,.95),
+                rgba(92,75,210,.85)
+            );
+            box-shadow: 0 10px 25px rgba(117,103,248,.20);
+        }
+
+        .nav-icon {
+            width: 22px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .system-status {
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            bottom: 18px;
+            padding: 12px;
+            border: 1px solid rgba(57,217,138,.14);
+            border-radius: 11px;
+            background: rgba(57,217,138,.05);
+            color: #91a5ba;
+            font-size: 11px;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            background: #39d98a;
+            border-radius: 50%;
+            margin-right: 7px;
+            box-shadow: 0 0 10px rgba(57,217,138,.7);
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+        }
+
+        .topbar {
+            height: 75px;
+            border-bottom: 1px solid rgba(255,255,255,.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            background: rgba(6,17,31,.82);
+            backdrop-filter: blur(14px);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .topbar-title h1 {
+            font-size: 21px;
+            font-weight: 750;
+        }
+
+        .topbar-title p {
+            margin-top: 4px;
+            color: #6f8499;
+            font-size: 12px;
+        }
+
+        .dataset-select {
+            min-width: 220px;
+            background: #0d2033;
+            color: #eaf1fa;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 9px;
+            padding: 10px 13px;
+            outline: none;
+        }
+
+        .content {
+            padding: 28px 30px 45px;
+        }
+
+        /* HERO */
+
+        .hero {
+            padding: 25px;
+            border-radius: 18px;
+            background:
+                radial-gradient(
+                    circle at 90% 20%,
+                    rgba(117,103,248,.20),
+                    transparent 35%
+                ),
+                #0b1d30;
+            border: 1px solid rgba(255,255,255,.07);
+            margin-bottom: 22px;
+            overflow: hidden;
+        }
+
+        .hero-label {
+            color: #7567f8;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .hero h2 {
+            margin-top: 8px;
+            font-size: 28px;
+        }
+
+        .hero p {
+            margin-top: 8px;
+            color: #8da1b6;
+            max-width: 760px;
+            line-height: 1.6;
+            font-size: 13px;
+        }
+
+        /* KPI */
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .kpi-card {
+            background: #0d2033;
+            border: 1px solid rgba(255,255,255,.06);
+            border-radius: 15px;
+            padding: 18px;
+            min-height: 125px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::after {
+            content: "";
+            position: absolute;
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            right: -28px;
+            top: -28px;
+            background: rgba(117,103,248,.07);
+        }
+
+        .kpi-label {
+            color: #70869c;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .9px;
+        }
+
+        .kpi-value {
+            margin-top: 13px;
+            font-size: 27px;
+            font-weight: 800;
+        }
+
+        .kpi-note {
+            margin-top: 7px;
+            font-size: 11px;
+            color: #748ba1;
+        }
+
+        .positive {
+            color: #39d98a;
+        }
+
+        .negative {
+            color: #ff5c70;
+        }
+
+        .warning {
+            color: #ff9f43;
+        }
+
+        .purple {
+            color: #7567f8;
+        }
+
+        /* GRID */
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: #0d2033;
+            border: 1px solid rgba(255,255,255,.06);
+            border-radius: 16px;
+            padding: 20px;
+            min-width: 0;
+        }
+
+        .card.full {
+            grid-column: 1 / -1;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 17px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .card-subtitle {
+            margin-top: 4px;
+            color: #6f8499;
+            font-size: 11px;
+        }
+
+        .chart-wrap {
+            height: 300px;
+            position: relative;
+        }
+
+        /* DISTRIBUTION */
+
+        .distribution {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .distribution-item {
+            padding: 17px 12px;
+            border-radius: 12px;
+            background: rgba(255,255,255,.025);
+            text-align: center;
+            border: 1px solid rgba(255,255,255,.05);
+        }
+
+        .distribution-number {
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .distribution-label {
+            margin-top: 6px;
+            font-size: 10px;
+            color: #70869c;
+            text-transform: uppercase;
+        }
+
+        /* ACTION TABLE */
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 750px;
+        }
+
+        th {
+            color: #657c92;
+            text-align: left;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .9px;
+            padding: 12px;
+            border-bottom: 1px solid rgba(255,255,255,.06);
+        }
+
+        td {
+            padding: 14px 12px;
+            border-bottom: 1px solid rgba(255,255,255,.04);
+            font-size: 12px;
+            color: #b4c2d1;
+        }
+
+        .action-name {
+            color: white;
+            font-weight: 650;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 8px;
+            border-radius: 7px;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .badge-positive {
+            background: rgba(57,217,138,.12);
+            color: #39d98a;
+        }
+
+        .badge-negative {
+            background: rgba(255,92,112,.12);
+            color: #ff5c70;
+        }
+
+        .badge-neutral {
+            background: rgba(255,159,67,.12);
+            color: #ff9f43;
+        }
+
+        .badge-pending {
+            background: rgba(117,103,248,.12);
+            color: #9b91ff;
+        }
+
+        /* EMPTY */
+
+        .empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: #70869c;
+        }
+
+        .empty-icon {
+            font-size: 35px;
+            margin-bottom: 12px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1200px) {
+            .kpi-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 220px;
+            }
+
+            .main {
+                margin-left: 220px;
+                width: calc(100% - 220px);
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card.full {
+                grid-column: auto;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                min-height: auto;
+            }
+
+            .system-status {
+                position: static;
+                margin-top: 20px;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .topbar {
+                padding: 15px;
+                height: auto;
+                gap: 12px;
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .content {
+                padding: 18px 15px 35px;
+            }
+
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .distribution {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 450px) {
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dataset-select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-title">
+                Smart <span>BI</span>
+            </div>
+            <div class="brand-subtitle">
+                Decision Intelligence
+            </div>
+        </div>
+
+        <div class="nav-section">Workspace</div>
+
+        <a href="{% url 'core:dashboard' %}" class="nav-link">
+            <span class="nav-icon">⌂</span>
+            Dashboard
+        </a>
+
+        <a href="{% url 'data_management:dataset_management' %}" class="nav-link">
+            <span class="nav-icon">▣</span>
+            Data Management
+        </a>
+
+        <div class="nav-section">Intelligence</div>
+
+        <a href="{% url 'analytics:business_intelligence' %}" class="nav-link">
+            <span class="nav-icon">◈</span>
+            Business Analytics
+        </a>
+
+        <a href="{% url 'advanced_insights:dashboard' %}" class="nav-link">
+            <span class="nav-icon">◉</span>
+            Advanced Insights
+        </a>
+
+        <a href="{% url 'decision_intelligence:recommendations' %}" class="nav-link">
+            <span class="nav-icon">🎯</span>
+            Recommendations
+        </a>
+
+        <div class="nav-section">Decision Intelligence</div>
+
+        <a href="{% url 'decision_intelligence:what_if' %}" class="nav-link">
+            <span class="nav-icon">🔬</span>
+            What-If Simulator
+        </a>
+
+        <a href="{% url 'decision_intelligence:scenario_planning' %}" class="nav-link">
+            <span class="nav-icon">📋</span>
+            Scenario Planning
+        </a>
+
+        <a href="{% url 'decision_intelligence:business_alerts' %}" class="nav-link">
+            <span class="nav-icon">🚨</span>
+            Business Alerts
+        </a>
+
+        <a href="{% url 'decision_intelligence:action_center' %}" class="nav-link">
+            <span class="nav-icon">⚡</span>
+            Action Center
+        </a>
+
+        <a href="{% url 'decision_intelligence:decision_impact' %}"
+           class="nav-link active">
+            <span class="nav-icon">📈</span>
+            Decision Impact
+        </a>
+
+        <div class="nav-section">System</div>
+
+        <a href="{% url 'accounts:logout' %}" class="nav-link">
+            <span class="nav-icon">↪</span>
+            Logout
+        </a>
+
+        <div class="system-status">
+            <span class="status-dot"></span>
+            Smart BI Engine Online
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div class="topbar-title">
+                <h1>Decision Impact</h1>
+                <p>Measure what happened after business decisions were executed.</p>
+            </div>
+
+            {% if datasets %}
+            <form method="get">
+                <select
+                    name="dataset"
+                    class="dataset-select"
+                    onchange="this.form.submit()"
+                >
+                    {% for dataset in datasets %}
+                        <option
+                            value="{{ dataset.id }}"
+                            {% if selected_dataset and dataset.id == selected_dataset.id %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ dataset.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+            {% endif %}
+
+        </header>
+
+
+        <section class="content">
+
+            <!-- HERO -->
+
+            <div class="hero">
+
+                <div class="hero-label">
+                    Decision Measurement Engine
+                </div>
+
+                <h2>
+                    From Decisions to Measurable Business Impact
+                </h2>
+
+                <p>
+                    Smart BI compares expected decision outcomes with actual
+                    business performance after completion. Revenue, profit and
+                    unit movement are evaluated to determine whether a decision
+                    created positive, negative or neutral impact.
+                </p>
+
+            </div>
+
+
+            {% if impact_records %}
+
+            <!-- KPI -->
+
+            <div class="kpi-grid">
+
+                <div class="kpi-card">
+                    <div class="kpi-label">
+                        Completed Decisions
+                    </div>
+
+                    <div class="kpi-value">
+                        {{ total_actions }}
+                    </div>
+
+                    <div class="kpi-note">
+                        Decisions available for measurement
+                    </div>
+                </div>
+
+
+                <div class="kpi-card">
+                    <div class="kpi-label">
+                        Positive Impact
+                    </div>
+
+                    <div class="kpi-value positive">
+                        {{ positive_count }}
+                    </div>
+
+                    <div class="kpi-note">
+                        Successful measured decisions
+                    </div>
+                </div>
+
+
+                <div class="kpi-card">
+                    <div class="kpi-label">
+                        Negative Impact
+                    </div>
+
+                    <div class="kpi-value negative">
+                        {{ negative_count }}
+                    </div>
+
+                    <div class="kpi-note">
+                        Decisions requiring review
+                    </div>
+                </div>
+
+
+                <div class="kpi-card">
+                    <div class="kpi-label">
+                        Measured
+                    </div>
+
+                    <div class="kpi-value purple">
+                        {{ measured_count }}
+                    </div>
+
+                    <div class="kpi-note">
+                        Decisions with actual outcomes
+                    </div>
+                </div>
+
+
+                <div class="kpi-card">
+                    <div class="kpi-label">
+                        Profit Accuracy
+                    </div>
+
+                    <div class="kpi-value">
+                        {{ overall_profit_accuracy|floatformat:1 }}%
+                    </div>
+
+                    <div class="kpi-note">
+                        Actual vs expected profit
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- DISTRIBUTION -->
+
+            <div class="card" style="margin-bottom:18px;">
+
+                <div class="card-header">
+
+                    <div>
+                        <div class="card-title">
+                            Decision Outcome Distribution
+                        </div>
+
+                        <div class="card-subtitle">
+                            Current measured decision portfolio
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="distribution">
+
+                    <div class="distribution-item">
+                        <div class="distribution-number positive">
+                            {{ positive_count }}
+                        </div>
+                        <div class="distribution-label">
+                            Positive
+                        </div>
+                    </div>
+
+                    <div class="distribution-item">
+                        <div class="distribution-number negative">
+                            {{ negative_count }}
+                        </div>
+                        <div class="distribution-label">
+                            Negative
+                        </div>
+                    </div>
+
+                    <div class="distribution-item">
+                        <div class="distribution-number warning">
+                            {{ neutral_count }}
+                        </div>
+                        <div class="distribution-label">
+                            Neutral
+                        </div>
+                    </div>
+
+                    <div class="distribution-item">
+                        <div class="distribution-number purple">
+                            {{ pending_count }}
+                        </div>
+                        <div class="distribution-label">
+                            Pending
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CHARTS -->
+
+            <div class="dashboard-grid">
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+                            <div class="card-title">
+                                Expected vs Actual Revenue
+                            </div>
+
+                            <div class="card-subtitle">
+                                Decision-level revenue movement
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="chart-wrap">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+                            <div class="card-title">
+                                Expected vs Actual Profit
+                            </div>
+
+                            <div class="card-subtitle">
+                                Decision-level profitability impact
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="chart-wrap">
+                        <canvas id="profitChart"></canvas>
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+                            <div class="card-title">
+                                Units Impact
+                            </div>
+
+                            <div class="card-subtitle">
+                                Expected vs observed unit movement
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="chart-wrap">
+                        <canvas id="unitsChart"></canvas>
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+                            <div class="card-title">
+                                Decision Outcome
+                            </div>
+
+                            <div class="card-subtitle">
+                                Positive, negative, neutral and pending
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="chart-wrap">
+                        <canvas id="outcomeChart"></canvas>
+                    </div>
+
+                </div>
+
+
+                <!-- FINANCIAL OVERVIEW -->
+
+                <div class="card full">
+
+                    <div class="card-header">
+
+                        <div>
+                            <div class="card-title">
+                                Expected vs Actual Financial Impact
+                            </div>
+
+                            <div class="card-subtitle">
+                                Aggregate profit movement across completed decisions
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="chart-wrap">
+                        <canvas id="financialChart"></canvas>
+                    </div>
+
+                </div>
+
+
+                <!-- DECISION TABLE -->
+
+                <div class="card full">
+
+                    <div class="card-header">
+
+                        <div>
+                            <div class="card-title">
+                                Decision Impact Register
+                            </div>
+
+                            <div class="card-subtitle">
+                                Detailed performance of completed actions
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="table-wrap">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>Decision</th>
+                                    <th>Priority</th>
+                                    <th>Expected Revenue</th>
+                                    <th>Actual Revenue</th>
+                                    <th>Expected Profit</th>
+                                    <th>Actual Profit</th>
+                                    <th>Impact</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                            {% for record in impact_records %}
+
+                                <tr>
+
+                                    <td>
+                                        <div class="action-name">
+                                            {{ record.action.title }}
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        {{ record.action.priority }}
+                                    </td>
+
+                                    <td>
+                                        {{ record.result.expected.revenue_change|floatformat:1 }}%
+                                    </td>
+
+                                    <td>
+                                        {{ record.result.actual.revenue_change|floatformat:1 }}%
+                                    </td>
+
+                                    <td>
+                                        {{ record.result.expected.profit_change|floatformat:1 }}%
+                                    </td>
+
+                                    <td>
+                                        {{ record.result.actual.profit_change|floatformat:1 }}%
+                                    </td>
+
+                                    <td>
+
+                                        {% if record.impact == "Positive" %}
+
+                                            <span class="badge badge-positive">
+                                                Positive
+                                            </span>
+
+                                        {% elif record.impact == "Negative" %}
+
+                                            <span class="badge badge-negative">
+                                                Negative
+                                            </span>
+
+                                        {% elif record.impact == "Neutral" %}
+
+                                            <span class="badge badge-neutral">
+                                                Neutral
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="badge badge-pending">
+                                                Pending
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+                <!-- DECISION INTELLIGENCE -->
+
+<div class="card full">
+
+    <div class="card-header">
+
+        <div>
+            <div class="card-title">
+                Decision Intelligence
+            </div>
+
+            <div class="card-subtitle">
+                Smart BI evaluation of completed business decisions
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="kpi-grid"
+         style="grid-template-columns:repeat(3,1fr);margin-bottom:18px;">
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Decision Success Rate
+            </div>
+
+            <div class="kpi-value positive">
+                {{ decision_intelligence.decision_success_rate|floatformat:1 }}%
+            </div>
+
+            <div class="kpi-note">
+                Positive decisions / measured decisions
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Average Accuracy
+            </div>
+
+            <div class="kpi-value purple">
+                {{ decision_intelligence.average_accuracy|floatformat:1 }}%
+            </div>
+
+            <div class="kpi-note">
+                Revenue + profit + units accuracy
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Performance Score
+            </div>
+
+            <div class="kpi-value">
+                {{ decision_intelligence.average_performance|floatformat:1 }}
+            </div>
+
+            <div class="kpi-note">
+                Overall decision performance
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- BEST DECISIONS -->
+
+    <div style="margin-bottom:25px;">
+
+        <h3 style="font-size:13px;margin-bottom:12px;">
+            🏆 Best Decisions
+        </h3>
+
+        {% if decision_intelligence.best_decisions %}
+
+            {% for item in decision_intelligence.best_decisions %}
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    gap:15px;
+                    padding:14px;
+                    margin-bottom:8px;
+                    border-radius:10px;
+                    background:rgba(57,217,138,.05);
+                    border:1px solid rgba(57,217,138,.10);
+                ">
+
+                    <div>
+
+                        <div style="font-weight:700;">
+                            {{ item.action.title }}
+                        </div>
+
+                        <div style="
+                            margin-top:5px;
+                            color:#71869c;
+                            font-size:11px;
+                        ">
+                            Actual profit:
+                            {{ item.actual_profit|floatformat:1 }}%
+                            · Accuracy:
+                            {{ item.accuracy_score|floatformat:1 }}%
+                        </div>
+
+                    </div>
+
+                    <div class="positive"
+                         style="font-weight:800;">
+                        {{ item.performance_score|floatformat:1 }}
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div style="color:#71869c;font-size:12px;">
+                No positive measured decisions yet.
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- UNDERPERFORMING -->
+
+    <div style="margin-bottom:25px;">
+
+        <h3 style="font-size:13px;margin-bottom:12px;">
+            ⚠️ Underperforming Decisions
+        </h3>
+
+        {% if decision_intelligence.underperforming_decisions %}
+
+            {% for item in decision_intelligence.underperforming_decisions %}
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    gap:15px;
+                    padding:14px;
+                    margin-bottom:8px;
+                    border-radius:10px;
+                    background:rgba(255,92,112,.05);
+                    border:1px solid rgba(255,92,112,.10);
+                ">
+
+                    <div>
+
+                        <div style="font-weight:700;">
+                            {{ item.action.title }}
+                        </div>
+
+                        <div style="
+                            margin-top:5px;
+                            color:#71869c;
+                            font-size:11px;
+                        ">
+                            Actual profit:
+                            {{ item.actual_profit|floatformat:1 }}%
+                            · Accuracy:
+                            {{ item.accuracy_score|floatformat:1 }}%
+                        </div>
+
+                    </div>
+
+                    <div class="negative"
+                         style="font-weight:800;">
+                        {{ item.performance_score|floatformat:1 }}
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div style="color:#71869c;font-size:12px;">
+                No underperforming measured decisions detected.
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- MOST ACCURATE -->
+
+    <div>
+
+        <h3 style="font-size:13px;margin-bottom:12px;">
+            🎯 Most Accurate Decisions
+        </h3>
+
+        {% if decision_intelligence.accurate_decisions %}
+
+            {% for item in decision_intelligence.accurate_decisions %}
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    gap:15px;
+                    padding:14px;
+                    margin-bottom:8px;
+                    border-radius:10px;
+                    background:rgba(117,103,248,.05);
+                    border:1px solid rgba(117,103,248,.10);
+                ">
+
+                    <div>
+
+                        <div style="font-weight:700;">
+                            {{ item.action.title }}
+                        </div>
+
+                        <div style="
+                            margin-top:5px;
+                            color:#71869c;
+                            font-size:11px;
+                        ">
+                            Revenue:
+                            {{ item.revenue_accuracy|floatformat:1 }}%
+                            · Profit:
+                            {{ item.profit_accuracy|floatformat:1 }}%
+                            · Units:
+                            {{ item.units_accuracy|floatformat:1 }}%
+                        </div>
+
+                    </div>
+
+                    <div class="purple"
+                         style="font-weight:800;">
+                        {{ item.accuracy_score|floatformat:1 }}%
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div style="color:#71869c;font-size:12px;">
+                No decisions have reached the 80% accuracy threshold yet.
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<!-- RECOMMENDATION LEARNING ENGINE -->
+
+<div class="card full">
+
+    <div class="card-header">
+
+        <div>
+
+            <div class="card-title">
+                Recommendation Learning Engine
+            </div>
+
+            <div class="card-subtitle">
+                Historical decision outcomes continuously improve future recommendations
+            </div>
+
+        </div>
+
+        <div class="badge badge-pending">
+            {{ learning_profile.status }}
+        </div>
+
+    </div>
+
+
+    <div class="kpi-grid"
+         style="grid-template-columns:repeat(4,1fr);margin-bottom:20px;">
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Historical Decisions
+            </div>
+
+            <div class="kpi-value">
+                {{ learning_profile.total_measured }}
+            </div>
+
+            <div class="kpi-note">
+                Measured decision outcomes
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Historical Success
+            </div>
+
+            <div class="kpi-value positive">
+                {{ learning_profile.success_rate|floatformat:1 }}%
+            </div>
+
+            <div class="kpi-note">
+                Positive decision rate
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Average Accuracy
+            </div>
+
+            <div class="kpi-value purple">
+                {{ learning_profile.average_accuracy|floatformat:1 }}%
+            </div>
+
+            <div class="kpi-note">
+                Expected vs actual accuracy
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Learning Score
+            </div>
+
+            <div class="kpi-value">
+                {{ learning_profile.learning_score|floatformat:1 }}
+            </div>
+
+            <div class="kpi-note">
+                Recommendation learning strength
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div style="
+        padding:20px;
+        border-radius:13px;
+        background:rgba(117,103,248,.05);
+        border:1px solid rgba(117,103,248,.12);
+    ">
+
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:20px;
+            flex-wrap:wrap;
+        ">
+
+            <div>
+
+                <div style="
+                    color:#7f94aa;
+                    font-size:10px;
+                    text-transform:uppercase;
+                    letter-spacing:1.2px;
+                ">
+                    Recommendation Confidence
+                </div>
+
+                <div style="
+                    margin-top:7px;
+                    font-size:30px;
+                    font-weight:800;
+                ">
+                    {{ learning_profile.confidence|floatformat:1 }}%
+                </div>
+
+            </div>
+
+
+            <div style="
+                flex:1;
+                min-width:250px;
+            ">
+
+                <div style="
+                    height:9px;
+                    background:#06111f;
+                    border-radius:20px;
+                    overflow:hidden;
+                ">
+
+                    <div style="
+                        width:{{ learning_profile.confidence }}%;
+                        height:100%;
+                        background:linear-gradient(
+                            90deg,
+                            #7567f8,
+                            #39d98a
+                        );
+                        border-radius:20px;
+                        transition:width .8s ease;
+                    "></div>
+
+                </div>
+
+                <div style="
+                    margin-top:9px;
+                    color:#71869c;
+                    font-size:11px;
+                    line-height:1.5;
+                ">
+                    This score represents how much historical decision
+                    performance can currently be trusted when improving
+                    future recommendation priorities.
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div style="
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:12px;
+        margin-top:15px;
+    ">
+
+        <div style="
+            padding:15px;
+            border-radius:11px;
+            background:rgba(57,217,138,.05);
+            border:1px solid rgba(57,217,138,.10);
+        ">
+
+            <div style="
+                color:#39d98a;
+                font-size:20px;
+            ">
+                ✓
+            </div>
+
+            <div style="
+                margin-top:8px;
+                font-weight:700;
+            ">
+                Successful Decisions
+            </div>
+
+            <div style="
+                margin-top:5px;
+                color:#71869c;
+                font-size:11px;
+            ">
+                {{ learning_profile.success_count }}
+                historical successes can strengthen similar recommendations.
+            </div>
+
+        </div>
+
+
+        <div style="
+            padding:15px;
+            border-radius:11px;
+            background:rgba(255,92,112,.05);
+            border:1px solid rgba(255,92,112,.10);
+        ">
+
+            <div style="
+                color:#ff5c70;
+                font-size:20px;
+            ">
+                !
+            </div>
+
+            <div style="
+                margin-top:8px;
+                font-weight:700;
+            ">
+                Failed Decisions
+            </div>
+
+            <div style="
+                margin-top:5px;
+                color:#71869c;
+                font-size:11px;
+            ">
+                {{ learning_profile.failure_count }}
+                historical failures can reduce confidence in similar strategies.
+            </div>
+
+        </div>
+
+
+        <div style="
+            padding:15px;
+            border-radius:11px;
+            background:rgba(255,159,67,.05);
+            border:1px solid rgba(255,159,67,.10);
+        ">
+
+            <div style="
+                color:#ff9f43;
+                font-size:20px;
+            ">
+                ◌
+            </div>
+
+            <div style="
+                margin-top:8px;
+                font-weight:700;
+            ">
+                Neutral Decisions
+            </div>
+
+            <div style="
+                margin-top:5px;
+                color:#71869c;
+                font-size:11px;
+            ">
+                {{ learning_profile.neutral_count }}
+                outcomes provide limited directional learning.
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- BUSINESS LEARNING -->
+
+<div class="card full">
+
+    <div class="card-header">
+
+        <div>
+            <div class="card-title">
+                Business Learning
+            </div>
+
+            <div class="card-subtitle">
+                Intelligence generated from historical decision outcomes
+            </div>
+        </div>
+
+    </div>
+
+
+    {% if decision_intelligence.insights %}
+
+        <div style="
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            gap:12px;
+        ">
+
+            {% for insight in decision_intelligence.insights %}
+
+                <div style="
+                    padding:17px;
+                    border-radius:11px;
+                    background:rgba(117,103,248,.05);
+                    border:1px solid rgba(117,103,248,.10);
+                    color:#aebdcd;
+                    font-size:12px;
+                    line-height:1.55;
+                ">
+
+                    <span style="
+                        color:#7567f8;
+                        font-weight:800;
+                        margin-right:6px;
+                    ">
+                        ✦
+                    </span>
+
+                    {{ insight }}
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div style="color:#71869c;font-size:12px;">
+            Business learning will appear after decisions are measured.
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+                <!-- BUSINESS LEARNING -->
+
+                <div class="card full">
+
+                    <div class="card-header">
+
+                        <div>
+                            <div class="card-title">
+                                Business Learning
+                            </div>
+
+                            <div class="card-subtitle">
+                                What Smart BI can learn from completed decisions
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
+
+                        <div style="padding:18px;border-radius:12px;background:rgba(57,217,138,.05);border:1px solid rgba(57,217,138,.10);">
+
+                            <div style="font-size:22px;">✓</div>
+
+                            <div style="margin-top:9px;font-weight:700;">
+                                Learn Successful Actions
+                            </div>
+
+                            <p style="margin-top:7px;color:#71869c;font-size:11px;line-height:1.5;">
+                                Positive decisions can become historical evidence
+                                for future recommendation scoring.
+                            </p>
+
+                        </div>
+
+
+                        <div style="padding:18px;border-radius:12px;background:rgba(255,92,112,.05);border:1px solid rgba(255,92,112,.10);">
+
+                            <div style="font-size:22px;">!</div>
+
+                            <div style="margin-top:9px;font-weight:700;">
+                                Detect Failed Decisions
+                            </div>
+
+                            <p style="margin-top:7px;color:#71869c;font-size:11px;line-height:1.5;">
+                                Negative outcomes can identify strategies that
+                                should be reviewed or avoided.
+                            </p>
+
+                        </div>
+
+
+                        <div style="padding:18px;border-radius:12px;background:rgba(117,103,248,.05);border:1px solid rgba(117,103,248,.10);">
+
+                            <div style="font-size:22px;">↗</div>
+
+                            <div style="margin-top:9px;font-weight:700;">
+                                Improve Future Decisions
+                            </div>
+
+                            <p style="margin-top:7px;color:#71869c;font-size:11px;line-height:1.5;">
+                                Expected-versus-actual accuracy can improve the
+                                quality of future business recommendations.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+                <div class="card">
+
+                    <div class="empty">
+
+                        <div class="empty-icon">
+                            📈
+                        </div>
+
+                        <h3>
+                            No completed decisions available
+                        </h3>
+
+                        <p style="margin-top:8px;">
+                            Complete an action from the Action Center to begin
+                            measuring its business impact.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+</div>
+
+
+{% if impact_records %}
+
+<script>
+
+    const labels = [
+        {% for record in impact_records %}
+            "{{ record.action.title|escapejs }}",
+        {% endfor %}
+    ];
+
+    const expectedRevenue = [
+        {% for record in impact_records %}
+            {{ record.result.expected.revenue_change|default:0 }},
+        {% endfor %}
+    ];
+
+    const actualRevenue = [
+        {% for record in impact_records %}
+            {{ record.result.actual.revenue_change|default:0 }},
+        {% endfor %}
+    ];
+
+    const expectedProfit = [
+        {% for record in impact_records %}
+            {{ record.result.expected.profit_change|default:0 }},
+        {% endfor %}
+    ];
+
+    const actualProfit = [
+        {% for record in impact_records %}
+            {{ record.result.actual.profit_change|default:0 }},
+        {% endfor %}
+    ];
+
+    const expectedUnits = [
+        {% for record in impact_records %}
+            {{ record.result.expected.units_change|default:0 }},
+        {% endfor %}
+    ];
+
+    const actualUnits = [
+        {% for record in impact_records %}
+            {{ record.result.actual.units_change|default:0 }},
+        {% endfor %}
+    ];
+
+
+    const commonOptions = {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        interaction: {
+            mode: "index",
+            intersect: false
+        },
+
+        plugins: {
+
+            legend: {
+                labels: {
+                    color: "#91a5ba",
+                    font: {
+                        size: 11
+                    }
+                }
+            }
+
+        },
+
+        scales: {
+
+            x: {
+                ticks: {
+                    color: "#71869c",
+                    maxRotation: 35,
+                    minRotation: 0
+                },
+
+                grid: {
+                    color: "rgba(255,255,255,.04)"
+                }
+            },
+
+            y: {
+                ticks: {
+                    color: "#71869c",
+                    callback: function(value) {
+                        return value + "%";
+                    }
+                },
+
+                grid: {
+                    color: "rgba(255,255,255,.04)"
+                }
+            }
+
+        }
+
+    };
+
+
+    /* REVENUE */
+
+    new Chart(
+        document.getElementById("revenueChart"),
+        {
+            type: "bar",
+
+            data: {
+                labels: labels,
+
+                datasets: [
+                    {
+                        label: "Expected Revenue",
+                        data: expectedRevenue
+                    },
+                    {
+                        label: "Actual Revenue",
+                        data: actualRevenue
+                    }
+                ]
+            },
+
+            options: commonOptions
+        }
+    );
+
+
+    /* PROFIT */
+
+    new Chart(
+        document.getElementById("profitChart"),
+        {
+            type: "bar",
+
+            data: {
+                labels: labels,
+
+                datasets: [
+                    {
+                        label: "Expected Profit",
+                        data: expectedProfit
+                    },
+                    {
+                        label: "Actual Profit",
+                        data: actualProfit
+                    }
+                ]
+            },
+
+            options: commonOptions
+        }
+    );
+
+
+    /* UNITS */
+
+    new Chart(
+        document.getElementById("unitsChart"),
+        {
+            type: "line",
+
+            data: {
+                labels: labels,
+
+                datasets: [
+                    {
+                        label: "Expected Units",
+                        data: expectedUnits,
+                        tension: .35
+                    },
+                    {
+                        label: "Actual Units",
+                        data: actualUnits,
+                        tension: .35
+                    }
+                ]
+            },
+
+            options: commonOptions
+        }
+    );
+
+
+    /* OUTCOME */
+
+    new Chart(
+        document.getElementById("outcomeChart"),
+        {
+            type: "doughnut",
+
+            data: {
+
+                labels: [
+                    "Positive",
+                    "Negative",
+                    "Neutral",
+                    "Pending"
+                ],
+
+                datasets: [
+                    {
+                        data: [
+                            {{ positive_count }},
+                            {{ negative_count }},
+                            {{ neutral_count }},
+                            {{ pending_count }}
+                        ]
+                    }
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                cutout: "68%",
+
+                plugins: {
+
+                    legend: {
+                        position: "bottom",
+                        labels: {
+                            color: "#91a5ba",
+                            padding: 15
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+    );
+
+
+    /* FINANCIAL */
+
+    new Chart(
+        document.getElementById("financialChart"),
+        {
+            type: "bar",
+
+            data: {
+
+                labels: [
+                    "Expected Profit Change",
+                    "Actual Profit Change"
+                ],
+
+                datasets: [
+                    {
+                        label: "Profit Impact",
+                        data: [
+                            {{ total_expected_profit|default:0 }},
+                            {{ total_actual_profit|default:0 }}
+                        ]
+                    }
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+                        display: false
+                    }
+
+                },
+
+                scales: {
+
+                    x: {
+                        ticks: {
+                            color: "#71869c"
+                        },
+
+                        grid: {
+                            color: "rgba(255,255,255,.04)"
+                        }
+                    },
+
+                    y: {
+
+                        ticks: {
+                            color: "#71869c",
+                            callback: function(value) {
+                                return value.toFixed(1) + "%";
+                            }
+                        },
+
+                        grid: {
+                            color: "rgba(255,255,255,.04)"
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+    );
+
+</script>
+
+{% endif %}
+
+</body>
+</html>
