@@ -1,0 +1,394 @@
+<aside class="smart-sidebar" id="smartSidebar">
+
+    <!-- BRAND -->
+
+    <div class="sidebar-brand">
+
+        <a
+            href="{% url 'core:dashboard' %}"
+            class="sidebar-brand-link"
+        >
+
+            <div class="sidebar-logo">
+                <span>BI</span>
+            </div>
+
+            <div class="sidebar-brand-text">
+
+                <strong>
+                    Smart BI
+                </strong>
+
+                <small>
+                    Decision Intelligence
+                </small>
+
+            </div>
+
+        </a>
+
+    </div>
+
+
+    <!-- USER -->
+
+    <div class="sidebar-user">
+
+        <div class="sidebar-avatar">
+
+            {{ user.username|first|upper }}
+
+        </div>
+
+        <div class="sidebar-user-info">
+
+            <span class="sidebar-user-name">
+                {{ user.username }}
+            </span>
+
+            <span class="sidebar-user-role">
+                {{ user.user_type|default:"Business User" }}
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="sidebar-nav">
+
+        <!-- OVERVIEW -->
+
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                Overview
+            </div>
+
+            <a
+                href="{% url 'core:dashboard' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">▦</span>
+                Dashboard
+            </a>
+
+        </div>
+
+
+        <!-- DATA -->
+
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                Data
+            </div>
+
+            <a
+                href="{% url 'data_management:dataset_management' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">▤</span>
+                Data Management
+            </a>
+
+        </div>
+
+
+        <!-- BUSINESS INTELLIGENCE -->
+
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                Intelligence
+            </div>
+
+            <a
+                href="{% url 'analytics:business_intelligence' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">◈</span>
+                Business Analytics
+            </a>
+
+            <a
+                href="{% url 'analytics:customer_intelligence' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">♙</span>
+                Customer Intelligence
+            </a>
+
+            <a
+                href="{% url 'analytics:product_intelligence' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">◫</span>
+                Product Intelligence
+            </a>
+
+            <a
+                href="{% url 'analytics:regional_intelligence' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">⌖</span>
+                Regional Intelligence
+            </a>
+
+            <a
+                href="{% url 'analytics:sales_intelligence' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">↗</span>
+                Sales Intelligence
+            </a>
+
+            <a
+                href="{% url 'analytics:financial_intelligence' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">₹</span>
+                Financial Intelligence
+            </a>
+
+            <a
+                href="{% url 'analytics:marketing_intelligence' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">⌁</span>
+                Marketing Intelligence
+            </a>
+
+            <a
+                href="{% url 'analytics:returns_intelligence' %}"
+                class="sidebar-link active"
+            >
+                <span class="nav-icon">↻</span>
+                Returns Intelligence
+            </a>
+
+        </div>
+
+
+        <!-- ADVANCED INSIGHTS -->
+
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                Advanced Insights
+            </div>
+
+            <a
+                href="{% url 'advanced_insights:dashboard' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">✦</span>
+                Advanced Insights
+            </a>
+
+            <a
+                href="{% url 'advanced_insights:anomaly_detection' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">⚠</span>
+                Anomaly Detection
+            </a>
+
+            <a
+                href="{% url 'advanced_insights:root_cause_analysis' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">⌕</span>
+                Root Cause Analysis
+            </a>
+
+            <a
+                href="{% url 'advanced_insights:customer_risk_analysis' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">!</span>
+                Customer Risk
+            </a>
+
+            <a
+                href="{% url 'advanced_insights:opportunity_detection' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">◆</span>
+                Opportunities
+            </a>
+
+        </div>
+
+
+        <!-- DECISION INTELLIGENCE -->
+
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                Decision Intelligence
+            </div>
+
+            <a
+                href="{% url 'decision_intelligence:recommendations' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">✓</span>
+                Recommendations
+            </a>
+
+            <a
+                href="{% url 'decision_intelligence:what_if' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">?</span>
+                What-If Simulator
+            </a>
+
+            <a
+                href="{% url 'decision_intelligence:scenario_planning' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">◇</span>
+                Scenario Planning
+            </a>
+
+            <a
+                href="{% url 'decision_intelligence:business_alerts' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">🔔</span>
+                Business Alerts
+            </a>
+
+            <a
+                href="{% url 'decision_intelligence:action_center' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">☑</span>
+                Action Center
+            </a>
+
+            <a
+                href="{% url 'decision_intelligence:decision_impact' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">◎</span>
+                Decision Impact
+            </a>
+
+        </div>
+
+
+        <!-- REPORTING -->
+
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                Reporting
+            </div>
+
+            <a
+                href="{% url 'reporting:dashboard' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">▥</span>
+                Reports
+            </a>
+
+        </div>
+
+
+        <!-- ADMIN -->
+
+        {% if user.is_staff or user.is_superuser %}
+
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                System Administration
+            </div>
+
+            <a
+                href="{% url 'admin_dashboard:dashboard' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">⚙</span>
+                Admin Dashboard
+            </a>
+
+            <a
+                href="{% url 'admin_dashboard:users' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">♙</span>
+                User Management
+            </a>
+
+            <a
+                href="{% url 'admin:index' %}"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">▣</span>
+                Django Admin
+            </a>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- SYSTEM -->
+
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                System
+            </div>
+
+            <a
+                href="#"
+                class="sidebar-link"
+            >
+                <span class="nav-icon">⚙</span>
+                Settings
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- BOTTOM -->
+
+    <div class="sidebar-bottom">
+
+        <div class="system-status">
+
+            <div class="status-dot"></div>
+
+            <div>
+                <strong>
+                    System Online
+                </strong>
+
+                <span>
+                    Intelligence Engine Active
+                </span>
+            </div>
+
+        </div>
+
+        <a
+            href="{% url 'accounts:logout' %}"
+            class="sidebar-link logout-link"
+        >
+            <span class="nav-icon">↪</span>
+            Logout
+        </a>
+
+    </div>
+
+</aside>

@@ -1,0 +1,421 @@
+Return_ID,Return_Date,Order_ID,Customer_ID,Product_ID,Product_Name,Category,Region,Quantity_Returned,Return_Reason,Refund_Amount,Return_Status
+R00001,2025-04-01,O001502,C00144,P0011,Electronics Product 011,Electronics,South,3,Changed Mind,20801.03,Approved
+R00002,2025-11-22,O002587,C00335,P0089,Beauty Product 089,Beauty,North,1,Wrong Product,8853.98,Approved
+R00003,2025-08-09,O002654,C00067,P0087,Home Product 087,Home,Central,5,Damaged,17005.18,Approved
+R00004,2025-02-22,O001056,C00024,P0006,Electronics Product 006,Electronics,North,4,Quality Issue,15837.49,Approved
+R00005,2025-10-20,O000706,C00398,P0001,Electronics Product 001,Electronics,South,1,Quality Issue,5629.28,Pending
+R00006,2025-06-08,O000107,C00207,P0052,Home Product 052,Home,Central,4,Quality Issue,9695.66,Approved
+R00007,2025-05-30,O000590,C00342,P0096,Electronics Product 096,Electronics,South,2,Wrong Product,3745.53,Approved
+R00008,2025-06-16,O002469,C00164,P0003,Fashion Product 003,Fashion,Central,3,Wrong Product,29827.65,Approved
+R00009,2025-03-08,O002414,C00068,P0038,Fashion Product 038,Fashion,Central,1,Damaged,5619.23,Approved
+R00010,2025-01-22,O001601,C00414,P0086,Electronics Product 086,Electronics,North,2,Unknown,11153.37,Approved
+R00011,2026-01-06,O002465,C00489,P0054,Beauty Product 054,Beauty,North,3,Damaged,14809.22,Approved
+R00012,2025-11-28,O000229,C00367,P0098,Fashion Product 098,Fashion,East,1,Damaged,4602.35,Approved
+R00013,2025-04-22,O000916,C00476,P0057,Home Product 057,Home,Central,1,Damaged,4820.76,Pending
+R00014,2025-10-09,O000795,C00073,P0011,Electronics Product 011,Electronics,West,3,Changed Mind,14322.0,Pending
+R00015,2025-08-08,O003022,C00308,P0027,Home Product 027,Home,North,1,Changed Mind,5323.65,Approved
+R00016,2025-10-11,O003544,C00479,P0046,Electronics Product 046,Electronics,West,4,Late Delivery,26487.02,Approved
+R00017,2025-01-18,O001074,C00215,P0067,Home Product 067,Home,Central,1,Wrong Product,7748.76,Approved
+R00018,2025-03-06,O003352,C00287,P0099,Beauty Product 099,Beauty,South,1,Changed Mind,8563.41,Approved
+R00019,2025-11-04,O001745,C00071,P0089,Beauty Product 089,Beauty,East,2,Changed Mind,9345.34,Approved
+R00020,2025-11-05,O001085,C00072,P0072,Home Product 072,Home,East,3,Late Delivery,15836.47,Approved
+R00021,2025-01-31,O000927,C00296,P0059,Beauty Product 059,Beauty,East,2,Wrong Product,3098.86,Approved
+R00022,2025-10-18,O003050,C00482,P0088,Fashion Product 088,Fashion,South,1,Quality Issue,4686.39,Rejected
+R00023,2025-02-21,O001118,C00228,P0015,Sports Product 015,Sports,Central,1,Changed Mind,2644.39,Approved
+R00024,2025-03-14,O000643,C00103,P0027,Home Product 027,Home,North,2,Late Delivery,19913.95,Approved
+R00025,2025-09-27,O004768,C00172,P0018,Fashion Product 018,Fashion,Central,1,Quality Issue,29993.51,Approved
+R00026,2025-04-26,O000502,C00389,P0068,Fashion Product 068,Fashion,West,4,Changed Mind,23637.65,Pending
+R00027,2025-01-18,O004067,C00457,P0081,Electronics Product 081,Electronics,West,3,Damaged,10482.01,Pending
+R00028,2025-02-18,O000334,C00314,P0050,Sports Product 050,Sports,Central,5,Damaged,16743.38,Approved
+R00029,2025-04-25,O004685,C00388,P0011,Electronics Product 011,Electronics,Central,1,Damaged,15872.48,Pending
+R00030,2025-04-18,O000487,C00020,P0037,Home Product 037,Home,South,1,Quality Issue,6395.59,Approved
+R00031,2025-11-05,O001963,C00412,P0027,Home Product 027,Home,West,4,Wrong Product,21973.58,Approved
+R00032,2025-11-14,O000394,C00247,P0067,Home Product 067,Home,East,2,Damaged,4167.96,Approved
+R00033,2025-02-23,O004843,C00368,P0057,Home Product 057,Home,East,3,Damaged,28940.06,Approved
+R00034,2025-03-13,O004867,C00479,P0096,Electronics Product 096,Electronics,West,1,Damaged,5000.34,Approved
+R00035,2025-09-21,O001756,C00017,P0009,Beauty Product 009,Beauty,North,3,Late Delivery,12224.74,Approved
+R00036,2025-09-05,O002516,C00143,P0011,Electronics Product 011,Electronics,North,3,Changed Mind,12201.72,Approved
+R00037,2025-11-08,O003586,C00057,P0095,Sports Product 095,Sports,West,5,Changed Mind,11815.36,Approved
+R00038,2025-09-14,O004316,C00181,P0060,Sports Product 060,Sports,North,1,Late Delivery,4758.15,Approved
+R00039,2025-05-17,O004967,C00398,P0091,Electronics Product 091,Electronics,South,2,Changed Mind,2651.16,Rejected
+R00040,2025-10-22,O002100,C00074,P0013,Fashion Product 013,Fashion,North,1,Late Delivery,9345.34,Pending
+R00041,2025-07-26,O003600,C00416,P0094,Beauty Product 094,Beauty,Central,4,Quality Issue,12147.69,Approved
+R00042,2025-09-24,O004122,C00226,P0003,Fashion Product 003,Fashion,West,1,Quality Issue,10051.46,Approved
+R00043,2025-04-13,O000030,C00468,P0049,Beauty Product 049,Beauty,West,1,Damaged,2381.16,Approved
+R00044,2025-12-07,O000066,C00299,P0083,Fashion Product 083,Fashion,Central,1,Damaged,2918.43,Approved
+R00045,2025-05-13,O000839,C00277,P0092,Home Product 092,Home,West,2,Wrong Product,15991.65,Approved
+R00046,2026-01-09,O003907,C00334,P0084,Beauty Product 084,Beauty,East,2,Changed Mind,6899.83,Approved
+R00047,2025-01-11,O003774,C00036,P0030,Sports Product 030,Sports,Central,3,Late Delivery,12763.63,Approved
+R00048,2025-03-23,O004636,C00367,P0018,Fashion Product 018,Fashion,East,1,Wrong Product,5492.25,Approved
+R00049,2025-12-02,O003162,C00247,P0095,Sports Product 095,Sports,East,3,Quality Issue,6310.65,Approved
+R00050,2025-07-11,O002660,C00185,P0008,Fashion Product 008,Fashion,East,1,Damaged,21521.94,Approved
+R00051,2025-10-16,O004616,C00234,P0007,Home Product 007,Home,East,5,Damaged,18990.8,Approved
+R00052,2025-08-10,O004629,C00246,P0021,Electronics Product 021,Electronics,Central,1,Damaged,4498.94,Pending
+R00053,2025-07-12,O002452,C00299,P0062,Home Product 062,Home,Central,1,Late Delivery,3713.05,Approved
+R00054,2025-07-11,O002847,C00216,P0055,Sports Product 055,Sports,North,1,Quality Issue,1309.76,Approved
+R00055,2025-09-05,O001145,C00236,P0015,Sports Product 015,Sports,North,5,Changed Mind,14261.31,Approved
+R00056,2025-04-20,O003079,C00474,P0057,Home Product 057,Home,South,1,Damaged,12419.01,Pending
+R00057,2025-05-26,O001104,C00428,P0092,Home Product 092,Home,West,1,Damaged,3727.4,Rejected
+R00058,2025-04-29,O000169,C00092,P0100,Sports Product 100,Sports,East,3,Damaged,17155.98,Approved
+R00059,2025-08-15,O001671,C00227,P0078,Fashion Product 078,Fashion,East,1,Changed Mind,21759.23,Pending
+R00060,2025-07-23,O002571,C00328,P0062,Home Product 062,Home,East,1,Changed Mind,11004.49,Approved
+R00061,2025-11-01,O002378,C00275,P0036,Electronics Product 036,Electronics,West,2,Quality Issue,9754.08,Approved
+R00062,2025-06-09,O004396,C00006,P0016,Electronics Product 016,Electronics,South,4,Wrong Product,13835.93,Approved
+R00063,2025-03-22,O004258,C00012,P0098,Fashion Product 098,Fashion,East,2,Changed Mind,28111.23,Approved
+R00064,2025-02-07,O003863,C00328,P0005,Sports Product 005,Sports,East,3,Damaged,23797.78,Approved
+R00065,2025-10-29,O000024,C00418,P0026,Electronics Product 026,Electronics,West,1,Quality Issue,1610.28,Approved
+R00066,2025-12-01,O002634,C00209,P0004,Beauty Product 004,Beauty,West,2,Damaged,5628.39,Approved
+R00067,2025-05-31,O003341,C00375,P0086,Electronics Product 086,Electronics,Central,3,Quality Issue,13745.83,Approved
+R00068,2025-12-25,O002216,C00412,P0023,Fashion Product 023,Fashion,West,1,Damaged,12159.64,Pending
+R00069,2025-07-08,O003683,C00193,P0094,Beauty Product 094,Beauty,West,1,Changed Mind,14504.35,Pending
+R00070,2025-11-03,O004725,C00308,P0031,Electronics Product 031,Electronics,North,1,Damaged,4850.02,Rejected
+R00071,2025-12-17,O001908,C00207,P0032,Home Product 032,Home,Central,1,Late Delivery,3331.68,Approved
+R00072,2026-01-10,O000085,C00122,P0097,Home Product 097,Home,West,5,Wrong Product,8782.6,Approved
+R00073,2025-01-27,O000228,C00258,P0016,Electronics Product 016,Electronics,West,3,Late Delivery,10009.42,Approved
+R00074,2025-07-01,O000297,C00322,P0091,Electronics Product 091,Electronics,Central,1,Late Delivery,1453.81,Approved
+R00075,2025-10-04,O001002,C00033,P0050,Sports Product 050,Sports,South,3,Late Delivery,9345.34,Pending
+R00076,2025-05-25,O002139,C00485,P0062,Home Product 062,Home,Central,5,Late Delivery,18617.51,Pending
+R00077,2025-01-14,O000712,C00301,P0089,Beauty Product 089,Beauty,Central,2,Late Delivery,16579.78,Approved
+R00078,2025-03-11,O002802,C00210,P0090,Sports Product 090,Sports,East,1,Quality Issue,847.25,Approved
+R00079,2025-08-30,O002528,C00272,P0044,Beauty Product 044,Beauty,East,1,Damaged,2488.52,Approved
+R00080,2025-10-02,O003753,C00433,P0038,Fashion Product 038,Fashion,West,1,Wrong Product,6034.0,Approved
+R00081,2025-07-11,O003322,C00392,P0022,Home Product 022,Home,North,2,Damaged,7138.27,Approved
+R00082,2025-02-17,O003182,C00034,P0052,Home Product 052,Home,South,1,Quality Issue,9968.16,Approved
+R00083,2025-07-09,O004184,C00017,P0073,Fashion Product 073,Fashion,North,1,Changed Mind,2662.61,Approved
+R00084,2025-02-25,O001616,C00111,P0045,Sports Product 045,Sports,West,2,Late Delivery,12102.36,Pending
+R00085,2026-01-01,O003025,C00128,P0022,Home Product 022,Home,Central,2,Late Delivery,17425.69,Pending
+R00086,2025-02-14,O001414,C00193,P0019,Beauty Product 019,Beauty,West,2,Quality Issue,8619.34,Approved
+R00087,2025-08-20,O000764,C00099,P0040,Sports Product 040,Sports,East,2,Damaged,4593.06,Approved
+R00088,2025-05-06,O000656,C00392,P0061,Electronics Product 061,Electronics,North,1,Wrong Product,14102.02,Rejected
+R00089,2025-08-27,O004798,C00196,P0065,Sports Product 065,Sports,East,1,Late Delivery,6030.04,Approved
+R00090,2025-09-01,O003850,C00344,P0078,Fashion Product 078,Fashion,North,1,Late Delivery,4241.55,Approved
+R00091,2025-05-05,O004154,C00370,P0090,Sports Product 090,Sports,North,1,Wrong Product,1372.65,Pending
+R00092,2025-09-24,O000469,C00286,P0097,Home Product 097,Home,West,1,Wrong Product,4367.0,Approved
+R00093,2025-10-10,O000158,C00033,P0062,Home Product 062,Home,South,1,Late Delivery,22888.75,Approved
+R00094,2025-02-25,O001296,C00093,P0050,Sports Product 050,Sports,North,2,Quality Issue,6072.26,Pending
+R00095,2025-10-08,O000498,C00040,P0048,Fashion Product 048,Fashion,South,1,Quality Issue,12315.23,Approved
+R00096,2025-04-22,O004741,C00312,P0001,Electronics Product 001,Electronics,East,2,Quality Issue,9104.03,Approved
+R00097,2025-06-25,O002941,C00334,P0006,Electronics Product 006,Electronics,East,4,Changed Mind,13427.48,Approved
+R00098,2025-11-07,O003457,C00017,P0060,Sports Product 060,Sports,North,4,Quality Issue,17226.18,Approved
+R00099,2025-09-18,O000374,C00500,P0002,Home Product 002,Home,Central,1,Damaged,6580.01,Approved
+R00100,2025-04-01,O000080,C00462,P0094,Beauty Product 094,Beauty,Central,2,Quality Issue,13586.47,Pending
+R00101,2025-01-25,O001554,C00446,P0036,Electronics Product 036,Electronics,South,1,Wrong Product,9945.38,Approved
+R00102,2025-01-07,O001670,C00010,P0064,Beauty Product 064,Beauty,West,4,Changed Mind,29927.53,Approved
+R00103,2025-11-28,O002132,C00229,P0095,Sports Product 095,Sports,East,2,Late Delivery,6694.33,Approved
+R00104,2025-10-28,O004440,C00161,P0038,Fashion Product 038,Fashion,West,3,Wrong Product,9549.6,Approved
+R00105,2025-03-19,O000466,C00369,P0060,Sports Product 060,Sports,West,4,Changed Mind,21486.07,Approved
+R00106,2025-03-07,O000249,C00274,P0056,Electronics Product 056,Electronics,Central,4,Quality Issue,25244.36,Approved
+R00107,2025-03-21,O000932,C00425,P0010,Sports Product 010,Sports,South,2,Quality Issue,3134.22,Approved
+R00108,2025-12-21,O001336,C00266,P0005,Sports Product 005,Sports,South,1,Changed Mind,13904.14,Pending
+R00109,2025-07-26,O004525,C00204,P0085,Sports Product 085,Sports,Central,3,Late Delivery,7159.67,Approved
+R00110,2025-03-11,O001339,C00069,P0098,Fashion Product 098,Fashion,West,1,Changed Mind,4479.3,Approved
+R00111,2025-01-26,O001407,C00268,P0071,Electronics Product 071,Electronics,East,2,Changed Mind,4671.29,Pending
+R00112,2025-10-02,O001091,C00288,P0056,Electronics Product 056,Electronics,North,3,Late Delivery,18854.38,Approved
+R00113,2025-06-17,O004210,C00360,P0020,Sports Product 020,Sports,North,5,Damaged,10228.71,Approved
+R00114,2025-04-08,O000743,C00260,P0001,Electronics Product 001,Electronics,South,4,Late Delivery,17489.82,Approved
+R00115,2025-11-05,O002324,C00414,P0013,Fashion Product 013,Fashion,North,5,Damaged,14984.01,Approved
+R00116,2025-07-06,O003602,C00393,P0042,Home Product 042,Home,South,1,Quality Issue,3834.97,Approved
+R00117,2025-05-13,O002124,C00484,P0062,Home Product 062,Home,West,2,Wrong Product,10366.49,Approved
+R00118,2025-03-23,O002095,C00065,P0040,Sports Product 040,Sports,West,2,Wrong Product,5457.06,Pending
+R00119,2025-07-09,O000241,C00167,P0029,Beauty Product 029,Beauty,West,5,Late Delivery,3629.62,Approved
+R00120,2025-09-11,O002352,C00496,P0065,Sports Product 065,Sports,Central,2,Changed Mind,11902.69,Approved
+R00121,2025-01-23,O001371,C00304,P0014,Beauty Product 014,Beauty,Central,1,Quality Issue,2596.58,Approved
+R00122,2025-04-15,O001058,C00001,P0043,Fashion Product 043,Fashion,East,1,Quality Issue,4943.11,Approved
+R00123,2025-10-23,O004817,C00377,P0038,Fashion Product 038,Fashion,East,4,Late Delivery,7661.0,Pending
+R00124,2025-11-09,O000200,C00280,P0047,Home Product 047,Home,South,2,Wrong Product,15493.97,Approved
+R00125,2025-02-17,O002281,C00411,P0078,Fashion Product 078,Fashion,North,2,Changed Mind,32516.52,Approved
+R00126,2025-03-10,O004750,C00127,P0077,Home Product 077,Home,East,1,Late Delivery,7133.91,Approved
+R00127,2025-11-14,O002221,C00053,P0084,Beauty Product 084,Beauty,Central,2,Damaged,22423.41,Rejected
+R00128,2025-08-10,O004772,C00224,P0035,Sports Product 035,Sports,South,2,Damaged,14395.87,Approved
+R00129,2025-08-05,O002820,C00007,P0046,Electronics Product 046,Electronics,East,1,Late Delivery,9735.51,Approved
+R00130,2025-02-22,O003151,C00098,P0085,Sports Product 085,Sports,Central,5,Quality Issue,13347.9,Approved
+R00131,2025-09-14,O004257,C00473,P0043,Fashion Product 043,Fashion,South,1,Changed Mind,2218.5,Approved
+R00132,2025-09-01,O003108,C00290,P0072,Home Product 072,Home,South,1,Changed Mind,8310.63,Approved
+R00133,2025-02-10,O001974,C00460,P0039,Beauty Product 039,Beauty,North,1,Quality Issue,26028.42,Approved
+R00134,2025-05-25,O001376,C00297,P0095,Sports Product 095,Sports,North,2,Wrong Product,4281.04,Rejected
+R00135,2025-10-10,O003969,C00363,P0100,Sports Product 100,Sports,North,2,Damaged,28783.28,Approved
+R00136,2025-04-10,O004063,C00189,P0090,Sports Product 090,Sports,West,1,Late Delivery,1094.22,Approved
+R00137,2025-04-27,O004446,C00218,P0082,Home Product 082,Home,South,2,Changed Mind,10335.8,Approved
+R00138,2025-07-14,O003558,C00068,P0080,Sports Product 080,Sports,Central,5,Wrong Product,16548.27,Approved
+R00139,2025-11-05,O000965,C00470,P0037,Home Product 037,Home,Central,3,Damaged,11728.09,Approved
+R00140,2025-03-11,O000180,C00237,P0037,Home Product 037,Home,West,3,Late Delivery,15902.6,Approved
+R00141,2025-05-17,O003699,C00349,P0032,Home Product 032,Home,Central,4,Late Delivery,7692.62,Rejected
+R00142,2025-08-28,O003822,C00052,P0015,Sports Product 015,Sports,South,4,Quality Issue,15469.86,Rejected
+R00143,2026-01-05,O004879,C00037,P0041,Electronics Product 041,Electronics,Central,2,Changed Mind,6503.83,Pending
+R00144,2025-09-28,O003900,C00182,P0066,Electronics Product 066,Electronics,North,1,Changed Mind,14540.67,Pending
+R00145,2025-11-01,O004488,C00252,P0046,Electronics Product 046,Electronics,East,1,Damaged,6470.7,Approved
+R00146,2025-11-29,O003239,C00435,P0075,Sports Product 075,Sports,South,2,Late Delivery,34923.72,Approved
+R00147,2025-06-18,O002975,C00475,P0051,Electronics Product 051,Electronics,South,1,Damaged,9345.34,Approved
+R00148,2025-03-14,O003581,C00126,P0039,Beauty Product 039,Beauty,Central,1,Damaged,8414.75,Approved
+R00149,2025-02-16,O002888,C00440,P0041,Electronics Product 041,Electronics,Central,2,Quality Issue,12729.83,Approved
+R00150,2025-07-24,O002576,C00027,P0036,Electronics Product 036,Electronics,East,5,Late Delivery,13138.5,Approved
+R00151,2025-10-29,O001420,C00358,P0099,Beauty Product 099,Beauty,East,4,Changed Mind,28788.47,Rejected
+R00152,2025-04-09,O003908,C00178,P0069,Beauty Product 069,Beauty,West,2,Wrong Product,7930.52,Approved
+R00153,2025-10-28,O004674,C00179,P0072,Home Product 072,Home,East,3,Damaged,15061.84,Approved
+R00154,2025-08-04,O004903,C00441,P0082,Home Product 082,Home,Central,3,Changed Mind,13554.71,Rejected
+R00155,2025-08-26,O001861,C00184,P0009,Beauty Product 009,Beauty,West,1,Damaged,13895.72,Approved
+R00156,2025-06-30,O000009,C00281,P0063,Fashion Product 063,Fashion,West,1,Damaged,3077.78,Rejected
+R00157,2025-07-26,O002895,C00428,P0041,Electronics Product 041,Electronics,West,5,Wrong Product,24117.39,Approved
+R00158,2025-08-31,O002848,C00070,P0073,Fashion Product 073,Fashion,South,1,Wrong Product,6221.93,Approved
+R00159,2025-05-07,O003665,C00213,P0043,Fashion Product 043,Fashion,East,1,Late Delivery,2465.23,Approved
+R00160,2025-04-19,O000145,C00380,P0043,Fashion Product 043,Fashion,East,1,Damaged,1611.18,Approved
+R00161,2025-03-18,O002105,C00301,P0027,Home Product 027,Home,Central,1,Wrong Product,25261.37,Approved
+R00162,2025-12-21,O003144,C00429,P0093,Fashion Product 093,Fashion,North,3,Wrong Product,8895.48,Approved
+R00163,2025-06-29,O000842,C00078,P0042,Home Product 042,Home,West,1,Damaged,4188.98,Pending
+R00164,2025-02-18,O001129,C00196,P0017,Home Product 017,Home,East,1,Late Delivery,15504.04,Approved
+R00165,2025-07-16,O000152,C00321,P0099,Beauty Product 099,Beauty,Central,1,Changed Mind,6153.46,Rejected
+R00166,2025-07-20,O003592,C00331,P0044,Beauty Product 044,Beauty,North,2,Changed Mind,6096.33,Approved
+R00167,2025-09-25,O001053,C00475,P0089,Beauty Product 089,Beauty,South,4,Wrong Product,13451.42,Approved
+R00168,2025-09-28,O001591,C00158,P0082,Home Product 082,Home,Central,2,Late Delivery,7095.87,Approved
+R00169,2025-05-01,O003009,C00053,P0088,Fashion Product 088,Fashion,Central,3,Damaged,9372.42,Approved
+R00170,2025-04-30,O002030,C00493,P0059,Beauty Product 059,Beauty,West,3,Wrong Product,2676.57,Approved
+R00171,2025-08-25,O003419,C00278,P0059,Beauty Product 059,Beauty,North,1,Changed Mind,1194.41,Rejected
+R00172,2025-11-10,O001808,C00358,P0010,Sports Product 010,Sports,East,4,Quality Issue,3380.86,Approved
+R00173,2025-10-20,O002697,C00078,P0035,Sports Product 035,Sports,West,3,Damaged,23542.13,Rejected
+R00174,2025-01-22,O003040,C00053,P0074,Beauty Product 074,Beauty,Central,1,Damaged,2108.02,Approved
+R00175,2025-09-04,O000473,C00445,P0074,Beauty Product 074,Beauty,North,1,Quality Issue,8617.48,Approved
+R00176,2025-04-29,O003290,C00387,P0045,Sports Product 045,Sports,East,1,Late Delivery,4224.01,Approved
+R00177,2026-01-06,O004075,C00421,P0002,Home Product 002,Home,East,3,Quality Issue,8568.27,Approved
+R00178,2025-12-01,O003497,C00055,P0006,Electronics Product 006,Electronics,North,1,Quality Issue,2583.0,Pending
+R00179,2026-01-02,O000280,C00427,P0051,Electronics Product 051,Electronics,North,3,Wrong Product,21828.71,Approved
+R00180,2025-08-01,O001742,C00010,P0037,Home Product 037,Home,West,3,Wrong Product,9808.89,Approved
+R00181,2025-09-15,O004625,C00090,P0060,Sports Product 060,Sports,South,1,Changed Mind,9345.34,Pending
+R00182,2025-05-20,O002887,C00431,P0082,Home Product 082,Home,West,1,Damaged,4429.44,Approved
+R00183,2025-05-08,O001942,C00202,P0003,Fashion Product 003,Fashion,North,1,Quality Issue,8637.36,Approved
+R00184,2025-02-04,O000101,C00228,P0079,Beauty Product 079,Beauty,Central,1,Damaged,5756.59,Approved
+R00185,2025-10-21,O002805,C00051,P0015,Sports Product 015,Sports,South,1,Quality Issue,11524.19,Pending
+R00186,2025-10-13,O003571,C00147,P0031,Electronics Product 031,Electronics,West,2,Wrong Product,11572.77,Approved
+R00187,2025-07-22,O003685,C00344,P0096,Electronics Product 096,Electronics,North,5,Quality Issue,11920.59,Approved
+R00188,2025-06-01,O003662,C00478,P0022,Home Product 022,Home,East,1,Changed Mind,11051.84,Approved
+R00189,2025-02-26,O000531,C00480,P0020,Sports Product 020,Sports,North,2,Late Delivery,6640.72,Rejected
+R00190,2026-01-04,O001887,C00057,P0011,Electronics Product 011,Electronics,West,1,Damaged,13878.01,Approved
+R00191,2025-03-02,O000682,C00167,P0010,Sports Product 010,Sports,West,4,Quality Issue,3318.83,Approved
+R00192,2025-03-08,O003795,C00424,P0064,Beauty Product 064,Beauty,East,1,Changed Mind,27559.31,Approved
+R00193,2025-09-18,O003945,C00421,P0067,Home Product 067,Home,East,1,Quality Issue,4539.81,Approved
+R00194,2025-04-10,O004667,C00280,P0036,Electronics Product 036,Electronics,South,1,Late Delivery,3306.3,Pending
+R00195,2025-12-09,O002019,C00001,P0047,Home Product 047,Home,East,1,Wrong Product,2754.71,Pending
+R00196,2025-01-06,O001097,C00334,P0089,Beauty Product 089,Beauty,East,1,Damaged,3900.98,Approved
+R00197,2025-12-23,O000830,C00264,P0035,Sports Product 035,Sports,West,3,Late Delivery,31169.62,Approved
+R00198,2025-03-15,O002806,C00037,P0015,Sports Product 015,Sports,Central,1,Wrong Product,6594.84,Approved
+R00199,2025-12-25,O003830,C00461,P0082,Home Product 082,Home,West,3,Changed Mind,17166.54,Pending
+R00200,2025-10-11,O004382,C00048,P0030,Sports Product 030,Sports,South,2,Wrong Product,4769.7,Rejected
+R00201,2025-09-08,O003892,C00300,P0100,Sports Product 100,Sports,East,1,Damaged,11386.46,Approved
+R00202,2025-03-16,O000765,C00395,P0039,Beauty Product 039,Beauty,South,2,Damaged,15555.59,Approved
+R00203,2026-01-09,O002768,C00017,P0069,Beauty Product 069,Beauty,North,2,Changed Mind,3398.89,Approved
+R00204,2025-01-13,O004329,C00056,P0061,Electronics Product 061,Electronics,West,1,Late Delivery,6787.46,Approved
+R00205,2025-01-16,O003296,C00183,P0003,Fashion Product 003,Fashion,North,2,Damaged,15259.56,Approved
+R00206,2025-04-15,O002195,C00284,P0051,Electronics Product 051,Electronics,North,2,Late Delivery,30836.96,Approved
+R00207,2025-06-20,O002358,C00292,P0036,Electronics Product 036,Electronics,North,1,Quality Issue,15212.23,Approved
+R00208,2025-10-21,O003426,C00237,P0085,Sports Product 085,Sports,West,2,Quality Issue,6754.81,Approved
+R00209,2025-12-12,O003980,C00308,P0053,Fashion Product 053,Fashion,North,4,Changed Mind,16284.17,Approved
+R00210,2025-03-11,O000912,C00164,P0079,Beauty Product 079,Beauty,Central,1,Late Delivery,5855.84,Approved
+R00211,2025-09-17,O003146,C00104,P0081,Electronics Product 081,Electronics,East,1,Wrong Product,5664.95,Approved
+R00212,2025-02-01,O001000,C00171,P0074,Beauty Product 074,Beauty,West,2,Quality Issue,3041.35,Approved
+R00213,2025-02-19,O003654,C00225,P0046,Electronics Product 046,Electronics,East,2,Late Delivery,8824.04,Approved
+R00214,2025-10-11,O002484,C00058,P0041,Electronics Product 041,Electronics,Central,1,Late Delivery,2600.75,Rejected
+R00215,2025-12-14,O004077,C00076,P0078,Fashion Product 078,Fashion,Central,5,Late Delivery,31648.36,Pending
+R00216,2025-09-26,O002371,C00338,P0065,Sports Product 065,Sports,Central,5,Damaged,24305.32,Approved
+R00217,2025-10-03,O004839,C00076,P0067,Home Product 067,Home,Central,3,Damaged,7900.06,Approved
+R00218,2025-03-24,O000034,C00055,P0014,Beauty Product 014,Beauty,North,2,Wrong Product,7490.62,Approved
+R00219,2025-10-14,O003790,C00424,P0070,Sports Product 070,Sports,East,1,Quality Issue,3179.9,Approved
+R00220,2025-09-20,O001021,C00307,P0076,Electronics Product 076,Electronics,Central,1,Late Delivery,15851.05,Approved
+R00221,2025-11-23,O001648,C00205,P0074,Beauty Product 074,Beauty,South,5,Wrong Product,12105.89,Pending
+R00222,2025-08-04,O000734,C00298,P0018,Fashion Product 018,Fashion,East,4,Wrong Product,28113.55,Rejected
+R00223,2025-09-28,O004583,C00440,P0009,Beauty Product 009,Beauty,Central,1,Late Delivery,10918.37,Approved
+R00224,2025-07-20,O003275,C00011,P0002,Home Product 002,Home,North,4,Wrong Product,15435.15,Approved
+R00225,2025-07-08,O001621,C00393,P0012,Home Product 012,Home,South,3,Changed Mind,8433.25,Approved
+R00226,2025-09-26,O003136,C00030,P0044,Beauty Product 044,Beauty,East,1,Damaged,2003.97,Approved
+R00227,2025-04-24,O002690,C00206,P0066,Electronics Product 066,Electronics,South,1,Late Delivery,15602.37,Approved
+R00228,2025-02-21,O002708,C00442,P0091,Electronics Product 091,Electronics,East,4,Damaged,4732.51,Pending
+R00229,2026-01-12,O000298,C00383,P0081,Electronics Product 081,Electronics,Central,1,Changed Mind,6340.34,Approved
+R00230,2025-06-24,O002340,C00244,P0077,Home Product 077,Home,North,1,Wrong Product,3307.68,Approved
+R00231,2025-07-06,O000654,C00129,P0020,Sports Product 020,Sports,East,1,Changed Mind,2853.35,Rejected
+R00232,2025-04-18,O003775,C00074,P0062,Home Product 062,Home,North,1,Changed Mind,27083.71,Rejected
+R00233,2025-03-09,O001256,C00453,P0013,Fashion Product 013,Fashion,North,2,Late Delivery,18803.8,Approved
+R00234,2025-12-03,O004521,C00444,P0058,Fashion Product 058,Fashion,South,2,Quality Issue,8349.71,Approved
+R00235,2025-03-28,O000231,C00212,P0093,Fashion Product 093,Fashion,South,1,Quality Issue,5083.75,Approved
+R00236,2025-09-29,O003277,C00231,P0021,Electronics Product 021,Electronics,West,5,Quality Issue,9627.94,Rejected
+R00237,2025-01-25,O003231,C00374,P0056,Electronics Product 056,Electronics,East,1,Wrong Product,11145.99,Approved
+R00238,2025-08-02,O000692,C00231,P0027,Home Product 027,Home,West,1,Quality Issue,19231.11,Approved
+R00239,2025-01-29,O002755,C00434,P0062,Home Product 062,Home,North,3,Changed Mind,9345.34,Pending
+R00240,2025-04-04,O004864,C00219,P0054,Beauty Product 054,Beauty,North,2,Changed Mind,11663.2,Approved
+R00241,2025-03-26,O000970,C00252,P0060,Sports Product 060,Sports,East,2,Late Delivery,11738.32,Approved
+R00242,2025-11-29,O000634,C00027,P0004,Beauty Product 004,Beauty,East,1,Wrong Product,3506.91,Approved
+R00243,2025-06-14,O004093,C00217,P0075,Sports Product 075,Sports,East,5,Late Delivery,28928.44,Rejected
+R00244,2025-03-18,O004078,C00050,P0066,Electronics Product 066,Electronics,South,1,Damaged,11942.82,Rejected
+R00245,2025-01-12,O001322,C00338,P0058,Fashion Product 058,Fashion,Central,4,Changed Mind,10032.56,Approved
+R00246,2025-10-13,O001832,C00486,P0012,Home Product 012,Home,West,1,Damaged,8484.26,Approved
+R00247,2025-07-25,O002179,C00340,P0100,Sports Product 100,Sports,West,2,Damaged,7564.67,Approved
+R00248,2025-07-26,O001418,C00199,P0089,Beauty Product 089,Beauty,North,4,Changed Mind,12308.81,Approved
+R00249,2025-07-30,O001783,C00472,P0069,Beauty Product 069,Beauty,South,3,Wrong Product,5610.28,Pending
+R00250,2025-05-31,O004716,C00238,P0064,Beauty Product 064,Beauty,East,4,Changed Mind,28284.1,Approved
+R00251,2025-10-01,O004702,C00220,P0075,Sports Product 075,Sports,Central,2,Damaged,7747.3,Pending
+R00252,2025-05-11,O004119,C00067,P0045,Sports Product 045,Sports,Central,3,Quality Issue,9140.93,Approved
+R00253,2025-09-28,O001653,C00085,P0031,Electronics Product 031,Electronics,Central,1,Changed Mind,9055.3,Approved
+R00254,2025-07-02,O001484,C00019,P0097,Home Product 097,Home,North,4,Changed Mind,7533.04,Approved
+R00255,2025-01-27,O002276,C00118,P0005,Sports Product 005,Sports,South,3,Changed Mind,21086.11,Approved
+R00256,2025-06-05,O000878,C00418,P0058,Fashion Product 058,Fashion,West,1,Changed Mind,1935.24,Approved
+R00257,2025-09-25,O003526,C00360,P0031,Electronics Product 031,Electronics,North,2,Late Delivery,11945.87,Approved
+R00258,2025-08-29,O002017,C00269,P0085,Sports Product 085,Sports,North,1,Quality Issue,1633.67,Approved
+R00259,2025-02-01,O000427,C00364,P0034,Beauty Product 034,Beauty,South,1,Wrong Product,14800.26,Approved
+R00260,2025-07-02,O000627,C00139,P0067,Home Product 067,Home,Central,1,Changed Mind,4965.41,Approved
+R00261,2025-02-10,O001590,C00440,P0088,Fashion Product 088,Fashion,Central,2,Changed Mind,10782.95,Approved
+R00262,2025-06-04,O002224,C00156,P0058,Fashion Product 058,Fashion,West,1,Unknown,9127.39,Approved
+R00263,2025-08-15,O002218,C00393,P0027,Home Product 027,Home,South,1,Damaged,26042.22,Approved
+R00264,2025-03-25,O004484,C00356,P0023,Fashion Product 023,Fashion,Central,2,Quality Issue,5471.78,Approved
+R00265,2025-11-07,O001486,C00336,P0037,Home Product 037,Home,South,1,Quality Issue,4383.12,Approved
+R00266,2025-06-11,O001740,C00281,P0033,Fashion Product 033,Fashion,West,1,Damaged,1704.33,Approved
+R00267,2025-11-28,O002481,C00181,P0067,Home Product 067,Home,North,5,Late Delivery,8348.16,Approved
+R00268,2025-01-18,O002585,C00231,P0091,Electronics Product 091,Electronics,West,1,Damaged,3850.43,Approved
+R00269,2025-03-21,O002894,C00260,P0028,Fashion Product 028,Fashion,South,1,Wrong Product,9902.32,Approved
+R00270,2025-08-10,O000150,C00404,P0054,Beauty Product 054,Beauty,East,3,Wrong Product,13306.24,Approved
+R00271,2025-01-08,O000677,C00404,P0071,Electronics Product 071,Electronics,East,3,Wrong Product,8150.5,Approved
+R00272,2025-05-28,O001262,C00222,P0005,Sports Product 005,Sports,Central,1,Damaged,8304.93,Rejected
+R00273,2025-05-12,O004918,C00169,P0018,Fashion Product 018,Fashion,West,1,Changed Mind,23780.41,Approved
+R00274,2025-07-05,O000013,C00155,P0033,Fashion Product 033,Fashion,West,3,Quality Issue,4412.57,Pending
+R00275,2025-07-25,O001834,C00231,P0085,Sports Product 085,Sports,West,3,Damaged,4489.76,Approved
+R00276,2026-01-01,O003249,C00268,P0039,Beauty Product 039,Beauty,East,1,Quality Issue,4120.74,Approved
+R00277,2025-05-02,O001492,C00310,P0088,Fashion Product 088,Fashion,South,1,Late Delivery,20452.57,Approved
+R00278,2025-06-12,O002728,C00342,P0001,Electronics Product 001,Electronics,South,3,Quality Issue,11334.62,Pending
+R00279,2025-01-21,O003687,C00315,P0040,Sports Product 040,Sports,North,1,Wrong Product,4419.54,Approved
+R00280,2025-01-30,O001425,C00012,P0056,Electronics Product 056,Electronics,East,1,Changed Mind,10175.61,Approved
+R00281,2025-07-04,O004606,C00132,P0063,Fashion Product 063,Fashion,North,2,Wrong Product,7536.51,Approved
+R00282,2025-11-18,O004596,C00273,P0058,Fashion Product 058,Fashion,Central,2,Quality Issue,14790.54,Approved
+R00283,2025-04-30,O000732,C00229,P0057,Home Product 057,Home,East,1,Late Delivery,3925.61,Approved
+R00284,2025-11-07,O001232,C00329,P0073,Fashion Product 073,Fashion,East,2,Damaged,5309.15,Pending
+R00285,2025-07-18,O001635,C00184,P0060,Sports Product 060,Sports,West,2,Quality Issue,13278.85,Approved
+R00286,2025-11-01,O003937,C00477,P0069,Beauty Product 069,Beauty,North,3,Quality Issue,6898.06,Pending
+R00287,2025-01-24,O001211,C00486,P0064,Beauty Product 064,Beauty,West,1,Damaged,5371.64,Approved
+R00288,2025-10-20,O003269,C00470,P0041,Electronics Product 041,Electronics,Central,3,Damaged,9329.4,Approved
+R00289,2026-01-04,O001935,C00255,P0018,Fashion Product 018,Fashion,West,3,Changed Mind,10277.79,Approved
+R00290,2025-03-02,O000554,C00243,P0005,Sports Product 005,Sports,Central,2,Changed Mind,7733.87,Approved
+R00291,2025-11-30,O000492,C00125,P0031,Electronics Product 031,Electronics,South,1,Late Delivery,14690.12,Approved
+R00292,2025-01-24,O002963,C00141,P0017,Home Product 017,Home,Central,3,Quality Issue,15114.87,Rejected
+R00293,2025-04-21,O002330,C00354,P0022,Home Product 022,Home,South,1,Late Delivery,4061.77,Approved
+R00294,2025-06-22,O002196,C00284,P0070,Sports Product 070,Sports,North,3,Changed Mind,10269.6,Approved
+R00295,2025-09-27,O003065,C00277,P0078,Fashion Product 078,Fashion,West,3,Late Delivery,23183.58,Approved
+R00296,2025-07-16,O000658,C00128,P0074,Beauty Product 074,Beauty,Central,1,Damaged,1835.42,Approved
+R00297,2025-05-18,O002375,C00398,P0089,Beauty Product 089,Beauty,South,1,Damaged,9380.27,Approved
+R00298,2025-06-09,O002226,C00084,P0096,Electronics Product 096,Electronics,Central,1,Changed Mind,11233.4,Approved
+R00299,2025-03-24,O004265,C00129,P0029,Beauty Product 029,Beauty,East,2,Changed Mind,2663.17,Approved
+R00300,2025-11-29,O001171,C00310,P0022,Home Product 022,Home,South,2,Damaged,10550.82,Approved
+R00301,2025-06-04,O000133,C00246,P0027,Home Product 027,Home,Central,1,Quality Issue,5155.5,Approved
+R00302,2025-12-24,O000472,C00387,P0091,Electronics Product 091,Electronics,East,3,Quality Issue,5360.91,Approved
+R00303,2025-04-11,O003226,C00114,P0011,Electronics Product 011,Electronics,South,2,Wrong Product,15739.54,Approved
+R00304,2025-12-17,O001406,C00241,P0078,Fashion Product 078,Fashion,North,1,Changed Mind,14575.06,Approved
+R00305,2025-12-14,O002877,C00500,P0012,Home Product 012,Home,Central,1,Damaged,5209.82,Pending
+R00306,2025-03-01,O004505,C00307,P0072,Home Product 072,Home,Central,1,Damaged,7986.86,Approved
+R00307,2025-12-22,O004693,C00373,P0084,Beauty Product 084,Beauty,South,4,Wrong Product,11911.71,Approved
+R00308,2025-12-27,O002827,C00249,P0067,Home Product 067,Home,North,1,Wrong Product,6794.65,Approved
+R00309,2025-11-29,O000288,C00475,P0066,Electronics Product 066,Electronics,South,2,Late Delivery,9176.57,Approved
+R00310,2025-03-06,O001870,C00208,P0064,Beauty Product 064,Beauty,East,1,Wrong Product,5553.02,Approved
+R00311,2025-06-10,O003115,C00391,P0062,Home Product 062,Home,North,2,Late Delivery,9520.37,Pending
+R00312,2025-09-11,O003626,C00450,P0022,Home Product 022,Home,East,1,Wrong Product,4665.27,Approved
+R00313,2025-12-27,O002313,C00059,P0015,Sports Product 015,Sports,Central,1,Quality Issue,2963.25,Pending
+R00314,2025-05-03,O004924,C00192,P0031,Electronics Product 031,Electronics,East,4,Late Delivery,15936.32,Approved
+R00315,2025-07-21,O001619,C00493,P0050,Sports Product 050,Sports,West,2,Quality Issue,7457.13,Approved
+R00316,2025-03-18,O000995,C00274,P0003,Fashion Product 003,Fashion,Central,2,Wrong Product,10543.09,Approved
+R00317,2025-08-05,O001804,C00009,P0047,Home Product 047,Home,North,1,Damaged,2762.25,Approved
+R00318,2025-04-07,O002643,C00215,P0082,Home Product 082,Home,Central,3,Wrong Product,16609.71,Approved
+R00319,2025-03-31,O004803,C00486,P0080,Sports Product 080,Sports,West,1,Damaged,12275.68,Approved
+R00320,2025-12-26,O003536,C00216,P0072,Home Product 072,Home,North,3,Damaged,10708.42,Approved
+R00321,2025-09-06,O004832,C00369,P0040,Sports Product 040,Sports,West,1,Wrong Product,3533.09,Approved
+R00322,2025-02-18,O003912,C00429,P0004,Beauty Product 004,Beauty,North,2,Quality Issue,11744.33,Approved
+R00323,2025-09-06,O002108,C00116,P0075,Sports Product 075,Sports,West,2,Changed Mind,12088.52,Approved
+R00324,2025-11-02,O003045,C00477,P0091,Electronics Product 091,Electronics,North,2,Late Delivery,2994.08,Approved
+R00325,2025-03-26,O000417,C00027,P0047,Home Product 047,Home,East,3,Quality Issue,11492.63,Approved
+R00326,2025-11-16,O000978,C00312,P0066,Electronics Product 066,Electronics,East,1,Late Delivery,9927.18,Pending
+R00327,2025-02-03,O002418,C00141,P0077,Home Product 077,Home,Central,5,Wrong Product,14573.63,Approved
+R00328,2025-06-12,O000506,C00488,P0086,Electronics Product 086,Electronics,East,3,Damaged,16643.21,Approved
+R00329,2026-01-07,O004153,C00064,P0023,Fashion Product 023,Fashion,South,1,Changed Mind,8464.96,Approved
+R00330,2025-10-06,O004256,C00243,P0062,Home Product 062,Home,Central,1,Changed Mind,15991.09,Approved
+R00331,2025-08-04,O003942,C00018,P0050,Sports Product 050,Sports,South,2,Wrong Product,5969.39,Approved
+R00332,2025-10-06,O000415,C00013,P0032,Home Product 032,Home,South,5,Wrong Product,12488.02,Approved
+R00333,2025-10-17,O004149,C00317,P0017,Home Product 017,Home,North,1,Wrong Product,7390.93,Approved
+R00334,2025-03-22,O001184,C00455,P0060,Sports Product 060,Sports,East,1,Changed Mind,5916.47,Approved
+R00335,2025-10-20,O000486,C00490,P0052,Home Product 052,Home,East,2,Late Delivery,9377.35,Pending
+R00336,2025-12-10,O000894,C00310,P0014,Beauty Product 014,Beauty,South,1,Damaged,12768.11,Approved
+R00337,2025-02-08,O000806,C00150,P0081,Electronics Product 081,Electronics,Central,1,Changed Mind,5528.77,Approved
+R00338,2025-05-04,O000556,C00293,P0028,Fashion Product 028,Fashion,South,1,Unknown,9784.2,Approved
+R00339,2025-10-14,O003826,C00465,P0068,Fashion Product 068,Fashion,East,1,Changed Mind,5542.9,Approved
+R00340,2025-05-06,O001198,C00208,P0066,Electronics Product 066,Electronics,East,1,Quality Issue,15176.32,Approved
+R00341,2025-06-01,O004254,C00024,P0058,Fashion Product 058,Fashion,North,1,Changed Mind,9836.97,Approved
+R00342,2025-09-26,O004059,C00478,P0085,Sports Product 085,Sports,East,4,Changed Mind,9127.85,Approved
+R00343,2025-04-24,O001294,C00393,P0068,Fashion Product 068,Fashion,South,1,Wrong Product,13679.98,Rejected
+R00344,2025-12-04,O002222,C00500,P0056,Electronics Product 056,Electronics,Central,2,Changed Mind,12930.08,Approved
+R00345,2025-07-11,O003505,C00175,P0013,Fashion Product 013,Fashion,West,1,Changed Mind,2209.24,Pending
+R00346,2025-05-31,O003655,C00399,P0024,Beauty Product 024,Beauty,North,4,Wrong Product,5911.34,Approved
+R00347,2025-04-03,O004759,C00345,P0076,Electronics Product 076,Electronics,West,2,Changed Mind,22185.28,Approved
+R00348,2025-06-30,O003007,C00420,P0095,Sports Product 095,Sports,Central,2,Late Delivery,3930.83,Approved
+R00349,2025-12-25,O002094,C00408,P0035,Sports Product 035,Sports,Central,1,Damaged,8512.45,Approved
+R00350,2025-07-06,O002188,C00145,P0092,Home Product 092,Home,East,3,Wrong Product,11030.24,Approved
+R00351,2026-01-08,O003037,C00099,P0100,Sports Product 100,Sports,East,4,Late Delivery,17179.59,Approved
+R00352,2025-01-18,O003919,C00054,P0068,Fashion Product 068,Fashion,North,1,Quality Issue,26076.74,Approved
+R00353,2025-05-21,O001273,C00499,P0010,Sports Product 010,Sports,West,1,Quality Issue,4685.96,Approved
+R00354,2025-10-14,O000291,C00408,P0004,Beauty Product 004,Beauty,Central,2,Late Delivery,9068.9,Approved
+R00355,2025-12-01,O004828,C00068,P0096,Electronics Product 096,Electronics,Central,4,Damaged,7796.26,Approved
+R00356,2025-10-29,O000253,C00267,P0039,Beauty Product 039,Beauty,Central,5,Changed Mind,29791.67,Approved
+R00357,2025-06-16,O003246,C00443,P0042,Home Product 042,Home,West,1,Changed Mind,7892.62,Approved
+R00358,2025-05-22,O000351,C00381,P0059,Beauty Product 059,Beauty,West,1,Late Delivery,2990.61,Approved
+R00359,2025-04-18,O001188,C00175,P0066,Electronics Product 066,Electronics,West,2,Unknown,7731.92,Approved
+R00360,2025-12-07,O001962,C00111,P0024,Beauty Product 024,Beauty,West,4,Quality Issue,8163.02,Approved
+R00361,2025-12-03,O000423,C00058,P0078,Fashion Product 078,Fashion,Central,2,Wrong Product,14039.75,Approved
+R00362,2025-11-07,O000091,C00186,P0052,Home Product 052,Home,North,3,Quality Issue,14271.56,Approved
+R00363,2025-04-16,O003730,C00157,P0086,Electronics Product 086,Electronics,Central,1,Quality Issue,7184.38,Approved
+R00364,2025-11-16,O002237,C00063,P0096,Electronics Product 096,Electronics,East,1,Wrong Product,5299.48,Approved
+R00365,2025-04-30,O000671,C00182,P0055,Sports Product 055,Sports,North,4,Wrong Product,4221.55,Approved
+R00366,2025-07-20,O003041,C00105,P0078,Fashion Product 078,Fashion,North,1,Wrong Product,6645.99,Pending
+R00367,2025-04-28,O000027,C00160,P0097,Home Product 097,Home,Central,3,Wrong Product,6905.24,Approved
+R00368,2025-06-25,O000430,C00368,P0058,Fashion Product 058,Fashion,East,1,Unknown,2678.09,Approved
+R00369,2026-01-05,O000684,C00358,P0088,Fashion Product 088,Fashion,East,1,Wrong Product,3973.76,Approved
+R00370,2025-11-25,O004464,C00188,P0053,Fashion Product 053,Fashion,South,1,Damaged,14522.7,Rejected
+R00371,2025-09-07,O003946,C00018,P0037,Home Product 037,Home,South,3,Late Delivery,17184.05,Approved
+R00372,2025-06-26,O003524,C00280,P0075,Sports Product 075,Sports,South,2,Late Delivery,8581.31,Approved
+R00373,2025-05-23,O001542,C00174,P0096,Electronics Product 096,Electronics,West,1,Wrong Product,2625.82,Approved
+R00374,2025-07-13,O002032,C00160,P0068,Fashion Product 068,Fashion,Central,4,Late Delivery,14546.81,Approved
+R00375,2025-08-27,O002233,C00085,P0092,Home Product 092,Home,Central,5,Damaged,21680.19,Approved
+R00376,2025-11-22,O004121,C00184,P0087,Home Product 087,Home,West,1,Late Delivery,7494.14,Pending
+R00377,2025-11-15,O003236,C00296,P0063,Fashion Product 063,Fashion,East,1,Wrong Product,10975.5,Approved
+R00378,2025-02-23,O000255,C00255,P0007,Home Product 007,Home,West,2,Wrong Product,8865.55,Approved
+R00379,2025-10-24,O001030,C00453,P0005,Sports Product 005,Sports,North,2,Changed Mind,23167.28,Approved
+R00380,2025-12-20,O004393,C00134,P0036,Electronics Product 036,Electronics,Central,1,Late Delivery,10800.65,Approved
+R00381,2025-03-11,O003801,C00430,P0092,Home Product 092,Home,East,1,Quality Issue,4454.85,Approved
+R00382,2025-03-04,O004311,C00338,P0088,Fashion Product 088,Fashion,Central,1,Quality Issue,3873.58,Approved
+R00383,2025-02-16,O002510,C00073,P0037,Home Product 037,Home,West,3,Damaged,29973.3,Approved
+R00384,2025-02-02,O002293,C00499,P0069,Beauty Product 069,Beauty,West,2,Changed Mind,6267.73,Approved
+R00385,2025-11-10,O001324,C00320,P0093,Fashion Product 093,Fashion,Central,1,Wrong Product,10257.11,Approved
+R00386,2025-06-21,O001551,C00486,P0002,Home Product 002,Home,West,3,Damaged,8949.11,Approved
+R00387,2025-10-27,O004648,C00127,P0057,Home Product 057,Home,East,3,Wrong Product,29266.07,Approved
+R00388,2025-07-18,O000316,C00229,P0056,Electronics Product 056,Electronics,East,1,Quality Issue,30397.22,Pending
+R00389,2025-09-22,O001243,C00005,P0056,Electronics Product 056,Electronics,West,2,Damaged,13167.71,Approved
+R00390,2025-08-15,O002451,C00338,P0043,Fashion Product 043,Fashion,Central,2,Changed Mind,3379.95,Approved
+R00391,2026-01-03,O001579,C00271,P0073,Fashion Product 073,Fashion,South,1,Damaged,4662.01,Approved
+R00392,2025-03-13,O004626,C00213,P0068,Fashion Product 068,Fashion,East,2,Changed Mind,18013.29,Approved
+R00393,2025-09-03,O003117,C00382,P0059,Beauty Product 059,Beauty,East,2,Quality Issue,2362.95,Pending
+R00394,2025-07-20,O000070,C00331,P0024,Beauty Product 024,Beauty,North,1,Changed Mind,1749.9,Approved
+R00395,2025-01-28,O000860,C00431,P0035,Sports Product 035,Sports,West,1,Changed Mind,25672.95,Approved
+R00396,2025-06-14,O002754,C00231,P0030,Sports Product 030,Sports,West,1,Damaged,1570.51,Approved
+R00397,2025-04-20,O001633,C00102,P0078,Fashion Product 078,Fashion,North,3,Wrong Product,28117.4,Pending
+R00398,2025-06-19,O001651,C00044,P0047,Home Product 047,Home,Central,1,Quality Issue,18126.52,Approved
+R00399,2025-09-17,O003861,C00496,P0070,Sports Product 070,Sports,Central,1,Changed Mind,3026.66,Pending
+R00400,2025-03-26,O003107,C00482,P0019,Beauty Product 019,Beauty,South,1,Wrong Product,4844.7,Approved
+R00401,2025-05-29,O001075,C00379,P0071,Electronics Product 071,Electronics,North,3,Damaged,12342.83,Approved
+R00402,2025-02-10,O004002,C00319,P0035,Sports Product 035,Sports,East,3,Late Delivery,21105.3,Approved
+R00403,2025-07-03,O000788,C00333,P0077,Home Product 077,Home,Central,2,Changed Mind,11405.91,Approved
+R00404,2025-11-30,O002606,C00085,P0051,Electronics Product 051,Electronics,Central,3,Late Delivery,23200.77,Approved
+R00405,2025-03-15,O003631,C00466,P0034,Beauty Product 034,Beauty,South,3,Damaged,21380.44,Approved
+R00406,2025-04-03,O002122,C00286,P0065,Sports Product 065,Sports,West,1,Changed Mind,14891.1,Approved
+R00407,2025-09-26,O001875,C00288,P0021,Electronics Product 021,Electronics,North,3,Quality Issue,10050.06,Approved
+R00408,2025-02-25,O000812,C00262,P0081,Electronics Product 081,Electronics,West,1,Quality Issue,10807.99,Approved
+R00409,2025-11-02,O000388,C00272,P0060,Sports Product 060,Sports,East,2,Changed Mind,18167.75,Approved
+R00410,2025-04-14,O002883,C00188,P0099,Beauty Product 099,Beauty,South,1,Damaged,4701.99,Approved
+R00411,2025-04-29,O001176,C00395,P0045,Sports Product 045,Sports,South,1,Quality Issue,4978.64,Approved
+R00412,2025-12-15,O003198,C00089,P0095,Sports Product 095,Sports,North,4,Changed Mind,5035.7,Approved
+R00413,2025-07-27,O002624,C00407,P0028,Fashion Product 028,Fashion,East,4,Changed Mind,27359.51,Rejected
+R00414,2025-05-09,O001352,C00244,P0017,Home Product 017,Home,North,5,Damaged,21670.22,Approved
+R00415,2025-04-09,O000411,C00094,P0046,Electronics Product 046,Electronics,North,1,Changed Mind,6613.27,Approved
+R00416,2025-07-28,O004213,C00318,P0059,Beauty Product 059,Beauty,West,1,Wrong Product,888.68,Pending
+R00417,2025-06-30,O000110,C00028,P0056,Electronics Product 056,Electronics,East,2,Wrong Product,20685.84,Approved
+R00418,2025-11-11,O004996,C00390,P0022,Home Product 022,Home,West,2,Changed Mind,11504.27,Pending
+R00419,2025-11-30,O003430,C00410,P0020,Sports Product 020,Sports,North,1,Late Delivery,8767.62,Approved
+R00420,2025-08-20,O002810,C00110,P0063,Fashion Product 063,Fashion,North,3,Damaged,5097.53,Approved

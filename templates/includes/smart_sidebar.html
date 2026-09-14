@@ -1,0 +1,966 @@
+{% load static %}
+
+<!-- =========================================================
+     MOBILE SIDEBAR BUTTON
+========================================================= -->
+<button
+    type="button"
+    class="mobile-sidebar-toggle"
+    id="mobileSidebarToggle"
+    aria-label="Open navigation"
+    aria-controls="smartBISidebar"
+    aria-expanded="false"
+>
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
+
+<!-- =========================================================
+     SIDEBAR OVERLAY
+========================================================= -->
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+></div>
+
+
+<!-- =========================================================
+     SMART BI SIDEBAR
+========================================================= -->
+<aside
+    class="sidebar"
+    id="smartBISidebar"
+>
+
+    <!-- =====================================================
+         BRAND
+    ====================================================== -->
+    <div class="sidebar-brand">
+
+        <a
+            href="{% url 'core:dashboard' %}"
+            class="sidebar-brand-link"
+        >
+
+            <div class="sidebar-logo">
+                <span>BI</span>
+            </div>
+
+            <div class="sidebar-brand-text">
+
+                <strong>Smart BI</strong>
+
+                <span>
+                    Decision Intelligence
+                </span>
+
+            </div>
+
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         USER PROFILE
+    ====================================================== -->
+    <div class="sidebar-user">
+
+        <div class="sidebar-user-avatar">
+
+            {% if user.first_name %}
+                {{ user.first_name|first|upper }}
+            {% elif user.username %}
+                {{ user.username|first|upper }}
+            {% else %}
+                U
+            {% endif %}
+
+        </div>
+
+
+        <div class="sidebar-user-info">
+
+            <strong>
+
+                {% if user.first_name %}
+                    {{ user.first_name }}
+                {% elif user.username %}
+                    {{ user.username }}
+                {% else %}
+                    User
+                {% endif %}
+
+            </strong>
+
+            <span>
+
+                {% if user.is_superuser %}
+                    Administrator
+                {% elif user.is_staff %}
+                    Staff
+                {% else %}
+                    {{ user.user_type|default:"Business User" }}
+                {% endif %}
+
+            </span>
+
+        </div>
+
+
+        <span class="sidebar-user-online"></span>
+
+    </div>
+
+
+    <!-- =====================================================
+         SCROLLABLE NAVIGATION
+    ====================================================== -->
+    <div class="sidebar-scroll-area">
+
+        <nav class="sidebar-navigation">
+
+
+            <!-- =================================================
+                 OVERVIEW
+            ================================================== -->
+            <div class="sidebar-section">
+
+                <div class="sidebar-section-title">
+                    OVERVIEW
+                </div>
+
+
+                <a
+                    href="{% url 'core:dashboard' %}"
+                    class="sidebar-link
+                    {% if request.resolver_match.app_name == 'core' and request.resolver_match.url_name == 'dashboard' %}
+                        active
+                    {% endif %}"
+                >
+
+                    <span class="sidebar-link-icon">
+                        ⌂
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Dashboard
+                    </span>
+
+                    <span class="sidebar-link-arrow">
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 DATA
+            ================================================== -->
+            <div class="sidebar-section">
+
+                <div class="sidebar-section-title">
+                    DATA
+                </div>
+
+
+                <a
+                    href="{% url 'data_management:dataset_management' %}"
+                    class="sidebar-link
+                    {% if request.resolver_match.app_name == 'data_management' %}
+                        active
+                    {% endif %}"
+                >
+
+                    <span class="sidebar-link-icon">
+                        ▣
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Data Management
+                    </span>
+
+                    <span class="sidebar-link-arrow">
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 INTELLIGENCE
+            ================================================== -->
+            <div
+                class="sidebar-section sidebar-collapsible
+                {% if request.resolver_match.app_name == 'analytics' %}
+                    section-open
+                {% endif %}"
+                data-section="analytics"
+            >
+
+                <!-- GROUP HEADER -->
+                <button
+                    type="button"
+                    class="sidebar-group-button"
+                    data-toggle-section="analytics"
+                    aria-expanded="{% if request.resolver_match.app_name == 'analytics' %}true{% else %}false{% endif %}"
+                >
+
+                    <span class="sidebar-section-title">
+                        INTELLIGENCE
+                    </span>
+
+                    <span class="sidebar-group-chevron">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <!-- GROUP CONTENT -->
+                <div class="sidebar-group-content">
+
+
+                    <!-- BUSINESS -->
+                    <a
+                        href="{% url 'analytics:business_intelligence' %}"
+                        class="sidebar-link
+                        {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'business_intelligence' %}
+                            active
+                        {% endif %}"
+                    >
+
+                        <span class="sidebar-link-icon">
+                            ◈
+                        </span>
+
+                        <span class="sidebar-link-text">
+                            Business Analytics
+                        </span>
+
+                        <span class="sidebar-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <!-- CUSTOMER -->
+                    <a
+                        href="{% url 'analytics:customer_intelligence' %}"
+                        class="sidebar-link
+                        {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'customer_intelligence' %}
+                            active
+                        {% endif %}"
+                    >
+
+                        <span class="sidebar-link-icon">
+                            ♙
+                        </span>
+
+                        <span class="sidebar-link-text">
+                            Customer Intelligence
+                        </span>
+
+                        <span class="sidebar-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <!-- PRODUCT -->
+                    <a
+                        href="{% url 'analytics:product_intelligence' %}"
+                        class="sidebar-link
+                        {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'product_intelligence' %}
+                            active
+                        {% endif %}"
+                    >
+
+                        <span class="sidebar-link-icon">
+                            ◉
+                        </span>
+
+                        <span class="sidebar-link-text">
+                            Product Intelligence
+                        </span>
+
+                        <span class="sidebar-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <!-- REGIONAL -->
+                    <a
+                        href="{% url 'analytics:regional_intelligence' %}"
+                        class="sidebar-link
+                        {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'regional_intelligence' %}
+                            active
+                        {% endif %}"
+                    >
+
+                        <span class="sidebar-link-icon">
+                            ◎
+                        </span>
+
+                        <span class="sidebar-link-text">
+                            Regional Intelligence
+                        </span>
+
+                        <span class="sidebar-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <!-- SALES -->
+                    <a
+                        href="{% url 'analytics:sales_intelligence' %}"
+                        class="sidebar-link
+                        {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'sales_intelligence' %}
+                            active
+                        {% endif %}"
+                    >
+
+                        <span class="sidebar-link-icon">
+                            ↗
+                        </span>
+
+                        <span class="sidebar-link-text">
+                            Sales Intelligence
+                        </span>
+
+                        <span class="sidebar-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <!-- FINANCIAL -->
+                    <a
+                        href="{% url 'analytics:financial_intelligence' %}"
+                        class="sidebar-link
+                        {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'financial_intelligence' %}
+                            active
+                        {% endif %}"
+                    >
+
+                        <span class="sidebar-link-icon">
+                            ₹
+                        </span>
+
+                        <span class="sidebar-link-text">
+                            Financial Intelligence
+                        </span>
+
+                        <span class="sidebar-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <!-- MARKETING -->
+                    <a
+                        href="{% url 'analytics:marketing_intelligence' %}"
+                        class="sidebar-link
+                        {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'marketing_intelligence' %}
+                            active
+                        {% endif %}"
+                    >
+
+                        <span class="sidebar-link-icon">
+                            ✦
+                        </span>
+
+                        <span class="sidebar-link-text">
+                            Marketing Intelligence
+                        </span>
+
+                        <span class="sidebar-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <!-- RETURNS -->
+                    <a
+                        href="{% url 'analytics:returns_intelligence' %}"
+                        class="sidebar-link
+                        {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'returns_intelligence' %}
+                            active
+                        {% endif %}"
+                    >
+
+                        <span class="sidebar-link-icon">
+                            ↩
+                        </span>
+
+                        <span class="sidebar-link-text">
+                            Returns Intelligence
+                        </span>
+
+                        <span class="sidebar-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 ADVANCED INSIGHTS
+            ================================================== -->
+            <div
+                class="sidebar-section sidebar-collapsible
+                {% if request.resolver_match.app_name == 'advanced_insights' %}
+                    section-open
+                {% endif %}"
+                data-section="insights"
+            >
+
+                <button
+                    type="button"
+                    class="sidebar-group-button"
+                    data-toggle-section="insights"
+                    aria-expanded="{% if request.resolver_match.app_name == 'advanced_insights' %}true{% else %}false{% endif %}"
+                >
+
+                    <span class="sidebar-section-title">
+                        INSIGHTS
+                    </span>
+
+                    <span class="sidebar-group-chevron">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div class="sidebar-group-content">
+
+
+                    <!-- ADVANCED INSIGHTS -->
+                    <a
+                        href="{% url 'advanced_insights:dashboard' %}"
+                        class="sidebar-link
+                        {% if request.resolver_match.app_name == 'advanced_insights' and request.resolver_match.url_name == 'dashboard' %}
+                            active
+                        {% endif %}"
+                    >
+
+                        <span class="sidebar-link-icon">
+                            ✦
+                        </span>
+
+                        <span class="sidebar-link-text">
+                            Advanced Insights
+                        </span>
+
+                        <span class="sidebar-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <!-- ANOMALY -->
+                    <a
+                        href="{% url 'advanced_insights:anomaly_detection' %}"
+                        class="sidebar-link
+                        {% if request.resolver_match.app_name == 'advanced_insights' and request.resolver_match.url_name == 'anomaly_detection' %}
+                            active
+                        {% endif %}"
+                    >
+
+                        <span class="sidebar-link-icon">
+                            !
+                        </span>
+
+                        <span class="sidebar-link-text">
+                            Anomaly Insights
+                        </span>
+
+                        <span class="sidebar-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <!-- ROOT CAUSE -->
+                    <a
+                        href="{% url 'advanced_insights:root_cause_analysis' %}"
+                        class="sidebar-link
+                        {% if request.resolver_match.app_name == 'advanced_insights' and request.resolver_match.url_name == 'root_cause_analysis' %}
+                            active
+                        {% endif %}"
+                    >
+
+                        <span class="sidebar-link-icon">
+                            ⌕
+                        </span>
+
+                        <span class="sidebar-link-text">
+                            Root Cause Analysis
+                        </span>
+
+                        <span class="sidebar-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <!-- CUSTOMER RISK -->
+                    <a
+                        href="{% url 'advanced_insights:customer_risk_analysis' %}"
+                        class="sidebar-link
+                        {% if request.resolver_match.app_name == 'advanced_insights' and request.resolver_match.url_name == 'customer_risk_analysis' %}
+                            active
+                        {% endif %}"
+                    >
+
+                        <span class="sidebar-link-icon">
+                            ⚠
+                        </span>
+
+                        <span class="sidebar-link-text">
+                            Customer Risk Analysis
+                        </span>
+
+                        <span class="sidebar-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <!-- OPPORTUNITY -->
+                    <a
+                        href="{% url 'advanced_insights:opportunity_detection' %}"
+                        class="sidebar-link
+                        {% if request.resolver_match.app_name == 'advanced_insights' and request.resolver_match.url_name == 'opportunity_detection' %}
+                            active
+                        {% endif %}"
+                    >
+
+                        <span class="sidebar-link-icon">
+                            ◎
+                        </span>
+
+                        <span class="sidebar-link-text">
+                            Opportunity Detection
+                        </span>
+
+                        <span class="sidebar-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 DECISION INTELLIGENCE
+            ================================================== -->
+            <div
+                class="sidebar-section sidebar-collapsible
+                {% if request.resolver_match.app_name == 'decision_intelligence' %}
+                    section-open
+                {% endif %}"
+                data-section="decision"
+            >
+
+                <button
+                    type="button"
+                    class="sidebar-group-button"
+                    data-toggle-section="decision"
+                    aria-expanded="{% if request.resolver_match.app_name == 'decision_intelligence' %}true{% else %}false{% endif %}"
+                >
+
+                    <span class="sidebar-section-title">
+                        DECISION INTELLIGENCE
+                    </span>
+
+                    <span class="sidebar-group-chevron">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div class="sidebar-group-content">
+
+
+                    <!-- RECOMMENDATIONS -->
+                    <a
+                        href="{% url 'decision_intelligence:recommendations' %}"
+                        class="sidebar-link
+                        {% if request.resolver_match.app_name == 'decision_intelligence' and request.resolver_match.url_name == 'recommendations' %}
+                            active
+                        {% endif %}"
+                    >
+
+                        <span class="sidebar-link-icon">
+                            🎯
+                        </span>
+
+                        <span class="sidebar-link-text">
+                            Recommendations
+                        </span>
+
+                        <span class="sidebar-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <!-- WHAT IF -->
+                    <a
+                        href="{% url 'decision_intelligence:what_if' %}"
+                        class="sidebar-link
+                        {% if request.resolver_match.app_name == 'decision_intelligence' and request.resolver_match.url_name == 'what_if' %}
+                            active
+                        {% endif %}"
+                    >
+
+                        <span class="sidebar-link-icon">
+                            🔬
+                        </span>
+
+                        <span class="sidebar-link-text">
+                            What-If Simulator
+                        </span>
+
+                        <span class="sidebar-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <!-- SCENARIO -->
+                    <a
+                        href="{% url 'decision_intelligence:scenario_planning' %}"
+                        class="sidebar-link
+                        {% if request.resolver_match.app_name == 'decision_intelligence' and request.resolver_match.url_name == 'scenario_planning' %}
+                            active
+                        {% endif %}"
+                    >
+
+                        <span class="sidebar-link-icon">
+                            📋
+                        </span>
+
+                        <span class="sidebar-link-text">
+                            Scenario Planning
+                        </span>
+
+                        <span class="sidebar-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <!-- ALERTS -->
+                    <a
+                        href="{% url 'decision_intelligence:business_alerts' %}"
+                        class="sidebar-link
+                        {% if request.resolver_match.app_name == 'decision_intelligence' and request.resolver_match.url_name == 'business_alerts' %}
+                            active
+                        {% endif %}"
+                    >
+
+                        <span class="sidebar-link-icon">
+                            🚨
+                        </span>
+
+                        <span class="sidebar-link-text">
+                            Business Alerts
+                        </span>
+
+                        <span class="sidebar-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <!-- ACTION CENTER -->
+                    <a
+                        href="{% url 'decision_intelligence:action_center' %}"
+                        class="sidebar-link
+                        {% if request.resolver_match.app_name == 'decision_intelligence' and request.resolver_match.url_name == 'action_center' %}
+                            active
+                        {% endif %}"
+                    >
+
+                        <span class="sidebar-link-icon">
+                            ⚡
+                        </span>
+
+                        <span class="sidebar-link-text">
+                            Action Center
+                        </span>
+
+                        <span class="sidebar-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <!-- DECISION IMPACT -->
+                    <a
+                        href="{% url 'decision_intelligence:decision_impact' %}"
+                        class="sidebar-link
+                        {% if request.resolver_match.app_name == 'decision_intelligence' and request.resolver_match.url_name == 'decision_impact' %}
+                            active
+                        {% endif %}"
+                    >
+
+                        <span class="sidebar-link-icon">
+                            📈
+                        </span>
+
+                        <span class="sidebar-link-text">
+                            Decision Impact
+                        </span>
+
+                        <span class="sidebar-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 REPORTING
+            ================================================== -->
+            <div class="sidebar-section">
+
+                <div class="sidebar-section-title">
+                    REPORTING
+                </div>
+
+
+                <a
+                    href="{% url 'reporting:dashboard' %}"
+                    class="sidebar-link
+                    {% if request.resolver_match.app_name == 'reporting' %}
+                        active
+                    {% endif %}"
+                >
+
+                    <span class="sidebar-link-icon">
+                        ▤
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Reports
+                    </span>
+
+                    <span class="sidebar-link-arrow">
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 ADMINISTRATION
+            ================================================== -->
+
+            {% if user.is_staff or user.is_superuser %}
+
+            <div class="sidebar-section">
+
+                <div class="sidebar-section-title">
+                    ADMINISTRATION
+                </div>
+
+
+                <!-- ADMIN DASHBOARD -->
+                <a
+                    href="{% url 'admin_dashboard:dashboard' %}"
+                    class="sidebar-link
+                    {% if request.resolver_match.app_name == 'admin_dashboard' and request.resolver_match.url_name == 'dashboard' %}
+                        active
+                    {% endif %}"
+                >
+
+                    <span class="sidebar-link-icon">
+                        ◫
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Admin Dashboard
+                    </span>
+
+                    <span class="sidebar-link-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <!-- USER MANAGEMENT -->
+                <a
+                    href="{% url 'admin_dashboard:users' %}"
+                    class="sidebar-link
+                    {% if request.resolver_match.app_name == 'admin_dashboard' and request.resolver_match.url_name == 'users' %}
+                        active
+                    {% endif %}"
+                >
+
+                    <span class="sidebar-link-icon">
+                        ♙
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        User Management
+                    </span>
+
+                    <span class="sidebar-link-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <!-- DJANGO ADMIN -->
+                <a
+                    href="/admin/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="sidebar-link"
+                >
+
+                    <span class="sidebar-link-icon">
+                        ⚙
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Django Admin
+                    </span>
+
+                    <span class="sidebar-link-arrow">
+                        ↗
+                    </span>
+
+                </a>
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- =================================================
+                 SYSTEM
+            ================================================== -->
+            <div class="sidebar-section">
+
+                <div class="sidebar-section-title">
+                    SYSTEM
+                </div>
+
+
+                <a
+                    href="#"
+                    class="sidebar-link sidebar-settings-link"
+                >
+
+                    <span class="sidebar-link-icon">
+                        ⚙
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Settings
+                    </span>
+
+                    <span class="sidebar-link-arrow">
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+
+        </nav>
+
+    </div>
+
+
+    <!-- =====================================================
+         SIDEBAR BOTTOM
+    ====================================================== -->
+    <div class="sidebar-bottom">
+
+
+        <!-- SYSTEM STATUS -->
+        <div class="sidebar-system-status">
+
+            <span class="system-status-indicator"></span>
+
+            <div>
+
+                <strong>
+                    System Online
+                </strong>
+
+                <small>
+                    Intelligence Engine
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- LOGOUT -->
+        <a
+            href="{% url 'accounts:logout' %}"
+            class="sidebar-logout"
+        >
+
+            <span class="sidebar-logout-icon">
+                ↪
+            </span>
+
+            <span>
+                Logout
+            </span>
+
+        </a>
+
+    </div>
+
+</aside>
