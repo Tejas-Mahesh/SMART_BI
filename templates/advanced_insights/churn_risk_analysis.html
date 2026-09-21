@@ -1,0 +1,2806 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Churn / Risk Analysis | Smart BI</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* =========================================================
+           ROOT
+        ========================================================= */
+
+        :root {
+            --ft-bg: #07111f;
+            --ft-bg-deep: #040b15;
+
+            --ft-panel: rgba(13, 27, 46, 0.94);
+            --ft-panel-strong: rgba(16, 32, 55, 0.97);
+            --ft-panel-soft: rgba(255, 255, 255, 0.025);
+
+            --ft-border: rgba(255, 255, 255, 0.075);
+            --ft-border-soft: rgba(255, 255, 255, 0.045);
+
+            --ft-text: #f2f7ff;
+            --ft-text-soft: rgba(218, 231, 245, 0.68);
+            --ft-text-muted: rgba(190, 208, 229, 0.46);
+
+            --ft-blue: #4fa3ff;
+            --ft-blue-bright: #74b9ff;
+            --ft-cyan: #22d3ee;
+            --ft-purple: #8b5cf6;
+
+            --ft-green: #48d597;
+            --ft-yellow: #f3c86b;
+            --ft-red: #ff6577;
+
+            --ft-radius: 18px;
+
+            --ft-shadow:
+                0 18px 55px rgba(0, 0, 0, 0.22);
+
+            --ft-glow:
+                0 0 35px rgba(79, 163, 255, 0.12);
+
+            --ft-sidebar-width: 260px;
+        }
+
+
+        /* =========================================================
+           RESET
+        ========================================================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 12% 0%,
+                    rgba(79, 163, 255, 0.09),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at 92% 8%,
+                    rgba(139, 92, 246, 0.075),
+                    transparent 28%
+                ),
+                linear-gradient(
+                    135deg,
+                    #040b15 0%,
+                    #07111f 52%,
+                    #06101d 100%
+                );
+
+            color: var(--ft-text);
+
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+        }
+
+        button,
+        select,
+        input {
+            font-family: inherit;
+        }
+
+
+        /* =========================================================
+           PAGE SHELL
+        ========================================================= */
+
+        .page-shell {
+            display: flex;
+
+            width: 100%;
+            height: 100vh;
+
+            overflow: hidden;
+        }
+
+
+        /* =========================================================
+           SIDEBAR
+        ========================================================= */
+
+        .sidebar-shell {
+            width: var(--ft-sidebar-width);
+            min-width: var(--ft-sidebar-width);
+
+            height: 100vh;
+
+            flex-shrink: 0;
+
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+
+        /* =========================================================
+           MAIN
+        ========================================================= */
+
+        .main-shell {
+            flex: 1;
+
+            min-width: 0;
+            height: 100vh;
+
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            scrollbar-width: thin;
+            scrollbar-color:
+                rgba(79, 163, 255, 0.28)
+                transparent;
+        }
+
+        .main-shell::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .main-shell::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .main-shell::-webkit-scrollbar-thumb {
+            border-radius: 999px;
+            background: rgba(79, 163, 255, 0.24);
+        }
+
+        .main-content {
+            width: 100%;
+            max-width: 1550px;
+
+            margin: 0 auto;
+
+            padding: 30px 32px 80px;
+        }
+
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        .page-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            gap: 24px;
+
+            margin-bottom: 25px;
+        }
+
+        .header-left {
+            min-width: 0;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            margin-bottom: 10px;
+
+            color: var(--ft-blue-bright);
+
+            font-size: 11px;
+            font-weight: 750;
+
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
+        }
+
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--ft-cyan);
+
+            box-shadow:
+                0 0 13px rgba(34, 211, 238, 0.7);
+        }
+
+        .page-title {
+            margin: 0;
+
+            color: var(--ft-text);
+
+            font-size: clamp(28px, 3vw, 40px);
+            font-weight: 760;
+
+            letter-spacing: -0.04em;
+            line-height: 1.08;
+        }
+
+        .page-description {
+            max-width: 850px;
+
+            margin: 11px 0 0;
+
+            color: var(--ft-text-soft);
+
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .analysis-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            flex-shrink: 0;
+
+            padding: 10px 14px;
+
+            border: 1px solid
+                rgba(79, 163, 255, 0.18);
+
+            border-radius: 999px;
+
+            background:
+                rgba(79, 163, 255, 0.055);
+
+            color: var(--ft-blue-bright);
+
+            font-size: 11px;
+            font-weight: 750;
+
+            white-space: nowrap;
+        }
+
+        .analysis-badge-icon {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: var(--ft-blue);
+
+            box-shadow:
+                0 0 12px rgba(79, 163, 255, 0.65);
+        }
+
+
+        /* =========================================================
+           MESSAGES
+        ========================================================= */
+
+        .message-stack {
+            display: grid;
+            gap: 9px;
+
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 13px 16px;
+
+            border: 1px solid var(--ft-border);
+            border-radius: 12px;
+
+            background:
+                rgba(255, 255, 255, 0.025);
+
+            color: var(--ft-text-soft);
+
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .message.success {
+            border-color:
+                rgba(72, 213, 151, 0.22);
+
+            background:
+                rgba(72, 213, 151, 0.035);
+        }
+
+        .message.error {
+            border-color:
+                rgba(255, 101, 119, 0.25);
+
+            background:
+                rgba(255, 101, 119, 0.035);
+        }
+
+        .message.warning {
+            border-color:
+                rgba(243, 200, 107, 0.25);
+
+            background:
+                rgba(243, 200, 107, 0.035);
+        }
+
+
+        /* =========================================================
+           CONTROL PANEL
+        ========================================================= */
+
+        .control-panel {
+            margin-bottom: 24px;
+            padding: 22px;
+
+            border: 1px solid var(--ft-border);
+            border-radius: var(--ft-radius);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(16, 32, 55, 0.98),
+                    rgba(8, 20, 35, 0.97)
+                );
+
+            box-shadow: var(--ft-shadow);
+        }
+
+        .control-heading {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 20px;
+        }
+
+        .control-heading h2 {
+            margin: 0;
+
+            color: var(--ft-text);
+
+            font-size: 17px;
+            font-weight: 700;
+
+            letter-spacing: -0.015em;
+        }
+
+        .control-heading p {
+            margin: 5px 0 0;
+
+            color: var(--ft-text-muted);
+
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .panel-badge {
+            display: inline-flex;
+            align-items: center;
+
+            padding: 6px 10px;
+
+            border: 1px solid var(--ft-border-soft);
+            border-radius: 999px;
+
+            background:
+                rgba(255, 255, 255, 0.018);
+
+            color: var(--ft-text-muted);
+
+            font-size: 10px;
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+
+        /* =========================================================
+           CONTROL GRID
+        ========================================================= */
+
+        .control-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(180px, 1.2fr)
+                minmax(170px, 1fr)
+                minmax(170px, 1fr)
+                minmax(180px, 1fr);
+
+            gap: 15px;
+        }
+
+        .field {
+            min-width: 0;
+        }
+
+        .field label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: var(--ft-text-soft);
+
+            font-size: 10px;
+            font-weight: 750;
+
+            letter-spacing: 0.075em;
+            text-transform: uppercase;
+        }
+
+        .field select {
+            width: 100%;
+            height: 43px;
+
+            padding: 0 13px;
+
+            border: 1px solid var(--ft-border);
+            border-radius: 11px;
+
+            outline: none;
+
+            background:
+                rgba(4, 11, 21, 0.72);
+
+            color: var(--ft-text);
+
+            font-size: 13px;
+
+            cursor: pointer;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .field select:hover {
+            border-color:
+                rgba(79, 163, 255, 0.25);
+        }
+
+        .field select:focus {
+            border-color:
+                rgba(79, 163, 255, 0.48);
+
+            background:
+                rgba(4, 11, 21, 0.88);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(79, 163, 255, 0.08);
+        }
+
+        .field select option {
+            background: #0b1a2d;
+            color: #f2f7ff;
+        }
+
+
+        /* =========================================================
+           METRICS
+        ========================================================= */
+
+        .metrics-field {
+            grid-column: 1 / -1;
+        }
+
+        .metrics-checkbox-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fill, minmax(185px, 1fr));
+
+            gap: 10px;
+
+            padding: 2px;
+        }
+
+        .metric-option {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            min-height: 46px;
+
+            gap: 10px;
+
+            padding: 10px 12px;
+
+            border: 1px solid var(--ft-border);
+            border-radius: 11px;
+
+            background:
+                rgba(4, 11, 21, 0.55);
+
+            color: var(--ft-text-soft);
+
+            cursor: pointer;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .metric-option:hover {
+            border-color:
+                rgba(79, 163, 255, 0.35);
+
+            background:
+                rgba(79, 163, 255, 0.045);
+
+            transform: translateY(-1px);
+        }
+
+        .metric-option input {
+            position: absolute;
+
+            width: 1px;
+            height: 1px;
+
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .metric-checkmark {
+            width: 17px;
+            height: 17px;
+
+            flex-shrink: 0;
+
+            border: 1px solid
+                rgba(255, 255, 255, 0.18);
+
+            border-radius: 5px;
+
+            background:
+                rgba(255, 255, 255, 0.025);
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .metric-option input:checked + .metric-checkmark {
+            border-color: var(--ft-blue);
+
+            background: var(--ft-blue);
+
+            box-shadow:
+                0 0 12px
+                rgba(79, 163, 255, 0.25);
+        }
+
+        .metric-option input:checked + .metric-checkmark::after {
+            content: "✓";
+
+            display: block;
+
+            color: #ffffff;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            line-height: 16px;
+            text-align: center;
+        }
+
+        .metric-option:has(input:checked) {
+            border-color:
+                rgba(79, 163, 255, 0.38);
+
+            background:
+                rgba(79, 163, 255, 0.075);
+        }
+
+        .metric-name {
+            overflow: hidden;
+
+            color: var(--ft-text-soft);
+
+            font-size: 12px;
+            font-weight: 600;
+
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .metric-option input:checked ~ .metric-name {
+            color: var(--ft-text);
+        }
+
+        .no-metrics {
+            grid-column: 1 / -1;
+
+            padding: 14px;
+
+            border: 1px dashed var(--ft-border);
+            border-radius: 10px;
+
+            color: var(--ft-text-muted);
+
+            font-size: 12px;
+        }
+
+        .metrics-help {
+            margin-top: 8px;
+
+            color: var(--ft-text-muted);
+
+            font-size: 11px;
+            line-height: 1.55;
+        }
+
+
+        /* =========================================================
+           CONTROL ACTIONS
+        ========================================================= */
+
+        .control-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+
+            gap: 12px;
+
+            margin-top: 19px;
+        }
+
+        .run-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-height: 44px;
+
+            gap: 9px;
+
+            padding: 0 20px;
+
+            border: 1px solid
+                rgba(79, 163, 255, 0.35);
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(79, 163, 255, 0.20),
+                    rgba(34, 211, 238, 0.12)
+                );
+
+            color: var(--ft-text);
+
+            font-size: 13px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .run-button:hover {
+            transform: translateY(-1px);
+
+            border-color:
+                rgba(79, 163, 255, 0.58);
+
+            box-shadow:
+                0 10px 28px
+                rgba(79, 163, 255, 0.12);
+        }
+
+        .run-button:active {
+            transform: translateY(0);
+        }
+
+        .run-icon {
+            width: 18px;
+            height: 18px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                rgba(79, 163, 255, 0.16);
+
+            color: var(--ft-blue-bright);
+
+            font-size: 10px;
+        }
+
+
+        /* =========================================================
+           EMPTY STATE
+        ========================================================= */
+
+        .empty-state {
+            padding: 58px 25px;
+
+            border: 1px dashed
+                rgba(255, 255, 255, 0.10);
+
+            border-radius: var(--ft-radius);
+
+            background:
+                rgba(255, 255, 255, 0.018);
+
+            text-align: center;
+        }
+
+        .empty-icon {
+            width: 58px;
+            height: 58px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin: 0 auto 17px;
+
+            border: 1px solid
+                rgba(79, 163, 255, 0.18);
+
+            border-radius: 16px;
+
+            background:
+                rgba(79, 163, 255, 0.06);
+
+            color: var(--ft-blue-bright);
+
+            font-size: 23px;
+            font-weight: 700;
+        }
+
+        .empty-state h3 {
+            margin: 0 0 8px;
+
+            color: var(--ft-text);
+
+            font-size: 18px;
+        }
+
+        .empty-state p {
+            max-width: 600px;
+
+            margin: 0 auto;
+
+            color: var(--ft-text-muted);
+
+            font-size: 13px;
+            line-height: 1.75;
+        }
+
+
+        /* =========================================================
+           KPI GRID
+        ========================================================= */
+
+        .kpi-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .kpi-card {
+            position: relative;
+
+            min-height: 145px;
+
+            overflow: hidden;
+
+            padding: 20px;
+
+            border: 1px solid var(--ft-border);
+            border-radius: var(--ft-radius);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(16, 32, 55, 0.97),
+                    rgba(9, 22, 38, 0.94)
+                );
+
+            box-shadow: var(--ft-shadow);
+        }
+
+        .kpi-card::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+            right: 0;
+
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(79, 163, 255, 0),
+                    rgba(79, 163, 255, 0.55),
+                    rgba(34, 211, 238, 0)
+                );
+        }
+
+        .kpi-card::after {
+            content: "";
+
+            position: absolute;
+
+            right: -40px;
+            bottom: -50px;
+
+            width: 125px;
+            height: 125px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(79, 163, 255, 0.07);
+
+            filter: blur(10px);
+        }
+
+        .kpi-label,
+        .kpi-value,
+        .kpi-sub {
+            position: relative;
+            z-index: 1;
+        }
+
+        .kpi-label {
+            color: var(--ft-text-muted);
+
+            font-size: 10px;
+            font-weight: 750;
+
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .kpi-value {
+            margin-top: 13px;
+
+            color: var(--ft-text);
+
+            font-size: 31px;
+            font-weight: 760;
+
+            letter-spacing: -0.045em;
+        }
+
+        .kpi-sub {
+            margin-top: 7px;
+
+            color: var(--ft-text-muted);
+
+            font-size: 11px;
+        }
+
+        .kpi-card.risk-high {
+            border-color:
+                rgba(255, 101, 119, 0.18);
+        }
+
+        .kpi-card.risk-high::after {
+            background:
+                rgba(255, 101, 119, 0.08);
+        }
+
+        .kpi-card.risk-high .kpi-value {
+            color: var(--ft-red);
+        }
+
+        .kpi-card.risk-medium {
+            border-color:
+                rgba(243, 200, 107, 0.18);
+        }
+
+        .kpi-card.risk-medium::after {
+            background:
+                rgba(243, 200, 107, 0.07);
+        }
+
+        .kpi-card.risk-medium .kpi-value {
+            color: var(--ft-yellow);
+        }
+
+
+        /* =========================================================
+           CONTENT GRID
+        ========================================================= */
+
+        .content-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(320px, 0.85fr)
+                minmax(450px, 1.5fr);
+
+            gap: 18px;
+
+            margin-bottom: 18px;
+        }
+
+        .panel {
+            min-width: 0;
+
+            padding: 21px;
+
+            border: 1px solid var(--ft-border);
+            border-radius: var(--ft-radius);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(13, 27, 46, 0.96),
+                    rgba(8, 19, 34, 0.95)
+                );
+
+            box-shadow: var(--ft-shadow);
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            gap: 16px;
+
+            margin-bottom: 18px;
+        }
+
+        .panel-header h2 {
+            margin: 0;
+
+            color: var(--ft-text);
+
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .panel-header p {
+            margin: 5px 0 0;
+
+            color: var(--ft-text-muted);
+
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+
+        /* =========================================================
+           CHART
+        ========================================================= */
+
+        .chart-wrap {
+            position: relative;
+
+            width: 100%;
+            height: 310px;
+        }
+
+        .chart-wrap canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+
+        /* =========================================================
+           RISK OVERVIEW
+        ========================================================= */
+
+        .risk-overview {
+            display: grid;
+            gap: 13px;
+
+            padding-top: 4px;
+        }
+
+        .risk-row {
+            display: grid;
+
+            grid-template-columns:
+                minmax(110px, 0.8fr)
+                minmax(100px, 1.8fr)
+                65px;
+
+            align-items: center;
+
+            gap: 13px;
+        }
+
+        .risk-name {
+            color: var(--ft-text-soft);
+
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .risk-bar {
+            height: 9px;
+
+            overflow: hidden;
+
+            border-radius: 999px;
+
+            background:
+                rgba(255, 255, 255, 0.055);
+        }
+
+        .risk-bar-fill {
+            height: 100%;
+
+            border-radius: inherit;
+
+            transition:
+                width 0.6s ease;
+        }
+
+        .risk-bar-fill.high {
+            background:
+                linear-gradient(
+                    90deg,
+                    #ff6577,
+                    #ff8190
+                );
+        }
+
+        .risk-bar-fill.medium {
+            background:
+                linear-gradient(
+                    90deg,
+                    #f3c86b,
+                    #f7d98d
+                );
+        }
+
+        .risk-bar-fill.low {
+            background:
+                linear-gradient(
+                    90deg,
+                    #48d597,
+                    #6ce5ac
+                );
+        }
+
+        .risk-count {
+            color: var(--ft-text);
+
+            font-size: 12px;
+            font-weight: 700;
+
+            text-align: right;
+        }
+
+
+        /* =========================================================
+           SUMMARY
+        ========================================================= */
+
+        .summary-panel {
+            margin-bottom: 18px;
+        }
+
+        .summary-content {
+            display: grid;
+
+            grid-template-columns:
+                minmax(180px, 0.85fr)
+                minmax(250px, 1.5fr)
+                minmax(180px, 0.85fr);
+
+            gap: 14px;
+        }
+
+        .summary-card {
+            min-height: 92px;
+
+            padding: 16px;
+
+            border: 1px solid var(--ft-border-soft);
+            border-radius: 13px;
+
+            background:
+                rgba(255, 255, 255, 0.018);
+        }
+
+        .summary-card-label {
+            margin-bottom: 9px;
+
+            color: var(--ft-text-muted);
+
+            font-size: 10px;
+            font-weight: 750;
+
+            letter-spacing: 0.065em;
+            text-transform: uppercase;
+        }
+
+        .summary-card-value {
+            color: var(--ft-text);
+
+            font-size: 17px;
+            font-weight: 700;
+
+            line-height: 1.35;
+            word-break: break-word;
+        }
+
+        .summary-card-value.high-risk {
+            color: var(--ft-red);
+        }
+
+        .summary-text {
+            grid-column: 1 / -1;
+
+            padding: 17px;
+
+            border: 1px solid
+                rgba(79, 163, 255, 0.10);
+
+            border-radius: 13px;
+
+            background:
+                rgba(79, 163, 255, 0.035);
+
+            color: var(--ft-text-soft);
+
+            font-size: 13px;
+            line-height: 1.75;
+        }
+
+
+        /* =========================================================
+           TABLE
+        ========================================================= */
+
+        .table-panel {
+            margin-bottom: 18px;
+        }
+
+        .table-container {
+            width: 100%;
+
+            overflow-x: auto;
+
+            border: 1px solid var(--ft-border-soft);
+            border-radius: 13px;
+
+            scrollbar-width: thin;
+            scrollbar-color:
+                rgba(79, 163, 255, 0.25)
+                transparent;
+        }
+
+        .risk-table {
+            width: 100%;
+            min-width: 950px;
+
+            border-collapse: collapse;
+        }
+
+        .risk-table th {
+            padding: 13px 14px;
+
+            border-bottom: 1px solid var(--ft-border);
+
+            background:
+                rgba(255, 255, 255, 0.025);
+
+            color: var(--ft-text-muted);
+
+            font-size: 10px;
+            font-weight: 750;
+
+            letter-spacing: 0.07em;
+
+            text-align: left;
+            text-transform: uppercase;
+
+            white-space: nowrap;
+        }
+
+        .risk-table td {
+            padding: 13px 14px;
+
+            border-bottom: 1px solid
+                rgba(255, 255, 255, 0.045);
+
+            color: var(--ft-text-soft);
+
+            font-size: 12px;
+
+            vertical-align: middle;
+        }
+
+        .risk-table tbody tr {
+            transition:
+                background 0.18s ease;
+        }
+
+        .risk-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .risk-table tbody tr:hover {
+            background:
+                rgba(79, 163, 255, 0.035);
+        }
+
+        .customer-name {
+            color: var(--ft-text);
+
+            font-weight: 700;
+        }
+
+        .score-value {
+            color: var(--ft-text);
+
+            font-weight: 750;
+        }
+
+
+        /* =========================================================
+           RISK PILLS
+        ========================================================= */
+
+        .risk-pill {
+            display: inline-flex;
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 6px 10px;
+
+            border-radius: 999px;
+
+            font-size: 10px;
+            font-weight: 750;
+
+            white-space: nowrap;
+        }
+
+        .risk-pill::before {
+            content: "";
+
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+        }
+
+        .risk-pill.high {
+            border: 1px solid
+                rgba(255, 101, 119, 0.18);
+
+            background:
+                rgba(255, 101, 119, 0.08);
+
+            color: var(--ft-red);
+        }
+
+        .risk-pill.high::before {
+            background: var(--ft-red);
+
+            box-shadow:
+                0 0 8px
+                rgba(255, 101, 119, 0.45);
+        }
+
+        .risk-pill.medium {
+            border: 1px solid
+                rgba(243, 200, 107, 0.18);
+
+            background:
+                rgba(243, 200, 107, 0.07);
+
+            color: var(--ft-yellow);
+        }
+
+        .risk-pill.medium::before {
+            background: var(--ft-yellow);
+
+            box-shadow:
+                0 0 8px
+                rgba(243, 200, 107, 0.4);
+        }
+
+        .risk-pill.low {
+            border: 1px solid
+                rgba(72, 213, 151, 0.18);
+
+            background:
+                rgba(72, 213, 151, 0.07);
+
+            color: var(--ft-green);
+        }
+
+        .risk-pill.low::before {
+            background: var(--ft-green);
+
+            box-shadow:
+                0 0 8px
+                rgba(72, 213, 151, 0.4);
+        }
+
+        .reason-text {
+            max-width: 380px;
+
+            color: var(--ft-text-muted);
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================================================
+           METHOD NOTE
+        ========================================================= */
+
+        .method-note {
+            padding: 15px 17px;
+
+            border: 1px solid var(--ft-border-soft);
+            border-radius: 13px;
+
+            background:
+                rgba(255, 255, 255, 0.018);
+
+            color: var(--ft-text-muted);
+
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .method-note strong {
+            color: var(--ft-text-soft);
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 1250px) {
+
+            .control-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-content {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .summary-text {
+                grid-column: 1 / -1;
+            }
+        }
+
+
+        @media (max-width: 850px) {
+
+            body {
+                overflow: auto;
+            }
+
+            .page-shell {
+                min-height: 100vh;
+                height: auto;
+
+                flex-direction: column;
+
+                overflow: visible;
+            }
+
+            .sidebar-shell {
+                width: 100%;
+                min-width: 0;
+
+                height: auto;
+
+                overflow: visible;
+            }
+
+            .main-shell {
+                height: auto;
+
+                overflow: visible;
+            }
+
+            .main-content {
+                padding:
+                    23px 18px 55px;
+            }
+
+            .page-header {
+                flex-direction: column;
+            }
+
+            .analysis-badge {
+                align-self: flex-start;
+            }
+
+            .kpi-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .control-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-field {
+                grid-column: auto;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-content {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-text {
+                grid-column: auto;
+            }
+
+            .control-actions {
+                justify-content: stretch;
+            }
+
+            .run-button {
+                width: 100%;
+            }
+
+            .chart-wrap {
+                height: 270px;
+            }
+
+            .page-title {
+                font-size: 29px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div class="page-shell">
+
+
+    <!-- =========================================================
+         SIDEBAR
+    ========================================================== -->
+
+    <aside class="sidebar-shell">
+
+        {% include "includes/smart_sidebar.html" %}
+
+    </aside>
+
+
+
+    <!-- =========================================================
+         MAIN CONTENT
+    ========================================================== -->
+
+    <main class="main-shell">
+
+        <div class="main-content">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="page-header">
+
+                <div class="header-left">
+
+                    <div class="eyebrow">
+
+                        <span class="eyebrow-dot"></span>
+
+                        Advanced Insights
+
+                    </div>
+
+
+                    <h1 class="page-title">
+                        Churn / Risk Analysis
+                    </h1>
+
+
+                    <p class="page-description">
+
+                        Identify customers with elevated
+                        activity-based risk using recency,
+                        frequency, and customer value patterns
+                        from the selected analytics-ready dataset.
+
+                    </p>
+
+                </div>
+
+
+                <div class="analysis-badge">
+
+                    <span class="analysis-badge-icon"></span>
+
+                    Customer Risk Intelligence
+
+                </div>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 MESSAGES
+            ================================================== -->
+
+            {% if messages %}
+
+                <div class="message-stack">
+
+                    {% for message in messages %}
+
+                        <div class="message {{ message.tags }}">
+
+                            {{ message }}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+
+
+            <!-- =================================================
+                 CONTROL PANEL
+            ================================================== -->
+
+            <section class="control-panel">
+
+
+                <div class="control-heading">
+
+                    <div>
+
+                        <h2>
+                            Risk Analysis Configuration
+                        </h2>
+
+                        <p>
+                            Select the dataset and customer
+                            activity fields used for the risk
+                            assessment.
+                        </p>
+
+                    </div>
+
+
+                    {% if churn_result %}
+
+                        <div class="panel-badge">
+
+                            Analysis Available
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <form method="post">
+
+                    {% csrf_token %}
+
+
+                    <div class="control-grid">
+
+
+                        <!-- Dataset -->
+
+                        <div class="field">
+
+                            <label for="dataset-select">
+                                Dataset
+                            </label>
+
+                            <select
+                                id="dataset-select"
+                                name="dataset"
+                                onchange="changeDataset(this.value)"
+                            >
+
+                                {% for dataset in datasets %}
+
+                                    <option
+                                        value="{{ dataset.id }}"
+                                        {% if selected_dataset.id == dataset.id %}
+                                            selected
+                                        {% endif %}
+                                    >
+
+                                        {{ dataset.name }}
+                                        — {{ dataset.dataset_type }}
+
+                                    </option>
+
+                                {% empty %}
+
+                                    <option value="">
+                                        No datasets available
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+
+                        <!-- Version -->
+
+                        <div class="field">
+
+                            <label for="version-select">
+                                Data Version
+                            </label>
+
+                            <select
+                                id="version-select"
+                                name="version"
+                                onchange="changeVersion(this.value)"
+                            >
+
+                                {% for version in versions %}
+
+                                    <option
+                                        value="{{ version.id }}"
+                                        {% if selected_version.id == version.id %}
+                                            selected
+                                        {% endif %}
+                                    >
+
+                                        Version
+                                        {{ version.version_number }}
+
+                                        —
+                                        {{ version.version_type }}
+
+                                        {% if version.is_current %}
+                                            (Current)
+                                        {% endif %}
+
+                                    </option>
+
+                                {% empty %}
+
+                                    <option value="">
+                                        No versions available
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+
+                        <!-- Customer Column -->
+
+                        <div class="field">
+
+                            <label for="customer-column">
+                                Customer Column
+                            </label>
+
+                            <select
+                                id="customer-column"
+                                name="customer_column"
+                            >
+
+                                {% for column in customer_columns %}
+
+                                    <option
+                                        value="{{ column }}"
+                                        {% if selected_customer_column == column %}
+                                            selected
+                                        {% endif %}
+                                    >
+
+                                        {{ column }}
+
+                                    </option>
+
+                                {% empty %}
+
+                                    <option value="">
+                                        No customer column detected
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+
+                        <!-- Activity Date -->
+
+                        <div class="field">
+
+                            <label for="date-column">
+                                Activity Date
+                            </label>
+
+                            <select
+                                id="date-column"
+                                name="date_column"
+                            >
+
+                                <option value="">
+                                    No Date / Not Available
+                                </option>
+
+                                {% for column in date_columns %}
+
+                                    <option
+                                        value="{{ column }}"
+                                        {% if selected_date_column == column %}
+                                            selected
+                                        {% endif %}
+                                    >
+
+                                        {{ column }}
+
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+
+                        <!-- Metrics -->
+
+                        <div class="field metrics-field">
+
+                            <label>
+                                Customer Activity / Value Metrics
+                            </label>
+
+
+                            <div class="metrics-checkbox-grid">
+
+                                {% for column in numeric_columns %}
+
+                                    <label class="metric-option">
+
+                                        <input
+                                            type="checkbox"
+                                            name="metric_columns"
+                                            value="{{ column }}"
+                                            {% if column in selected_metric_columns %}
+                                                checked
+                                            {% endif %}
+                                        >
+
+                                        <span class="metric-checkmark"></span>
+
+                                        <span class="metric-name">
+                                            {{ column }}
+                                        </span>
+
+                                    </label>
+
+                                {% empty %}
+
+                                    <div class="no-metrics">
+
+                                        No numeric metrics detected.
+
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+
+                            <div class="metrics-help">
+
+                                Select one or more customer
+                                activity/value metrics.
+                                Sales, revenue, quantity, profit,
+                                or similar numeric fields are
+                                recommended.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Action -->
+
+                    <div class="control-actions">
+
+                        <button
+                            type="submit"
+                            class="run-button"
+                        >
+
+                            <span class="run-icon">
+                                ↗
+                            </span>
+
+                            Run Risk Analysis
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 EMPTY STATES
+            ================================================== -->
+
+            {% if not customer_columns %}
+
+                <section class="empty-state">
+
+                    <div class="empty-icon">
+                        !
+                    </div>
+
+                    <h3>
+                        Customer Data Required
+                    </h3>
+
+                    <p>
+
+                        The selected dataset does not appear
+                        to contain a recognizable customer
+                        identifier. Select a dataset containing
+                        fields such as Customer_ID, Customer ID,
+                        CustomerID, Client ID, or Buyer ID.
+
+                    </p>
+
+                </section>
+
+
+            {% elif not churn_result %}
+
+                <section class="empty-state">
+
+                    <div class="empty-icon">
+                        ◌
+                    </div>
+
+                    <h3>
+                        Ready for Risk Analysis
+                    </h3>
+
+                    <p>
+
+                        Configure the customer, activity date,
+                        and numeric activity/value fields above,
+                        then run the analysis to generate
+                        customer-level risk classifications.
+
+                    </p>
+
+                </section>
+
+
+            {% else %}
+
+
+                <!-- =================================================
+                     KPI CARDS
+                ================================================== -->
+
+                <section class="kpi-grid">
+
+
+                    <!-- Total Customers -->
+
+                    <div class="kpi-card">
+
+                        <div class="kpi-label">
+                            Total Customers
+                        </div>
+
+                        <div class="kpi-value">
+                            {{ churn_result.total_customers|default:0 }}
+                        </div>
+
+                        <div class="kpi-sub">
+                            Unique customers identified
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Assessed -->
+
+                    <div class="kpi-card">
+
+                        <div class="kpi-label">
+                            Assessed Customers
+                        </div>
+
+                        <div class="kpi-value">
+                            {{ churn_result.assessed_customers|default:0 }}
+                        </div>
+
+                        <div class="kpi-sub">
+                            Customers included in analysis
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- High Risk -->
+
+                    <div class="kpi-card risk-high">
+
+                        <div class="kpi-label">
+                            High Risk
+                        </div>
+
+                        <div class="kpi-value">
+                            {{ churn_result.high_risk_customers|default:0 }}
+                        </div>
+
+                        <div class="kpi-sub">
+
+                            {{ churn_result.high_risk_percentage|floatformat:2 }}%
+
+                            of assessed customers
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Average Risk -->
+
+                    <div class="kpi-card risk-medium">
+
+                        <div class="kpi-label">
+                            Average Risk Score
+                        </div>
+
+                        <div class="kpi-value">
+                            {{ churn_result.average_risk_score|floatformat:2 }}
+                        </div>
+
+                        <div class="kpi-sub">
+                            Risk scale: 0–100
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     CHART + RISK OVERVIEW
+                ================================================== -->
+
+                <section class="content-grid">
+
+
+                    <!-- Chart -->
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+
+                            <div>
+
+                                <h2>
+                                    Risk Distribution
+                                </h2>
+
+                                <p>
+                                    Customer distribution by risk level
+                                </p>
+
+                            </div>
+
+                            <div class="panel-badge">
+                                Current Analysis
+                            </div>
+
+                        </div>
+
+
+                        <div class="chart-wrap">
+
+                            <canvas
+                                id="riskDistributionChart"
+                            ></canvas>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Risk Overview -->
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+
+                            <div>
+
+                                <h2>
+                                    Risk Overview
+                                </h2>
+
+                                <p>
+                                    Breakdown of assessed customers
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="risk-overview">
+
+                            {% for item in churn_result.risk_data %}
+
+                                <div class="risk-row">
+
+
+                                    <div class="risk-name">
+
+                                        {{ item.risk_level }}
+
+                                    </div>
+
+
+                                    <div class="risk-bar">
+
+                                        <div
+                                            class="
+                                                risk-bar-fill
+                                                {% if item.risk_level == 'High Risk' %}
+                                                    high
+                                                {% elif item.risk_level == 'Medium Risk' %}
+                                                    medium
+                                                {% else %}
+                                                    low
+                                                {% endif %}
+                                            "
+                                            style="
+                                                width: {{ item.percentage }}%;
+                                            "
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div class="risk-count">
+
+                                        {{ item.count }}
+
+                                    </div>
+
+                                </div>
+
+                            {% empty %}
+
+                                <div class="no-metrics">
+                                    No risk distribution data available.
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     SUMMARY
+                ================================================== -->
+
+                <section class="panel summary-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <h2>
+                                Risk Analysis Summary
+                            </h2>
+
+                            <p>
+                                Key findings from the current assessment
+                            </p>
+
+                        </div>
+
+                        <div class="panel-badge">
+
+                            {{ churn_result.risk_method }}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="summary-content">
+
+
+                        <!-- Highest Risk Customer -->
+
+                        <div class="summary-card">
+
+                            <div class="summary-card-label">
+                                Highest Risk Customer
+                            </div>
+
+                            <div class="summary-card-value">
+
+                                {{ churn_result.highest_risk_customer|default:"—" }}
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Highest Risk Score -->
+
+                        <div class="summary-card">
+
+                            <div class="summary-card-label">
+                                Highest Risk Score
+                            </div>
+
+                            <div class="summary-card-value high-risk">
+
+                                {{ churn_result.highest_risk_score|floatformat:2 }}
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- High Risk Percentage -->
+
+                        <div class="summary-card">
+
+                            <div class="summary-card-label">
+                                High Risk Percentage
+                            </div>
+
+                            <div class="summary-card-value">
+
+                                {{ churn_result.high_risk_percentage|floatformat:2 }}%
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Summary -->
+
+                        <div class="summary-text">
+
+                            {{ churn_result.summary }}
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     CUSTOMER RISK TABLE
+                ================================================== -->
+
+                <section class="panel table-panel">
+
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <h2>
+                                Customer Risk Assignments
+                            </h2>
+
+                            <p>
+                                Customers ranked from highest
+                                to lowest calculated risk score
+                            </p>
+
+                        </div>
+
+
+                        <div class="panel-badge">
+
+                            {{ churn_result.assessed_customers }}
+                            Customers
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="table-container">
+
+                        <table class="risk-table">
+
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Customer
+                                    </th>
+
+                                    <th>
+                                        Risk Score
+                                    </th>
+
+                                    <th>
+                                        Risk Level
+                                    </th>
+
+                                    <th>
+                                        Last Activity
+                                    </th>
+
+                                    <th>
+                                        Activity Frequency
+                                    </th>
+
+                                    <th>
+                                        Customer Value
+                                    </th>
+
+                                    <th>
+                                        Risk Indicator
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+
+                            <tbody>
+
+                                {% for customer in churn_result.customer_data %}
+
+                                    <tr>
+
+
+                                        <td>
+
+                                            <span class="customer-name">
+
+                                                {{ customer.customer }}
+
+                                            </span>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <span class="score-value">
+
+                                                {{ customer.risk_score|floatformat:2 }}
+
+                                            </span>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <span
+                                                class="
+                                                    risk-pill
+                                                    {% if customer.risk_level == 'High Risk' %}
+                                                        high
+                                                    {% elif customer.risk_level == 'Medium Risk' %}
+                                                        medium
+                                                    {% else %}
+                                                        low
+                                                    {% endif %}
+                                                "
+                                            >
+
+                                                {{ customer.risk_level }}
+
+                                            </span>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {{ customer.last_activity|default:"—" }}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {{ customer.activity_frequency }}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {{ customer.customer_value|floatformat:2 }}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <div class="reason-text">
+
+                                                {{ customer.risk_reason }}
+
+                                            </div>
+
+                                        </td>
+
+                                    </tr>
+
+                                {% empty %}
+
+                                    <tr>
+
+                                        <td
+                                            colspan="7"
+                                            style="text-align: center;"
+                                        >
+
+                                            No customer risk records
+                                            were generated.
+
+                                        </td>
+
+                                    </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     METHOD NOTE
+                ================================================== -->
+
+                <div class="method-note">
+
+                    <strong>
+                        Risk methodology:
+                    </strong>
+
+                    The current analysis estimates customer risk
+                    from observable activity patterns. Recency
+                    contributes 50% of the score, activity frequency
+                    contributes 30%, and customer value contributes
+                    20%. A higher score indicates a higher
+                    activity-based risk classification. This analysis
+                    is an analytical risk indicator and is not a
+                    confirmed prediction that a customer will churn.
+
+                </div>
+
+
+            {% endif %}
+
+        </div>
+
+    </main>
+
+</div>
+
+
+
+<!-- =============================================================
+     JAVASCRIPT
+============================================================== -->
+
+<script>
+
+
+    /* =========================================================
+       DATASET NAVIGATION
+    ========================================================== */
+
+    function changeDataset(datasetId) {
+
+        if (!datasetId) {
+            return;
+        }
+
+        const url = new URL(
+            window.location.href
+        );
+
+        url.searchParams.set(
+            "dataset",
+            datasetId
+        );
+
+        url.searchParams.delete(
+            "version"
+        );
+
+        url.searchParams.delete(
+            "customer_column"
+        );
+
+        url.searchParams.delete(
+            "date_column"
+        );
+
+        url.searchParams.delete(
+            "metric_columns"
+        );
+
+        window.location.href =
+            url.toString();
+    }
+
+
+
+    /* =========================================================
+       VERSION NAVIGATION
+    ========================================================== */
+
+    function changeVersion(versionId) {
+
+        if (!versionId) {
+            return;
+        }
+
+        const url = new URL(
+            window.location.href
+        );
+
+        url.searchParams.set(
+            "version",
+            versionId
+        );
+
+        url.searchParams.delete(
+            "customer_column"
+        );
+
+        url.searchParams.delete(
+            "date_column"
+        );
+
+        url.searchParams.delete(
+            "metric_columns"
+        );
+
+        window.location.href =
+            url.toString();
+    }
+
+
+
+    /* =========================================================
+       RISK DISTRIBUTION CHART
+    ========================================================== */
+
+    {% if churn_result %}
+
+        const chartData = [
+
+            {% for item in churn_result.chart_data %}
+
+                {
+                    label:
+                        "{{ item.label|escapejs }}",
+
+                    value:
+                        {{ item.value|default:0 }}
+                }
+
+                {% if not forloop.last %}
+                    ,
+                {% endif %}
+
+            {% endfor %}
+
+        ];
+
+
+        const chartLabels =
+            chartData.map(
+                item => item.label
+            );
+
+
+        const chartValues =
+            chartData.map(
+                item => Number(item.value) || 0
+            );
+
+
+        const chartColors =
+            chartLabels.map(
+                label => {
+
+                    if (
+                        label === "High Risk"
+                    ) {
+                        return "#ff6577";
+                    }
+
+                    if (
+                        label === "Medium Risk"
+                    ) {
+                        return "#f3c86b";
+                    }
+
+                    return "#48d597";
+                }
+            );
+
+
+        const chartCanvas =
+            document.getElementById(
+                "riskDistributionChart"
+            );
+
+
+        if (chartCanvas && chartValues.length) {
+
+            new Chart(
+                chartCanvas,
+                {
+                    type: "doughnut",
+
+                    data: {
+
+                        labels:
+                            chartLabels,
+
+                        datasets: [
+
+                            {
+                                data:
+                                    chartValues,
+
+                                backgroundColor:
+                                    chartColors,
+
+                                borderColor:
+                                    "#07111f",
+
+                                borderWidth: 4,
+
+                                hoverOffset: 7
+                            }
+
+                        ]
+                    },
+
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio:
+                            false,
+
+                        cutout: "69%",
+
+
+                        animation: {
+                            duration: 750
+                        },
+
+
+                        plugins: {
+
+                            legend: {
+
+                                position: "bottom",
+
+                                labels: {
+
+                                    color:
+                                        "#d9e7f5",
+
+                                    padding: 18,
+
+                                    usePointStyle:
+                                        true,
+
+                                    pointStyle:
+                                        "circle",
+
+                                    font: {
+                                        size: 11
+                                    }
+
+                                }
+
+                            },
+
+
+                            tooltip: {
+
+                                backgroundColor:
+                                    "rgba(4, 11, 21, 0.96)",
+
+                                titleColor:
+                                    "#f2f7ff",
+
+                                bodyColor:
+                                    "#d9e7f5",
+
+                                borderColor:
+                                    "rgba(255,255,255,0.10)",
+
+                                borderWidth: 1,
+
+                                padding: 11,
+
+
+                                callbacks: {
+
+                                    label:
+                                        function(context) {
+
+                                            const value =
+                                                Number(
+                                                    context.parsed
+                                                ) || 0;
+
+                                            const total =
+                                                chartValues.reduce(
+                                                    (
+                                                        sum,
+                                                        current
+                                                    ) =>
+                                                        sum +
+                                                        current,
+                                                    0
+                                                );
+
+                                            const percentage =
+                                                total
+                                                    ? (
+                                                        value /
+                                                        total *
+                                                        100
+                                                    ).toFixed(1)
+                                                    : "0.0";
+
+                                            return (
+                                                " " +
+                                                value +
+                                                " customers (" +
+                                                percentage +
+                                                "%)"
+                                            );
+                                        }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+
+    {% endif %}
+
+</script>
+
+</body>
+</html>

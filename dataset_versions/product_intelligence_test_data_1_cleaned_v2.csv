@@ -1,0 +1,31 @@
+product_id,product_name,category,date,units_sold,selling_price,revenue,profit,price,returned_units,status,region
+1,Laptop Pro 14,Electronics,2026-01-05,12,89999,1080000,180000,89999,2,Active,South
+2,Laptop Pro 15,Electronics,2026-01-12,8,109999,880000,136000,109999,1,Active,South
+3,Wireless Mouse,Accessories,2026-01-18,75,1499,112425,22485,1499,4,Active,South
+4,Mechanical Keyboard,Accessories,2026-02-03,42,4999,209958,41992,4999,3,Active,West
+5,4K Monitor,Electronics,2026-02-10,18,32999,593982,89097,32999,2,Active,West
+6,USB-C Hub,Accessories,2026-02-21,55,3499,192445,38489,3499,5,Active,South
+7,Office Chair,Furniture,2026-03-02,25,12999,324975,64995,12999,1,Active,North
+8,Standing Desk,Furniture,2026-03-15,14,24999,349986,52498,24999,0,Active,North
+9,Webcam HD,Electronics,2026-03-25,35,5999,209965,41993,5999,6,Watch,East
+10,Noise Cancelling Headphones,Electronics,2026-04-04,28,8999,251972,50394,8999,4,Active,East
+11,Bluetooth Speaker,Electronics,2026-04-12,45,3999,179955,35991,3999,8,Watch,South
+12,Smart Watch,Electronics,2026-04-20,32,7499,239968,47994,7499,3,Active,West
+13,Power Bank,Accessories,2026-05-02,68,2499,169932,33986,2499,7,Watch,South
+14,Laptop Stand,Accessories,2026-05-11,40,2999,119960,23992,2999,2,Active,North
+15,Tablet 11,Electronics,2026-05-20,20,27999,559980,83997,27999,1,Active,East
+16,External SSD 1TB,Storage,2026-06-01,24,8499,203976,40795,8499,2,Active,South
+17,External SSD 2TB,Storage,2026-06-08,15,13999,209985,41997,13999,1,Active,West
+18,Gaming Mouse,Accessories,2026-06-15,50,2999,149950,29990,2999,5,Active,South
+19,Gaming Monitor,Electronics,2026-06-22,16,45999,735984,110398,45999,2,Active,West
+20,Ergonomic Keyboard,Accessories,2026-07-03,38,6999,265962,53192,6999,4,Active,North
+21,Air Purifier,Home Appliances,2026-07-10,22,15999,351978,52797,15999,3,Active,East
+22,Smart TV 55,Electronics,2026-07-18,10,54999,549990,82499,54999,1,Active,South
+23,Smart TV 65,Electronics,2026-07-25,7,74999,524993,78749,74999,1,Active,West
+24,Printer Laser,Office,2026-08-02,18,18999,341982,51297,18999,5,Watch,North
+25,Laser Toner,Office,2026-08-08,60,4999,299940,59988,4999,2,Active,North
+26,Projector,Electronics,2026-08-15,9,39999,359991,53999,39999,1,Active,East
+27,USB Flash Drive 128GB,Storage,2026-08-22,80,1299,103920,20784,1299,6,Watch,South
+28,Desk Lamp,Furniture,2026-08-29,48,1999,95952,19190,1999,2,Active,North
+29,Smartphone X,Mobiles,2026-09-03,30,29999,899970,134996,29999,2,Active,South
+30,Smartphone Y,Mobiles,2026-09-07,22,39999,879978,131997,39999,3,Active,West

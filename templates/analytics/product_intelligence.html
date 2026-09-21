@@ -1,1725 +1,2031 @@
-{% extends "base.html" %}
-
 {% load static %}
 
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
-<!-- =========================================================
-     CHART.JS
-========================================================= -->
+    <meta charset="UTF-8">
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
- <link
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Product Intelligence</title>
+
+    <link
         rel="stylesheet"
         href="{% static 'css/smart_sidebar.css' %}"
     >
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<style>
+    <style>
 
-/* =========================================================
-   PRODUCT INTELLIGENCE APPLICATION SHELL
-========================================================= */
+        /* =========================================================
+           PRODUCT INTELLIGENCE DARK THEME
+           ========================================================= */
 
-.product-app {
-    position: relative;
+        :root {
 
-    width: 100%;
-    height: 100vh;
+            --ri-bg: #06111f;
+            --ri-sidebar: #081827;
+            --ri-card: #0d2033;
+            --ri-card-2: #10283e;
 
-    overflow: hidden;
+            --ri-border: rgba(255,255,255,.08);
 
-    background: #06111f;
+            --ri-text: #f5f7fb;
+            --ri-muted: #91a4b8;
 
-    color: #e8eef7;
-}
+            --ri-purple: #7567f8;
+            --ri-blue: #3fa9f5;
+            --ri-green: #39d98a;
+            --ri-orange: #ff9f43;
+            --ri-red: #ff5c70;
 
+            --ri-cyan: #22d3ee;
+            --ri-pink: #f472b6;
+            --ri-yellow: #facc15;
+            --ri-indigo: #818cf8;
+            --ri-teal: #2dd4bf;
 
-/* =========================================================
-   FIXED SMART SIDEBAR
-========================================================= */
+            --ri-shadow:
+                0 14px 40px rgba(0,0,0,.20);
 
-.product-app .smart-fixed-sidebar {
-    position: fixed;
+            --ri-shadow-hover:
+                0 20px 50px rgba(0,0,0,.30);
 
-    top: 0;
-    left: 0;
+            --ri-radius: 18px;
+        }
 
-    width: 260px;
-    height: 100vh;
 
-    z-index: 1000;
+        /* =========================================================
+           RESET
+           ========================================================= */
 
-    overflow-y: auto;
-    overflow-x: hidden;
+        * {
+            box-sizing: border-box;
+        }
 
-    background: #081827;
 
-    border-right:
-        1px solid rgba(255,255,255,.07);
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
 
-    overscroll-behavior: contain;
 
-    scrollbar-width: thin;
-}
+        body {
 
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
 
-/*
-   IMPORTANT:
+            background: var(--ri-bg);
 
-   Sidebar scroll is completely independent
-   from the main page.
-*/
+            color: var(--ri-text);
 
-.product-app .smart-fixed-sidebar::-webkit-scrollbar {
-    width: 5px;
-}
+            overflow: hidden;
+        }
 
-.product-app .smart-fixed-sidebar::-webkit-scrollbar-track {
-    background: transparent;
-}
 
-.product-app .smart-fixed-sidebar::-webkit-scrollbar-thumb {
-    background: rgba(117,103,248,.35);
+        /* =========================================================
+           MAIN PAGE LAYOUT
+           SIDEBAR + MAIN SCROLL INDEPENDENTLY
+           ========================================================= */
 
-    border-radius: 20px;
-}
+        .page-shell {
 
+            display: flex;
 
-/* =========================================================
-   MAIN AREA
-========================================================= */
+            width: 100%;
+            height: 100vh;
+            min-height: 100vh;
 
-.product-app .product-main {
-    position: relative;
+            overflow: hidden;
 
-    width: calc(100% - 260px);
+            background: var(--ri-bg);
+        }
 
-    height: 100vh;
 
-    margin-left: 260px;
+        /* =========================================================
+           SIDEBAR
+           ========================================================= */
 
-    overflow-y: auto;
-    overflow-x: hidden;
+        .sidebar-wrapper {
 
-    overscroll-behavior: contain;
+            width: 280px;
+            min-width: 280px;
 
-    background:
-        radial-gradient(
-            circle at 10% 5%,
-            rgba(117,103,248,.11),
-            transparent 28%
-        ),
-        radial-gradient(
-            circle at 92% 8%,
-            rgba(63,169,245,.08),
-            transparent 26%
-        ),
-        #06111f;
+            height: 100vh;
 
-    scrollbar-width: thin;
-}
+            flex: 0 0 280px;
 
-.product-app .product-main::-webkit-scrollbar {
-    width: 7px;
-}
+            position: relative;
 
-.product-app .product-main::-webkit-scrollbar-track {
-    background: #06111f;
-}
+            overflow-y: auto;
+            overflow-x: hidden;
 
-.product-app .product-main::-webkit-scrollbar-thumb {
-    background: rgba(117,103,248,.30);
+            background: var(--ri-sidebar);
 
-    border-radius: 20px;
-}
+            border-right:
+                1px solid var(--ri-border);
 
+            z-index: 100;
 
-/* =========================================================
-   CONTENT
-========================================================= */
+            scrollbar-width: thin;
+            scrollbar-color:
+                rgba(255,255,255,.12)
+                transparent;
+        }
 
-.product-page {
-    min-height: 100%;
 
-    padding: 30px;
+        .sidebar-wrapper::-webkit-scrollbar {
+            width: 6px;
+        }
 
-    box-sizing: border-box;
-}
 
+        .sidebar-wrapper::-webkit-scrollbar-track {
+            background: transparent;
+        }
 
-/* =========================================================
-   TOP HEADER
-========================================================= */
 
-.product-topbar {
-    display: flex;
+        .sidebar-wrapper::-webkit-scrollbar-thumb {
 
-    justify-content: space-between;
-    align-items: flex-start;
+            background:
+                rgba(255,255,255,.12);
 
-    gap: 20px;
+            border-radius: 20px;
+        }
 
-    margin-bottom: 24px;
-}
 
-.product-title-area {
-    max-width: 800px;
-}
+        /* =========================================================
+           MAIN CONTENT
+           ========================================================= */
 
-.product-eyebrow {
-    display: flex;
+        .main-content {
 
-    align-items: center;
+            flex: 1;
 
-    gap: 8px;
+            width: calc(100% - 280px);
 
-    margin-bottom: 9px;
+            min-width: 0;
 
-    color: #8f85ff;
+            height: 100vh;
 
-    font-size: 10px;
+            overflow-y: auto;
+            overflow-x: hidden;
 
-    font-weight: 850;
+            padding: 24px 26px 35px;
 
-    letter-spacing: 1.5px;
+            background:
+                radial-gradient(
+                    circle at 15% 0%,
+                    rgba(117,103,248,.08),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 85% 10%,
+                    rgba(63,169,245,.06),
+                    transparent 28%
+                ),
+                var(--ri-bg);
 
-    text-transform: uppercase;
-}
+            scrollbar-width: thin;
 
-.product-eyebrow-dot {
-    width: 7px;
-    height: 7px;
+            scrollbar-color:
+                rgba(255,255,255,.14)
+                transparent;
+        }
 
-    border-radius: 50%;
 
-    background: #39d98a;
+        .main-content::-webkit-scrollbar {
+            width: 7px;
+        }
 
-    box-shadow:
-        0 0 14px rgba(57,217,138,.8);
 
-    animation:
-        productPulse 2s infinite;
-}
+        .main-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
 
-@keyframes productPulse {
 
-    0%, 100% {
-        opacity: 1;
-        transform: scale(1);
-    }
+        .main-content::-webkit-scrollbar-thumb {
 
-    50% {
-        opacity: .55;
-        transform: scale(.75);
-    }
-}
+            background:
+                rgba(255,255,255,.14);
 
-.product-title-area h1 {
-    margin: 0;
+            border-radius: 20px;
+        }
 
-    font-size: 31px;
 
-    line-height: 1.15;
+        .content-container {
 
-    font-weight: 850;
+            width: 100%;
 
-    letter-spacing: -.7px;
-}
+            max-width: 1750px;
 
-.product-title-area p {
-    margin: 9px 0 0;
+            margin: 0 auto;
+        }
 
-    color: #8195a9;
 
-    font-size: 13px;
+        /* =========================================================
+           HERO
+           ========================================================= */
 
-    line-height: 1.7;
-}
+        .hero {
 
+            position: relative;
 
-/* =========================================================
-   HEADER DATA STATUS
-========================================================= */
+            overflow: hidden;
 
-.product-status-card {
-    min-width: 220px;
+            padding: 28px 30px;
 
-    padding: 14px 16px;
+            margin-bottom: 20px;
 
-    border:
-        1px solid rgba(255,255,255,.07);
+            border-radius: 22px;
 
-    border-radius: 14px;
+            border:
+                1px solid rgba(117,103,248,.25);
 
-    background:
-        rgba(13,32,51,.85);
+            background:
+                linear-gradient(
+                    135deg,
+                    #101f39 0%,
+                    #16264a 45%,
+                    #132d48 100%
+                );
 
-    backdrop-filter: blur(12px);
-}
+            box-shadow:
+                0 18px 45px rgba(0,0,0,.25);
+        }
 
-.product-status-top {
-    display: flex;
 
-    justify-content: space-between;
+        .hero::before {
 
-    align-items: center;
+            content: "";
 
-    gap: 10px;
-}
+            position: absolute;
 
-.product-status-label {
-    color: #71879c;
+            width: 300px;
+            height: 300px;
 
-    font-size: 9px;
+            right: -90px;
+            top: -160px;
 
-    font-weight: 750;
+            border-radius: 50%;
 
-    text-transform: uppercase;
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(117,103,248,.28),
+                    transparent 68%
+                );
+        }
 
-    letter-spacing: .8px;
-}
 
-.product-status-value {
-    color: #63e9a5;
+        .hero::after {
 
-    font-size: 10px;
+            content: "";
 
-    font-weight: 800;
-}
+            position: absolute;
 
-.product-status-line {
-    height: 4px;
+            width: 240px;
+            height: 240px;
 
-    margin-top: 10px;
+            right: 180px;
+            bottom: -180px;
 
-    overflow: hidden;
+            border-radius: 50%;
 
-    border-radius: 10px;
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(63,169,245,.14),
+                    transparent 68%
+                );
+        }
 
-    background:
-        rgba(255,255,255,.05);
-}
 
-.product-status-line span {
-    display: block;
+        .hero-content {
 
-    width: 100%;
-    height: 100%;
+            position: relative;
 
-    border-radius: inherit;
+            z-index: 2;
 
-    background:
-        linear-gradient(
-            90deg,
-            #7567f8,
-            #39d98a
-        );
-}
+            display: flex;
 
+            align-items: center;
 
-/* =========================================================
-   ERROR
-========================================================= */
+            justify-content: space-between;
 
-.product-error {
-    margin-bottom: 20px;
+            gap: 20px;
+        }
 
-    padding: 18px 20px;
 
-    border:
-        1px solid rgba(255,92,112,.18);
+        .hero-left {
 
-    border-radius: 15px;
+            display: flex;
 
-    background:
-        rgba(255,92,112,.06);
+            align-items: center;
 
-    color: #ff9daa;
+            gap: 17px;
 
-    font-size: 12px;
+            min-width: 0;
+        }
 
-    line-height: 1.6;
-}
 
+        .hero-icon {
 
-/* =========================================================
-   EMPTY STATE
-========================================================= */
+            width: 60px;
+            height: 60px;
 
-.product-empty {
-    max-width: 680px;
+            flex: 0 0 60px;
 
-    margin: 90px auto;
+            display: flex;
 
-    padding: 55px 45px;
+            align-items: center;
+            justify-content: center;
 
-    text-align: center;
+            border-radius: 17px;
 
-    border:
-        1px solid rgba(255,255,255,.07);
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(117,103,248,.30),
+                    rgba(63,169,245,.20)
+                );
 
-    border-radius: 22px;
+            border:
+                1px solid rgba(255,255,255,.12);
 
-    background:
-        rgba(11,28,45,.9);
+            font-size: 29px;
 
-    box-shadow:
-        0 25px 70px rgba(0,0,0,.25);
-}
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.08);
+        }
 
-.product-empty-icon {
-    width: 76px;
-    height: 76px;
 
-    display: flex;
+        .hero h1 {
 
-    align-items: center;
-    justify-content: center;
+            margin: 0 0 6px;
 
-    margin: 0 auto 18px;
+            color: #ffffff;
 
-    border-radius: 20px;
+            font-size: 29px;
 
-    background:
-        rgba(117,103,248,.10);
+            line-height: 1.15;
 
-    font-size: 34px;
-}
+            font-weight: 850;
 
-.product-empty h2 {
-    margin: 0 0 10px;
+            letter-spacing: -.7px;
+        }
 
-    font-size: 22px;
-}
 
-.product-empty p {
-    margin: 0;
+        .hero p {
 
-    color: #8195a9;
+            margin: 0;
 
-    font-size: 12px;
+            max-width: 800px;
 
-    line-height: 1.8;
-}
+            color: var(--ri-muted);
 
+            font-size: 13px;
 
-/* =========================================================
-   KPI GRID
-========================================================= */
+            line-height: 1.65;
+        }
 
-.product-kpi-grid {
-    display: grid;
 
-    grid-template-columns:
-        repeat(4, minmax(0, 1fr));
+        .hero-status {
 
-    gap: 14px;
+            display: inline-flex;
 
-    margin-bottom: 20px;
-}
+            align-items: center;
 
-.product-kpi {
-    position: relative;
+            gap: 9px;
 
-    min-height: 128px;
+            padding: 9px 13px;
 
-    padding: 19px;
+            border-radius: 999px;
 
-    overflow: hidden;
+            white-space: nowrap;
 
-    border:
-        1px solid rgba(255,255,255,.07);
+            color: #cbd5e1;
 
-    border-radius: 16px;
+            background:
+                rgba(255,255,255,.055);
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(13,32,51,.96),
-            rgba(9,25,41,.96)
-        );
+            border:
+                1px solid rgba(255,255,255,.09);
 
-    transition:
-        transform .25s ease,
-        border-color .25s ease,
-        box-shadow .25s ease;
-}
+            font-size: 11px;
 
-.product-kpi:hover {
-    transform: translateY(-4px);
+            font-weight: 750;
+        }
 
-    border-color:
-        rgba(117,103,248,.27);
 
-    box-shadow:
-        0 15px 35px rgba(0,0,0,.20);
-}
+        .status-dot {
 
-.product-kpi::after {
-    content: "";
+            width: 8px;
+            height: 8px;
 
-    position: absolute;
+            border-radius: 50%;
 
-    width: 105px;
-    height: 105px;
+            background: var(--ri-green);
 
-    right: -45px;
-    bottom: -45px;
+            box-shadow:
+                0 0 0 4px
+                rgba(57,217,138,.10),
+                0 0 14px
+                rgba(57,217,138,.45);
+        }
 
-    border-radius: 50%;
 
-    background:
-        rgba(117,103,248,.07);
-}
+        /* =========================================================
+           FILTER CARD
+           ========================================================= */
 
-.kpi-label {
-    position: relative;
+        .filter-card {
 
-    color: #71879c;
+            padding: 19px;
 
-    font-size: 9px;
+            margin-bottom: 21px;
 
-    font-weight: 750;
+            border-radius: var(--ri-radius);
 
-    letter-spacing: .6px;
+            background:
+                linear-gradient(
+                    145deg,
+                    var(--ri-card),
+                    var(--ri-card-2)
+                );
 
-    text-transform: uppercase;
-}
+            border:
+                1px solid var(--ri-border);
 
-.kpi-value {
-    position: relative;
+            box-shadow: var(--ri-shadow);
+        }
 
-    margin-top: 9px;
 
-    font-size: 24px;
+        .filter-grid {
 
-    font-weight: 850;
+            display: grid;
 
-    letter-spacing: -.5px;
-}
+            grid-template-columns:
+                minmax(230px, 1.35fr)
+                minmax(180px, .8fr)
+                minmax(180px, .8fr)
+                auto;
 
-.kpi-sub {
-    position: relative;
+            gap: 13px;
 
-    margin-top: 6px;
+            align-items: end;
+        }
 
-    color: #71879c;
 
-    font-size: 9px;
-}
+        .field {
+            min-width: 0;
+        }
 
-.kpi-purple {
-    color: #a9a0ff;
-}
 
-.kpi-green {
-    color: #63e9a5;
-}
+        .field label {
 
-.kpi-orange {
-    color: #ffbc73;
-}
+            display: block;
 
-.kpi-red {
-    color: #ff8191;
-}
+            margin-bottom: 7px;
 
+            color: #a9b8c8;
 
-/* =========================================================
-   SECONDARY KPI STRIP
-========================================================= */
+            font-size: 11px;
 
-.product-secondary-grid {
-    display: grid;
+            font-weight: 750;
 
-    grid-template-columns:
-        repeat(4, minmax(0, 1fr));
+            letter-spacing: .25px;
+        }
 
-    gap: 12px;
 
-    margin-bottom: 20px;
-}
+        .field select,
+        .field input {
 
-.secondary-card {
-    padding: 14px 16px;
+            width: 100%;
 
-    border:
-        1px solid rgba(255,255,255,.06);
+            height: 43px;
 
-    border-radius: 13px;
+            padding: 0 12px;
 
-    background:
-        rgba(11,28,45,.78);
-}
+            outline: none;
 
-.secondary-label {
-    color: #71879c;
+            border:
+                1px solid
+                rgba(255,255,255,.09);
 
-    font-size: 9px;
+            border-radius: 10px;
 
-    text-transform: uppercase;
+            background:
+                rgba(255,255,255,.035);
 
-    letter-spacing: .6px;
-}
+            color: var(--ri-text);
 
-.secondary-value {
-    margin-top: 6px;
+            font-size: 12px;
 
-    color: #e5edf5;
+            transition:
+                border-color .2s ease,
+                background .2s ease,
+                box-shadow .2s ease;
+        }
 
-    font-size: 16px;
 
-    font-weight: 800;
-}
+        .field select option {
 
-.secondary-value.positive {
-    color: #63e9a5;
-}
+            background: #0d2033;
 
-.secondary-value.negative {
-    color: #ff8191;
-}
+            color: #f5f7fb;
+        }
 
-.secondary-value.warning {
-    color: #ffbc73;
-}
 
+        .field select:focus,
+        .field input:focus {
 
-/* =========================================================
-   PANEL GRID
-========================================================= */
+            border-color:
+                rgba(117,103,248,.75);
 
-.product-grid-2 {
-    display: grid;
+            background:
+                rgba(117,103,248,.06);
 
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+            box-shadow:
+                0 0 0 3px
+                rgba(117,103,248,.10);
+        }
 
-    gap: 18px;
 
-    margin-bottom: 18px;
-}
+        .filter-button {
 
+            height: 43px;
 
-/* =========================================================
-   PANEL
-========================================================= */
+            padding: 0 22px;
 
-.product-panel {
-    overflow: hidden;
+            border: 0;
 
-    border:
-        1px solid rgba(255,255,255,.07);
+            border-radius: 10px;
 
-    border-radius: 17px;
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--ri-purple),
+                    #5968e8
+                );
 
-    background:
-        rgba(11,28,45,.90);
+            color: white;
 
-    box-shadow:
-        0 15px 45px rgba(0,0,0,.10);
-}
+            font-size: 12px;
 
-.product-panel-header {
-    display: flex;
+            font-weight: 800;
 
-    justify-content: space-between;
+            cursor: pointer;
 
-    align-items: flex-start;
+            box-shadow:
+                0 9px 22px
+                rgba(117,103,248,.22);
 
-    gap: 15px;
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease;
+        }
 
-    padding: 18px 20px;
 
-    border-bottom:
-        1px solid rgba(255,255,255,.06);
-}
+        .filter-button:hover {
 
-.product-panel-header h2 {
-    margin: 0;
+            transform: translateY(-1px);
 
-    font-size: 14px;
+            box-shadow:
+                0 13px 28px
+                rgba(117,103,248,.30);
+        }
 
-    font-weight: 800;
-}
 
-.product-panel-header p {
-    margin: 5px 0 0;
+        .custom-date-fields {
 
-    color: #71879c;
+            display: none;
 
-    font-size: 9px;
+            grid-column: 1 / -1;
 
-    line-height: 1.5;
-}
+            grid-template-columns:
+                repeat(2, minmax(160px,1fr));
 
-.panel-badge {
-    flex-shrink: 0;
+            gap: 13px;
 
-    padding: 5px 9px;
+            padding-top: 2px;
+        }
 
-    border-radius: 8px;
 
-    background:
-        rgba(117,103,248,.10);
+        .custom-date-fields.visible {
+            display: grid;
+        }
 
-    color: #a9a0ff;
 
-    font-size: 8px;
+        /* =========================================================
+           DATASET META
+           ========================================================= */
 
-    font-weight: 850;
+        .dataset-meta {
 
-    letter-spacing: .5px;
-}
+            display: flex;
 
-.panel-body {
-    padding: 20px;
-}
+            flex-wrap: wrap;
 
+            gap: 8px;
 
-/* =========================================================
-   CHART HEIGHT
-========================================================= */
+            margin-top: 14px;
+        }
 
-.product-chart {
-    position: relative;
 
-    width: 100%;
+        .meta-chip {
 
-    height: 315px;
-}
+            display: inline-flex;
 
-.product-chart.large {
-    height: 355px;
-}
+            align-items: center;
 
-.product-chart.small {
-    height: 275px;
-}
+            gap: 6px;
 
+            padding: 7px 10px;
 
-/* =========================================================
-   CHART INSIGHT
-========================================================= */
+            border-radius: 999px;
 
-.chart-note {
-    margin-top: 12px;
+            color: var(--ri-muted);
 
-    padding: 11px 13px;
+            background:
+                rgba(255,255,255,.035);
 
-    border-left:
-        3px solid #7567f8;
+            border:
+                1px solid
+                rgba(255,255,255,.06);
 
-    border-radius: 8px;
+            font-size: 10px;
 
-    background:
-        rgba(117,103,248,.045);
+            font-weight: 700;
+        }
 
-    color: #8296a9;
 
-    font-size: 10px;
+        .meta-chip strong {
+            color: #dce6f0;
+        }
 
-    line-height: 1.6;
-}
 
+        /* =========================================================
+           ALERTS
+           ========================================================= */
 
-/* =========================================================
-   LEADER CARDS
-========================================================= */
+        .alert {
 
-.leader-grid {
-    display: grid;
+            display: flex;
 
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+            align-items: flex-start;
 
-    gap: 10px;
+            gap: 10px;
 
-    margin-top: 15px;
-}
+            padding: 13px 15px;
 
-.leader-card {
-    padding: 13px;
+            margin-bottom: 18px;
 
-    border-radius: 11px;
+            border-radius: 13px;
 
-    background:
-        rgba(255,255,255,.025);
-}
+            font-size: 12px;
 
-.leader-label {
-    color: #71879c;
+            line-height: 1.6;
+        }
 
-    font-size: 8px;
 
-    text-transform: uppercase;
+        .alert-error {
 
-    letter-spacing: .6px;
-}
+            color: #ffb8c0;
 
-.leader-value {
-    margin-top: 5px;
+            background:
+                rgba(255,92,112,.08);
 
-    overflow: hidden;
+            border:
+                1px solid
+                rgba(255,92,112,.20);
+        }
 
-    color: #e7eff6;
 
-    font-size: 11px;
+        .alert-warning {
 
-    font-weight: 750;
+            color: #ffd28d;
 
-    text-overflow: ellipsis;
+            background:
+                rgba(255,159,67,.08);
 
-    white-space: nowrap;
-}
+            border:
+                1px solid
+                rgba(255,159,67,.20);
+        }
 
 
-/* =========================================================
-   PRODUCT MATRIX
-========================================================= */
+        .alert-icon {
 
-.product-table-panel {
-    margin-bottom: 18px;
-}
+            font-size: 17px;
 
-.table-container {
-    width: 100%;
+            line-height: 1;
+        }
 
-    overflow-x: auto;
-}
 
-.product-table {
-    width: 100%;
+        /* =========================================================
+           SECTION HEADING
+           ========================================================= */
 
-    min-width: 980px;
+        .section-heading {
 
-    border-collapse: collapse;
-}
+            display: flex;
 
-.product-table th {
-    padding: 12px 14px;
+            align-items: center;
 
-    color: #71879c;
+            justify-content: space-between;
 
-    font-size: 8px;
+            gap: 15px;
 
-    font-weight: 800;
+            margin: 25px 0 13px;
+        }
 
-    letter-spacing: .7px;
 
-    text-align: left;
+        .section-heading h2 {
 
-    text-transform: uppercase;
+            margin: 0;
 
-    white-space: nowrap;
+            color: #eef4fa;
 
-    border-bottom:
-        1px solid rgba(255,255,255,.07);
-}
+            font-size: 16px;
 
-.product-table td {
-    padding: 13px 14px;
+            font-weight: 800;
 
-    color: #cbd7e3;
+            letter-spacing: -.2px;
+        }
 
-    font-size: 10px;
 
-    border-bottom:
-        1px solid rgba(255,255,255,.035);
+        .section-heading span {
 
-    white-space: nowrap;
-}
+            color: var(--ri-muted);
 
-.product-table tbody tr {
-    transition:
-        background .2s ease;
-}
+            font-size: 10px;
+        }
 
-.product-table tbody tr:hover {
-    background:
-        rgba(117,103,248,.045);
-}
 
-.product-name {
-    color: #f0f5fa !important;
+        /* =========================================================
+           KPI GRID
+           ========================================================= */
 
-    font-weight: 750;
-}
+        .kpi-grid {
 
-.revenue-cell {
-    color: #63e9a5 !important;
+            display: grid;
 
-    font-weight: 750;
-}
+            grid-template-columns:
+                repeat(4, minmax(0,1fr));
 
-.profit-cell {
-    color: #a9a0ff !important;
+            gap: 14px;
+        }
 
-    font-weight: 700;
-}
 
-.growth-positive {
-    color: #63e9a5 !important;
+        .kpi-card {
 
-    font-weight: 750;
-}
+            position: relative;
 
-.growth-negative {
-    color: #ff8191 !important;
+            overflow: hidden;
 
-    font-weight: 750;
-}
+            min-width: 0;
 
-.return-warning {
-    color: #ffbc73 !important;
+            padding: 18px;
 
-    font-weight: 750;
-}
+            border-radius: 16px;
 
+            background:
+                linear-gradient(
+                    145deg,
+                    var(--ri-card),
+                    rgba(16,40,62,.88)
+                );
 
-/* =========================================================
-   SCORE
-========================================================= */
+            border:
+                1px solid var(--ri-border);
 
-.score-wrapper {
-    display: flex;
+            box-shadow: var(--ri-shadow);
 
-    align-items: center;
+            transition:
+                transform .22s ease,
+                box-shadow .22s ease,
+                border-color .22s ease;
+        }
 
-    gap: 8px;
-}
 
-.score-bar {
-    width: 60px;
-    height: 5px;
+        .kpi-card:hover {
 
-    overflow: hidden;
+            transform: translateY(-3px);
 
-    border-radius: 10px;
+            box-shadow: var(--ri-shadow-hover);
 
-    background:
-        rgba(255,255,255,.07);
-}
+            border-color:
+                rgba(255,255,255,.13);
+        }
 
-.score-bar span {
-    display: block;
 
-    height: 100%;
+        .kpi-card::before {
 
-    border-radius: inherit;
+            content: "";
 
-    background:
-        linear-gradient(
-            90deg,
-            #7567f8,
-            #39d98a
-        );
-}
+            position: absolute;
 
-.score-value {
-    color: #dce6ef;
+            left: 0;
+            top: 0;
+            bottom: 0;
 
-    font-size: 9px;
+            width: 3px;
 
-    font-weight: 800;
-}
+            background: var(--kpi-color);
 
+            box-shadow:
+                0 0 16px
+                var(--kpi-color);
+        }
 
-/* =========================================================
-   STATUS
-========================================================= */
 
-.product-status {
-    display: inline-flex;
+        .kpi-top {
 
-    padding: 5px 9px;
+            display: flex;
 
-    border-radius: 20px;
+            align-items: center;
 
-    font-size: 8px;
+            justify-content: space-between;
 
-    font-weight: 850;
-}
+            gap: 10px;
+        }
 
-.status-growing {
-    color: #63e9a5;
 
-    background:
-        rgba(57,217,138,.11);
-}
+        .kpi-label {
 
-.status-strong {
-    color: #a9a0ff;
+            color: #8fa2b5;
 
-    background:
-        rgba(117,103,248,.13);
-}
+            font-size: 10px;
 
-.status-stable {
-    color: #68bbfa;
+            font-weight: 750;
 
-    background:
-        rgba(63,169,245,.10);
-}
+            text-transform: uppercase;
 
-.status-weak {
-    color: #ff8191;
+            letter-spacing: .45px;
+        }
 
-    background:
-        rgba(255,92,112,.11);
-}
 
-.status-risk {
-    color: #ffbc73;
+        .kpi-icon {
 
-    background:
-        rgba(255,159,67,.12);
-}
+            width: 39px;
+            height: 39px;
 
+            display: flex;
 
-/* =========================================================
-   INSIGHTS
-========================================================= */
+            align-items: center;
+            justify-content: center;
 
-.insights-panel {
-    margin-bottom: 18px;
-}
+            border-radius: 12px;
 
-.insights-grid {
-    display: grid;
+            color: var(--kpi-color);
 
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+            background:
+                var(--kpi-bg);
 
-    gap: 12px;
-}
+            border:
+                1px solid
+                rgba(255,255,255,.05);
 
-.product-insight {
-    padding: 16px;
+            font-size: 18px;
+        }
 
-    border:
-        1px solid rgba(117,103,248,.13);
 
-    border-radius: 13px;
+        .kpi-value {
 
-    background:
-        rgba(117,103,248,.045);
-}
+            margin-top: 13px;
 
-.product-insight.warning {
-    border-color:
-        rgba(255,159,67,.15);
+            color: #f8fafc;
 
-    background:
-        rgba(255,159,67,.045);
-}
+            font-size: 23px;
 
-.product-insight.negative {
-    border-color:
-        rgba(255,92,112,.15);
+            line-height: 1.2;
 
-    background:
-        rgba(255,92,112,.045);
-}
+            font-weight: 850;
 
-.insight-title {
-    display: flex;
+            letter-spacing: -.6px;
 
-    align-items: center;
+            word-break: break-word;
+        }
 
-    gap: 8px;
 
-    margin-bottom: 7px;
+        .kpi-subtitle {
 
-    color: #a9a0ff;
+            margin-top: 6px;
 
-    font-size: 10px;
+            color: #70859a;
 
-    font-weight: 850;
-}
+            font-size: 10px;
 
-.product-insight.warning
-.insight-title {
-    color: #ffbc73;
-}
+            line-height: 1.5;
+        }
 
-.product-insight.negative
-.insight-title {
-    color: #ff8191;
-}
 
-.insight-icon {
-    display: flex;
+        /* KPI COLORS */
 
-    width: 22px;
-    height: 22px;
+        .kpi-blue {
 
-    align-items: center;
-    justify-content: center;
+            --kpi-color: var(--ri-blue);
 
-    border-radius: 7px;
+            --kpi-bg:
+                rgba(63,169,245,.10);
+        }
 
-    background:
-        rgba(255,255,255,.05);
-}
 
-.product-insight p {
-    margin: 0;
+        .kpi-purple {
 
-    color: #93a7b9;
+            --kpi-color: var(--ri-purple);
 
-    font-size: 10px;
+            --kpi-bg:
+                rgba(117,103,248,.11);
+        }
 
-    line-height: 1.7;
-}
 
+        .kpi-green {
 
-/* =========================================================
-   DATA INFORMATION
-========================================================= */
+            --kpi-color: var(--ri-green);
 
-.data-info-grid {
-    display: grid;
+            --kpi-bg:
+                rgba(57,217,138,.10);
+        }
 
-    grid-template-columns:
-        repeat(5, minmax(0, 1fr));
 
-    gap: 10px;
-}
+        .kpi-orange {
 
-.data-info-item {
-    min-width: 0;
+            --kpi-color: var(--ri-orange);
 
-    padding: 12px;
+            --kpi-bg:
+                rgba(255,159,67,.10);
+        }
 
-    border-radius: 10px;
 
-    background:
-        rgba(255,255,255,.025);
-}
+        .kpi-cyan {
 
-.data-info-item span {
-    display: block;
+            --kpi-color: var(--ri-cyan);
 
-    color: #71879c;
+            --kpi-bg:
+                rgba(34,211,238,.10);
+        }
 
-    font-size: 8px;
 
-    text-transform: uppercase;
+        .kpi-pink {
 
-    letter-spacing: .5px;
-}
+            --kpi-color: var(--ri-pink);
 
-.data-info-item strong {
-    display: block;
+            --kpi-bg:
+                rgba(244,114,182,.10);
+        }
 
-    margin-top: 5px;
 
-    overflow: hidden;
+        .kpi-amber {
 
-    color: #dbe6f0;
+            --kpi-color: var(--ri-yellow);
 
-    font-size: 10px;
+            --kpi-bg:
+                rgba(250,204,21,.09);
+        }
 
-    text-overflow: ellipsis;
 
-    white-space: nowrap;
-}
+        /* =========================================================
+           CHART GRID
+           ========================================================= */
 
+        .charts-grid {
 
-/* =========================================================
-   BOTTOM FILTER
-========================================================= */
+            display: grid;
 
-.product-filter-panel {
-    margin-top: 20px;
+            grid-template-columns:
+                repeat(2, minmax(0,1fr));
 
-    margin-bottom: 30px;
+            gap: 16px;
+        }
 
-    border:
-        1px solid rgba(117,103,248,.16);
 
-    border-radius: 17px;
+        .chart-card {
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(117,103,248,.055),
-            rgba(11,28,45,.94)
-        );
-}
+            position: relative;
 
-.product-filter-header {
-    padding: 18px 20px;
+            min-width: 0;
 
-    border-bottom:
-        1px solid rgba(255,255,255,.06);
-}
+            overflow: hidden;
 
-.product-filter-header h2 {
-    margin: 0;
+            padding: 18px;
 
-    font-size: 14px;
+            border-radius: var(--ri-radius);
 
-    font-weight: 800;
-}
+            background:
+                linear-gradient(
+                    145deg,
+                    var(--ri-card),
+                    var(--ri-card-2)
+                );
 
-.product-filter-header p {
-    margin: 5px 0 0;
+            border:
+                1px solid var(--ri-border);
 
-    color: #71879c;
+            box-shadow: var(--ri-shadow);
 
-    font-size: 9px;
-}
+            transition:
+                transform .22s ease,
+                box-shadow .22s ease,
+                border-color .22s ease;
+        }
 
-.product-filter-body {
-    padding: 20px;
-}
 
-.filter-form {
-    display: grid;
+        .chart-card:hover {
 
-    grid-template-columns:
-        1.3fr
-        1fr
-        1fr
-        auto;
+            transform: translateY(-2px);
 
-    gap: 12px;
+            box-shadow: var(--ri-shadow-hover);
 
-    align-items: end;
-}
+            border-color:
+                rgba(255,255,255,.12);
+        }
 
-.filter-group label {
-    display: block;
 
-    margin-bottom: 7px;
+        .chart-card.wide {
 
-    color: #71879c;
+            grid-column: 1 / -1;
+        }
 
-    font-size: 8px;
 
-    font-weight: 800;
+        .chart-header {
 
-    letter-spacing: .7px;
+            display: flex;
 
-    text-transform: uppercase;
-}
+            align-items: flex-start;
 
-.filter-group select,
-.filter-group input {
-    width: 100%;
+            justify-content: space-between;
 
-    box-sizing: border-box;
+            gap: 15px;
 
-    padding: 11px 12px;
+            margin-bottom: 14px;
+        }
 
-    outline: none;
 
-    border:
-        1px solid rgba(255,255,255,.08);
+        .chart-title-wrap {
 
-    border-radius: 9px;
+            display: flex;
 
-    background: #0d2033;
+            align-items: center;
 
-    color: #dce7f2;
+            gap: 10px;
 
-    font-size: 10px;
-}
+            min-width: 0;
+        }
 
-.filter-group select:focus,
-.filter-group input:focus {
-    border-color:
-        rgba(117,103,248,.45);
-}
 
-.filter-button {
-    height: 37px;
+        .chart-icon {
 
-    padding: 0 17px;
+            width: 37px;
+            height: 37px;
 
-    border: 0;
+            flex: 0 0 37px;
 
-    border-radius: 9px;
+            display: flex;
 
-    cursor: pointer;
+            align-items: center;
+            justify-content: center;
 
-    background:
-        linear-gradient(
-            135deg,
-            #7567f8,
-            #6255e8
-        );
+            border-radius: 11px;
 
-    color: white;
+            background:
+                rgba(117,103,248,.10);
 
-    font-size: 10px;
+            border:
+                1px solid
+                rgba(117,103,248,.12);
 
-    font-weight: 800;
+            color: var(--ri-purple);
 
-    transition:
-        transform .2s ease,
-        box-shadow .2s ease;
-}
+            font-size: 16px;
+        }
 
-.filter-button:hover {
-    transform: translateY(-2px);
 
-    box-shadow:
-        0 8px 20px rgba(117,103,248,.25);
-}
+        .chart-title {
 
-.filter-summary {
-    display: flex;
+            margin: 0;
 
-    flex-wrap: wrap;
+            color: #e9f0f6;
 
-    gap: 8px;
+            font-size: 13px;
 
-    margin-top: 14px;
-}
+            font-weight: 800;
+        }
 
-.filter-chip {
-    padding: 6px 9px;
 
-    border-radius: 8px;
+        .chart-description {
 
-    background:
-        rgba(255,255,255,.035);
+            margin: 3px 0 0;
 
-    color: #8498aa;
+            color: #70859a;
 
-    font-size: 8px;
-}
+            font-size: 10px;
 
-.filter-chip strong {
-    color: #dce7f0;
-}
+            line-height: 1.45;
+        }
 
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+        .chart-badge {
 
-@media (max-width:1200px) {
+            flex: 0 0 auto;
 
-    .product-kpi-grid {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
+            padding: 5px 8px;
 
-    .product-secondary-grid {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
+            border-radius: 999px;
 
-    .data-info-grid {
-        grid-template-columns:
-            repeat(3, minmax(0, 1fr));
-    }
+            color: #91a4b8;
 
-    .filter-form {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
+            background:
+                rgba(255,255,255,.035);
 
-    .filter-button {
-        width: 100%;
-    }
-}
+            border:
+                1px solid
+                rgba(255,255,255,.07);
 
+            font-size: 9px;
 
-@media (max-width:900px) {
+            font-weight: 800;
 
-    .product-app .smart-fixed-sidebar {
-        width: 220px;
-    }
+            letter-spacing: .45px;
+        }
 
-    .product-app .product-main {
-        width: calc(100% - 220px);
 
-        margin-left: 220px;
-    }
+        .chart-container {
 
-    .product-page {
-        padding: 22px;
-    }
+            position: relative;
 
-    .product-grid-2 {
-        grid-template-columns: 1fr;
-    }
+            width: 100%;
 
-    .product-topbar {
-        flex-direction: column;
-    }
+            height: 315px;
+        }
 
-    .product-status-card {
-        width: 100%;
 
-        box-sizing: border-box;
-    }
-}
+        .chart-card.wide
+        .chart-container {
 
+            height: 335px;
+        }
 
-@media (max-width:650px) {
 
-    .product-app .smart-fixed-sidebar {
-        position: fixed;
+        /* =========================================================
+           EMPTY CHART
+           ========================================================= */
 
-        width: 0;
+        .chart-unavailable {
 
-        border: 0;
+            min-height: 245px;
 
-        overflow: hidden;
-    }
+            display: flex;
 
-    .product-app .product-main {
-        width: 100%;
+            align-items: center;
 
-        margin-left: 0;
-    }
+            justify-content: center;
 
-    .product-page {
-        padding: 17px 13px;
-    }
+            flex-direction: column;
 
-    .product-title-area h1 {
-        font-size: 25px;
-    }
+            text-align: center;
 
-    .product-kpi-grid,
-    .product-secondary-grid {
-        grid-template-columns: 1fr;
-    }
+            padding: 20px;
 
-    .insights-grid {
-        grid-template-columns: 1fr;
-    }
+            border-radius: 14px;
 
-    .data-info-grid {
-        grid-template-columns: 1fr;
-    }
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.025),
+                    rgba(255,255,255,.015)
+                );
 
-    .filter-form {
-        grid-template-columns: 1fr;
-    }
-}
+            border:
+                1px dashed
+                rgba(255,255,255,.11);
 
-</style>
+            color: var(--ri-muted);
+        }
 
 
-<!-- =========================================================
-     APPLICATION SHELL
-========================================================= -->
+        .chart-unavailable-icon {
 
-<div class="product-app">
+            width: 46px;
+            height: 46px;
 
+            display: flex;
 
-    <!-- =====================================================
-         FIXED SMART BI SIDEBAR
-    ====================================================== -->
+            align-items: center;
+            justify-content: center;
 
-    <aside
-        class="smart-fixed-sidebar"
-        id="productSmartSidebar"
-    >
+            margin-bottom: 10px;
+
+            border-radius: 13px;
+
+            background:
+                rgba(255,255,255,.045);
+
+            color: #71869b;
+
+            font-size: 21px;
+        }
+
+
+        .chart-unavailable strong {
+
+            color: #aebdca;
+
+            font-size: 12px;
+        }
+
+
+        .chart-unavailable span {
+
+            max-width: 300px;
+
+            margin-top: 5px;
+
+            color: #64798d;
+
+            font-size: 10px;
+
+            line-height: 1.55;
+        }
+
+
+        /* =========================================================
+           SMART PRODUCT INSIGHTS
+           ALWAYS AT BOTTOM
+           ========================================================= */
+
+        .insights-section {
+
+            margin-top: 24px;
+
+            margin-bottom: 24px;
+        }
+
+
+        .insights-header {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 14px;
+        }
+
+
+        .insights-header-icon {
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(117,103,248,.16),
+                    rgba(63,169,245,.10)
+                );
+
+            border:
+                1px solid
+                rgba(117,103,248,.16);
+
+            color: var(--ri-purple);
+
+            font-size: 19px;
+
+            box-shadow:
+                0 8px 25px
+                rgba(117,103,248,.10);
+        }
+
+
+        .insights-header h2 {
+
+            margin: 0;
+
+            color: #edf3f8;
+
+            font-size: 17px;
+
+            font-weight: 850;
+        }
+
+
+        .insights-header p {
+
+            margin: 3px 0 0;
+
+            color: var(--ri-muted);
+
+            font-size: 10px;
+        }
+
+
+        .insights-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0,1fr));
+
+            gap: 13px;
+        }
+
+
+        .insight-card {
+
+            position: relative;
+
+            overflow: hidden;
+
+            padding: 17px;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    var(--ri-card),
+                    var(--ri-card-2)
+                );
+
+            border:
+                1px solid var(--ri-border);
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,.14);
+
+            transition:
+                transform .2s ease,
+                border-color .2s ease;
+        }
+
+
+        .insight-card:hover {
+
+            transform: translateY(-2px);
+
+            border-color:
+                rgba(255,255,255,.13);
+        }
+
+
+        .insight-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+
+            top: 0;
+            bottom: 0;
+
+            width: 3px;
+
+            background:
+                var(--insight-color);
+
+            box-shadow:
+                0 0 14px
+                var(--insight-color);
+        }
+
+
+        .insight-top {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin-bottom: 9px;
+        }
+
+
+        .insight-icon {
+
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            color: var(--insight-color);
+
+            background:
+                var(--insight-bg);
+
+            font-size: 15px;
+        }
+
+
+        .insight-type {
+
+            color: var(--insight-color);
+
+            font-size: 9px;
+
+            font-weight: 850;
+
+            text-transform: uppercase;
+
+            letter-spacing: .65px;
+        }
+
+
+        .insight-title {
+
+            margin: 0 0 6px;
+
+            color: #e7eef5;
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+
+        .insight-message {
+
+            margin: 0;
+
+            color: #8498ab;
+
+            font-size: 11px;
+
+            line-height: 1.65;
+        }
+
+
+        /* INSIGHT COLORS */
+
+        .insight-growth {
+
+            --insight-color: var(--ri-green);
+
+            --insight-bg:
+                rgba(57,217,138,.09);
+        }
+
+
+        .insight-decline {
+
+            --insight-color: var(--ri-red);
+
+            --insight-bg:
+                rgba(255,92,112,.09);
+        }
+
+
+        .insight-top-product {
+
+            --insight-color: var(--ri-blue);
+
+            --insight-bg:
+                rgba(63,169,245,.09);
+        }
+
+
+        .insight-category {
+
+            --insight-color: var(--ri-purple);
+
+            --insight-bg:
+                rgba(117,103,248,.09);
+        }
+
+
+        .insight-profit {
+
+            --insight-color: var(--ri-green);
+
+            --insight-bg:
+                rgba(57,217,138,.09);
+        }
+
+
+        .insight-margin {
+
+            --insight-color: var(--ri-orange);
+
+            --insight-bg:
+                rgba(255,159,67,.09);
+        }
+
+
+        .insight-default {
+
+            --insight-color: var(--ri-blue);
+
+            --insight-bg:
+                rgba(63,169,245,.08);
+        }
+
+
+        .no-insights {
+
+            padding: 24px;
+
+            text-align: center;
+
+            border-radius: 15px;
+
+            color: #70859a;
+
+            background:
+                rgba(255,255,255,.025);
+
+            border:
+                1px dashed
+                rgba(255,255,255,.10);
+
+            font-size: 11px;
+        }
+
+
+        /* =========================================================
+           FOOTER
+           ========================================================= */
+
+        .dashboard-footer {
+
+            padding: 4px 0 15px;
+
+            text-align: center;
+
+            color: #53697d;
+
+            font-size: 9px;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+        @media (max-width: 1250px) {
+
+            .kpi-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0,1fr));
+            }
+
+
+            .filter-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0,1fr));
+            }
+
+
+            .filter-button {
+
+                width: 100%;
+            }
+        }
+
+
+        @media (max-width: 900px) {
+
+            body {
+                overflow: auto;
+            }
+
+
+            .page-shell {
+
+                height: auto;
+
+                min-height: 100vh;
+
+                overflow: visible;
+            }
+
+
+            .sidebar-wrapper {
+
+                display: none;
+            }
+
+
+            .main-content {
+
+                width: 100%;
+
+                height: auto;
+
+                min-height: 100vh;
+
+                overflow: visible;
+
+                padding: 16px;
+            }
+
+
+            .charts-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .chart-card.wide {
+
+                grid-column: auto;
+            }
+
+
+            .insights-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .hero-content {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+
+            .hero-status {
+
+                align-self: flex-start;
+            }
+        }
+
+
+        @media (max-width: 620px) {
+
+            .main-content {
+
+                padding: 11px;
+            }
+
+
+            .hero {
+
+                padding: 21px;
+
+                border-radius: 18px;
+            }
+
+
+            .hero h1 {
+
+                font-size: 23px;
+            }
+
+
+            .hero-icon {
+
+                width: 52px;
+                height: 52px;
+
+                flex-basis: 52px;
+
+                font-size: 24px;
+            }
+
+
+            .filter-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .custom-date-fields {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .kpi-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .chart-container,
+            .chart-card.wide
+            .chart-container {
+
+                height: 275px;
+            }
+
+
+            .chart-card {
+
+                padding: 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page-shell">
+
+
+    <!-- =========================================================
+         SIDEBAR
+         ========================================================= -->
+
+    <aside class="sidebar-wrapper">
 
         {% include "includes/smart_sidebar.html" %}
 
     </aside>
 
 
-    <!-- =====================================================
-         MAIN SCROLL AREA
-    ====================================================== -->
+    <!-- =========================================================
+         MAIN CONTENT
+         ========================================================= -->
 
-    <main class="product-main">
+    <main class="main-content">
+
+        <div class="content-container">
 
 
-        <div class="product-page">
+            <!-- =================================================
+                 HERO
+                 ================================================= -->
+
+            <section class="hero">
+
+                <div class="hero-content">
+
+                    <div class="hero-left">
+
+                        <div class="hero-icon">
+                            📦
+                        </div>
+
+                        <div>
+
+                            <h1>
+                                Product Intelligence
+                            </h1>
+
+                            <p>
+                                Understand product performance,
+                                sales trends, category contribution,
+                                profitability and product demand.
+                            </p>
+
+                        </div>
+
+                    </div>
 
 
-            {% if error_message %}
+                    <div class="hero-status">
 
-                <div class="product-error">
-                    {{ error_message }}
+                        <span class="status-dot"></span>
+
+                        {% if selected_version %}
+                            Analytics Ready
+                        {% else %}
+                            Awaiting Product Data
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ERROR
+                 ================================================= -->
+
+            {% if error %}
+
+                <div class="alert alert-error">
+
+                    <div class="alert-icon">
+                        ⚠️
+                    </div>
+
+                    <div>
+                        {{ error }}
+                    </div>
+
                 </div>
 
             {% endif %}
 
 
-            {% if not has_data %}
+            <!-- =================================================
+                 WARNING
+                 ================================================= -->
 
+            {% if warning and not error %}
 
-                <!-- =================================================
-                     EMPTY STATE
-                ================================================== -->
+                <div class="alert alert-warning">
 
-                <div class="product-empty">
-
-                    <div class="product-empty-icon">
-                        📦
+                    <div class="alert-icon">
+                        ⚠️
                     </div>
 
-                    <h2>
-                        Product Intelligence Unavailable
-                    </h2>
-
-                    <p>
-                        Upload a Product dataset containing
-                        product and sales information to
-                        activate product-level analytics.
-                    </p>
+                    <div>
+                        {{ warning }}
+                    </div>
 
                 </div>
 
+            {% endif %}
 
-            {% else %}
+
+            <!-- =================================================
+                 FILTERS
+                 ================================================= -->
+
+            {% if product_datasets %}
+
+                <form
+                    method="get"
+                    class="filter-card"
+                    id="productFilterForm"
+                >
+
+                    <div class="filter-grid">
 
 
-                <!-- =================================================
-                     HEADER
-                ================================================== -->
+                        <!-- DATASET -->
 
-                <header class="product-topbar">
+                        <div class="field">
 
-                    <div class="product-title-area">
+                            <label for="dataset">
+                                Product Dataset
+                            </label>
 
-                        <div class="product-eyebrow">
+                            <select
+                                id="dataset"
+                                name="dataset"
+                            >
 
-                            <span
-                                class="product-eyebrow-dot"
-                            ></span>
+                                {% for dataset in product_datasets %}
 
-                            Product Intelligence
+                                    <option
+                                        value="{{ dataset.id }}"
+                                        {% if selected_dataset and dataset.id == selected_dataset.id %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ dataset.name }}
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
 
                         </div>
 
-                        <h1>
-                            Product Performance Command Center
-                        </h1>
 
-                        <p>
-                            Analyze product revenue, demand,
-                            profitability, growth and return
-                            risk from the selected Product dataset.
-                        </p>
+                        <!-- DATE RANGE -->
 
-                    </div>
+                        <div class="field">
 
+                            <label for="range">
+                                Analysis Period
+                            </label>
 
-                    <div class="product-status-card">
+                            <select
+                                id="range"
+                                name="range"
+                            >
 
-                        <div class="product-status-top">
+                                {% for value, label in date_range_options.items %}
 
-                            <span class="product-status-label">
-                                Intelligence Engine
-                            </span>
+                                    <option
+                                        value="{{ value }}"
+                                        {% if selected_range == value %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ label }}
+                                    </option>
 
-                            <span class="product-status-value">
-                                ● Active
-                            </span>
+                                {% endfor %}
+
+                            </select>
 
                         </div>
 
-                        <div class="product-status-line">
-                            <span></span>
+
+                        <!-- SELECTED PERIOD -->
+
+                        <div class="field">
+
+                            <label>
+                                Selected Period
+                            </label>
+
+                            <input
+                                type="text"
+                                value="{% if analysis_from_date %}{{ analysis_from_date|date:'d M Y' }} → {% endif %}{% if analysis_to_date %}{{ analysis_to_date|date:'d M Y' }}{% else %}All Available Data{% endif %}"
+                                readonly
+                            >
+
                         </div>
 
-                    </div>
 
-                </header>
+                        <!-- APPLY -->
 
-<section class="product-filter-panel">
-
-                    <div class="product-filter-header">
-
-                        <h2>
-                            Analysis Filters
-                        </h2>
-
-                        <p>
-                            Change the Product dataset and analysis
-                            period. All KPIs and visualizations recalculate
-                            from the selected data.
-                        </p>
-
-                    </div>
+                        <button
+                            type="submit"
+                            class="filter-button"
+                        >
+                            Apply Filters
+                        </button>
 
 
-                    <div class="product-filter-body">
+                        <!-- CUSTOM DATES -->
 
-
-                        <form
-                            method="get"
-                            class="filter-form"
+                        <div
+                            class="custom-date-fields {% if selected_range == 'custom' %}visible{% endif %}"
+                            id="customDateFields"
                         >
 
+                            <div class="field">
 
-                            <!-- DATASET -->
-
-                            <div class="filter-group">
-
-                                <label>
-                                    Product Dataset
-                                </label>
-
-                                <select
-                                    name="dataset"
-                                    onchange="
-                                    this.form.submit();
-                                    "
-                                >
-
-                                    {% for dataset in datasets %}
-
-                                        <option
-                                            value="{{ dataset.id }}"
-                                            {% if selected_dataset.id == dataset.id %}
-                                                selected
-                                            {% endif %}
-                                        >
-                                            {{ dataset.name }}
-                                        </option>
-
-                                    {% endfor %}
-
-                                </select>
-
-                            </div>
-
-
-                            <!-- DATE RANGE -->
-
-                            <div class="filter-group">
-
-                                <label>
-                                    Date Range
-                                </label>
-
-                                <select
-                                    name="range"
-                                    id="productRange"
-                                >
-
-                                    <option
-                                        value="30"
-                                        {% if range_key == "30" %}
-                                            selected
-                                        {% endif %}
-                                    >
-                                        Last 30 Days
-                                    </option>
-
-                                    <option
-                                        value="90"
-                                        {% if range_key == "90" %}
-                                            selected
-                                        {% endif %}
-                                    >
-                                        Last 3 Months
-                                    </option>
-
-                                    <option
-                                        value="180"
-                                        {% if range_key == "180" %}
-                                            selected
-                                        {% endif %}
-                                    >
-                                        Last 6 Months
-                                    </option>
-
-                                    <option
-                                        value="365"
-                                        {% if range_key == "365" %}
-                                            selected
-                                        {% endif %}
-                                    >
-                                        Last 12 Months
-                                    </option>
-
-                                    <option
-                                        value="all"
-                                        {% if range_key == "all" %}
-                                            selected
-                                        {% endif %}
-                                    >
-                                        All Data
-                                    </option>
-
-                                    <option
-                                        value="custom"
-                                        {% if range_key == "custom" %}
-                                            selected
-                                        {% endif %}
-                                    >
-                                        Custom Range
-                                    </option>
-
-                                </select>
-
-                            </div>
-
-
-                            <!-- START -->
-
-                            <div class="filter-group">
-
-                                <label>
-                                    Custom Start Date
+                                <label for="from_date">
+                                    From Date
                                 </label>
 
                                 <input
                                     type="date"
-                                    name="start_date"
-                                    id="productStartDate"
-                                    value="{{ request.GET.start_date|default:'' }}"
+                                    id="from_date"
+                                    name="from_date"
+                                    value="{% if analysis_from_date %}{{ analysis_from_date|date:'Y-m-d' }}{% endif %}"
                                 >
 
                             </div>
 
 
-                            <!-- END -->
+                            <div class="field">
 
-                            <div class="filter-group">
-
-                                <label>
-                                    Custom End Date
+                                <label for="to_date">
+                                    To Date
                                 </label>
 
                                 <input
                                     type="date"
-                                    name="end_date"
-                                    id="productEndDate"
-                                    value="{{ request.GET.end_date|default:'' }}"
+                                    id="to_date"
+                                    name="to_date"
+                                    value="{% if analysis_to_date %}{{ analysis_to_date|date:'Y-m-d' }}{% endif %}"
                                 >
 
                             </div>
 
+                        </div>
 
-                            <button
-                                type="submit"
-                                class="filter-button"
-                            >
-                                Apply Analysis
-                            </button>
+                    </div>
 
 
-                        </form>
+                    <!-- DATASET META -->
 
+                    {% if selected_dataset %}
 
-                        <!-- =================================================
-                             FILTER SUMMARY
-                        ================================================== -->
+                        <div class="dataset-meta">
 
-                        <div class="filter-summary">
+                            <div class="meta-chip">
 
-
-                            <div class="filter-chip">
-
-                                Dataset:
+                                📦
 
                                 <strong>
                                     {{ selected_dataset.name }}
@@ -1728,1130 +2034,924 @@
                             </div>
 
 
-                            <div class="filter-chip">
+                            <div class="meta-chip">
 
-                                Period:
+                                Type:
 
                                 <strong>
-                                    {{ range_label }}
+                                    {{ selected_dataset.get_dataset_type_display }}
                                 </strong>
 
                             </div>
 
 
-                            {% if start_date %}
+                            {% if selected_version %}
 
-                                <div class="filter-chip">
+                                <div class="meta-chip">
 
-                                    From:
+                                    Version:
 
                                     <strong>
-                                        {{ start_date }}
+                                        {{ selected_version.version_number }}
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="meta-chip">
+
+                                    {{ selected_version.version_type }}
+
+                                </div>
+
+                            {% endif %}
+
+
+                            {% if available_from_date and available_to_date %}
+
+                                <div class="meta-chip">
+
+                                    Available:
+
+                                    <strong>
+
+                                        {{ available_from_date|date:"d M Y" }}
+
+                                        –
+
+                                        {{ available_to_date|date:"d M Y" }}
+
                                     </strong>
 
                                 </div>
 
                             {% endif %}
 
-
-                            {% if end_date %}
-
-                                <div class="filter-chip">
-
-                                    To:
-
-                                    <strong>
-                                        {{ end_date }}
-                                    </strong>
-
-                                </div>
-
-                            {% endif %}
-
-
-                            {% if analysis_rows %}
-
-                                <div class="filter-chip">
-
-                                    Records:
-
-                                    <strong>
-                                        {{ analysis_rows }}
-                                    </strong>
-
-                                </div>
-
-                            {% endif %}
-
-
                         </div>
 
-                    </div>
+                    {% endif %}
 
-                </section>
+                </form>
 
-                <!-- =================================================
-                     MAIN KPI CARDS
-                ================================================== -->
+            {% endif %}
 
-                <section class="product-kpi-grid">
 
+            <!-- =================================================
+                 KPI SECTION
+                 ================================================= -->
 
-                    <!-- PRODUCTS -->
+            {% if not error %}
 
-                    <div class="product-kpi">
+                <div class="section-heading">
 
-                        <div class="kpi-label">
-                            Products Analyzed
-                        </div>
+                    <h2>
+                        Product Performance Overview
+                    </h2>
 
-                        <div class="kpi-value kpi-purple">
-                            {{ total_products|default:0 }}
-                        </div>
+                    {% if analysis_from_date or analysis_to_date %}
 
-                        <div class="kpi-sub">
-                            Unique products in selected period
-                        </div>
+                        <span>
+                            Based on selected analysis period
+                        </span>
 
-                    </div>
-
-
-                    <!-- REVENUE -->
-
-                    <div class="product-kpi">
-
-                        <div class="kpi-label">
-                            Product Revenue
-                        </div>
-
-                        <div class="kpi-value kpi-green">
-                            ₹{{ total_revenue|floatformat:0 }}
-                        </div>
-
-                        <div class="kpi-sub">
-                            Total product revenue
-                        </div>
-
-                    </div>
-
-
-                    <!-- UNITS -->
-
-                    <div class="product-kpi">
-
-                        <div class="kpi-label">
-                            Units Sold
-                        </div>
-
-                        <div class="kpi-value kpi-orange">
-                            {{ total_units|floatformat:0 }}
-                        </div>
-
-                        <div class="kpi-sub">
-                            Recorded product volume
-                        </div>
-
-                    </div>
-
-
-                    <!-- PROFIT -->
-
-                    <div class="product-kpi">
-
-                        <div class="kpi-label">
-                            Product Profit
-                        </div>
-
-                        <div class="kpi-value kpi-purple">
-                            ₹{{ total_profit|floatformat:0 }}
-                        </div>
-
-                        <div class="kpi-sub">
-                            Revenue minus product cost
-                        </div>
-
-                    </div>
-
-                </section>
-
-
-                <!-- =================================================
-                     SECONDARY KPI STRIP
-                ================================================== -->
-
-                <section class="product-secondary-grid">
-
-
-                    <div class="secondary-card">
-
-                        <div class="secondary-label">
-                            Profit Margin
-                        </div>
-
-                        <div class="secondary-value">
-                            {{ profit_margin|floatformat:1 }}%
-                        </div>
-
-                    </div>
-
-
-                    <div class="secondary-card">
-
-                        <div class="secondary-label">
-                            Average Product Revenue
-                        </div>
-
-                        <div class="secondary-value">
-                            ₹{{ average_product_revenue|floatformat:0 }}
-                        </div>
-
-                    </div>
-
-
-                    <div class="secondary-card">
-
-                        <div class="secondary-label">
-                            Average Selling Price
-                        </div>
-
-                        <div class="secondary-value">
-                            ₹{{ average_selling_price|floatformat:0 }}
-                        </div>
-
-                    </div>
-
-
-                    <div class="secondary-card">
-
-                        <div class="secondary-label">
-                            Return Rate
-                        </div>
-
-                        <div
-                            class="
-                            secondary-value
-                            {% if return_rate >= 8 %}
-                                negative
-                            {% elif return_rate >= 5 %}
-                                warning
-                            {% else %}
-                                positive
-                            {% endif %}
-                            "
-                        >
-                            {{ return_rate|floatformat:1 }}%
-                        </div>
-
-                    </div>
-
-                </section>
-
-
-                <!-- =================================================
-                     PRODUCT LEADERS
-                ================================================== -->
-
-                <div class="product-panel"
-                     style="margin-bottom:18px;">
-
-                    <div class="product-panel-header">
-
-                        <div>
-
-                            <h2>
-                                Product Leaders
-                            </h2>
-
-                            <p>
-                                Highest-impact products identified
-                                from the selected data.
-                            </p>
-
-                        </div>
-
-                        <div class="panel-badge">
-                            LEADERS
-                        </div>
-
-                    </div>
-
-
-                    <div class="panel-body">
-
-                        <div class="leader-grid">
-
-
-                            <div class="leader-card">
-
-                                <div class="leader-label">
-                                    Revenue Leader
-                                </div>
-
-                                <div class="leader-value">
-                                    {{ highest_revenue_product }}
-                                </div>
-
-                            </div>
-
-
-                            <div class="leader-card">
-
-                                <div class="leader-label">
-                                    Volume Leader
-                                </div>
-
-                                <div class="leader-value">
-                                    {{ best_selling_product }}
-                                </div>
-
-                            </div>
-
-
-                            <div class="leader-card">
-
-                                <div class="leader-label">
-                                    Profit Leader
-                                </div>
-
-                                <div class="leader-value">
-                                    {{ highest_profit_product }}
-                                </div>
-
-                            </div>
-
-
-                            <div class="leader-card">
-
-                                <div class="leader-label">
-                                    Fastest Growing
-                                </div>
-
-                                <div class="leader-value">
-
-                                    {% if growth_available %}
-                                        {{ fastest_growing_product }}
-                                    {% else %}
-                                        Previous period unavailable
-                                    {% endif %}
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
+                    {% endif %}
 
                 </div>
 
 
-                <!-- =================================================
-                     REVENUE + UNITS
-                ================================================== -->
-
-                <div class="product-grid-2">
+                <section class="kpi-grid">
 
 
-                    <!-- REVENUE -->
+                    <!-- TOTAL PRODUCTS -->
 
-                    <section class="product-panel">
+                    <div class="kpi-card kpi-blue">
 
-                        <div class="product-panel-header">
+                        <div class="kpi-top">
 
-                            <div>
+                            <div class="kpi-label">
+                                Total Products
+                            </div>
 
-                                <h2>
-                                    Revenue by Product
-                                </h2>
+                            <div class="kpi-icon">
+                                📦
+                            </div>
 
-                                <p>
-                                    Top products ranked by revenue
-                                    contribution.
-                                </p>
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.total_products is not None %}
+                                {{ metrics.total_products|floatformat:0 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Unique products identified
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACTIVE PRODUCTS -->
+
+                    <div class="kpi-card kpi-purple">
+
+                        <div class="kpi-top">
+
+                            <div class="kpi-label">
+                                Active Products
+                            </div>
+
+                            <div class="kpi-icon">
+                                ✓
+                            </div>
+
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.active_products is not None %}
+                                {{ metrics.active_products|floatformat:0 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Products represented in the data
+                        </div>
+
+                    </div>
+
+
+                    <!-- TOTAL SALES -->
+
+                    <div class="kpi-card kpi-green">
+
+                        <div class="kpi-top">
+
+                            <div class="kpi-label">
+                                Total Product Sales
+                            </div>
+
+                            <div class="kpi-icon">
+                                ₹
+                            </div>
+
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.total_sales is not None %}
+                                ₹{{ metrics.total_sales|floatformat:2 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Sales generated in selected period
+                        </div>
+
+                    </div>
+
+
+                    <!-- UNITS SOLD -->
+
+                    <div class="kpi-card kpi-orange">
+
+                        <div class="kpi-top">
+
+                            <div class="kpi-label">
+                                Units Sold
+                            </div>
+
+                            <div class="kpi-icon">
+                                🔢
+                            </div>
+
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.units_sold is not None %}
+                                {{ metrics.units_sold|floatformat:0 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Total recorded quantity
+                        </div>
+
+                    </div>
+
+
+                    <!-- AVERAGE PRODUCT SALES -->
+
+                    <div class="kpi-card kpi-cyan">
+
+                        <div class="kpi-top">
+
+                            <div class="kpi-label">
+                                Avg. Product Sales
+                            </div>
+
+                            <div class="kpi-icon">
+                                📊
+                            </div>
+
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.average_product_sales is not None %}
+                                ₹{{ metrics.average_product_sales|floatformat:2 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Average sales per product
+                        </div>
+
+                    </div>
+
+
+                    <!-- AVERAGE UNIT PRICE -->
+
+                    <div class="kpi-card kpi-pink">
+
+                        <div class="kpi-top">
+
+                            <div class="kpi-label">
+                                Avg. Unit Price
+                            </div>
+
+                            <div class="kpi-icon">
+                                💰
+                            </div>
+
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.average_unit_price is not None %}
+                                ₹{{ metrics.average_unit_price|floatformat:2 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Average recorded unit price
+                        </div>
+
+                    </div>
+
+
+                    <!-- TOTAL PROFIT -->
+
+                    <div class="kpi-card kpi-green">
+
+                        <div class="kpi-top">
+
+                            <div class="kpi-label">
+                                Total Profit
+                            </div>
+
+                            <div class="kpi-icon">
+                                📈
+                            </div>
+
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.total_profit is not None %}
+                                ₹{{ metrics.total_profit|floatformat:2 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Recorded product profit
+                        </div>
+
+                    </div>
+
+
+                    <!-- GROWTH -->
+
+                    <div class="kpi-card kpi-amber">
+
+                        <div class="kpi-top">
+
+                            <div class="kpi-label">
+                                Product Sales Growth
+                            </div>
+
+                            <div class="kpi-icon">
+
+                                {% if metrics.product_growth is not None and metrics.product_growth >= 0 %}
+                                    ↗
+                                {% else %}
+                                    ↘
+                                {% endif %}
 
                             </div>
 
-                            <div class="panel-badge">
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.product_growth is not None %}
+
+                                {% if metrics.product_growth > 0 %}
+                                    +
+                                {% endif %}
+
+                                {{ metrics.product_growth|floatformat:2 }}%
+
+                            {% else %}
+
+                                —
+
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Compared with previous comparable period
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     PRODUCT ANALYTICS
+                     ================================================= -->
+
+                <div class="section-heading">
+
+                    <h2>
+                        Product Analytics
+                    </h2>
+
+                    <span>
+                        Interactive performance analysis
+                    </span>
+
+                </div>
+
+
+                <section class="charts-grid">
+
+
+                    <!-- =================================================
+                         SALES TREND
+                         ================================================= -->
+
+                    <article class="chart-card wide">
+
+                        <div class="chart-header">
+
+                            <div class="chart-title-wrap">
+
+                                <div class="chart-icon">
+                                    📈
+                                </div>
+
+                                <div>
+
+                                    <h3 class="chart-title">
+                                        Product Sales Trend
+                                    </h3>
+
+                                    <p class="chart-description">
+                                        Daily product sales across the selected period.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <div class="chart-badge">
+                                SALES TREND
+                            </div>
+
+                        </div>
+
+
+                        {% if chart_data.sales_trend %}
+
+                            <div class="chart-container">
+
+                                <canvas
+                                    id="salesTrendChart"
+                                ></canvas>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="chart-unavailable">
+
+                                <div class="chart-unavailable-icon">
+                                    📈
+                                </div>
+
+                                <strong>
+                                    Product Sales Trend unavailable
+                                </strong>
+
+                                <span>
+                                    A compatible Date and Sales Amount
+                                    column are required.
+                                </span>
+
+                            </div>
+
+                        {% endif %}
+
+                    </article>
+
+
+                    <!-- =================================================
+                         SALES BY PRODUCT
+                         ================================================= -->
+
+                    <article class="chart-card">
+
+                        <div class="chart-header">
+
+                            <div class="chart-title-wrap">
+
+                                <div class="chart-icon">
+                                    🏆
+                                </div>
+
+                                <div>
+
+                                    <h3 class="chart-title">
+                                        Top Products by Sales
+                                    </h3>
+
+                                    <p class="chart-description">
+                                        Highest-selling products.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <div class="chart-badge">
                                 TOP 10
                             </div>
 
                         </div>
 
-                        <div class="panel-body">
 
-                            <div class="product-chart">
+                        {% if chart_data.sales_by_product %}
+
+                            <div class="chart-container">
 
                                 <canvas
-                                    id="productRevenueChart"
+                                    id="salesByProductChart"
                                 ></canvas>
 
                             </div>
 
-                            <div class="chart-note">
+                        {% else %}
 
-                                This visualization identifies
-                                the products responsible for the
-                                largest share of current revenue.
+                            <div class="chart-unavailable">
 
+                                <div class="chart-unavailable-icon">
+                                    🏆
+                                </div>
+
+                                <strong>
+                                    Sales by Product unavailable
+                                </strong>
+
+                                <span>
+                                    Product ID and Sales Amount
+                                    are required.
+                                </span>
+
+                            </div>
+
+                        {% endif %}
+
+                    </article>
+
+
+                    <!-- =================================================
+                         UNITS BY PRODUCT
+                         ================================================= -->
+
+                    <article class="chart-card">
+
+                        <div class="chart-header">
+
+                            <div class="chart-title-wrap">
+
+                                <div class="chart-icon">
+                                    📦
+                                </div>
+
+                                <div>
+
+                                    <h3 class="chart-title">
+                                        Top Products by Units
+                                    </h3>
+
+                                    <p class="chart-description">
+                                        Products ranked by recorded quantity.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <div class="chart-badge">
+                                TOP 10
                             </div>
 
                         </div>
 
-                    </section>
 
+                        {% if chart_data.units_by_product %}
 
-                    <!-- UNITS -->
-
-                    <section class="product-panel">
-
-                        <div class="product-panel-header">
-
-                            <div>
-
-                                <h2>
-                                    Product Demand
-                                </h2>
-
-                                <p>
-                                    Highest-volume products by units sold.
-                                </p>
-
-                            </div>
-
-                            <div class="panel-badge">
-                                VOLUME
-                            </div>
-
-                        </div>
-
-                        <div class="panel-body">
-
-                            <div class="product-chart">
+                            <div class="chart-container">
 
                                 <canvas
-                                    id="productQuantityChart"
+                                    id="unitsByProductChart"
                                 ></canvas>
 
                             </div>
 
-                            <div class="chart-note">
+                        {% else %}
 
-                                Revenue leaders and volume leaders
-                                are not always the same. This helps
-                                identify high-demand products.
+                            <div class="chart-unavailable">
 
+                                <div class="chart-unavailable-icon">
+                                    📦
+                                </div>
+
+                                <strong>
+                                    Units by Product unavailable
+                                </strong>
+
+                                <span>
+                                    Product ID and Quantity
+                                    are required.
+                                </span>
+
+                            </div>
+
+                        {% endif %}
+
+                    </article>
+
+
+                    <!-- =================================================
+                         CATEGORY
+                         ================================================= -->
+
+                    <article class="chart-card">
+
+                        <div class="chart-header">
+
+                            <div class="chart-title-wrap">
+
+                                <div class="chart-icon">
+                                    🗂️
+                                </div>
+
+                                <div>
+
+                                    <h3 class="chart-title">
+                                        Sales by Category
+                                    </h3>
+
+                                    <p class="chart-description">
+                                        Contribution of each product category.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <div class="chart-badge">
+                                CATEGORY
                             </div>
 
                         </div>
 
-                    </section>
 
-                </div>
+                        {% if chart_data.sales_by_category %}
 
-
-                <!-- =================================================
-                     TREND + STATUS
-                ================================================== -->
-
-                <div class="product-grid-2">
-
-
-                    <!-- TREND -->
-
-                    <section class="product-panel">
-
-                        <div class="product-panel-header">
-
-                            <div>
-
-                                <h2>
-                                    Product Revenue & Profit Trend
-                                </h2>
-
-                                <p>
-                                    Monthly movement across the selected
-                                    analysis period.
-                                </p>
-
-                            </div>
-
-                            <div class="panel-badge">
-                                TREND
-                            </div>
-
-                        </div>
-
-                        <div class="panel-body">
-
-                            <div class="product-chart large">
+                            <div class="chart-container">
 
                                 <canvas
-                                    id="productTrendChart"
+                                    id="salesByCategoryChart"
                                 ></canvas>
 
                             </div>
 
-                        </div>
+                        {% else %}
 
-                    </section>
+                            <div class="chart-unavailable">
 
+                                <div class="chart-unavailable-icon">
+                                    🗂️
+                                </div>
 
-                    <!-- STATUS -->
+                                <strong>
+                                    Sales by Category unavailable
+                                </strong>
 
-                    <section class="product-panel">
-
-                        <div class="product-panel-header">
-
-                            <div>
-
-                                <h2>
-                                    Product Portfolio Health
-                                </h2>
-
-                                <p>
-                                    Distribution of product performance
-                                    classifications.
-                                </p>
+                                <span>
+                                    Category and Sales Amount
+                                    are required.
+                                </span>
 
                             </div>
 
-                            <div class="panel-badge">
-                                HEALTH
+                        {% endif %}
+
+                    </article>
+
+
+                    <!-- =================================================
+                         PROFIT
+                         ================================================= -->
+
+                    <article class="chart-card">
+
+                        <div class="chart-header">
+
+                            <div class="chart-title-wrap">
+
+                                <div class="chart-icon">
+                                    💹
+                                </div>
+
+                                <div>
+
+                                    <h3 class="chart-title">
+                                        Profit by Product
+                                    </h3>
+
+                                    <p class="chart-description">
+                                        Products ranked by recorded profit.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <div class="chart-badge">
+                                TOP 10
                             </div>
 
                         </div>
 
-                        <div class="panel-body">
 
-                            <div class="product-chart small">
+                        {% if chart_data.profit_by_product %}
+
+                            <div class="chart-container">
 
                                 <canvas
-                                    id="productStatusChart"
+                                    id="profitByProductChart"
                                 ></canvas>
 
                             </div>
 
+                        {% else %}
+
+                            <div class="chart-unavailable">
+
+                                <div class="chart-unavailable-icon">
+                                    💹
+                                </div>
+
+                                <strong>
+                                    Profit by Product unavailable
+                                </strong>
+
+                                <span>
+                                    Product ID and Profit
+                                    are required.
+                                </span>
+
+                            </div>
+
+                        {% endif %}
+
+                    </article>
+
+
+                    <!-- =================================================
+                         QUANTITY DISTRIBUTION
+                         ================================================= -->
+
+                    <article class="chart-card wide">
+
+                        <div class="chart-header">
+
+                            <div class="chart-title-wrap">
+
+                                <div class="chart-icon">
+                                    📊
+                                </div>
+
+                                <div>
+
+                                    <h3 class="chart-title">
+                                        Product Quantity Distribution
+                                    </h3>
+
+                                    <p class="chart-description">
+                                        Number of products grouped by total
+                                        recorded quantity.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <div class="chart-badge">
+                                DISTRIBUTION
+                            </div>
+
                         </div>
 
-                    </section>
 
-                </div>
+                        {% if chart_data.quantity_distribution %}
 
+                            <div class="chart-container">
 
-                <!-- =================================================
-                     PERFORMANCE MATRIX
-                ================================================== -->
+                                <canvas
+                                    id="quantityDistributionChart"
+                                ></canvas>
 
-                <section class="product-panel product-table-panel">
+                            </div>
 
-                    <div class="product-panel-header">
+                        {% else %}
 
-                        <div>
+                            <div class="chart-unavailable">
 
-                            <h2>
-                                Product Performance Matrix
-                            </h2>
+                                <div class="chart-unavailable-icon">
+                                    📊
+                                </div>
 
-                            <p>
-                                Revenue, volume, profit, growth,
-                                returns and intelligence score.
-                            </p>
+                                <strong>
+                                    Quantity Distribution unavailable
+                                </strong>
 
-                        </div>
+                                <span>
+                                    Product ID and Quantity
+                                    are required.
+                                </span>
 
-                        <div class="panel-badge">
-                            TOP 50
-                        </div>
+                            </div>
 
-                    </div>
+                        {% endif %}
 
-
-                    <div class="table-container">
-
-                        <table class="product-table">
-
-                            <thead>
-
-                                <tr>
-
-                                    <th>
-                                        Product
-                                    </th>
-
-                                    <th>
-                                        Revenue
-                                    </th>
-
-                                    <th>
-                                        Units
-                                    </th>
-
-                                    <th>
-                                        Profit
-                                    </th>
-
-                                    <th>
-                                        Margin
-                                    </th>
-
-                                    <th>
-                                        Growth
-                                    </th>
-
-                                    <th>
-                                        Return Rate
-                                    </th>
-
-                                    <th>
-                                        Score
-                                    </th>
-
-                                    <th>
-                                        Status
-                                    </th>
-
-                                </tr>
-
-                            </thead>
-
-
-                            <tbody>
-
-                            {% for product in product_rows %}
-
-                                <tr>
-
-
-                                    <td class="product-name">
-                                        {{ product.product }}
-                                    </td>
-
-
-                                    <td class="revenue-cell">
-                                        ₹{{ product.revenue|floatformat:0 }}
-                                    </td>
-
-
-                                    <td>
-                                        {{ product.units|floatformat:0 }}
-                                    </td>
-
-
-                                    <td class="profit-cell">
-                                        ₹{{ product.profit|floatformat:0 }}
-                                    </td>
-
-
-                                    <td>
-                                        {{ product.margin|floatformat:1 }}%
-                                    </td>
-
-
-                                    <td>
-
-                                        {% if not growth_available %}
-
-                                            <span style="color:#71879c;">
-                                                N/A
-                                            </span>
-
-                                        {% elif product.growth >= 0 %}
-
-                                            <span class="growth-positive">
-                                                ↑ {{ product.growth|floatformat:1 }}%
-                                            </span>
-
-                                        {% else %}
-
-                                            <span class="growth-negative">
-                                                ↓ {{ product.growth|floatformat:1 }}%
-                                            </span>
-
-                                        {% endif %}
-
-                                    </td>
-
-
-                                    <td
-                                        class="
-                                        {% if product.returns >= 8 %}
-                                            return-warning
-                                        {% endif %}
-                                        "
-                                    >
-                                        {{ product.returns|floatformat:1 }}%
-                                    </td>
-
-
-                                    <td>
-
-                                        <div class="score-wrapper">
-
-                                            <div class="score-bar">
-
-                                                <span
-                                                    style="
-                                                    width:{{ product.score }}%;
-                                                    "
-                                                ></span>
-
-                                            </div>
-
-                                            <span class="score-value">
-                                                {{ product.score }}
-                                            </span>
-
-                                        </div>
-
-                                    </td>
-
-
-                                    <td>
-
-                                        {% if product.status == "Growing" %}
-
-                                            <span
-                                                class="
-                                                product-status
-                                                status-growing
-                                                "
-                                            >
-                                                Growing
-                                            </span>
-
-                                        {% elif product.status == "Strong" %}
-
-                                            <span
-                                                class="
-                                                product-status
-                                                status-strong
-                                                "
-                                            >
-                                                Strong
-                                            </span>
-
-                                        {% elif product.status == "Weak" %}
-
-                                            <span
-                                                class="
-                                                product-status
-                                                status-weak
-                                                "
-                                            >
-                                                Weak
-                                            </span>
-
-                                        {% elif product.status == "Return Risk" %}
-
-                                            <span
-                                                class="
-                                                product-status
-                                                status-risk
-                                                "
-                                            >
-                                                Return Risk
-                                            </span>
-
-                                        {% else %}
-
-                                            <span
-                                                class="
-                                                product-status
-                                                status-stable
-                                                "
-                                            >
-                                                Stable
-                                            </span>
-
-                                        {% endif %}
-
-                                    </td>
-
-
-                                </tr>
-
-                            {% empty %}
-
-                                <tr>
-
-                                    <td colspan="9">
-
-                                        No product performance
-                                        records are available.
-
-                                    </td>
-
-                                </tr>
-
-                            {% endfor %}
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
+                    </article>
 
                 </section>
 
 
                 <!-- =================================================
-                     ADVANCED VISUALIZATION
-                ================================================== -->
+                     SMART PRODUCT INSIGHTS
+                     AT BOTTOM
+                     ================================================= -->
 
-                <div class="product-grid-2">
+                <section class="insights-section">
 
+                    <div class="insights-header">
 
-                    <!-- SCATTER -->
+                        <div class="insights-header-icon">
+                            ✨
+                        </div>
 
-                    <section class="product-panel">
+                        <div>
 
-                        <div class="product-panel-header">
+                            <h2>
+                                Smart Product Insights
+                            </h2>
 
-                            <div>
-
-                                <h2>
-                                    Product Demand vs Revenue
-                                </h2>
-
-                                <p>
-                                    Each point represents a product.
-                                    X = units sold, Y = revenue.
-                                </p>
-
-                            </div>
-
-                            <div class="panel-badge">
-                                RELATIONSHIP
-                            </div>
+                            <p>
+                                Rule-based observations generated
+                                from the available Product metrics.
+                            </p>
 
                         </div>
 
-                        <div class="panel-body">
-
-                            <div class="product-chart">
-
-                                <canvas
-                                    id="productScatterChart"
-                                ></canvas>
-
-                            </div>
-
-                        </div>
-
-                    </section>
+                    </div>
 
 
-                    <!-- PARETO -->
+                    {% if insights %}
 
-                    <section class="product-panel">
+                        <div class="insights-grid">
 
-                        <div class="product-panel-header">
+                            {% for insight in insights %}
 
-                            <div>
+                                <article
+                                    class="
+                                        insight-card
+                                        insight-{{ insight.type|default:'default' }}
+                                    "
+                                >
 
-                                <h2>
-                                    Revenue Concentration
-                                </h2>
+                                    <div class="insight-top">
 
-                                <p>
-                                    Cumulative contribution of the
-                                    highest-revenue products.
-                                </p>
+                                        <div class="insight-icon">
 
-                            </div>
-
-                            <div class="panel-badge">
-                                PARETO
-                            </div>
-
-                        </div>
-
-                        <div class="panel-body">
-
-                            <div class="product-chart">
-
-                                <canvas
-                                    id="productParetoChart"
-                                ></canvas>
-
-                            </div>
-
-                            <div class="chart-note">
-
-                                Top 20% of products currently
-                                contribute approximately
-                                <strong>
-                                    {{ revenue_concentration|floatformat:1 }}%
-                                </strong>
-                                of product revenue.
-
-                            </div>
-
-                        </div>
-
-                    </section>
-
-                </div>
-
-
-                <!-- =================================================
-                     INSIGHTS
-                ================================================== -->
-
-                {% if product_insights %}
-
-                    <section
-                        class="
-                        product-panel
-                        insights-panel
-                        "
-                    >
-
-                        <div class="product-panel-header">
-
-                            <div>
-
-                                <h2>
-                                    Product Intelligence Insights
-                                </h2>
-
-                                <p>
-                                    Automatically generated observations
-                                    from the selected Product dataset.
-                                </p>
-
-                            </div>
-
-                            <div class="panel-badge">
-                                AI-READY INSIGHTS
-                            </div>
-
-                        </div>
-
-
-                        <div class="panel-body">
-
-                            <div class="insights-grid">
-
-                                {% for insight in product_insights %}
-
-                                    <div
-                                        class="
-                                        product-insight
-                                        {% if insight.type == 'warning' %}
-                                            warning
-                                        {% elif insight.type == 'negative' %}
-                                            negative
-                                        {% endif %}
-                                        "
-                                    >
-
-                                        <div class="insight-title">
-
-                                            <span class="insight-icon">
-                                                {{ insight.icon }}
-                                            </span>
-
-                                            {{ insight.title }}
+                                            {% if insight.type == "growth" %}
+                                                ↗
+                                            {% elif insight.type == "decline" %}
+                                                ↘
+                                            {% elif insight.type == "top_product" %}
+                                                🏆
+                                            {% elif insight.type == "category" %}
+                                                🗂️
+                                            {% elif insight.type == "profit" %}
+                                                💹
+                                            {% elif insight.type == "margin" %}
+                                                %
+                                            {% else %}
+                                                ✨
+                                            {% endif %}
 
                                         </div>
 
-                                        <p>
-                                            {{ insight.text }}
-                                        </p>
+                                        <div class="insight-type">
+                                            {{ insight.type|default:"insight"|title }}
+                                        </div>
 
                                     </div>
 
-                                {% endfor %}
 
-                            </div>
-
-                        </div>
-
-                    </section>
-
-                {% endif %}
+                                    <h3 class="insight-title">
+                                        {{ insight.title }}
+                                    </h3>
 
 
-                <!-- =================================================
-                     DATA INFORMATION
-                ================================================== -->
+                                    <p class="insight-message">
+                                        {{ insight.message }}
+                                    </p>
 
-                <section
-                    class="product-panel"
-                    style="margin-bottom:18px;"
-                >
+                                </article>
 
-                    <div class="product-panel-header">
-
-                        <div>
-
-                            <h2>
-                                Analysis Information
-                            </h2>
-
-                            <p>
-                                Dataset and detected field information.
-                            </p>
+                            {% endfor %}
 
                         </div>
 
-                        <div class="panel-badge">
-                            DATA PROFILE
-                        </div>
+                    {% else %}
 
-                    </div>
+                        <div class="no-insights">
 
-
-                    <div class="panel-body">
-
-                        <div class="data-info-grid">
-
-
-                            <div class="data-info-item">
-
-                                <span>
-                                    Dataset
-                                </span>
-
-                                <strong>
-                                    {{ selected_dataset.name }}
-                                </strong>
-
-                            </div>
-
-
-                            <div class="data-info-item">
-
-                                <span>
-                                    Source Rows
-                                </span>
-
-                                <strong>
-                                    {{ source_rows|default:0 }}
-                                </strong>
-
-                            </div>
-
-
-                            <div class="data-info-item">
-
-                                <span>
-                                    Analysis Rows
-                                </span>
-
-                                <strong>
-                                    {{ analysis_rows|default:0 }}
-                                </strong>
-
-                            </div>
-
-
-                            <div class="data-info-item">
-
-                                <span>
-                                    Product Column
-                                </span>
-
-                                <strong>
-                                    {{ product_column }}
-                                </strong>
-
-                            </div>
-
-
-                            <div class="data-info-item">
-
-                                <span>
-                                    Sales Column
-                                </span>
-
-                                <strong>
-                                    {{ sales_column }}
-                                </strong>
-
-                            </div>
-
-
-                            <div class="data-info-item">
-
-                                <span>
-                                    Quantity Column
-                                </span>
-
-                                <strong>
-                                    {{ quantity_column }}
-                                </strong>
-
-                            </div>
-
-
-                            <div class="data-info-item">
-
-                                <span>
-                                    Profit Column
-                                </span>
-
-                                <strong>
-                                    {{ profit_column }}
-                                </strong>
-
-                            </div>
-
-
-                            <div class="data-info-item">
-
-                                <span>
-                                    Return Column
-                                </span>
-
-                                <strong>
-                                    {{ return_column|default:"Not detected" }}
-                                </strong>
-
-                            </div>
-
-
-                            <div class="data-info-item">
-
-                                <span>
-                                    Date Column
-                                </span>
-
-                                <strong>
-                                    {{ date_column|default:"Not detected" }}
-                                </strong>
-
-                            </div>
-
-
-                            <div class="data-info-item">
-
-                                <span>
-                                    Analysis Period
-                                </span>
-
-                                <strong>
-                                    {{ range_label }}
-                                </strong>
-
-                            </div>
+                            Smart Product Insights are not available
+                            for the current dataset and selected period.
 
                         </div>
 
-                    </div>
+                    {% endif %}
 
                 </section>
 
-
-                <!-- =================================================
-                     DATE / DATASET FILTER
-                     INTENTIONALLY AT BOTTOM
-                ================================================== -->
-
-                
-
             {% endif %}
+
+
+            <!-- =================================================
+                 FOOTER
+                 ================================================= -->
+
+            <div class="dashboard-footer">
+
+                Product Intelligence
+                •
+                Based on the selected Product dataset version
+
+            </div>
 
 
         </div>
@@ -2861,9 +2961,9 @@
 </div>
 
 
-<!-- =========================================================
-     CHART JAVASCRIPT
-========================================================= -->
+<!-- ============================================================
+     CHART.JS
+     ============================================================ -->
 
 <script>
 
@@ -2873,52 +2973,62 @@ document.addEventListener(
 
 
         /* =====================================================
-           DATA FROM DJANGO
-        ====================================================== */
+           DATE RANGE
+           ===================================================== */
 
-        const productLabels =
-            {{ product_labels|default:"[]"|safe }};
+        const rangeSelect =
+            document.getElementById(
+                "range"
+            );
 
-        const productRevenue =
-            {{ product_revenue_values|default:"[]"|safe }};
+        const customDateFields =
+            document.getElementById(
+                "customDateFields"
+            );
 
-        const productUnits =
-            {{ product_quantity_values|default:"[]"|safe }};
 
-        const productProfit =
-            {{ product_profit_values|default:"[]"|safe }};
+        function updateCustomDateVisibility() {
 
-        const trendLabels =
-            {{ trend_labels|default:"[]"|safe }};
+            if (
+                !rangeSelect ||
+                !customDateFields
+            ) {
+                return;
+            }
 
-        const trendRevenue =
-            {{ trend_revenue|default:"[]"|safe }};
 
-        const trendProfit =
-            {{ trend_profit|default:"[]"|safe }};
+            if (
+                rangeSelect.value === "custom"
+            ) {
 
-        const trendUnits =
-            {{ trend_units|default:"[]"|safe }};
+                customDateFields.classList.add(
+                    "visible"
+                );
 
-        const statusLabels =
-            {{ status_labels|default:"[]"|safe }};
+            } else {
 
-        const statusValues =
-            {{ status_values|default:"[]"|safe }};
+                customDateFields.classList.remove(
+                    "visible"
+                );
 
-        const paretoLabels =
-            {{ pareto_labels|default:"[]"|safe }};
+            }
+        }
 
-        const paretoValues =
-            {{ pareto_values|default:"[]"|safe }};
 
-        const scatterPoints =
-            {{ scatter_points|default:"[]"|safe }};
+        if (rangeSelect) {
+
+            rangeSelect.addEventListener(
+                "change",
+                updateCustomDateVisibility
+            );
+
+            updateCustomDateVisibility();
+        }
 
 
         /* =====================================================
-           CHART DEFAULTS
-        ====================================================== */
+           CHART.JS CHECK
+           ===================================================== */
 
         if (
             typeof Chart === "undefined"
@@ -2928,382 +3038,219 @@ document.addEventListener(
 
 
         Chart.defaults.font.family =
-            "Inter, Arial, sans-serif";
+            'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+
+        Chart.defaults.font.size = 10;
 
         Chart.defaults.color =
-            "#8195a9";
+            "#91a4b8";
 
 
         /* =====================================================
-           NUMBER FORMAT
-        ====================================================== */
+           ATTRACTIVE DARK DASHBOARD PALETTE
+           ===================================================== */
 
-        function formatIndianNumber(
-            value
-        ) {
+        const colors = [
 
-            return Number(
-                value || 0
-            ).toLocaleString(
-                "en-IN"
-            );
+            "#7567f8",
+            "#3fa9f5",
+            "#39d98a",
+            "#ff9f43",
+            "#ff5c70",
+            "#22d3ee",
+            "#f472b6",
+            "#facc15",
+            "#818cf8",
+            "#2dd4bf"
 
-        }
-
-
-        function formatCompact(
-            value
-        ) {
-
-            return Number(
-                value || 0
-            ).toLocaleString(
-                "en-IN",
-                {
-                    notation: "compact",
-                    maximumFractionDigits: 1
-                }
-            );
-
-        }
+        ];
 
 
         /* =====================================================
-           COMMON OPTIONS
-        ====================================================== */
+           JSON HELPER
+           ===================================================== */
 
-        const commonOptions = {
+        function parseJSON(
+            elementId
+        ) {
 
-            responsive: true,
+            const element =
+                document.getElementById(
+                    elementId
+                );
 
-            maintainAspectRatio: false,
 
-            animation: {
-                duration: 900
-            },
-
-            interaction: {
-                mode: "index",
-                intersect: false
-            },
-
-            plugins: {
-
-                legend: {
-                    display: false
-                },
-
-                tooltip: {
-
-                    backgroundColor:
-                        "#0d2033",
-
-                    borderColor:
-                        "rgba(255,255,255,.09)",
-
-                    borderWidth: 1,
-
-                    padding: 11,
-
-                    titleColor:
-                        "#f0f5fa",
-
-                    bodyColor:
-                        "#b7c7d5",
-
-                    displayColors: true
-                }
-
-            },
-
-            scales: {
-
-                x: {
-
-                    grid: {
-                        display: false
-                    },
-
-                    ticks: {
-
-                        color:
-                            "#71879c",
-
-                        font: {
-                            size: 8
-                        },
-
-                        maxRotation: 45,
-
-                        minRotation: 0
-                    }
-
-                },
-
-                y: {
-
-                    beginAtZero: true,
-
-                    grid: {
-
-                        color:
-                            "rgba(255,255,255,.045)"
-                    },
-
-                    ticks: {
-
-                        color:
-                            "#71879c",
-
-                        font: {
-                            size: 8
-                        }
-                    }
-
-                }
-
+            if (!element) {
+                return [];
             }
 
+
+            try {
+
+                return JSON.parse(
+                    element.textContent
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Unable to parse chart data:",
+                    error
+                );
+
+                return [];
+            }
+        }
+
+
+        /* =====================================================
+           GRADIENT HELPER
+           ===================================================== */
+
+        function createGradient(
+            context,
+            topColor,
+            bottomColor
+        ) {
+
+            const gradient =
+                context.createLinearGradient(
+                    0,
+                    0,
+                    0,
+                    340
+                );
+
+
+            gradient.addColorStop(
+                0,
+                topColor
+            );
+
+
+            gradient.addColorStop(
+                1,
+                bottomColor
+            );
+
+
+            return gradient;
+        }
+
+
+        /* =====================================================
+           TOOLTIP
+           ===================================================== */
+
+        const tooltipOptions = {
+
+            backgroundColor:
+                "rgba(5,15,27,.97)",
+
+            titleColor:
+                "#ffffff",
+
+            bodyColor:
+                "#cbd5e1",
+
+            borderColor:
+                "rgba(117,103,248,.28)",
+
+            borderWidth: 1,
+
+            padding: 11,
+
+            cornerRadius: 9,
+
+            displayColors: true,
+
+            boxPadding: 5,
+
+            titleFont: {
+                weight: "700"
+            },
+
+            bodyFont: {
+                size: 11
+            }
         };
 
 
         /* =====================================================
-           REVENUE CHART
-        ====================================================== */
+           COMMON GRID
+           ===================================================== */
 
-        const revenueCanvas =
-            document.getElementById(
-                "productRevenueChart"
-            );
+        const gridColor =
+            "rgba(145,164,184,.09)";
 
 
-        if (revenueCanvas) {
+        const commonScaleOptions = {
 
-            new Chart(
-                revenueCanvas,
-                {
+            x: {
 
-                    type: "bar",
+                grid: {
+                    color: gridColor,
+                    drawBorder: false
+                },
 
-                    data: {
-
-                        labels:
-                            productLabels,
-
-                        datasets: [
-
-                            {
-
-                                label:
-                                    "Revenue",
-
-                                data:
-                                    productRevenue,
-
-                                backgroundColor:
-                                    "rgba(117,103,248,.72)",
-
-                                borderColor:
-                                    "#7567f8",
-
-                                borderWidth: 1,
-
-                                borderRadius: 7,
-
-                                maxBarThickness: 44
-                            }
-
-                        ]
-
-                    },
-
-                    options: {
-
-                        ...commonOptions,
-
-                        plugins: {
-
-                            ...commonOptions.plugins,
-
-                            tooltip: {
-
-                                ...commonOptions.plugins.tooltip,
-
-                                callbacks: {
-
-                                    label:
-                                        function(
-                                            context
-                                        ) {
-
-                                            return (
-                                                " Revenue: ₹"
-                                                +
-                                                formatIndianNumber(
-                                                    context.raw
-                                                )
-                                            );
-
-                                        }
-
-                                }
-
-                            }
-
-                        },
-
-                        scales: {
-
-                            ...commonOptions.scales,
-
-                            y: {
-
-                                ...commonOptions.scales.y,
-
-                                ticks: {
-
-                                    color:
-                                        "#71879c",
-
-                                    callback:
-                                        function(
-                                            value
-                                        ) {
-
-                                            return (
-                                                "₹"
-                                                +
-                                                formatCompact(
-                                                    value
-                                                )
-                                            );
-
-                                        }
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-
+                ticks: {
+                    color: "#71869b",
+                    padding: 7
                 }
-            );
+            },
 
-        }
+            y: {
+
+                grid: {
+                    color: gridColor,
+                    drawBorder: false
+                },
+
+                ticks: {
+                    color: "#71869b",
+                    padding: 7
+                }
+            }
+        };
 
 
         /* =====================================================
-           UNITS CHART
-        ====================================================== */
+           SALES TREND
+           ===================================================== */
 
-        const quantityCanvas =
-            document.getElementById(
-                "productQuantityChart"
+        const salesTrendData =
+            parseJSON(
+                "salesTrendData"
             );
 
 
-        if (quantityCanvas) {
-
-            new Chart(
-                quantityCanvas,
-                {
-
-                    type: "bar",
-
-                    data: {
-
-                        labels:
-                            productLabels,
-
-                        datasets: [
-
-                            {
-
-                                label:
-                                    "Units Sold",
-
-                                data:
-                                    productUnits,
-
-                                backgroundColor:
-                                    "rgba(57,217,138,.68)",
-
-                                borderColor:
-                                    "#39d98a",
-
-                                borderWidth: 1,
-
-                                borderRadius: 7,
-
-                                maxBarThickness: 44
-                            }
-
-                        ]
-
-                    },
-
-                    options: {
-
-                        ...commonOptions,
-
-                        plugins: {
-
-                            ...commonOptions.plugins,
-
-                            tooltip: {
-
-                                ...commonOptions.plugins.tooltip,
-
-                                callbacks: {
-
-                                    label:
-                                        function(
-                                            context
-                                        ) {
-
-                                            return (
-                                                " Units: "
-                                                +
-                                                formatIndianNumber(
-                                                    context.raw
-                                                )
-                                            );
-
-                                        }
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        /* =====================================================
-           TREND CHART
-        ====================================================== */
-
-        const trendCanvas =
+        const salesTrendCanvas =
             document.getElementById(
-                "productTrendChart"
+                "salesTrendChart"
             );
 
 
         if (
-            trendCanvas &&
-            trendLabels.length > 0
+            salesTrendCanvas &&
+            salesTrendData.length
         ) {
 
+            const ctx =
+                salesTrendCanvas.getContext(
+                    "2d"
+                );
+
+
+            const gradient =
+                createGradient(
+                    ctx,
+                    "rgba(117,103,248,.32)",
+                    "rgba(117,103,248,.015)"
+                );
+
+
             new Chart(
-                trendCanvas,
+                ctx,
                 {
 
                     type: "line",
@@ -3311,223 +3258,55 @@ document.addEventListener(
                     data: {
 
                         labels:
-                            trendLabels,
+                            salesTrendData.map(
+                                item =>
+                                    item.date
+                            ),
 
                         datasets: [
 
                             {
 
                                 label:
-                                    "Revenue",
+                                    "Product Sales",
 
                                 data:
-                                    trendRevenue,
+                                    salesTrendData.map(
+                                        item =>
+                                            item.sales
+                                    ),
 
                                 borderColor:
                                     "#7567f8",
 
                                 backgroundColor:
-                                    "rgba(117,103,248,.10)",
+                                    gradient,
 
                                 fill: true,
 
-                                tension: .35,
+                                borderWidth: 3,
 
-                                pointRadius: 3,
+                                tension: .38,
+
+                                pointRadius: 2.5,
 
                                 pointHoverRadius: 6,
 
-                                borderWidth: 2
+                                pointBackgroundColor:
+                                    "#0d2033",
 
-                            },
+                                pointBorderColor:
+                                    "#7567f8",
 
-                            {
+                                pointBorderWidth: 2,
 
-                                label:
-                                    "Profit",
-
-                                data:
-                                    trendProfit,
-
-                                borderColor:
-                                    "#39d98a",
-
-                                backgroundColor:
-                                    "transparent",
-
-                                fill: false,
-
-                                tension: .35,
-
-                                pointRadius: 2,
-
-                                pointHoverRadius: 5,
-
-                                borderWidth: 2
-
+                                cubicInterpolationMode:
+                                    "monotone"
                             }
 
                         ]
-
                     },
 
-                    options: {
-
-                        ...commonOptions,
-
-                        plugins: {
-
-                            ...commonOptions.plugins,
-
-                            legend: {
-
-                                display: true,
-
-                                position: "top",
-
-                                align: "end",
-
-                                labels: {
-
-                                    color:
-                                        "#8195a9",
-
-                                    boxWidth: 9,
-
-                                    boxHeight: 9,
-
-                                    font: {
-                                        size: 9
-                                    }
-                                }
-
-                            },
-
-                            tooltip: {
-
-                                ...commonOptions.plugins.tooltip,
-
-                                callbacks: {
-
-                                    label:
-                                        function(
-                                            context
-                                        ) {
-
-                                            return (
-                                                " "
-                                                +
-                                                context.dataset.label
-                                                +
-                                                ": ₹"
-                                                +
-                                                formatIndianNumber(
-                                                    context.raw
-                                                )
-                                            );
-
-                                        }
-
-                                }
-
-                            }
-
-                        },
-
-                        scales: {
-
-                            ...commonOptions.scales,
-
-                            y: {
-
-                                ...commonOptions.scales.y,
-
-                                ticks: {
-
-                                    color:
-                                        "#71879c",
-
-                                    callback:
-                                        function(
-                                            value
-                                        ) {
-
-                                            return (
-                                                "₹"
-                                                +
-                                                formatCompact(
-                                                    value
-                                                )
-                                            );
-
-                                        }
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        /* =====================================================
-           STATUS DOUGHNUT
-        ====================================================== */
-
-        const statusCanvas =
-            document.getElementById(
-                "productStatusChart"
-            );
-
-
-        if (
-            statusCanvas &&
-            statusLabels.length > 0
-        ) {
-
-            new Chart(
-                statusCanvas,
-                {
-
-                    type: "doughnut",
-
-                    data: {
-
-                        labels:
-                            statusLabels,
-
-                        datasets: [
-
-                            {
-
-                                data:
-                                    statusValues,
-
-                                backgroundColor: [
-                                    "rgba(57,217,138,.78)",
-                                    "rgba(117,103,248,.78)",
-                                    "rgba(63,169,245,.78)",
-                                    "rgba(255,92,112,.78)",
-                                    "rgba(255,159,67,.78)"
-                                ],
-
-                                borderColor:
-                                    "#0b1c2d",
-
-                                borderWidth: 3,
-
-                                hoverOffset: 8
-                            }
-
-                        ]
-
-                    },
 
                     options: {
 
@@ -3535,77 +3314,586 @@ document.addEventListener(
 
                         maintainAspectRatio: false,
 
-                        cutout: "66%",
+                        interaction: {
+
+                            intersect: false,
+
+                            mode: "index"
+                        },
+
+
+                        plugins: {
+
+                            legend: {
+                                display: false
+                            },
+
+                            tooltip:
+                                tooltipOptions
+                        },
+
+
+                        scales:
+                            commonScaleOptions
+                    }
+
+                }
+            );
+        }
+
+
+        /* =====================================================
+           TOP PRODUCTS BY SALES
+           ===================================================== */
+
+        const salesByProductData =
+            parseJSON(
+                "salesByProductData"
+            );
+
+
+        const salesByProductCanvas =
+            document.getElementById(
+                "salesByProductChart"
+            );
+
+
+        if (
+            salesByProductCanvas &&
+            salesByProductData.length
+        ) {
+
+            new Chart(
+                salesByProductCanvas,
+                {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels:
+                            salesByProductData.map(
+                                item =>
+                                    item.product_name
+                            ),
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    "Sales",
+
+                                data:
+                                    salesByProductData.map(
+                                        item =>
+                                            item.sales
+                                    ),
+
+                                backgroundColor:
+                                    salesByProductData.map(
+                                        (
+                                            item,
+                                            index
+                                        ) =>
+                                            colors[
+                                                index %
+                                                colors.length
+                                            ]
+                                    ),
+
+                                borderWidth: 0,
+
+                                borderRadius: 7,
+
+                                borderSkipped: false
+                            }
+
+                        ]
+                    },
+
+
+                    options: {
+
+                        indexAxis: "y",
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+
+                        plugins: {
+
+                            legend: {
+                                display: false
+                            },
+
+                            tooltip:
+                                tooltipOptions
+                        },
+
+
+                        scales: {
+
+                            x: {
+
+                                beginAtZero: true,
+
+                                grid: {
+                                    color: gridColor
+                                },
+
+                                ticks: {
+                                    color: "#71869b"
+                                }
+                            },
+
+
+                            y: {
+
+                                grid: {
+                                    display: false
+                                },
+
+                                ticks: {
+
+                                    color:
+                                        "#aebdca",
+
+                                    font: {
+                                        weight: 600
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+
+        /* =====================================================
+           TOP PRODUCTS BY UNITS
+           ===================================================== */
+
+        const unitsByProductData =
+            parseJSON(
+                "unitsByProductData"
+            );
+
+
+        const unitsByProductCanvas =
+            document.getElementById(
+                "unitsByProductChart"
+            );
+
+
+        if (
+            unitsByProductCanvas &&
+            unitsByProductData.length
+        ) {
+
+            new Chart(
+                unitsByProductCanvas,
+                {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels:
+                            unitsByProductData.map(
+                                item =>
+                                    item.product_name
+                            ),
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    "Units",
+
+                                data:
+                                    unitsByProductData.map(
+                                        item =>
+                                            item.units
+                                    ),
+
+                                backgroundColor:
+                                    unitsByProductData.map(
+                                        (
+                                            item,
+                                            index
+                                        ) =>
+                                            colors[
+                                                (
+                                                    index + 2
+                                                ) %
+                                                colors.length
+                                            ]
+                                    ),
+
+                                borderWidth: 0,
+
+                                borderRadius: 7,
+
+                                borderSkipped: false
+                            }
+
+                        ]
+                    },
+
+
+                    options: {
+
+                        indexAxis: "y",
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+
+                        plugins: {
+
+                            legend: {
+                                display: false
+                            },
+
+                            tooltip:
+                                tooltipOptions
+                        },
+
+
+                        scales: {
+
+                            x: {
+
+                                beginAtZero: true,
+
+                                grid: {
+                                    color: gridColor
+                                },
+
+                                ticks: {
+                                    color: "#71869b"
+                                }
+                            },
+
+
+                            y: {
+
+                                grid: {
+                                    display: false
+                                },
+
+                                ticks: {
+
+                                    color:
+                                        "#aebdca",
+
+                                    font: {
+                                        weight: 600
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+
+        /* =====================================================
+           SALES BY CATEGORY
+           ===================================================== */
+
+        const categoryData =
+            parseJSON(
+                "salesByCategoryData"
+            );
+
+
+        const categoryCanvas =
+            document.getElementById(
+                "salesByCategoryChart"
+            );
+
+
+        if (
+            categoryCanvas &&
+            categoryData.length
+        ) {
+
+            new Chart(
+                categoryCanvas,
+                {
+
+                    type: "doughnut",
+
+                    data: {
+
+                        labels:
+                            categoryData.map(
+                                item =>
+                                    item.category
+                            ),
+
+                        datasets: [
+
+                            {
+
+                                data:
+                                    categoryData.map(
+                                        item =>
+                                            item.sales
+                                    ),
+
+                                backgroundColor:
+                                    categoryData.map(
+                                        (
+                                            item,
+                                            index
+                                        ) =>
+                                            colors[
+                                                index %
+                                                colors.length
+                                            ]
+                                    ),
+
+                                borderColor:
+                                    "#0d2033",
+
+                                borderWidth: 4,
+
+                                hoverOffset: 10
+                            }
+
+                        ]
+                    },
+
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        cutout: "64%",
+
 
                         plugins: {
 
                             legend: {
 
-                                display: true,
-
-                                position: "bottom",
+                                position:
+                                    "bottom",
 
                                 labels: {
 
+                                    usePointStyle:
+                                        true,
+
+                                    pointStyle:
+                                        "circle",
+
+                                    padding: 15,
+
                                     color:
-                                        "#8195a9",
-
-                                    padding: 14,
-
-                                    boxWidth: 10,
+                                        "#91a4b8",
 
                                     font: {
-                                        size: 9
+                                        weight: 600
                                     }
-
                                 }
-
                             },
 
-                            tooltip: {
 
-                                backgroundColor:
-                                    "#0d2033",
-
-                                borderColor:
-                                    "rgba(255,255,255,.08)",
-
-                                borderWidth: 1
-
-                            }
-
+                            tooltip:
+                                tooltipOptions
                         }
-
                     }
-
                 }
             );
-
         }
 
 
         /* =====================================================
-           SCATTER CHART
-        ====================================================== */
+           PROFIT BY PRODUCT
+           ===================================================== */
 
-        const scatterCanvas =
+        const profitByProductData =
+            parseJSON(
+                "profitByProductData"
+            );
+
+
+        const profitByProductCanvas =
             document.getElementById(
-                "productScatterChart"
+                "profitByProductChart"
             );
 
 
         if (
-            scatterCanvas &&
-            scatterPoints.length > 0
+            profitByProductCanvas &&
+            profitByProductData.length
         ) {
 
             new Chart(
-                scatterCanvas,
+                profitByProductCanvas,
                 {
 
-                    type: "scatter",
+                    type: "bar",
 
                     data: {
+
+                        labels:
+                            profitByProductData.map(
+                                item =>
+                                    item.product_name
+                            ),
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    "Profit",
+
+                                data:
+                                    profitByProductData.map(
+                                        item =>
+                                            item.profit
+                                    ),
+
+                                backgroundColor:
+                                    profitByProductData.map(
+                                        (
+                                            item,
+                                            index
+                                        ) => {
+
+                                            if (
+                                                Number(
+                                                    item.profit
+                                                ) < 0
+                                            ) {
+
+                                                return "#ff5c70";
+                                            }
+
+
+                                            return colors[
+                                                (
+                                                    index + 2
+                                                ) %
+                                                colors.length
+                                            ];
+                                        }
+                                    ),
+
+                                borderWidth: 0,
+
+                                borderRadius: 7,
+
+                                borderSkipped: false
+                            }
+
+                        ]
+                    },
+
+
+                    options: {
+
+                        indexAxis: "y",
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+
+                        plugins: {
+
+                            legend: {
+                                display: false
+                            },
+
+                            tooltip:
+                                tooltipOptions
+                        },
+
+
+                        scales: {
+
+                            x: {
+
+                                grid: {
+                                    color: gridColor
+                                },
+
+                                ticks: {
+                                    color: "#71869b"
+                                }
+                            },
+
+
+                            y: {
+
+                                grid: {
+                                    display: false
+                                },
+
+                                ticks: {
+
+                                    color:
+                                        "#aebdca",
+
+                                    font: {
+                                        weight: 600
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+
+        /* =====================================================
+           QUANTITY DISTRIBUTION
+           ===================================================== */
+
+        const quantityDistributionData =
+            parseJSON(
+                "quantityDistributionData"
+            );
+
+
+        const quantityDistributionCanvas =
+            document.getElementById(
+                "quantityDistributionChart"
+            );
+
+
+        if (
+            quantityDistributionCanvas &&
+            quantityDistributionData.length
+        ) {
+
+            new Chart(
+                quantityDistributionCanvas,
+                {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels:
+                            quantityDistributionData.map(
+                                item =>
+                                    item.band
+                            ),
 
                         datasets: [
 
@@ -3615,315 +3903,71 @@ document.addEventListener(
                                     "Products",
 
                                 data:
-                                    scatterPoints,
+                                    quantityDistributionData.map(
+                                        item =>
+                                            item.products
+                                    ),
 
-                                backgroundColor:
+                                backgroundColor: [
+
+                                    "rgba(117,103,248,.30)",
+
+                                    "rgba(117,103,248,.48)",
+
                                     "rgba(117,103,248,.65)",
 
-                                borderColor:
+                                    "rgba(63,169,245,.72)",
+
+                                    "rgba(57,217,138,.76)",
+
+                                    "rgba(255,159,67,.80)"
+
+                                ],
+
+                                borderColor: [
+
                                     "#7567f8",
 
-                                pointRadius: 5,
+                                    "#7567f8",
 
-                                pointHoverRadius: 8,
+                                    "#7567f8",
 
-                                borderWidth: 1
+                                    "#3fa9f5",
+
+                                    "#39d98a",
+
+                                    "#ff9f43"
+
+                                ],
+
+                                borderWidth: 1,
+
+                                borderRadius: 8,
+
+                                borderSkipped: false
                             }
 
                         ]
-
                     },
+
 
                     options: {
 
-                        ...commonOptions,
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
 
                         plugins: {
 
-                            ...commonOptions.plugins,
-
-                            tooltip: {
-
-                                ...commonOptions.plugins.tooltip,
-
-                                callbacks: {
-
-                                    title:
-                                        function(
-                                            items
-                                        ) {
-
-                                            if (
-                                                !items.length
-                                            ) {
-                                                return "";
-                                            }
-
-                                            const point =
-                                                items[0]
-                                                .raw;
-
-                                            return (
-                                                point.label
-                                                || "Product"
-                                            );
-
-                                        },
-
-                                    label:
-                                        function(
-                                            context
-                                        ) {
-
-                                            const point =
-                                                context.raw;
-
-                                            return [
-
-                                                " Units: "
-                                                +
-                                                formatIndianNumber(
-                                                    point.x
-                                                ),
-
-                                                " Revenue: ₹"
-                                                +
-                                                formatIndianNumber(
-                                                    point.y
-                                                ),
-
-                                                " Profit: ₹"
-                                                +
-                                                formatIndianNumber(
-                                                    point.profit
-                                                ),
-
-                                                " Growth: "
-                                                +
-                                                Number(
-                                                    point.growth
-                                                    || 0
-                                                ).toFixed(1)
-                                                +
-                                                "%",
-
-                                                " Return Rate: "
-                                                +
-                                                Number(
-                                                    point.returnRate
-                                                    || 0
-                                                ).toFixed(1)
-                                                +
-                                                "%"
-                                            ];
-
-                                        }
-
-                                }
-
-                            }
-
-                        },
-
-                        scales: {
-
-                            x: {
-
-                                title: {
-
-                                    display: true,
-
-                                    text:
-                                        "Units Sold",
-
-                                    color:
-                                        "#71879c",
-
-                                    font: {
-                                        size: 9
-                                    }
-
-                                },
-
-                                grid: {
-
-                                    color:
-                                        "rgba(255,255,255,.045)"
-
-                                },
-
-                                ticks: {
-
-                                    color:
-                                        "#71879c",
-
-                                    font: {
-                                        size: 8
-                                    }
-
-                                }
-
+                            legend: {
+                                display: false
                             },
 
-                            y: {
-
-                                beginAtZero: true,
-
-                                title: {
-
-                                    display: true,
-
-                                    text:
-                                        "Revenue",
-
-                                    color:
-                                        "#71879c",
-
-                                    font: {
-                                        size: 9
-                                    }
-
-                                },
-
-                                grid: {
-
-                                    color:
-                                        "rgba(255,255,255,.045)"
-
-                                },
-
-                                ticks: {
-
-                                    color:
-                                        "#71879c",
-
-                                    font: {
-                                        size: 8
-                                    },
-
-                                    callback:
-                                        function(
-                                            value
-                                        ) {
-
-                                            return (
-                                                "₹"
-                                                +
-                                                formatCompact(
-                                                    value
-                                                )
-                                            );
-
-                                        }
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        /* =====================================================
-           PARETO CHART
-        ====================================================== */
-
-        const paretoCanvas =
-            document.getElementById(
-                "productParetoChart"
-            );
-
-
-        if (
-            paretoCanvas &&
-            paretoLabels.length > 0
-        ) {
-
-            new Chart(
-                paretoCanvas,
-                {
-
-                    type: "line",
-
-                    data: {
-
-                        labels:
-                            paretoLabels,
-
-                        datasets: [
-
-                            {
-
-                                label:
-                                    "Cumulative Revenue %",
-
-                                data:
-                                    paretoValues,
-
-                                borderColor:
-                                    "#ff9f43",
-
-                                backgroundColor:
-                                    "rgba(255,159,67,.08)",
-
-                                fill: true,
-
-                                tension: .25,
-
-                                pointRadius: 3,
-
-                                pointHoverRadius: 6,
-
-                                borderWidth: 2
-                            }
-
-                        ]
-
-                    },
-
-                    options: {
-
-                        ...commonOptions,
-
-                        plugins: {
-
-                            ...commonOptions.plugins,
-
-                            tooltip: {
-
-                                ...commonOptions.plugins.tooltip,
-
-                                callbacks: {
-
-                                    label:
-                                        function(
-                                            context
-                                        ) {
-
-                                            return (
-                                                " Cumulative: "
-                                                +
-                                                Number(
-                                                    context.raw
-                                                    || 0
-                                                ).toFixed(1)
-                                                +
-                                                "%"
-                                            );
-
-                                        }
-
-                                }
-
-                            }
-
+                            tooltip:
+                                tooltipOptions
                         },
+
 
                         scales: {
 
@@ -3936,180 +3980,35 @@ document.addEventListener(
                                 ticks: {
 
                                     color:
-                                        "#71879c",
+                                        "#aebdca",
 
                                     font: {
-                                        size: 8
-                                    },
-
-                                    maxRotation: 45
-
+                                        weight: 600
+                                    }
                                 }
-
                             },
+
 
                             y: {
 
-                                min: 0,
-
-                                max: 100,
+                                beginAtZero: true,
 
                                 grid: {
-
-                                    color:
-                                        "rgba(255,255,255,.045)"
-
+                                    color: gridColor
                                 },
 
                                 ticks: {
 
+                                    precision: 0,
+
                                     color:
-                                        "#71879c",
-
-                                    font: {
-                                        size: 8
-                                    },
-
-                                    callback:
-                                        function(
-                                            value
-                                        ) {
-
-                                            return (
-                                                value
-                                                +
-                                                "%"
-                                            );
-
-                                        }
-
+                                        "#71869b"
                                 }
-
                             }
-
                         }
-
                     }
-
                 }
             );
-
-        }
-
-
-        /* =====================================================
-           CUSTOM DATE RANGE UX
-        ====================================================== */
-
-        const rangeSelect =
-            document.getElementById(
-                "productRange"
-            );
-
-        const startDate =
-            document.getElementById(
-                "productStartDate"
-            );
-
-        const endDate =
-            document.getElementById(
-                "productEndDate"
-            );
-
-
-        function updateCustomDateState() {
-
-            if (!rangeSelect) {
-                return;
-            }
-
-            const isCustom =
-                rangeSelect.value === "custom";
-
-            if (startDate) {
-
-                startDate.disabled =
-                    !isCustom;
-
-                startDate.style.opacity =
-                    isCustom ? "1" : ".55";
-            }
-
-            if (endDate) {
-
-                endDate.disabled =
-                    !isCustom;
-
-                endDate.style.opacity =
-                    isCustom ? "1" : ".55";
-            }
-
-        }
-
-
-        if (rangeSelect) {
-
-            rangeSelect.addEventListener(
-                "change",
-                updateCustomDateState
-            );
-
-            updateCustomDateState();
-
-        }
-
-
-        /* =====================================================
-           SIDEBAR SCROLL ISOLATION
-        ====================================================== */
-
-        const sidebar =
-            document.getElementById(
-                "productSmartSidebar"
-            );
-
-        const main =
-            document.querySelector(
-                ".product-app .product-main"
-            );
-
-
-        /*
-           Prevent wheel events from propagating
-           between sidebar and main content.
-        */
-
-        if (sidebar) {
-
-            sidebar.addEventListener(
-                "wheel",
-                function(event) {
-
-                    event.stopPropagation();
-
-                },
-                {
-                    passive: true
-                }
-            );
-
-        }
-
-
-        if (main) {
-
-            main.addEventListener(
-                "wheel",
-                function(event) {
-
-                    event.stopPropagation();
-
-                },
-                {
-                    passive: true
-                }
-            );
-
         }
 
     }
@@ -4118,4 +4017,58 @@ document.addEventListener(
 
 </script>
 
-{% endblock %}
+
+<!-- ============================================================
+     CHART DATA
+     ============================================================ -->
+
+<script
+    type="application/json"
+    id="salesTrendData"
+>
+    {{ sales_trend_json|safe }}
+</script>
+
+
+<script
+    type="application/json"
+    id="salesByProductData"
+>
+    {{ sales_by_product_json|safe }}
+</script>
+
+
+<script
+    type="application/json"
+    id="unitsByProductData"
+>
+    {{ units_by_product_json|safe }}
+</script>
+
+
+<script
+    type="application/json"
+    id="salesByCategoryData"
+>
+    {{ sales_by_category_json|safe }}
+</script>
+
+
+<script
+    type="application/json"
+    id="profitByProductData"
+>
+    {{ profit_by_product_json|safe }}
+</script>
+
+
+<script
+    type="application/json"
+    id="quantityDistributionData"
+>
+    {{ quantity_distribution_json|safe }}
+</script>
+
+
+</body>
+</html>

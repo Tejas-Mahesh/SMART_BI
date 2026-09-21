@@ -1,302 +1,134 @@
-/* =========================================================
-   SMART BI SIDEBAR
-   - Mobile open / close
-   - Collapsible sections
-   - Auto-open active section
-   - Close sidebar after mobile navigation
-========================================================= */
+/**
+ * SMART BI — ENTERPRISE SIDEBAR CONTROLLER
+ * File: static/js/smart-sidebar.js
+ * High-performance vanilla JavaScript controller managing:
+ * - Mobile slide-in drawer state and backdrop overlay
+ * - Collapsible section state toggling with aria-expanded sync
+ * - Mobile navigation auto-closing & keyboard accessibility (Escape to close)
+ * - Preservation of server-rendered active states
+ */
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
+  "use strict";
 
-    const sidebar =
-        document.getElementById("smartBISidebar");
+  const sidebar = document.getElementById("smartBISidebar");
+  const toggleBtn = document.getElementById("mobileSidebarToggle");
+  const overlay = document.getElementById("sidebarOverlay");
+  const collapsibleSections = document.querySelectorAll(".sidebar-collapsible");
 
-    const toggleButton =
-        document.getElementById("mobileSidebarToggle");
+  /* ==========================================================================
+     1. MOBILE SIDEBAR OPEN / CLOSE HANDLERS
+     ========================================================================== */
+  const openSidebar = () => {
+    if (!sidebar) return;
+    sidebar.classList.add("sidebar-open");
+    if (overlay) overlay.classList.add("active");
+    if (toggleBtn) {
+      toggleBtn.classList.add("open");
+      toggleBtn.setAttribute("aria-expanded", "true");
+    }
+    document.body.classList.add("sidebar-open");
+  };
 
-    const overlay =
-        document.getElementById("sidebarOverlay");
+  const closeSidebar = () => {
+    if (!sidebar) return;
+    sidebar.classList.remove("sidebar-open");
+    if (overlay) overlay.classList.remove("active");
+    if (toggleBtn) {
+      toggleBtn.classList.remove("open");
+      toggleBtn.setAttribute("aria-expanded", "false");
+    }
+    document.body.classList.remove("sidebar-open");
+  };
 
+  const toggleSidebar = () => {
+    if (!sidebar) return;
+    const isOpen = sidebar.classList.contains("sidebar-open");
+    if (isOpen) {
+      closeSidebar();
+    } else {
+      openSidebar();
+    }
+  };
 
-    if (!sidebar) {
-        return;
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleSidebar();
+    });
+  }
+
+  if (overlay) {
+    overlay.addEventListener("click", () => {
+      closeSidebar();
+    });
+  }
+
+  // Keyboard navigation: Escape key closes sidebar
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && sidebar && sidebar.classList.contains("sidebar-open")) {
+      closeSidebar();
+      if (toggleBtn) toggleBtn.focus();
+    }
+  });
+
+  // Mobile Link Click: Automatically close sidebar so navigation feels snappy
+  if (sidebar) {
+    const navLinks = sidebar.querySelectorAll(".sidebar-link:not(.sidebar-settings-link)");
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        if (window.innerWidth <= 1024) {
+          closeSidebar();
+        }
+      });
+    });
+  }
+
+  /* ==========================================================================
+     2. COLLAPSIBLE ACCORDION SECTIONS
+     ========================================================================== */
+  collapsibleSections.forEach((section) => {
+    const trigger = section.querySelector(".sidebar-group-button");
+    const content = section.querySelector(".sidebar-group-content");
+
+    // Preserve initial server-rendered state
+    const isInitiallyOpen = section.classList.contains("section-open");
+    if (trigger) {
+      trigger.setAttribute("aria-expanded", isInitiallyOpen ? "true" : "false");
     }
 
+    if (trigger) {
+      trigger.addEventListener("click", (e) => {
+        e.preventDefault();
+        const isOpen = section.classList.contains("section-open");
 
-    /* =====================================================
-       MOBILE SIDEBAR
-    ====================================================== */
-
-    function openMobileSidebar() {
-
-        sidebar.classList.add("sidebar-open");
-
-        document.body.classList.add(
-            "sidebar-mobile-open"
-        );
-
-        if (toggleButton) {
-
-            toggleButton.classList.add(
-                "is-open"
-            );
-
-            toggleButton.setAttribute(
-                "aria-expanded",
-                "true"
-            );
-
-        }
-
-        if (overlay) {
-            overlay.classList.add("show");
-        }
-
-    }
-
-
-    function closeMobileSidebar() {
-
-        sidebar.classList.remove(
-            "sidebar-open"
-        );
-
-        document.body.classList.remove(
-            "sidebar-mobile-open"
-        );
-
-        if (toggleButton) {
-
-            toggleButton.classList.remove(
-                "is-open"
-            );
-
-            toggleButton.setAttribute(
-                "aria-expanded",
-                "false"
-            );
-
-        }
-
-        if (overlay) {
-            overlay.classList.remove("show");
-        }
-
-    }
-
-
-    function toggleMobileSidebar() {
-
-        if (
-            sidebar.classList.contains(
-                "sidebar-open"
-            )
-        ) {
-
-            closeMobileSidebar();
-
+        if (isOpen) {
+          section.classList.remove("section-open");
+          trigger.setAttribute("aria-expanded", "false");
         } else {
-
-            openMobileSidebar();
-
+          section.classList.add("section-open");
+          trigger.setAttribute("aria-expanded", "true");
         }
-
+      });
     }
+  });
 
-
-    if (toggleButton) {
-
-        toggleButton.addEventListener(
-            "click",
-            toggleMobileSidebar
-        );
-
-    }
-
-
-    if (overlay) {
-
-        overlay.addEventListener(
-            "click",
-            closeMobileSidebar
-        );
-
-    }
-
-
-    /* =====================================================
-       ESC KEY
-    ====================================================== */
-
-    document.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (event.key === "Escape") {
-
-                closeMobileSidebar();
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       COLLAPSIBLE SIDEBAR SECTIONS
-    ====================================================== */
-
-    const sectionButtons =
-        document.querySelectorAll(
-            "[data-toggle-section]"
-        );
-
-
-    sectionButtons.forEach(function (button) {
-
-        button.addEventListener(
-            "click",
-            function () {
-
-                const sectionName =
-                    button.getAttribute(
-                        "data-toggle-section"
-                    );
-
-                const section =
-                    document.querySelector(
-                        '[data-section="' +
-                        sectionName +
-                        '"]'
-                    );
-
-
-                if (!section) {
-                    return;
-                }
-
-
-                const isOpen =
-                    section.classList.contains(
-                        "section-open"
-                    );
-
-
-                /*
-                   Optional accordion behavior:
-                   only one large section stays open.
-                */
-
-                document
-                    .querySelectorAll(
-                        ".sidebar-collapsible"
-                    )
-                    .forEach(function (otherSection) {
-
-                        if (
-                            otherSection !== section
-                        ) {
-
-                            otherSection.classList.remove(
-                                "section-open"
-                            );
-
-                            const otherButton =
-                                otherSection.querySelector(
-                                    ".sidebar-group-button"
-                                );
-
-                            if (otherButton) {
-
-                                otherButton.setAttribute(
-                                    "aria-expanded",
-                                    "false"
-                                );
-
-                            }
-
-                        }
-
-                    });
-
-
-                if (isOpen) {
-
-                    section.classList.remove(
-                        "section-open"
-                    );
-
-                    button.setAttribute(
-                        "aria-expanded",
-                        "false"
-                    );
-
-                } else {
-
-                    section.classList.add(
-                        "section-open"
-                    );
-
-                    button.setAttribute(
-                        "aria-expanded",
-                        "true"
-                    );
-
-                }
-
-            }
-        );
-
+  /* ==========================================================================
+     3. PREVENT UNNECESSARY BEHAVIOR ON DISABLED/SETTINGS LINKS
+     ========================================================================== */
+  const settingsLinks = document.querySelectorAll(".sidebar-settings-link");
+  settingsLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
     });
+  });
 
-
-    /* =====================================================
-       MOBILE NAVIGATION CLOSE
-    ====================================================== */
-
-    const navigationLinks =
-        sidebar.querySelectorAll(
-            "a.sidebar-link"
-        );
-
-
-    navigationLinks.forEach(function (link) {
-
-        link.addEventListener(
-            "click",
-            function () {
-
-                if (
-                    window.innerWidth <= 700
-                ) {
-
-                    closeMobileSidebar();
-
-                }
-
-            }
-        );
-
-    });
-
-
-    /* =====================================================
-       RESIZE HANDLER
-    ====================================================== */
-
-    window.addEventListener(
-        "resize",
-        function () {
-
-            if (
-                window.innerWidth > 700
-            ) {
-
-                closeMobileSidebar();
-
-            }
-
-        }
-    );
-
+  /* ==========================================================================
+     4. RESIZE EVENT WATCHER
+     ========================================================================== */
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 1024 && sidebar && sidebar.classList.contains("sidebar-open")) {
+      closeSidebar();
+    }
+  }, { passive: true });
 });

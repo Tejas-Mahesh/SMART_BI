@@ -1,1765 +1,3735 @@
-{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
-{% block title %}Marketing Intelligence | Smart BI{% endblock %}
+    <meta charset="UTF-8">
 
-{% block extra_css %}
-<style>
-    .marketing-page {
-        padding: 28px;
-        animation: pageIn .5s ease;
-    }
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+      <link
+        rel="stylesheet"
+        href="{% static 'css/smart_sidebar.css' %}"
+    >
+    <title>
+        Marketing Intelligence
+    </title>
 
-    @keyframes pageIn {
-        from {
-            opacity: 0;
-            transform: translateY(12px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    .page-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 20px;
-        margin-bottom: 24px;
-    }
+    <style>
 
-    .page-header h1 {
-        margin: 0 0 7px;
-        font-size: 30px;
-        color: #fff;
-    }
+        /* =====================================================
+           GLOBAL THEME
+           ===================================================== */
 
-    .page-header p {
-        margin: 0;
-        color: #8ea3b7;
-        font-size: 14px;
-    }
+        :root {
 
-    .dataset-selector {
-        min-width: 250px;
-    }
+            --bg: #06111f;
+            --sidebar: #081827;
+            --panel: #0d2033;
+            --panel-2: #10283f;
 
-    .dataset-selector label {
-        display: block;
-        margin-bottom: 7px;
-        color: #8ea3b7;
-        font-size: 12px;
-        font-weight: 600;
-    }
+            --border: rgba(255,255,255,.075);
 
-    .dataset-selector select {
-        width: 100%;
-        padding: 11px 14px;
-        border: 1px solid #1c3850;
-        border-radius: 10px;
-        background: #0d2033;
-        color: #fff;
-        outline: none;
-    }
+            --text: #f5f7fb;
+            --muted: #8fa4b8;
 
-    /* DATE CONTROLS */
+            --purple: #7567f8;
+            --green: #39d98a;
+            --orange: #ff9f43;
+            --red: #ff5c70;
+            --blue: #3fa9f5;
+            --cyan: #38d9ff;
 
-    .analysis-controls {
-        display: flex;
-        align-items: flex-end;
-        flex-wrap: wrap;
-        gap: 15px;
-        margin-bottom: 24px;
-        padding: 18px;
-        background: #0b1c2d;
-        border: 1px solid #183149;
-        border-radius: 14px;
-    }
+            --shadow:
+                0 18px 55px rgba(0,0,0,.22);
 
-    .control-group label {
-        display: block;
-        margin-bottom: 7px;
-        color: #8ea3b7;
-        font-size: 12px;
-        font-weight: 600;
-    }
+            --radius: 17px;
 
-    .control-group select,
-    .control-group input {
-        min-width: 155px;
-        padding: 10px 12px;
-        border: 1px solid #1d3a53;
-        border-radius: 9px;
-        background: #0d2033;
-        color: #fff;
-        outline: none;
-    }
-
-    .control-group input {
-        min-width: 145px;
-    }
-
-    .custom-date-group {
-        display: flex;
-        align-items: flex-end;
-        gap: 10px;
-    }
-
-    .apply-range-btn {
-        border: 0;
-        padding: 11px 18px;
-        border-radius: 9px;
-        background: #7567f8;
-        color: white;
-        cursor: pointer;
-        font-weight: 700;
-    }
-
-    .apply-range-btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 8px 20px rgba(117, 103, 248, .25);
-    }
-
-    .selected-period {
-        margin-left: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-        padding: 10px 15px;
-        border-radius: 10px;
-        background: rgba(117, 103, 248, .08);
-        border: 1px solid rgba(117, 103, 248, .2);
-    }
-
-    .selected-period span {
-        color: #7e93a8;
-        font-size: 11px;
-    }
-
-    .selected-period strong {
-        color: #fff;
-        font-size: 14px;
-    }
-
-    .selected-period small {
-        color: #8ea3b7;
-    }
-
-    /* ALERT */
-
-    .error-box {
-        padding: 18px;
-        margin-bottom: 22px;
-        border-radius: 12px;
-        background: rgba(255, 92, 112, .08);
-        border: 1px solid rgba(255, 92, 112, .25);
-        color: #ff8b9a;
-    }
-
-    .empty-state {
-        padding: 70px 30px;
-        text-align: center;
-        background: #0d2033;
-        border: 1px solid #183149;
-        border-radius: 16px;
-    }
-
-    .empty-icon {
-        font-size: 45px;
-        margin-bottom: 15px;
-    }
-
-    .empty-state h2 {
-        color: #fff;
-        margin-bottom: 8px;
-    }
-
-    .empty-state p {
-        color: #8298ad;
-        margin: 0;
-    }
-
-    /* KPI */
-
-    .kpi-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 18px;
-        margin-bottom: 22px;
-    }
-
-    .kpi-card {
-        position: relative;
-        overflow: hidden;
-        padding: 21px;
-        background: #0d2033;
-        border: 1px solid #183149;
-        border-radius: 15px;
-        transition: .25s ease;
-    }
-
-    .kpi-card:hover {
-        transform: translateY(-4px);
-        border-color: #2d4d68;
-    }
-
-    .kpi-card::after {
-        content: "";
-        position: absolute;
-        width: 90px;
-        height: 90px;
-        right: -35px;
-        top: -35px;
-        border-radius: 50%;
-        background: rgba(117, 103, 248, .08);
-    }
-
-    .kpi-label {
-        color: #849aae;
-        font-size: 12px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: .5px;
-    }
-
-    .kpi-value {
-        margin-top: 10px;
-        color: #fff;
-        font-size: 27px;
-        font-weight: 800;
-    }
-
-    .kpi-subtitle {
-        margin-top: 7px;
-        color: #71869b;
-        font-size: 12px;
-    }
-
-    .purple {
-        color: #7567f8;
-    }
-
-    .green {
-        color: #39d98a;
-    }
-
-    .orange {
-        color: #ff9f43;
-    }
-
-    .red {
-        color: #ff5c70;
-    }
-
-    /* CARDS */
-
-    .content-grid {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 20px;
-        margin-bottom: 22px;
-    }
-
-    .chart-card,
-    .table-card,
-    .insights-card,
-    .comparison-card,
-    .info-card {
-        background: #0d2033;
-        border: 1px solid #183149;
-        border-radius: 15px;
-    }
-
-    .chart-card {
-        padding: 20px;
-        min-height: 390px;
-    }
-
-    .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 15px;
-        margin-bottom: 18px;
-    }
-
-    .card-header h2 {
-        margin: 0 0 5px;
-        color: #fff;
-        font-size: 17px;
-    }
-
-    .card-header p {
-        margin: 0;
-        color: #758ba0;
-        font-size: 12px;
-    }
-
-    .chart-container {
-        height: 305px;
-        position: relative;
-    }
-
-    /* COMPARISON */
-
-    .comparison-card {
-        padding: 21px;
-        margin-bottom: 22px;
-    }
-
-    .comparison-header {
-        display: flex;
-        justify-content: space-between;
-        gap: 15px;
-        margin-bottom: 20px;
-    }
-
-    .comparison-header h2 {
-        color: #fff;
-        font-size: 18px;
-        margin: 0 0 5px;
-    }
-
-    .comparison-header p {
-        color: #788da2;
-        font-size: 12px;
-        margin: 0;
-    }
-
-    .comparison-badge {
-        align-self: flex-start;
-        padding: 7px 12px;
-        border-radius: 20px;
-        background: rgba(117, 103, 248, .1);
-        border: 1px solid rgba(117, 103, 248, .25);
-        color: #a69fff;
-        font-size: 12px;
-    }
-
-    .comparison-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 14px;
-    }
-
-    .comparison-box {
-        padding: 17px;
-        background: #0a1b2b;
-        border: 1px solid #173047;
-        border-radius: 12px;
-    }
-
-    .comparison-label {
-        display: block;
-        color: #71879c;
-        font-size: 11px;
-        margin-bottom: 8px;
-    }
-
-    .comparison-box strong {
-        display: block;
-        color: #fff;
-        font-size: 21px;
-    }
-
-    .comparison-box small {
-        display: block;
-        margin-top: 5px;
-        color: #72879a;
-        font-size: 11px;
-    }
-
-    .comparison-box.positive {
-        border-color: rgba(57, 217, 138, .3);
-    }
-
-    .comparison-box.negative {
-        border-color: rgba(255, 92, 112, .3);
-    }
-
-    .positive-text {
-        color: #39d98a !important;
-    }
-
-    .negative-text {
-        color: #ff5c70 !important;
-    }
-
-    .neutral-text {
-        color: #ff9f43 !important;
-    }
-
-    /* CAMPAIGN TABLE */
-
-    .table-card {
-        padding: 20px;
-        margin-bottom: 22px;
-    }
-
-    .table-wrapper {
-        overflow-x: auto;
-    }
-
-    .data-table {
-        width: 100%;
-        border-collapse: collapse;
-        min-width: 720px;
-    }
-
-    .data-table th {
-        padding: 12px;
-        text-align: left;
-        color: #71879b;
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: .4px;
-        border-bottom: 1px solid #1a344b;
-    }
-
-    .data-table td {
-        padding: 14px 12px;
-        color: #d8e1ea;
-        font-size: 13px;
-        border-bottom: 1px solid #132b40;
-    }
-
-    .data-table tbody tr {
-        transition: .2s;
-    }
-
-    .data-table tbody tr:hover {
-        background: rgba(117, 103, 248, .04);
-    }
-
-    .status {
-        display: inline-flex;
-        padding: 5px 9px;
-        border-radius: 20px;
-        font-size: 10px;
-        font-weight: 700;
-    }
-
-    .status-high {
-        color: #39d98a;
-        background: rgba(57, 217, 138, .1);
-    }
-
-    .status-low {
-        color: #ff9f43;
-        background: rgba(255, 159, 67, .1);
-    }
-
-    .status-loss {
-        color: #ff5c70;
-        background: rgba(255, 92, 112, .1);
-    }
-
-    .status-moderate {
-        color: #7567f8;
-        background: rgba(117, 103, 248, .1);
-    }
-
-    /* INSIGHTS */
-
-    .insights-card {
-        padding: 20px;
-        margin-bottom: 22px;
-    }
-
-    .insight-list {
-        display: grid;
-        gap: 10px;
-    }
-
-    .insight-item {
-        display: flex;
-        gap: 12px;
-        padding: 14px;
-        border-radius: 11px;
-        background: #0a1b2b;
-        border: 1px solid #173047;
-    }
-
-    .insight-icon {
-        width: 31px;
-        height: 31px;
-        flex: 0 0 31px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        background: rgba(117, 103, 248, .1);
-    }
-
-    .insight-item p {
-        margin: 0;
-        color: #a9b8c6;
-        font-size: 13px;
-        line-height: 1.55;
-    }
-
-    /* INFO */
-
-    .info-card {
-        padding: 20px;
-        margin-bottom: 30px;
-    }
-
-    .info-grid {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 12px;
-    }
-
-    .info-item {
-        padding: 13px;
-        background: #0a1b2b;
-        border-radius: 10px;
-    }
-
-    .info-item span {
-        display: block;
-        color: #71879b;
-        font-size: 10px;
-        margin-bottom: 6px;
-        text-transform: uppercase;
-    }
-
-    .info-item strong {
-        color: #dce5ed;
-        font-size: 12px;
-        word-break: break-word;
-    }
-
-    @media (max-width: 1100px) {
-        .kpi-grid {
-            grid-template-columns: repeat(2, 1fr);
         }
 
-        .comparison-grid {
-            grid-template-columns: repeat(2, 1fr);
+
+        /* =====================================================
+           RESET
+           ===================================================== */
+
+        * {
+            box-sizing: border-box;
         }
 
-        .info-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
+        html,
+        body {
 
-    @media (max-width: 850px) {
-        .content-grid {
-            grid-template-columns: 1fr;
-        }
+            margin: 0;
+            padding: 0;
 
-        .page-header {
-            flex-direction: column;
-        }
-
-        .dataset-selector {
             width: 100%;
+            height: 100%;
+
+            overflow: hidden;
+
+            background: var(--bg);
+            color: var(--text);
+
+            font-family:
+                Inter,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
         }
 
-        .selected-period {
-            margin-left: 0;
-        }
-    }
 
-    @media (max-width: 600px) {
+        /* =====================================================
+           MAIN APPLICATION LAYOUT
+           ===================================================== */
+
+        .marketing-layout {
+
+            display: flex;
+
+            width: 100%;
+            height: 100vh;
+
+            overflow: hidden;
+
+            background: var(--bg);
+
+        }
+
+
+        /* =====================================================
+           SIDEBAR
+           ===================================================== */
+
+        .marketing-sidebar {
+
+            width: 270px;
+            min-width: 270px;
+
+            height: 100vh;
+
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            background: var(--sidebar);
+
+            border-right:
+                1px solid var(--border);
+
+            scrollbar-width: thin;
+
+            scrollbar-color:
+                rgba(255,255,255,.12)
+                transparent;
+
+        }
+
+
+        .marketing-sidebar::-webkit-scrollbar {
+
+            width: 7px;
+
+        }
+
+
+        .marketing-sidebar::-webkit-scrollbar-track {
+
+            background: transparent;
+
+        }
+
+
+        .marketing-sidebar::-webkit-scrollbar-thumb {
+
+            background:
+                rgba(255,255,255,.12);
+
+            border-radius: 20px;
+
+        }
+
+
+        /* =====================================================
+           MAIN CONTENT
+           ===================================================== */
+
+        .marketing-main {
+
+            flex: 1;
+
+            min-width: 0;
+
+            height: 100vh;
+
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(117,103,248,.08),
+                    transparent 32%
+                ),
+                var(--bg);
+
+            scrollbar-width: thin;
+
+            scrollbar-color:
+                rgba(255,255,255,.12)
+                transparent;
+
+        }
+
+
+        .marketing-main::-webkit-scrollbar {
+
+            width: 8px;
+
+        }
+
+
+        .marketing-main::-webkit-scrollbar-track {
+
+            background: transparent;
+
+        }
+
+
+        .marketing-main::-webkit-scrollbar-thumb {
+
+            background:
+                rgba(255,255,255,.12);
+
+            border-radius: 20px;
+
+        }
+
+
+        /* =====================================================
+           PAGE
+           ===================================================== */
+
         .marketing-page {
-            padding: 18px;
+
+            width: 100%;
+
+            min-height: 100%;
+
+            padding: 28px;
+
         }
 
-        .kpi-grid,
-        .comparison-grid,
-        .info-grid {
-            grid-template-columns: 1fr;
+
+        .marketing-container {
+
+            width: 100%;
+
+            max-width: 1600px;
+
+            margin: 0 auto;
+
         }
 
-        .analysis-controls,
-        .custom-date-group {
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
+
+        .marketing-header {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                flex-start;
+
+            gap: 20px;
+
+            margin-bottom: 24px;
+
+        }
+
+
+        .marketing-header h1 {
+
+            margin: 0;
+
+            font-size: 30px;
+
+            font-weight: 800;
+
+            letter-spacing: -.02em;
+
+            color: var(--text);
+
+        }
+
+
+        .marketing-header p {
+
+            margin: 7px 0 0;
+
+            max-width: 800px;
+
+            color: var(--muted);
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+        }
+
+
+        /* =====================================================
+           FILTER CARD
+           ===================================================== */
+
+        .filter-card {
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(16,40,63,.96),
+                    rgba(13,32,51,.96)
+                );
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                var(--radius);
+
+            padding: 20px;
+
+            margin-bottom: 24px;
+
+            box-shadow:
+                var(--shadow);
+
+        }
+
+
+        .filter-form {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(220px, 1.5fr)
+                minmax(160px, 1fr)
+                auto;
+
+            gap: 16px;
+
+            align-items: end;
+
+        }
+
+
+        .filter-group {
+
+            display: flex;
+
             flex-direction: column;
-            align-items: stretch;
+
+            gap: 7px;
+
         }
 
-        .control-group select,
-        .control-group input {
+
+        .filter-group label {
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                .07em;
+
+        }
+
+
+        .filter-group select,
+        .filter-group input {
+
             width: 100%;
+
+            min-height: 44px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 10px;
+
+            padding:
+                9px 12px;
+
+            background:
+                var(--panel);
+
+            color:
+                var(--text);
+
+            font-size: 14px;
+
+            outline: none;
+
         }
 
-        .apply-range-btn {
+
+        .filter-group select option {
+
+            background:
+                var(--panel);
+
+            color:
+                var(--text);
+
+        }
+
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+
+            border-color:
+                var(--purple);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(117,103,248,.12);
+
+        }
+
+
+        .filter-button {
+
+            min-height: 44px;
+
+            border: 0;
+
+            border-radius: 10px;
+
+            padding:
+                0 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--purple),
+                    #5547e8
+                );
+
+            color:
+                #ffffff;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition:
+                .2s ease;
+
+        }
+
+
+        .filter-button:hover {
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 10px 25px
+                rgba(117,103,248,.25);
+
+        }
+
+
+        .custom-date-row {
+
+            display: none;
+
+            grid-template-columns:
+                minmax(160px, 1fr)
+                minmax(160px, 1fr);
+
+            gap: 16px;
+
+            margin-top: 16px;
+
+        }
+
+
+        .custom-date-row.visible {
+
+            display: grid;
+
+        }
+
+
+        /* =====================================================
+           DATASET INFO
+           ===================================================== */
+
+        .dataset-info {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 16px;
+
+        }
+
+
+        .dataset-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            padding:
+                7px 11px;
+
+            border-radius:
+                999px;
+
+            background:
+                rgba(117,103,248,.12);
+
+            border:
+                1px solid
+                rgba(117,103,248,.20);
+
+            color:
+                #b9b2ff;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+
+        .dataset-badge.version {
+
+            background:
+                rgba(57,217,138,.10);
+
+            border-color:
+                rgba(57,217,138,.18);
+
+            color:
+                var(--green);
+
+        }
+
+
+        .dataset-badge.date {
+
+            background:
+                rgba(63,169,245,.10);
+
+            border-color:
+                rgba(63,169,245,.18);
+
+            color:
+                var(--blue);
+
+        }
+
+
+        /* =====================================================
+           ALERTS
+           ===================================================== */
+
+        .alert {
+
+            border-radius: 13px;
+
+            padding: 14px 16px;
+
+            margin-bottom: 20px;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+        }
+
+
+        .alert-error {
+
+            background:
+                rgba(255,92,112,.09);
+
+            border:
+                1px solid
+                rgba(255,92,112,.25);
+
+            color:
+                #ff9aaa;
+
+        }
+
+
+        .alert-warning {
+
+            background:
+                rgba(255,159,67,.09);
+
+            border:
+                1px solid
+                rgba(255,159,67,.25);
+
+            color:
+                #ffc078;
+
+        }
+
+
+        /* =====================================================
+           SECTION TITLES
+           ===================================================== */
+
+        .section-title {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            gap: 15px;
+
+            margin:
+                28px 0 15px;
+
+        }
+
+
+        .section-title h2 {
+
+            margin: 0;
+
+            color:
+                var(--text);
+
+            font-size: 20px;
+
+            font-weight: 800;
+
+        }
+
+
+        .section-title span {
+
+            color:
+                var(--muted);
+
+            font-size: 12px;
+
+        }
+
+
+        /* =====================================================
+           KPI GRID
+           ===================================================== */
+
+        .kpi-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0,1fr));
+
+            gap: 17px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .kpi-card {
+
+            position: relative;
+
+            overflow: hidden;
+
+            min-height: 135px;
+
+            padding: 20px;
+
+            border-radius:
+                var(--radius);
+
+            color:
+                var(--text);
+
+            border:
+                1px solid
+                var(--border);
+
+            background:
+                var(--panel);
+
+            box-shadow:
+                var(--shadow);
+
+        }
+
+
+        .kpi-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            top: 0;
+
+            width: 4px;
+
+            height: 100%;
+
+            border-radius:
+                10px;
+
+        }
+
+
+        .kpi-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 130px;
+
+            height: 130px;
+
+            border-radius: 50%;
+
+            right: -55px;
+
+            bottom: -65px;
+
+            background:
+                rgba(255,255,255,.035);
+
+        }
+
+
+        .kpi-card.purple::before {
+            background: var(--purple);
+        }
+
+        .kpi-card.blue::before {
+            background: var(--blue);
+        }
+
+        .kpi-card.cyan::before {
+            background: var(--cyan);
+        }
+
+        .kpi-card.green::before {
+            background: var(--green);
+        }
+
+        .kpi-card.orange::before {
+            background: var(--orange);
+        }
+
+        .kpi-card.pink::before {
+            background: #ff62b0;
+        }
+
+        .kpi-card.indigo::before {
+            background: #8b7fff;
+        }
+
+        .kpi-card.teal::before {
+            background: #25c7b5;
+        }
+
+
+        .kpi-label {
+
+            position: relative;
+
+            z-index: 2;
+
+            color:
+                var(--muted);
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                .06em;
+
+        }
+
+
+        .kpi-value {
+
+            position: relative;
+
+            z-index: 2;
+
+            margin-top: 12px;
+
+            color:
+                var(--text);
+
+            font-size: 28px;
+
+            font-weight: 800;
+
+            line-height: 1.15;
+
+        }
+
+
+        .kpi-subtitle {
+
+            position: relative;
+
+            z-index: 2;
+
+            margin-top: 8px;
+
+            color:
+                var(--muted);
+
+            font-size: 12px;
+
+        }
+
+
+        /* =====================================================
+           CHART GRID
+           ===================================================== */
+
+        .chart-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2,minmax(0,1fr));
+
+            gap: 20px;
+
+        }
+
+
+        .chart-card {
+
+            min-height: 380px;
+
+            padding: 20px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    var(--panel-2),
+                    var(--panel)
+                );
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                var(--radius);
+
+            box-shadow:
+                var(--shadow);
+
+        }
+
+
+        .chart-card.full-width {
+
+            grid-column:
+                1 / -1;
+
+        }
+
+
+        .chart-card-header {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                flex-start;
+
+            gap: 12px;
+
+            margin-bottom: 16px;
+
+        }
+
+
+        .chart-card-header h3 {
+
+            margin: 0;
+
+            color:
+                var(--text);
+
+            font-size: 16px;
+
+            font-weight: 800;
+
+        }
+
+
+        .chart-card-header p {
+
+            margin:
+                5px 0 0;
+
+            color:
+                var(--muted);
+
+            font-size: 12px;
+
+        }
+
+
+        .chart-wrapper {
+
+            position: relative;
+
             width: 100%;
+
+            height: 290px;
+
         }
 
-        .page-header h1 {
-            font-size: 24px;
+
+        .chart-wrapper.tall {
+
+            height: 340px;
+
         }
-    }
-</style>
-{% endblock %}
 
 
-{% block content %}
+        /* =====================================================
+           UNAVAILABLE
+           ===================================================== */
 
-<div class="marketing-page">
+        .unavailable-card {
 
-    <!-- HEADER -->
+            min-height: 220px;
 
-    <div class="page-header">
+            display: flex;
 
-        <div>
-            <h1>📣 Marketing Intelligence</h1>
-            <p>
-                Understand marketing efficiency, campaign performance,
-                revenue contribution and ROI.
-            </p>
-        </div>
+            align-items: center;
 
-        <div class="dataset-selector">
+            justify-content: center;
 
-            <label>Active Dataset</label>
+            text-align: center;
 
-            <select onchange="changeDataset(this.value)">
+            border:
+                1px dashed
+                rgba(255,255,255,.14);
 
-                {% for dataset in datasets %}
+            background:
+                rgba(255,255,255,.015);
 
-                <option
-                    value="{{ dataset.id }}"
-                    {% if selected_dataset.id == dataset.id %}
-                        selected
-                    {% endif %}
-                >
-                    {{ dataset.name }}
-                </option>
+            border-radius:
+                var(--radius);
 
-                {% endfor %}
+            padding: 24px;
 
-            </select>
+        }
 
-        </div>
 
-    </div>
+        .unavailable-inner {
 
+            max-width: 400px;
 
-    <!-- DATE CONTROLS -->
+        }
 
-    <div class="analysis-controls">
 
-        <div class="control-group">
+        .unavailable-icon {
 
-            <label>Analysis Period</label>
+            width: 52px;
 
-            <select
-                id="rangeSelector"
-                onchange="changeDateRange(this.value)"
-            >
+            height: 52px;
 
-                {% for key, label in date_range_options.items %}
+            display: flex;
 
-                <option
-                    value="{{ key }}"
-                    {% if selected_range == key %}
-                        selected
-                    {% endif %}
-                >
-                    {{ label }}
-                </option>
+            align-items: center;
 
-                {% endfor %}
+            justify-content: center;
 
-                <option
-                    value="custom"
-                    {% if selected_range == "custom" %}
-                        selected
-                    {% endif %}
-                >
-                    Custom Range
-                </option>
+            margin:
+                0 auto 12px;
 
-            </select>
+            border-radius: 50%;
 
-        </div>
+            background:
+                rgba(255,255,255,.05);
 
+            color:
+                var(--muted);
 
-        <div
-            class="custom-date-group"
-            id="customDateGroup"
-            {% if selected_range != "custom" %}
-                style="display:none;"
-            {% endif %}
-        >
+            font-size: 22px;
 
-            <div class="control-group">
+            font-weight: 800;
 
-                <label>From</label>
+        }
 
-                <input
-                    type="date"
-                    id="startDate"
-                    value="{{ custom_start }}"
-                >
 
-            </div>
+        .unavailable-inner h4 {
 
-            <div class="control-group">
+            margin:
+                0 0 6px;
 
-                <label>To</label>
+            color:
+                var(--text);
 
-                <input
-                    type="date"
-                    id="endDate"
-                    value="{{ custom_end }}"
-                >
+            font-size: 15px;
 
-            </div>
+        }
 
-            <button
-                type="button"
-                class="apply-range-btn"
-                onclick="applyCustomRange()"
-            >
-                Apply
-            </button>
 
-        </div>
+        .unavailable-inner p {
 
+            margin: 0;
 
-        {% if has_data %}
+            color:
+                var(--muted);
 
-        <div class="selected-period">
+            font-size: 13px;
 
-            <span>Currently analyzing</span>
+            line-height: 1.5;
 
-            <strong>
-                {{ date_range.range_label }}
-            </strong>
+        }
 
-            {% if date_range.start_date and date_range.end_date %}
 
-            <small>
-                {{ date_range.start_date|date:"d M Y" }}
-                →
-                {{ date_range.end_date|date:"d M Y" }}
-            </small>
+        /* =====================================================
+           SMART INSIGHTS
+           ===================================================== */
 
-            {% endif %}
+        .insights-section {
 
-        </div>
+            margin:
+                32px 0 40px;
 
-        {% endif %}
+        }
 
-    </div>
 
+        .insights-header {
 
-    <!-- ERROR -->
+            margin-bottom:
+                15px;
 
-    {% if error_message %}
+        }
 
-    <div class="error-box">
-        ⚠️ {{ error_message }}
-    </div>
 
-    {% endif %}
+        .insights-header h2 {
 
+            margin: 0;
 
-    {% if not datasets %}
+            color:
+                var(--text);
 
-    <div class="empty-state">
+            font-size: 21px;
 
-        <div class="empty-icon">📂</div>
+            font-weight: 800;
 
-        <h2>No Dataset Available</h2>
+        }
 
-        <p>
-            Upload a business dataset through Data Management
-            before opening Marketing Intelligence.
-        </p>
 
-    </div>
+        .insights-header p {
 
-    {% elif not has_data %}
+            margin:
+                6px 0 0;
 
-    <div class="empty-state">
+            color:
+                var(--muted);
 
-        <div class="empty-icon">📣</div>
+            font-size: 13px;
 
-        <h2>Marketing Data Not Available</h2>
+        }
 
-        <p>
-            Your dataset needs marketing spend and revenue information.
-            Expected columns include marketing_spend, ad_spend,
-            campaign_spend and revenue/sales.
-        </p>
 
-    </div>
+        .insights-grid {
 
-    {% else %}
+            display: grid;
 
+            grid-template-columns:
+                repeat(2,minmax(0,1fr));
 
-    <!-- KPI -->
+            gap: 15px;
 
-    <div class="kpi-grid">
+        }
 
-        <div class="kpi-card">
 
-            <div class="kpi-label">
-                Marketing Spend
-            </div>
+        .insight-card {
 
-            <div class="kpi-value orange">
-                ₹{{ total_marketing_spend|floatformat:0 }}
-            </div>
+            position: relative;
 
-            <div class="kpi-subtitle">
-                Total campaign investment
-            </div>
+            overflow: hidden;
 
-        </div>
+            padding:
+                18px 18px 18px 22px;
 
+            border-radius:
+                15px;
 
-        <div class="kpi-card">
+            background:
+                var(--panel);
 
-            <div class="kpi-label">
-                Marketing Revenue
-            </div>
+            border:
+                1px solid
+                var(--border);
 
-            <div class="kpi-value green">
-                ₹{{ total_revenue|floatformat:0 }}
-            </div>
+            box-shadow:
+                0 12px 35px
+                rgba(0,0,0,.16);
 
-            <div class="kpi-subtitle">
-                Revenue attributed to dataset
-            </div>
+        }
 
-        </div>
 
+        .insight-card::before {
 
-        <div class="kpi-card">
+            content: "";
 
-            <div class="kpi-label">
-                Marketing ROI
-            </div>
+            position: absolute;
 
-            <div class="kpi-value purple">
-                {{ marketing_roi|floatformat:1 }}%
-            </div>
+            left: 0;
 
-            <div class="kpi-subtitle">
-                Return after marketing spend
-            </div>
+            top: 0;
 
-        </div>
+            bottom: 0;
 
+            width: 5px;
 
-        <div class="kpi-card">
+        }
 
-            <div class="kpi-label">
-                ROAS
-            </div>
 
-            <div class="kpi-value">
-                {{ marketing_roas|floatformat:2 }}x
-            </div>
+        .insight-card.positive::before {
 
-            <div class="kpi-subtitle">
-                Revenue per ₹1 spent
-            </div>
+            background:
+                var(--green);
 
-        </div>
+        }
 
-    </div>
 
+        .insight-card.warning::before {
 
-    <!-- COMPARISON -->
+            background:
+                var(--orange);
 
-    {% if comparison_available %}
+        }
 
-    <div class="comparison-card">
 
-        <div class="comparison-header">
+        .insight-card.neutral::before {
 
-            <div>
-                <h2>Period Comparison</h2>
+            background:
+                var(--blue);
 
-                <p>
-                    Compare the selected period with the
-                    previous equivalent period.
-                </p>
-            </div>
+        }
 
-            <div class="comparison-badge">
-                {{ date_range.range_label }}
-            </div>
 
-        </div>
+        .insight-title {
 
+            margin:
+                0 0 7px;
 
-        <div class="comparison-grid">
+            color:
+                var(--text);
 
-            <div class="comparison-box">
+            font-size: 14px;
 
-                <span class="comparison-label">
-                    Current Marketing Spend
-                </span>
+            font-weight: 800;
 
-                <strong>
-                    ₹{{ current_period_spend|floatformat:0 }}
-                </strong>
+        }
 
-                <small>
-                    Selected period
-                </small>
 
-            </div>
+        .insight-message {
 
+            margin: 0;
 
-            <div class="comparison-box">
+            color:
+                var(--muted);
 
-                <span class="comparison-label">
-                    Previous Marketing Spend
-                </span>
+            font-size: 13px;
 
-                <strong>
-                    ₹{{ previous_period_spend|floatformat:0 }}
-                </strong>
+            line-height: 1.6;
 
-                <small>
-                    Previous equivalent period
-                </small>
+        }
 
-            </div>
 
+        .no-insights {
 
-            <div class="comparison-box
-                {% if spend_change > 20 %}
-                    negative
-                {% elif spend_change < 0 %}
-                    positive
-                {% endif %}
-            ">
+            padding: 20px;
 
-                <span class="comparison-label">
-                    Spend Change
-                </span>
+            border-radius:
+                14px;
 
-                <strong>
-                    {% if spend_change > 0 %}
-                        ↗
-                    {% elif spend_change < 0 %}
-                        ↘
-                    {% else %}
-                        →
-                    {% endif %}
+            background:
+                var(--panel);
 
-                    {{ spend_change|floatformat:1 }}%
-                </strong>
+            border:
+                1px dashed
+                rgba(255,255,255,.13);
 
-                <small>
-                    Compared with previous period
-                </small>
+            color:
+                var(--muted);
 
-            </div>
+            text-align:
+                center;
 
+            font-size: 13px;
 
-            <div class="comparison-box
-                {% if revenue_change > spend_change %}
-                    positive
-                {% elif revenue_change < spend_change %}
-                    negative
-                {% endif %}
-            ">
+        }
 
-                <span class="comparison-label">
-                    Revenue Change
-                </span>
 
-                <strong>
-                    {% if revenue_change > 0 %}
-                        ↗
-                    {% elif revenue_change < 0 %}
-                        ↘
-                    {% else %}
-                        →
-                    {% endif %}
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
 
-                    {{ revenue_change|floatformat:1 }}%
-                </strong>
+        @media (max-width: 1200px) {
 
-                <small>
-                    Compared with previous period
-                </small>
+            .kpi-grid {
 
-            </div>
+                grid-template-columns:
+                    repeat(2,minmax(0,1fr));
 
-        </div>
+            }
 
-    </div>
+        }
 
-    {% endif %}
 
+        @media (max-width: 900px) {
 
-    <!-- CHARTS -->
+            .marketing-sidebar {
 
-    <div class="content-grid">
+                width: 220px;
 
+                min-width: 220px;
 
-        <!-- DAILY TREND -->
+            }
 
-        <div class="chart-card">
 
-            <div class="card-header">
+            .filter-form {
 
-                <div>
+                grid-template-columns:
+                    1fr;
 
-                    <h2>Marketing Revenue vs Spend</h2>
+            }
 
-                    <p>
-                        Daily marketing investment compared
-                        with generated revenue.
-                    </p>
+
+            .chart-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .chart-card.full-width {
+
+                grid-column:
+                    auto;
+
+            }
+
+
+            .insights-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .marketing-layout {
+
+                display: block;
+
+                overflow: auto;
+
+            }
+
+
+            .marketing-sidebar {
+
+                width: 100%;
+
+                min-width: 100%;
+
+                height: auto;
+
+                max-height: 300px;
+
+            }
+
+
+            .marketing-main {
+
+                height: auto;
+
+                overflow: visible;
+
+            }
+
+
+            .marketing-page {
+
+                padding: 16px;
+
+            }
+
+
+            .marketing-header {
+
+                flex-direction:
+                    column;
+
+            }
+
+
+            .marketing-header h1 {
+
+                font-size: 24px;
+
+            }
+
+
+            .kpi-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .custom-date-row {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .chart-card {
+
+                min-height: 350px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="marketing-layout">
+
+
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside class="marketing-sidebar">
+
+        {% include "includes/smart_sidebar.html" %}
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
+
+    <main class="marketing-main">
+
+        <div class="marketing-page">
+
+            <div class="marketing-container">
+
+
+                <!-- =================================================
+                     HEADER
+                     ================================================= -->
+
+                <div class="marketing-header">
+
+                    <div>
+
+                        <h1>
+                            Marketing Intelligence
+                        </h1>
+
+                        <p>
+                            Analyze campaign performance,
+                            marketing channels, conversions,
+                            spend, returns, and customer
+                            acquisition.
+                        </p>
+
+                    </div>
 
                 </div>
 
-            </div>
 
-            <div class="chart-container">
+                <!-- =================================================
+                     ERROR
+                     ================================================= -->
 
-                <canvas id="marketingTrendChart"></canvas>
+                {% if error %}
 
-            </div>
+                    <div class="alert alert-error">
+                        {{ error }}
+                    </div>
 
-        </div>
-
-
-        <!-- CHANNEL -->
-
-        <div class="chart-card">
-
-            <div class="card-header">
-
-                <div>
-
-                    <h2>Channel Performance</h2>
-
-                    <p>
-                        Revenue contribution by marketing channel.
-                    </p>
-
-                </div>
-
-            </div>
-
-            <div class="chart-container">
-
-                <canvas id="channelChart"></canvas>
-
-            </div>
-
-        </div>
-
-    </div>
+                {% endif %}
 
 
-    <!-- CAMPAIGN PERFORMANCE -->
+                <!-- =================================================
+                     WARNING
+                     ================================================= -->
 
-    <div class="table-card">
+                {% if warning %}
 
-        <div class="card-header">
+                    <div class="alert alert-warning">
+                        {{ warning }}
+                    </div>
 
-            <div>
-
-                <h2>Campaign Performance</h2>
-
-                <p>
-                    Campaign-level spend, revenue, ROI and ROAS.
-                </p>
-
-            </div>
-
-        </div>
+                {% endif %}
 
 
-        {% if campaign_rows %}
+                <!-- =================================================
+                     FILTERS
+                     ================================================= -->
 
-        <div class="table-wrapper">
+                {% if marketing_datasets %}
 
-            <table class="data-table">
+                <div class="filter-card">
 
-                <thead>
+                    <form
+                        method="get"
+                        class="filter-form"
+                    >
 
-                    <tr>
-                        <th>Campaign</th>
-                        <th>Spend</th>
-                        <th>Revenue</th>
-                        <th>ROI</th>
-                        <th>ROAS</th>
-                        <th>Status</th>
-                    </tr>
+                        <div class="filter-group">
 
-                </thead>
+                            <label for="dataset">
+                                Marketing Dataset
+                            </label>
 
-                <tbody>
+                            <select
+                                id="dataset"
+                                name="dataset"
+                            >
 
-                    {% for campaign in campaign_rows %}
+                                {% for dataset in marketing_datasets %}
 
-                    <tr>
+                                    <option
+                                        value="{{ dataset.id }}"
+                                        {% if selected_dataset and dataset.id == selected_dataset.id %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ dataset.name }}
+                                    </option>
 
-                        <td>
-                            <strong>
-                                {{ campaign.campaign }}
-                            </strong>
-                        </td>
+                                {% endfor %}
 
-                        <td>
-                            ₹{{ campaign.spend|floatformat:0 }}
-                        </td>
+                            </select>
 
-                        <td>
-                            ₹{{ campaign.revenue|floatformat:0 }}
-                        </td>
+                        </div>
 
-                        <td>
-                            {{ campaign.roi|floatformat:1 }}%
-                        </td>
 
-                        <td>
-                            {{ campaign.roas|floatformat:2 }}x
-                        </td>
+                        <div class="filter-group">
 
-                        <td>
+                            <label for="range">
+                                Analysis Period
+                            </label>
 
-                            {% if campaign.status == "High Performer" %}
+                            <select
+                                id="range"
+                                name="range"
+                                onchange="toggleMarketingCustomDates()"
+                            >
 
-                                <span class="status status-high">
-                                    High Performer
-                                </span>
+                                {% for value, label in date_range_options %}
 
-                            {% elif campaign.status == "Loss Making" %}
+                                    <option
+                                        value="{{ value }}"
+                                        {% if selected_range == value %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ label }}
+                                    </option>
 
-                                <span class="status status-loss">
-                                    Loss Making
-                                </span>
+                                {% endfor %}
 
-                            {% elif campaign.status == "Low Performer" %}
+                            </select>
 
-                                <span class="status status-low">
-                                    Low Performer
-                                </span>
+                        </div>
 
-                            {% else %}
 
-                                <span class="status status-moderate">
-                                    Moderate
-                                </span>
+                        <button
+                            type="submit"
+                            class="filter-button"
+                        >
+                            Apply Analysis
+                        </button>
 
+                    </form>
+
+
+                    <div
+                        id="customDateRow"
+                        class="custom-date-row"
+                    >
+
+                        <div class="filter-group">
+
+                            <label for="from_date">
+                                From Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="from_date"
+                                value="{% if analysis_from_date %}{{ analysis_from_date|date:'Y-m-d' }}{% endif %}"
+                                onchange="updateMarketingDateForm()"
+                            >
+
+                        </div>
+
+
+                        <div class="filter-group">
+
+                            <label for="to_date">
+                                To Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="to_date"
+                                value="{% if analysis_to_date %}{{ analysis_to_date|date:'Y-m-d' }}{% endif %}"
+                                onchange="updateMarketingDateForm()"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    {% if selected_dataset %}
+
+                    <div class="dataset-info">
+
+                        <span class="dataset-badge">
+
+                            Dataset:
+                            {{ selected_dataset.name }}
+
+                        </span>
+
+
+                        {% if selected_version %}
+
+                        <span class="dataset-badge version">
+
+                            Current Version:
+                            {{ selected_version.version_number }}
+
+                            {% if selected_version.version_type %}
+                                · {{ selected_version.version_type }}
                             {% endif %}
 
-                        </td>
+                        </span>
 
-                    </tr>
-
-                    {% endfor %}
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-        {% else %}
-
-        <div class="empty-state">
-            <div class="empty-icon">📊</div>
-            <h2>Campaign Data Not Available</h2>
-            <p>
-                Add a campaign or campaign_name column
-                to see campaign-level performance.
-            </p>
-        </div>
-
-        {% endif %}
-
-    </div>
+                        {% endif %}
 
 
-    <!-- PEAK / LOWEST -->
+                        {% if analysis_from_date or analysis_to_date %}
 
-    <div class="content-grid">
+                        <span class="dataset-badge date">
 
-        <div class="chart-card">
+                            Analysis:
 
-            <div class="card-header">
+                            {% if analysis_from_date %}
+                                {{ analysis_from_date|date:"d M Y" }}
+                            {% endif %}
 
-                <div>
+                            {% if analysis_from_date and analysis_to_date %}
+                                →
+                            {% endif %}
 
-                    <h2>Marketing Performance Trend</h2>
+                            {% if analysis_to_date %}
+                                {{ analysis_to_date|date:"d M Y" }}
+                            {% endif %}
 
-                    <p>
-                        Revenue and marketing investment over time.
-                    </p>
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+                    {% endif %}
 
                 </div>
 
-            </div>
-
-            <div class="chart-container">
-
-                <canvas id="performanceChart"></canvas>
-
-            </div>
-
-        </div>
+                {% endif %}
 
 
-        <div class="chart-card">
-
-            <div class="card-header">
-
-                <div>
-
-                    <h2>Performance Highlights</h2>
-
-                    <p>
-                        Important periods identified from the data.
-                    </p>
-
-                </div>
-
-            </div>
+                {% if selected_dataset and not error %}
 
 
-            <div style="
-                display:grid;
-                gap:14px;
-                margin-top:30px;
-            ">
+                <!-- =================================================
+                     KPI SECTION
+                     ================================================= -->
 
-                <div class="comparison-box">
+                <div class="section-title">
 
-                    <span class="comparison-label">
-                        Best Marketing Period
+                    <div>
+
+                        <h2>
+                            Marketing Performance Overview
+                        </h2>
+
+                    </div>
+
+                    <span>
+                        Current filtered dataset
                     </span>
 
-                    <strong class="green">
-                        {{ peak_period }}
-                    </strong>
+                </div>
 
-                    <small>
-                        Highest marketing contribution
-                    </small>
+
+                <div class="kpi-grid">
+
+
+                    <div class="kpi-card purple">
+
+                        <div class="kpi-label">
+                            Total Campaigns
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.total_campaigns != None %}
+                                {{ metrics.total_campaigns|floatformat:0 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Active campaign records
+                        </div>
+
+                    </div>
+
+
+                    <div class="kpi-card blue">
+
+                        <div class="kpi-label">
+                            Marketing Sales
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.total_sales != None %}
+                                {{ metrics.total_sales|floatformat:2 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Revenue attributed to marketing
+                        </div>
+
+                    </div>
+
+
+                    <div class="kpi-card orange">
+
+                        <div class="kpi-label">
+                            Marketing Cost
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.total_marketing_cost != None %}
+                                {{ metrics.total_marketing_cost|floatformat:2 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Available campaign spend
+                        </div>
+
+                    </div>
+
+
+                    <div class="kpi-card green">
+
+                        <div class="kpi-label">
+                            Marketing Profit
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.total_profit != None %}
+                                {{ metrics.total_profit|floatformat:2 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Available campaign profit
+                        </div>
+
+                    </div>
+
+
+                    <div class="kpi-card cyan">
+
+                        <div class="kpi-label">
+                            Impressions
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.total_impressions != None %}
+                                {{ metrics.total_impressions|floatformat:0 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Marketing reach opportunities
+                        </div>
+
+                    </div>
+
+
+                    <div class="kpi-card indigo">
+
+                        <div class="kpi-label">
+                            Clicks
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.total_clicks != None %}
+                                {{ metrics.total_clicks|floatformat:0 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Campaign interactions
+                        </div>
+
+                    </div>
+
+
+                    <div class="kpi-card pink">
+
+                        <div class="kpi-label">
+                            Click-Through Rate
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.average_ctr != None %}
+                                {{ metrics.average_ctr|floatformat:2 }}%
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Clicks relative to impressions
+                        </div>
+
+                    </div>
+
+
+                    <div class="kpi-card teal">
+
+                        <div class="kpi-label">
+                            Conversion Rate
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.conversion_rate != None %}
+                                {{ metrics.conversion_rate|floatformat:2 }}%
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Conversions relative to clicks
+                        </div>
+
+                    </div>
 
                 </div>
 
 
-                <div class="comparison-box">
+                <!-- =================================================
+                     SECONDARY KPIs
+                     ================================================= -->
 
-                    <span class="comparison-label">
-                        Lowest Marketing Period
+                <div class="kpi-grid">
+
+
+                    <div class="kpi-card purple">
+
+                        <div class="kpi-label">
+                            Conversions
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.total_conversions != None %}
+                                {{ metrics.total_conversions|floatformat:0 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Completed conversions
+                        </div>
+
+                    </div>
+
+
+                    <div class="kpi-card blue">
+
+                        <div class="kpi-label">
+                            Cost / Click
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.cost_per_click != None %}
+                                {{ metrics.cost_per_click|floatformat:2 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Average available CPC
+                        </div>
+
+                    </div>
+
+
+                    <div class="kpi-card orange">
+
+                        <div class="kpi-label">
+                            Cost / Conversion
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.cost_per_conversion != None %}
+                                {{ metrics.cost_per_conversion|floatformat:2 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Available acquisition cost
+                        </div>
+
+                    </div>
+
+
+                    <div class="kpi-card green">
+
+                        <div class="kpi-label">
+                            ROAS
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.roas != None %}
+                                {{ metrics.roas|floatformat:2 }}x
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Sales per marketing spend
+                        </div>
+
+                    </div>
+
+
+                    <div class="kpi-card cyan">
+
+                        <div class="kpi-label">
+                            ROI
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.roi != None %}
+                                {{ metrics.roi|floatformat:2 }}%
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Return on marketing cost
+                        </div>
+
+                    </div>
+
+
+                    <div class="kpi-card indigo">
+
+                        <div class="kpi-label">
+                            Leads
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.total_leads != None %}
+                                {{ metrics.total_leads|floatformat:0 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Generated marketing leads
+                        </div>
+
+                    </div>
+
+
+                    <div class="kpi-card pink">
+
+                        <div class="kpi-label">
+                            Customers Acquired
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.customers_acquired != None %}
+                                {{ metrics.customers_acquired|floatformat:0 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            New customers attributed to marketing
+                        </div>
+
+                    </div>
+
+
+                    <div class="kpi-card teal">
+
+                        <div class="kpi-label">
+                            Marketing Growth
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.marketing_growth != None %}
+
+                                {% if metrics.marketing_growth > 0 %}
+                                    +
+                                {% endif %}
+
+                                {{ metrics.marketing_growth|floatformat:2 }}%
+
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Compared with previous period
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     CHARTS
+                     ================================================= -->
+
+                <div class="section-title">
+
+                    <div>
+
+                        <h2>
+                            Marketing Analytics
+                        </h2>
+
+                    </div>
+
+                    <span>
+                        Interactive performance analysis
                     </span>
 
-                    <strong class="red">
-                        {{ lowest_period }}
-                    </strong>
+                </div>
 
-                    <small>
-                        Lowest marketing contribution
-                    </small>
+
+                <div class="chart-grid">
+
+
+                    {% if "Marketing Sales Trend" not in unavailable_charts %}
+
+                    <div class="chart-card full-width">
+
+                        <div class="chart-card-header">
+
+                            <div>
+
+                                <h3>
+                                    Marketing Sales Trend
+                                </h3>
+
+                                <p>
+                                    Daily marketing-attributed sales
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="chart-wrapper tall">
+
+                            <canvas
+                                id="marketingSalesTrendChart"
+                            ></canvas>
+
+                        </div>
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="unavailable-card">
+
+                        <div class="unavailable-inner">
+
+                            <div class="unavailable-icon">
+                                !
+                            </div>
+
+                            <h4>
+                                Marketing Sales Trend
+                            </h4>
+
+                            <p>
+                                Not available — a compatible Date
+                                and Sales/Revenue column is required.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {% endif %}
+
+
+                    {% if "Sales by Campaign" not in unavailable_charts %}
+
+                    <div class="chart-card">
+
+                        <div class="chart-card-header">
+
+                            <div>
+
+                                <h3>
+                                    Sales by Campaign
+                                </h3>
+
+                                <p>
+                                    Top campaigns by attributed sales
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="chart-wrapper">
+
+                            <canvas
+                                id="salesByCampaignChart"
+                            ></canvas>
+
+                        </div>
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="unavailable-card">
+
+                        <div class="unavailable-inner">
+
+                            <div class="unavailable-icon">
+                                !
+                            </div>
+
+                            <h4>
+                                Sales by Campaign
+                            </h4>
+
+                            <p>
+                                Not available — Campaign and
+                                Sales/Revenue columns are required.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {% endif %}
+
+
+                    {% if "Marketing Cost by Campaign" not in unavailable_charts %}
+
+                    <div class="chart-card">
+
+                        <div class="chart-card-header">
+
+                            <div>
+
+                                <h3>
+                                    Marketing Cost by Campaign
+                                </h3>
+
+                                <p>
+                                    Campaign-level marketing spend
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="chart-wrapper">
+
+                            <canvas
+                                id="costByCampaignChart"
+                            ></canvas>
+
+                        </div>
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="unavailable-card">
+
+                        <div class="unavailable-inner">
+
+                            <div class="unavailable-icon">
+                                !
+                            </div>
+
+                            <h4>
+                                Marketing Cost by Campaign
+                            </h4>
+
+                            <p>
+                                Not available — Campaign and
+                                marketing cost columns are required.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {% endif %}
+
+
+                    {% if "Conversions by Campaign" not in unavailable_charts %}
+
+                    <div class="chart-card">
+
+                        <div class="chart-card-header">
+
+                            <div>
+
+                                <h3>
+                                    Conversions by Campaign
+                                </h3>
+
+                                <p>
+                                    Campaign conversion volume
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="chart-wrapper">
+
+                            <canvas
+                                id="conversionsByCampaignChart"
+                            ></canvas>
+
+                        </div>
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="unavailable-card">
+
+                        <div class="unavailable-inner">
+
+                            <div class="unavailable-icon">
+                                !
+                            </div>
+
+                            <h4>
+                                Conversions by Campaign
+                            </h4>
+
+                            <p>
+                                Not available — Campaign and
+                                conversion columns are required.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {% endif %}
+
+
+                    {% if "Channel Performance" not in unavailable_charts %}
+
+                    <div class="chart-card">
+
+                        <div class="chart-card-header">
+
+                            <div>
+
+                                <h3>
+                                    Channel Performance
+                                </h3>
+
+                                <p>
+                                    Sales and marketing return by channel
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="chart-wrapper">
+
+                            <canvas
+                                id="channelPerformanceChart"
+                            ></canvas>
+
+                        </div>
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="unavailable-card">
+
+                        <div class="unavailable-inner">
+
+                            <div class="unavailable-icon">
+                                !
+                            </div>
+
+                            <h4>
+                                Channel Performance
+                            </h4>
+
+                            <p>
+                                Not available — a Channel column and
+                                at least one marketing metric are required.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {% endif %}
+
+
+                    {% if "Campaign ROI / ROAS" not in unavailable_charts %}
+
+                    <div class="chart-card">
+
+                        <div class="chart-card-header">
+
+                            <div>
+
+                                <h3>
+                                    Campaign ROI / ROAS
+                                </h3>
+
+                                <p>
+                                    Campaign return comparison
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="chart-wrapper">
+
+                            <canvas
+                                id="campaignRoiChart"
+                            ></canvas>
+
+                        </div>
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="unavailable-card">
+
+                        <div class="unavailable-inner">
+
+                            <div class="unavailable-icon">
+                                !
+                            </div>
+
+                            <h4>
+                                Campaign ROI / ROAS
+                            </h4>
+
+                            <p>
+                                Not available — Campaign, Sales/Revenue,
+                                and marketing cost are required.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {% endif %}
+
+
+                    {% if "Marketing Funnel" not in unavailable_charts %}
+
+                    <div class="chart-card">
+
+                        <div class="chart-card-header">
+
+                            <div>
+
+                                <h3>
+                                    Marketing Funnel
+                                </h3>
+
+                                <p>
+                                    Movement from impressions to conversions
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="chart-wrapper">
+
+                            <canvas
+                                id="marketingFunnelChart"
+                            ></canvas>
+
+                        </div>
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="unavailable-card">
+
+                        <div class="unavailable-inner">
+
+                            <div class="unavailable-icon">
+                                !
+                            </div>
+
+                            <h4>
+                                Marketing Funnel
+                            </h4>
+
+                            <p>
+                                Not available — impressions, clicks,
+                                leads, or conversion data is required.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {% endif %}
+
+
+                    {% if "Marketing Performance by Region" not in unavailable_charts %}
+
+                    <div class="chart-card">
+
+                        <div class="chart-card-header">
+
+                            <div>
+
+                                <h3>
+                                    Marketing Performance by Region
+                                </h3>
+
+                                <p>
+                                    Marketing sales across regions
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="chart-wrapper">
+
+                            <canvas
+                                id="marketingRegionChart"
+                            ></canvas>
+
+                        </div>
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="unavailable-card">
+
+                        <div class="unavailable-inner">
+
+                            <div class="unavailable-icon">
+                                !
+                            </div>
+
+                            <h4>
+                                Marketing Performance by Region
+                            </h4>
+
+                            <p>
+                                Not available — Region and at least one
+                                marketing performance metric are required.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {% endif %}
 
                 </div>
 
-            </div>
 
-        </div>
+                <!-- =================================================
+                     SMART INSIGHTS
+                     ================================================= -->
 
-    </div>
+                <div class="insights-section">
 
+                    <div class="insights-header">
 
-    <!-- INSIGHTS -->
+                        <h2>
+                            Smart Marketing Insights
+                        </h2>
 
-    <div class="insights-card">
+                        <p>
+                            Rule-based observations generated from
+                            the selected Marketing dataset and period.
+                        </p>
 
-        <div class="card-header">
-
-            <div>
-
-                <h2>🧠 Marketing Insights</h2>
-
-                <p>
-                    Automatically generated observations from the
-                    selected dataset and analysis period.
-                </p>
-
-            </div>
-
-        </div>
+                    </div>
 
 
-        <div class="insight-list">
+                    {% if insights %}
 
-            {% for insight in marketing_insights %}
+                    <div class="insights-grid">
 
-            <div class="insight-item">
+                        {% for insight in insights %}
 
-                <div class="insight-icon">
-                    💡
+                        <div
+                            class="
+                                insight-card
+                                {% if insight.type == 'positive' %}
+                                    positive
+                                {% elif insight.type == 'warning' %}
+                                    warning
+                                {% else %}
+                                    neutral
+                                {% endif %}
+                            "
+                        >
+
+                            <h4 class="insight-title">
+                                {{ insight.title }}
+                            </h4>
+
+                            <p class="insight-message">
+                                {{ insight.message }}
+                            </p>
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="no-insights">
+
+                        Smart Marketing Insights are not available
+                        for the selected data.
+
+                    </div>
+
+                    {% endif %}
+
                 </div>
 
-                <p>
-                    {{ insight }}
-                </p>
 
-            </div>
+                {% endif %}
 
-            {% empty %}
-
-            <div class="insight-item">
-
-                <div class="insight-icon">
-                    ℹ️
-                </div>
-
-                <p>
-                    No additional marketing insights were generated
-                    for this period.
-                </p>
-
-            </div>
-
-            {% endfor %}
-
-        </div>
-
-    </div>
-
-
-    <!-- INFORMATION -->
-
-    <div class="info-card">
-
-        <div class="card-header">
-
-            <div>
-
-                <h2>Analysis Information</h2>
-
-                <p>
-                    Columns and dataset version used for this analysis.
-                </p>
 
             </div>
 
         </div>
 
-
-        <div class="info-grid">
-
-            <div class="info-item">
-
-                <span>Dataset</span>
-
-                <strong>
-                    {{ selected_dataset.name }}
-                </strong>
-
-            </div>
-
-
-            <div class="info-item">
-
-                <span>Marketing Spend</span>
-
-                <strong>
-                    {{ spend_column }}
-                </strong>
-
-            </div>
-
-
-            <div class="info-item">
-
-                <span>Revenue</span>
-
-                <strong>
-                    {{ revenue_column }}
-                </strong>
-
-            </div>
-
-
-            <div class="info-item">
-
-                <span>Campaign</span>
-
-                <strong>
-                    {{ campaign_column|default:"Not available" }}
-                </strong>
-
-            </div>
-
-
-            <div class="info-item">
-
-                <span>Date</span>
-
-                <strong>
-                    {{ date_column }}
-                </strong>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    {% endif %}
+    </main>
 
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script>
 
-function changeDataset(datasetId) {
+    /* =========================================================
+       DATA FROM DJANGO
+       ========================================================= */
 
-    const url = new URL(window.location.href);
+    const salesTrendData =
+        {{ sales_trend_json|safe }};
 
-    url.searchParams.set("dataset", datasetId);
+    const salesByCampaignData =
+        {{ sales_by_campaign_json|safe }};
 
-    window.location.href = url.toString();
+    const costByCampaignData =
+        {{ cost_by_campaign_json|safe }};
 
-}
+    const conversionsByCampaignData =
+        {{ conversions_by_campaign_json|safe }};
+
+    const channelPerformanceData =
+        {{ channel_performance_json|safe }};
+
+    const roiByCampaignData =
+        {{ roi_by_campaign_json|safe }};
+
+    const marketingFunnelData =
+        {{ marketing_funnel_json|safe }};
+
+    const marketingByRegionData =
+        {{ marketing_by_region_json|safe }};
 
 
-function changeDateRange(range) {
+    /* =========================================================
+       CHART DEFAULTS
+       ========================================================= */
 
-    if (range === "custom") {
+    Chart.defaults.font.family =
+        "Inter, system-ui, -apple-system, BlinkMacSystemFont, " +
+        "\"Segoe UI\", sans-serif";
 
+    Chart.defaults.color =
+        "#8fa4b8";
+
+    Chart.defaults.borderColor =
+        "rgba(255,255,255,.075)";
+
+
+    /* =========================================================
+       MARKETING SALES TREND
+       ========================================================= */
+
+    const salesTrendCanvas =
         document.getElementById(
-            "customDateGroup"
-        ).style.display = "flex";
-
-        return;
-    }
-
-    const url = new URL(window.location.href);
-
-    url.searchParams.set("range", range);
-
-    url.searchParams.delete("start");
-    url.searchParams.delete("end");
-
-    window.location.href = url.toString();
-
-}
-
-
-function applyCustomRange() {
-
-    const start =
-        document.getElementById("startDate").value;
-
-    const end =
-        document.getElementById("endDate").value;
-
-    if (!start || !end) {
-
-        alert(
-            "Please select both start and end dates."
+            "marketingSalesTrendChart"
         );
 
-        return;
-    }
+    if (
+        salesTrendCanvas &&
+        Array.isArray(salesTrendData) &&
+        salesTrendData.length
+    ) {
 
-    if (start > end) {
+        new Chart(
+            salesTrendCanvas,
+            {
 
-        alert(
-            "Start date cannot be after end date."
-        );
+                type: "line",
 
-        return;
-    }
+                data: {
 
-    const url = new URL(window.location.href);
+                    labels:
+                        salesTrendData.map(
+                            item => item.date
+                        ),
 
-    url.searchParams.set(
-        "range",
-        "custom"
-    );
+                    datasets: [
 
-    url.searchParams.set(
-        "start",
-        start
-    );
+                        {
 
-    url.searchParams.set(
-        "end",
-        end
-    );
+                            label:
+                                "Marketing Sales",
 
-    window.location.href =
-        url.toString();
+                            data:
+                                salesTrendData.map(
+                                    item => item.sales
+                                ),
 
-}
+                            borderWidth: 3,
 
+                            tension: .35,
 
-/* CHART DATA */
+                            fill: true,
 
-const marketingLabels =
-    {{ marketing_labels|default:"[]"|safe }};
+                            borderColor:
+                                "#7567f8",
 
-const marketingSpendValues =
-    {{ marketing_spend_values|default:"[]"|safe }};
+                            backgroundColor:
+                                "rgba(117,103,248,.13)",
 
-const marketingRevenueValues =
-    {{ marketing_revenue_values|default:"[]"|safe }};
+                            pointBackgroundColor:
+                                "#7567f8",
 
-const channelLabels =
-    {{ channel_labels|default:"[]"|safe }};
+                            pointBorderColor:
+                                "#ffffff",
 
-const channelSpendValues =
-    {{ channel_spend_values|default:"[]"|safe }};
+                            pointBorderWidth: 2,
 
-const channelRevenueValues =
-    {{ channel_revenue_values|default:"[]"|safe }};
+                            pointRadius: 3,
 
+                            pointHoverRadius: 6
 
-/* COMMON OPTIONS */
+                        }
 
-const commonOptions = {
+                    ]
 
-    responsive: true,
+                },
 
-    maintainAspectRatio: false,
+                options: {
 
-    interaction: {
-        mode: "index",
-        intersect: false
-    },
+                    responsive: true,
 
-    plugins: {
+                    maintainAspectRatio: false,
 
-        legend: {
-            labels: {
-                color: "#9db0c1",
-                usePointStyle: true
-            }
-        }
+                    interaction: {
 
-    },
+                        intersect: false,
 
-    scales: {
+                        mode: "index"
 
-        x: {
-            ticks: {
-                color: "#71879b",
-                maxTicksLimit: 10
-            },
-
-            grid: {
-                color: "rgba(255,255,255,.04)"
-            }
-        },
-
-        y: {
-            ticks: {
-                color: "#71879b"
-            },
-
-            grid: {
-                color: "rgba(255,255,255,.05)"
-            }
-        }
-
-    }
-
-};
-
-
-/* MARKETING TREND */
-
-const trendCanvas =
-    document.getElementById(
-        "marketingTrendChart"
-    );
-
-if (trendCanvas) {
-
-    new Chart(
-        trendCanvas,
-        {
-            type: "line",
-
-            data: {
-
-                labels: marketingLabels,
-
-                datasets: [
-
-                    {
-                        label: "Marketing Spend",
-
-                        data: marketingSpendValues,
-
-                        borderColor: "#ff9f43",
-
-                        backgroundColor:
-                            "rgba(255,159,67,.08)",
-
-                        fill: true,
-
-                        tension: .35,
-
-                        pointRadius: 2
                     },
 
-                    {
-                        label: "Revenue",
+                    plugins: {
 
-                        data: marketingRevenueValues,
-
-                        borderColor: "#39d98a",
-
-                        backgroundColor:
-                            "rgba(57,217,138,.08)",
-
-                        fill: true,
-
-                        tension: .35,
-
-                        pointRadius: 2
-                    }
-
-                ]
-
-            },
-
-            options: commonOptions
-        }
-    );
-
-}
-
-
-/* CHANNEL CHART */
-
-const channelCanvas =
-    document.getElementById(
-        "channelChart"
-    );
-
-if (channelCanvas) {
-
-    new Chart(
-        channelCanvas,
-        {
-            type: "doughnut",
-
-            data: {
-
-                labels: channelLabels,
-
-                datasets: [
-                    {
-                        data: channelRevenueValues,
-
-                        backgroundColor: [
-                            "#7567f8",
-                            "#39d98a",
-                            "#ff9f43",
-                            "#3fa9f5",
-                            "#ff5c70",
-                            "#8b7ff5",
-                            "#58df9b"
-                        ],
-
-                        borderWidth: 0
-                    }
-                ]
-
-            },
-
-            options: {
-
-                responsive: true,
-
-                maintainAspectRatio: false,
-
-                cutout: "66%",
-
-                plugins: {
-
-                    legend: {
-                        position: "bottom",
-
-                        labels: {
-                            color: "#9db0c1",
-                            padding: 15,
-                            usePointStyle: true
+                        legend: {
+                            display: false
                         }
+
+                    },
+
+                    scales: {
+
+                        x: {
+
+                            grid: {
+                                display: false
+                            }
+
+                        },
+
+                        y: {
+
+                            beginAtZero: true,
+
+                            grid: {
+
+                                color:
+                                    "rgba(255,255,255,.06)"
+
+                            },
+
+                            ticks: {
+
+                                color:
+                                    "#8fa4b8",
+
+                                callback:
+                                    function(value) {
+
+                                        return Number(
+                                            value
+                                        ).toLocaleString();
+
+                                    }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       SALES BY CAMPAIGN
+       ========================================================= */
+
+    const salesCampaignCanvas =
+        document.getElementById(
+            "salesByCampaignChart"
+        );
+
+    if (
+        salesCampaignCanvas &&
+        Array.isArray(salesByCampaignData) &&
+        salesByCampaignData.length
+    ) {
+
+        new Chart(
+            salesCampaignCanvas,
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels:
+                        salesByCampaignData.map(
+                            item => item.campaign
+                        ),
+
+                    datasets: [
+
+                        {
+
+                            label:
+                                "Sales",
+
+                            data:
+                                salesByCampaignData.map(
+                                    item => item.sales
+                                ),
+
+                            borderRadius: 8,
+
+                            backgroundColor:
+                                "#7567f8",
+
+                            maxBarThickness: 45
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    indexAxis: "y",
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        }
+
+                    },
+
+                    scales: {
+
+                        x: {
+
+                            beginAtZero: true,
+
+                            grid: {
+
+                                color:
+                                    "rgba(255,255,255,.06)"
+
+                            }
+
+                        },
+
+                        y: {
+
+                            grid: {
+                                display: false
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       COST BY CAMPAIGN
+       ========================================================= */
+
+    const costCampaignCanvas =
+        document.getElementById(
+            "costByCampaignChart"
+        );
+
+    if (
+        costCampaignCanvas &&
+        Array.isArray(costByCampaignData) &&
+        costByCampaignData.length
+    ) {
+
+        new Chart(
+            costCampaignCanvas,
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels:
+                        costByCampaignData.map(
+                            item => item.campaign
+                        ),
+
+                    datasets: [
+
+                        {
+
+                            label:
+                                "Marketing Cost",
+
+                            data:
+                                costByCampaignData.map(
+                                    item => item.cost
+                                ),
+
+                            borderRadius: 8,
+
+                            backgroundColor:
+                                "#ff9f43",
+
+                            maxBarThickness: 45
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    indexAxis: "y",
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        }
+
+                    },
+
+                    scales: {
+
+                        x: {
+
+                            beginAtZero: true,
+
+                            grid: {
+
+                                color:
+                                    "rgba(255,255,255,.06)"
+
+                            }
+
+                        },
+
+                        y: {
+
+                            grid: {
+                                display: false
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       CONVERSIONS BY CAMPAIGN
+       ========================================================= */
+
+    const conversionsCanvas =
+        document.getElementById(
+            "conversionsByCampaignChart"
+        );
+
+    if (
+        conversionsCanvas &&
+        Array.isArray(conversionsByCampaignData) &&
+        conversionsByCampaignData.length
+    ) {
+
+        new Chart(
+            conversionsCanvas,
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels:
+                        conversionsByCampaignData.map(
+                            item => item.campaign
+                        ),
+
+                    datasets: [
+
+                        {
+
+                            label:
+                                "Conversions",
+
+                            data:
+                                conversionsByCampaignData.map(
+                                    item => item.conversions
+                                ),
+
+                            borderRadius: 8,
+
+                            backgroundColor:
+                                "#38d9ff",
+
+                            maxBarThickness: 45
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    indexAxis: "y",
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        }
+
+                    },
+
+                    scales: {
+
+                        x: {
+
+                            beginAtZero: true,
+
+                            grid: {
+
+                                color:
+                                    "rgba(255,255,255,.06)"
+
+                            }
+
+                        },
+
+                        y: {
+
+                            grid: {
+                                display: false
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       CHANNEL PERFORMANCE
+       ========================================================= */
+
+    const channelCanvas =
+        document.getElementById(
+            "channelPerformanceChart"
+        );
+
+    if (
+        channelCanvas &&
+        Array.isArray(channelPerformanceData) &&
+        channelPerformanceData.length
+    ) {
+
+        new Chart(
+            channelCanvas,
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels:
+                        channelPerformanceData.map(
+                            item => item.channel
+                        ),
+
+                    datasets: [
+
+                        {
+
+                            label:
+                                "Sales",
+
+                            data:
+                                channelPerformanceData.map(
+                                    item =>
+                                        item.sales ?? 0
+                                ),
+
+                            backgroundColor:
+                                "#3fa9f5",
+
+                            borderRadius: 7,
+
+                            maxBarThickness: 42
+
+                        },
+
+                        {
+
+                            label:
+                                "Cost",
+
+                            data:
+                                channelPerformanceData.map(
+                                    item =>
+                                        item.cost ?? 0
+                                ),
+
+                            backgroundColor:
+                                "#ff9f43",
+
+                            borderRadius: 7,
+
+                            maxBarThickness: 42
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+
+                        legend: {
+
+                            position:
+                                "bottom",
+
+                            labels: {
+
+                                color:
+                                    "#8fa4b8"
+
+                            }
+
+                        }
+
+                    },
+
+                    scales: {
+
+                        x: {
+
+                            grid: {
+                                display: false
+                            }
+
+                        },
+
+                        y: {
+
+                            beginAtZero: true,
+
+                            grid: {
+
+                                color:
+                                    "rgba(255,255,255,.06)"
+
+                            }
+
+                        }
+
                     }
 
                 }
 
             }
 
-        }
-    );
+        );
 
-}
+    }
 
 
-/* PERFORMANCE CHART */
+    /* =========================================================
+       CAMPAIGN ROI / ROAS
+       ========================================================= */
 
-const performanceCanvas =
-    document.getElementById(
-        "performanceChart"
-    );
+    const roiCanvas =
+        document.getElementById(
+            "campaignRoiChart"
+        );
 
-if (performanceCanvas) {
+    if (
+        roiCanvas &&
+        Array.isArray(roiByCampaignData) &&
+        roiByCampaignData.length
+    ) {
 
-    new Chart(
-        performanceCanvas,
-        {
-            type: "bar",
+        new Chart(
+            roiCanvas,
+            {
 
-            data: {
+                type: "bar",
 
-                labels: channelLabels,
+                data: {
 
-                datasets: [
+                    labels:
+                        roiByCampaignData.map(
+                            item => item.campaign
+                        ),
 
-                    {
-                        label: "Revenue",
+                    datasets: [
 
-                        data: channelRevenueValues,
+                        {
 
-                        backgroundColor:
-                            "rgba(57,217,138,.65)",
+                            label:
+                                "ROAS",
 
-                        borderRadius: 6
+                            data:
+                                roiByCampaignData.map(
+                                    item =>
+                                        item.roas ?? 0
+                                ),
+
+                            backgroundColor:
+                                "#39d98a",
+
+                            borderRadius: 8,
+
+                            maxBarThickness: 45
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    indexAxis: "y",
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        },
+
+                        tooltip: {
+
+                            callbacks: {
+
+                                label:
+                                    function(context) {
+
+                                        return (
+                                            "ROAS: " +
+                                            Number(
+                                                context.parsed.x
+                                            ).toFixed(2) +
+                                            "x"
+                                        );
+
+                                    }
+
+                            }
+
+                        }
+
                     },
 
-                    {
-                        label: "Marketing Spend",
+                    scales: {
 
-                        data: channelSpendValues,
+                        x: {
 
-                        backgroundColor:
-                            "rgba(255,159,67,.65)",
+                            beginAtZero: true,
 
-                        borderRadius: 6
+                            grid: {
+
+                                color:
+                                    "rgba(255,255,255,.06)"
+
+                            }
+
+                        },
+
+                        y: {
+
+                            grid: {
+                                display: false
+                            }
+
+                        }
+
                     }
 
-                ]
+                }
 
-            },
+            }
 
-            options: commonOptions
+        );
+
+    }
+
+
+    /* =========================================================
+       MARKETING FUNNEL
+       ========================================================= */
+
+    const funnelCanvas =
+        document.getElementById(
+            "marketingFunnelChart"
+        );
+
+    if (
+        funnelCanvas &&
+        Array.isArray(marketingFunnelData) &&
+        marketingFunnelData.length
+    ) {
+
+        new Chart(
+            funnelCanvas,
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels:
+                        marketingFunnelData.map(
+                            item => item.stage
+                        ),
+
+                    datasets: [
+
+                        {
+
+                            label:
+                                "Volume",
+
+                            data:
+                                marketingFunnelData.map(
+                                    item => item.value
+                                ),
+
+                            backgroundColor: [
+
+                                "#7567f8",
+                                "#3fa9f5",
+                                "#38d9ff",
+                                "#39d98a"
+
+                            ],
+
+                            borderRadius: 9,
+
+                            maxBarThickness: 55
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        }
+
+                    },
+
+                    scales: {
+
+                        x: {
+
+                            grid: {
+                                display: false
+                            }
+
+                        },
+
+                        y: {
+
+                            beginAtZero: true,
+
+                            grid: {
+
+                                color:
+                                    "rgba(255,255,255,.06)"
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+    }
+
+
+    /* =========================================================
+       MARKETING BY REGION
+       ========================================================= */
+
+    const regionCanvas =
+        document.getElementById(
+            "marketingRegionChart"
+        );
+
+    if (
+        regionCanvas &&
+        Array.isArray(marketingByRegionData) &&
+        marketingByRegionData.length
+    ) {
+
+        new Chart(
+            regionCanvas,
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels:
+                        marketingByRegionData.map(
+                            item => item.region
+                        ),
+
+                    datasets: [
+
+                        {
+
+                            label:
+                                "Sales",
+
+                            data:
+                                marketingByRegionData.map(
+                                    item =>
+                                        item.sales ?? 0
+                                ),
+
+                            backgroundColor:
+                                "#ff62b0",
+
+                            borderRadius: 8,
+
+                            maxBarThickness: 45
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    indexAxis: "y",
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        }
+
+                    },
+
+                    scales: {
+
+                        x: {
+
+                            beginAtZero: true,
+
+                            grid: {
+
+                                color:
+                                    "rgba(255,255,255,.06)"
+
+                            }
+
+                        },
+
+                        y: {
+
+                            grid: {
+                                display: false
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+    }
+
+
+    /* =========================================================
+       CUSTOM DATE UI
+       ========================================================= */
+
+    function toggleMarketingCustomDates() {
+
+        const range =
+            document.getElementById(
+                "range"
+            );
+
+        const row =
+            document.getElementById(
+                "customDateRow"
+            );
+
+        if (!range || !row) {
+            return;
+        }
+
+        if (
+            range.value === "custom"
+        ) {
+
+            row.classList.add(
+                "visible"
+            );
+
+        } else {
+
+            row.classList.remove(
+                "visible"
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       CUSTOM DATE FORM VALUES
+       ========================================================= */
+
+    function updateMarketingDateForm() {
+
+        const form =
+            document.querySelector(
+                ".filter-form"
+            );
+
+        if (!form) {
+            return;
+        }
+
+
+        const fromInput =
+            document.getElementById(
+                "from_date"
+            );
+
+        const toInput =
+            document.getElementById(
+                "to_date"
+            );
+
+
+        form.querySelectorAll(
+            ".marketing-generated-date"
+        ).forEach(
+            element =>
+                element.remove()
+        );
+
+
+        const range =
+            document.getElementById(
+                "range"
+            );
+
+
+        if (
+            !range ||
+            range.value !== "custom"
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            fromInput &&
+            fromInput.value
+        ) {
+
+            const hiddenFrom =
+                document.createElement(
+                    "input"
+                );
+
+            hiddenFrom.type =
+                "hidden";
+
+            hiddenFrom.name =
+                "from_date";
+
+            hiddenFrom.value =
+                fromInput.value;
+
+            hiddenFrom.className =
+                "marketing-generated-date";
+
+            form.appendChild(
+                hiddenFrom
+            );
+
+        }
+
+
+        if (
+            toInput &&
+            toInput.value
+        ) {
+
+            const hiddenTo =
+                document.createElement(
+                    "input"
+                );
+
+            hiddenTo.type =
+                "hidden";
+
+            hiddenTo.name =
+                "to_date";
+
+            hiddenTo.value =
+                toInput.value;
+
+            hiddenTo.className =
+                "marketing-generated-date";
+
+            form.appendChild(
+                hiddenTo
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       INITIALIZE
+       ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            toggleMarketingCustomDates();
+
+            updateMarketingDateForm();
+
         }
     );
 
-}
+
+    const marketingFilterForm =
+        document.querySelector(
+            ".filter-form"
+        );
+
+
+    if (
+        marketingFilterForm
+    ) {
+
+        marketingFilterForm.addEventListener(
+            "submit",
+            function() {
+
+                updateMarketingDateForm();
+
+            }
+        );
+
+    }
 
 </script>
 
-{% endblock %}
+</body>
+</html>

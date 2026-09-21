@@ -1,100 +1,792 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}About | Smart BI{% endblock %}
+{% block title %}
+About | Smart BI
+{% endblock %}
 
 {% block content %}
+<div class="smart-about-universe" id="aboutUniverse">
 
-<section class="page-hero">
+    <!-- AMBIENT ENGINE GLOWS, CYBER MESH & CANVAS PARTICLES -->
+    <div class="ambient-glow engine-glow-top" aria-hidden="true"></div>
+    <div class="ambient-glow engine-glow-core" aria-hidden="true"></div>
+    <div class="ambient-glow engine-glow-domains" aria-hidden="true"></div>
+    <div class="ambient-glow engine-glow-bottom" aria-hidden="true"></div>
+    <div class="ambient-cyber-grid" aria-hidden="true"></div>
+    <canvas id="aboutParticleCanvas" class="about-particle-canvas" aria-hidden="true"></canvas>
 
-    <div class="hero-badge">
-        ABOUT SMART BI
-    </div>
+    <!-- 1. CINEMATIC HERO: THE INTELLIGENCE ENGINE -->
+    <section class="about-hero-section" id="aboutHero" aria-label="About Smart BI Engine">
+        <div class="about-hero-container">
 
-    <h1>
-        From Business Data to
-        <span>Business Intelligence</span>
-    </h1>
+            <!-- LEFT: MISSION HEADLINE & MANIFESTO -->
+            <div class="about-hero-content">
+                <div class="hero-badge reveal-fade">
+                    <span class="badge-pulse-dot" aria-hidden="true"></span>
+                    <span class="badge-text">ABOUT SMART BI</span>
+                </div>
 
-    <p>
-        Smart Business Decision Intelligence System is designed
-        to help businesses understand their performance,
-        identify opportunities, predict future trends and
-        make better data-driven decisions.
-    </p>
+                <h1 class="about-hero-headline reveal-fade">
+                    <span class="headline-row">From Business Data to</span>
+                    <span class="headline-row headline-gradient">Business Intelligence.</span>
+                </h1>
 
-</section>
+                <p class="about-hero-description reveal-fade">
+                    Smart Business Decision Intelligence System is designed to help businesses understand their performance, identify opportunities, predict future trends and make better data-driven decisions.
+                </p>
 
+                <div class="about-hero-actions reveal-fade">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'core:dashboard' %}" class="btn-primary-glow" id="aboutHeroAuthenticated">
+                            <span class="btn-text">Open Smart BI</span>
+                            <span class="btn-icon" aria-hidden="true">&rarr;</span>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'accounts:signup' %}" class="btn-primary-glow" id="aboutHeroSignup">
+                            <span class="btn-text">Explore Smart BI</span>
+                            <span class="btn-icon" aria-hidden="true">&rarr;</span>
+                        </a>
+                    {% endif %}
+                </div>
 
-<section class="about-content">
+                <div class="hero-metric-strip reveal-fade">
+                    <div class="metric-strip-item">
+                        <span class="strip-num">7+</span>
+                        <span class="strip-label">Data Domains</span>
+                    </div>
+                    <div class="metric-strip-divider" aria-hidden="true"></div>
+                    <div class="metric-strip-item">
+                        <span class="strip-num">4</span>
+                        <span class="strip-label">Cognitive Stages</span>
+                    </div>
+                    <div class="metric-strip-divider" aria-hidden="true"></div>
+                    <div class="metric-strip-item">
+                        <span class="strip-num">100%</span>
+                        <span class="strip-label">Action Oriented</span>
+                    </div>
+                </div>
+            </div>
 
-    <div class="about-text">
+            <!-- RIGHT: DYNAMIC INTELLIGENCE CORE VISUALIZATION -->
+            <div class="about-core-stage" id="aboutCoreStage">
+                <div class="core-assembly-box" id="coreAssembly">
 
-        <span class="section-label">
-            OUR PURPOSE
-        </span>
+                    <!-- ORBITING SVG FIELD -->
+                    <svg class="core-orbit-svg" viewBox="0 0 540 540" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                        <defs>
+                            <radialGradient id="coreAuraGradient" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#7C5CFF" stop-opacity="0.6"/>
+                                <stop offset="45%" stop-color="#35B8FF" stop-opacity="0.3"/>
+                                <stop offset="85%" stop-color="#22D3EE" stop-opacity="0.1"/>
+                                <stop offset="100%" stop-color="#030712" stop-opacity="0"/>
+                            </radialGradient>
+                            <linearGradient id="beamGradientPurple" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#7C5CFF" stop-opacity="0.8"/>
+                                <stop offset="100%" stop-color="#22D3EE" stop-opacity="0.1"/>
+                            </linearGradient>
+                            <linearGradient id="beamGradientBlue" x1="100%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#35B8FF" stop-opacity="0.8"/>
+                                <stop offset="100%" stop-color="#39E58C" stop-opacity="0.1"/>
+                            </linearGradient>
+                        </defs>
 
-        <h2>
-            Businesses have data.
-            We help turn it into decisions.
-        </h2>
+                        <!-- AURA BACKGROUND -->
+                        <circle cx="270" cy="270" r="230" fill="url(#coreAuraGradient)" class="core-aura-pulse" />
 
-        <p>
-            Modern businesses generate large amounts of data
-            from sales, customers, products, marketing,
-            finance and operations.
-        </p>
+                        <!-- ROTATING CONCENTRIC ORBITAL RINGS -->
+                        <circle cx="270" cy="270" r="210" class="orbit-ring ring-outer" />
+                        <circle cx="270" cy="270" r="150" class="orbit-ring ring-mid" />
+                        <circle cx="270" cy="270" r="95" class="orbit-ring ring-inner" />
 
-        <p>
-            The challenge is not simply collecting that data.
-            The challenge is understanding what the data means
-            and knowing what action should be taken.
-        </p>
+                        <!-- INWARD CONVERGENT DATA BEAMS -->
+                        <line x1="80" y1="130" x2="270" y2="270" class="core-feed-beam beam-sales" />
+                        <line x1="60" y1="270" x2="270" y2="270" class="core-feed-beam beam-cust" />
+                        <line x1="100" y1="410" x2="270" y2="270" class="core-feed-beam beam-prod" />
+                        <line x1="270" y1="470" x2="270" y2="270" class="core-feed-beam beam-region" />
+                        <line x1="440" y1="410" x2="270" y2="270" class="core-feed-beam beam-mktg" />
+                        <line x1="480" y1="270" x2="270" y2="270" class="core-feed-beam beam-fin" />
+                        <line x1="440" y1="130" x2="270" y2="270" class="core-feed-beam beam-ret" />
+                    </svg>
 
-        <p>
-            Smart BI combines data science, statistics,
-            machine learning and web-based visualization
-            to create a complete business intelligence workflow.
-        </p>
+                    <!-- ORBITING FLOATING DATA CAPSULES -->
+                    <div class="floating-satellite sat-sales" data-node="sales">
+                        <span class="sat-dot"></span>
+                        <span class="sat-text">SALES</span>
+                    </div>
+                    <div class="floating-satellite sat-cust" data-node="customers">
+                        <span class="sat-dot"></span>
+                        <span class="sat-text">CUSTOMERS</span>
+                    </div>
+                    <div class="floating-satellite sat-prod" data-node="products">
+                        <span class="sat-dot"></span>
+                        <span class="sat-text">PRODUCTS</span>
+                    </div>
+                    <div class="floating-satellite sat-region" data-node="regional">
+                        <span class="sat-dot"></span>
+                        <span class="sat-text">REGIONAL</span>
+                    </div>
+                    <div class="floating-satellite sat-mktg" data-node="marketing">
+                        <span class="sat-dot"></span>
+                        <span class="sat-text">MARKETING</span>
+                    </div>
+                    <div class="floating-satellite sat-fin" data-node="financial">
+                        <span class="sat-dot"></span>
+                        <span class="sat-text">FINANCIAL</span>
+                    </div>
+                    <div class="floating-satellite sat-ret" data-node="returns">
+                        <span class="sat-dot"></span>
+                        <span class="sat-text">RETURNS</span>
+                    </div>
 
-    </div>
+                    <!-- CENTRAL SMART BI INTELLIGENCE CORE -->
+                    <div class="central-core-monolith">
+                        <div class="core-halo-spin" aria-hidden="true"></div>
+                        <div class="core-center-nucleus">
+                            <div class="nucleus-symbol" aria-hidden="true">&#10022;</div>
+                            <span class="nucleus-title">SMART BI</span>
+                            <span class="nucleus-sub">AI CORE</span>
+                            <div class="nucleus-dots" aria-hidden="true">
+                                <span></span><span></span><span></span><span></span>
+                            </div>
+                        </div>
+                    </div>
 
+                    <!-- CORE LOWER RESULT BADGE -->
+                    <div class="core-result-tag" aria-hidden="true">
+                        <span class="result-label">DATA</span>
+                        <span class="result-arrow">&rarr;</span>
+                        <span class="result-value">INTELLIGENCE</span>
+                    </div>
 
-    <div class="about-principles">
+                </div>
+            </div>
 
-        <div class="principle-card">
-            <strong>01</strong>
-            <h3>Understand</h3>
-            <p>
-                Know what happened in your business.
-            </p>
         </div>
+    </section>
 
-        <div class="principle-card">
-            <strong>02</strong>
-            <h3>Discover</h3>
-            <p>
-                Find patterns, causes, risks and opportunities.
-            </p>
+    <!-- 2. THE SMART BI APPROACH (7-STAGE FLUID PIPELINE) -->
+    <section class="approach-section" id="approachSection" aria-label="The Smart BI Approach">
+        <div class="about-shell">
+            <div class="about-intro text-center reveal-fade">
+                <span class="sub-badge">THE SMART BI APPROACH</span>
+                <h2 class="section-title">
+                    Data is only <span class="text-gradient">the beginning.</span>
+                </h2>
+                <p class="section-tagline">
+                    Smart BI connects the complete journey from raw business data to decisive leadership action.
+                </p>
+            </div>
+
+            <!-- HORIZONTAL ON DESKTOP, FLUID VERTICAL ON MOBILE -->
+            <div class="approach-flow-container reveal-fade">
+                
+                <!-- STAGE 01 -->
+                <div class="approach-step-card" data-step="1">
+                    <div class="step-badge-circle">01</div>
+                    <div class="step-icon-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                        </svg>
+                    </div>
+                    <h3 class="step-title">Data</h3>
+                    <p class="step-detail">Ingest structured multi-source enterprise feeds.</p>
+                </div>
+
+                <div class="approach-wire-segment" aria-hidden="true"><div class="wire-pulse"></div></div>
+
+                <!-- STAGE 02 -->
+                <div class="approach-step-card" data-step="2">
+                    <div class="step-badge-circle">02</div>
+                    <div class="step-icon-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
+                        </svg>
+                    </div>
+                    <h3 class="step-title">Clean</h3>
+                    <p class="step-detail">Eliminate noise, null values and anomalies.</p>
+                </div>
+
+                <div class="approach-wire-segment" aria-hidden="true"><div class="wire-pulse"></div></div>
+
+                <!-- STAGE 03 -->
+                <div class="approach-step-card" data-step="3">
+                    <div class="step-badge-circle">03</div>
+                    <div class="step-icon-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="step-title">Validate</h3>
+                    <p class="step-detail">Audit data schema integrity and consistency.</p>
+                </div>
+
+                <div class="approach-wire-segment" aria-hidden="true"><div class="wire-pulse"></div></div>
+
+                <!-- STAGE 04 -->
+                <div class="approach-step-card" data-step="4">
+                    <div class="step-badge-circle">04</div>
+                    <div class="step-icon-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                    </div>
+                    <h3 class="step-title">Analyze</h3>
+                    <p class="step-detail">Compute multi-dimensional business metrics.</p>
+                </div>
+
+                <div class="approach-wire-segment" aria-hidden="true"><div class="wire-pulse"></div></div>
+
+                <!-- STAGE 05 -->
+                <div class="approach-step-card" data-step="5">
+                    <div class="step-badge-circle">05</div>
+                    <div class="step-icon-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                    </div>
+                    <h3 class="step-title">Insight</h3>
+                    <p class="step-detail">Uncover root causes, cohorts and signals.</p>
+                </div>
+
+                <div class="approach-wire-segment" aria-hidden="true"><div class="wire-pulse"></div></div>
+
+                <!-- STAGE 06 -->
+                <div class="approach-step-card" data-step="6">
+                    <div class="step-badge-circle">06</div>
+                    <div class="step-icon-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 6l-9.5 9.5-5-5L1 18"></path>
+                            <path d="M17 6h6v6"></path>
+                        </svg>
+                    </div>
+                    <h3 class="step-title">Forecast</h3>
+                    <p class="step-detail">Project forward demand corridors and trends.</p>
+                </div>
+
+                <div class="approach-wire-segment" aria-hidden="true"><div class="wire-pulse"></div></div>
+
+                <!-- STAGE 07 -->
+                <div class="approach-step-card highlight-decision" data-step="7">
+                    <div class="step-badge-circle">07</div>
+                    <div class="step-icon-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <circle cx="12" cy="12" r="6"></circle>
+                            <circle cx="12" cy="12" r="2"></circle>
+                        </svg>
+                    </div>
+                    <h3 class="step-title">Decision</h3>
+                    <p class="step-detail">Execute prescriptive, high-impact action.</p>
+                </div>
+
+            </div>
         </div>
+    </section>
 
-        <div class="principle-card">
-            <strong>03</strong>
-            <h3>Predict</h3>
-            <p>
-                Understand what could happen next.
-            </p>
+    <!-- 3. OUR PURPOSE (THREE DISCIPLINE STATEMENTS) -->
+    <section class="purpose-section" id="purposeSection" aria-label="Our Core Purpose">
+        <div class="about-shell">
+            <div class="about-intro reveal-fade">
+                <span class="sub-badge">OUR PURPOSE</span>
+                <h2 class="section-title">
+                    Businesses have data. <br>
+                    <span class="text-gradient">We help turn it into decisions.</span>
+                </h2>
+            </div>
+
+            <div class="purpose-grid">
+                
+                <!-- STATEMENT 01 -->
+                <div class="purpose-card reveal-fade" data-index="1">
+                    <div class="purpose-ghost-num" aria-hidden="true">01</div>
+                    <div class="purpose-card-inner">
+                        <span class="purpose-tag">The Reality</span>
+                        <h3 class="purpose-heading">Data is everywhere.</h3>
+                        <p class="purpose-body">
+                            Modern businesses generate large amounts of data from sales, customers, products, marketing, finance and operations.
+                        </p>
+                        <div class="purpose-bottom-accent accent-blue"></div>
+                    </div>
+                </div>
+
+                <!-- STATEMENT 02 -->
+                <div class="purpose-card reveal-fade" data-index="2">
+                    <div class="purpose-ghost-num" aria-hidden="true">02</div>
+                    <div class="purpose-card-inner">
+                        <span class="purpose-tag">The Friction</span>
+                        <h3 class="purpose-heading">Understanding is harder.</h3>
+                        <p class="purpose-body">
+                            The challenge is not simply collecting that data. The challenge is understanding what the data means and knowing what action should be taken.
+                        </p>
+                        <div class="purpose-bottom-accent accent-purple"></div>
+                    </div>
+                </div>
+
+                <!-- STATEMENT 03 -->
+                <div class="purpose-card reveal-fade" data-index="3">
+                    <div class="purpose-ghost-num" aria-hidden="true">03</div>
+                    <div class="purpose-card-inner">
+                        <span class="purpose-tag">The Solution</span>
+                        <h3 class="purpose-heading">Intelligence connects the two.</h3>
+                        <p class="purpose-body">
+                            Smart BI combines data science, statistics, machine learning and web-based visualization to create a complete business intelligence workflow.
+                        </p>
+                        <div class="purpose-bottom-accent accent-cyan"></div>
+                    </div>
+                </div>
+
+            </div>
         </div>
+    </section>
 
-        <div class="principle-card">
-            <strong>04</strong>
-            <h3>Decide</h3>
-            <p>
-                Convert insights into measurable actions.
-            </p>
+    <!-- 4. FOUR INTELLIGENCE LAYERS: CONNECTED TIMELINE -->
+    <section class="layers-section" id="layersSection" aria-label="Four Intelligence Layers">
+        <div class="about-shell">
+            <div class="about-intro text-center reveal-fade">
+                <span class="sub-badge">FROM QUESTIONS TO DECISIONS</span>
+                <h2 class="section-title">
+                    Four layers of <span class="text-gradient">business intelligence.</span>
+                </h2>
+                <p class="section-tagline">
+                    An integrated cognitive continuum designed to move leaders from historical context to prescriptive certainty.
+                </p>
+            </div>
+
+            <div class="layers-timeline-container" id="layersTimeline">
+                <div class="layers-timeline-spine" aria-hidden="true">
+                    <div class="spine-glow-runner" id="spineRunner"></div>
+                </div>
+
+                <!-- LAYER 01: UNDERSTAND (BLUE) -->
+                <div class="layer-item active" data-layer="1">
+                    <div class="layer-node-col">
+                        <div class="layer-beacon beacon-blue">01</div>
+                    </div>
+                    <div class="layer-card theme-blue">
+                        <div class="layer-card-header">
+                            <span class="layer-kicker">Layer 01 &bull; Descriptive</span>
+                            <h3 class="layer-title">UNDERSTAND</h3>
+                        </div>
+                        <div class="layer-question">What happened?</div>
+                        <p class="layer-desc">
+                            Understand business performance, revenue, customers, products and operational signals with unified telemetry.
+                        </p>
+                        <div class="layer-specs">
+                            <span>Historical Performance</span>
+                            <span>Customer Aggregations</span>
+                            <span>Sales Trajectory</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LAYER 02: DISCOVER (PURPLE) -->
+                <div class="layer-item" data-layer="2">
+                    <div class="layer-node-col">
+                        <div class="layer-beacon beacon-purple">02</div>
+                    </div>
+                    <div class="layer-card theme-purple">
+                        <div class="layer-card-header">
+                            <span class="layer-kicker">Layer 02 &bull; Diagnostic</span>
+                            <h3 class="layer-title">DISCOVER</h3>
+                        </div>
+                        <div class="layer-question">Why did it happen?</div>
+                        <p class="layer-desc">
+                            Find patterns, anomalies, risks, causes and opportunities buried across disparate product categories and customer cohorts.
+                        </p>
+                        <div class="layer-specs">
+                            <span>Anomaly Detection</span>
+                            <span>Variance Analysis</span>
+                            <span>Root Cause Correlation</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LAYER 03: PREDICT (CYAN / GREEN) -->
+                <div class="layer-item" data-layer="3">
+                    <div class="layer-node-col">
+                        <div class="layer-beacon beacon-cyan">03</div>
+                    </div>
+                    <div class="layer-card theme-cyan">
+                        <div class="layer-card-header">
+                            <span class="layer-kicker">Layer 03 &bull; Predictive</span>
+                            <h3 class="layer-title">PREDICT</h3>
+                        </div>
+                        <div class="layer-question">What happens next?</div>
+                        <p class="layer-desc">
+                            Identify trends, demand forecasts and future possibilities using machine learning models with confidence bands.
+                        </p>
+                        <div class="layer-specs">
+                            <span>Time-Series Projections</span>
+                            <span>Demand Simulations</span>
+                            <span>Risk Thresholds</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LAYER 04: DECIDE (ORANGE / AMBER) -->
+                <div class="layer-item" data-layer="4">
+                    <div class="layer-node-col">
+                        <div class="layer-beacon beacon-orange">04</div>
+                    </div>
+                    <div class="layer-card theme-orange">
+                        <div class="layer-card-header">
+                            <span class="layer-kicker">Layer 04 &bull; Prescriptive</span>
+                            <h3 class="layer-title">DECIDE</h3>
+                        </div>
+                        <div class="layer-question">What should we do?</div>
+                        <p class="layer-desc">
+                            Convert intelligence into scenarios, recommendations and measurable business actions that maximize bottom-line value.
+                        </p>
+                        <div class="layer-specs">
+                            <span>What-If Sandbox</span>
+                            <span>Actionable Playbooks</span>
+                            <span>Resource Optimization</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
+    </section>
 
-    </div>
+    <!-- 5. BUSINESS INTELLIGENCE DOMAINS: 7-NODE CONNECTED CONSTELLATION -->
+    <section class="domains-section" id="domainsSection" aria-label="Business Intelligence Domains">
+        <div class="about-shell">
+            <div class="about-intro text-center reveal-fade">
+                <span class="sub-badge">THE BUSINESS INTELLIGENCE ENGINE</span>
+                <h2 class="section-title">
+                    One intelligence layer <span class="text-gradient">across the business.</span>
+                </h2>
+                <p class="section-tagline">
+                    Hover any enterprise domain to inspect how individual data streams converge into central platform intelligence.
+                </p>
+            </div>
 
-</section>
+            <!-- INTERACTIVE CONSTELLATION STAGE -->
+            <div class="domains-constellation-box reveal-fade" id="constellationStage">
+                
+                <!-- SVG INTERACTION WIRES -->
+                <svg class="constellation-svg" id="constellationSvg" viewBox="0 0 920 540" preserveAspectRatio="none" aria-hidden="true">
+                    <!-- LINE TO SALES (TOP) -->
+                    <line x1="460" y1="270" x2="460" y2="70" class="domain-wire wire-sales" />
+                    <!-- LINE TO CUSTOMERS (TOP LEFT) -->
+                    <line x1="460" y1="270" x2="170" y2="130" class="domain-wire wire-customers" />
+                    <!-- LINE TO PRODUCTS (TOP RIGHT) -->
+                    <line x1="460" y1="270" x2="750" y2="130" class="domain-wire wire-products" />
+                    <!-- LINE TO REGIONAL (BOTTOM LEFT) -->
+                    <line x1="460" y1="270" x2="160" y2="410" class="domain-wire wire-regional" />
+                    <!-- LINE TO MARKETING (BOTTOM RIGHT) -->
+                    <line x1="460" y1="270" x2="760" y2="410" class="domain-wire wire-marketing" />
+                    <!-- LINE TO FINANCIAL (LOWER MID) -->
+                    <line x1="460" y1="270" x2="350" y2="475" class="domain-wire wire-financial" />
+                    <!-- LINE TO RETURNS (LOWER FAR) -->
+                    <line x1="460" y1="270" x2="570" y2="475" class="domain-wire wire-returns" />
+                </svg>
 
+                <!-- 7 SURROUNDING DOMAIN NODES WITH HOVER DATA POPOVERS -->
+                <div class="domain-node node-sales" data-target="sales" tabindex="0" role="button" aria-label="Sales Domain">
+                    <div class="domain-node-pill">
+                        <span class="domain-node-dot dot-blue"></span>
+                        <span class="domain-name">Sales</span>
+                    </div>
+                    <div class="domain-preview-tooltip">
+                        <span class="tooltip-title">Sales Telemetry</span>
+                        <p class="tooltip-desc">Revenue, orders, products and growth trajectories.</p>
+                    </div>
+                </div>
+
+                <div class="domain-node node-customers" data-target="customers" tabindex="0" role="button" aria-label="Customers Domain">
+                    <div class="domain-node-pill">
+                        <span class="domain-node-dot dot-cyan"></span>
+                        <span class="domain-name">Customers</span>
+                    </div>
+                    <div class="domain-preview-tooltip">
+                        <span class="tooltip-title">Customer Cohorts</span>
+                        <p class="tooltip-desc">Customer activity, segments and lifetime behavior.</p>
+                    </div>
+                </div>
+
+                <div class="domain-node node-products" data-target="products" tabindex="0" role="button" aria-label="Products Domain">
+                    <div class="domain-node-pill">
+                        <span class="domain-node-dot dot-purple"></span>
+                        <span class="domain-name">Products</span>
+                    </div>
+                    <div class="domain-preview-tooltip">
+                        <span class="tooltip-title">Product Dynamics</span>
+                        <p class="tooltip-desc">Product performance, margins and inventory demand.</p>
+                    </div>
+                </div>
+
+                <div class="domain-node node-regional" data-target="regional" tabindex="0" role="button" aria-label="Regional Domain">
+                    <div class="domain-node-pill">
+                        <span class="domain-node-dot dot-amber"></span>
+                        <span class="domain-name">Regional</span>
+                    </div>
+                    <div class="domain-preview-tooltip">
+                        <span class="tooltip-title">Geographic Footprint</span>
+                        <p class="tooltip-desc">Geographic performance and macro market signals.</p>
+                    </div>
+                </div>
+
+                <div class="domain-node node-marketing" data-target="marketing" tabindex="0" role="button" aria-label="Marketing Domain">
+                    <div class="domain-node-pill">
+                        <span class="domain-node-dot dot-green"></span>
+                        <span class="domain-name">Marketing</span>
+                    </div>
+                    <div class="domain-preview-tooltip">
+                        <span class="tooltip-title">Acquisition Channels</span>
+                        <p class="tooltip-desc">Campaigns, conversions, cost and attribution ROI.</p>
+                    </div>
+                </div>
+
+                <div class="domain-node node-financial" data-target="financial" tabindex="0" role="button" aria-label="Financial Domain">
+                    <div class="domain-node-pill">
+                        <span class="domain-node-dot dot-blue"></span>
+                        <span class="domain-name">Financial</span>
+                    </div>
+                    <div class="domain-preview-tooltip">
+                        <span class="tooltip-title">Fiscal Architecture</span>
+                        <p class="tooltip-desc">Gross revenue, cost burdens, profit and cash flow.</p>
+                    </div>
+                </div>
+
+                <div class="domain-node node-returns" data-target="returns" tabindex="0" role="button" aria-label="Returns Domain">
+                    <div class="domain-node-pill">
+                        <span class="domain-node-dot dot-red"></span>
+                        <span class="domain-name">Returns</span>
+                    </div>
+                    <div class="domain-preview-tooltip">
+                        <span class="tooltip-title">Reversal Analysis</span>
+                        <p class="tooltip-desc">Returns, value, root reasons and return risk.</p>
+                    </div>
+                </div>
+
+                <!-- CENTRAL CORE NEXUS -->
+                <div class="constellation-core">
+                    <div class="constellation-core-rings" aria-hidden="true">
+                        <span></span><span></span>
+                    </div>
+                    <div class="constellation-core-card">
+                        <span class="core-tag">CENTRAL HUB</span>
+                        <h3 class="core-hub-heading">SMART BI</h3>
+                        <span class="core-hub-sub">INTELLIGENCE</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. DATA TO DECISION PIPELINE (PARTICLE STREAM) -->
+    <section class="particle-pipeline-section" id="particlePipeline" aria-label="Data to Decision Flow Pipeline">
+        <div class="about-shell">
+            <div class="about-intro text-center reveal-fade">
+                <span class="sub-badge">SYNTHESIS ARCHITECTURE</span>
+                <h2 class="section-title">
+                    From raw data to <span class="text-gradient">business intelligence.</span>
+                </h2>
+                <p class="section-tagline">
+                    A deterministic pipeline transforming unstructured complexity into clear strategic actions.
+                </p>
+            </div>
+
+            <div class="pipeline-track-card reveal-fade">
+                
+                <!-- PIPELINE STATIONS -->
+                <div class="pipeline-stations-grid" id="pipelineTrack">
+                    <div class="station-cell active" data-pipeline-step="1">
+                        <div class="station-dot"></div>
+                        <span class="station-label">Raw Data</span>
+                    </div>
+                    <div class="station-cell" data-pipeline-step="2">
+                        <div class="station-dot"></div>
+                        <span class="station-label">Cleaning</span>
+                    </div>
+                    <div class="station-cell" data-pipeline-step="3">
+                        <div class="station-dot"></div>
+                        <span class="station-label">Validation</span>
+                    </div>
+                    <div class="station-cell" data-pipeline-step="4">
+                        <div class="station-dot"></div>
+                        <span class="station-label">Transformation</span>
+                    </div>
+                    <div class="station-cell" data-pipeline-step="5">
+                        <div class="station-dot"></div>
+                        <span class="station-label">Analytics</span>
+                    </div>
+                    <div class="station-cell" data-pipeline-step="6">
+                        <div class="station-dot"></div>
+                        <span class="station-label">Forecasting</span>
+                    </div>
+                    <div class="station-cell final-station" data-pipeline-step="7">
+                        <div class="station-dot"></div>
+                        <span class="station-label">Decision</span>
+                    </div>
+                </div>
+
+                <!-- GLOWING TRANSIT RAIL -->
+                <div class="pipeline-rail" aria-hidden="true">
+                    <div class="pipeline-flowing-bead" id="pipelineBead"></div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. TECHNOLOGY CONSTELLATION SECTION -->
+    <section class="tech-section" id="techSection" aria-label="Technology Stack">
+        <div class="about-shell">
+            <div class="tech-card-wrapper reveal-fade">
+                
+                <div class="tech-content">
+                    <span class="sub-badge">ENGINEERING FOUNDATION</span>
+                    <h2 class="section-title">
+                        Built for intelligent <span class="text-gradient">business analysis.</span>
+                    </h2>
+                    <p class="tech-desc">
+                        Smart BI brings together modern data processing, analytics, statistics, machine learning and web technologies into one unified, enterprise-grade architecture.
+                    </p>
+                </div>
+
+                <!-- TECHNOLOGY NODES CONSTELLATION -->
+                <div class="tech-constellation-grid">
+                    <div class="tech-node-item">
+                        <span class="tech-node-code">Py</span>
+                        <div class="tech-node-info">
+                            <span class="tech-node-title">Python</span>
+                            <span class="tech-node-role">Core Computational Engine</span>
+                        </div>
+                    </div>
+                    <div class="tech-node-item">
+                        <span class="tech-node-code">Dj</span>
+                        <div class="tech-node-info">
+                            <span class="tech-node-title">Django</span>
+                            <span class="tech-node-role">Enterprise Backend Web Framework</span>
+                        </div>
+                    </div>
+                    <div class="tech-node-item">
+                        <span class="tech-node-code">SQL</span>
+                        <div class="tech-node-info">
+                            <span class="tech-node-title">SQL</span>
+                            <span class="tech-node-role">Relational Data Store &amp; Indexing</span>
+                        </div>
+                    </div>
+                    <div class="tech-node-item">
+                        <span class="tech-node-code">Pd</span>
+                        <div class="tech-node-info">
+                            <span class="tech-node-title">Pandas</span>
+                            <span class="tech-node-role">High-Performance Dataframes</span>
+                        </div>
+                    </div>
+                    <div class="tech-node-item">
+                        <span class="tech-node-code">Np</span>
+                        <div class="tech-node-info">
+                            <span class="tech-node-title">NumPy</span>
+                            <span class="tech-node-role">Vectorized Linear Algebra</span>
+                        </div>
+                    </div>
+                    <div class="tech-node-item">
+                        <span class="tech-node-code">An</span>
+                        <div class="tech-node-info">
+                            <span class="tech-node-title">Analytics</span>
+                            <span class="tech-node-role">Multi-Dimensional KPI Synthesis</span>
+                        </div>
+                    </div>
+                    <div class="tech-node-item">
+                        <span class="tech-node-code">ML</span>
+                        <div class="tech-node-info">
+                            <span class="tech-node-title">Machine Learning</span>
+                            <span class="tech-node-role">Time-Series &amp; Horizon Forecasting</span>
+                        </div>
+                    </div>
+                    <div class="tech-node-item">
+                        <span class="tech-node-code">Viz</span>
+                        <div class="tech-node-info">
+                            <span class="tech-node-title">Visualization</span>
+                            <span class="tech-node-role">Reactive Front-End Canvas &amp; SVG</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. PHILOSOPHY MANIFESTO STATEMENT -->
+    <section class="philosophy-section" id="philosophySection" aria-label="Smart BI Philosophy">
+        <div class="about-shell">
+            <div class="philosophy-monolith reveal-fade">
+                <p class="philosophy-first-line">
+                    Data should not only tell you what happened.
+                </p>
+                <p class="philosophy-second-line headline-gradient">
+                    It should help you understand what comes next.
+                </p>
+                <div class="philosophy-pill-sequence" aria-label="Core Cognitive Pillars">
+                    <span>UNDERSTAND</span>
+                    <span class="sep-dot">&bull;</span>
+                    <span>DISCOVER</span>
+                    <span class="sep-dot">&bull;</span>
+                    <span>PREDICT</span>
+                    <span class="sep-dot">&bull;</span>
+                    <span>DECIDE</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. FINAL CINEMATIC CTA -->
+    <section class="about-final-cta-section" id="aboutFinalCta" aria-label="Call to Action">
+        <div class="about-shell">
+            <div class="about-cta-card reveal-fade">
+                <div class="cta-rim-beam" aria-hidden="true"></div>
+
+                <div class="cta-inner-content text-center">
+                    <div class="cta-spark-pill">
+                        <span class="spark-dot" aria-hidden="true"></span>
+                        <span>SMART BI DECISION PLATFORM</span>
+                    </div>
+
+                    <h2 class="about-cta-title">
+                        Your data already contains signals. <br>
+                        <span class="text-gradient">Smart BI helps you find them.</span>
+                    </h2>
+
+                    <p class="about-cta-desc">
+                        Turn your business data into intelligence, forecasts and better decisions.
+                    </p>
+
+                    <div class="about-cta-actions">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'core:dashboard' %}" class="btn-primary-glow btn-lg" id="aboutCtaAuthenticated">
+                                <span class="btn-text">Open Smart BI</span>
+                                <span class="btn-icon" aria-hidden="true">&rarr;</span>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'accounts:signup' %}" class="btn-primary-glow btn-lg" id="aboutCtaSignup">
+                                <span class="btn-text">Start Building Intelligence</span>
+                                <span class="btn-icon" aria-hidden="true">&rarr;</span>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/about.js' %}"></script>
 {% endblock %}

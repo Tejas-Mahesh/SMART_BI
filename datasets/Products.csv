@@ -1,0 +1,41 @@
+Product_ID,Product_Name,Category,Subcategory,Brand,Unit_Cost,Unit_Price,Stock_Quantity,Reorder_Level,Supplier,Product_Status
+PROD001,iPhone 17,Electronics,Mobile,Apple,60000,75000,120,30,ABC Ltd,Active
+PROD002,Galaxy S26 Ultra,Electronics,Mobile,Samsung,58000,72000,95,25,ABC Ltd,Active
+PROD003,Pixel 10 Pro,Electronics,Mobile,Google,50000,64000,80,20,TechSource Global,Active
+PROD004,OnePlus 13,Electronics,Mobile,OnePlus,38000,48000,110,30,TechSource Global,Active
+PROD005,Redmi Note 15 Pro,Electronics,Mobile,Xiaomi,18000,24000,210,50,Eastern Supplies,Active
+PROD006,MacBook Pro 16,Electronics,Laptop,Apple,145000,175000,45,15,ABC Ltd,Active
+PROD007,ThinkPad X1 Carbon,Electronics,Laptop,Lenovo,95000,120000,60,20,Zenith Tech,Active
+PROD008,Dell XPS 15,Electronics,Laptop,Dell,88000,110000,50,15,Zenith Tech,Active
+PROD009,HP Spectre x360,Electronics,Laptop,HP,78000,98000,65,20,Zenith Tech,Active
+PROD010,ASUS ROG Zephyrus,Electronics,Laptop,Asus,102000,130000,40,10,Zenith Tech,Active
+PROD011,AirPods Pro 3,Electronics,Audio,Apple,16000,22000,180,40,ABC Ltd,Active
+PROD012,Sony WH-1000XM6,Electronics,Audio,Sony,22000,29000,130,35,Omni Distributors,Active
+PROD013,Bose QuietComfort Ultra,Electronics,Audio,Bose,24000,32000,90,25,Omni Distributors,Active
+PROD014,Apple Watch Series 11,Electronics,Wearables,Apple,32000,42000,115,30,ABC Ltd,Active
+PROD015,Galaxy Watch 8,Electronics,Wearables,Samsung,22000,30000,100,25,ABC Ltd,Active
+PROD016,Ergonomic Mesh Chair,Furniture,Seating,Herman Miller,28000,38000,70,20,Apex Interiors,Active
+PROD017,High-Back Executive Chair,Furniture,Seating,Steelcase,18000,25000,85,25,Apex Interiors,Active
+PROD018,Motorized Standing Desk,Furniture,Desks,ErgoDesk,22000,32000,60,15,WoodCraft Solutions,Active
+PROD019,L-Shaped Corner Workstation,Furniture,Desks,IKEA,14000,21000,50,15,WoodCraft Solutions,Active
+PROD020,Solid Oak 5-Tier Bookshelf,Furniture,Storage,WoodCraft,9500,15000,40,10,WoodCraft Solutions,Active
+PROD021,2-Door File Cabinet,Furniture,Storage,Godrej,6500,9800,75,20,Apex Interiors,Active
+PROD022,Espresso Barista Machine,Home & Kitchen,Appliances,De'Longhi,26000,36000,55,15,HomeComfort Ltd,Active
+PROD023,Smart Air Fryer XXL,Home & Kitchen,Appliances,Philips,6500,10500,140,35,HomeComfort Ltd,Active
+PROD024,Robotic Vacuum Cleaner,Home & Kitchen,Appliances,Ecovacs,21000,31000,65,20,TechSource Global,Active
+PROD025,Cold Press Juicer,Home & Kitchen,Appliances,Kuvings,13500,19500,80,20,HomeComfort Ltd,Active
+PROD026,Classic Oxford Cotton Shirt,Apparel,Topwear,Ralph Lauren,3200,5800,250,60,Vogue Apparels,Active
+PROD027,Slim Fit Denim Jeans,Apparel,Bottomwear,Levi's,1800,3600,320,80,Vogue Apparels,Active
+PROD028,Water-Resistant Winter Jacket,Apparel,Outerwear,Columbia,5500,9500,110,30,Vogue Apparels,Active
+PROD029,Athletic Dri-Fit Hoodie,Apparel,Activewear,Nike,2400,4500,190,45,Prime Garments,Active
+PROD030,Formal Wool Blazer,Apparel,Outerwear,Zara,4200,7900,85,25,Prime Garments,Active
+PROD031,Air Zoom Running Shoes,Footwear,Athletic,Nike,4500,8500,160,40,Prime Garments,Active
+PROD032,Ultraboost Light Sneakers,Footwear,Athletic,Adidas,5200,9800,140,35,Prime Garments,Active
+PROD033,Classic Leather Oxford Shoes,Footwear,Formal,Clarks,3800,6900,95,25,Prime Garments,Active
+PROD034,Genuine Leather Laptop Sleeve,Accessories,Bags,Bellroy,2200,4200,180,50,Eastern Supplies,Active
+PROD035,Travel Duffel Bag 45L,Accessories,Luggage,Samsonite,4000,7500,120,30,Eastern Supplies,Active
+PROD036,Polarized Aviator Sunglasses,Accessories,Eyewear,Ray-Ban,4800,8200,130,30,Eastern Supplies,Active
+PROD037,Fast Charging GaN 100W Hub,Accessories,Peripherals,Anker,2100,3800,240,60,TechSource Global,Active
+PROD038,Vintage Turntable Player,Electronics,Audio,Audio-Technica,8500,13500,8,15,Omni Distributors,Discontinued
+PROD039,Manual Crank Standing Desk,Furniture,Desks,ErgoDesk,9000,14000,4,10,WoodCraft Solutions,Discontinued
+PROD040,Corded Stick Vacuum 500W,Home & Kitchen,Appliances,Eureka,2500,4200,0,20,HomeComfort Ltd,Out of Stock

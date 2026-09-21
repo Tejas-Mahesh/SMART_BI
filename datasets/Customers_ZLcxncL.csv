@@ -1,0 +1,1001 @@
+Customer_ID,Customer_Name,Gender,Age,City,State,Region,Signup_Date,Customer_Segment,Acquisition_Channel
+CUST1754,Arjun Patel,Male,27,Jaipur,Rajasthan,North,2025-01-01,Standard,Referral
+CUST1408,Suresh Joshi,Male,33,Indore,Madhya Pradesh,Central,2025-01-02,Standard,Organic Search
+CUST1502,Kavita Das,Female,47,Kolkata,West Bengal,East,2025-01-03,Standard,Online
+CUST1556,Karthik Bose,Male,29,Mumbai,Maharashtra,West,2025-01-03,Standard,Social Media
+CUST1919,Arjun Singh,Male,39,Nagpur,Maharashtra,Central,2025-01-03,Enterprise,Online
+CUST1318,Varun Gupta,Male,23,Chennai,Tamil Nadu,South,2025-01-04,Standard,Social Media
+CUST1320,Sunita Das,Female,39,Bengaluru,Karnataka,South,2025-01-04,Standard,Referral
+CUST1341,Meera Reddy,Female,35,Pune,Maharashtra,West,2025-01-04,Enterprise,Online
+CUST1657,Neha Kumar,Female,35,Lucknow,Uttar Pradesh,North,2025-01-04,Standard,Online
+CUST1039,Sneha Gupta,Female,27,Hyderabad,Telangana,South,2025-01-05,Standard,Email Campaign
+CUST1812,Sneha Iyer,Female,27,Bhubaneswar,Odisha,East,2025-01-07,Standard,Social Media
+CUST1127,Varun Bose,Male,23,Patna,Bihar,East,2025-01-08,Premium,Referral
+CUST1145,Tanvi Mehta,Female,30,Kolkata,West Bengal,East,2025-01-08,Standard,Online
+CUST1771,Sunita Sharma,Female,33,Kochi,Kerala,South,2025-01-08,Enterprise,Retail
+CUST1837,Aditya Choudhury,Male,36,New Delhi,Delhi,North,2025-01-08,Standard,Online
+CUST1834,Ritu Iyer,Female,47,Patna,Bihar,East,2025-01-09,Standard,Online
+CUST1843,Pradeep Bose,Male,28,Chandigarh,Punjab,North,2025-01-09,Premium,Online
+CUST1020,Karthik Rao,Male,33,Bhopal,Madhya Pradesh,Central,2025-01-10,Standard,Referral
+CUST1503,Priya Choudhury,Female,26,Jaipur,Rajasthan,North,2025-01-10,Premium,Retail
+CUST1453,Rohan Das,Male,49,Pune,Maharashtra,West,2025-01-11,Standard,Email Campaign
+CUST1292,Manoj Das,Male,32,Pune,Maharashtra,West,2025-01-12,Standard,Social Media
+CUST1769,Anil Das,Male,37,Pune,Maharashtra,West,2025-01-12,Standard,Online
+CUST1878,Vikram Singh,Male,35,Hyderabad,Telangana,South,2025-01-12,Premium,Online
+CUST1567,Sunita Bose,Female,47,New Delhi,Delhi,North,2025-01-13,Standard,Online
+CUST1208,Ananya Rao,Female,20,Lucknow,Uttar Pradesh,North,2025-01-15,Standard,Online
+CUST1011,Sanjay Rao,Male,42,Lucknow,Uttar Pradesh,North,2025-01-17,Premium,Referral
+CUST1151,Sunita Sharma,Female,40,Mumbai,Maharashtra,West,2025-01-17,Premium,Online
+CUST1369,Amit Reddy,Male,48,Pune,Maharashtra,West,2025-01-17,Standard,Retail
+CUST1550,Pooja Mehta,Female,18,Nagpur,Maharashtra,Central,2025-01-17,Standard,Referral
+CUST1633,Rahul Iyer,Male,37,Nagpur,Maharashtra,Central,2025-01-17,Standard,Referral
+CUST1807,Aishwarya Joshi,Female,34,Indore,Madhya Pradesh,Central,2025-01-17,Standard,Online
+CUST1227,Rahul Verma,Male,41,Patna,Bihar,East,2025-01-18,Standard,Online
+CUST1971,Sunita Rao,Female,45,Bhubaneswar,Odisha,East,2025-01-18,Standard,Online
+CUST1218,Amit Joshi,Male,44,Patna,Bihar,East,2025-01-19,Standard,Online
+CUST1409,Rahul Das,Male,20,Chandigarh,Punjab,North,2025-01-19,Standard,Organic Search
+CUST1055,Priya Sharma,Female,39,Mumbai,Maharashtra,West,2025-01-20,Standard,Referral
+CUST1277,Varun Nair,Male,35,Pune,Maharashtra,West,2025-01-20,Standard,Retail
+CUST1473,Kavita Verma,Female,23,Kolkata,West Bengal,East,2025-01-20,Standard,Organic Search
+CUST1698,Karthik Gupta,Male,37,Pune,Maharashtra,West,2025-01-20,Premium,Retail
+CUST1048,Rahul Patel,Male,29,Surat,Gujarat,West,2025-01-21,Premium,Online
+CUST1861,Naveen Reddy,Male,41,Chennai,Tamil Nadu,South,2025-01-21,Enterprise,Social Media
+CUST1888,Shreya Sharma,Female,31,Bhopal,Madhya Pradesh,Central,2025-01-21,Standard,Retail
+CUST1356,Divya Sharma,Female,35,Pune,Maharashtra,West,2025-01-23,Premium,Online
+CUST1708,Meera Verma,Female,44,Patna,Bihar,East,2025-01-23,Enterprise,Online
+CUST1177,Sunita Gupta,Female,24,Pune,Maharashtra,West,2025-01-24,Standard,Email Campaign
+CUST1538,Ananya Mehta,Female,30,Bhubaneswar,Odisha,East,2025-01-24,Enterprise,Social Media
+CUST1904,Sunita Choudhury,Female,36,Surat,Gujarat,West,2025-01-25,Standard,Retail
+CUST1077,Amit Gupta,Male,18,Chandigarh,Punjab,North,2025-01-26,Standard,Online
+CUST1747,Sanjay Reddy,Male,37,Hyderabad,Telangana,South,2025-01-26,Standard,Email Campaign
+CUST1168,Tanvi Gupta,Female,29,Bhubaneswar,Odisha,East,2025-01-27,Enterprise,Retail
+CUST1810,Aishwarya Bose,Female,38,Kochi,Kerala,South,2025-01-27,Standard,Referral
+CUST1974,Ritu Joshi,Female,23,Bengaluru,Karnataka,South,2025-01-27,Premium,Online
+CUST1207,Varun Das,Male,49,Bhubaneswar,Odisha,East,2025-01-28,Standard,Referral
+CUST1496,Tanvi Sharma,Female,51,Bhopal,Madhya Pradesh,Central,2025-01-28,Premium,Retail
+CUST1713,Vikram Verma,Male,39,Mumbai,Maharashtra,West,2025-01-28,Standard,Organic Search
+CUST1993,Shreya Das,Female,34,Patna,Bihar,East,2025-01-28,Standard,Online
+CUST1746,Rahul Verma,Male,39,New Delhi,Delhi,North,2025-01-29,Premium,Online
+CUST1760,Ritu Mehta,Female,21,Bhubaneswar,Odisha,East,2025-01-29,Premium,Online
+CUST1035,Pooja Kumar,Female,24,Ahmedabad,Gujarat,West,2025-01-30,Standard,Referral
+CUST1435,Meera Singh,Female,50,Mumbai,Maharashtra,West,2025-01-30,Premium,Referral
+CUST1818,Rahul Kumar,Male,36,Hyderabad,Telangana,South,2025-01-30,Enterprise,Social Media
+CUST1160,Ritu Gupta,Female,33,Bengaluru,Karnataka,South,2025-02-01,Enterprise,Social Media
+CUST1790,Tanvi Verma,Female,44,Pune,Maharashtra,West,2025-02-01,Standard,Retail
+CUST1212,Sunita Mehta,Female,28,Patna,Bihar,East,2025-02-02,Standard,Organic Search
+CUST1339,Sneha Verma,Female,33,New Delhi,Delhi,North,2025-02-02,Standard,Online
+CUST1488,Sunita Sharma,Female,35,Bhopal,Madhya Pradesh,Central,2025-02-02,Standard,Online
+CUST1615,Varun Verma,Male,22,Hyderabad,Telangana,South,2025-02-02,Standard,Referral
+CUST1839,Varun Bose,Male,42,Lucknow,Uttar Pradesh,North,2025-02-02,Premium,Referral
+CUST1960,Anil Reddy,Male,45,Pune,Maharashtra,West,2025-02-02,Enterprise,Referral
+CUST1099,Sneha Kumar,Female,33,Kochi,Kerala,South,2025-02-03,Standard,Online
+CUST1236,Karthik Choudhury,Male,44,Hyderabad,Telangana,South,2025-02-03,Standard,Email Campaign
+CUST1391,Deepak Mehta,Male,41,New Delhi,Delhi,North,2025-02-05,Standard,Online
+CUST1823,Priya Patel,Female,40,Patna,Bihar,East,2025-02-05,Standard,Organic Search
+CUST1828,Ritu Nair,Female,47,Kolkata,West Bengal,East,2025-02-05,Standard,Online
+CUST1025,Priya Reddy,Female,22,Bengaluru,Karnataka,South,2025-02-06,Premium,Online
+CUST1026,Naveen Kumar,Male,30,Ahmedabad,Gujarat,West,2025-02-06,Standard,Online
+CUST1836,Arjun Reddy,Male,46,Lucknow,Uttar Pradesh,North,2025-02-06,Standard,Online
+CUST1348,Arjun Nair,Male,25,Kolkata,West Bengal,East,2025-02-07,Standard,Retail
+CUST1427,Sunita Gupta,Female,37,Mumbai,Maharashtra,West,2025-02-08,Standard,Online
+CUST1516,Sneha Sharma,Female,34,Indore,Madhya Pradesh,Central,2025-02-08,Premium,Online
+CUST1189,Vikram Das,Male,31,Pune,Maharashtra,West,2025-02-09,Premium,Email Campaign
+CUST1329,Karthik Verma,Male,34,Kolkata,West Bengal,East,2025-02-09,Standard,Retail
+CUST1950,Kavita Singh,Female,18,Surat,Gujarat,West,2025-02-09,Premium,Online
+CUST1006,Swati Sharma,Female,39,Kolkata,West Bengal,East,2025-02-10,Standard,Social Media
+CUST1210,Ritu Reddy,Female,39,Bengaluru,Karnataka,South,2025-02-10,Standard,Online
+CUST1776,Arjun Mehta,Male,27,Nagpur,Maharashtra,Central,2025-02-10,Enterprise,Social Media
+CUST1071,Arjun Patel,Male,34,Nagpur,Maharashtra,Central,2025-02-11,Standard,Online
+CUST1161,Sunita Sharma,Female,18,Hyderabad,Telangana,South,2025-02-11,Standard,Online
+CUST1243,Tanvi Choudhury,Female,18,Bengaluru,Karnataka,South,2025-02-11,Standard,Retail
+CUST1459,Pooja Sharma,Female,39,Pune,Maharashtra,West,2025-02-11,Standard,Online
+CUST1830,Anil Iyer,Male,27,Ahmedabad,Gujarat,West,2025-02-11,Premium,Social Media
+CUST1334,Aishwarya Singh,Female,31,Hyderabad,Telangana,South,2025-02-12,Standard,Referral
+CUST1386,Sanjay Rao,Male,23,Mumbai,Maharashtra,West,2025-02-12,Standard,Organic Search
+CUST1400,Kavita Joshi,Female,34,Kolkata,West Bengal,East,2025-02-12,Premium,Retail
+CUST1021,Pooja Kumar,Female,34,Hyderabad,Telangana,South,2025-02-13,Premium,Social Media
+CUST1100,Rohan Verma,Male,51,Pune,Maharashtra,West,2025-02-13,Enterprise,Online
+CUST1192,Aditya Sharma,Male,21,Ahmedabad,Gujarat,West,2025-02-13,Standard,Online
+CUST1650,Amit Patel,Male,36,New Delhi,Delhi,North,2025-02-13,Premium,Organic Search
+CUST1458,Anil Kumar,Male,37,Bhubaneswar,Odisha,East,2025-02-14,Standard,Social Media
+CUST1468,Preeti Joshi,Female,40,Hyderabad,Telangana,South,2025-02-14,Standard,Referral
+CUST1720,Preeti Nair,Female,20,New Delhi,Delhi,North,2025-02-14,Premium,Retail
+CUST1716,Ritu Bose,Female,24,Nagpur,Maharashtra,Central,2025-02-15,Standard,Retail
+CUST1789,Preeti Choudhury,Female,18,Surat,Gujarat,West,2025-02-15,Standard,Retail
+CUST1896,Ananya Choudhury,Female,42,Kolkata,West Bengal,East,2025-02-15,Standard,Retail
+CUST1979,Rahul Kumar,Male,45,Lucknow,Uttar Pradesh,North,2025-02-15,Enterprise,Online
+CUST1141,Vikram Mehta,Male,22,New Delhi,Delhi,North,2025-02-16,Enterprise,Online
+CUST1153,Priya Nair,Female,30,Patna,Bihar,East,2025-02-16,Premium,Retail
+CUST1460,Ritu Das,Female,34,Mumbai,Maharashtra,West,2025-02-16,Premium,Referral
+CUST1702,Ritu Mehta,Female,44,Indore,Madhya Pradesh,Central,2025-02-16,Standard,Online
+CUST1786,Divya Das,Female,39,Chennai,Tamil Nadu,South,2025-02-16,Standard,Online
+CUST1063,Sanjay Sharma,Male,31,Ahmedabad,Gujarat,West,2025-02-17,Premium,Social Media
+CUST1166,Ananya Sharma,Female,41,Hyderabad,Telangana,South,2025-02-17,Standard,Social Media
+CUST1559,Pradeep Iyer,Male,40,Kolkata,West Bengal,East,2025-02-17,Standard,Organic Search
+CUST1765,Sneha Sharma,Female,32,Jaipur,Rajasthan,North,2025-02-17,Standard,Online
+CUST1889,Priya Nair,Female,29,Surat,Gujarat,West,2025-02-17,Standard,Retail
+CUST1695,Preeti Iyer,Female,22,New Delhi,Delhi,North,2025-02-18,Standard,Referral
+CUST1686,Ananya Singh,Female,31,Indore,Madhya Pradesh,Central,2025-02-19,Standard,Online
+CUST1777,Meera Verma,Female,47,Patna,Bihar,East,2025-02-19,Standard,Social Media
+CUST1813,Sunita Rao,Female,47,Chennai,Tamil Nadu,South,2025-02-19,Enterprise,Retail
+CUST1031,Varun Choudhury,Male,48,Nagpur,Maharashtra,Central,2025-02-20,Standard,Email Campaign
+CUST1152,Pooja Bose,Female,23,Surat,Gujarat,West,2025-02-20,Enterprise,Referral
+CUST1383,Aishwarya Rao,Female,46,Chennai,Tamil Nadu,South,2025-02-20,Premium,Social Media
+CUST1918,Manoj Reddy,Male,45,Hyderabad,Telangana,South,2025-02-20,Premium,Social Media
+CUST1931,Ritu Das,Female,36,Bengaluru,Karnataka,South,2025-02-20,Premium,Social Media
+CUST1273,Sanjay Singh,Male,42,Bhopal,Madhya Pradesh,Central,2025-02-21,Premium,Online
+CUST1613,Arjun Singh,Male,20,Chandigarh,Punjab,North,2025-02-21,Standard,Referral
+CUST1390,Ananya Joshi,Female,18,Kochi,Kerala,South,2025-02-22,Standard,Organic Search
+CUST1531,Divya Sharma,Female,48,Bengaluru,Karnataka,South,2025-02-22,Standard,Online
+CUST1591,Preeti Das,Female,35,Ahmedabad,Gujarat,West,2025-02-22,Premium,Retail
+CUST1825,Karthik Gupta,Male,41,Mumbai,Maharashtra,West,2025-02-22,Standard,Online
+CUST1908,Divya Choudhury,Female,38,Chandigarh,Punjab,North,2025-02-22,Standard,Retail
+CUST1066,Sanjay Joshi,Male,24,Bengaluru,Karnataka,South,2025-02-24,Premium,Online
+CUST1609,Sunita Singh,Female,31,Surat,Gujarat,West,2025-02-24,Standard,Social Media
+CUST1726,Sneha Mehta,Female,35,Jaipur,Rajasthan,North,2025-02-24,Standard,Online
+CUST1774,Preeti Gupta,Female,40,Chennai,Tamil Nadu,South,2025-02-24,Standard,Online
+CUST1824,Sneha Gupta,Female,32,Bhopal,Madhya Pradesh,Central,2025-02-25,Standard,Social Media
+CUST1279,Preeti Verma,Female,39,Jaipur,Rajasthan,North,2025-02-27,Standard,Social Media
+CUST1524,Aditya Choudhury,Male,28,Bhopal,Madhya Pradesh,Central,2025-02-27,Premium,Referral
+CUST1706,Divya Gupta,Female,45,Hyderabad,Telangana,South,2025-02-27,Premium,Referral
+CUST1943,Meera Sharma,Female,36,Pune,Maharashtra,West,2025-02-28,Standard,Online
+CUST1056,Kavita Reddy,Female,29,Indore,Madhya Pradesh,Central,2025-03-01,Standard,Retail
+CUST1290,Tanvi Iyer,Female,44,Patna,Bihar,East,2025-03-01,Premium,Social Media
+CUST1354,Vikram Nair,Male,37,Hyderabad,Telangana,South,2025-03-01,Premium,Social Media
+CUST1768,Aditya Nair,Male,48,Indore,Madhya Pradesh,Central,2025-03-01,Standard,Organic Search
+CUST1910,Deepak Das,Male,29,Hyderabad,Telangana,South,2025-03-01,Premium,Organic Search
+CUST1296,Sanjay Bose,Male,46,Surat,Gujarat,West,2025-03-02,Standard,Retail
+CUST1405,Sneha Rao,Female,44,Mumbai,Maharashtra,West,2025-03-02,Premium,Online
+CUST1912,Arjun Patel,Male,29,Bengaluru,Karnataka,South,2025-03-02,Standard,Organic Search
+CUST1403,Ananya Das,Female,31,Chandigarh,Punjab,North,2025-03-03,Standard,Online
+CUST1421,Rohan Sharma,Male,39,Bhubaneswar,Odisha,East,2025-03-03,Standard,Email Campaign
+CUST1630,Sneha Mehta,Female,47,Kochi,Kerala,South,2025-03-03,Enterprise,Social Media
+CUST1248,Anil Singh,Male,58,Patna,Bihar,East,2025-03-04,Standard,Online
+CUST1750,Vikram Das,Male,38,New Delhi,Delhi,North,2025-03-04,Premium,Online
+CUST1928,Pooja Reddy,Female,41,Kolkata,West Bengal,East,2025-03-04,Standard,Referral
+CUST1205,Tanvi Rao,Female,30,Indore,Madhya Pradesh,Central,2025-03-05,Standard,Social Media
+CUST1239,Pradeep Verma,Male,18,Chennai,Tamil Nadu,South,2025-03-05,Standard,Online
+CUST1508,Karthik Iyer,Male,29,Chandigarh,Punjab,North,2025-03-05,Standard,Social Media
+CUST1237,Swati Nair,Female,36,Hyderabad,Telangana,South,2025-03-06,Enterprise,Retail
+CUST1648,Rohan Bose,Male,45,Bengaluru,Karnataka,South,2025-03-06,Premium,Social Media
+CUST1156,Vikram Bose,Male,27,New Delhi,Delhi,North,2025-03-08,Standard,Social Media
+CUST1179,Divya Sharma,Female,48,Chandigarh,Punjab,North,2025-03-08,Standard,Social Media
+CUST1196,Neha Gupta,Female,38,Kolkata,West Bengal,East,2025-03-08,Standard,Organic Search
+CUST1441,Rahul Iyer,Male,25,Jaipur,Rajasthan,North,2025-03-08,Standard,Online
+CUST1501,Karthik Mehta,Male,42,Hyderabad,Telangana,South,2025-03-08,Premium,Retail
+CUST1291,Ananya Choudhury,Female,18,Patna,Bihar,East,2025-03-09,Standard,Referral
+CUST1388,Suresh Das,Male,23,Hyderabad,Telangana,South,2025-03-09,Standard,Retail
+CUST1651,Pooja Singh,Female,33,New Delhi,Delhi,North,2025-03-09,Standard,Online
+CUST1877,Manoj Gupta,Male,43,Nagpur,Maharashtra,Central,2025-03-09,Standard,Referral
+CUST1067,Priya Iyer,Female,34,Patna,Bihar,East,2025-03-10,Premium,Social Media
+CUST1418,Karthik Sharma,Male,45,Indore,Madhya Pradesh,Central,2025-03-10,Premium,Referral
+CUST1539,Pradeep Choudhury,Male,21,Indore,Madhya Pradesh,Central,2025-03-10,Enterprise,Online
+CUST1543,Vikram Nair,Male,57,Patna,Bihar,East,2025-03-10,Standard,Retail
+CUST1598,Rohan Reddy,Male,34,Chandigarh,Punjab,North,2025-03-10,Premium,Online
+CUST1985,Meera Gupta,Female,31,Bhopal,Madhya Pradesh,Central,2025-03-10,Premium,Email Campaign
+CUST1367,Meera Kumar,Female,48,Bhopal,Madhya Pradesh,Central,2025-03-11,Standard,Referral
+CUST1444,Anil Patel,Male,18,Ahmedabad,Gujarat,West,2025-03-11,Enterprise,Social Media
+CUST1704,Aishwarya Joshi,Female,42,New Delhi,Delhi,North,2025-03-11,Standard,Online
+CUST1737,Rohan Mehta,Male,18,Nagpur,Maharashtra,Central,2025-03-11,Standard,Online
+CUST1199,Suresh Rao,Male,43,Lucknow,Uttar Pradesh,North,2025-03-12,Standard,Online
+CUST1257,Karthik Iyer,Male,31,Chennai,Tamil Nadu,South,2025-03-12,Premium,Social Media
+CUST1840,Divya Sharma,Female,40,Nagpur,Maharashtra,Central,2025-03-12,Standard,Email Campaign
+CUST1030,Suresh Iyer,Male,33,Patna,Bihar,East,2025-03-13,Standard,Online
+CUST1258,Sneha Reddy,Female,35,Indore,Madhya Pradesh,Central,2025-03-13,Standard,Retail
+CUST1347,Varun Bose,Male,36,Bhopal,Madhya Pradesh,Central,2025-03-13,Premium,Online
+CUST1536,Naveen Verma,Male,44,Bhopal,Madhya Pradesh,Central,2025-03-13,Premium,Social Media
+CUST1574,Priya Iyer,Female,27,Nagpur,Maharashtra,Central,2025-03-14,Standard,Online
+CUST1172,Divya Kumar,Female,22,Chandigarh,Punjab,North,2025-03-15,Standard,Referral
+CUST1778,Ritu Singh,Female,42,Lucknow,Uttar Pradesh,North,2025-03-15,Premium,Retail
+CUST1895,Shreya Choudhury,Female,19,Hyderabad,Telangana,South,2025-03-15,Standard,Referral
+CUST1270,Preeti Nair,Female,51,Surat,Gujarat,West,2025-03-16,Standard,Online
+CUST1549,Vikram Mehta,Male,39,Mumbai,Maharashtra,West,2025-03-16,Premium,Social Media
+CUST1723,Shreya Joshi,Female,49,Bhubaneswar,Odisha,East,2025-03-16,Premium,Retail
+CUST1885,Manoj Patel,Male,35,Bhopal,Madhya Pradesh,Central,2025-03-16,Enterprise,Organic Search
+CUST1064,Pooja Mehta,Female,46,Jaipur,Rajasthan,North,2025-03-17,Standard,Online
+CUST1206,Ritu Choudhury,Female,32,Indore,Madhya Pradesh,Central,2025-03-17,Premium,Online
+CUST1423,Tanvi Joshi,Female,33,Ahmedabad,Gujarat,West,2025-03-17,Standard,Online
+CUST1470,Ananya Nair,Female,31,New Delhi,Delhi,North,2025-03-17,Standard,Retail
+CUST1884,Sanjay Rao,Male,53,Surat,Gujarat,West,2025-03-17,Standard,Retail
+CUST1930,Ritu Iyer,Female,22,Mumbai,Maharashtra,West,2025-03-17,Premium,Online
+CUST1603,Suresh Iyer,Male,40,Bhubaneswar,Odisha,East,2025-03-18,Premium,Online
+CUST1353,Divya Nair,Female,20,Indore,Madhya Pradesh,Central,2025-03-19,Standard,Online
+CUST1401,Vikram Sharma,Male,30,Jaipur,Rajasthan,North,2025-03-21,Standard,Referral
+CUST1655,Pradeep Sharma,Male,25,Mumbai,Maharashtra,West,2025-03-21,Standard,Online
+CUST1759,Preeti Das,Female,37,Bhopal,Madhya Pradesh,Central,2025-03-21,Premium,Organic Search
+CUST1851,Priya Sharma,Female,32,Chandigarh,Punjab,North,2025-03-22,Premium,Referral
+CUST1385,Pooja Joshi,Female,49,Pune,Maharashtra,West,2025-03-23,Premium,Organic Search
+CUST1436,Aishwarya Reddy,Female,37,Lucknow,Uttar Pradesh,North,2025-03-23,Standard,Social Media
+CUST1522,Rohan Joshi,Male,42,Chennai,Tamil Nadu,South,2025-03-23,Standard,Organic Search
+CUST1668,Sunita Patel,Female,47,Ahmedabad,Gujarat,West,2025-03-23,Premium,Online
+CUST1019,Tanvi Gupta,Female,28,Surat,Gujarat,West,2025-03-24,Standard,Social Media
+CUST1454,Anil Verma,Male,41,Kolkata,West Bengal,East,2025-03-24,Premium,Retail
+CUST1514,Shreya Nair,Female,23,Pune,Maharashtra,West,2025-03-24,Standard,Referral
+CUST1614,Aishwarya Iyer,Female,38,Chennai,Tamil Nadu,South,2025-03-24,Standard,Retail
+CUST1082,Karthik Reddy,Male,23,Kochi,Kerala,South,2025-03-25,Enterprise,Online
+CUST1741,Priya Mehta,Female,37,New Delhi,Delhi,North,2025-03-25,Premium,Online
+CUST1994,Rahul Das,Male,28,Mumbai,Maharashtra,West,2025-03-25,Premium,Referral
+CUST1374,Tanvi Joshi,Female,25,Bhubaneswar,Odisha,East,2025-03-26,Premium,Social Media
+CUST1762,Anil Nair,Male,35,Nagpur,Maharashtra,Central,2025-03-26,Standard,Referral
+CUST1032,Amit Choudhury,Male,41,Lucknow,Uttar Pradesh,North,2025-03-27,Standard,Referral
+CUST1224,Neha Das,Female,33,Bhubaneswar,Odisha,East,2025-03-27,Premium,Referral
+CUST1466,Pradeep Das,Male,32,Chandigarh,Punjab,North,2025-03-27,Enterprise,Social Media
+CUST1735,Kavita Choudhury,Female,28,Patna,Bihar,East,2025-03-27,Standard,Retail
+CUST1375,Pradeep Kumar,Male,23,Nagpur,Maharashtra,Central,2025-03-28,Standard,Social Media
+CUST1707,Pooja Rao,Female,26,Pune,Maharashtra,West,2025-03-28,Enterprise,Retail
+CUST1927,Rohan Nair,Male,24,Kochi,Kerala,South,2025-03-28,Standard,Email Campaign
+CUST1989,Sneha Choudhury,Female,22,Mumbai,Maharashtra,West,2025-03-28,Standard,Organic Search
+CUST1262,Arjun Kumar,Male,20,Bhopal,Madhya Pradesh,Central,2025-03-29,Standard,Social Media
+CUST1780,Anil Das,Male,21,Patna,Bihar,East,2025-03-29,Standard,Online
+CUST1857,Vikram Verma,Male,41,Bhubaneswar,Odisha,East,2025-03-29,Premium,Online
+CUST1103,Sanjay Singh,Male,33,Lucknow,Uttar Pradesh,North,2025-03-30,Standard,Online
+CUST1266,Swati Nair,Female,30,Ahmedabad,Gujarat,West,2025-03-30,Standard,Retail
+CUST1133,Manoj Nair,Male,19,Chandigarh,Punjab,North,2025-03-31,Standard,Organic Search
+CUST1186,Karthik Verma,Male,30,Hyderabad,Telangana,South,2025-04-01,Enterprise,Retail
+CUST1438,Preeti Bose,Female,19,Chandigarh,Punjab,North,2025-04-01,Standard,Online
+CUST1481,Sanjay Kumar,Male,34,Patna,Bihar,East,2025-04-01,Enterprise,Referral
+CUST1653,Swati Das,Female,48,Nagpur,Maharashtra,Central,2025-04-01,Standard,Referral
+CUST1748,Sanjay Patel,Male,27,Nagpur,Maharashtra,Central,2025-04-01,Enterprise,Social Media
+CUST1936,Ritu Kumar,Female,32,Chennai,Tamil Nadu,South,2025-04-01,Standard,Organic Search
+CUST1328,Preeti Iyer,Female,25,Chennai,Tamil Nadu,South,2025-04-02,Enterprise,Online
+CUST1411,Karthik Rao,Male,43,Chennai,Tamil Nadu,South,2025-04-02,Standard,Retail
+CUST1611,Aishwarya Singh,Female,20,Bhopal,Madhya Pradesh,Central,2025-04-02,Standard,Retail
+CUST1855,Naveen Nair,Male,46,Patna,Bihar,East,2025-04-02,Standard,Online
+CUST1875,Suresh Choudhury,Male,36,Kolkata,West Bengal,East,2025-04-02,Standard,Email Campaign
+CUST1171,Karthik Choudhury,Male,26,Bengaluru,Karnataka,South,2025-04-03,Standard,Social Media
+CUST1493,Swati Patel,Female,43,Nagpur,Maharashtra,Central,2025-04-03,Standard,Referral
+CUST1665,Rahul Patel,Male,34,Bhopal,Madhya Pradesh,Central,2025-04-03,Standard,Social Media
+CUST1494,Shreya Mehta,Female,19,Nagpur,Maharashtra,Central,2025-04-04,Enterprise,Organic Search
+CUST1660,Kavita Singh,Female,26,Hyderabad,Telangana,South,2025-04-04,Standard,Online
+CUST1882,Arjun Iyer,Male,31,Pune,Maharashtra,West,2025-04-04,Enterprise,Social Media
+CUST1636,Meera Rao,Female,39,Surat,Gujarat,West,2025-04-05,Standard,Online
+CUST1036,Rahul Iyer,Male,28,Hyderabad,Telangana,South,2025-04-06,Standard,Online
+CUST1635,Deepak Reddy,Male,40,Mumbai,Maharashtra,West,2025-04-06,Standard,Online
+CUST1952,Naveen Kumar,Male,32,Indore,Madhya Pradesh,Central,2025-04-06,Standard,Online
+CUST1489,Tanvi Patel,Female,33,Pune,Maharashtra,West,2025-04-07,Standard,Social Media
+CUST1250,Preeti Reddy,Female,27,Ahmedabad,Gujarat,West,2025-04-08,Premium,Referral
+CUST1263,Sneha Bose,Female,33,Kochi,Kerala,South,2025-04-08,Standard,Online
+CUST1679,Anil Joshi,Male,55,Kolkata,West Bengal,East,2025-04-08,Standard,Referral
+CUST1766,Preeti Iyer,Female,35,New Delhi,Delhi,North,2025-04-08,Standard,Referral
+CUST1095,Anil Sharma,Male,33,Chandigarh,Punjab,North,2025-04-09,Standard,Referral
+CUST1674,Aishwarya Choudhury,Female,29,Patna,Bihar,East,2025-04-09,Standard,Referral
+CUST1579,Sanjay Gupta,Male,34,Hyderabad,Telangana,South,2025-04-10,Standard,Referral
+CUST1891,Sunita Gupta,Female,57,Kolkata,West Bengal,East,2025-04-10,Standard,Retail
+CUST1080,Pradeep Kumar,Male,36,Lucknow,Uttar Pradesh,North,2025-04-13,Premium,Retail
+CUST1897,Kavita Verma,Female,20,New Delhi,Delhi,North,2025-04-13,Standard,Referral
+CUST1289,Naveen Reddy,Male,46,Indore,Madhya Pradesh,Central,2025-04-14,Standard,Online
+CUST1617,Pradeep Bose,Male,38,Bengaluru,Karnataka,South,2025-04-14,Premium,Organic Search
+CUST1681,Rahul Bose,Male,39,Chennai,Tamil Nadu,South,2025-04-14,Standard,Online
+CUST1856,Sanjay Rao,Male,50,Mumbai,Maharashtra,West,2025-04-14,Standard,Online
+CUST1958,Sunita Choudhury,Female,36,Chennai,Tamil Nadu,South,2025-04-14,Standard,Online
+CUST1313,Ritu Sharma,Female,38,Ahmedabad,Gujarat,West,2025-04-15,Standard,Referral
+CUST1730,Kavita Singh,Female,38,Jaipur,Rajasthan,North,2025-04-15,Standard,Organic Search
+CUST1996,Amit Rao,Male,45,Hyderabad,Telangana,South,2025-04-15,Premium,Online
+CUST1395,Aishwarya Joshi,Female,51,Pune,Maharashtra,West,2025-04-16,Standard,Retail
+CUST1629,Aditya Joshi,Male,38,Mumbai,Maharashtra,West,2025-04-16,Standard,Social Media
+CUST1845,Shreya Mehta,Female,36,New Delhi,Delhi,North,2025-04-16,Standard,Online
+CUST1683,Priya Rao,Female,36,Bengaluru,Karnataka,South,2025-04-17,Premium,Organic Search
+CUST1450,Ritu Kumar,Female,50,Mumbai,Maharashtra,West,2025-04-18,Standard,Online
+CUST1012,Suresh Choudhury,Male,21,Ahmedabad,Gujarat,West,2025-04-19,Premium,Referral
+CUST1178,Rahul Singh,Male,27,Pune,Maharashtra,West,2025-04-19,Premium,Social Media
+CUST1310,Neha Choudhury,Female,19,Bengaluru,Karnataka,South,2025-04-19,Enterprise,Email Campaign
+CUST1575,Swati Iyer,Female,41,Surat,Gujarat,West,2025-04-19,Standard,Retail
+CUST1271,Anil Choudhury,Male,27,Bhopal,Madhya Pradesh,Central,2025-04-20,Standard,Retail
+CUST1948,Varun Bose,Male,56,Nagpur,Maharashtra,Central,2025-04-20,Standard,Online
+CUST1173,Arjun Gupta,Male,37,Indore,Madhya Pradesh,Central,2025-04-21,Standard,Referral
+CUST1537,Ananya Patel,Female,29,Kolkata,West Bengal,East,2025-04-21,Standard,Social Media
+CUST1002,Priya Kumar,Female,40,Hyderabad,Telangana,South,2025-04-22,Standard,Retail
+CUST1309,Suresh Mehta,Male,35,Nagpur,Maharashtra,Central,2025-04-22,Standard,Organic Search
+CUST1560,Divya Rao,Female,43,Pune,Maharashtra,West,2025-04-22,Enterprise,Retail
+CUST1628,Aditya Rao,Male,41,Surat,Gujarat,West,2025-04-22,Premium,Online
+CUST1286,Divya Reddy,Female,25,Lucknow,Uttar Pradesh,North,2025-04-23,Enterprise,Referral
+CUST1854,Tanvi Singh,Female,30,Kolkata,West Bengal,East,2025-04-23,Standard,Retail
+CUST1052,Tanvi Kumar,Female,41,Bhopal,Madhya Pradesh,Central,2025-04-24,Standard,Organic Search
+CUST1159,Aishwarya Rao,Female,29,Indore,Madhya Pradesh,Central,2025-04-24,Enterprise,Online
+CUST1426,Amit Kumar,Male,24,Chennai,Tamil Nadu,South,2025-04-24,Standard,Social Media
+CUST1169,Ananya Reddy,Female,28,Bhopal,Madhya Pradesh,Central,2025-04-25,Premium,Referral
+CUST1507,Rohan Choudhury,Male,41,Lucknow,Uttar Pradesh,North,2025-04-25,Premium,Online
+CUST1529,Divya Singh,Female,30,Indore,Madhya Pradesh,Central,2025-04-25,Standard,Referral
+CUST1106,Deepak Sharma,Male,37,Nagpur,Maharashtra,Central,2025-04-26,Premium,Organic Search
+CUST1144,Aditya Sharma,Male,50,New Delhi,Delhi,North,2025-04-26,Premium,Social Media
+CUST1305,Vikram Nair,Male,38,Lucknow,Uttar Pradesh,North,2025-04-26,Standard,Social Media
+CUST1924,Sunita Bose,Female,36,Patna,Bihar,East,2025-04-26,Standard,Online
+CUST1475,Neha Patel,Female,43,Kochi,Kerala,South,2025-04-27,Standard,Email Campaign
+CUST1646,Amit Verma,Male,18,Ahmedabad,Gujarat,West,2025-04-27,Standard,Social Media
+CUST1139,Naveen Reddy,Male,33,Pune,Maharashtra,West,2025-04-28,Premium,Referral
+CUST1602,Preeti Das,Female,36,Hyderabad,Telangana,South,2025-04-28,Standard,Online
+CUST1134,Aditya Choudhury,Male,27,New Delhi,Delhi,North,2025-04-29,Standard,Online
+CUST1331,Manoj Joshi,Male,36,Bhubaneswar,Odisha,East,2025-04-29,Premium,Online
+CUST1124,Arjun Singh,Male,34,Kolkata,West Bengal,East,2025-04-30,Premium,Referral
+CUST1155,Amit Bose,Male,34,Jaipur,Rajasthan,North,2025-04-30,Standard,Online
+CUST1420,Divya Das,Female,32,Mumbai,Maharashtra,West,2025-04-30,Standard,Online
+CUST1696,Vikram Rao,Male,33,Lucknow,Uttar Pradesh,North,2025-04-30,Standard,Online
+CUST1149,Rahul Kumar,Male,30,Kochi,Kerala,South,2025-05-01,Premium,Online
+CUST1185,Divya Joshi,Female,46,New Delhi,Delhi,North,2025-05-01,Standard,Online
+CUST1961,Sunita Gupta,Female,40,New Delhi,Delhi,North,2025-05-01,Standard,Social Media
+CUST1963,Pradeep Mehta,Male,27,Kolkata,West Bengal,East,2025-05-01,Enterprise,Online
+CUST1984,Rahul Patel,Male,40,Mumbai,Maharashtra,West,2025-05-01,Premium,Organic Search
+CUST1211,Manoj Joshi,Male,26,Pune,Maharashtra,West,2025-05-02,Standard,Online
+CUST1302,Meera Reddy,Female,18,Ahmedabad,Gujarat,West,2025-05-02,Standard,Online
+CUST1373,Divya Bose,Female,37,Kochi,Kerala,South,2025-05-02,Standard,Social Media
+CUST1416,Ananya Singh,Female,35,Indore,Madhya Pradesh,Central,2025-05-02,Standard,Email Campaign
+CUST1744,Karthik Choudhury,Male,29,Bhopal,Madhya Pradesh,Central,2025-05-02,Standard,Social Media
+CUST1797,Divya Singh,Female,38,Bhopal,Madhya Pradesh,Central,2025-05-02,Premium,Online
+CUST1396,Neha Gupta,Female,36,Chennai,Tamil Nadu,South,2025-05-03,Standard,Online
+CUST1402,Vikram Joshi,Male,44,Bhubaneswar,Odisha,East,2025-05-03,Standard,Online
+CUST1299,Rahul Mehta,Male,27,Bengaluru,Karnataka,South,2025-05-04,Standard,Online
+CUST1954,Anil Das,Male,21,New Delhi,Delhi,North,2025-05-04,Standard,Social Media
+CUST1027,Pooja Iyer,Female,48,Bhopal,Madhya Pradesh,Central,2025-05-05,Premium,Social Media
+CUST1154,Rahul Mehta,Male,57,Ahmedabad,Gujarat,West,2025-05-05,Enterprise,Social Media
+CUST1272,Sneha Sharma,Female,36,Lucknow,Uttar Pradesh,North,2025-05-05,Standard,Organic Search
+CUST1338,Arjun Choudhury,Male,40,Nagpur,Maharashtra,Central,2025-05-05,Standard,Online
+CUST1709,Sneha Mehta,Female,33,Chennai,Tamil Nadu,South,2025-05-05,Enterprise,Organic Search
+CUST1842,Swati Verma,Female,29,Patna,Bihar,East,2025-05-05,Enterprise,Online
+CUST1300,Aditya Reddy,Male,23,Chennai,Tamil Nadu,South,2025-05-06,Premium,Referral
+CUST1733,Manoj Sharma,Male,18,Chennai,Tamil Nadu,South,2025-05-06,Standard,Referral
+CUST1394,Divya Mehta,Female,36,New Delhi,Delhi,North,2025-05-07,Standard,Online
+CUST1705,Sunita Reddy,Female,38,Indore,Madhya Pradesh,Central,2025-05-07,Standard,Online
+CUST1731,Tanvi Reddy,Female,26,Patna,Bihar,East,2025-05-07,Standard,Social Media
+CUST1860,Arjun Nair,Male,31,Lucknow,Uttar Pradesh,North,2025-05-07,Standard,Retail
+CUST1998,Deepak Choudhury,Male,23,Hyderabad,Telangana,South,2025-05-07,Premium,Social Media
+CUST1249,Rahul Patel,Male,50,Bhubaneswar,Odisha,East,2025-05-08,Enterprise,Organic Search
+CUST1425,Rahul Nair,Male,41,Nagpur,Maharashtra,Central,2025-05-08,Standard,Online
+CUST1479,Rohan Singh,Male,38,Chennai,Tamil Nadu,South,2025-05-08,Standard,Online
+CUST1666,Tanvi Kumar,Female,30,Kochi,Kerala,South,2025-05-08,Standard,Email Campaign
+CUST1568,Amit Kumar,Male,28,Chandigarh,Punjab,North,2025-05-09,Standard,Retail
+CUST1593,Divya Reddy,Female,24,Indore,Madhya Pradesh,Central,2025-05-09,Standard,Organic Search
+CUST1951,Kavita Gupta,Female,28,Kolkata,West Bengal,East,2025-05-09,Premium,Referral
+CUST1962,Manoj Gupta,Male,28,Indore,Madhya Pradesh,Central,2025-05-09,Standard,Online
+CUST1215,Deepak Bose,Male,21,Surat,Gujarat,West,2025-05-10,Premium,Referral
+CUST1820,Naveen Sharma,Male,49,Chandigarh,Punjab,North,2025-05-10,Standard,Social Media
+CUST1090,Aditya Singh,Male,38,Surat,Gujarat,West,2025-05-13,Standard,Organic Search
+CUST1314,Arjun Verma,Male,20,Bengaluru,Karnataka,South,2025-05-14,Standard,Retail
+CUST1013,Sneha Patel,Female,43,Nagpur,Maharashtra,Central,2025-05-15,Premium,Referral
+CUST1406,Neha Iyer,Female,45,Hyderabad,Telangana,South,2025-05-15,Premium,Retail
+CUST1513,Vikram Sharma,Male,36,Jaipur,Rajasthan,North,2025-05-15,Premium,Email Campaign
+CUST1033,Preeti Kumar,Female,34,Kolkata,West Bengal,East,2025-05-16,Enterprise,Social Media
+CUST1253,Neha Iyer,Female,38,New Delhi,Delhi,North,2025-05-16,Premium,Social Media
+CUST1422,Aditya Patel,Male,42,Patna,Bihar,East,2025-05-16,Premium,Online
+CUST1051,Aishwarya Choudhury,Female,22,Lucknow,Uttar Pradesh,North,2025-05-17,Standard,Social Media
+CUST1222,Divya Choudhury,Female,39,Indore,Madhya Pradesh,Central,2025-05-17,Premium,Social Media
+CUST1982,Arjun Singh,Male,43,Jaipur,Rajasthan,North,2025-05-17,Standard,Referral
+CUST1474,Rahul Joshi,Male,24,Bhopal,Madhya Pradesh,Central,2025-05-18,Premium,Online
+CUST1476,Aishwarya Bose,Female,19,Ahmedabad,Gujarat,West,2025-05-18,Premium,Retail
+CUST1662,Rohan Sharma,Male,46,Pune,Maharashtra,West,2025-05-18,Standard,Referral
+CUST1010,Rohan Das,Male,55,Kolkata,West Bengal,East,2025-05-19,Enterprise,Retail
+CUST1094,Divya Joshi,Female,47,Patna,Bihar,East,2025-05-19,Standard,Online
+CUST1327,Suresh Singh,Male,45,Bhopal,Madhya Pradesh,Central,2025-05-19,Standard,Online
+CUST1906,Tanvi Bose,Female,28,Pune,Maharashtra,West,2025-05-19,Premium,Social Media
+CUST1043,Vikram Sharma,Male,45,New Delhi,Delhi,North,2025-05-20,Standard,Online
+CUST1138,Varun Gupta,Male,34,Kolkata,West Bengal,East,2025-05-21,Standard,Organic Search
+CUST1188,Ritu Gupta,Female,24,Pune,Maharashtra,West,2025-05-21,Standard,Referral
+CUST1225,Arjun Bose,Male,44,Bhubaneswar,Odisha,East,2025-05-21,Premium,Social Media
+CUST1241,Tanvi Sharma,Female,33,Nagpur,Maharashtra,Central,2025-05-21,Standard,Online
+CUST1430,Anil Singh,Male,26,Chandigarh,Punjab,North,2025-05-21,Standard,Organic Search
+CUST1805,Varun Mehta,Male,33,Mumbai,Maharashtra,West,2025-05-21,Premium,Online
+CUST1841,Pradeep Kumar,Male,27,Kochi,Kerala,South,2025-05-21,Standard,Referral
+CUST1581,Sneha Kumar,Female,27,Bhubaneswar,Odisha,East,2025-05-22,Premium,Online
+CUST1619,Anil Singh,Male,20,Hyderabad,Telangana,South,2025-05-22,Premium,Referral
+CUST1670,Divya Kumar,Female,29,Chandigarh,Punjab,North,2025-05-22,Standard,Referral
+CUST1822,Neha Verma,Female,30,Hyderabad,Telangana,South,2025-05-22,Premium,Referral
+CUST1004,Arjun Nair,Male,25,Ahmedabad,Gujarat,West,2025-05-23,Standard,Email Campaign
+CUST1078,Divya Rao,Female,41,Kolkata,West Bengal,East,2025-05-23,Premium,Social Media
+CUST1890,Karthik Iyer,Male,29,Lucknow,Uttar Pradesh,North,2025-05-23,Standard,Online
+CUST1632,Ritu Verma,Female,22,Indore,Madhya Pradesh,Central,2025-05-24,Standard,Social Media
+CUST1412,Deepak Sharma,Male,43,Patna,Bihar,East,2025-05-25,Premium,Online
+CUST1791,Rahul Joshi,Male,18,Kochi,Kerala,South,2025-05-25,Premium,Online
+CUST1382,Aditya Patel,Male,23,Ahmedabad,Gujarat,West,2025-05-26,Standard,Retail
+CUST1607,Deepak Verma,Male,33,Hyderabad,Telangana,South,2025-05-26,Standard,Retail
+CUST1659,Ananya Nair,Female,26,Mumbai,Maharashtra,West,2025-05-26,Premium,Retail
+CUST1850,Rahul Gupta,Male,49,Surat,Gujarat,West,2025-05-26,Standard,Online
+CUST1881,Divya Patel,Female,34,Surat,Gujarat,West,2025-05-26,Standard,Online
+CUST1294,Naveen Das,Male,36,Chennai,Tamil Nadu,South,2025-05-27,Standard,Social Media
+CUST1547,Meera Reddy,Female,47,Nagpur,Maharashtra,Central,2025-05-27,Premium,Referral
+CUST1770,Anil Singh,Male,31,Jaipur,Rajasthan,North,2025-05-27,Standard,Online
+CUST1804,Aishwarya Joshi,Female,32,Bengaluru,Karnataka,South,2025-05-27,Standard,Online
+CUST1269,Divya Das,Female,21,Mumbai,Maharashtra,West,2025-05-28,Standard,Social Media
+CUST1366,Manoj Verma,Male,38,Bhopal,Madhya Pradesh,Central,2025-05-28,Standard,Online
+CUST1894,Shreya Nair,Female,34,Patna,Bihar,East,2025-05-28,Standard,Social Media
+CUST1007,Meera Singh,Female,33,Lucknow,Uttar Pradesh,North,2025-05-29,Enterprise,Organic Search
+CUST1181,Meera Nair,Female,21,Bhubaneswar,Odisha,East,2025-05-29,Standard,Online
+CUST1802,Kavita Rao,Female,27,Pune,Maharashtra,West,2025-05-29,Standard,Social Media
+CUST1104,Ritu Joshi,Female,37,Bhopal,Madhya Pradesh,Central,2025-05-30,Standard,Online
+CUST1132,Rahul Rao,Male,47,Chennai,Tamil Nadu,South,2025-05-31,Standard,Referral
+CUST1554,Pradeep Joshi,Male,18,Jaipur,Rajasthan,North,2025-05-31,Standard,Email Campaign
+CUST1675,Vikram Choudhury,Male,47,Nagpur,Maharashtra,Central,2025-05-31,Standard,Referral
+CUST1096,Ananya Bose,Female,18,Jaipur,Rajasthan,North,2025-06-01,Standard,Online
+CUST1143,Tanvi Verma,Female,33,Bhopal,Madhya Pradesh,Central,2025-06-01,Premium,Online
+CUST1245,Sunita Patel,Female,18,Kolkata,West Bengal,East,2025-06-02,Standard,Social Media
+CUST1268,Swati Patel,Female,23,Lucknow,Uttar Pradesh,North,2025-06-02,Premium,Social Media
+CUST1372,Arjun Bose,Male,26,Lucknow,Uttar Pradesh,North,2025-06-02,Premium,Online
+CUST1573,Aishwarya Mehta,Female,38,New Delhi,Delhi,North,2025-06-02,Premium,Organic Search
+CUST1970,Ananya Choudhury,Female,43,Lucknow,Uttar Pradesh,North,2025-06-02,Standard,Organic Search
+CUST1042,Sanjay Bose,Male,37,Nagpur,Maharashtra,Central,2025-06-03,Enterprise,Online
+CUST1788,Sanjay Choudhury,Male,25,Ahmedabad,Gujarat,West,2025-06-03,Standard,Organic Search
+CUST1486,Neha Singh,Female,20,Patna,Bihar,East,2025-06-04,Premium,Social Media
+CUST1511,Ritu Joshi,Female,41,Bengaluru,Karnataka,South,2025-06-04,Standard,Online
+CUST1710,Priya Rao,Female,30,Kochi,Kerala,South,2025-06-06,Standard,Online
+CUST1717,Swati Choudhury,Female,33,Indore,Madhya Pradesh,Central,2025-06-06,Standard,Referral
+CUST1880,Ritu Patel,Female,44,New Delhi,Delhi,North,2025-06-06,Standard,Online
+CUST1335,Arjun Nair,Male,32,Bengaluru,Karnataka,South,2025-06-07,Standard,Social Media
+CUST1183,Suresh Nair,Male,24,Kolkata,West Bengal,East,2025-06-08,Premium,Online
+CUST1654,Swati Gupta,Female,50,Nagpur,Maharashtra,Central,2025-06-08,Enterprise,Referral
+CUST1023,Pooja Choudhury,Female,19,Jaipur,Rajasthan,North,2025-06-09,Standard,Social Media
+CUST1504,Suresh Joshi,Male,49,Surat,Gujarat,West,2025-06-09,Standard,Referral
+CUST1343,Vikram Rao,Male,22,Bhopal,Madhya Pradesh,Central,2025-06-10,Standard,Referral
+CUST1544,Tanvi Joshi,Female,28,Nagpur,Maharashtra,Central,2025-06-10,Premium,Organic Search
+CUST1816,Sunita Joshi,Female,43,Chandigarh,Punjab,North,2025-06-10,Standard,Social Media
+CUST1975,Aishwarya Gupta,Female,39,Pune,Maharashtra,West,2025-06-10,Standard,Online
+CUST1419,Deepak Gupta,Male,40,Mumbai,Maharashtra,West,2025-06-11,Enterprise,Referral
+CUST1626,Sanjay Joshi,Male,18,Lucknow,Uttar Pradesh,North,2025-06-11,Standard,Referral
+CUST1694,Vikram Singh,Male,35,Jaipur,Rajasthan,North,2025-06-11,Standard,Social Media
+CUST1129,Varun Rao,Male,44,Kolkata,West Bengal,East,2025-06-12,Premium,Organic Search
+CUST1673,Arjun Iyer,Male,35,Lucknow,Uttar Pradesh,North,2025-06-12,Enterprise,Social Media
+CUST1112,Divya Nair,Female,36,Ahmedabad,Gujarat,West,2025-06-14,Premium,Organic Search
+CUST1223,Deepak Reddy,Male,39,Pune,Maharashtra,West,2025-06-14,Standard,Online
+CUST1434,Preeti Reddy,Female,33,Indore,Madhya Pradesh,Central,2025-06-14,Standard,Online
+CUST1564,Priya Patel,Female,32,Jaipur,Rajasthan,North,2025-06-14,Standard,Organic Search
+CUST1661,Meera Das,Female,32,Jaipur,Rajasthan,North,2025-06-14,Standard,Online
+CUST1088,Ritu Nair,Female,18,Mumbai,Maharashtra,West,2025-06-15,Premium,Social Media
+CUST1282,Rohan Verma,Male,18,Bhopal,Madhya Pradesh,Central,2025-06-15,Enterprise,Online
+CUST1781,Manoj Sharma,Male,22,Kochi,Kerala,South,2025-06-16,Standard,Online
+CUST1853,Arjun Gupta,Male,39,Kochi,Kerala,South,2025-06-16,Standard,Online
+CUST1059,Arjun Choudhury,Male,31,Bhubaneswar,Odisha,East,2025-06-17,Standard,Online
+CUST1147,Ananya Gupta,Female,34,Nagpur,Maharashtra,Central,2025-06-17,Enterprise,Online
+CUST1330,Sunita Choudhury,Female,19,Nagpur,Maharashtra,Central,2025-06-19,Standard,Social Media
+CUST1428,Aishwarya Verma,Female,32,Hyderabad,Telangana,South,2025-06-19,Standard,Organic Search
+CUST1456,Sneha Kumar,Female,32,Kochi,Kerala,South,2025-06-19,Standard,Online
+CUST1495,Suresh Rao,Male,37,Bhubaneswar,Odisha,East,2025-06-19,Standard,Retail
+CUST1533,Divya Rao,Female,41,Patna,Bihar,East,2025-06-19,Standard,Retail
+CUST1664,Ritu Joshi,Female,42,Chennai,Tamil Nadu,South,2025-06-19,Standard,Social Media
+CUST1758,Varun Verma,Male,29,Jaipur,Rajasthan,North,2025-06-19,Premium,Organic Search
+CUST1045,Amit Gupta,Male,27,Bengaluru,Karnataka,South,2025-06-20,Premium,Retail
+CUST1195,Manoj Gupta,Male,28,New Delhi,Delhi,North,2025-06-20,Standard,Social Media
+CUST1972,Ritu Joshi,Female,23,Bhubaneswar,Odisha,East,2025-06-20,Premium,Organic Search
+CUST1415,Naveen Nair,Male,45,Bengaluru,Karnataka,South,2025-06-21,Standard,Social Media
+CUST1814,Meera Choudhury,Female,30,Mumbai,Maharashtra,West,2025-06-21,Standard,Social Media
+CUST1075,Aditya Singh,Male,32,Kolkata,West Bengal,East,2025-06-22,Premium,Social Media
+CUST1089,Vikram Choudhury,Male,19,Kolkata,West Bengal,East,2025-06-22,Standard,Organic Search
+CUST1280,Shreya Verma,Female,25,Bengaluru,Karnataka,South,2025-06-22,Premium,Retail
+CUST1946,Ananya Joshi,Female,20,Jaipur,Rajasthan,North,2025-06-22,Standard,Social Media
+CUST1029,Sanjay Gupta,Male,38,Kolkata,West Bengal,East,2025-06-23,Premium,Online
+CUST1128,Amit Das,Male,38,Mumbai,Maharashtra,West,2025-06-23,Premium,Referral
+CUST1221,Kavita Choudhury,Female,26,Kolkata,West Bengal,East,2025-06-23,Enterprise,Referral
+CUST1121,Varun Sharma,Male,31,Bhubaneswar,Odisha,East,2025-06-24,Enterprise,Retail
+CUST1506,Kavita Choudhury,Female,27,New Delhi,Delhi,North,2025-06-25,Enterprise,Referral
+CUST1238,Ritu Gupta,Female,18,Indore,Madhya Pradesh,Central,2025-06-26,Standard,Social Media
+CUST1642,Swati Iyer,Female,24,Mumbai,Maharashtra,West,2025-06-26,Standard,Online
+CUST1240,Anil Choudhury,Male,42,Lucknow,Uttar Pradesh,North,2025-06-27,Enterprise,Retail
+CUST1621,Manoj Patel,Male,32,Surat,Gujarat,West,2025-06-27,Enterprise,Online
+CUST1355,Neha Rao,Female,28,Bhopal,Madhya Pradesh,Central,2025-06-28,Standard,Referral
+CUST1362,Meera Nair,Female,38,Kochi,Kerala,South,2025-06-28,Standard,Referral
+CUST1079,Tanvi Sharma,Female,19,Chennai,Tamil Nadu,South,2025-06-29,Standard,Online
+CUST1817,Rahul Nair,Male,37,Patna,Bihar,East,2025-06-29,Standard,Online
+CUST1028,Amit Sharma,Male,49,Bhubaneswar,Odisha,East,2025-07-01,Standard,Referral
+CUST1643,Karthik Reddy,Male,27,Pune,Maharashtra,West,2025-07-01,Standard,Retail
+CUST1718,Rahul Rao,Male,31,Surat,Gujarat,West,2025-07-01,Premium,Online
+CUST1761,Swati Iyer,Female,45,Ahmedabad,Gujarat,West,2025-07-01,Standard,Online
+CUST1903,Sneha Reddy,Female,41,New Delhi,Delhi,North,2025-07-02,Standard,Online
+CUST1433,Sanjay Mehta,Male,32,Kolkata,West Bengal,East,2025-07-03,Standard,Social Media
+CUST1523,Aishwarya Reddy,Female,31,Kolkata,West Bengal,East,2025-07-03,Premium,Organic Search
+CUST1340,Ritu Mehta,Female,41,Hyderabad,Telangana,South,2025-07-04,Standard,Online
+CUST1397,Sunita Reddy,Female,51,Bengaluru,Karnataka,South,2025-07-04,Enterprise,Online
+CUST1684,Aditya Mehta,Male,48,Chennai,Tamil Nadu,South,2025-07-04,Standard,Organic Search
+CUST1692,Aishwarya Iyer,Female,21,Mumbai,Maharashtra,West,2025-07-04,Enterprise,Referral
+CUST1991,Anil Kumar,Male,44,Mumbai,Maharashtra,West,2025-07-04,Enterprise,Online
+CUST1234,Tanvi Verma,Female,28,Chandigarh,Punjab,North,2025-07-05,Standard,Online
+CUST1966,Preeti Mehta,Female,49,New Delhi,Delhi,North,2025-07-05,Standard,Referral
+CUST1193,Arjun Das,Male,44,Chandigarh,Punjab,North,2025-07-06,Standard,Online
+CUST1226,Amit Gupta,Male,27,Kolkata,West Bengal,East,2025-07-06,Standard,Social Media
+CUST1229,Divya Das,Female,34,Indore,Madhya Pradesh,Central,2025-07-07,Standard,Retail
+CUST1920,Naveen Iyer,Male,32,Bhopal,Madhya Pradesh,Central,2025-07-07,Premium,Online
+CUST1260,Ritu Bose,Female,26,Bengaluru,Karnataka,South,2025-07-08,Standard,Online
+CUST1407,Aditya Das,Male,30,Chandigarh,Punjab,North,2025-07-08,Standard,Social Media
+CUST1480,Shreya Singh,Female,29,Mumbai,Maharashtra,West,2025-07-08,Premium,Retail
+CUST1978,Pooja Sharma,Female,30,Bhubaneswar,Odisha,East,2025-07-08,Standard,Organic Search
+CUST1047,Amit Choudhury,Male,32,Chennai,Tamil Nadu,South,2025-07-09,Standard,Online
+CUST1520,Meera Patel,Female,33,Hyderabad,Telangana,South,2025-07-10,Premium,Online
+CUST1671,Rahul Kumar,Male,21,New Delhi,Delhi,North,2025-07-10,Premium,Online
+CUST1165,Shreya Sharma,Female,31,Mumbai,Maharashtra,West,2025-07-11,Enterprise,Social Media
+CUST1319,Amit Joshi,Male,37,Patna,Bihar,East,2025-07-11,Standard,Retail
+CUST1563,Neha Iyer,Female,33,Indore,Madhya Pradesh,Central,2025-07-11,Standard,Retail
+CUST1902,Shreya Bose,Female,29,Kochi,Kerala,South,2025-07-11,Standard,Retail
+CUST1999,Priya Patel,Female,28,Kolkata,West Bengal,East,2025-07-11,Standard,Email Campaign
+CUST1295,Divya Choudhury,Female,20,Kolkata,West Bengal,East,2025-07-12,Standard,Email Campaign
+CUST1712,Arjun Joshi,Male,44,Bengaluru,Karnataka,South,2025-07-12,Standard,Social Media
+CUST1123,Aditya Iyer,Male,25,Nagpur,Maharashtra,Central,2025-07-13,Standard,Online
+CUST1446,Pooja Gupta,Female,30,Chandigarh,Punjab,North,2025-07-13,Standard,Social Media
+CUST1101,Meera Reddy,Female,35,Indore,Madhya Pradesh,Central,2025-07-14,Standard,Referral
+CUST1715,Rahul Patel,Male,42,Lucknow,Uttar Pradesh,North,2025-07-14,Standard,Social Media
+CUST1749,Preeti Kumar,Female,40,Surat,Gujarat,West,2025-07-14,Premium,Social Media
+CUST1811,Ritu Joshi,Female,53,Lucknow,Uttar Pradesh,North,2025-07-14,Premium,Referral
+CUST1941,Aishwarya Joshi,Female,20,Ahmedabad,Gujarat,West,2025-07-14,Standard,Online
+CUST1548,Manoj Sharma,Male,29,Bengaluru,Karnataka,South,2025-07-15,Standard,Social Media
+CUST1562,Rahul Gupta,Male,20,Ahmedabad,Gujarat,West,2025-07-15,Enterprise,Organic Search
+CUST1606,Pooja Mehta,Female,33,Bhopal,Madhya Pradesh,Central,2025-07-15,Standard,Social Media
+CUST1932,Sunita Kumar,Female,55,Chandigarh,Punjab,North,2025-07-15,Premium,Online
+CUST1120,Aditya Iyer,Male,23,New Delhi,Delhi,North,2025-07-16,Standard,Retail
+CUST1190,Karthik Reddy,Male,34,Indore,Madhya Pradesh,Central,2025-07-16,Standard,Retail
+CUST1869,Manoj Choudhury,Male,25,Kochi,Kerala,South,2025-07-16,Standard,Retail
+CUST1935,Pradeep Kumar,Male,52,Kochi,Kerala,South,2025-07-16,Standard,Organic Search
+CUST1015,Rohan Gupta,Male,41,Hyderabad,Telangana,South,2025-07-17,Standard,Email Campaign
+CUST1337,Ananya Kumar,Female,43,Ahmedabad,Gujarat,West,2025-07-17,Standard,Referral
+CUST1923,Swati Joshi,Female,41,Kochi,Kerala,South,2025-07-17,Standard,Retail
+CUST1541,Arjun Reddy,Male,41,Kochi,Kerala,South,2025-07-18,Premium,Retail
+CUST1787,Pradeep Verma,Male,28,Pune,Maharashtra,West,2025-07-19,Premium,Referral
+CUST1937,Preeti Joshi,Female,38,Pune,Maharashtra,West,2025-07-19,Standard,Online
+CUST1969,Manoj Bose,Male,34,Bengaluru,Karnataka,South,2025-07-21,Enterprise,Organic Search
+CUST1083,Naveen Patel,Male,18,Kolkata,West Bengal,East,2025-07-23,Enterprise,Online
+CUST1311,Arjun Mehta,Male,27,Jaipur,Rajasthan,North,2025-07-23,Enterprise,Retail
+CUST1399,Karthik Sharma,Male,40,Chennai,Tamil Nadu,South,2025-07-23,Standard,Retail
+CUST1892,Naveen Gupta,Male,27,Surat,Gujarat,West,2025-07-23,Standard,Organic Search
+CUST1247,Tanvi Joshi,Female,22,Surat,Gujarat,West,2025-07-24,Standard,Referral
+CUST1379,Kavita Das,Female,48,Hyderabad,Telangana,South,2025-07-26,Standard,Online
+CUST1478,Amit Patel,Male,50,Indore,Madhya Pradesh,Central,2025-07-26,Standard,Organic Search
+CUST1323,Tanvi Rao,Female,33,Surat,Gujarat,West,2025-07-27,Standard,Online
+CUST1491,Sanjay Das,Male,40,Bhubaneswar,Odisha,East,2025-07-27,Standard,Online
+CUST1785,Divya Iyer,Female,41,Pune,Maharashtra,West,2025-07-27,Standard,Online
+CUST1792,Sunita Rao,Female,24,Kolkata,West Bengal,East,2025-07-27,Standard,Retail
+CUST1091,Swati Kumar,Female,28,Lucknow,Uttar Pradesh,North,2025-07-28,Standard,Social Media
+CUST1498,Rohan Singh,Male,38,Ahmedabad,Gujarat,West,2025-07-29,Enterprise,Organic Search
+CUST1680,Karthik Patel,Male,43,Ahmedabad,Gujarat,West,2025-07-29,Premium,Online
+CUST1729,Ritu Das,Female,37,Chennai,Tamil Nadu,South,2025-07-29,Premium,Online
+CUST1264,Deepak Joshi,Male,31,Jaipur,Rajasthan,North,2025-07-30,Standard,Retail
+CUST1431,Karthik Reddy,Male,24,Bhopal,Madhya Pradesh,Central,2025-07-30,Premium,Referral
+CUST1050,Varun Verma,Male,43,Chandigarh,Punjab,North,2025-07-31,Standard,Social Media
+CUST1164,Deepak Das,Male,31,Lucknow,Uttar Pradesh,North,2025-07-31,Standard,Referral
+CUST1306,Preeti Kumar,Female,44,Nagpur,Maharashtra,Central,2025-07-31,Enterprise,Retail
+CUST1417,Arjun Patel,Male,50,Indore,Madhya Pradesh,Central,2025-07-31,Premium,Referral
+CUST1725,Tanvi Choudhury,Female,35,Ahmedabad,Gujarat,West,2025-07-31,Enterprise,Online
+CUST1755,Arjun Bose,Male,37,Bhubaneswar,Odisha,East,2025-07-31,Standard,Online
+CUST1072,Arjun Singh,Male,42,Hyderabad,Telangana,South,2025-08-01,Standard,Retail
+CUST1119,Aditya Choudhury,Male,31,Mumbai,Maharashtra,West,2025-08-01,Premium,Email Campaign
+CUST1368,Kavita Gupta,Female,18,Bhopal,Madhya Pradesh,Central,2025-08-01,Premium,Referral
+CUST1276,Naveen Choudhury,Male,18,Chandigarh,Punjab,North,2025-08-02,Premium,Online
+CUST1410,Pooja Rao,Female,49,Lucknow,Uttar Pradesh,North,2025-08-02,Enterprise,Online
+CUST1510,Rahul Joshi,Male,22,Kochi,Kerala,South,2025-08-02,Standard,Online
+CUST1699,Pradeep Kumar,Male,41,Bhubaneswar,Odisha,East,2025-08-02,Enterprise,Online
+CUST1793,Aditya Verma,Male,37,Surat,Gujarat,West,2025-08-02,Standard,Email Campaign
+CUST1074,Neha Mehta,Female,26,Kolkata,West Bengal,East,2025-08-03,Standard,Social Media
+CUST1150,Divya Gupta,Female,43,Nagpur,Maharashtra,Central,2025-08-03,Standard,Social Media
+CUST1432,Vikram Nair,Male,25,New Delhi,Delhi,North,2025-08-03,Standard,Organic Search
+CUST1451,Aishwarya Sharma,Female,33,Patna,Bihar,East,2025-08-03,Enterprise,Organic Search
+CUST1512,Meera Reddy,Female,45,New Delhi,Delhi,North,2025-08-03,Premium,Online
+CUST1542,Swati Choudhury,Female,48,Kolkata,West Bengal,East,2025-08-03,Enterprise,Organic Search
+CUST1847,Meera Sharma,Female,23,Surat,Gujarat,West,2025-08-03,Standard,Online
+CUST1521,Kavita Das,Female,32,Bhopal,Madhya Pradesh,Central,2025-08-04,Premium,Social Media
+CUST1663,Suresh Sharma,Male,40,Ahmedabad,Gujarat,West,2025-08-04,Standard,Social Media
+CUST1973,Varun Verma,Male,30,Surat,Gujarat,West,2025-08-04,Premium,Social Media
+CUST1485,Suresh Patel,Male,18,Mumbai,Maharashtra,West,2025-08-05,Premium,Organic Search
+CUST1610,Neha Bose,Female,26,Nagpur,Maharashtra,Central,2025-08-05,Standard,Retail
+CUST1913,Arjun Singh,Male,31,Hyderabad,Telangana,South,2025-08-06,Premium,Social Media
+CUST1752,Aditya Joshi,Male,22,Pune,Maharashtra,West,2025-08-07,Premium,Online
+CUST1867,Deepak Choudhury,Male,29,Pune,Maharashtra,West,2025-08-07,Premium,Social Media
+CUST1213,Sanjay Iyer,Male,21,Pune,Maharashtra,West,2025-08-08,Standard,Referral
+CUST1387,Rahul Nair,Male,23,Lucknow,Uttar Pradesh,North,2025-08-08,Premium,Social Media
+CUST1555,Rohan Verma,Male,33,Chennai,Tamil Nadu,South,2025-08-08,Standard,Online
+CUST1061,Kavita Iyer,Female,37,Jaipur,Rajasthan,North,2025-08-09,Premium,Retail
+CUST1336,Rohan Sharma,Male,37,Chandigarh,Punjab,North,2025-08-09,Standard,Retail
+CUST1351,Karthik Gupta,Male,29,Ahmedabad,Gujarat,West,2025-08-09,Standard,Online
+CUST1455,Anil Reddy,Male,52,Bengaluru,Karnataka,South,2025-08-09,Enterprise,Online
+CUST1914,Rahul Mehta,Male,39,Bhopal,Madhya Pradesh,Central,2025-08-09,Standard,Online
+CUST1526,Swati Iyer,Female,46,Kochi,Kerala,South,2025-08-10,Premium,Online
+CUST1569,Naveen Patel,Male,25,Kolkata,West Bengal,East,2025-08-10,Standard,Referral
+CUST1638,Aishwarya Singh,Female,39,Nagpur,Maharashtra,Central,2025-08-10,Premium,Online
+CUST1783,Aditya Nair,Male,39,Bhubaneswar,Odisha,East,2025-08-11,Standard,Online
+CUST1180,Ananya Nair,Female,34,Chennai,Tamil Nadu,South,2025-08-12,Standard,Organic Search
+CUST1107,Amit Kumar,Male,37,Pune,Maharashtra,West,2025-08-13,Standard,Social Media
+CUST1116,Swati Verma,Female,41,Pune,Maharashtra,West,2025-08-13,Premium,Referral
+CUST1201,Karthik Nair,Male,37,Chandigarh,Punjab,North,2025-08-13,Standard,Referral
+CUST1346,Arjun Das,Male,36,Jaipur,Rajasthan,North,2025-08-13,Premium,Social Media
+CUST1926,Sunita Sharma,Female,41,Kolkata,West Bengal,East,2025-08-13,Standard,Social Media
+CUST1342,Aishwarya Bose,Female,38,Ahmedabad,Gujarat,West,2025-08-14,Standard,Social Media
+CUST1371,Aishwarya Iyer,Female,37,Chennai,Tamil Nadu,South,2025-08-14,Standard,Email Campaign
+CUST1384,Amit Choudhury,Male,24,Chandigarh,Punjab,North,2025-08-14,Standard,Email Campaign
+CUST1461,Preeti Nair,Female,27,Mumbai,Maharashtra,West,2025-08-14,Standard,Online
+CUST1883,Rohan Singh,Male,55,New Delhi,Delhi,North,2025-08-14,Standard,Online
+CUST1964,Rohan Singh,Male,49,Mumbai,Maharashtra,West,2025-08-14,Standard,Organic Search
+CUST1175,Rohan Mehta,Male,24,Mumbai,Maharashtra,West,2025-08-15,Premium,Referral
+CUST1131,Pooja Joshi,Female,55,Kochi,Kerala,South,2025-08-16,Standard,Online
+CUST1852,Amit Choudhury,Male,18,Lucknow,Uttar Pradesh,North,2025-08-16,Standard,Online
+CUST1582,Preeti Das,Female,48,Patna,Bihar,East,2025-08-17,Standard,Online
+CUST1588,Pradeep Iyer,Male,38,New Delhi,Delhi,North,2025-08-17,Standard,Retail
+CUST1742,Deepak Patel,Male,41,Pune,Maharashtra,West,2025-08-17,Standard,Online
+CUST1893,Kavita Rao,Female,42,Pune,Maharashtra,West,2025-08-17,Premium,Online
+CUST1092,Sunita Joshi,Female,33,Bhopal,Madhya Pradesh,Central,2025-08-18,Premium,Online
+CUST1202,Aditya Reddy,Male,38,Pune,Maharashtra,West,2025-08-18,Standard,Online
+CUST1069,Tanvi Choudhury,Female,18,Bhopal,Madhya Pradesh,Central,2025-08-19,Standard,Online
+CUST1307,Deepak Singh,Male,33,Hyderabad,Telangana,South,2025-08-19,Premium,Online
+CUST1641,Rahul Singh,Male,37,Kochi,Kerala,South,2025-08-19,Premium,Online
+CUST1024,Ritu Choudhury,Female,30,Indore,Madhya Pradesh,Central,2025-08-20,Standard,Online
+CUST1232,Rohan Bose,Male,43,Hyderabad,Telangana,South,2025-08-20,Standard,Social Media
+CUST1500,Sunita Kumar,Female,29,Bengaluru,Karnataka,South,2025-08-20,Standard,Social Media
+CUST1534,Shreya Gupta,Female,19,Surat,Gujarat,West,2025-08-20,Standard,Social Media
+CUST1764,Preeti Singh,Female,19,Surat,Gujarat,West,2025-08-20,Premium,Online
+CUST1017,Aishwarya Gupta,Female,29,Chandigarh,Punjab,North,2025-08-21,Standard,Social Media
+CUST1278,Naveen Rao,Male,28,Pune,Maharashtra,West,2025-08-21,Enterprise,Retail
+CUST1738,Rohan Das,Male,24,Jaipur,Rajasthan,North,2025-08-21,Standard,Online
+CUST1779,Kavita Verma,Female,29,Ahmedabad,Gujarat,West,2025-08-21,Standard,Online
+CUST1865,Sneha Joshi,Female,22,Bengaluru,Karnataka,South,2025-08-21,Standard,Online
+CUST1981,Sneha Reddy,Female,44,Bhubaneswar,Odisha,East,2025-08-21,Premium,Referral
+CUST1505,Sneha Sharma,Female,37,Pune,Maharashtra,West,2025-08-22,Premium,Retail
+CUST1838,Tanvi Mehta,Female,32,Kochi,Kerala,South,2025-08-22,Premium,Social Media
+CUST1835,Deepak Sharma,Male,37,Indore,Madhya Pradesh,Central,2025-08-23,Enterprise,Organic Search
+CUST1995,Priya Das,Female,25,Bhopal,Madhya Pradesh,Central,2025-08-23,Standard,Social Media
+CUST1298,Tanvi Singh,Female,20,Lucknow,Uttar Pradesh,North,2025-08-24,Standard,Online
+CUST1634,Aditya Sharma,Male,24,Indore,Madhya Pradesh,Central,2025-08-24,Standard,Online
+CUST2000,Sneha Kumar,Female,21,Hyderabad,Telangana,South,2025-08-24,Premium,Social Media
+CUST1118,Varun Choudhury,Male,20,Kochi,Kerala,South,2025-08-25,Enterprise,Retail
+CUST1203,Preeti Bose,Female,38,Patna,Bihar,East,2025-08-25,Premium,Social Media
+CUST1577,Sanjay Mehta,Male,31,Nagpur,Maharashtra,Central,2025-08-25,Premium,Online
+CUST1246,Aditya Nair,Male,35,Bhopal,Madhya Pradesh,Central,2025-08-26,Standard,Retail
+CUST1297,Arjun Singh,Male,41,Pune,Maharashtra,West,2025-08-26,Premium,Retail
+CUST1517,Sunita Singh,Female,18,Mumbai,Maharashtra,West,2025-08-26,Standard,Social Media
+CUST1736,Arjun Iyer,Male,49,New Delhi,Delhi,North,2025-08-26,Premium,Referral
+CUST1957,Rohan Singh,Male,49,Pune,Maharashtra,West,2025-08-26,Standard,Email Campaign
+CUST1081,Rohan Das,Male,28,Jaipur,Rajasthan,North,2025-08-27,Premium,Social Media
+CUST1799,Rohan Joshi,Male,30,Mumbai,Maharashtra,West,2025-08-27,Standard,Retail
+CUST1676,Manoj Rao,Male,37,Ahmedabad,Gujarat,West,2025-08-28,Standard,Social Media
+CUST1801,Meera Kumar,Female,43,Bengaluru,Karnataka,South,2025-08-29,Standard,Organic Search
+CUST1873,Anil Rao,Male,23,Kochi,Kerala,South,2025-08-29,Premium,Social Media
+CUST1398,Divya Iyer,Female,42,Chandigarh,Punjab,North,2025-08-30,Enterprise,Social Media
+CUST1987,Amit Iyer,Male,41,Lucknow,Uttar Pradesh,North,2025-08-30,Enterprise,Email Campaign
+CUST1093,Deepak Joshi,Male,34,Surat,Gujarat,West,2025-08-31,Standard,Online
+CUST1484,Swati Kumar,Female,23,Bengaluru,Karnataka,South,2025-08-31,Enterprise,Retail
+CUST1572,Kavita Nair,Female,43,Bengaluru,Karnataka,South,2025-08-31,Standard,Online
+CUST1652,Sanjay Rao,Male,24,Ahmedabad,Gujarat,West,2025-09-01,Standard,Organic Search
+CUST1274,Deepak Gupta,Male,37,Bhopal,Madhya Pradesh,Central,2025-09-02,Premium,Social Media
+CUST1862,Deepak Iyer,Male,28,Kolkata,West Bengal,East,2025-09-03,Premium,Social Media
+CUST1625,Aishwarya Das,Female,26,Bengaluru,Karnataka,South,2025-09-04,Standard,Online
+CUST1631,Meera Kumar,Female,35,Chennai,Tamil Nadu,South,2025-09-04,Standard,Online
+CUST1697,Meera Choudhury,Female,34,Ahmedabad,Gujarat,West,2025-09-05,Standard,Social Media
+CUST1070,Aishwarya Mehta,Female,28,Indore,Madhya Pradesh,Central,2025-09-06,Premium,Online
+CUST1879,Kavita Reddy,Female,26,Ahmedabad,Gujarat,West,2025-09-06,Standard,Social Media
+CUST1959,Aishwarya Mehta,Female,32,Chennai,Tamil Nadu,South,2025-09-06,Premium,Online
+CUST1499,Sneha Rao,Female,37,Hyderabad,Telangana,South,2025-09-07,Standard,Email Campaign
+CUST1589,Arjun Joshi,Male,25,Lucknow,Uttar Pradesh,North,2025-09-07,Standard,Online
+CUST1594,Divya Bose,Female,19,Surat,Gujarat,West,2025-09-07,Premium,Organic Search
+CUST1832,Sanjay Joshi,Male,36,Surat,Gujarat,West,2025-09-07,Standard,Retail
+CUST1378,Tanvi Singh,Female,33,Kolkata,West Bengal,East,2025-09-08,Standard,Retail
+CUST1833,Rohan Kumar,Male,39,Lucknow,Uttar Pradesh,North,2025-09-08,Standard,Social Media
+CUST1440,Swati Patel,Female,36,Chandigarh,Punjab,North,2025-09-09,Standard,Online
+CUST1557,Rahul Verma,Male,44,Pune,Maharashtra,West,2025-09-09,Premium,Retail
+CUST1108,Neha Iyer,Female,40,Nagpur,Maharashtra,Central,2025-09-10,Standard,Retail
+CUST1753,Preeti Verma,Female,26,Bhopal,Madhya Pradesh,Central,2025-09-10,Premium,Organic Search
+CUST1933,Meera Reddy,Female,36,Indore,Madhya Pradesh,Central,2025-09-10,Premium,Online
+CUST1252,Priya Kumar,Female,35,Pune,Maharashtra,West,2025-09-11,Standard,Social Media
+CUST1528,Manoj Bose,Male,30,Bhopal,Madhya Pradesh,Central,2025-09-11,Premium,Online
+CUST1808,Karthik Choudhury,Male,39,New Delhi,Delhi,North,2025-09-11,Premium,Referral
+CUST1429,Rohan Choudhury,Male,19,Kolkata,West Bengal,East,2025-09-12,Standard,Social Media
+CUST1448,Sanjay Reddy,Male,34,Kochi,Kerala,South,2025-09-12,Standard,Social Media
+CUST1743,Suresh Kumar,Male,29,Patna,Bihar,East,2025-09-12,Premium,Retail
+CUST1826,Aishwarya Das,Female,40,Bengaluru,Karnataka,South,2025-09-12,Standard,Retail
+CUST1849,Vikram Kumar,Male,39,Bhopal,Madhya Pradesh,Central,2025-09-12,Standard,Social Media
+CUST1947,Sneha Reddy,Female,26,Jaipur,Rajasthan,North,2025-09-12,Premium,Email Campaign
+CUST1230,Amit Kumar,Male,22,Chandigarh,Punjab,North,2025-09-13,Standard,Organic Search
+CUST1315,Neha Verma,Female,36,Lucknow,Uttar Pradesh,North,2025-09-13,Standard,Organic Search
+CUST1126,Aditya Kumar,Male,18,New Delhi,Delhi,North,2025-09-15,Enterprise,Online
+CUST1301,Manoj Singh,Male,34,New Delhi,Delhi,North,2025-09-15,Enterprise,Online
+CUST1321,Manoj Joshi,Male,30,Bengaluru,Karnataka,South,2025-09-15,Premium,Social Media
+CUST1604,Naveen Mehta,Male,25,Nagpur,Maharashtra,Central,2025-09-15,Premium,Online
+CUST1701,Swati Kumar,Female,29,Ahmedabad,Gujarat,West,2025-09-15,Premium,Online
+CUST1872,Anil Rao,Male,38,Mumbai,Maharashtra,West,2025-09-15,Premium,Online
+CUST1044,Pooja Gupta,Female,24,Mumbai,Maharashtra,West,2025-09-16,Standard,Organic Search
+CUST1251,Ritu Choudhury,Female,33,Kolkata,West Bengal,East,2025-09-16,Standard,Online
+CUST1018,Swati Mehta,Female,40,Chandigarh,Punjab,North,2025-09-17,Enterprise,Organic Search
+CUST1040,Amit Iyer,Male,26,Jaipur,Rajasthan,North,2025-09-17,Standard,Organic Search
+CUST1259,Deepak Reddy,Male,33,Ahmedabad,Gujarat,West,2025-09-17,Premium,Retail
+CUST1584,Arjun Sharma,Male,23,Bengaluru,Karnataka,South,2025-09-17,Premium,Social Media
+CUST1886,Rahul Joshi,Male,35,Nagpur,Maharashtra,Central,2025-09-17,Standard,Social Media
+CUST1014,Divya Singh,Female,45,New Delhi,Delhi,North,2025-09-18,Standard,Social Media
+CUST1198,Sanjay Gupta,Male,27,Bhubaneswar,Odisha,East,2025-09-18,Standard,Referral
+CUST1532,Varun Sharma,Male,32,Pune,Maharashtra,West,2025-09-18,Standard,Social Media
+CUST1796,Meera Verma,Female,33,Patna,Bihar,East,2025-09-18,Standard,Social Media
+CUST1176,Kavita Patel,Female,24,Jaipur,Rajasthan,North,2025-09-20,Standard,Referral
+CUST1623,Manoj Sharma,Male,25,Kochi,Kerala,South,2025-09-20,Enterprise,Organic Search
+CUST1114,Divya Sharma,Female,34,Kolkata,West Bengal,East,2025-09-21,Premium,Online
+CUST1281,Rohan Reddy,Male,45,Bhubaneswar,Odisha,East,2025-09-21,Standard,Referral
+CUST1595,Manoj Choudhury,Male,37,Hyderabad,Telangana,South,2025-09-21,Premium,Online
+CUST1921,Rohan Bose,Male,28,Jaipur,Rajasthan,North,2025-09-21,Standard,Online
+CUST1357,Sunita Sharma,Female,31,Lucknow,Uttar Pradesh,North,2025-09-22,Standard,Online
+CUST1477,Suresh Das,Male,38,Bhopal,Madhya Pradesh,Central,2025-09-22,Premium,Social Media
+CUST1618,Pooja Kumar,Female,43,Indore,Madhya Pradesh,Central,2025-09-22,Premium,Retail
+CUST1992,Meera Bose,Female,32,Mumbai,Maharashtra,West,2025-09-22,Standard,Organic Search
+CUST1265,Tanvi Bose,Female,33,New Delhi,Delhi,North,2025-09-23,Standard,Online
+CUST1590,Rahul Gupta,Male,34,Jaipur,Rajasthan,North,2025-09-23,Enterprise,Referral
+CUST1620,Kavita Reddy,Female,18,Jaipur,Rajasthan,North,2025-09-23,Standard,Social Media
+CUST1693,Priya Joshi,Female,41,Bengaluru,Karnataka,South,2025-09-23,Standard,Organic Search
+CUST1907,Manoj Reddy,Male,31,New Delhi,Delhi,North,2025-09-23,Standard,Social Media
+CUST1667,Arjun Kumar,Male,38,Kochi,Kerala,South,2025-09-24,Premium,Online
+CUST1922,Ananya Das,Female,40,Kochi,Kerala,South,2025-09-24,Standard,Social Media
+CUST1404,Rohan Das,Male,32,Surat,Gujarat,West,2025-09-25,Standard,Social Media
+CUST1605,Naveen Reddy,Male,33,Bhubaneswar,Odisha,East,2025-09-25,Standard,Organic Search
+CUST1214,Sneha Gupta,Female,27,Hyderabad,Telangana,South,2025-09-26,Enterprise,Online
+CUST1304,Anil Gupta,Male,45,Kolkata,West Bengal,East,2025-09-26,Standard,Referral
+CUST1322,Amit Choudhury,Male,58,Kochi,Kerala,South,2025-09-26,Standard,Online
+CUST1158,Rohan Joshi,Male,34,Bhubaneswar,Odisha,East,2025-09-27,Standard,Online
+CUST1200,Manoj Mehta,Male,30,Nagpur,Maharashtra,Central,2025-09-27,Standard,Online
+CUST1288,Sanjay Mehta,Male,43,Hyderabad,Telangana,South,2025-09-27,Standard,Social Media
+CUST1558,Pradeep Joshi,Male,28,Ahmedabad,Gujarat,West,2025-09-27,Standard,Online
+CUST1361,Anil Rao,Male,35,Bhopal,Madhya Pradesh,Central,2025-09-28,Enterprise,Online
+CUST1685,Tanvi Rao,Female,34,Mumbai,Maharashtra,West,2025-09-28,Standard,Online
+CUST1184,Amit Iyer,Male,28,Kochi,Kerala,South,2025-09-29,Standard,Organic Search
+CUST1497,Aditya Choudhury,Male,35,Kolkata,West Bengal,East,2025-09-29,Standard,Online
+CUST1724,Anil Sharma,Male,22,Nagpur,Maharashtra,Central,2025-09-30,Enterprise,Online
+CUST1909,Pradeep Choudhury,Male,21,Indore,Madhya Pradesh,Central,2025-09-30,Premium,Social Media
+CUST1381,Arjun Das,Male,24,Hyderabad,Telangana,South,2025-10-01,Standard,Email Campaign
+CUST1656,Anil Patel,Male,37,Bhopal,Madhya Pradesh,Central,2025-10-01,Standard,Organic Search
+CUST1471,Naveen Sharma,Male,30,Pune,Maharashtra,West,2025-10-02,Premium,Organic Search
+CUST1287,Shreya Reddy,Female,24,Bhopal,Madhya Pradesh,Central,2025-10-03,Premium,Social Media
+CUST1566,Tanvi Sharma,Female,31,Jaipur,Rajasthan,North,2025-10-03,Premium,Organic Search
+CUST1583,Rohan Gupta,Male,20,New Delhi,Delhi,North,2025-10-03,Standard,Social Media
+CUST1142,Sneha Singh,Female,38,New Delhi,Delhi,North,2025-10-04,Premium,Referral
+CUST1773,Meera Singh,Female,37,Ahmedabad,Gujarat,West,2025-10-04,Standard,Online
+CUST1848,Manoj Sharma,Male,22,Surat,Gujarat,West,2025-10-04,Standard,Referral
+CUST1293,Karthik Sharma,Male,41,Hyderabad,Telangana,South,2025-10-05,Enterprise,Organic Search
+CUST1677,Amit Iyer,Male,38,Mumbai,Maharashtra,West,2025-10-05,Standard,Online
+CUST1934,Ritu Iyer,Female,36,Mumbai,Maharashtra,West,2025-10-05,Standard,Organic Search
+CUST1219,Naveen Kumar,Male,30,Kolkata,West Bengal,East,2025-10-06,Standard,Online
+CUST1349,Swati Iyer,Female,50,Bhubaneswar,Odisha,East,2025-10-06,Standard,Email Campaign
+CUST1585,Aishwarya Reddy,Female,34,Mumbai,Maharashtra,West,2025-10-06,Premium,Retail
+CUST1414,Aishwarya Mehta,Female,34,Jaipur,Rajasthan,North,2025-10-07,Premium,Online
+CUST1452,Preeti Nair,Female,31,Surat,Gujarat,West,2025-10-07,Standard,Social Media
+CUST1965,Aditya Iyer,Male,18,Ahmedabad,Gujarat,West,2025-10-07,Standard,Social Media
+CUST1535,Rahul Rao,Male,26,Pune,Maharashtra,West,2025-10-08,Standard,Social Media
+CUST1649,Suresh Verma,Male,30,Bhopal,Madhya Pradesh,Central,2025-10-08,Standard,Social Media
+CUST1703,Sneha Verma,Female,28,Chennai,Tamil Nadu,South,2025-10-08,Standard,Online
+CUST1711,Arjun Iyer,Male,36,Mumbai,Maharashtra,West,2025-10-08,Standard,Social Media
+CUST1745,Kavita Das,Female,44,Lucknow,Uttar Pradesh,North,2025-10-08,Standard,Retail
+CUST1022,Rohan Gupta,Male,45,Bhopal,Madhya Pradesh,Central,2025-10-09,Standard,Retail
+CUST1113,Kavita Joshi,Female,20,Kolkata,West Bengal,East,2025-10-09,Standard,Online
+CUST1370,Pradeep Das,Male,36,Bhopal,Madhya Pradesh,Central,2025-10-09,Standard,Retail
+CUST1690,Preeti Rao,Female,42,Ahmedabad,Gujarat,West,2025-10-09,Enterprise,Online
+CUST1772,Suresh Iyer,Male,39,Surat,Gujarat,West,2025-10-09,Standard,Online
+CUST1046,Sneha Joshi,Female,37,Patna,Bihar,East,2025-10-10,Premium,Retail
+CUST1117,Sanjay Reddy,Male,38,Pune,Maharashtra,West,2025-10-10,Standard,Referral
+CUST1552,Kavita Mehta,Female,31,Ahmedabad,Gujarat,West,2025-10-10,Standard,Social Media
+CUST1097,Arjun Iyer,Male,35,Chennai,Tamil Nadu,South,2025-10-11,Standard,Organic Search
+CUST1235,Pradeep Verma,Male,34,Surat,Gujarat,West,2025-10-11,Standard,Referral
+CUST1463,Aishwarya Iyer,Female,21,Lucknow,Uttar Pradesh,North,2025-10-11,Standard,Referral
+CUST1719,Aishwarya Kumar,Female,20,Bengaluru,Karnataka,South,2025-10-12,Enterprise,Online
+CUST1256,Deepak Rao,Male,33,Ahmedabad,Gujarat,West,2025-10-13,Enterprise,Social Media
+CUST1352,Manoj Joshi,Male,25,Indore,Madhya Pradesh,Central,2025-10-13,Standard,Retail
+CUST1687,Pooja Singh,Female,27,Chandigarh,Punjab,North,2025-10-13,Premium,Referral
+CUST1167,Aishwarya Verma,Female,22,Nagpur,Maharashtra,Central,2025-10-15,Standard,Online
+CUST1487,Meera Sharma,Female,68,Surat,Gujarat,West,2025-10-15,Premium,Retail
+CUST1439,Preeti Reddy,Female,47,New Delhi,Delhi,North,2025-10-16,Enterprise,Social Media
+CUST1624,Shreya Das,Female,33,Kolkata,West Bengal,East,2025-10-16,Standard,Online
+CUST1326,Tanvi Nair,Female,41,Ahmedabad,Gujarat,West,2025-10-17,Enterprise,Email Campaign
+CUST1580,Shreya Reddy,Female,41,New Delhi,Delhi,North,2025-10-17,Standard,Social Media
+CUST1887,Preeti Patel,Female,48,New Delhi,Delhi,North,2025-10-17,Premium,Organic Search
+CUST1901,Ritu Sharma,Female,27,Bhopal,Madhya Pradesh,Central,2025-10-17,Standard,Online
+CUST1953,Neha Choudhury,Female,23,Bhubaneswar,Odisha,East,2025-10-17,Premium,Online
+CUST1174,Anil Patel,Male,33,Ahmedabad,Gujarat,West,2025-10-18,Standard,Organic Search
+CUST1447,Rohan Joshi,Male,48,Kolkata,West Bengal,East,2025-10-18,Standard,Retail
+CUST1640,Neha Patel,Female,34,Nagpur,Maharashtra,Central,2025-10-18,Standard,Online
+CUST1944,Priya Das,Female,32,Bhubaneswar,Odisha,East,2025-10-18,Standard,Referral
+CUST1254,Priya Nair,Female,34,Chennai,Tamil Nadu,South,2025-10-19,Standard,Referral
+CUST1457,Sunita Patel,Female,32,Kolkata,West Bengal,East,2025-10-20,Standard,Referral
+CUST1465,Deepak Choudhury,Male,35,Indore,Madhya Pradesh,Central,2025-10-20,Premium,Retail
+CUST1472,Kavita Gupta,Female,32,Bhopal,Madhya Pradesh,Central,2025-10-20,Premium,Online
+CUST1751,Swati Singh,Female,29,Kochi,Kerala,South,2025-10-20,Premium,Retail
+CUST1938,Sunita Iyer,Female,42,Nagpur,Maharashtra,Central,2025-10-20,Standard,Retail
+CUST1945,Arjun Das,Male,18,Kolkata,West Bengal,East,2025-10-20,Standard,Retail
+CUST1098,Ananya Bose,Female,35,Bengaluru,Karnataka,South,2025-10-21,Standard,Referral
+CUST1170,Ananya Mehta,Female,33,Mumbai,Maharashtra,West,2025-10-21,Standard,Referral
+CUST1464,Swati Gupta,Female,41,Bhopal,Madhya Pradesh,Central,2025-10-21,Premium,Referral
+CUST1530,Amit Das,Male,40,Patna,Bihar,East,2025-10-21,Standard,Organic Search
+CUST1073,Priya Singh,Female,38,Bengaluru,Karnataka,South,2025-10-22,Standard,Online
+CUST1137,Deepak Bose,Male,27,Surat,Gujarat,West,2025-10-22,Standard,Social Media
+CUST1344,Neha Joshi,Female,25,Bhopal,Madhya Pradesh,Central,2025-10-22,Premium,Online
+CUST1437,Swati Bose,Female,37,Lucknow,Uttar Pradesh,North,2025-10-22,Premium,Social Media
+CUST1622,Aditya Choudhury,Male,22,Kolkata,West Bengal,East,2025-10-22,Standard,Online
+CUST1637,Divya Bose,Female,26,New Delhi,Delhi,North,2025-10-22,Premium,Social Media
+CUST1827,Sanjay Nair,Male,32,Kolkata,West Bengal,East,2025-10-22,Standard,Social Media
+CUST1110,Pradeep Gupta,Male,32,Mumbai,Maharashtra,West,2025-10-23,Standard,Social Media
+CUST1360,Suresh Patel,Male,18,Hyderabad,Telangana,South,2025-10-23,Standard,Organic Search
+CUST1525,Vikram Gupta,Male,28,Indore,Madhya Pradesh,Central,2025-10-23,Premium,Online
+CUST1608,Pooja Kumar,Female,49,Bengaluru,Karnataka,South,2025-10-23,Standard,Retail
+CUST1809,Pooja Gupta,Female,22,Jaipur,Rajasthan,North,2025-10-23,Premium,Online
+CUST1858,Meera Verma,Female,40,Chandigarh,Punjab,North,2025-10-23,Enterprise,Organic Search
+CUST1592,Tanvi Joshi,Female,32,Mumbai,Maharashtra,West,2025-10-24,Standard,Online
+CUST1803,Shreya Mehta,Female,31,Bhopal,Madhya Pradesh,Central,2025-10-24,Standard,Online
+CUST1917,Priya Sharma,Female,43,Mumbai,Maharashtra,West,2025-10-24,Standard,Online
+CUST1216,Anil Singh,Male,36,Kochi,Kerala,South,2025-10-25,Premium,Online
+CUST1380,Ritu Das,Female,41,Ahmedabad,Gujarat,West,2025-10-25,Standard,Social Media
+CUST1578,Vikram Sharma,Male,32,Jaipur,Rajasthan,North,2025-10-25,Standard,Online
+CUST1871,Rohan Rao,Male,34,Bhopal,Madhya Pradesh,Central,2025-10-25,Premium,Social Media
+CUST1283,Pooja Das,Female,34,Pune,Maharashtra,West,2025-10-26,Premium,Online
+CUST1997,Arjun Iyer,Male,39,Jaipur,Rajasthan,North,2025-10-26,Enterprise,Online
+CUST1146,Sunita Joshi,Female,32,Mumbai,Maharashtra,West,2025-10-27,Standard,Retail
+CUST1540,Manoj Choudhury,Male,38,Bhubaneswar,Odisha,East,2025-10-27,Standard,Retail
+CUST1570,Manoj Kumar,Male,39,Hyderabad,Telangana,South,2025-10-27,Standard,Social Media
+CUST1898,Priya Bose,Female,29,Pune,Maharashtra,West,2025-10-27,Standard,Retail
+CUST1122,Vikram Joshi,Male,49,Pune,Maharashtra,West,2025-10-28,Standard,Social Media
+CUST1442,Priya Kumar,Female,35,New Delhi,Delhi,North,2025-10-28,Premium,Online
+CUST1647,Meera Gupta,Female,19,Surat,Gujarat,West,2025-10-28,Standard,Referral
+CUST1916,Naveen Reddy,Male,32,Jaipur,Rajasthan,North,2025-10-28,Enterprise,Online
+CUST1003,Arjun Gupta,Male,31,Patna,Bihar,East,2025-10-29,Standard,Organic Search
+CUST1157,Sanjay Bose,Male,35,Lucknow,Uttar Pradesh,North,2025-10-29,Standard,Online
+CUST1393,Tanvi Singh,Female,37,Kochi,Kerala,South,2025-10-29,Premium,Referral
+CUST1586,Anil Nair,Male,36,Lucknow,Uttar Pradesh,North,2025-10-29,Premium,Online
+CUST1782,Swati Das,Female,41,Kolkata,West Bengal,East,2025-10-30,Standard,Retail
+CUST1859,Deepak Bose,Male,18,Jaipur,Rajasthan,North,2025-10-30,Standard,Referral
+CUST1940,Divya Kumar,Female,40,Bengaluru,Karnataka,South,2025-10-30,Standard,Social Media
+CUST1242,Manoj Gupta,Male,46,Chandigarh,Punjab,North,2025-10-31,Enterprise,Online
+CUST1345,Tanvi Mehta,Female,30,Jaipur,Rajasthan,North,2025-10-31,Enterprise,Online
+CUST1359,Kavita Kumar,Female,32,Patna,Bihar,East,2025-10-31,Standard,Online
+CUST1949,Aishwarya Singh,Female,18,Kochi,Kerala,South,2025-10-31,Standard,Online
+CUST1509,Deepak Choudhury,Male,24,Chennai,Tamil Nadu,South,2025-11-01,Enterprise,Social Media
+CUST1976,Manoj Joshi,Male,40,New Delhi,Delhi,North,2025-11-01,Premium,Social Media
+CUST1261,Meera Patel,Female,38,Bengaluru,Karnataka,South,2025-11-02,Standard,Email Campaign
+CUST1911,Divya Patel,Female,32,Patna,Bihar,East,2025-11-02,Standard,Email Campaign
+CUST1599,Rahul Verma,Male,33,Kolkata,West Bengal,East,2025-11-03,Enterprise,Retail
+CUST1905,Manoj Singh,Male,34,Kochi,Kerala,South,2025-11-03,Premium,Retail
+CUST1980,Rahul Nair,Male,27,Bhubaneswar,Odisha,East,2025-11-04,Standard,Online
+CUST1005,Ananya Sharma,Female,27,Surat,Gujarat,West,2025-11-06,Standard,Online
+CUST1191,Aditya Choudhury,Male,38,Ahmedabad,Gujarat,West,2025-11-06,Standard,Online
+CUST1204,Sneha Bose,Female,46,Jaipur,Rajasthan,North,2025-11-06,Standard,Online
+CUST1228,Divya Nair,Female,22,Chennai,Tamil Nadu,South,2025-11-06,Standard,Referral
+CUST1721,Deepak Singh,Male,25,Pune,Maharashtra,West,2025-11-06,Standard,Retail
+CUST1819,Karthik Gupta,Male,50,Hyderabad,Telangana,South,2025-11-06,Standard,Social Media
+CUST1571,Preeti Iyer,Female,46,Pune,Maharashtra,West,2025-11-07,Standard,Social Media
+CUST1600,Ananya Singh,Female,39,Patna,Bihar,East,2025-11-07,Enterprise,Organic Search
+CUST1009,Pooja Gupta,Female,31,Hyderabad,Telangana,South,2025-11-08,Premium,Retail
+CUST1691,Kavita Mehta,Female,22,Ahmedabad,Gujarat,West,2025-11-08,Standard,Retail
+CUST1102,Neha Reddy,Female,27,Chennai,Tamil Nadu,South,2025-11-09,Enterprise,Online
+CUST1267,Sunita Mehta,Female,43,Mumbai,Maharashtra,West,2025-11-09,Standard,Email Campaign
+CUST1846,Kavita Singh,Female,24,Chandigarh,Punjab,North,2025-11-09,Premium,Retail
+CUST1068,Aishwarya Choudhury,Female,51,Patna,Bihar,East,2025-11-10,Premium,Organic Search
+CUST1527,Sunita Gupta,Female,30,Nagpur,Maharashtra,Central,2025-11-10,Standard,Retail
+CUST1732,Shreya Rao,Female,34,Kolkata,West Bengal,East,2025-11-10,Enterprise,Retail
+CUST1740,Shreya Mehta,Female,37,Indore,Madhya Pradesh,Central,2025-11-10,Enterprise,Referral
+CUST1616,Arjun Nair,Male,36,Kolkata,West Bengal,East,2025-11-11,Premium,Online
+CUST1644,Preeti Sharma,Female,24,Kolkata,West Bengal,East,2025-11-11,Standard,Retail
+CUST1087,Deepak Verma,Male,31,Mumbai,Maharashtra,West,2025-11-12,Premium,Retail
+CUST1576,Rohan Verma,Male,31,Lucknow,Uttar Pradesh,North,2025-11-12,Premium,Online
+CUST1775,Sneha Joshi,Female,24,Patna,Bihar,East,2025-11-12,Standard,Online
+CUST1939,Manoj Kumar,Male,25,Kolkata,West Bengal,East,2025-11-12,Premium,Social Media
+CUST1130,Tanvi Iyer,Female,19,Chennai,Tamil Nadu,South,2025-11-13,Standard,Retail
+CUST1244,Sunita Singh,Female,27,Bhubaneswar,Odisha,East,2025-11-13,Premium,Referral
+CUST1037,Deepak Sharma,Male,44,Chennai,Tamil Nadu,South,2025-11-14,Standard,Social Media
+CUST1049,Sanjay Sharma,Male,27,Bhubaneswar,Odisha,East,2025-11-14,Premium,Organic Search
+CUST1678,Shreya Verma,Female,40,Bengaluru,Karnataka,South,2025-11-14,Premium,Social Media
+CUST1868,Pradeep Gupta,Male,23,Hyderabad,Telangana,South,2025-11-14,Premium,Social Media
+CUST1988,Rahul Patel,Male,36,Indore,Madhya Pradesh,Central,2025-11-14,Standard,Email Campaign
+CUST1076,Varun Das,Male,44,New Delhi,Delhi,North,2025-11-15,Standard,Organic Search
+CUST1413,Manoj Das,Male,40,Pune,Maharashtra,West,2025-11-15,Standard,Referral
+CUST1255,Ananya Nair,Female,18,Mumbai,Maharashtra,West,2025-11-16,Premium,Online
+CUST1601,Suresh Bose,Male,29,Chandigarh,Punjab,North,2025-11-16,Premium,Online
+CUST1105,Shreya Bose,Female,20,Mumbai,Maharashtra,West,2025-11-17,Standard,Social Media
+CUST1115,Kavita Kumar,Female,37,Bhopal,Madhya Pradesh,Central,2025-11-17,Standard,Online
+CUST1303,Deepak Patel,Male,32,Chandigarh,Punjab,North,2025-11-17,Premium,Retail
+CUST1672,Ananya Gupta,Female,27,Ahmedabad,Gujarat,West,2025-11-17,Standard,Referral
+CUST1866,Sneha Mehta,Female,36,Surat,Gujarat,West,2025-11-17,Standard,Retail
+CUST1140,Karthik Patel,Male,18,New Delhi,Delhi,North,2025-11-18,Standard,Retail
+CUST1187,Aishwarya Reddy,Female,34,Ahmedabad,Gujarat,West,2025-11-18,Standard,Referral
+CUST1392,Aditya Rao,Male,18,Jaipur,Rajasthan,North,2025-11-18,Premium,Organic Search
+CUST1467,Rahul Nair,Male,46,Jaipur,Rajasthan,North,2025-11-18,Standard,Retail
+CUST1358,Ritu Singh,Female,29,Kolkata,West Bengal,East,2025-11-19,Standard,Retail
+CUST1639,Aditya Mehta,Male,43,New Delhi,Delhi,North,2025-11-19,Standard,Social Media
+CUST1734,Manoj Nair,Male,39,Indore,Madhya Pradesh,Central,2025-11-19,Enterprise,Online
+CUST1194,Aishwarya Rao,Female,33,Chennai,Tamil Nadu,South,2025-11-20,Premium,Online
+CUST1645,Varun Verma,Male,20,Bhubaneswar,Odisha,East,2025-11-20,Premium,Referral
+CUST1332,Aishwarya Rao,Female,33,Bengaluru,Karnataka,South,2025-11-21,Standard,Email Campaign
+CUST1553,Karthik Bose,Male,37,Lucknow,Uttar Pradesh,North,2025-11-21,Premium,Retail
+CUST1700,Arjun Gupta,Male,30,Bengaluru,Karnataka,South,2025-11-21,Premium,Referral
+CUST1739,Arjun Joshi,Male,37,Patna,Bihar,East,2025-11-21,Standard,Retail
+CUST1955,Tanvi Nair,Female,18,Hyderabad,Telangana,South,2025-11-21,Standard,Referral
+CUST1008,Deepak Patel,Male,31,Patna,Bihar,East,2025-11-22,Premium,Online
+CUST1086,Ananya Nair,Female,37,Surat,Gujarat,West,2025-11-22,Premium,Referral
+CUST1111,Swati Gupta,Female,27,Bhubaneswar,Odisha,East,2025-11-22,Premium,Email Campaign
+CUST1325,Amit Nair,Male,25,Chennai,Tamil Nadu,South,2025-11-23,Standard,Online
+CUST1899,Pooja Kumar,Female,35,Pune,Maharashtra,West,2025-11-24,Premium,Referral
+CUST1968,Swati Nair,Female,31,Pune,Maharashtra,West,2025-11-24,Enterprise,Referral
+CUST1054,Pradeep Patel,Male,27,Surat,Gujarat,West,2025-11-25,Standard,Social Media
+CUST1316,Neha Mehta,Female,40,Bhopal,Madhya Pradesh,Central,2025-11-25,Premium,Referral
+CUST1317,Sneha Verma,Female,32,Nagpur,Maharashtra,Central,2025-11-25,Enterprise,Retail
+CUST1795,Sunita Nair,Female,38,New Delhi,Delhi,North,2025-11-25,Premium,Organic Search
+CUST1929,Neha Mehta,Female,31,Mumbai,Maharashtra,West,2025-11-26,Enterprise,Referral
+CUST1658,Kavita Singh,Female,18,Chandigarh,Punjab,North,2025-11-27,Standard,Referral
+CUST1085,Anil Iyer,Male,26,Indore,Madhya Pradesh,Central,2025-11-28,Standard,Social Media
+CUST1483,Rohan Bose,Male,18,Lucknow,Uttar Pradesh,North,2025-11-28,Standard,Online
+CUST1597,Aditya Gupta,Male,27,Chandigarh,Punjab,North,2025-11-28,Premium,Online
+CUST1794,Rohan Kumar,Male,42,Hyderabad,Telangana,South,2025-11-28,Standard,Social Media
+CUST1864,Anil Patel,Male,45,Lucknow,Uttar Pradesh,North,2025-11-28,Enterprise,Online
+CUST1312,Kavita Das,Female,34,Nagpur,Maharashtra,Central,2025-11-29,Standard,Online
+CUST1275,Divya Patel,Female,22,Hyderabad,Telangana,South,2025-11-30,Standard,Retail
+CUST1324,Vikram Gupta,Male,42,Hyderabad,Telangana,South,2025-12-01,Enterprise,Retail
+CUST1163,Ritu Iyer,Female,30,Kochi,Kerala,South,2025-12-02,Premium,Social Media
+CUST1220,Vikram Rao,Male,41,Chennai,Tamil Nadu,South,2025-12-02,Standard,Online
+CUST1350,Amit Mehta,Male,25,Lucknow,Uttar Pradesh,North,2025-12-03,Premium,Online
+CUST1682,Karthik Gupta,Male,31,Kolkata,West Bengal,East,2025-12-03,Standard,Retail
+CUST1689,Rohan Mehta,Male,37,Ahmedabad,Gujarat,West,2025-12-03,Standard,Email Campaign
+CUST1053,Neha Bose,Female,35,Bengaluru,Karnataka,South,2025-12-04,Standard,Online
+CUST1806,Karthik Verma,Male,38,New Delhi,Delhi,North,2025-12-04,Standard,Social Media
+CUST1034,Kavita Joshi,Female,34,Nagpur,Maharashtra,Central,2025-12-05,Premium,Online
+CUST1490,Pradeep Bose,Male,48,Kolkata,West Bengal,East,2025-12-05,Standard,Online
+CUST1596,Rohan Rao,Male,38,Kochi,Kerala,South,2025-12-05,Standard,Social Media
+CUST1831,Sunita Singh,Female,35,Kolkata,West Bengal,East,2025-12-05,Standard,Social Media
+CUST1942,Kavita Rao,Female,26,Chennai,Tamil Nadu,South,2025-12-05,Standard,Online
+CUST1125,Shreya Das,Female,29,Kolkata,West Bengal,East,2025-12-06,Premium,Social Media
+CUST1519,Varun Mehta,Male,34,New Delhi,Delhi,North,2025-12-06,Premium,Online
+CUST1587,Swati Iyer,Female,41,Bengaluru,Karnataka,South,2025-12-06,Standard,Email Campaign
+CUST1714,Deepak Gupta,Male,36,Mumbai,Maharashtra,West,2025-12-06,Premium,Social Media
+CUST1058,Anil Nair,Male,38,Hyderabad,Telangana,South,2025-12-07,Enterprise,Retail
+CUST1284,Shreya Singh,Female,18,Chennai,Tamil Nadu,South,2025-12-08,Standard,Online
+CUST1669,Vikram Das,Male,30,Chennai,Tamil Nadu,South,2025-12-08,Standard,Online
+CUST1915,Aditya Sharma,Male,36,Pune,Maharashtra,West,2025-12-08,Standard,Online
+CUST1038,Preeti Patel,Female,29,Jaipur,Rajasthan,North,2025-12-09,Premium,Online
+CUST1561,Swati Bose,Female,34,Kochi,Kerala,South,2025-12-09,Standard,Online
+CUST1197,Swati Nair,Female,29,New Delhi,Delhi,North,2025-12-10,Premium,Organic Search
+CUST1515,Arjun Choudhury,Male,27,Bengaluru,Karnataka,South,2025-12-10,Standard,Online
+CUST1565,Pradeep Iyer,Male,21,Jaipur,Rajasthan,North,2025-12-10,Premium,Online
+CUST1308,Rahul Patel,Male,42,Kolkata,West Bengal,East,2025-12-11,Premium,Online
+CUST1363,Varun Gupta,Male,31,Hyderabad,Telangana,South,2025-12-11,Standard,Online
+CUST1545,Suresh Singh,Male,28,Surat,Gujarat,West,2025-12-11,Standard,Social Media
+CUST1627,Arjun Bose,Male,33,Kolkata,West Bengal,East,2025-12-11,Premium,Online
+CUST1815,Sunita Reddy,Female,21,Lucknow,Uttar Pradesh,North,2025-12-11,Standard,Online
+CUST1874,Ritu Reddy,Female,37,Surat,Gujarat,West,2025-12-11,Enterprise,Social Media
+CUST1062,Ritu Das,Female,27,Patna,Bihar,East,2025-12-12,Standard,Referral
+CUST1109,Shreya Rao,Female,32,Lucknow,Uttar Pradesh,North,2025-12-12,Premium,Retail
+CUST1688,Pradeep Gupta,Male,32,Surat,Gujarat,West,2025-12-12,Standard,Social Media
+CUST1001,Rahul Joshi,Male,32,Kochi,Kerala,South,2025-12-13,Premium,Retail
+CUST1060,Suresh Nair,Male,41,Kolkata,West Bengal,East,2025-12-13,Premium,Online
+CUST1135,Sunita Kumar,Female,42,Pune,Maharashtra,West,2025-12-13,Standard,Online
+CUST1424,Kavita Iyer,Female,31,Chennai,Tamil Nadu,South,2025-12-13,Standard,Social Media
+CUST1518,Varun Patel,Male,40,Surat,Gujarat,West,2025-12-13,Standard,Social Media
+CUST1767,Aishwarya Rao,Female,45,Indore,Madhya Pradesh,Central,2025-12-13,Enterprise,Online
+CUST1983,Deepak Bose,Male,35,Pune,Maharashtra,West,2025-12-13,Standard,Online
+CUST1376,Meera Patel,Female,29,Indore,Madhya Pradesh,Central,2025-12-14,Premium,Online
+CUST1925,Pooja Bose,Female,49,Bhopal,Madhya Pradesh,Central,2025-12-14,Standard,Online
+CUST1016,Swati Bose,Female,45,Bengaluru,Karnataka,South,2025-12-15,Premium,Social Media
+CUST1333,Pooja Rao,Female,25,Chandigarh,Punjab,North,2025-12-15,Standard,Referral
+CUST1829,Ananya Reddy,Female,18,Ahmedabad,Gujarat,West,2025-12-16,Standard,Online
+CUST1084,Amit Joshi,Male,24,Pune,Maharashtra,West,2025-12-17,Premium,Online
+CUST1722,Sanjay Verma,Male,29,Nagpur,Maharashtra,Central,2025-12-17,Premium,Organic Search
+CUST1800,Suresh Das,Male,18,Hyderabad,Telangana,South,2025-12-17,Premium,Social Media
+CUST1057,Priya Joshi,Female,23,Nagpur,Maharashtra,Central,2025-12-18,Premium,Social Media
+CUST1492,Anil Joshi,Male,33,Lucknow,Uttar Pradesh,North,2025-12-18,Standard,Social Media
+CUST1727,Meera Reddy,Female,24,Lucknow,Uttar Pradesh,North,2025-12-18,Standard,Online
+CUST1757,Neha Iyer,Female,19,Kochi,Kerala,South,2025-12-18,Standard,Referral
+CUST1956,Sunita Verma,Female,43,Mumbai,Maharashtra,West,2025-12-18,Premium,Referral
+CUST1977,Ritu Das,Female,37,Chandigarh,Punjab,North,2025-12-18,Standard,Online
+CUST1482,Divya Verma,Female,44,Mumbai,Maharashtra,West,2025-12-19,Standard,Online
+CUST1900,Kavita Verma,Female,28,Bhopal,Madhya Pradesh,Central,2025-12-19,Premium,Online
+CUST1136,Meera Patel,Female,28,Bhubaneswar,Odisha,East,2025-12-20,Standard,Social Media
+CUST1182,Sneha Mehta,Female,27,Patna,Bihar,East,2025-12-20,Enterprise,Online
+CUST1285,Sunita Iyer,Female,50,Pune,Maharashtra,West,2025-12-20,Standard,Organic Search
+CUST1756,Rahul Gupta,Male,45,Jaipur,Rajasthan,North,2025-12-20,Standard,Social Media
+CUST1967,Priya Gupta,Female,46,Chennai,Tamil Nadu,South,2025-12-20,Enterprise,Social Media
+CUST1551,Arjun Gupta,Male,27,Pune,Maharashtra,West,2025-12-21,Premium,Organic Search
+CUST1821,Sanjay Das,Male,40,Bhubaneswar,Odisha,East,2025-12-21,Enterprise,Social Media
+CUST1863,Aditya Das,Male,34,Bengaluru,Karnataka,South,2025-12-21,Premium,Organic Search
+CUST1231,Vikram Mehta,Male,33,Pune,Maharashtra,West,2025-12-22,Enterprise,Referral
+CUST1364,Ananya Verma,Female,26,Surat,Gujarat,West,2025-12-22,Standard,Referral
+CUST1365,Karthik Nair,Male,24,Nagpur,Maharashtra,Central,2025-12-22,Enterprise,Organic Search
+CUST1389,Priya Kumar,Female,28,Bhubaneswar,Odisha,East,2025-12-22,Standard,Online
+CUST1065,Meera Bose,Female,35,Jaipur,Rajasthan,North,2025-12-23,Standard,Referral
+CUST1209,Aishwarya Verma,Female,38,Bhopal,Madhya Pradesh,Central,2025-12-23,Premium,Social Media
+CUST1217,Anil Iyer,Male,27,Patna,Bihar,East,2025-12-23,Standard,Online
+CUST1462,Meera Kumar,Female,41,New Delhi,Delhi,North,2025-12-23,Premium,Online
+CUST1876,Rohan Patel,Male,31,Kochi,Kerala,South,2025-12-23,Standard,Online
+CUST1148,Sanjay Bose,Male,36,Patna,Bihar,East,2025-12-25,Standard,Referral
+CUST1469,Tanvi Patel,Female,18,Bengaluru,Karnataka,South,2025-12-25,Premium,Retail
+CUST1377,Preeti Kumar,Female,52,New Delhi,Delhi,North,2025-12-26,Premium,Online
+CUST1041,Naveen Singh,Male,30,Nagpur,Maharashtra,Central,2025-12-27,Standard,Email Campaign
+CUST1443,Varun Iyer,Male,48,Surat,Gujarat,West,2025-12-27,Enterprise,Referral
+CUST1798,Priya Kumar,Female,45,Bhopal,Madhya Pradesh,Central,2025-12-27,Standard,Retail
+CUST1870,Divya Verma,Female,18,Nagpur,Maharashtra,Central,2025-12-27,Standard,Social Media
+CUST1612,Neha Reddy,Female,42,Surat,Gujarat,West,2025-12-28,Standard,Online
+CUST1844,Rohan Choudhury,Male,27,Hyderabad,Telangana,South,2025-12-28,Premium,Organic Search
+CUST1445,Aishwarya Gupta,Female,46,Chandigarh,Punjab,North,2025-12-29,Enterprise,Social Media
+CUST1449,Anil Rao,Male,43,Hyderabad,Telangana,South,2025-12-29,Premium,Social Media
+CUST1986,Sunita Singh,Female,30,Kolkata,West Bengal,East,2025-12-29,Standard,Retail
+CUST1233,Pradeep Gupta,Male,59,Surat,Gujarat,West,2025-12-30,Standard,Retail
+CUST1546,Manoj Iyer,Male,28,Ahmedabad,Gujarat,West,2025-12-30,Standard,Referral
+CUST1763,Varun Mehta,Male,34,Ahmedabad,Gujarat,West,2025-12-30,Standard,Referral
+CUST1990,Sneha Sharma,Female,29,Ahmedabad,Gujarat,West,2025-12-30,Standard,Online
+CUST1162,Vikram Reddy,Male,35,Nagpur,Maharashtra,Central,2025-12-31,Standard,Email Campaign
+CUST1728,Sneha Iyer,Female,26,Bhopal,Madhya Pradesh,Central,2025-12-31,Premium,Online
+CUST1784,Rohan Gupta,Male,36,Hyderabad,Telangana,South,2025-12-31,Standard,Referral

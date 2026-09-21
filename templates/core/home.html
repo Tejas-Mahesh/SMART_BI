@@ -5,801 +5,1085 @@
 Smart BI | Business Intelligence & Decision Intelligence
 {% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/smart_home.css' %}">
+{% endblock %}
+
 {% block content %}
+<div class="smart-bi-universe" id="smartUniverse">
 
-<div class="smart-home">
+    <!-- AMBIENT GLOW & CANVAS PARTICLES BACKGROUND -->
+    <div class="ambient-glow ambient-glow-hero-top" aria-hidden="true"></div>
+    <div class="ambient-glow ambient-glow-hero-center" aria-hidden="true"></div>
+    <div class="ambient-glow ambient-glow-dashboard" aria-hidden="true"></div>
+    <div class="ambient-glow ambient-glow-bottom" aria-hidden="true"></div>
+    <div class="ambient-cyber-grid" aria-hidden="true"></div>
+    <canvas id="heroParticleCanvas" class="hero-particle-canvas" aria-hidden="true"></canvas>
 
-    <!-- =====================================================
-         HERO
-    ====================================================== -->
-
-    <section class="hero-section">
-
-        <div class="hero-grid"></div>
-
-        <div class="hero-glow glow-one"></div>
-        <div class="hero-glow glow-two"></div>
-
-        <div class="hero-content">
-
-            <div class="hero-badge">
-                <span class="pulse-dot"></span>
-                AI-Powered Business Intelligence
-            </div>
-
-            <h1 class="hero-title">
-                Turn Business Data
-                <span>Into Better Decisions.</span>
-            </h1>
-
-            <p class="hero-description">
-                Smart BI transforms raw business data into clear
-                analytics, intelligent insights, forecasts and
-                actionable decisions.
-            </p>
-
-            <div class="hero-actions">
-
-                {% if user.is_authenticated %}
-
-                    <a href="{% url 'core:dashboard' %}"
-                       class="hero-btn primary">
-                        Open Dashboard
-                        <span>→</span>
-                    </a>
-
-                {% else %}
-
-                    <a href="{% url 'accounts:signup' %}"
-                       class="hero-btn primary">
-                        Get Started
-                        <span>→</span>
-                    </a>
-
-                    <a href="{% url 'core:how_it_works' %}"
-                       class="hero-btn secondary">
-                        Explore Platform
-                    </a>
-
-                {% endif %}
-
-            </div>
-
-            <div class="hero-trust">
-
-                <span>Built with</span>
-
-                <div class="tech-pills">
-                    <span>Python</span>
-                    <span>Django</span>
-                    <span>SQL</span>
-                    <span>Pandas</span>
-                    <span>NumPy</span>
+    <!-- CINEMATIC HERO SECTION -->
+    <section class="hero-section" id="heroSection" aria-label="Hero Command Center">
+        <div class="hero-container">
+            
+            <!-- HERO CONTENT (LEFT) -->
+            <div class="hero-content">
+                <div class="hero-badge reveal-fade">
+                    <span class="badge-pulse-dot" aria-hidden="true"></span>
+                    <span class="badge-text">AI-POWERED BUSINESS INTELLIGENCE</span>
                 </div>
 
-            </div>
+                <h1 class="hero-headline reveal-fade">
+                    <span class="headline-block">Your Data Is Speaking.</span>
+                    <span class="headline-block headline-gradient">Smart BI Makes It Visible.</span>
+                </h1>
 
-        </div>
+                <p class="hero-description reveal-fade">
+                    Transform business data into intelligence, forecasts and decisions through one intelligent platform.
+                </p>
 
+                <div class="hero-action-group reveal-fade">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'core:dashboard' %}" class="btn-primary-glow" id="heroCtaAuthenticated">
+                            <span class="btn-text">Open Dashboard</span>
+                            <span class="btn-icon" aria-hidden="true">&rarr;</span>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'accounts:signup' %}" class="btn-primary-glow" id="heroCtaSignup">
+                            <span class="btn-text">Start Building Intelligence</span>
+                            <span class="btn-icon" aria-hidden="true">&rarr;</span>
+                        </a>
+                    {% endif %}
 
-        <!-- =================================================
-             ANALYTICS VISUAL
-        ================================================== -->
-
-        <div class="hero-dashboard">
-
-            <div class="dashboard-window">
-
-                <div class="window-topbar">
-
-                    <div class="window-dots">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-
-                    <div class="window-title">
-                        Smart Business Overview
-                    </div>
-
-                    <div class="live-indicator">
-                        <span></span>
-                        LIVE
-                    </div>
-
-                </div>
-
-
-                <div class="dashboard-inner">
-
-                    <div class="mini-header">
-
-                        <div>
-                            <small>BUSINESS HEALTH</small>
-                            <h3>Executive Overview</h3>
-                        </div>
-
-                        <div class="health-score">
-                            <span>82</span>
-                            <small>/100</small>
-                        </div>
-
-                    </div>
-
-
-                    <!-- KPI CARDS -->
-
-                    <div class="mini-kpis">
-
-                        <div class="mini-kpi">
-
-                            <span class="mini-label">
-                                Revenue
-                            </span>
-
-                            <strong>
-                                ₹8.42M
-                            </strong>
-
-                            <small class="positive">
-                                ↑ 18.4%
-                            </small>
-
-                        </div>
-
-
-                        <div class="mini-kpi">
-
-                            <span class="mini-label">
-                                Customers
-                            </span>
-
-                            <strong>
-                                24.8K
-                            </strong>
-
-                            <small class="positive">
-                                ↑ 12.8%
-                            </small>
-
-                        </div>
-
-
-                        <div class="mini-kpi">
-
-                            <span class="mini-label">
-                                Profit
-                            </span>
-
-                            <strong>
-                                26.7%
-                            </strong>
-
-                            <small class="positive">
-                                ↑ 4.6%
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- CHART -->
-
-                    <div class="mini-chart-card">
-
-                        <div class="chart-heading">
-
-                            <div>
-                                <span>
-                                    Revenue Performance
-                                </span>
-
-                                <strong>
-                                    ₹8.42M
-                                </strong>
-                            </div>
-
-                            <span class="chart-period">
-                                6 Months
-                            </span>
-
-                        </div>
-
-
-                        <div class="chart-area">
-
-                            <div class="chart-lines">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-
-                            <svg
-                                class="revenue-chart"
-                                viewBox="0 0 600 220"
-                                preserveAspectRatio="none"
-                            >
-
-                                <defs>
-
-                                    <linearGradient
-                                        id="chartFill"
-                                        x1="0"
-                                        y1="0"
-                                        x2="0"
-                                        y2="1"
-                                    >
-
-                                        <stop
-                                            offset="0%"
-                                            stop-opacity=".35"
-                                        />
-
-                                        <stop
-                                            offset="100%"
-                                            stop-opacity="0"
-                                        />
-
-                                    </linearGradient>
-
-                                </defs>
-
-
-                                <path
-                                    class="chart-area-fill"
-                                    d="M0,175
-                                       C40,165 60,150 90,158
-                                       C120,166 135,125 170,132
-                                       C205,140 220,112 250,118
-                                       C280,124 300,90 330,100
-                                       C360,110 380,82 410,91
-                                       C440,100 460,65 490,72
-                                       C520,80 545,42 600,30
-                                       L600,220
-                                       L0,220 Z"
-                                />
-
-                                <path
-                                    class="chart-line"
-                                    d="M0,175
-                                       C40,165 60,150 90,158
-                                       C120,166 135,125 170,132
-                                       C205,140 220,112 250,118
-                                       C280,124 300,90 330,100
-                                       C360,110 380,82 410,91
-                                       C440,100 460,65 490,72
-                                       C520,80 545,42 600,30"
-                                />
-
-                                <circle
-                                    class="chart-point"
-                                    cx="600"
-                                    cy="30"
-                                    r="6"
-                                />
-
+                    <a href="{% url 'core:how_it_works' %}" class="btn-secondary-glass" id="heroSecondaryExplore">
+                        <span class="btn-play-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z"/>
                             </svg>
+                        </span>
+                        <span class="btn-text">Explore Platform</span>
+                    </a>
+                </div>
+
+                <div class="hero-tech-stack reveal-fade">
+                    <span class="tech-label">Engineered for precision:</span>
+                    <div class="tech-pills">
+                        <span class="tech-pill">Python</span>
+                        <span class="tech-pill">Django</span>
+                        <span class="tech-pill">Pandas</span>
+                        <span class="tech-pill">NumPy</span>
+                        <span class="tech-pill">SQL Engine</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HERO DASHBOARD 3D PERSPECTIVE (RIGHT) -->
+            <div class="hero-visual-stage" id="heroVisualStage">
+                <div class="dashboard-tilt-card" id="dashboardTiltCard">
+                    
+                    <!-- TOP AMBIENT EDGE LIGHT -->
+                    <div class="dashboard-rim-light" aria-hidden="true"></div>
+
+                    <!-- MOCKUP TOP BAR -->
+                    <header class="dashboard-topbar">
+                        <div class="dash-brand">
+                            <div class="dash-logo-icon" aria-hidden="true">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <span class="dash-brand-name">Smart BI</span>
+                        </div>
+                        <div class="dash-search-bar" aria-hidden="true">
+                            <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="search-placeholder">Search analytics, metrics, forecasts...</span>
+                        </div>
+                        <div class="dash-user-profile" aria-hidden="true">
+                            <div class="user-avatar-dot"></div>
+                            <span class="user-greeting">HQ Command</span>
+                        </div>
+                    </header>
+
+                    <!-- MOCKUP MAIN GRID -->
+                    <div class="dashboard-body">
+                        
+                        <!-- MINI SIDEBAR -->
+                        <aside class="dashboard-sidebar" aria-hidden="true">
+                            <div class="sidebar-item active">
+                                <span class="nav-icon-indicator"></span>
+                                <span>Dashboard</span>
+                            </div>
+                            <div class="sidebar-item">
+                                <span class="nav-icon-indicator"></span>
+                                <span>Analytics</span>
+                            </div>
+                            <div class="sidebar-item">
+                                <span class="nav-icon-indicator"></span>
+                                <span>Reports</span>
+                            </div>
+                            <div class="sidebar-item">
+                                <span class="nav-icon-indicator"></span>
+                                <span>Datasets</span>
+                            </div>
+                            <div class="sidebar-item">
+                                <span class="nav-icon-indicator"></span>
+                                <span>Forecasting</span>
+                            </div>
+                            <div class="sidebar-item">
+                                <span class="nav-icon-indicator"></span>
+                                <span>Scenarios</span>
+                            </div>
+                        </aside>
+
+                        <!-- DASHBOARD WORKSPACE -->
+                        <div class="dashboard-workspace">
+                            
+                            <!-- KPI ROW -->
+                            <div class="kpi-ribbon">
+                                <div class="kpi-mini-card">
+                                    <div class="kpi-header">
+                                        <span class="kpi-title">Total Revenue</span>
+                                        <span class="kpi-tag positive">&uarr; 18.4%</span>
+                                    </div>
+                                    <div class="kpi-value-row">
+                                        <span class="kpi-currency">&#8377;</span>
+                                        <span class="kpi-counter" data-target="8.42" data-decimals="2">0.00</span>
+                                        <span class="kpi-unit">M</span>
+                                    </div>
+                                    <div class="kpi-spark-bar">
+                                        <span class="spark-fill" style="width: 78%;"></span>
+                                    </div>
+                                </div>
+
+                                <div class="kpi-mini-card">
+                                    <div class="kpi-header">
+                                        <span class="kpi-title">Total Customers</span>
+                                        <span class="kpi-tag positive">&uarr; 12.8%</span>
+                                    </div>
+                                    <div class="kpi-value-row">
+                                        <span class="kpi-counter" data-target="24.8" data-decimals="1">0.0</span>
+                                        <span class="kpi-unit">K</span>
+                                    </div>
+                                    <div class="kpi-spark-bar">
+                                        <span class="spark-fill spark-fill-cyan" style="width: 65%;"></span>
+                                    </div>
+                                </div>
+
+                                <div class="kpi-mini-card">
+                                    <div class="kpi-header">
+                                        <span class="kpi-title">Total Orders</span>
+                                        <span class="kpi-tag positive">&uarr; 16.2%</span>
+                                    </div>
+                                    <div class="kpi-value-row">
+                                        <span class="kpi-counter" data-target="12.6" data-decimals="1">0.0</span>
+                                        <span class="kpi-unit">K</span>
+                                    </div>
+                                    <div class="kpi-spark-bar">
+                                        <span class="spark-fill spark-fill-purple" style="width: 82%;"></span>
+                                    </div>
+                                </div>
+
+                                <div class="kpi-mini-card">
+                                    <div class="kpi-header">
+                                        <span class="kpi-title">Profit Margin</span>
+                                        <span class="kpi-tag positive">&uarr; 4.6%</span>
+                                    </div>
+                                    <div class="kpi-value-row">
+                                        <span class="kpi-counter" data-target="26.7" data-decimals="1">0.0</span>
+                                        <span class="kpi-unit">%</span>
+                                    </div>
+                                    <div class="kpi-spark-bar">
+                                        <span class="spark-fill spark-fill-amber" style="width: 71%;"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- CHARTS DUAL PANE -->
+                            <div class="charts-dual-row">
+                                
+                                <!-- REVENUE TREND CHART -->
+                                <div class="chart-panel chart-revenue">
+                                    <div class="panel-header">
+                                        <div class="panel-title-wrap">
+                                            <span class="panel-title">Revenue Trend</span>
+                                            <span class="panel-subtitle">Realtime synthesized trajectory</span>
+                                        </div>
+                                        <div class="panel-pill">30-Day Window</div>
+                                    </div>
+
+                                    <div class="mockup-chart-container">
+                                        <svg class="chart-svg" viewBox="0 0 460 170" preserveAspectRatio="none">
+                                            <defs>
+                                                <linearGradient id="heroRevGradient" x1="0" y1="0" x2="0" y2="1">
+                                                    <stop offset="0%" stop-color="#35B8FF" stop-opacity="0.45"/>
+                                                    <stop offset="100%" stop-color="#35B8FF" stop-opacity="0.0"/>
+                                                </linearGradient>
+                                                <linearGradient id="heroRevStroke" x1="0" y1="0" x2="1" y2="0">
+                                                    <stop offset="0%" stop-color="#7C5CFF"/>
+                                                    <stop offset="50%" stop-color="#35B8FF"/>
+                                                    <stop offset="100%" stop-color="#22D3EE"/>
+                                                </linearGradient>
+                                            </defs>
+                                            <!-- GRID LINES -->
+                                            <line x1="0" y1="30" x2="460" y2="30" class="chart-grid-line" />
+                                            <line x1="0" y1="70" x2="460" y2="70" class="chart-grid-line" />
+                                            <line x1="0" y1="110" x2="460" y2="110" class="chart-grid-line" />
+                                            <line x1="0" y1="150" x2="460" y2="150" class="chart-grid-line" />
+
+                                            <!-- AREA UNDER CURVE -->
+                                            <path d="M 10 135 C 70 120, 110 140, 150 90 C 190 40, 240 100, 280 65 C 320 30, 380 45, 450 15 L 450 160 L 10 160 Z" fill="url(#heroRevGradient)"/>
+                                            
+                                            <!-- TREND PATH -->
+                                            <path d="M 10 135 C 70 120, 110 140, 150 90 C 190 40, 240 100, 280 65 C 320 30, 380 45, 450 15" fill="none" stroke="url(#heroRevStroke)" stroke-width="3.5" stroke-linecap="round" class="animated-chart-line"/>
+
+                                            <!-- HIGHLIGHT NODES -->
+                                            <circle cx="10" cy="135" r="4.5" class="chart-node" />
+                                            <circle cx="150" cy="90" r="4.5" class="chart-node" />
+                                            <circle cx="280" cy="65" r="4.5" class="chart-node" />
+                                            <circle cx="450" cy="15" r="5.5" class="chart-node chart-node-active" />
+                                        </svg>
+                                        <div class="chart-axis-labels">
+                                            <span>Jan</span>
+                                            <span>Feb</span>
+                                            <span>Mar</span>
+                                            <span>Apr</span>
+                                            <span>May</span>
+                                            <span>Jun</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- CATEGORY DONUT CHART -->
+                                <div class="chart-panel chart-donut">
+                                    <div class="panel-header">
+                                        <div class="panel-title-wrap">
+                                            <span class="panel-title">Sales by Category</span>
+                                            <span class="panel-subtitle">Revenue distribution</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="donut-content-layout">
+                                        <div class="donut-svg-wrapper">
+                                            <svg viewBox="0 0 120 120" class="donut-svg">
+                                                <circle cx="60" cy="60" r="45" class="donut-ring-bg" />
+                                                <circle cx="60" cy="60" r="45" class="donut-segment segment-1" stroke-dasharray="88 200" stroke-dashoffset="0" />
+                                                <circle cx="60" cy="60" r="45" class="donut-segment segment-2" stroke-dasharray="64 200" stroke-dashoffset="-88" />
+                                                <circle cx="60" cy="60" r="45" class="donut-segment segment-3" stroke-dasharray="48 200" stroke-dashoffset="-152" />
+                                                <circle cx="60" cy="60" r="45" class="donut-segment segment-4" stroke-dasharray="32 200" stroke-dashoffset="-200" />
+                                            </svg>
+                                            <div class="donut-center-label">
+                                                <span class="center-sub">Total</span>
+                                                <span class="center-val">&#8377;8.42M</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="donut-legend">
+                                            <div class="legend-item">
+                                                <span class="legend-dot dot-cyan"></span>
+                                                <span class="legend-name">Electronics</span>
+                                                <span class="legend-pct">32%</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <span class="legend-dot dot-blue"></span>
+                                                <span class="legend-name">Fashion</span>
+                                                <span class="legend-pct">24%</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <span class="legend-dot dot-purple"></span>
+                                                <span class="legend-name">Home &amp; Living</span>
+                                                <span class="legend-pct">18%</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <span class="legend-dot dot-amber"></span>
+                                                <span class="legend-name">Others</span>
+                                                <span class="legend-pct">26%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- BOTTOM SPLIT: TOP PRODUCTS & SEGMENTS -->
+                            <div class="bottom-intel-row">
+                                <div class="intel-sub-card">
+                                    <div class="sub-card-header">
+                                        <span>Top Products</span>
+                                        <span class="link-label">Live Stream</span>
+                                    </div>
+                                    <div class="progress-list">
+                                        <div class="prog-item">
+                                            <div class="prog-info">
+                                                <span class="prog-name">Laptop Pro Max</span>
+                                                <span class="prog-val">&#8377;2.4M</span>
+                                            </div>
+                                            <div class="prog-bar-bg"><span class="prog-bar-fill fill-blue" style="width: 82%;"></span></div>
+                                        </div>
+                                        <div class="prog-item">
+                                            <div class="prog-info">
+                                                <span class="prog-name">Smartphone 5G</span>
+                                                <span class="prog-val">&#8377;1.8M</span>
+                                            </div>
+                                            <div class="prog-bar-bg"><span class="prog-bar-fill fill-cyan" style="width: 64%;"></span></div>
+                                        </div>
+                                        <div class="prog-item">
+                                            <div class="prog-info">
+                                                <span class="prog-name">Wireless Earbuds</span>
+                                                <span class="prog-val">&#8377;1.2M</span>
+                                            </div>
+                                            <div class="prog-bar-bg"><span class="prog-bar-fill fill-purple" style="width: 48%;"></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="intel-sub-card">
+                                    <div class="sub-card-header">
+                                        <span>Customer Segments</span>
+                                        <span class="link-label">AI Clustered</span>
+                                    </div>
+                                    <div class="segment-breakdown">
+                                        <div class="segment-tile">
+                                            <span class="tile-tag">Retail</span>
+                                            <span class="tile-val">42%</span>
+                                        </div>
+                                        <div class="segment-tile">
+                                            <span class="tile-tag">Wholesale</span>
+                                            <span class="tile-val">28%</span>
+                                        </div>
+                                        <div class="segment-tile">
+                                            <span class="tile-tag">Corporate</span>
+                                            <span class="tile-val">20%</span>
+                                        </div>
+                                        <div class="segment-tile">
+                                            <span class="tile-tag">Others</span>
+                                            <span class="tile-val">10%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
+                    </div>
+                </div>
 
-                        <div class="chart-months">
-                            <span>Jan</span>
-                            <span>Feb</span>
-                            <span>Mar</span>
-                            <span>Apr</span>
-                            <span>May</span>
-                            <span>Jun</span>
+                <!-- FLOATING INTELLIGENCE CARDS (SURROUNDING DASHBOARD) -->
+                <div class="floating-card float-card-growth" data-speed="1.2" aria-hidden="true">
+                    <div class="float-icon-wrap icon-green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                            <polyline points="17 6 23 6 23 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="float-data">
+                        <span class="float-label">Revenue Growth</span>
+                        <span class="float-value value-green">+18.4%</span>
+                    </div>
+                </div>
+
+                <div class="floating-card float-card-insight" data-speed="-1.0" aria-hidden="true">
+                    <div class="float-icon-wrap icon-purple">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2L14.4 8.6L21 11L14.4 13.4L12 20L9.6 13.4L3 11L9.6 8.6L12 2Z" />
+                        </svg>
+                    </div>
+                    <div class="float-data">
+                        <span class="float-label">Smart Insight</span>
+                        <span class="float-value value-purple">Opportunity detected</span>
+                    </div>
+                </div>
+
+                <div class="floating-card float-card-customers" data-speed="0.8" aria-hidden="true">
+                    <div class="float-icon-wrap icon-blue">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 3s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                        </svg>
+                    </div>
+                    <div class="float-data">
+                        <span class="float-label">Total Customers</span>
+                        <span class="float-value value-cyan">24.8K</span>
+                    </div>
+                </div>
+
+                <div class="floating-card float-card-alert" data-speed="-1.3" aria-hidden="true">
+                    <div class="float-icon-wrap icon-amber">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                    </div>
+                    <div class="float-data">
+                        <span class="float-label">Business Alert</span>
+                        <span class="float-value value-amber">Demand increasing</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION E: FROM DATA TO DECISIONS -->
+    <section class="pipeline-section" id="pipelineSection" aria-label="From Data to Decisions Pipeline">
+        <div class="section-shell">
+            <div class="section-intro text-center reveal-fade">
+                <span class="sub-badge">FROM DATA TO DECISIONS</span>
+                <h2 class="section-title">
+                    One platform. Complete <span class="text-gradient">business intelligence.</span>
+                </h2>
+                <p class="section-tagline">
+                    Smart BI connects your entire decision-making process—from raw data to meaningful business action.
+                </p>
+            </div>
+
+            <!-- FOUR STAGE PIPELINE WITH CONNECTORS -->
+            <div class="pipeline-flow-track reveal-fade">
+                
+                <!-- STAGE 01 -->
+                <div class="pipeline-stage-card" data-stage="1">
+                    <div class="stage-node">
+                        <div class="stage-icon-halo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
                         </div>
+                        <div class="stage-order">01</div>
+                    </div>
+                    <div class="stage-meta">
+                        <h3 class="stage-heading">Upload</h3>
+                        <p class="stage-desc">
+                            Bring your sales, customers, products, marketing, financial and operational data in any structured format.
+                        </p>
+                    </div>
+                </div>
 
+                <!-- CONNECTOR 1 -> 2 -->
+                <div class="pipeline-connector-line" aria-hidden="true">
+                    <div class="flow-pulse-light"></div>
+                </div>
+
+                <!-- STAGE 02 -->
+                <div class="pipeline-stage-card" data-stage="2">
+                    <div class="stage-node">
+                        <div class="stage-icon-halo icon-halo-purple">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                            </svg>
+                        </div>
+                        <div class="stage-order">02</div>
+                    </div>
+                    <div class="stage-meta">
+                        <h3 class="stage-heading">Analyze</h3>
+                        <p class="stage-desc">
+                            Clean, validate, profile and transform your business datasets automatically with built-in data integrity engines.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- CONNECTOR 2 -> 3 -->
+                <div class="pipeline-connector-line" aria-hidden="true">
+                    <div class="flow-pulse-light"></div>
+                </div>
+
+                <!-- STAGE 03 -->
+                <div class="pipeline-stage-card" data-stage="3">
+                    <div class="stage-node">
+                        <div class="stage-icon-halo icon-halo-cyan">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                        </div>
+                        <div class="stage-order">03</div>
+                    </div>
+                    <div class="stage-meta">
+                        <h3 class="stage-heading">Discover</h3>
+                        <p class="stage-desc">
+                            Find hidden trends, anomalies, patterns, growth opportunities and high-probability future scenarios.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- CONNECTOR 3 -> 4 -->
+                <div class="pipeline-connector-line" aria-hidden="true">
+                    <div class="flow-pulse-light"></div>
+                </div>
+
+                <!-- STAGE 04 -->
+                <div class="pipeline-stage-card" data-stage="4">
+                    <div class="stage-node">
+                        <div class="stage-icon-halo icon-halo-amber">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <circle cx="12" cy="12" r="6"></circle>
+                                <circle cx="12" cy="12" r="2"></circle>
+                            </svg>
+                        </div>
+                        <div class="stage-order">04</div>
+                    </div>
+                    <div class="stage-meta">
+                        <h3 class="stage-heading">Decide</h3>
+                        <p class="stage-desc">
+                            Turn machine-discovered intelligence into concrete recommendations, executable action plans and optimized decisions.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION F: SMART BI ECOSYSTEM -->
+    <section class="ecosystem-section" id="ecosystemSection" aria-label="Smart BI Ecosystem">
+        <div class="section-shell">
+            <div class="section-intro reveal-fade">
+                <span class="sub-badge">THE SMART BI ECOSYSTEM</span>
+                <h2 class="section-title">
+                    Everything your business needs to understand <span class="text-gradient">what happens next.</span>
+                </h2>
+            </div>
+
+            <div class="ecosystem-grid">
+                
+                <!-- MODULE 01 -->
+                <div class="eco-card reveal-fade" data-index="1">
+                    <div class="eco-card-header">
+                        <div class="eco-module-icon eco-icon-blue">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 7v10c0 2 1.5 3 3.5 3h9c2 0 3.5-1 3.5-3V7c0-2-1.5-3-3.5-3h-9C5.5 4 4 5 4 7z"></path>
+                                <path d="M9 12h6"></path>
+                                <path d="M9 16h4"></path>
+                            </svg>
+                        </div>
+                        <span class="eco-num">01</span>
+                    </div>
+                    <h3 class="eco-title">Data Management</h3>
+                    <p class="eco-desc">Manage, validate, clean, profile and transform your business datasets with autonomous schema alignment.</p>
+                    <div class="eco-tags">
+                        <span>Upload</span>
+                        <span>Quality</span>
+                        <span>Validation</span>
+                        <span>Profiling</span>
+                    </div>
+                </div>
+
+                <!-- MODULE 02 -->
+                <div class="eco-card reveal-fade" data-index="2">
+                    <div class="eco-card-header">
+                        <div class="eco-module-icon eco-icon-cyan">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                            </svg>
+                        </div>
+                        <span class="eco-num">02</span>
+                    </div>
+                    <h3 class="eco-title">Business Analytics</h3>
+                    <p class="eco-desc">Deeply explore revenue, orders, customers, regional dynamics, margins and dimensional performance metrics.</p>
+                    <div class="eco-tags">
+                        <span>KPIs</span>
+                        <span>Charts</span>
+                        <span>Trends</span>
+                        <span>Cohorts</span>
+                    </div>
+                </div>
+
+                <!-- MODULE 03 -->
+                <div class="eco-card reveal-fade" data-index="3">
+                    <div class="eco-card-header">
+                        <div class="eco-module-icon eco-icon-purple">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                            </svg>
+                        </div>
+                        <span class="eco-num">03</span>
+                    </div>
+                    <h3 class="eco-title">Advanced Insights</h3>
+                    <p class="eco-desc">Uncover anomalies, seasonal variance, customer churn risks and hidden profitability bottlenecks instantaneously.</p>
+                    <div class="eco-tags">
+                        <span>AI Insights</span>
+                        <span>Anomalies</span>
+                        <span>Root Causes</span>
+                    </div>
+                </div>
+
+                <!-- MODULE 04 -->
+                <div class="eco-card reveal-fade" data-index="4">
+                    <div class="eco-card-header">
+                        <div class="eco-module-icon eco-icon-amber">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M16 12l-4-4-4 4"></path>
+                                <path d="M12 16V8"></path>
+                            </svg>
+                        </div>
+                        <span class="eco-num">04</span>
+                    </div>
+                    <h3 class="eco-title">Decision Intelligence</h3>
+                    <p class="eco-desc">Simulate operational scenarios, test hypothesis variations, and receive prescriptive next-best business actions.</p>
+                    <div class="eco-tags">
+                        <span>What-If</span>
+                        <span>Simulations</span>
+                        <span>Strategy</span>
+                    </div>
+                </div>
+
+                <!-- MODULE 05 -->
+                <div class="eco-card reveal-fade" data-index="5">
+                    <div class="eco-card-header">
+                        <div class="eco-module-icon eco-icon-green">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                            </svg>
+                        </div>
+                        <span class="eco-num">05</span>
+                    </div>
+                    <h3 class="eco-title">Forecasting</h3>
+                    <p class="eco-desc">Project future sales trajectories, seasonal demand waves, and inventory requirements with statistical confidence intervals.</p>
+                    <div class="eco-tags">
+                        <span>Time-Series</span>
+                        <span>Demand Model</span>
+                        <span>Trends</span>
+                    </div>
+                </div>
+
+                <!-- MODULE 06 -->
+                <div class="eco-card reveal-fade" data-index="6">
+                    <div class="eco-card-header">
+                        <div class="eco-module-icon eco-icon-red">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <span class="eco-num">06</span>
+                    </div>
+                    <h3 class="eco-title">Reporting</h3>
+                    <p class="eco-desc">Generate executive synthesis briefings, automated KPI export decks, and comprehensive boardroom audit reports.</p>
+                    <div class="eco-tags">
+                        <span>Executive Briefs</span>
+                        <span>Export PDF</span>
+                        <span>Audit</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION G: BUSINESS DATA WORLDS (INTERCONNECTED INTELLIGENCE NETWORK) -->
+    <section class="data-worlds-section" id="dataWorldsSection" aria-label="Connected Business Data Worlds">
+        <div class="section-shell">
+            <div class="section-intro text-center reveal-fade">
+                <span class="sub-badge">CONVERGENT ARCHITECTURE</span>
+                <h2 class="section-title">
+                    Seven data worlds. <span class="text-gradient">One central brain.</span>
+                </h2>
+                <p class="section-tagline">
+                    Every operational silo in your enterprise unifies into a synchronized intelligence stream.
+                </p>
+            </div>
+
+            <!-- INTERACTIVE INTERCONNECTED SVG NETWORK -->
+            <div class="network-stage-container reveal-fade" id="networkStage">
+                
+                <!-- TOP DATA ORBIT NODES -->
+                <div class="network-nodes-row" id="sourceNodesRow">
+                    <div class="data-node" data-node="sales">
+                        <span class="node-indicator"></span>
+                        <span class="node-title">Sales</span>
+                    </div>
+                    <div class="data-node" data-node="customers">
+                        <span class="node-indicator"></span>
+                        <span class="node-title">Customers</span>
+                    </div>
+                    <div class="data-node" data-node="products">
+                        <span class="node-indicator"></span>
+                        <span class="node-title">Products</span>
+                    </div>
+                    <div class="data-node" data-node="regional">
+                        <span class="node-indicator"></span>
+                        <span class="node-title">Regional</span>
+                    </div>
+                    <div class="data-node" data-node="marketing">
+                        <span class="node-indicator"></span>
+                        <span class="node-title">Marketing</span>
+                    </div>
+                    <div class="data-node" data-node="financial">
+                        <span class="node-indicator"></span>
+                        <span class="node-title">Financial</span>
+                    </div>
+                    <div class="data-node" data-node="returns">
+                        <span class="node-indicator"></span>
+                        <span class="node-title">Returns</span>
+                    </div>
+                </div>
+
+                <!-- SVG DYNAMIC INTERCONNECT PATHS -->
+                <div class="network-svg-layer" aria-hidden="true">
+                    <svg class="network-svg" id="networkConnectorSvg" viewBox="0 0 900 240" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="netPulseGradient" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#35B8FF" stop-opacity="0.8"/>
+                                <stop offset="50%" stop-color="#7C5CFF" stop-opacity="0.9"/>
+                                <stop offset="100%" stop-color="#22D3EE" stop-opacity="0.8"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- DYNAMIC CONNECTOR LINES -->
+                        <path d="M 64 20 C 64 100, 450 60, 450 160" class="net-wire-bg" />
+                        <path d="M 192 20 C 192 100, 450 70, 450 160" class="net-wire-bg" />
+                        <path d="M 320 20 C 320 100, 450 90, 450 160" class="net-wire-bg" />
+                        <path d="M 450 20 C 450 80, 450 100, 450 160" class="net-wire-bg" />
+                        <path d="M 580 20 C 580 100, 450 90, 450 160" class="net-wire-bg" />
+                        <path d="M 708 20 C 708 100, 450 70, 450 160" class="net-wire-bg" />
+                        <path d="M 836 20 C 836 100, 450 60, 450 160" class="net-wire-bg" />
+
+                        <!-- ANIMATED BEAM WIRES -->
+                        <path d="M 64 20 C 64 100, 450 60, 450 160" class="net-wire-beam beam-1" />
+                        <path d="M 192 20 C 192 100, 450 70, 450 160" class="net-wire-beam beam-2" />
+                        <path d="M 320 20 C 320 100, 450 90, 450 160" class="net-wire-beam beam-3" />
+                        <path d="M 450 20 C 450 80, 450 100, 450 160" class="net-wire-beam beam-4" />
+                        <path d="M 580 20 C 580 100, 450 90, 450 160" class="net-wire-beam beam-5" />
+                        <path d="M 708 20 C 708 100, 450 70, 450 160" class="net-wire-beam beam-6" />
+                        <path d="M 836 20 C 836 100, 450 60, 450 160" class="net-wire-beam beam-7" />
+                    </svg>
+                </div>
+
+                <!-- CENTER HUB: SMART BI CENTRAL CORE -->
+                <div class="network-core-hub">
+                    <div class="core-pulse-rings" aria-hidden="true">
+                        <span class="core-ring r1"></span>
+                        <span class="core-ring r2"></span>
+                        <span class="core-ring r3"></span>
+                    </div>
+                    <div class="core-inner-capsule">
+                        <div class="core-logo-mark" aria-hidden="true">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <span class="core-label">SMART BI</span>
+                        <span class="core-sublabel">Cognitive Engine</span>
+                    </div>
+                </div>
+
+                <!-- OUTPUT STREAM -->
+                <div class="network-output-stream">
+                    <div class="output-beam-line" aria-hidden="true"></div>
+                    <div class="output-intel-badge">
+                        <span class="badge-spark" aria-hidden="true">&#10022;</span>
+                        <span class="badge-val">Synthesized Business Intelligence &amp; Strategic Action</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION H: FORECASTING EXPERIENCE -->
+    <section class="forecast-section" id="forecastSection" aria-label="Futuristic Forecasting Experience">
+        <div class="section-shell">
+            <div class="forecast-card-wrapper reveal-fade">
+                
+                <div class="forecast-header">
+                    <div>
+                        <span class="sub-badge">PREDICTIVE SIMULATION</span>
+                        <h2 class="section-title">See What Happens Next.</h2>
+                        <p class="section-tagline">From historical performance to future possibilities with machine learning confidence corridors.</p>
+                    </div>
+                    <div class="forecast-mode-tags">
+                        <span class="mode-tag active">90-Day Projection</span>
+                        <span class="mode-tag">95% Confidence Band</span>
+                    </div>
+                </div>
+
+                <!-- LARGE FUTURISTIC FORECAST GRAPH -->
+                <div class="forecast-graph-container" id="forecastGraph">
+                    <svg viewBox="0 0 940 320" class="forecast-svg" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="forecastAreaFill" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.30"/>
+                                <stop offset="100%" stop-color="#22D3EE" stop-opacity="0.0"/>
+                            </linearGradient>
+                            <linearGradient id="histAreaFill" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#7C5CFF" stop-opacity="0.25"/>
+                                <stop offset="100%" stop-color="#7C5CFF" stop-opacity="0.0"/>
+                            </linearGradient>
+                        </defs>
+
+                        <!-- HORIZONTAL AXIS GUIDES -->
+                        <line x1="40" y1="60" x2="900" y2="60" class="fc-grid-line" />
+                        <line x1="40" y1="130" x2="900" y2="130" class="fc-grid-line" />
+                        <line x1="40" y1="200" x2="900" y2="200" class="fc-grid-line" />
+                        <line x1="40" y1="270" x2="900" y2="270" class="fc-grid-line" />
+
+                        <!-- FORECAST REGION BACKGROUND (FUTURE TONE) -->
+                        <rect x="520" y="30" width="380" height="250" class="fc-forecast-boundary" />
+
+                        <!-- HISTORICAL AREA -->
+                        <path d="M 50 250 Q 130 220 200 180 T 360 170 T 520 130 L 520 290 L 50 290 Z" fill="url(#histAreaFill)"/>
+
+                        <!-- FORECAST CONFIDENCE AREA -->
+                        <path d="M 520 130 Q 640 100 740 65 T 890 35 L 890 125 Q 740 135 640 160 T 520 130 Z" fill="url(#forecastAreaFill)"/>
+
+                        <!-- HISTORICAL CURVE -->
+                        <path d="M 50 250 Q 130 220 200 180 T 360 170 T 520 130" class="fc-line-historical" id="histLinePath" />
+
+                        <!-- FORECAST CURVE (DASHED / GLOWING) -->
+                        <path d="M 520 130 Q 640 100 740 65 T 890 35" class="fc-line-forecast" id="forecastLinePath" />
+
+                        <!-- TRANSITION SEPARATOR -->
+                        <line x1="520" y1="30" x2="520" y2="290" class="fc-pivot-divider" />
+
+                        <!-- PIVOT NODE -->
+                        <circle cx="520" cy="130" r="6" class="fc-pivot-dot" />
+
+                        <!-- PREDICTION MARKER ENDPOINT -->
+                        <circle cx="890" cy="35" r="7" class="fc-endpoint-pulse" id="predictionEndpoint" />
+                    </svg>
+
+                    <!-- FLOATING PREDICTION PIN -->
+                    <div class="forecast-prediction-pin" id="predictionPin">
+                        <span class="pin-badge">AI Target</span>
+                        <span class="pin-val">&#8377;12.4M</span>
+                        <span class="pin-growth">+24.3% Projected</span>
                     </div>
 
-
-                    <!-- BOTTOM INSIGHTS -->
-
-                    <div class="mini-bottom">
-
-                        <div class="insight-mini">
-
-                            <div class="insight-icon">
-                                ↗
-                            </div>
-
-                            <div>
-                                <small>TOP REGION</small>
-                                <strong>Bangalore</strong>
-                            </div>
-
+                    <!-- GRAPH FOOTER LEGEND & STAMPS -->
+                    <div class="forecast-labels-bar">
+                        <div class="label-group-historical">
+                            <span class="legend-indicator-dot dot-purple"></span>
+                            <span>Historical Track Record (Past 12 Months)</span>
                         </div>
-
-
-                        <div class="insight-mini">
-
-                            <div class="insight-icon">
-                                ★
-                            </div>
-
-                            <div>
-                                <small>TOP PRODUCT</small>
-                                <strong>Laptop Pro</strong>
-                            </div>
-
+                        <div class="label-group-pivot">
+                            <span class="pivot-badge">TODAY</span>
                         </div>
-
-
-                        <div class="insight-mini">
-
-                            <div class="insight-icon">
-                                !
-                            </div>
-
-                            <div>
-                                <small>ALERT</small>
-                                <strong>Return Rate ↑</strong>
-                            </div>
-
+                        <div class="label-group-future">
+                            <span class="legend-indicator-dot dot-cyan"></span>
+                            <span>Projected AI Trajectory (Next Quarter)</span>
                         </div>
+                    </div>
+                </div>
 
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION I: DECISION INTELLIGENCE / WHAT-IF -->
+    <section class="whatif-section" id="whatifSection" aria-label="Decision Intelligence and What-If Scenarios">
+        <div class="section-shell">
+            <div class="whatif-glass-box reveal-fade">
+                
+                <div class="whatif-content">
+                    <span class="sub-badge">DYNAMIC SCENARIO MODELING</span>
+                    <h2 class="section-title">What If?</h2>
+                    <p class="section-tagline">
+                        Move beyond descriptive analytics. Simulate business decisions in real-time before committing capital.
+                    </p>
+                    
+                    <div class="scenario-action-box">
+                        <a href="{% url 'core:how_it_works' %}" class="btn-primary-glow">
+                            <span>Explore Scenarios</span>
+                            <span class="btn-icon" aria-hidden="true">&rarr;</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- SIMULATION CHAIN CARDS -->
+                <div class="whatif-chain-display">
+                    
+                    <!-- INPUT TRIGGER -->
+                    <div class="chain-step-card step-input">
+                        <span class="chain-step-num">Hypothesis Input</span>
+                        <h4 class="chain-title">Increase Marketing</h4>
+                        <div class="chain-metric text-cyan">+15.0%</div>
+                        <p class="chain-detail">Digital ad spend &amp; omni-channel acquisition</p>
+                    </div>
+
+                    <!-- CONNECTOR -->
+                    <div class="chain-arrow-cell" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+
+                    <!-- INTERMEDIATE OUTCOME -->
+                    <div class="chain-step-card step-mid">
+                        <span class="chain-step-num">Projected Sales</span>
+                        <h4 class="chain-title">Sales Volume</h4>
+                        <div class="chain-metric text-purple">+11.8%</div>
+                        <p class="chain-detail">Based on historical customer conversion elasticity</p>
+                    </div>
+
+                    <!-- CONNECTOR -->
+                    <div class="chain-arrow-cell" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+
+                    <!-- FINAL STRATEGIC VALUE -->
+                    <div class="chain-step-card step-final">
+                        <span class="chain-step-num">Net Executive Gain</span>
+                        <h4 class="chain-title">Projected Profit</h4>
+                        <div class="chain-metric text-green">+7.2%</div>
+                        <p class="chain-detail">Net margin expansion after factoring operational overhead</p>
                     </div>
 
                 </div>
 
             </div>
-
-
-            <!-- FLOATING ELEMENTS -->
-
-            <div class="floating-card floating-growth">
-
-                <div class="floating-icon">
-                    ↗
-                </div>
-
-                <div>
-                    <small>Revenue Growth</small>
-                    <strong>+18.4%</strong>
-                </div>
-
-            </div>
-
-
-            <div class="floating-card floating-ai">
-
-                <div class="ai-orb">
-                    ✦
-                </div>
-
-                <div>
-                    <small>Smart Insight</small>
-                    <strong>Opportunity detected</strong>
-                </div>
-
-            </div>
-
-
-            <div class="floating-card floating-alert">
-
-                <span class="alert-dot"></span>
-
-                <div>
-                    <small>Business Alert</small>
-                    <strong>Demand increasing</strong>
-                </div>
-
-            </div>
-
         </div>
-
     </section>
 
+    <!-- SECTION J: BUSINESS QUESTIONS (VERTICAL INTELLIGENCE TIMELINE) -->
+    <section class="questions-section" id="questionsSection" aria-label="The Four Core Business Questions">
+        <div class="section-shell">
+            <div class="section-intro text-center reveal-fade">
+                <span class="sub-badge">COGNITIVE MATURITY</span>
+                <h2 class="section-title">
+                    The four questions that determine <span class="text-gradient">business success.</span>
+                </h2>
+                <p class="section-tagline">
+                    Smart BI accompanies your leadership team across the entire cognitive intelligence continuum.
+                </p>
+            </div>
 
-    <!-- =====================================================
-         TRANSFORMATION SECTION
-    ====================================================== -->
+            <div class="questions-timeline reveal-fade" id="questionsTimeline">
+                
+                <!-- QUESTION 1 -->
+                <div class="timeline-row active" data-step="1">
+                    <div class="timeline-indicator-col">
+                        <span class="timeline-step-badge">01</span>
+                        <div class="timeline-rail" aria-hidden="true"></div>
+                    </div>
+                    <div class="timeline-card">
+                        <div class="q-header-bar">
+                            <span class="q-level-tag">Descriptive Analytics</span>
+                            <h3 class="q-title">WHAT HAPPENED?</h3>
+                        </div>
+                        <p class="q-summary">
+                            Consolidate dispersed sales receipts, client logs, SKU movements, and profit margins into an audit-ready, single source of enterprise truth.
+                        </p>
+                    </div>
+                </div>
 
-    <section class="transformation-section">
+                <!-- QUESTION 2 -->
+                <div class="timeline-row" data-step="2">
+                    <div class="timeline-indicator-col">
+                        <span class="timeline-step-badge">02</span>
+                        <div class="timeline-rail" aria-hidden="true"></div>
+                    </div>
+                    <div class="timeline-card">
+                        <div class="q-header-bar">
+                            <span class="q-level-tag">Diagnostic Analytics</span>
+                            <h3 class="q-title">WHY DID IT HAPPEN?</h3>
+                        </div>
+                        <p class="q-summary">
+                            Detect root causes, seasonal anomalies, discount sensitivity, regional drop-offs, and behavioral micro-cohort shifts without manual spreadsheet modeling.
+                        </p>
+                    </div>
+                </div>
 
-        <div class="section-heading reveal">
+                <!-- QUESTION 3 -->
+                <div class="timeline-row" data-step="3">
+                    <div class="timeline-indicator-col">
+                        <span class="timeline-step-badge">03</span>
+                        <div class="timeline-rail" aria-hidden="true"></div>
+                    </div>
+                    <div class="timeline-card">
+                        <div class="q-header-bar">
+                            <span class="q-level-tag">Predictive Analytics</span>
+                            <h3 class="q-title">WHAT WILL HAPPEN?</h3>
+                        </div>
+                        <p class="q-summary">
+                            Simulate forward-looking demand, forecast cash flows, anticipate seasonal product requirements, and minimize unexpected customer attrition before it occurs.
+                        </p>
+                    </div>
+                </div>
 
-            <span class="section-label">
-                FROM DATA TO DECISIONS
-            </span>
+                <!-- QUESTION 4 -->
+                <div class="timeline-row" data-step="4">
+                    <div class="timeline-indicator-col">
+                        <span class="timeline-step-badge">04</span>
+                        <div class="timeline-rail" aria-hidden="true"></div>
+                    </div>
+                    <div class="timeline-card">
+                        <div class="q-header-bar">
+                            <span class="q-level-tag">Prescriptive Analytics</span>
+                            <h3 class="q-title">WHAT SHOULD WE DO?</h3>
+                        </div>
+                        <p class="q-summary">
+                            Receive machine-guided recommendations, test capital deployment trade-offs in sandbox simulations, and execute proactive decisions with precision.
+                        </p>
+                    </div>
+                </div>
 
-            <h2>
-                One platform.
-                <span>Complete business intelligence.</span>
-            </h2>
-
-            <p>
-                Smart BI connects your entire decision-making
-                process—from raw data to meaningful business action.
-            </p>
-
+            </div>
         </div>
-
-
-        <div class="transformation-flow">
-
-            <div class="flow-card reveal">
-
-                <div class="flow-number">01</div>
-
-                <div class="flow-icon">
-                    ↑
-                </div>
-
-                <h3>Upload</h3>
-
-                <p>
-                    Bring your sales, customers, products,
-                    marketing, financial and operational data.
-                </p>
-
-                <div class="flow-line"></div>
-
-            </div>
-
-
-            <div class="flow-arrow">
-                →
-            </div>
-
-
-            <div class="flow-card reveal">
-
-                <div class="flow-number">02</div>
-
-                <div class="flow-icon">
-                    ◈
-                </div>
-
-                <h3>Analyze</h3>
-
-                <p>
-                    Clean, validate, profile and transform
-                    your datasets automatically.
-                </p>
-
-                <div class="flow-line"></div>
-
-            </div>
-
-
-            <div class="flow-arrow">
-                →
-            </div>
-
-
-            <div class="flow-card reveal">
-
-                <div class="flow-number">03</div>
-
-                <div class="flow-icon">
-                    ✦
-                </div>
-
-                <h3>Discover</h3>
-
-                <p>
-                    Find trends, anomalies, patterns,
-                    opportunities and future possibilities.
-                </p>
-
-                <div class="flow-line"></div>
-
-            </div>
-
-
-            <div class="flow-arrow">
-                →
-            </div>
-
-
-            <div class="flow-card reveal">
-
-                <div class="flow-number">04</div>
-
-                <div class="flow-icon">
-                    ◎
-                </div>
-
-                <h3>Decide</h3>
-
-                <p>
-                    Turn intelligence into recommendations,
-                    scenarios and business actions.
-                </p>
-
-                <div class="flow-line"></div>
-
-            </div>
-
-        </div>
-
     </section>
 
+    <!-- SECTION K: FINAL CINEMATIC CTA -->
+    <section class="final-cta-section" id="finalCtaSection" aria-label="Call to Action">
+        <div class="section-shell">
+            <div class="cta-monolith reveal-fade">
+                <div class="cta-ambient-beam" aria-hidden="true"></div>
 
-    <!-- =====================================================
-         CAPABILITIES
-    ====================================================== -->
+                <div class="cta-content text-center">
+                    <div class="cta-spark-pill">
+                        <span class="spark-dot" aria-hidden="true"></span>
+                        <span>Enterprise Intelligence Platform</span>
+                    </div>
 
-    <section class="capabilities-section">
+                    <h2 class="cta-title">
+                        Your next decision is already hiding in your data.
+                    </h2>
 
-        <div class="section-heading reveal">
+                    <p class="cta-lead">
+                        Upload your business data and start discovering what is happening inside your business.
+                    </p>
 
-            <span class="section-label">
-                THE SMART BI ECOSYSTEM
-            </span>
+                    <div class="cta-actions">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'core:dashboard' %}" class="btn-primary-glow btn-lg" id="finalCtaAuthenticated">
+                                <span class="btn-text">Open Smart BI</span>
+                                <span class="btn-icon" aria-hidden="true">&rarr;</span>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'accounts:signup' %}" class="btn-primary-glow btn-lg" id="finalCtaSignup">
+                                <span class="btn-text">Start Building Intelligence</span>
+                                <span class="btn-icon" aria-hidden="true">&rarr;</span>
+                            </a>
+                        {% endif %}
 
-            <h2>
-                Everything your business needs
-                <span>to understand what happens next.</span>
-            </h2>
+                        <a href="{% url 'core:how_it_works' %}" class="btn-secondary-glass btn-lg" id="finalSecondaryExplore">
+                            <span class="btn-text">Explore Platform</span>
+                        </a>
+                    </div>
 
+                    <div class="cta-proof-points">
+                        <div class="proof-item">
+                            <span class="proof-check" aria-hidden="true">&#10003;</span>
+                            <span>Self-service CSV &amp; Excel ingestion</span>
+                        </div>
+                        <div class="proof-item">
+                            <span class="proof-check" aria-hidden="true">&#10003;</span>
+                            <span>Automated data profiling</span>
+                        </div>
+                        <div class="proof-item">
+                            <span class="proof-check" aria-hidden="true">&#10003;</span>
+                            <span>Scenario sandbox modeling</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-
-        <div class="capability-grid">
-
-            <div class="capability-card large reveal">
-
-                <div class="capability-number">
-                    01
-                </div>
-
-                <div class="capability-icon">
-                    ◫
-                </div>
-
-                <h3>Data Management</h3>
-
-                <p>
-                    Manage, validate, clean, profile and
-                    transform your business datasets.
-                </p>
-
-                <div class="capability-tags">
-                    <span>Upload</span>
-                    <span>Quality</span>
-                    <span>Validation</span>
-                    <span>Profiling</span>
-                </div>
-
-                <div class="card-orbit orbit-one"></div>
-                <div class="card-orbit orbit-two"></div>
-
-            </div>
-
-
-            <div class="capability-card reveal">
-
-                <div class="capability-number">
-                    02
-                </div>
-
-                <div class="capability-icon">
-                    ◒
-                </div>
-
-                <h3>Business Analytics</h3>
-
-                <p>
-                    Understand revenue, customers, products,
-                    regions and business performance.
-                </p>
-
-                <div class="capability-tags">
-                    <span>KPIs</span>
-                    <span>Charts</span>
-                    <span>Trends</span>
-                </div>
-
-            </div>
-
-
-            <div class="capability-card reveal">
-
-                <div class="capability-number">
-                    03
-                </div>
-
-                <div class="capability-icon">
-                    ✦
-                </div>
-
-                <h3>Advanced Insights</h3>
-
-                <p>
-                    Discover anomalies, forecasts,
-                    customer risks and hidden opportunities.
-                </p>
-
-                <div class="capability-tags">
-                    <span>Forecasting</span>
-                    <span>AI Insights</span>
-                </div>
-
-            </div>
-
-
-            <div class="capability-card reveal">
-
-                <div class="capability-number">
-                    04
-                </div>
-
-                <div class="capability-icon">
-                    ◎
-                </div>
-
-                <h3>Decision Intelligence</h3>
-
-                <p>
-                    Simulate scenarios and convert insights
-                    into recommended business actions.
-                </p>
-
-                <div class="capability-tags">
-                    <span>What-If</span>
-                    <span>Recommendations</span>
-                </div>
-
-            </div>
-
-
-            <div class="capability-card large reveal">
-
-                <div class="capability-number">
-                    05
-                </div>
-
-                <div class="capability-icon">
-                    ▣
-                </div>
-
-                <h3>Reporting</h3>
-
-                <p>
-                    Generate professional reports and
-                    transform analytics into management-ready
-                    business information.
-                </p>
-
-                <div class="capability-tags">
-                    <span>Reports</span>
-                    <span>PDF</span>
-                    <span>Excel</span>
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         BUSINESS QUESTIONS
-    ====================================================== -->
-
-    <section class="questions-section">
-
-        <div class="question-content reveal">
-
-            <span class="section-label">
-                FROM QUESTIONS TO ANSWERS
-            </span>
-
-            <h2>
-                Your business asks the questions.
-                <span>Smart BI finds the answers.</span>
-            </h2>
-
-        </div>
-
-
-        <div class="question-list">
-
-            <div class="question-item reveal">
-                <span>01</span>
-                <div>
-                    <small>WHAT HAPPENED?</small>
-                    <strong>Understand your business performance.</strong>
-                </div>
-                <b>→</b>
-            </div>
-
-
-            <div class="question-item reveal">
-                <span>02</span>
-                <div>
-                    <small>WHY DID IT HAPPEN?</small>
-                    <strong>Discover the factors behind changes.</strong>
-                </div>
-                <b>→</b>
-            </div>
-
-
-            <div class="question-item reveal">
-                <span>03</span>
-                <div>
-                    <small>WHAT WILL HAPPEN?</small>
-                    <strong>Identify trends and future possibilities.</strong>
-                </div>
-                <b>→</b>
-            </div>
-
-
-            <div class="question-item reveal">
-                <span>04</span>
-                <div>
-                    <small>WHAT SHOULD WE DO?</small>
-                    <strong>Turn intelligence into action.</strong>
-                </div>
-                <b>→</b>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         FINAL CTA
-    ====================================================== -->
-
-    <section class="home-cta reveal">
-
-        <div class="cta-glow"></div>
-
-        <span class="section-label">
-            READY TO BEGIN?
-        </span>
-
-        <h2>
-            Your data already knows
-            <span>more than you think.</span>
-        </h2>
-
-        <p>
-            Upload your first dataset and start discovering
-            what is happening inside your business.
-        </p>
-
-        {% if user.is_authenticated %}
-
-            <a href="{% url 'core:dashboard' %}"
-               class="hero-btn primary">
-                Open Smart BI
-                <span>→</span>
-            </a>
-
-        {% else %}
-
-            <a href="{% url 'accounts:signup' %}"
-               class="hero-btn primary">
-                Start Building Intelligence
-                <span>→</span>
-            </a>
-
-        {% endif %}
-
     </section>
 
 </div>
-
-{% endblock %}
-
-{% block extra_css %}
-
-<link rel="stylesheet"
-      href="{% static 'css/smart_home.css' %}">
-
 {% endblock %}
 
 {% block extra_js %}
-
 <script src="{% static 'js/smart_home.js' %}"></script>
-
 {% endblock %}

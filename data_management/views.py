@@ -1,27 +1,92 @@
 import os
-
 import pandas as pd
-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.files.base import ContentFile
 from django.db.models import Prefetch
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-
 from .forms import DatasetUploadForm
 from .models import Dataset, DatasetVersion, DatasetActivity
-
-
+from io import StringIO
+from django.core.files.base import ContentFile
 # ============================================================
 # COMMON APPROVAL CHECK
 # ============================================================
+# ============================================================
+# READ DATASET VERSION FILE
+# ============================================================
+def read_dataset_version_file(version):
 
-def user_is_approved(request):
-    return (
-        request.user.is_authenticated
-        and request.user.approval_status == "Approved"
+    if version is None:
+        raise ValueError(
+            "Dataset version was not provided."
+        )
+
+    if not version.file:
+        raise ValueError(
+            "Dataset version does not contain a file."
+        )
+
+    file_name = (
+        version.file_name
+        or version.file.name
+        or ""
     )
+
+    extension = os.path.splitext(
+        file_name
+    )[1].lower()
+
+    version.file.open("rb")
+
+    try:
+
+        if extension == ".csv":
+
+            dataframe = pd.read_csv(
+                version.file
+            )
+
+        elif extension in [".xlsx", ".xls"]:
+
+            dataframe = pd.read_excel(
+                version.file
+            )
+
+        else:
+
+            raise ValueError(
+                (
+                    "Unsupported dataset format: "
+                    f"{extension or 'unknown'}"
+                )
+            )
+
+    finally:
+
+        version.file.close()
+
+    if dataframe is None:
+        raise ValueError(
+            "Unable to read dataset version."
+        )
+
+    return dataframe
+def user_is_approved(request):
+    """
+    Check whether the current user is authenticated
+    and has been approved by the administrator.
+    """
+
+    if not request.user.is_authenticated:
+        return False
+
+    return getattr(
+        request.user,
+        "approval_status",
+        ""
+    ) == "Approved"
 
 
 # ============================================================
@@ -50,15 +115,12 @@ def read_dataset_file(dataset):
     file_path = dataset.file.path
 
     if filename.endswith(".csv"):
-
         return pd.read_csv(file_path)
 
     elif filename.endswith(".xls"):
-
         return pd.read_excel(file_path)
 
     elif filename.endswith(".xlsx"):
-
         return pd.read_excel(file_path)
 
     raise ValueError(
@@ -82,6 +144,9 @@ def calculate_quality_score(
     Score considers:
         - Missing values
         - Duplicate rows
+
+    Returns:
+        Float between 0 and 100.
     """
 
     total_rows = len(dataframe)
@@ -122,75 +187,99 @@ def calculate_quality_score(
 
     return round(score, 2)
 
-
 # ============================================================
 # CREATE ORIGINAL VERSION
 # ============================================================
 
+# ============================================================
+# CREATE ORIGINAL DATASET VERSION
+# ============================================================
+
 def create_original_dataset_version(dataset):
+    """
+    Create Version 1 for the uploaded dataset.
 
-    try:
+    Version 1 always represents the original uploaded file.
+    """
 
-        existing_version = (
-            DatasetVersion.objects
-            .filter(
-                dataset=dataset,
-                version_number=1
+    # --------------------------------------------------------
+    # Check whether Version 1 already exists
+    # --------------------------------------------------------
+
+    existing_version = (
+        DatasetVersion.objects
+        .filter(
+            dataset=dataset,
+            version_number=1
+        )
+        .first()
+    )
+
+    if existing_version:
+        return existing_version
+
+    # --------------------------------------------------------
+    # Make sure no other version is marked current
+    # --------------------------------------------------------
+
+    DatasetVersion.objects.filter(
+        dataset=dataset,
+        is_current=True
+    ).update(
+        is_current=False
+    )
+
+    # --------------------------------------------------------
+    # Validate original file
+    # --------------------------------------------------------
+
+    if not dataset.file:
+        raise ValueError(
+            "Cannot create original dataset version "
+            "because the dataset file is missing."
+        )
+
+    # --------------------------------------------------------
+    # Create Version 1
+    # --------------------------------------------------------
+
+    version = DatasetVersion.objects.create(
+
+        dataset=dataset,
+
+        version_number=1,
+
+        version_type="Original",
+
+        file=dataset.file,
+
+        file_name=(
+            dataset.original_filename
+            or os.path.basename(
+                dataset.file.name
             )
-            .first()
-        )
+        ),
 
-        if existing_version:
-            return existing_version
+        file_size=dataset.file_size,
 
-        # Make sure there is no other current version.
-        DatasetVersion.objects.filter(
-            dataset=dataset,
-            is_current=True
-        ).update(
-            is_current=False
-        )
+        total_rows=dataset.total_rows,
 
-        version = DatasetVersion.objects.create(
+        total_columns=dataset.total_columns,
 
-            dataset=dataset,
+        missing_values=dataset.missing_values,
 
-            version_number=1,
+        duplicate_rows=dataset.duplicate_rows,
 
-            version_type="Original",
+        quality_score=dataset.quality_score,
 
-            file=dataset.file,
+        notes=(
+            "Original dataset uploaded by the user."
+        ),
 
-            file_name=(
-                dataset.original_filename
-                or os.path.basename(
-                    dataset.file.name
-                )
-            ),
+        is_current=True
+    )
 
-            file_size=dataset.file_size,
-
-            total_rows=dataset.total_rows,
-
-            total_columns=dataset.total_columns,
-
-            missing_values=dataset.missing_values,
-
-            duplicate_rows=dataset.duplicate_rows,
-
-            quality_score=dataset.quality_score,
-
-            notes=(
-                "Original dataset uploaded by the user."
-            ),
-
-            is_current=True
-        )
-
-        return version
-
-    except Exception:
-        return None
+    return version
 
 
 # ============================================================
@@ -210,201 +299,186 @@ def create_cleaned_dataset_version(
     DatasetVersion.
 
     Version 1 = Original
-    Version 2 = Cleaned
+    Version 2+ = Cleaned / subsequent processing versions.
     """
 
-    try:
+    # --------------------------------------------------------
+    # Basic validation
+    # --------------------------------------------------------
 
-        # ----------------------------------------------------
-        # Determine next version number
-        # ----------------------------------------------------
-
-        latest_version = (
-            DatasetVersion.objects
-            .filter(
-                dataset=dataset
-            )
-            .order_by(
-                "-version_number"
-            )
-            .first()
+    if cleaned_dataframe is None:
+        raise ValueError(
+            "Cleaned dataframe is missing."
         )
 
-        if latest_version:
+    # --------------------------------------------------------
+    # Determine next version number
+    # --------------------------------------------------------
 
-            next_version = (
-                latest_version.version_number
-                + 1
-            )
-
-        else:
-
-            next_version = 1
-
-        # ----------------------------------------------------
-        # Calculate cleaned statistics
-        # ----------------------------------------------------
-
-        cleaned_rows = len(
-            cleaned_dataframe
+    latest_version = (
+        DatasetVersion.objects
+        .filter(
+            dataset=dataset
         )
-
-        cleaned_columns = len(
-            cleaned_dataframe.columns
+        .order_by(
+            "-version_number"
         )
+        .first()
+    )
 
-        cleaned_quality_score = (
-            calculate_quality_score(
-                cleaned_dataframe,
-                missing_after,
-                duplicates_after
-            )
+    if latest_version:
+        next_version = (
+            latest_version.version_number + 1
         )
+    else:
+        next_version = 1
 
-        # ----------------------------------------------------
-        # Convert cleaned dataframe to CSV
-        # ----------------------------------------------------
+    # --------------------------------------------------------
+    # Calculate cleaned statistics
+    # --------------------------------------------------------
 
-        csv_content = (
-            cleaned_dataframe
-            .to_csv(index=False)
-        )
+    cleaned_rows = len(
+        cleaned_dataframe
+    )
 
-        # ----------------------------------------------------
-        # Safe filename
-        # ----------------------------------------------------
+    cleaned_columns = len(
+        cleaned_dataframe.columns
+    )
 
-        original_name = (
-            dataset.original_filename
-            or dataset.name
-            or "dataset"
-        )
-
-        base_name = os.path.splitext(
-            os.path.basename(
-                original_name
-            )
-        )[0]
-
-        cleaned_filename = (
-            f"{base_name}_cleaned_v"
-            f"{next_version}.csv"
-        )
-
-        # ----------------------------------------------------
-        # Make previous current version inactive
-        # ----------------------------------------------------
-
-        DatasetVersion.objects.filter(
-            dataset=dataset,
-            is_current=True
-        ).update(
-            is_current=False
-        )
-
-        # ----------------------------------------------------
-        # Create version
-        # ----------------------------------------------------
-
-        version = DatasetVersion(
-            dataset=dataset,
-
-            version_number=next_version,
-
-            version_type="Cleaned",
-
-            file_name=cleaned_filename,
-
-            total_rows=cleaned_rows,
-
-            total_columns=cleaned_columns,
-
-            missing_values=missing_after,
-
-            duplicate_rows=duplicates_after,
-
-            quality_score=cleaned_quality_score,
-
-            notes=(
-                "Automatically cleaned by Smart BI. "
-                f"Missing values changed from "
-                f"{missing_before} to "
-                f"{missing_after}. "
-                f"Duplicate rows changed from "
-                f"{duplicates_before} to "
-                f"{duplicates_after}."
-            ),
-
-            is_current=True,
-        )
-
-        # ----------------------------------------------------
-        # Save physical cleaned file
-        # ----------------------------------------------------
-
-        version.file.save(
-            cleaned_filename,
-            ContentFile(
-                csv_content.encode("utf-8")
-            ),
-            save=False
-        )
-
-        version.file_size = (
-            version.file.size
-            if version.file
-            else len(
-                csv_content.encode("utf-8")
-            )
-        )
-
-        version.save()
-
-        # ----------------------------------------------------
-        # Update main Dataset
-        # ----------------------------------------------------
-
-        dataset.total_rows = (
-            cleaned_rows
-        )
-
-        dataset.total_columns = (
-            cleaned_columns
-        )
-
-        dataset.missing_values = (
-            missing_after
-        )
-
-        dataset.duplicate_rows = (
+    cleaned_quality_score = (
+        calculate_quality_score(
+            cleaned_dataframe,
+            missing_after,
             duplicates_after
         )
+    )
 
-        dataset.quality_score = (
-            cleaned_quality_score
+    # --------------------------------------------------------
+    # Convert cleaned dataframe to CSV
+    # --------------------------------------------------------
+
+    csv_content = (
+        cleaned_dataframe
+        .to_csv(index=False)
+    )
+
+    csv_bytes = (
+        csv_content.encode("utf-8")
+    )
+
+    # --------------------------------------------------------
+    # Safe filename
+    # --------------------------------------------------------
+
+    original_name = (
+        dataset.original_filename
+        or dataset.name
+        or "dataset"
+    )
+
+    base_name = os.path.splitext(
+        os.path.basename(
+            original_name
         )
+    )[0]
 
-        dataset.save(
-            update_fields=[
-                "total_rows",
-                "total_columns",
-                "missing_values",
-                "duplicate_rows",
-                "quality_score",
-                "updated_at",
-            ]
-        )
+    cleaned_filename = (
+        f"{base_name}_cleaned_v"
+        f"{next_version}.csv"
+    )
 
-        return version
+    # --------------------------------------------------------
+    # Make previous current version inactive
+    # --------------------------------------------------------
 
-    except Exception as error:
+    DatasetVersion.objects.filter(
+        dataset=dataset,
+        is_current=True
+    ).update(
+        is_current=False
+    )
 
-        print(
-            "Unable to create cleaned dataset version:",
-            error
-        )
+    # --------------------------------------------------------
+    # Create cleaned version
+    # --------------------------------------------------------
 
-        return None
+    version = DatasetVersion(
+
+        dataset=dataset,
+
+        version_number=next_version,
+
+        version_type="Cleaned",
+
+        file_name=cleaned_filename,
+
+        total_rows=cleaned_rows,
+
+        total_columns=cleaned_columns,
+
+        missing_values=missing_after,
+
+        duplicate_rows=duplicates_after,
+
+        quality_score=cleaned_quality_score,
+
+        notes=(
+            "Automatically cleaned by Smart BI. "
+            f"Missing values changed from "
+            f"{missing_before} to "
+            f"{missing_after}. "
+            f"Duplicate rows changed from "
+            f"{duplicates_before} to "
+            f"{duplicates_after}."
+        ),
+
+        is_current=True,
+    )
+
+    # --------------------------------------------------------
+    # Save physical cleaned file
+    # --------------------------------------------------------
+
+    version.file.save(
+        cleaned_filename,
+        ContentFile(csv_bytes),
+        save=False
+    )
+
+    version.file_size = (
+        version.file.size
+        if version.file
+        else len(csv_bytes)
+    )
+
+    version.save()
+
+    # --------------------------------------------------------
+    # Update Dataset metadata
+    # --------------------------------------------------------
+
+    dataset.total_rows = cleaned_rows
+
+    dataset.total_columns = cleaned_columns
+
+    dataset.missing_values = missing_after
+
+    dataset.duplicate_rows = duplicates_after
+
+    dataset.quality_score = cleaned_quality_score
+
+    dataset.save(
+        update_fields=[
+            "total_rows",
+            "total_columns",
+            "missing_values",
+            "duplicate_rows",
+            "quality_score",
+            "updated_at",
+        ]
+    )
+
+    return version
 
 
 # ============================================================
@@ -551,25 +625,20 @@ def upload_dataset(request):
                 # 04. SAVE DATASET
                 # =================================================
 
-                dataset.total_rows = (
-                    total_rows
-                )
+                dataset.total_rows = total_rows
 
-                dataset.total_columns = (
-                    total_columns
-                )
+                dataset.total_columns = total_columns
 
-                dataset.missing_values = (
-                    missing_values
-                )
+                dataset.missing_values = missing_values
 
-                dataset.duplicate_rows = (
-                    duplicate_rows
-                )
+                dataset.duplicate_rows = duplicate_rows
 
-                dataset.quality_score = (
-                    quality_score
-                )
+                dataset.quality_score = quality_score
+
+                # Important: save the uploaded file as well.
+                uploaded_file.seek(0)
+
+                dataset.file = uploaded_file
 
                 dataset.save()
 
@@ -624,8 +693,7 @@ def upload_dataset(request):
 
                 column_names = [
                     str(column).strip()
-                    for column
-                    in dataframe.columns
+                    for column in dataframe.columns
                 ]
 
                 validation_issues = []
@@ -695,8 +763,8 @@ def upload_dataset(request):
 
                 numeric_columns = [
                     str(column)
-                    for column
-                    in dataframe
+                    for column in
+                    dataframe
                     .select_dtypes(
                         include="number"
                     )
@@ -705,8 +773,8 @@ def upload_dataset(request):
 
                 categorical_columns = [
                     str(column)
-                    for column
-                    in dataframe
+                    for column in
+                    dataframe
                     .select_dtypes(
                         include=[
                             "object",
@@ -990,19 +1058,29 @@ def upload_dataset(request):
 
                 rows_removed = (
                     rows_before_cleaning
-                    -
-                    final_rows
+                    - final_rows
                 )
 
-                # -------------------------------------------------
-                # Save REAL cleaned version
-                # -------------------------------------------------
+                # =================================================
+                # 10A. CREATE ORIGINAL VERSION FIRST
+                # =================================================
 
                 original_version = (
                     create_original_dataset_version(
                         dataset
                     )
                 )
+
+                if original_version is None:
+
+                    raise ValueError(
+                        "Smart BI could not create "
+                        "the original dataset version."
+                    )
+
+                # =================================================
+                # 10B. CREATE CLEANED VERSION
+                # =================================================
 
                 cleaned_version = (
                     create_cleaned_dataset_version(
@@ -1183,6 +1261,9 @@ def upload_dataset(request):
         }
     )
 
+# ============================================================
+# DATASET PREVIEW
+# ============================================================
 
 # ============================================================
 # DATASET PREVIEW
@@ -1190,104 +1271,210 @@ def upload_dataset(request):
 
 @login_required
 def dataset_preview(request, dataset_id):
+
+    # ---------------------------------------------------------
+    # APPROVAL CHECK
+    # ---------------------------------------------------------
+
     if not user_is_approved(request):
         return redirect("accounts:login")
 
-    dataset = Dataset.objects.filter(
-        id=dataset_id,
-        owner=request.user,
-        is_active=True
-    ).first()
+    # ---------------------------------------------------------
+    # GET DATASET
+    # ---------------------------------------------------------
+
+    dataset = (
+        Dataset.objects
+        .filter(
+            id=dataset_id,
+            owner=request.user,
+            is_active=True
+        )
+        .first()
+    )
 
     if not dataset:
-        messages.error(request, "Dataset not found.")
-        return redirect("data_management:dataset_management")
+        messages.error(
+            request,
+            "Dataset not found."
+        )
+
+        return redirect(
+            "data_management:dataset_management"
+        )
 
     # ---------------------------------------------------------
-    # Select requested version
+    # GET ALL VERSIONS
     # ---------------------------------------------------------
+
+    versions = list(
+        DatasetVersion.objects
+        .filter(
+            dataset=dataset
+        )
+        .order_by(
+            "-version_number"
+        )
+    )
+
+    # ---------------------------------------------------------
+    # SELECT REQUESTED VERSION
+    # ---------------------------------------------------------
+
     version_id = request.GET.get("version")
+
     selected_version = None
 
     if version_id:
+
         try:
-            selected_version = DatasetVersion.objects.filter(
-                id=version_id,
-                dataset=dataset
-            ).first()
+
+            selected_version = (
+                DatasetVersion.objects
+                .filter(
+                    id=version_id,
+                    dataset=dataset
+                )
+                .first()
+            )
+
         except (ValueError, TypeError):
+
             selected_version = None
 
-    # Default = current cleaned version
-    if selected_version is None:
-        selected_version = DatasetVersion.objects.filter(
-            dataset=dataset,
-            version_type="Cleaned",
-            is_current=True
-        ).first()
+    # ---------------------------------------------------------
+    # DEFAULT = CURRENT VERSION
+    # ---------------------------------------------------------
 
-    # Fallback = original
     if selected_version is None:
-        selected_version = DatasetVersion.objects.filter(
-            dataset=dataset,
-            version_type="Original"
-        ).first()
+
+        selected_version = next(
+            (
+                version
+                for version in versions
+                if version.is_current
+            ),
+            None
+        )
 
     # ---------------------------------------------------------
-    # Select file
+    # FALLBACK = LATEST VERSION
     # ---------------------------------------------------------
+
+    if selected_version is None and versions:
+
+        selected_version = versions[0]
+
+    # ---------------------------------------------------------
+    # FALLBACK = DATASET FILE
+    # ---------------------------------------------------------
+
     file_to_read = None
 
-    if selected_version and selected_version.file:
+    if (
+        selected_version
+        and selected_version.file
+    ):
+
         file_to_read = selected_version.file
+
     elif dataset.file:
+
         file_to_read = dataset.file
 
     if not file_to_read:
-        messages.error(request, "Dataset file could not be found.")
-        return redirect("data_management:dataset_management")
+
+        messages.error(
+            request,
+            "Dataset file could not be found."
+        )
+
+        return redirect(
+            "data_management:dataset_management"
+        )
 
     # ---------------------------------------------------------
-    # Read dataframe
+    # READ DATAFRAME
     # ---------------------------------------------------------
+
     dataframe = None
 
     try:
+
+        # -----------------------------------------------------
+        # Determine filename
+        # -----------------------------------------------------
+
         filename = ""
 
         if selected_version:
-            filename = selected_version.file_name or ""
+
+            filename = (
+                selected_version.file_name
+                or ""
+            )
 
         if not filename:
-            filename = dataset.original_filename or dataset.file.name
+
+            filename = (
+                dataset.original_filename
+                or (
+                    dataset.file.name
+                    if dataset.file
+                    else ""
+                )
+                or ""
+            )
 
         filename_lower = filename.lower()
 
-        # Open the Django FileField directly
+        # -----------------------------------------------------
+        # Open Django FileField
+        # -----------------------------------------------------
+
         file_to_read.open("rb")
 
-        if filename_lower.endswith(".csv"):
-            dataframe = pd.read_csv(file_to_read)
+        try:
 
-        elif filename_lower.endswith(".xlsx"):
-            dataframe = pd.read_excel(
-                file_to_read,
-                engine="openpyxl"
-            )
+            if filename_lower.endswith(".csv"):
 
-        elif filename_lower.endswith(".xls"):
-            dataframe = pd.read_excel(file_to_read)
+                dataframe = pd.read_csv(
+                    file_to_read
+                )
 
-        else:
-            messages.error(
-                request,
-                f"Unsupported file format: {filename}"
-            )
-            return redirect("data_management:dataset_management")
+            elif filename_lower.endswith(".xlsx"):
 
-        file_to_read.close()
+                dataframe = pd.read_excel(
+                    file_to_read,
+                    engine="openpyxl"
+                )
+
+            elif filename_lower.endswith(".xls"):
+
+                dataframe = pd.read_excel(
+                    file_to_read
+                )
+
+            else:
+
+                messages.error(
+                    request,
+                    (
+                        "Unsupported file format: "
+                        f"{filename}"
+                    )
+                )
+
+                return redirect(
+                    "data_management:dataset_management"
+                )
+
+        finally:
+
+            file_to_read.close()
 
     except Exception as error:
+
         try:
             file_to_read.close()
         except Exception:
@@ -1295,14 +1482,35 @@ def dataset_preview(request, dataset_id):
 
         messages.error(
             request,
-            f"Unable to read dataset: {error}"
+            (
+                "Unable to read dataset: "
+                f"{error}"
+            )
         )
 
-        return redirect("data_management:dataset_management")
+        return redirect(
+            "data_management:dataset_management"
+        )
 
     # ---------------------------------------------------------
-    # Prepare preview
+    # HANDLE EMPTY DATAFRAME
     # ---------------------------------------------------------
+
+    if dataframe is None:
+
+        messages.error(
+            request,
+            "Unable to load dataset."
+        )
+
+        return redirect(
+            "data_management:dataset_management"
+        )
+
+    # ---------------------------------------------------------
+    # PREPARE PREVIEW
+    # ---------------------------------------------------------
+
     dataframe = dataframe.fillna("")
 
     preview_dataframe = dataframe.head(20)
@@ -1315,114 +1523,256 @@ def dataset_preview(request, dataset_id):
     rows = []
 
     for _, row in preview_dataframe.iterrows():
-        rows.append([
-            str(value)
-            for value in row.tolist()
-        ])
+
+        rows.append(
+            [
+                str(value)
+                for value in row.tolist()
+            ]
+        )
 
     # ---------------------------------------------------------
-    # Version labels
+    # VERSION LABELS
     # ---------------------------------------------------------
+
     if selected_version:
 
-        if selected_version.version_type == "Cleaned":
-            version_label = "Current Cleaned Data"
-            version_badge = "Analytics Ready"
+        version_type = (
+            selected_version.version_type
+            or "Unknown"
+        )
 
-        elif selected_version.version_type == "Original":
-            version_label = "Original Uploaded Data"
+        if version_type == "Cleaned":
+
+            version_label = (
+                "Cleaned Dataset"
+            )
+
+            version_badge = (
+                "Analytics Ready"
+            )
+
+        elif version_type == "Original":
+
+            version_label = (
+                "Original Uploaded Data"
+            )
+
             version_badge = "Original"
 
-        else:
+        elif version_type == "Transformed":
+
             version_label = (
-                f"Version {selected_version.version_number}"
+                "Transformed Dataset"
             )
-            version_badge = selected_version.version_type
+
+            version_badge = "Transformed"
+
+        else:
+
+            version_label = (
+                f"Version "
+                f"{selected_version.version_number}"
+            )
+
+            version_badge = version_type
 
     else:
-        version_label = "Uploaded Data"
+
+        version_label = (
+            "Uploaded Data"
+        )
+
         version_badge = "Original"
 
     # ---------------------------------------------------------
-    # Original / cleaned versions
+    # ORIGINAL VERSION
     # ---------------------------------------------------------
-    original_version = DatasetVersion.objects.filter(
-        dataset=dataset,
-        version_type="Original"
-    ).first()
 
-    cleaned_version = DatasetVersion.objects.filter(
-        dataset=dataset,
-        version_type="Cleaned",
-        is_current=True
-    ).first()
+    original_version = next(
+        (
+            version
+            for version in versions
+            if version.version_type == "Original"
+        ),
+        None
+    )
 
     # ---------------------------------------------------------
-    # Context
+    # CURRENT VERSION
     # ---------------------------------------------------------
+
+    current_version = next(
+        (
+            version
+            for version in versions
+            if version.is_current
+        ),
+        None
+    )
+
+    # ---------------------------------------------------------
+    # CURRENT CLEANED VERSION
+    # ---------------------------------------------------------
+
+    cleaned_version = next(
+        (
+            version
+            for version in versions
+            if (
+                version.version_type == "Cleaned"
+                and version.is_current
+            )
+        ),
+        None
+    )
+
+    # ---------------------------------------------------------
+    # CURRENT TRANSFORMED VERSION
+    # ---------------------------------------------------------
+
+    transformed_version = next(
+        (
+            version
+            for version in versions
+            if (
+                version.version_type == "Transformed"
+                and version.is_current
+            )
+        ),
+        None
+    )
+
+    # ---------------------------------------------------------
+    # VERSION STATUS
+    # ---------------------------------------------------------
+
+    is_original = (
+        selected_version is not None
+        and selected_version.version_type
+        == "Original"
+    )
+
+    is_cleaned = (
+        selected_version is not None
+        and selected_version.version_type
+        == "Cleaned"
+    )
+
+    is_transformed = (
+        selected_version is not None
+        and selected_version.version_type
+        == "Transformed"
+    )
+
+    # ---------------------------------------------------------
+    # CONTEXT
+    # ---------------------------------------------------------
+
     context = {
-        "dataset": dataset,
 
-        "version": selected_version,
-        "selected_version": selected_version,
+        "dataset":
+            dataset,
 
-        "version_label": version_label,
-        "version_badge": version_badge,
+        "version":
+            selected_version,
 
-        "columns": columns,
-        "rows": rows,
-        "preview_rows": len(rows),
+        "selected_version":
+            selected_version,
 
-        "total_rows": (
-            selected_version.total_rows
-            if selected_version
-            else len(dataframe)
-        ),
+        "current_version":
+            current_version,
 
-        "total_columns": (
-            selected_version.total_columns
-            if selected_version
-            else len(dataframe.columns)
-        ),
+        "version_label":
+            version_label,
 
-        "missing_values": (
-            selected_version.missing_values
-            if selected_version
-            else int(dataframe.isna().sum().sum())
-        ),
+        "version_badge":
+            version_badge,
 
-        "duplicate_rows": (
-            selected_version.duplicate_rows
-            if selected_version
-            else int(dataframe.duplicated().sum())
-        ),
+        "versions":
+            versions,
 
-        "quality_score": (
-            selected_version.quality_score
-            if selected_version
-            else dataset.quality_score
-        ),
+        "columns":
+            columns,
 
-        "is_original": (
-            selected_version is not None
-            and selected_version.version_type == "Original"
-        ),
+        "rows":
+            rows,
 
-        "is_cleaned": (
-            selected_version is not None
-            and selected_version.version_type == "Cleaned"
-        ),
+        "preview_rows":
+            len(rows),
 
-        "original_version": original_version,
-        "cleaned_version": cleaned_version,
+        "total_rows":
+            (
+                selected_version.total_rows
+                if selected_version
+                else len(dataframe)
+            ),
+
+        "total_columns":
+            (
+                selected_version.total_columns
+                if selected_version
+                else len(dataframe.columns)
+            ),
+
+        "missing_values":
+            (
+                selected_version.missing_values
+                if selected_version
+                else int(
+                    dataframe
+                    .isna()
+                    .sum()
+                    .sum()
+                )
+            ),
+
+        "duplicate_rows":
+            (
+                selected_version.duplicate_rows
+                if selected_version
+                else int(
+                    dataframe
+                    .duplicated()
+                    .sum()
+                )
+            ),
+
+        "quality_score":
+            (
+                selected_version.quality_score
+                if selected_version
+                else dataset.quality_score
+            ),
+
+        "is_original":
+            is_original,
+
+        "is_cleaned":
+            is_cleaned,
+
+        "is_transformed":
+            is_transformed,
+
+        "original_version":
+            original_version,
+
+        "cleaned_version":
+            cleaned_version,
+
+        "transformed_version":
+            transformed_version,
     }
+
+    # ---------------------------------------------------------
+    # RENDER
+    # ---------------------------------------------------------
 
     return render(
         request,
         "data_management/dataset_preview.html",
         context
     )
-
 # ============================================================
 # DATASET MANAGEMENT
 # ============================================================
@@ -1430,8 +1780,16 @@ def dataset_preview(request, dataset_id):
 @login_required
 def dataset_management(request):
 
+    # ---------------------------------------------------------
+    # APPROVAL CHECK
+    # ---------------------------------------------------------
+
     if not user_is_approved(request):
         return redirect("accounts:login")
+
+    # ---------------------------------------------------------
+    # GET USER DATASETS
+    # ---------------------------------------------------------
 
     datasets = (
         Dataset.objects
@@ -1442,27 +1800,35 @@ def dataset_management(request):
         .prefetch_related(
             Prefetch(
                 "activities",
-                queryset=DatasetActivity.objects.order_by(
-                    "created_at"
+                queryset=(
+                    DatasetActivity.objects
+                    .order_by("-created_at")
                 )
             ),
             Prefetch(
                 "versions",
-                queryset=DatasetVersion.objects.order_by(
-                    "-version_number"
+                queryset=(
+                    DatasetVersion.objects
+                    .order_by("-version_number")
                 )
             )
         )
         .order_by("-uploaded_at")
     )
 
+    # ---------------------------------------------------------
+    # PREPARE DATA FOR EACH DATASET
+    # ---------------------------------------------------------
+
     for dataset in datasets:
 
-        versions = list(dataset.versions.all())
+        versions = list(
+            dataset.versions.all()
+        )
 
-        # -----------------------------------------
+        # -----------------------------------------------------
         # ORIGINAL VERSION
-        # -----------------------------------------
+        # -----------------------------------------------------
 
         original_version = next(
             (
@@ -1473,9 +1839,30 @@ def dataset_management(request):
             None
         )
 
-        # -----------------------------------------
+        # -----------------------------------------------------
+        # CURRENT VERSION
+        # -----------------------------------------------------
+
+        current_version = next(
+            (
+                version
+                for version in versions
+                if version.is_current
+            ),
+            None
+        )
+
+        # -----------------------------------------------------
+        # FALLBACK = LATEST VERSION
+        # -----------------------------------------------------
+
+        if current_version is None and versions:
+
+            current_version = versions[0]
+
+        # -----------------------------------------------------
         # CURRENT CLEANED VERSION
-        # -----------------------------------------
+        # -----------------------------------------------------
 
         cleaned_version = next(
             (
@@ -1489,7 +1876,10 @@ def dataset_management(request):
             None
         )
 
-        # Fallback: latest cleaned version
+        # -----------------------------------------------------
+        # FALLBACK = LATEST CLEANED VERSION
+        # -----------------------------------------------------
+
         if cleaned_version is None:
 
             cleaned_versions = [
@@ -1499,26 +1889,188 @@ def dataset_management(request):
             ]
 
             if cleaned_versions:
+
                 cleaned_version = max(
                     cleaned_versions,
-                    key=lambda version: version.version_number
+                    key=lambda version:
+                    version.version_number
                 )
 
-        # -----------------------------------------
-        # ATTACH DATA FOR TEMPLATE
-        # -----------------------------------------
+        # -----------------------------------------------------
+        # CURRENT TRANSFORMED VERSION
+        # -----------------------------------------------------
 
-        dataset.original_version = original_version
-        dataset.cleaned_version = cleaned_version
+        transformed_version = next(
+            (
+                version
+                for version in versions
+                if (
+                    version.version_type == "Transformed"
+                    and version.is_current
+                )
+            ),
+            None
+        )
 
-        # -----------------------------------------
-        # CURRENT STATUS
-        # -----------------------------------------
+        # -----------------------------------------------------
+        # FALLBACK = LATEST TRANSFORMED VERSION
+        # -----------------------------------------------------
 
-        if cleaned_version:
-            dataset.processing_status = "Analytics Ready"
+        if transformed_version is None:
+
+            transformed_versions = [
+                version
+                for version in versions
+                if version.version_type == "Transformed"
+            ]
+
+            if transformed_versions:
+
+                transformed_version = max(
+                    transformed_versions,
+                    key=lambda version:
+                    version.version_number
+                )
+
+        # -----------------------------------------------------
+        # ATTACH VERSION INFORMATION
+        # -----------------------------------------------------
+
+        dataset.original_version = (
+            original_version
+        )
+
+        dataset.current_version = (
+            current_version
+        )
+
+        dataset.cleaned_version = (
+            cleaned_version
+        )
+
+        dataset.transformed_version = (
+            transformed_version
+        )
+
+        # -----------------------------------------------------
+        # CURRENT VERSION INFORMATION
+        # -----------------------------------------------------
+
+        if current_version:
+
+            dataset.current_version_number = (
+                current_version.version_number
+            )
+
+            dataset.current_version_type = (
+                current_version.version_type
+            )
+
+            dataset.current_quality_score = (
+                current_version.quality_score
+            )
+
+            dataset.current_rows = (
+                current_version.total_rows
+            )
+
+            dataset.current_columns = (
+                current_version.total_columns
+            )
+
+            dataset.current_missing_values = (
+                current_version.missing_values
+            )
+
+            dataset.current_duplicate_rows = (
+                current_version.duplicate_rows
+            )
+
         else:
-            dataset.processing_status = "Processing"
+
+            dataset.current_version_number = None
+
+            dataset.current_version_type = (
+                "Original"
+            )
+
+            dataset.current_quality_score = (
+                dataset.quality_score
+            )
+
+            dataset.current_rows = (
+                dataset.total_rows
+            )
+
+            dataset.current_columns = (
+                dataset.total_columns
+            )
+
+            dataset.current_missing_values = (
+                dataset.missing_values
+            )
+
+            dataset.current_duplicate_rows = (
+                dataset.duplicate_rows
+            )
+
+        # -----------------------------------------------------
+        # PROCESSING STATUS
+        # -----------------------------------------------------
+
+        if current_version:
+
+            if current_version.version_type == "Original":
+
+                dataset.processing_status = (
+                    "Original"
+                )
+
+            elif current_version.version_type == "Cleaned":
+
+                dataset.processing_status = (
+                    "Analytics Ready"
+                )
+
+            elif current_version.version_type == "Transformed":
+
+                dataset.processing_status = (
+                    "Transformed"
+                )
+
+            else:
+
+                dataset.processing_status = (
+                    current_version.version_type
+                )
+
+        else:
+
+            dataset.processing_status = (
+                "Processing"
+            )
+
+        # -----------------------------------------------------
+        # VERSION COUNT
+        # -----------------------------------------------------
+
+        dataset.version_count = len(
+            versions
+        )
+
+        # -----------------------------------------------------
+        # LAST VERSION
+        # -----------------------------------------------------
+
+        dataset.latest_version = (
+            versions[0]
+            if versions
+            else None
+        )
+
+    # ---------------------------------------------------------
+    # RENDER
+    # ---------------------------------------------------------
 
     return render(
         request,
@@ -1536,8 +2088,10 @@ def dataset_management(request):
 @login_required
 def data_quality(request):
 
+    # --------------------------------------------------------
+    # ACCESS CONTROL
+    # --------------------------------------------------------
     if not user_is_approved(request):
-
         return render(
             request,
             "accounts/access_denied.html",
@@ -1549,65 +2103,142 @@ def data_quality(request):
             }
         )
 
-    datasets = Dataset.objects.filter(
-        owner=request.user,
-        is_active=True
+    # --------------------------------------------------------
+    # USER DATASETS
+    # --------------------------------------------------------
+    datasets = (
+        Dataset.objects
+        .filter(
+            owner=request.user,
+            is_active=True
+        )
+        .order_by("-uploaded_at")
     )
 
     selected_dataset = None
+    selected_version = None
     quality_data = None
 
-    dataset_id = request.GET.get(
-        "dataset"
-    )
+    # --------------------------------------------------------
+    # DATASET SELECTION
+    # --------------------------------------------------------
+    dataset_id = request.GET.get("dataset")
 
     if dataset_id:
-
         selected_dataset = (
             datasets
-            .filter(
-                id=dataset_id
-            )
+            .filter(id=dataset_id)
             .first()
         )
 
     elif datasets.exists():
+        selected_dataset = datasets.first()
 
-        selected_dataset = (
-            datasets.first()
+    # --------------------------------------------------------
+    # VERSION SELECTION
+    # --------------------------------------------------------
+    if selected_dataset:
+
+        versions = list(
+            selected_dataset.versions
+            .all()
+            .order_by("-version_number")
         )
 
+        version_id = request.GET.get("version")
+
+        # Explicit version selected from UI
+        if version_id:
+            selected_version = next(
+                (
+                    version
+                    for version in versions
+                    if str(version.id) == str(version_id)
+                ),
+                None
+            )
+
+        # Otherwise use current version
+        if selected_version is None:
+            selected_version = next(
+                (
+                    version
+                    for version in versions
+                    if version.is_current
+                ),
+                None
+            )
+
+        # If no current version exists, use latest version
+        if selected_version is None and versions:
+            selected_version = versions[0]
+
+    # --------------------------------------------------------
+    # ANALYZE DATASET
+    # --------------------------------------------------------
     if selected_dataset:
 
         try:
 
-            dataframe = read_dataset_file(
-                selected_dataset
+            # ------------------------------------------------
+            # READ THE SELECTED VERSION
+            # ------------------------------------------------
+            if selected_version and selected_version.file:
+                dataframe = read_dataset_file(
+                    selected_version
+                )
+            else:
+                dataframe = read_dataset_file(
+                    selected_dataset
+                )
+
+            # ------------------------------------------------
+            # BASIC DATASET INFORMATION
+            # ------------------------------------------------
+            total_rows = int(
+                len(dataframe)
             )
 
-            total_rows = len(
-                dataframe
+            total_columns = int(
+                len(dataframe.columns)
             )
 
-            total_columns = len(
-                dataframe.columns
-            )
+            # ------------------------------------------------
+            # EMPTY DATASET PROTECTION
+            # ------------------------------------------------
+            if total_rows == 0 or total_columns == 0:
 
-            missing_values = int(
-                dataframe
-                .isnull()
-                .sum()
-                .sum()
-            )
+                missing_values = 0
+                duplicate_rows = 0
+                complete_rows = 0
+                incomplete_rows = 0
+                missing_percentage = 0
+                duplicate_percentage = 0
 
-            duplicate_rows = int(
-                dataframe
-                .duplicated()
-                .sum()
-            )
+            else:
 
-            if total_rows > 0:
+                # --------------------------------------------
+                # MISSING VALUES
+                # --------------------------------------------
+                missing_values = int(
+                    dataframe
+                    .isnull()
+                    .sum()
+                    .sum()
+                )
 
+                # --------------------------------------------
+                # DUPLICATE ROWS
+                # --------------------------------------------
+                duplicate_rows = int(
+                    dataframe
+                    .duplicated()
+                    .sum()
+                )
+
+                # --------------------------------------------
+                # ROW COMPLETENESS
+                # --------------------------------------------
                 incomplete_rows = int(
                     dataframe
                     .isnull()
@@ -1617,10 +2248,12 @@ def data_quality(request):
 
                 complete_rows = (
                     total_rows
-                    -
-                    incomplete_rows
+                    - incomplete_rows
                 )
 
+                # --------------------------------------------
+                # MISSING PERCENTAGE
+                # --------------------------------------------
                 missing_percentage = round(
                     (
                         missing_values
@@ -1633,8 +2266,11 @@ def data_quality(request):
                     )
                     * 100,
                     2
-                ) if total_columns else 0
+                )
 
+                # --------------------------------------------
+                # DUPLICATE PERCENTAGE
+                # --------------------------------------------
                 duplicate_percentage = round(
                     (
                         duplicate_rows
@@ -1645,21 +2281,24 @@ def data_quality(request):
                     2
                 )
 
-            else:
-
-                complete_rows = 0
-                incomplete_rows = 0
-                missing_percentage = 0
-                duplicate_percentage = 0
-
-            quality_score = (
-                calculate_quality_score(
-                    dataframe,
-                    missing_values,
-                    duplicate_rows
-                )
+            # ------------------------------------------------
+            # QUALITY SCORE
+            # ------------------------------------------------
+            quality_score = calculate_quality_score(
+                dataframe,
+                missing_values,
+                duplicate_rows
             )
 
+            # Make sure score remains usable in templates
+            quality_score = round(
+                float(quality_score),
+                2
+            )
+
+            # ------------------------------------------------
+            # OVERALL QUALITY STATUS
+            # ------------------------------------------------
             if quality_score >= 90:
 
                 quality_status = "Excellent"
@@ -1680,16 +2319,25 @@ def data_quality(request):
                 quality_status = "Critical"
                 quality_class = "critical"
 
+            # ------------------------------------------------
+            # COLUMN-LEVEL QUALITY
+            # ------------------------------------------------
             column_quality = []
 
             for column in dataframe.columns:
 
+                series = dataframe[column]
+
+                # --------------------------------------------
+                # COLUMN MISSING VALUES
+                # --------------------------------------------
                 column_missing = int(
-                    dataframe[column]
-                    .isnull()
-                    .sum()
+                    series.isnull().sum()
                 )
 
+                # --------------------------------------------
+                # COLUMN MISSING PERCENTAGE
+                # --------------------------------------------
                 column_missing_percentage = round(
                     (
                         column_missing
@@ -1700,18 +2348,23 @@ def data_quality(request):
                     2
                 ) if total_rows else 0
 
+                # --------------------------------------------
+                # COLUMN DUPLICATES
+                # --------------------------------------------
                 column_duplicates = int(
-                    dataframe[column]
-                    .duplicated()
-                    .sum()
+                    series.duplicated().sum()
                 )
 
+                # --------------------------------------------
+                # NON-NULL VALUES
+                # --------------------------------------------
                 non_null_values = int(
-                    dataframe[column]
-                    .notnull()
-                    .sum()
+                    series.notnull().sum()
                 )
 
+                # --------------------------------------------
+                # COLUMN QUALITY STATUS
+                # --------------------------------------------
                 if column_missing_percentage == 0:
 
                     column_status = "Excellent"
@@ -1732,20 +2385,18 @@ def data_quality(request):
                     column_status = "Critical"
                     column_class = "critical"
 
+                # --------------------------------------------
+                # COLUMN QUALITY OBJECT
+                # --------------------------------------------
                 column_quality.append(
                     {
-                        "name":
-                            str(column),
+                        "name": str(column),
 
-                        "data_type":
-                            str(
-                                dataframe[
-                                    column
-                                ].dtype
-                            ),
+                        "data_type": str(
+                            series.dtype
+                        ),
 
-                        "missing":
-                            column_missing,
+                        "missing": column_missing,
 
                         "missing_percentage":
                             column_missing_percentage,
@@ -1756,6 +2407,12 @@ def data_quality(request):
                         "duplicates":
                             column_duplicates,
 
+                        "unique_values": int(
+                            series.nunique(
+                                dropna=True
+                            )
+                        ),
+
                         "status":
                             column_status,
 
@@ -1764,6 +2421,45 @@ def data_quality(request):
                     }
                 )
 
+            # ------------------------------------------------
+            # VERSION INFORMATION
+            # ------------------------------------------------
+            version_label = "Dataset File"
+            version_badge = "dataset"
+
+            if selected_version:
+
+                version_type = (
+                    selected_version.version_type
+                    or "Original"
+                )
+
+                version_label = (
+                    f"Version "
+                    f"{selected_version.version_number}"
+                    f" — "
+                    f"{version_type}"
+                )
+
+                if version_type.lower() == "original":
+
+                    version_badge = "original"
+
+                elif version_type.lower() == "cleaned":
+
+                    version_badge = "cleaned"
+
+                elif version_type.lower() == "transformed":
+
+                    version_badge = "transformed"
+
+                else:
+
+                    version_badge = "version"
+
+            # ------------------------------------------------
+            # QUALITY DATA FOR TEMPLATE
+            # ------------------------------------------------
             quality_data = {
 
                 "total_rows":
@@ -1801,6 +2497,50 @@ def data_quality(request):
 
                 "column_quality":
                     column_quality,
+
+                "version_label":
+                    version_label,
+
+                "version_badge":
+                    version_badge,
+
+                "version_number":
+                    (
+                        selected_version.version_number
+                        if selected_version
+                        else None
+                    ),
+
+                "version_type":
+                    (
+                        selected_version.version_type
+                        if selected_version
+                        else None
+                    ),
+
+                "is_original":
+                    (
+                        selected_version.version_type
+                        == "Original"
+                        if selected_version
+                        else False
+                    ),
+
+                "is_cleaned":
+                    (
+                        selected_version.version_type
+                        == "Cleaned"
+                        if selected_version
+                        else False
+                    ),
+
+                "is_transformed":
+                    (
+                        selected_version.version_type
+                        == "Transformed"
+                        if selected_version
+                        else False
+                    ),
             }
 
         except Exception as error:
@@ -1813,19 +2553,28 @@ def data_quality(request):
                 )
             )
 
+    # --------------------------------------------------------
+    # TEMPLATE CONTEXT
+    # --------------------------------------------------------
+    context = {
+
+        "datasets":
+            datasets,
+
+        "selected_dataset":
+            selected_dataset,
+
+        "selected_version":
+            selected_version,
+
+        "quality":
+            quality_data,
+    }
+
     return render(
         request,
         "data_management/data_quality.html",
-        {
-            "datasets":
-                datasets,
-
-            "selected_dataset":
-                selected_dataset,
-
-            "quality":
-                quality_data,
-        }
+        context
     )
 
 
@@ -1836,8 +2585,10 @@ def data_quality(request):
 @login_required
 def data_cleaning(request):
 
+    # --------------------------------------------------------
+    # ACCESS CONTROL
+    # --------------------------------------------------------
     if not user_is_approved(request):
-
         return render(
             request,
             "accounts/access_denied.html",
@@ -1849,48 +2600,110 @@ def data_cleaning(request):
             }
         )
 
-    datasets = Dataset.objects.filter(
-        owner=request.user,
-        is_active=True
+    # --------------------------------------------------------
+    # USER DATASETS
+    # --------------------------------------------------------
+    datasets = (
+        Dataset.objects
+        .filter(
+            owner=request.user,
+            is_active=True
+        )
+        .order_by("-uploaded_at")
     )
 
     selected_dataset = None
+    selected_version = None
     cleaning_data = None
 
-    dataset_id = request.GET.get(
-        "dataset"
-    )
+    # --------------------------------------------------------
+    # DATASET SELECTION
+    # --------------------------------------------------------
+    dataset_id = request.GET.get("dataset")
 
     if dataset_id:
-
         selected_dataset = (
             datasets
-            .filter(
-                id=dataset_id
-            )
+            .filter(id=dataset_id)
             .first()
         )
 
     elif datasets.exists():
+        selected_dataset = datasets.first()
 
-        selected_dataset = (
-            datasets.first()
+    # --------------------------------------------------------
+    # VERSION SELECTION
+    # --------------------------------------------------------
+    if selected_dataset:
+
+        versions = list(
+            selected_dataset.versions
+            .all()
+            .order_by("-version_number")
         )
 
+        version_id = request.GET.get("version")
+
+        # Explicit version selected
+        if version_id:
+
+            selected_version = next(
+                (
+                    version
+                    for version in versions
+                    if str(version.id) == str(version_id)
+                ),
+                None
+            )
+
+        # Otherwise use current version
+        if selected_version is None:
+
+            selected_version = next(
+                (
+                    version
+                    for version in versions
+                    if version.is_current
+                ),
+                None
+            )
+
+        # Fallback to latest version
+        if selected_version is None and versions:
+
+            selected_version = versions[0]
+
+    # --------------------------------------------------------
+    # ANALYZE / PREVIEW CLEANING
+    # --------------------------------------------------------
     if selected_dataset:
 
         try:
 
-            dataframe = read_dataset_file(
-                selected_dataset
+            # ------------------------------------------------
+            # READ SELECTED VERSION
+            # ------------------------------------------------
+            if selected_version and selected_version.file:
+
+                dataframe = read_dataset_file(
+                    selected_version
+                )
+
+            else:
+
+                dataframe = read_dataset_file(
+                    selected_dataset
+                )
+
+            # ------------------------------------------------
+            # BEFORE CLEANING
+            # ------------------------------------------------
+            before_rows = int(
+                len(dataframe)
             )
 
-            before_rows = len(
-                dataframe
-            )
-
-            before_columns = len(
-                dataframe.columns
+            before_columns = int(
+                len(dataframe.columns)
             )
 
             before_missing = int(
@@ -1906,6 +2719,9 @@ def data_cleaning(request):
                 .sum()
             )
 
+            # ------------------------------------------------
+            # EMPTY ROWS
+            # ------------------------------------------------
             empty_rows = int(
                 dataframe
                 .isnull()
@@ -1913,19 +2729,25 @@ def data_cleaning(request):
                 .sum()
             )
 
-            dataframe = (
-                dataframe
-                .dropna(how="all")
-            )
+            # Remove completely empty rows
+            dataframe = dataframe.dropna(
+                how="all"
+            ).copy()
 
+            # ------------------------------------------------
+            # TEXT CLEANING
+            # ------------------------------------------------
             text_columns_cleaned = 0
+            text_values_cleaned = 0
 
             for column in dataframe.columns:
 
+                # Handle pandas string/object columns
                 if (
-                    dataframe[column]
-                    .dtype
-                    == "object"
+                    dataframe[column].dtype == "object"
+                    or str(
+                        dataframe[column].dtype
+                    ).startswith("string")
                 ):
 
                     original_values = (
@@ -1946,16 +2768,27 @@ def data_cleaning(request):
                         )
                     )
 
-                    changed_values = (
-                        original_values
-                        !=
-                        dataframe[column]
-                    ).sum()
+                    changed_values = int(
+                        (
+                            original_values
+                            !=
+                            dataframe[column]
+                        )
+                        .fillna(False)
+                        .sum()
+                    )
 
                     if changed_values > 0:
 
                         text_columns_cleaned += 1
 
+                        text_values_cleaned += (
+                            changed_values
+                        )
+
+            # ------------------------------------------------
+            # DUPLICATE ROWS
+            # ------------------------------------------------
             duplicates_removed = int(
                 dataframe
                 .duplicated()
@@ -1965,8 +2798,12 @@ def data_cleaning(request):
             dataframe = (
                 dataframe
                 .drop_duplicates()
+                .copy()
             )
 
+            # ------------------------------------------------
+            # AFTER CLEANING
+            # ------------------------------------------------
             after_missing = int(
                 dataframe
                 .isnull()
@@ -1974,12 +2811,12 @@ def data_cleaning(request):
                 .sum()
             )
 
-            after_rows = len(
-                dataframe
+            after_rows = int(
+                len(dataframe)
             )
 
-            after_columns = len(
-                dataframe.columns
+            after_columns = int(
+                len(dataframe.columns)
             )
 
             after_duplicates = int(
@@ -1988,6 +2825,9 @@ def data_cleaning(request):
                 .sum()
             )
 
+            # ------------------------------------------------
+            # IMPROVEMENT METRICS
+            # ------------------------------------------------
             rows_removed = (
                 before_rows
                 -
@@ -2000,16 +2840,118 @@ def data_cleaning(request):
                 after_missing
             )
 
+            duplicate_reduction = (
+                before_duplicates
+                -
+                after_duplicates
+            )
+
+            # Number of categories of cleaning actions
             total_cleaning_actions = (
-                empty_rows
+                int(empty_rows > 0)
                 +
-                duplicates_removed
+                int(duplicates_removed > 0)
                 +
                 text_columns_cleaned
             )
 
+            # ------------------------------------------------
+            # CLEANING PERCENTAGE
+            # ------------------------------------------------
+            if before_rows > 0:
+
+                rows_retained_percentage = round(
+                    (
+                        after_rows
+                        /
+                        before_rows
+                    )
+                    * 100,
+                    2
+                )
+
+            else:
+
+                rows_retained_percentage = 0
+
+            if before_missing > 0:
+
+                missing_reduction_percentage = round(
+                    (
+                        missing_reduction
+                        /
+                        before_missing
+                    )
+                    * 100,
+                    2
+                )
+
+            else:
+
+                missing_reduction_percentage = 0
+
+            if before_duplicates > 0:
+
+                duplicate_reduction_percentage = round(
+                    (
+                        duplicate_reduction
+                        /
+                        before_duplicates
+                    )
+                    * 100,
+                    2
+                )
+
+            else:
+
+                duplicate_reduction_percentage = 0
+
+            # ------------------------------------------------
+            # VERSION INFORMATION
+            # ------------------------------------------------
+            version_label = "Dataset File"
+            version_badge = "dataset"
+
+            if selected_version:
+
+                version_type = (
+                    selected_version.version_type
+                    or "Original"
+                )
+
+                version_label = (
+                    f"Version "
+                    f"{selected_version.version_number}"
+                    f" — "
+                    f"{version_type}"
+                )
+
+                version_type_lower = (
+                    version_type.lower()
+                )
+
+                if version_type_lower == "original":
+
+                    version_badge = "original"
+
+                elif version_type_lower == "cleaned":
+
+                    version_badge = "cleaned"
+
+                elif version_type_lower == "transformed":
+
+                    version_badge = "transformed"
+
+                else:
+
+                    version_badge = "version"
+
+            # ------------------------------------------------
+            # CLEANING RESULT
+            # ------------------------------------------------
             cleaning_data = {
 
+                # Before
                 "before_rows":
                     before_rows,
 
@@ -2022,6 +2964,7 @@ def data_cleaning(request):
                 "before_duplicates":
                     before_duplicates,
 
+                # After
                 "after_rows":
                     after_rows,
 
@@ -2034,6 +2977,7 @@ def data_cleaning(request):
                 "after_duplicates":
                     after_duplicates,
 
+                # Actions
                 "empty_rows":
                     empty_rows,
 
@@ -2049,8 +2993,45 @@ def data_cleaning(request):
                 "text_columns_cleaned":
                     text_columns_cleaned,
 
+                "text_values_cleaned":
+                    text_values_cleaned,
+
+                "duplicate_reduction":
+                    duplicate_reduction,
+
                 "total_actions":
                     total_cleaning_actions,
+
+                # Percentages
+                "rows_retained_percentage":
+                    rows_retained_percentage,
+
+                "missing_reduction_percentage":
+                    missing_reduction_percentage,
+
+                "duplicate_reduction_percentage":
+                    duplicate_reduction_percentage,
+
+                # Version
+                "version_label":
+                    version_label,
+
+                "version_badge":
+                    version_badge,
+
+                "version_number":
+                    (
+                        selected_version.version_number
+                        if selected_version
+                        else None
+                    ),
+
+                "version_type":
+                    (
+                        selected_version.version_type
+                        if selected_version
+                        else None
+                    ),
             }
 
         except Exception as error:
@@ -2058,26 +3039,34 @@ def data_cleaning(request):
             messages.error(
                 request,
                 (
-                    "Unable to clean dataset: "
+                    "Unable to analyze dataset for cleaning: "
                     f"{error}"
                 )
             )
 
+    # --------------------------------------------------------
+    # TEMPLATE CONTEXT
+    # --------------------------------------------------------
+    context = {
+
+        "datasets":
+            datasets,
+
+        "selected_dataset":
+            selected_dataset,
+
+        "selected_version":
+            selected_version,
+
+        "cleaning":
+            cleaning_data,
+    }
+
     return render(
         request,
         "data_management/data_cleaning.html",
-        {
-            "datasets":
-                datasets,
-
-            "selected_dataset":
-                selected_dataset,
-
-            "cleaning":
-                cleaning_data,
-        }
+        context
     )
-
 
 # ============================================================
 # DOWNLOAD CLEANED DATASET
@@ -2089,6 +3078,9 @@ def download_cleaned_dataset(
     dataset_id
 ):
 
+    # --------------------------------------------------------
+    # ACCESS CONTROL
+    # --------------------------------------------------------
     if not user_is_approved(request):
 
         return render(
@@ -2102,6 +3094,9 @@ def download_cleaned_dataset(
             }
         )
 
+    # --------------------------------------------------------
+    # GET USER'S DATASET
+    # --------------------------------------------------------
     dataset = (
         Dataset.objects
         .filter(
@@ -2124,9 +3119,8 @@ def download_cleaned_dataset(
         )
 
     # --------------------------------------------------------
-    # Find latest cleaned version
+    # FIND LATEST CLEANED VERSION
     # --------------------------------------------------------
-
     cleaned_version = (
         DatasetVersion.objects
         .filter(
@@ -2150,6 +3144,23 @@ def download_cleaned_dataset(
             "data_management:data_cleaning"
         )
 
+    # --------------------------------------------------------
+    # CHECK CLEANED FILE
+    # --------------------------------------------------------
+    if not cleaned_version.file:
+
+        messages.error(
+            request,
+            "The cleaned dataset file is not available."
+        )
+
+        return redirect(
+            "data_management:data_cleaning"
+        )
+
+    # --------------------------------------------------------
+    # DOWNLOAD FILE
+    # --------------------------------------------------------
     try:
 
         file_handle = (
@@ -2163,20 +3174,29 @@ def download_cleaned_dataset(
             content_type="text/csv"
         )
 
+        # ----------------------------------------------------
+        # SAFE DOWNLOAD NAME
+        # ----------------------------------------------------
         safe_name = (
             dataset.name
             .replace(" ", "_")
             .replace("/", "_")
+            .replace("\\", "_")
+            .replace('"', "")
+        )
+
+        filename = (
+            f"{safe_name}_"
+            f"cleaned_v"
+            f"{cleaned_version.version_number}"
+            f".csv"
         )
 
         response[
             "Content-Disposition"
         ] = (
             "attachment; "
-            f'filename="{safe_name}_'
-            f'cleaned_v'
-            f'{cleaned_version.version_number}'
-            f'.csv"'
+            f'filename="{filename}"'
         )
 
         return response
@@ -2195,7 +3215,6 @@ def download_cleaned_dataset(
             "data_management:data_cleaning"
         )
 
-
 # ============================================================
 # DATA VALIDATION
 # ============================================================
@@ -2203,6 +3222,9 @@ def download_cleaned_dataset(
 @login_required
 def data_validation(request):
 
+    # --------------------------------------------------------
+    # ACCESS CONTROL
+    # --------------------------------------------------------
     if not user_is_approved(request):
 
         return render(
@@ -2216,75 +3238,140 @@ def data_validation(request):
             }
         )
 
-    datasets = Dataset.objects.filter(
-        owner=request.user,
-        is_active=True
+    # --------------------------------------------------------
+    # USER DATASETS
+    # --------------------------------------------------------
+    datasets = (
+        Dataset.objects
+        .filter(
+            owner=request.user,
+            is_active=True
+        )
+        .order_by("-uploaded_at")
     )
 
     selected_dataset = None
+    selected_version = None
     validation = None
 
-    dataset_id = request.GET.get(
-        "dataset"
-    )
+    # --------------------------------------------------------
+    # DATASET SELECTION
+    # --------------------------------------------------------
+    dataset_id = request.GET.get("dataset")
 
     if dataset_id:
 
         selected_dataset = (
             datasets
-            .filter(
-                id=dataset_id
-            )
+            .filter(id=dataset_id)
             .first()
         )
 
     elif datasets.exists():
 
-        selected_dataset = (
-            datasets.first()
+        selected_dataset = datasets.first()
+
+    # --------------------------------------------------------
+    # VERSION SELECTION
+    # --------------------------------------------------------
+    if selected_dataset:
+
+        versions = list(
+            selected_dataset.versions
+            .all()
+            .order_by("-version_number")
         )
 
+        version_id = request.GET.get("version")
+
+        # Explicit version selected
+        if version_id:
+
+            selected_version = next(
+                (
+                    version
+                    for version in versions
+                    if str(version.id) == str(version_id)
+                ),
+                None
+            )
+
+        # Use current version if no explicit version
+        if selected_version is None:
+
+            selected_version = next(
+                (
+                    version
+                    for version in versions
+                    if version.is_current
+                ),
+                None
+            )
+
+        # Fallback to latest version
+        if selected_version is None and versions:
+
+            selected_version = versions[0]
+
+    # --------------------------------------------------------
+    # VALIDATE SELECTED DATASET
+    # --------------------------------------------------------
     if selected_dataset:
 
         try:
 
-            dataframe = read_dataset_file(
-                selected_dataset
-            )
+            # ------------------------------------------------
+            # READ SELECTED VERSION
+            # ------------------------------------------------
+            if selected_version and selected_version.file:
+
+                dataframe = read_dataset_file(
+                    selected_version
+                )
+
+            else:
+
+                dataframe = read_dataset_file(
+                    selected_dataset
+                )
 
             # ------------------------------------------------
             # NORMALIZE COLUMN NAMES
             # ------------------------------------------------
-
             dataframe.columns = [
                 str(column).strip()
-                for column
-                in dataframe.columns
+                for column in dataframe.columns
             ]
 
             columns = list(
                 dataframe.columns
             )
 
+            # Case-insensitive column lookup
             lower_columns = {
-                str(column).lower():
-                column
-                for column
-                in columns
+                str(column).strip().lower(): column
+                for column in columns
             }
 
-            total_rows = len(
-                dataframe
+            total_rows = int(
+                len(dataframe)
+            )
+
+            total_columns = int(
+                len(dataframe.columns)
+            )
+
+            # ------------------------------------------------
+            # DATASET TYPE
+            # ------------------------------------------------
+            dataset_type = (
+                selected_dataset.dataset_type
+                or ""
             )
 
             # ------------------------------------------------
             # REQUIRED COLUMNS
             # ------------------------------------------------
-
-            dataset_type = (
-                selected_dataset.dataset_type
-            )
-
             required_columns = []
 
             if dataset_type == "Sales":
@@ -2331,14 +3418,15 @@ def data_validation(request):
                     "date",
                 ]
 
+            # ------------------------------------------------
+            # FIND MISSING REQUIRED COLUMNS
+            # ------------------------------------------------
             missing_required_columns = []
 
-            for required_column in (
-                required_columns
-            ):
+            for required_column in required_columns:
 
                 if (
-                    required_column
+                    required_column.lower()
                     not in lower_columns
                 ):
 
@@ -2349,26 +3437,27 @@ def data_validation(request):
             # ------------------------------------------------
             # COLUMN FINDER
             # ------------------------------------------------
-
-            def find_column(
-                possible_names
-            ):
+            def find_column(possible_names):
 
                 for name in possible_names:
 
-                    if (
-                        name.lower()
-                        in lower_columns
-                    ):
+                    normalized_name = (
+                        str(name)
+                        .strip()
+                        .lower()
+                    )
 
-                        return (
-                            lower_columns[
-                                name.lower()
-                            ]
-                        )
+                    if normalized_name in lower_columns:
+
+                        return lower_columns[
+                            normalized_name
+                        ]
 
                 return None
 
+            # ------------------------------------------------
+            # DETECT IMPORTANT COLUMNS
+            # ------------------------------------------------
             date_column = find_column(
                 [
                     "date",
@@ -2404,13 +3493,15 @@ def data_validation(request):
             )
 
             # ------------------------------------------------
-            # VALIDATION
+            # VALIDATION CONTAINERS
             # ------------------------------------------------
-
             validation_errors = []
 
             row_failed_flags = []
 
+            # ------------------------------------------------
+            # DUPLICATE ROW DETECTION
+            # ------------------------------------------------
             duplicate_mask = (
                 dataframe
                 .duplicated(
@@ -2418,6 +3509,15 @@ def data_validation(request):
                 )
             )
 
+            duplicate_rows = int(
+                dataframe
+                .duplicated()
+                .sum()
+            )
+
+            # ------------------------------------------------
+            # EMPTY ROW DETECTION
+            # ------------------------------------------------
             empty_rows = int(
                 dataframe
                 .isnull()
@@ -2425,6 +3525,9 @@ def data_validation(request):
                 .sum()
             )
 
+            # ------------------------------------------------
+            # ROW VALIDATION
+            # ------------------------------------------------
             for position, (
                 index,
                 row
@@ -2437,7 +3540,6 @@ def data_validation(request):
                 # --------------------------------------------
                 # Empty row
                 # --------------------------------------------
-
                 if row.isnull().all():
 
                     row_errors.append(
@@ -2447,7 +3549,6 @@ def data_validation(request):
                 # --------------------------------------------
                 # Missing values
                 # --------------------------------------------
-
                 missing_fields = []
 
                 for column in columns:
@@ -2470,10 +3571,15 @@ def data_validation(request):
                         )
                     )
 
+                    if len(missing_fields) > 5:
+
+                        row_errors.append(
+                            f"(+{len(missing_fields) - 5} more)"
+                        )
+
                 # --------------------------------------------
                 # Date validation
                 # --------------------------------------------
-
                 if date_column:
 
                     date_value = row[
@@ -2502,7 +3608,6 @@ def data_validation(request):
                 # --------------------------------------------
                 # Sales validation
                 # --------------------------------------------
-
                 if sales_column:
 
                     sales_value = row[
@@ -2537,7 +3642,6 @@ def data_validation(request):
                 # --------------------------------------------
                 # Quantity validation
                 # --------------------------------------------
-
                 if quantity_column:
 
                     quantity_value = row[
@@ -2572,7 +3676,6 @@ def data_validation(request):
                 # --------------------------------------------
                 # Discount validation
                 # --------------------------------------------
-
                 if discount_column:
 
                     discount_value = row[
@@ -2611,7 +3714,6 @@ def data_validation(request):
                 # --------------------------------------------
                 # Duplicate validation
                 # --------------------------------------------
-
                 if bool(
                     duplicate_mask.iloc[
                         position
@@ -2622,6 +3724,9 @@ def data_validation(request):
                         "Duplicate row"
                     )
 
+                # --------------------------------------------
+                # ROW RESULT
+                # --------------------------------------------
                 has_error = bool(
                     row_errors
                 )
@@ -2645,47 +3750,41 @@ def data_validation(request):
                     )
 
             # ------------------------------------------------
-            # Correct row counts
+            # ROW COUNTS
             # ------------------------------------------------
-
-            failed_rows = sum(
-                row_failed_flags
+            failed_rows = int(
+                sum(row_failed_flags)
             )
 
-            passed_rows = (
-                total_rows
-                -
-                failed_rows
+            passed_rows = max(
+                0,
+                total_rows - failed_rows
             )
 
             # ------------------------------------------------
-            # Required column issue
+            # REQUIRED COLUMN ERROR
             # ------------------------------------------------
-
             if missing_required_columns:
 
                 validation_errors.insert(
                     0,
                     {
-                        "row_number":
-                            "-",
+                        "row_number": "-",
 
-                        "reason":
-                            (
-                                "Missing required "
-                                "column(s): "
-                                +
-                                ", ".join(
-                                    missing_required_columns
-                                )
-                            ),
+                        "reason": (
+                            "Missing required "
+                            "column(s): "
+                            +
+                            ", ".join(
+                                missing_required_columns
+                            )
+                        ),
                     }
                 )
 
             # ------------------------------------------------
-            # Score
+            # VALIDATION SCORE
             # ------------------------------------------------
-
             if total_rows > 0:
 
                 validation_score = round(
@@ -2702,6 +3801,7 @@ def data_validation(request):
 
                 validation_score = 0
 
+            # Required structural columns are mandatory
             if missing_required_columns:
 
                 validation_score = 0
@@ -2715,9 +3815,8 @@ def data_validation(request):
             )
 
             # ------------------------------------------------
-            # Status
+            # VALIDATION STATUS
             # ------------------------------------------------
-
             if validation_score >= 95:
 
                 validation_status = "Excellent"
@@ -2739,18 +3838,22 @@ def data_validation(request):
                 validation_class = "critical"
 
             # ------------------------------------------------
-            # Validation rule count
+            # VALIDATION RULE COUNT
             # ------------------------------------------------
-
             validation_rules = 0
 
-            if missing_required_columns:
+            # Required columns rule
+            if required_columns:
 
                 validation_rules += 1
 
-            validation_rules += 1
+            # Missing-value rule
             validation_rules += 1
 
+            # Duplicate rule
+            validation_rules += 1
+
+            # Conditional rules
             if date_column:
                 validation_rules += 1
 
@@ -2763,6 +3866,49 @@ def data_validation(request):
             if discount_column:
                 validation_rules += 1
 
+            # ------------------------------------------------
+            # VERSION INFORMATION
+            # ------------------------------------------------
+            version_label = "Dataset File"
+            version_badge = "dataset"
+
+            if selected_version:
+
+                version_type = (
+                    selected_version.version_type
+                    or "Original"
+                )
+
+                version_label = (
+                    f"Version "
+                    f"{selected_version.version_number}"
+                    f" — "
+                    f"{version_type}"
+                )
+
+                version_type_lower = (
+                    version_type.lower()
+                )
+
+                if version_type_lower == "original":
+
+                    version_badge = "original"
+
+                elif version_type_lower == "cleaned":
+
+                    version_badge = "cleaned"
+
+                elif version_type_lower == "transformed":
+
+                    version_badge = "transformed"
+
+                else:
+
+                    version_badge = "version"
+
+            # ------------------------------------------------
+            # VALIDATION RESULT
+            # ------------------------------------------------
             validation = {
 
                 "dataset_type":
@@ -2787,6 +3933,9 @@ def data_validation(request):
                     validation_class,
 
                 "duplicate_rows":
+                    duplicate_rows,
+
+                "duplicate_row_flags":
                     int(
                         duplicate_mask.sum()
                     ),
@@ -2817,6 +3966,50 @@ def data_validation(request):
 
                 "total_errors":
                     len(validation_errors),
+
+                "version_label":
+                    version_label,
+
+                "version_badge":
+                    version_badge,
+
+                "version_number":
+                    (
+                        selected_version.version_number
+                        if selected_version
+                        else None
+                    ),
+
+                "version_type":
+                    (
+                        selected_version.version_type
+                        if selected_version
+                        else None
+                    ),
+
+                "is_original":
+                    (
+                        selected_version.version_type
+                        == "Original"
+                        if selected_version
+                        else False
+                    ),
+
+                "is_cleaned":
+                    (
+                        selected_version.version_type
+                        == "Cleaned"
+                        if selected_version
+                        else False
+                    ),
+
+                "is_transformed":
+                    (
+                        selected_version.version_type
+                        == "Transformed"
+                        if selected_version
+                        else False
+                    ),
             }
 
         except Exception as error:
@@ -2829,6 +4022,9 @@ def data_validation(request):
                 )
             )
 
+    # --------------------------------------------------------
+    # TEMPLATE CONTEXT
+    # --------------------------------------------------------
     return render(
         request,
         "data_management/data_validation.html",
@@ -2838,6 +4034,9 @@ def data_validation(request):
 
             "selected_dataset":
                 selected_dataset,
+
+            "selected_version":
+                selected_version,
 
             "validation":
                 validation,
@@ -2855,6 +4054,9 @@ def download_validation_report(
     dataset_id
 ):
 
+    # --------------------------------------------------------
+    # ACCESS CONTROL
+    # --------------------------------------------------------
     if not user_is_approved(request):
 
         return render(
@@ -2868,6 +4070,9 @@ def download_validation_report(
             }
         )
 
+    # --------------------------------------------------------
+    # GET DATASET
+    # --------------------------------------------------------
     dataset = (
         Dataset.objects
         .filter(
@@ -2891,10 +4096,73 @@ def download_validation_report(
 
     try:
 
-        dataframe = read_dataset_file(
-            dataset
+        # ----------------------------------------------------
+        # FIND VERSION TO VALIDATE
+        # ----------------------------------------------------
+        versions = list(
+            dataset.versions
+            .all()
+            .order_by("-version_number")
         )
 
+        selected_version = None
+
+        version_id = request.GET.get(
+            "version"
+        )
+
+        # Explicit version selected
+        if version_id:
+
+            selected_version = next(
+                (
+                    version
+                    for version in versions
+                    if str(version.id)
+                    == str(version_id)
+                ),
+                None
+            )
+
+        # Current version
+        if selected_version is None:
+
+            selected_version = next(
+                (
+                    version
+                    for version in versions
+                    if version.is_current
+                ),
+                None
+            )
+
+        # Latest version fallback
+        if selected_version is None and versions:
+
+            selected_version = versions[0]
+
+        # ----------------------------------------------------
+        # READ SELECTED VERSION
+        # ----------------------------------------------------
+        if (
+            selected_version
+            and
+            selected_version.file
+        ):
+
+            dataframe = read_dataset_file(
+                selected_version
+            )
+
+        else:
+
+            dataframe = read_dataset_file(
+                dataset
+            )
+
+        # ----------------------------------------------------
+        # NORMALIZE COLUMN NAMES
+        # ----------------------------------------------------
         dataframe.columns = [
             str(column).strip()
             for column
@@ -2906,31 +4174,106 @@ def download_validation_report(
         )
 
         lower_columns = {
-            str(column).lower():
+            str(column).strip().lower():
             column
             for column
             in columns
         }
 
-        def find_column(
-            possible_names
-        ):
+        # ----------------------------------------------------
+        # DATASET TYPE
+        # ----------------------------------------------------
+        dataset_type = (
+            dataset.dataset_type
+            or ""
+        )
+
+        # ----------------------------------------------------
+        # REQUIRED COLUMNS
+        # ----------------------------------------------------
+        required_columns = []
+
+        if dataset_type == "Sales":
+
+            required_columns = [
+                "date",
+                "sales",
+            ]
+
+        elif dataset_type == "Customers":
+
+            required_columns = [
+                "customer",
+            ]
+
+        elif dataset_type == "Products":
+
+            required_columns = [
+                "product",
+            ]
+
+        elif dataset_type == "Regional":
+
+            required_columns = [
+                "region",
+                "sales",
+            ]
+
+        elif dataset_type == "Marketing":
+
+            required_columns = [
+                "date",
+            ]
+
+        elif dataset_type == "Financial":
+
+            required_columns = [
+                "date",
+            ]
+
+        elif dataset_type == "Returns":
+
+            required_columns = [
+                "date",
+            ]
+
+        missing_required_columns = []
+
+        for required_column in required_columns:
+
+            if (
+                required_column.lower()
+                not in lower_columns
+            ):
+
+                missing_required_columns.append(
+                    required_column.title()
+                )
+
+        # ----------------------------------------------------
+        # COLUMN FINDER
+        # ----------------------------------------------------
+        def find_column(possible_names):
 
             for name in possible_names:
 
-                if (
-                    name.lower()
-                    in lower_columns
-                ):
+                normalized_name = (
+                    str(name)
+                    .strip()
+                    .lower()
+                )
 
-                    return (
-                        lower_columns[
-                            name.lower()
-                        ]
-                    )
+                if normalized_name in lower_columns:
+
+                    return lower_columns[
+                        normalized_name
+                    ]
 
             return None
 
+        # ----------------------------------------------------
+        # DETECT IMPORTANT COLUMNS
+        # ----------------------------------------------------
         date_column = find_column(
             [
                 "date",
@@ -2965,6 +4308,9 @@ def download_validation_report(
             ]
         )
 
+        # ----------------------------------------------------
+        # DUPLICATE DETECTION
+        # ----------------------------------------------------
         duplicate_mask = (
             dataframe
             .duplicated(
@@ -2972,8 +4318,36 @@ def download_validation_report(
             )
         )
 
+        # ----------------------------------------------------
+        # REPORT ROWS
+        # ----------------------------------------------------
         report_rows = []
 
+        # ----------------------------------------------------
+        # REQUIRED COLUMN ERROR
+        # ----------------------------------------------------
+        if missing_required_columns:
+
+            report_rows.append(
+                {
+                    "row_number": "-",
+
+                    "status": "FAILED",
+
+                    "reason": (
+                        "Missing required "
+                        "column(s): "
+                        +
+                        ", ".join(
+                            missing_required_columns
+                        )
+                    ),
+                }
+            )
+
+        # ----------------------------------------------------
+        # ROW VALIDATION
+        # ----------------------------------------------------
         for position, (
             index,
             row
@@ -2984,9 +4358,17 @@ def download_validation_report(
             errors = []
 
             # ------------------------------------------------
+            # Empty row
+            # ------------------------------------------------
+            if row.isnull().all():
+
+                errors.append(
+                    "Empty row"
+                )
+
+            # ------------------------------------------------
             # Missing values
             # ------------------------------------------------
-
             missing_fields = []
 
             for column in columns:
@@ -3001,7 +4383,7 @@ def download_validation_report(
 
             if missing_fields:
 
-                errors.append(
+                missing_message = (
                     "Missing value in: "
                     +
                     ", ".join(
@@ -3009,10 +4391,19 @@ def download_validation_report(
                     )
                 )
 
-            # ------------------------------------------------
-            # Date
-            # ------------------------------------------------
+                if len(missing_fields) > 5:
 
+                    missing_message += (
+                        f" (+{len(missing_fields) - 5} more)"
+                    )
+
+                errors.append(
+                    missing_message
+                )
+
+            # ------------------------------------------------
+            # Date validation
+            # ------------------------------------------------
             if date_column:
 
                 value = row[
@@ -3037,9 +4428,8 @@ def download_validation_report(
                         )
 
             # ------------------------------------------------
-            # Sales
+            # Sales validation
             # ------------------------------------------------
-
             if sales_column:
 
                 value = row[
@@ -3070,9 +4460,8 @@ def download_validation_report(
                         )
 
             # ------------------------------------------------
-            # Quantity
+            # Quantity validation
             # ------------------------------------------------
-
             if quantity_column:
 
                 value = row[
@@ -3103,9 +4492,8 @@ def download_validation_report(
                         )
 
             # ------------------------------------------------
-            # Discount
+            # Discount validation
             # ------------------------------------------------
-
             if discount_column:
 
                 value = row[
@@ -3140,9 +4528,8 @@ def download_validation_report(
                         )
 
             # ------------------------------------------------
-            # Duplicate
+            # Duplicate validation
             # ------------------------------------------------
-
             is_duplicate = bool(
                 duplicate_mask.iloc[
                     position
@@ -3155,6 +4542,9 @@ def download_validation_report(
                     "Duplicate row"
                 )
 
+            # ------------------------------------------------
+            # REPORT RESULT
+            # ------------------------------------------------
             report_rows.append(
                 {
                     "row_number":
@@ -3176,28 +4566,65 @@ def download_validation_report(
                 }
             )
 
+        # ----------------------------------------------------
+        # CREATE REPORT DATAFRAME
+        # ----------------------------------------------------
         report_dataframe = pd.DataFrame(
-            report_rows
+            report_rows,
+            columns=[
+                "row_number",
+                "status",
+                "reason",
+            ]
         )
 
+        # ----------------------------------------------------
+        # CREATE HTTP RESPONSE
+        # ----------------------------------------------------
         response = HttpResponse(
             content_type="text/csv"
         )
 
+        # ----------------------------------------------------
+        # SAFE FILE NAME
+        # ----------------------------------------------------
         safe_name = (
-            dataset.name
+            str(dataset.name)
             .replace(" ", "_")
             .replace("/", "_")
+            .replace("\\", "_")
+            .replace('"', "")
+            .replace("'", "")
         )
+
+        # ----------------------------------------------------
+        # VERSION-AWARE FILE NAME
+        # ----------------------------------------------------
+        if selected_version:
+
+            filename = (
+                "validation_report_"
+                f"{safe_name}_"
+                f"v{selected_version.version_number}.csv"
+            )
+
+        else:
+
+            filename = (
+                "validation_report_"
+                f"{safe_name}.csv"
+            )
 
         response[
             "Content-Disposition"
         ] = (
             "attachment; "
-            f'filename="validation_report_'
-            f'{safe_name}.csv"'
+            f'filename="{filename}"'
         )
 
+        # ----------------------------------------------------
+        # WRITE CSV
+        # ----------------------------------------------------
         report_dataframe.to_csv(
             response,
             index=False
@@ -3219,13 +4646,16 @@ def download_validation_report(
             "data_management:data_validation"
         )
 
-
 # ============================================================
 # DATA PROFILING
 # ============================================================
 
 @login_required
 def data_profiling(request):
+
+    # --------------------------------------------------------
+    # APPROVAL CHECK
+    # --------------------------------------------------------
 
     if not user_is_approved(request):
 
@@ -3240,49 +4670,110 @@ def data_profiling(request):
             }
         )
 
-    datasets = Dataset.objects.filter(
-        owner=request.user,
-        is_active=True
+    # --------------------------------------------------------
+    # USER DATASETS
+    # --------------------------------------------------------
+
+    datasets = (
+        Dataset.objects
+        .filter(
+            owner=request.user,
+            is_active=True
+        )
+        .order_by("-uploaded_at")
     )
 
     selected_dataset = None
+    selected_version = None
     profiling = None
 
-    dataset_id = request.GET.get(
-        "dataset"
-    )
+    # --------------------------------------------------------
+    # DATASET SELECTION
+    # --------------------------------------------------------
+
+    dataset_id = request.GET.get("dataset")
 
     if dataset_id:
 
         selected_dataset = (
             datasets
-            .filter(
-                id=dataset_id
-            )
+            .filter(id=dataset_id)
             .first()
         )
 
     elif datasets.exists():
 
-        selected_dataset = (
-            datasets.first()
-        )
+        selected_dataset = datasets.first()
+
+    # --------------------------------------------------------
+    # VERSION SELECTION
+    # --------------------------------------------------------
 
     if selected_dataset:
 
+        versions = (
+            DatasetVersion.objects
+            .filter(
+                dataset=selected_dataset
+            )
+            .order_by("-version_number")
+        )
+
+        requested_version = request.GET.get("version")
+
+        # 1. Explicit version selected from URL
+        if requested_version:
+
+            selected_version = (
+                versions
+                .filter(
+                    id=requested_version
+                )
+                .first()
+            )
+
+        # 2. Use current version
+        if selected_version is None:
+
+            selected_version = (
+                versions
+                .filter(
+                    is_current=True
+                )
+                .first()
+            )
+
+        # 3. Fallback to latest version
+        if selected_version is None:
+
+            selected_version = (
+                versions
+                .first()
+            )
+
+        # ----------------------------------------------------
+        # READ SELECTED VERSION
+        # ----------------------------------------------------
+
         try:
 
-            dataframe = read_dataset_file(
-                selected_dataset
-            )
+            if selected_version:
+
+                dataframe = read_dataset_version_file(
+                    selected_version
+                )
+
+            else:
+
+                dataframe = read_dataset_file(
+                    selected_dataset
+                )
 
             # ------------------------------------------------
             # BASIC INFORMATION
             # ------------------------------------------------
 
-            total_rows = len(
-                dataframe
-            )
+            total_rows = len(dataframe)
 
             total_columns = len(
                 dataframe.columns
@@ -3319,7 +4810,8 @@ def data_profiling(request):
                     /
                     total_cells
                 )
-                * 100
+                *
+                100
                 if total_cells
                 else 0
             )
@@ -3328,6 +4820,10 @@ def data_profiling(request):
                 completeness,
                 2
             )
+
+            # ------------------------------------------------
+            # COLUMN TYPE DETECTION
+            # ------------------------------------------------
 
             numeric_columns = list(
                 dataframe
@@ -3367,9 +4863,7 @@ def data_profiling(request):
 
             for column in dataframe.columns:
 
-                series = dataframe[
-                    column
-                ]
+                series = dataframe[column]
 
                 data_type = str(
                     series.dtype
@@ -3402,7 +4896,8 @@ def data_profiling(request):
                         /
                         total_rows
                     )
-                    * 100
+                    *
+                    100
                     if total_rows
                     else 0
                 )
@@ -3411,6 +4906,10 @@ def data_profiling(request):
                     missing_percentage,
                     2
                 )
+
+                # --------------------------------------------
+                # NUMERIC STATISTICS
+                # --------------------------------------------
 
                 minimum = "-"
                 maximum = "-"
@@ -3422,44 +4921,58 @@ def data_profiling(request):
                     series
                 ):
 
-                    if series.notna().any():
+                    valid_series = (
+                        pd.to_numeric(
+                            series,
+                            errors="coerce"
+                        )
+                        .dropna()
+                    )
+
+                    if not valid_series.empty:
 
                         minimum = round(
                             float(
-                                series.min()
+                                valid_series.min()
                             ),
                             2
                         )
 
                         maximum = round(
                             float(
-                                series.max()
+                                valid_series.max()
                             ),
                             2
                         )
 
                         mean = round(
                             float(
-                                series.mean()
+                                valid_series.mean()
                             ),
                             2
                         )
 
                         median = round(
                             float(
-                                series.median()
+                                valid_series.median()
                             ),
                             2
                         )
 
                         standard_deviation = round(
                             float(
-                                series.std()
+                                valid_series.std()
                             )
-                            if series.notna().sum() > 1
+                            if len(
+                                valid_series
+                            ) > 1
                             else 0,
                             2
                         )
+
+                # --------------------------------------------
+                # TOP CATEGORICAL VALUE
+                # --------------------------------------------
 
                 top_value = "-"
                 top_frequency = 0
@@ -3467,11 +4980,9 @@ def data_profiling(request):
                 if (
                     series.dtype == "object"
                     or
-                    str(series.dtype)
-                    == "category"
+                    str(series.dtype) == "category"
                     or
-                    str(series.dtype)
-                    == "bool"
+                    str(series.dtype) == "bool"
                 ):
 
                     value_counts = (
@@ -3490,6 +5001,10 @@ def data_profiling(request):
                             value_counts.iloc[0]
                         )
 
+                # --------------------------------------------
+                # COLUMN TYPE
+                # --------------------------------------------
+
                 if pd.api.types.is_numeric_dtype(
                     series
                 ):
@@ -3497,10 +5012,8 @@ def data_profiling(request):
                     column_type = "Numeric"
                     type_class = "numeric"
 
-                elif (
-                    pd.api.types.is_datetime64_any_dtype(
-                        series
-                    )
+                elif pd.api.types.is_datetime64_any_dtype(
+                    series
                 ):
 
                     column_type = "Date / Time"
@@ -3510,6 +5023,10 @@ def data_profiling(request):
 
                     column_type = "Categorical"
                     type_class = "categorical"
+
+                # --------------------------------------------
+                # COLUMN HEALTH
+                # --------------------------------------------
 
                 if missing_percentage == 0:
 
@@ -3530,6 +5047,10 @@ def data_profiling(request):
 
                     health = "Critical"
                     health_class = "critical"
+
+                # --------------------------------------------
+                # SAVE PROFILE
+                # --------------------------------------------
 
                 column_profiles.append(
                     {
@@ -3597,16 +5118,17 @@ def data_profiling(request):
 
             for column in numeric_columns:
 
-                series = dataframe[
-                    column
-                ]
+                series = dataframe[column]
 
                 valid_series = (
-                    series.dropna()
+                    pd.to_numeric(
+                        series,
+                        errors="coerce"
+                    )
+                    .dropna()
                 )
 
                 if valid_series.empty:
-
                     continue
 
                 numeric_summary.append(
@@ -3725,6 +5247,53 @@ def data_profiling(request):
                 health_status = "Critical"
                 health_class = "critical"
 
+            # ------------------------------------------------
+            # VERSION INFORMATION
+            # ------------------------------------------------
+
+            version_label = "Original"
+            version_badge = "original"
+
+            if selected_version:
+
+                version_type = (
+                    getattr(
+                        selected_version,
+                        "version_type",
+                        ""
+                    )
+                    or ""
+                )
+
+                if version_type.lower() == "cleaned":
+
+                    version_label = "Cleaned"
+                    version_badge = "cleaned"
+
+                elif version_type.lower() == "transformed":
+
+                    version_label = "Transformed"
+                    version_badge = "transformed"
+
+                elif version_type.lower() == "original":
+
+                    version_label = "Original"
+                    version_badge = "original"
+
+                else:
+
+                    version_label = (
+                        version_type
+                        or
+                        f"Version {selected_version.version_number}"
+                    )
+
+                    version_badge = "version"
+
+            # ------------------------------------------------
+            # FINAL PROFILING OBJECT
+            # ------------------------------------------------
+
             profiling = {
 
                 "total_rows":
@@ -3774,6 +5343,34 @@ def data_profiling(request):
 
                 "health_class":
                     health_class,
+
+                # Version information
+                "version_number":
+                    (
+                        selected_version.version_number
+                        if selected_version
+                        else None
+                    ),
+
+                "version_type":
+                    (
+                        selected_version.version_type
+                        if selected_version
+                        else "Original"
+                    ),
+
+                "version_label":
+                    version_label,
+
+                "version_badge":
+                    version_badge,
+
+                "is_current":
+                    (
+                        selected_version.is_current
+                        if selected_version
+                        else False
+                    ),
             }
 
         except Exception as error:
@@ -3786,6 +5383,26 @@ def data_profiling(request):
                 )
             )
 
+    # --------------------------------------------------------
+    # ALL VERSIONS FOR SELECTED DATASET
+    # --------------------------------------------------------
+
+    versions = []
+
+    if selected_dataset:
+
+        versions = (
+            DatasetVersion.objects
+            .filter(
+                dataset=selected_dataset
+            )
+            .order_by("-version_number")
+        )
+
+    # --------------------------------------------------------
+    # RENDER
+    # --------------------------------------------------------
+
     return render(
         request,
         "data_management/data_profiling.html",
@@ -3795,6 +5412,12 @@ def data_profiling(request):
 
             "selected_dataset":
                 selected_dataset,
+
+            "selected_version":
+                selected_version,
+
+            "versions":
+                versions,
 
             "profiling":
                 profiling,
@@ -3809,6 +5432,10 @@ def data_profiling(request):
 @login_required
 def data_transformation(request):
 
+    # --------------------------------------------------------
+    # APPROVAL CHECK
+    # --------------------------------------------------------
+
     if not user_is_approved(request):
 
         return render(
@@ -3822,17 +5449,28 @@ def data_transformation(request):
             }
         )
 
-    datasets = Dataset.objects.filter(
-        owner=request.user,
-        is_active=True
+    # --------------------------------------------------------
+    # USER DATASETS
+    # --------------------------------------------------------
+
+    datasets = (
+        Dataset.objects
+        .filter(
+            owner=request.user,
+            is_active=True
+        )
+        .order_by("-uploaded_at")
     )
 
     selected_dataset = None
+    selected_version = None
     transformation = None
 
-    dataset_id = request.GET.get(
-        "dataset"
-    )
+    # --------------------------------------------------------
+    # DATASET SELECTION
+    # --------------------------------------------------------
+
+    dataset_id = request.GET.get("dataset")
 
     if dataset_id:
 
@@ -3846,38 +5484,114 @@ def data_transformation(request):
 
     elif datasets.exists():
 
-        selected_dataset = (
-            datasets.first()
-        )
+        selected_dataset = datasets.first()
+
+    # --------------------------------------------------------
+    # VERSION SELECTION
+    # --------------------------------------------------------
 
     if selected_dataset:
 
+        versions = (
+            DatasetVersion.objects
+            .filter(
+                dataset=selected_dataset
+            )
+            .order_by("-version_number")
+        )
+
+        requested_version = request.GET.get(
+            "version"
+        )
+
+        # ----------------------------------------------------
+        # 1. EXPLICIT VERSION
+        # ----------------------------------------------------
+
+        if requested_version:
+
+            selected_version = (
+                versions
+                .filter(
+                    id=requested_version
+                )
+                .first()
+            )
+
+        # ----------------------------------------------------
+        # 2. CURRENT VERSION
+        # ----------------------------------------------------
+
+        if selected_version is None:
+
+            selected_version = (
+                versions
+                .filter(
+                    is_current=True
+                )
+                .first()
+            )
+
+        # ----------------------------------------------------
+        # 3. LATEST VERSION FALLBACK
+        # ----------------------------------------------------
+
+        if selected_version is None:
+
+            selected_version = (
+                versions
+                .first()
+            )
+
+        # ----------------------------------------------------
+        # LOAD DATASET
+        # ----------------------------------------------------
+
         try:
 
-            dataframe = read_dataset_file(
-                selected_dataset
-            )
+            if selected_version:
+
+                dataframe = read_dataset_version_file(
+                    selected_version
+                )
+
+            else:
+
+                dataframe = read_dataset_file(
+                    selected_dataset
+                )
+
+            # ------------------------------------------------
+            # NORMALIZE COLUMN NAMES
+            # ------------------------------------------------
 
             dataframe.columns = [
                 str(column).strip()
-                for column
-                in dataframe.columns
+                for column in dataframe.columns
             ]
+
+            # ------------------------------------------------
+            # NUMERIC COLUMNS
+            # ------------------------------------------------
 
             numeric_columns = [
                 str(column)
-                for column
-                in dataframe
+                for column in
+                dataframe
                 .select_dtypes(
                     include="number"
                 )
                 .columns
             ]
 
+            # ------------------------------------------------
+            # CATEGORICAL COLUMNS
+            # ------------------------------------------------
+
             categorical_columns = [
                 str(column)
-                for column
-                in dataframe
+                for column in
+                dataframe
                 .select_dtypes(
                     include=[
                         "object",
@@ -3888,12 +5602,18 @@ def data_transformation(request):
                 .columns
             ]
 
+            # ------------------------------------------------
+            # DATE / TIME COLUMNS
+            # ------------------------------------------------
+
             date_columns = []
 
             for column in dataframe.columns:
 
                 column_name = (
-                    str(column).lower()
+                    str(column)
+                    .strip()
+                    .lower()
                 )
 
                 if (
@@ -3905,6 +5625,108 @@ def data_transformation(request):
                     date_columns.append(
                         str(column)
                     )
+
+            # ------------------------------------------------
+            # COLUMN INFORMATION
+            # ------------------------------------------------
+
+            column_information = []
+
+            for column in dataframe.columns:
+
+                series = dataframe[column]
+
+                column_information.append(
+                    {
+                        "name":
+                            str(column),
+
+                        "dtype":
+                            str(
+                                series.dtype
+                            ),
+
+                        "missing":
+                            int(
+                                series
+                                .isnull()
+                                .sum()
+                            ),
+
+                        "unique":
+                            int(
+                                series
+                                .nunique(
+                                    dropna=True
+                                )
+                            ),
+                    }
+                )
+
+            # ------------------------------------------------
+            # VERSION INFORMATION
+            # ------------------------------------------------
+
+            version_label = "Original"
+            version_badge = "original"
+
+            if selected_version:
+
+                version_type = (
+                    getattr(
+                        selected_version,
+                        "version_type",
+                        ""
+                    )
+                    or ""
+                )
+
+                if (
+                    version_type
+                    .lower()
+                    ==
+                    "cleaned"
+                ):
+
+                    version_label = "Cleaned"
+                    version_badge = "cleaned"
+
+                elif (
+                    version_type
+                    .lower()
+                    ==
+                    "transformed"
+                ):
+
+                    version_label = "Transformed"
+                    version_badge = "transformed"
+
+                elif (
+                    version_type
+                    .lower()
+                    ==
+                    "original"
+                ):
+
+                    version_label = "Original"
+                    version_badge = "original"
+
+                else:
+
+                    version_label = (
+                        version_type
+                        or
+                        (
+                            f"Version "
+                            f"{selected_version.version_number}"
+                        )
+                    )
+
+                    version_badge = "version"
+
+            # ------------------------------------------------
+            # TRANSFORMATION DATA
+            # ------------------------------------------------
 
             transformation = {
 
@@ -3923,42 +5745,8 @@ def data_transformation(request):
                 "date_columns":
                     date_columns,
 
-                "columns": [
-
-                    {
-                        "name":
-                            str(column),
-
-                        "dtype":
-                            str(
-                                dataframe[
-                                    column
-                                ].dtype
-                            ),
-
-                        "missing":
-                            int(
-                                dataframe[
-                                    column
-                                ]
-                                .isnull()
-                                .sum()
-                            ),
-
-                        "unique":
-                            int(
-                                dataframe[
-                                    column
-                                ]
-                                .nunique(
-                                    dropna=True
-                                )
-                            ),
-                    }
-
-                    for column
-                    in dataframe.columns
-                ],
+                "columns":
+                    column_information,
 
                 "preview":
                     (
@@ -3976,6 +5764,37 @@ def data_transformation(request):
                         for column
                         in dataframe.columns
                     ],
+
+                # --------------------------------------------
+                # VERSION INFORMATION
+                # --------------------------------------------
+
+                "version_number":
+                    (
+                        selected_version.version_number
+                        if selected_version
+                        else None
+                    ),
+
+                "version_type":
+                    (
+                        selected_version.version_type
+                        if selected_version
+                        else "Original"
+                    ),
+
+                "version_label":
+                    version_label,
+
+                "version_badge":
+                    version_badge,
+
+                "is_current":
+                    (
+                        selected_version.is_current
+                        if selected_version
+                        else False
+                    ),
             }
 
         except Exception as error:
@@ -3988,6 +5807,26 @@ def data_transformation(request):
                 )
             )
 
+    # --------------------------------------------------------
+    # AVAILABLE VERSIONS
+    # --------------------------------------------------------
+
+    versions = []
+
+    if selected_dataset:
+
+        versions = (
+            DatasetVersion.objects
+            .filter(
+                dataset=selected_dataset
+            )
+            .order_by("-version_number")
+        )
+
+    # --------------------------------------------------------
+    # RENDER
+    # --------------------------------------------------------
+
     return render(
         request,
         "data_management/data_transformation.html",
@@ -3998,12 +5837,16 @@ def data_transformation(request):
             "selected_dataset":
                 selected_dataset,
 
+            "selected_version":
+                selected_version,
+
+            "versions":
+                versions,
+
             "transformation":
                 transformation,
         }
     )
-
-
 # ============================================================
 # TRANSFORM AND DOWNLOAD DATASET
 # ============================================================
@@ -4013,6 +5856,10 @@ def transform_dataset(
     request,
     dataset_id
 ):
+
+    # --------------------------------------------------------
+    # APPROVAL CHECK
+    # --------------------------------------------------------
 
     if not user_is_approved(request):
 
@@ -4026,6 +5873,10 @@ def transform_dataset(
                 )
             }
         )
+
+    # --------------------------------------------------------
+    # GET DATASET
+    # --------------------------------------------------------
 
     dataset = (
         Dataset.objects
@@ -4048,11 +5899,90 @@ def transform_dataset(
             "data_management:data_transformation"
         )
 
+    # --------------------------------------------------------
+    # GET SELECTED VERSION
+    # --------------------------------------------------------
+
+    requested_version = request.GET.get(
+        "version"
+    )
+
+    selected_version = None
+
+    versions = (
+        DatasetVersion.objects
+        .filter(
+            dataset=dataset
+        )
+        .order_by("-version_number")
+    )
+
+    # Explicitly selected version
+    if requested_version:
+
+        selected_version = (
+            versions
+            .filter(
+                id=requested_version
+            )
+            .first()
+        )
+
+    # Current version fallback
+    if selected_version is None:
+
+        selected_version = (
+            versions
+            .filter(
+                is_current=True
+            )
+            .first()
+        )
+
+    # Latest version fallback
+    if selected_version is None:
+
+        selected_version = (
+            versions
+            .first()
+        )
+
+    # --------------------------------------------------------
+    # PROCESS TRANSFORMATION
+    # --------------------------------------------------------
+
     try:
 
-        dataframe = read_dataset_file(
-            dataset
-        )
+        # ----------------------------------------------------
+        # LOAD SELECTED VERSION
+        # ----------------------------------------------------
+
+        if selected_version:
+
+            dataframe = read_dataset_version_file(
+                selected_version
+            )
+
+        else:
+
+            dataframe = read_dataset_file(
+                dataset
+            )
+
+        # ----------------------------------------------------
+        # COPY DATAFRAME
+        # ----------------------------------------------------
+
+        dataframe = dataframe.copy()
+
+        # ----------------------------------------------------
+        # NORMALIZE COLUMN NAMES
+        # ----------------------------------------------------
+
+        dataframe.columns = [
+            str(column).strip()
+            for column in dataframe.columns
+        ]
 
         # ----------------------------------------------------
         # GET SETTINGS
@@ -4117,31 +6047,85 @@ def transform_dataset(
         actions = []
 
         # ----------------------------------------------------
+        # VALIDATE TEXT OPTIONS
+        # ----------------------------------------------------
+
+        if lowercase_text and uppercase_text:
+
+            messages.warning(
+                request,
+                (
+                    "Please select either lowercase "
+                    "or uppercase text conversion, "
+                    "not both."
+                )
+            )
+
+            return redirect(
+                f"/data/transformation/"
+                f"?dataset={dataset.id}"
+                f"&version={selected_version.id}"
+                if selected_version
+                else
+                f"/data/transformation/"
+                f"?dataset={dataset.id}"
+            )
+
+        # ----------------------------------------------------
+        # VALIDATE NUMERIC OPTIONS
+        # ----------------------------------------------------
+
+        if normalize and standardize:
+
+            messages.warning(
+                request,
+                (
+                    "Please select either normalization "
+                    "or standardization, not both."
+                )
+            )
+
+            return redirect(
+                f"/data/transformation/"
+                f"?dataset={dataset.id}"
+                f"&version={selected_version.id}"
+                if selected_version
+                else
+                f"/data/transformation/"
+                f"?dataset={dataset.id}"
+            )
+
+        # ----------------------------------------------------
         # TRIM TEXT
         # ----------------------------------------------------
 
         if trim_text:
 
-            for column in dataframe.columns:
+            text_columns = (
+                dataframe
+                .select_dtypes(
+                    include=[
+                        "object",
+                        "category"
+                    ]
+                )
+                .columns
+            )
 
-                if (
+            for column in text_columns:
+
+                dataframe[column] = (
                     dataframe[column]
-                    .dtype
-                    == "object"
-                ):
-
-                    dataframe[column] = (
-                        dataframe[column]
-                        .apply(
-                            lambda value:
-                            value.strip()
-                            if isinstance(
-                                value,
-                                str
-                            )
-                            else value
+                    .apply(
+                        lambda value:
+                        value.strip()
+                        if isinstance(
+                            value,
+                            str
                         )
+                        else value
                     )
+                )
 
             actions.append(
                 "Removed leading and trailing spaces"
@@ -4153,26 +6137,31 @@ def transform_dataset(
 
         if lowercase_text:
 
-            for column in dataframe.columns:
+            text_columns = (
+                dataframe
+                .select_dtypes(
+                    include=[
+                        "object",
+                        "category"
+                    ]
+                )
+                .columns
+            )
 
-                if (
+            for column in text_columns:
+
+                dataframe[column] = (
                     dataframe[column]
-                    .dtype
-                    == "object"
-                ):
-
-                    dataframe[column] = (
-                        dataframe[column]
-                        .apply(
-                            lambda value:
-                            value.lower()
-                            if isinstance(
-                                value,
-                                str
-                            )
-                            else value
+                    .apply(
+                        lambda value:
+                        value.lower()
+                        if isinstance(
+                            value,
+                            str
                         )
+                        else value
                     )
+                )
 
             actions.append(
                 "Converted text to lowercase"
@@ -4184,26 +6173,31 @@ def transform_dataset(
 
         if uppercase_text:
 
-            for column in dataframe.columns:
+            text_columns = (
+                dataframe
+                .select_dtypes(
+                    include=[
+                        "object",
+                        "category"
+                    ]
+                )
+                .columns
+            )
 
-                if (
+            for column in text_columns:
+
+                dataframe[column] = (
                     dataframe[column]
-                    .dtype
-                    == "object"
-                ):
-
-                    dataframe[column] = (
-                        dataframe[column]
-                        .apply(
-                            lambda value:
-                            value.upper()
-                            if isinstance(
-                                value,
-                                str
-                            )
-                            else value
+                    .apply(
+                        lambda value:
+                        value.upper()
+                        if isinstance(
+                            value,
+                            str
                         )
+                        else value
                     )
+                )
 
             actions.append(
                 "Converted text to uppercase"
@@ -4223,6 +6217,8 @@ def transform_dataset(
                 .columns
             )
 
+            filled_columns = []
+
             for column in numeric_columns:
 
                 if dataframe[
@@ -4230,29 +6226,30 @@ def transform_dataset(
                 ].isnull().any():
 
                     median_value = (
-                        dataframe[
-                            column
-                        ].median()
+                        dataframe[column]
+                        .median()
                     )
 
                     if pd.notna(
                         median_value
                     ):
 
-                        dataframe[
-                            column
-                        ] = (
-                            dataframe[
-                                column
-                            ]
+                        dataframe[column] = (
+                            dataframe[column]
                             .fillna(
                                 median_value
                             )
                         )
 
-            actions.append(
-                "Filled numeric missing values using median"
-            )
+                        filled_columns.append(
+                            str(column)
+                        )
+
+            if filled_columns:
+
+                actions.append(
+                    "Filled numeric missing values using median"
+                )
 
         # ----------------------------------------------------
         # CATEGORICAL MISSING VALUES
@@ -4272,6 +6269,8 @@ def transform_dataset(
                 .columns
             )
 
+            filled_columns = []
+
             for column in categorical_columns:
 
                 if dataframe[
@@ -4279,27 +6278,28 @@ def transform_dataset(
                 ].isnull().any():
 
                     mode_values = (
-                        dataframe[
-                            column
-                        ].mode()
+                        dataframe[column]
+                        .mode()
                     )
 
                     if not mode_values.empty:
 
-                        dataframe[
-                            column
-                        ] = (
-                            dataframe[
-                                column
-                            ]
+                        dataframe[column] = (
+                            dataframe[column]
                             .fillna(
                                 mode_values.iloc[0]
                             )
                         )
 
-            actions.append(
-                "Filled categorical missing values using mode"
-            )
+                        filled_columns.append(
+                            str(column)
+                        )
+
+            if filled_columns:
+
+                actions.append(
+                    "Filled categorical missing values using mode"
+                )
 
         # ----------------------------------------------------
         # NORMALIZATION
@@ -4315,15 +6315,14 @@ def transform_dataset(
                 .columns
             )
 
+            normalized_columns = []
+
             for column in numeric_columns:
 
-                minimum = dataframe[
-                    column
-                ].min()
+                series = dataframe[column]
 
-                maximum = dataframe[
-                    column
-                ].max()
+                minimum = series.min()
+                maximum = series.max()
 
                 if (
                     pd.notna(minimum)
@@ -4335,7 +6334,7 @@ def transform_dataset(
 
                     dataframe[column] = (
                         (
-                            dataframe[column]
+                            series
                             - minimum
                         )
                         /
@@ -4345,9 +6344,15 @@ def transform_dataset(
                         )
                     )
 
-            actions.append(
-                "Normalized numeric columns using Min-Max scaling"
-            )
+                    normalized_columns.append(
+                        str(column)
+                    )
+
+            if normalized_columns:
+
+                actions.append(
+                    "Normalized numeric columns using Min-Max scaling"
+                )
 
         # ----------------------------------------------------
         # STANDARDIZATION
@@ -4363,17 +6368,14 @@ def transform_dataset(
                 .columns
             )
 
+            standardized_columns = []
+
             for column in numeric_columns:
 
-                mean_value = (
-                    dataframe[column]
-                    .mean()
-                )
+                series = dataframe[column]
 
-                std_value = (
-                    dataframe[column]
-                    .std()
-                )
+                mean_value = series.mean()
+                std_value = series.std()
 
                 if (
                     pd.notna(std_value)
@@ -4383,16 +6385,22 @@ def transform_dataset(
 
                     dataframe[column] = (
                         (
-                            dataframe[column]
+                            series
                             - mean_value
                         )
                         /
                         std_value
                     )
 
-            actions.append(
-                "Standardized numeric columns using Z-score"
-            )
+                    standardized_columns.append(
+                        str(column)
+                    )
+
+            if standardized_columns:
+
+                actions.append(
+                    "Standardized numeric columns using Z-score"
+                )
 
         # ----------------------------------------------------
         # DATE CONVERSION
@@ -4400,10 +6408,14 @@ def transform_dataset(
 
         if convert_dates:
 
+            converted_columns = []
+
             for column in dataframe.columns:
 
                 column_name = (
-                    str(column).lower()
+                    str(column)
+                    .strip()
+                    .lower()
                 )
 
                 if (
@@ -4412,17 +6424,20 @@ def transform_dataset(
                     "time" in column_name
                 ):
 
-                    converted = (
-                        pd.to_datetime(
-                            dataframe[column],
-                            errors="coerce"
-                        )
+                    original_series = (
+                        dataframe[column]
                     )
 
-                    if (
+                    converted = pd.to_datetime(
+                        original_series,
+                        errors="coerce"
+                    )
+
+                    valid_count = int(
                         converted.notna().sum()
-                        > 0
-                    ):
+                    )
+
+                    if valid_count > 0:
 
                         dataframe[column] = (
                             converted
@@ -4431,9 +6446,15 @@ def transform_dataset(
                             )
                         )
 
-            actions.append(
-                "Converted date/time columns to standard date format"
-            )
+                        converted_columns.append(
+                            str(column)
+                        )
+
+            if converted_columns:
+
+                actions.append(
+                    "Converted date/time columns to standard date format"
+                )
 
         # ----------------------------------------------------
         # NO ACTION
@@ -4449,36 +6470,184 @@ def transform_dataset(
                 )
             )
 
+            if selected_version:
+
+                return redirect(
+                    f"/data/transformation/"
+                    f"?dataset={dataset.id}"
+                    f"&version={selected_version.id}"
+                )
+
             return redirect(
                 f"/data/transformation/"
                 f"?dataset={dataset.id}"
             )
 
         # ----------------------------------------------------
-        # DOWNLOAD
+        # CREATE TRANSFORMED VERSION
         # ----------------------------------------------------
 
-        response = HttpResponse(
-            content_type="text/csv"
+        # Deactivate previous current version
+        DatasetVersion.objects.filter(
+            dataset=dataset,
+            is_current=True
+        ).update(
+            is_current=False
+        )
+
+        # ----------------------------------------------------
+        # DETERMINE NEXT VERSION NUMBER
+        # ----------------------------------------------------
+
+        latest_version = (
+            DatasetVersion.objects
+            .filter(
+                dataset=dataset
+            )
+            .order_by(
+                "-version_number"
+            )
+            .first()
+        )
+
+        if latest_version:
+
+            next_version_number = (
+                latest_version.version_number
+                + 1
+            )
+
+        else:
+
+            next_version_number = 1
+
+        # ----------------------------------------------------
+        # CREATE CSV CONTENT
+        # ----------------------------------------------------
+
+        csv_buffer = StringIO()
+
+        dataframe.to_csv(
+            csv_buffer,
+            index=False
+        )
+
+        csv_content = (
+            csv_buffer
+            .getvalue()
+            .encode("utf-8")
+        )
+
+        # ----------------------------------------------------
+        # CALCULATE TRANSFORMED DATASET STATS
+        # ----------------------------------------------------
+
+        total_rows = len(dataframe)
+        total_columns = len(dataframe.columns)
+
+        missing_values = int(
+            dataframe
+            .isnull()
+            .sum()
+            .sum()
+        )
+
+        duplicate_rows = int(
+            dataframe
+            .duplicated()
+            .sum()
+        )
+
+        total_cells = (
+            total_rows
+            *
+            total_columns
+        )
+
+        completeness = (
+            (
+                (
+                    total_cells
+                    -
+                    missing_values
+                )
+                /
+                total_cells
+            )
+            *
+            100
+            if total_cells
+            else 0
+        )
+
+        quality_score = round(
+            completeness,
+            2
+        )
+
+        # ----------------------------------------------------
+        # CREATE VERSION
+        # ----------------------------------------------------
+
+        transformed_version = DatasetVersion(
+            dataset=dataset,
+            version_number=next_version_number,
+            version_type="Transformed",
+            is_current=True,
+
+            row_count=total_rows,
+            column_count=total_columns,
+            missing_values=missing_values,
+            duplicate_rows=duplicate_rows,
+            quality_score=quality_score,
         )
 
         safe_name = (
             dataset.name
             .replace(" ", "_")
             .replace("/", "_")
+            .replace("\\", "_")
+        )
+
+        filename = (
+            f"transformed_"
+            f"{safe_name}_v"
+            f"{next_version_number}.csv"
+        )
+
+        transformed_version.file.save(
+            filename,
+            ContentFile(
+                csv_content
+            ),
+            save=False
+        )
+
+        transformed_version.save()
+
+        # ----------------------------------------------------
+        # DOWNLOAD TRANSFORMED DATASET
+        # ----------------------------------------------------
+
+        response = HttpResponse(
+            csv_content,
+            content_type="text/csv"
         )
 
         response[
             "Content-Disposition"
         ] = (
             "attachment; "
-            f'filename="transformed_'
-            f'{safe_name}.csv"'
+            f'filename="{filename}"'
         )
 
-        dataframe.to_csv(
-            response,
-            index=False
+        messages.success(
+            request,
+            (
+                "Dataset transformed successfully. "
+                f"Version {next_version_number} "
+                "has been created."
+            )
         )
 
         return response
@@ -4496,14 +6665,16 @@ def transform_dataset(
         return redirect(
             "data_management:data_transformation"
         )
-
-
 # ============================================================
 # DATA VERSION HISTORY
 # ============================================================
 
 @login_required
 def data_version_history(request):
+
+    # --------------------------------------------------------
+    # APPROVAL CHECK
+    # --------------------------------------------------------
 
     if not user_is_approved(request):
 
@@ -4518,13 +6689,25 @@ def data_version_history(request):
             }
         )
 
-    datasets = Dataset.objects.filter(
-        owner=request.user,
-        is_active=True
+    # --------------------------------------------------------
+    # USER DATASETS
+    # --------------------------------------------------------
+
+    datasets = (
+        Dataset.objects
+        .filter(
+            owner=request.user,
+            is_active=True
+        )
+        .order_by("-uploaded_at")
     )
 
     selected_dataset = None
     versions = []
+
+    # --------------------------------------------------------
+    # DATASET SELECTION
+    # --------------------------------------------------------
 
     dataset_id = request.GET.get(
         "dataset"
@@ -4546,9 +6729,13 @@ def data_version_history(request):
             datasets.first()
         )
 
+    # --------------------------------------------------------
+    # VERSION HISTORY
+    # --------------------------------------------------------
+
     if selected_dataset:
 
-        versions = (
+        versions = list(
             DatasetVersion.objects
             .filter(
                 dataset=selected_dataset
@@ -4557,6 +6744,138 @@ def data_version_history(request):
                 "-version_number"
             )
         )
+
+        # ----------------------------------------------------
+        # ATTACH EXTRA INFORMATION TO EACH VERSION
+        # ----------------------------------------------------
+
+        for version in versions:
+
+            version.is_active_version = bool(
+                version.is_current
+            )
+
+            version.version_label = (
+                getattr(
+                    version,
+                    "version_type",
+                    ""
+                )
+                or
+                f"Version {version.version_number}"
+            )
+
+            version.version_badge = (
+                version.version_label
+                .lower()
+                .replace(" ", "-")
+            )
+
+    # --------------------------------------------------------
+    # CURRENT VERSION
+    # --------------------------------------------------------
+
+    current_version = None
+
+    if selected_dataset:
+
+        current_version = (
+            DatasetVersion.objects
+            .filter(
+                dataset=selected_dataset,
+                is_current=True
+            )
+            .order_by(
+                "-version_number"
+            )
+            .first()
+        )
+
+    # --------------------------------------------------------
+    # ORIGINAL VERSION
+    # --------------------------------------------------------
+
+    original_version = None
+
+    if selected_dataset:
+
+        original_version = (
+            DatasetVersion.objects
+            .filter(
+                dataset=selected_dataset,
+                version_type="Original"
+            )
+            .order_by(
+                "version_number"
+            )
+            .first()
+        )
+
+    # --------------------------------------------------------
+    # CLEANED VERSION
+    # --------------------------------------------------------
+
+    cleaned_version = None
+
+    if selected_dataset:
+
+        cleaned_version = (
+            DatasetVersion.objects
+            .filter(
+                dataset=selected_dataset,
+                version_type="Cleaned"
+            )
+            .order_by(
+                "-version_number"
+            )
+            .first()
+        )
+
+    # --------------------------------------------------------
+    # TRANSFORMED VERSION
+    # --------------------------------------------------------
+
+    transformed_version = None
+
+    if selected_dataset:
+
+        transformed_version = (
+            DatasetVersion.objects
+            .filter(
+                dataset=selected_dataset,
+                version_type="Transformed"
+            )
+            .order_by(
+                "-version_number"
+            )
+            .first()
+        )
+
+    # --------------------------------------------------------
+    # DATASET VERSION SUMMARY
+    # --------------------------------------------------------
+
+    version_summary = {
+
+        "total_versions":
+            len(versions),
+
+        "current_version":
+            current_version,
+
+        "original_version":
+            original_version,
+
+        "cleaned_version":
+            cleaned_version,
+
+        "transformed_version":
+            transformed_version,
+    }
+
+    # --------------------------------------------------------
+    # RENDER
+    # --------------------------------------------------------
 
     return render(
         request,
@@ -4570,6 +6889,21 @@ def data_version_history(request):
 
             "versions":
                 versions,
+
+            "current_version":
+                current_version,
+
+            "original_version":
+                original_version,
+
+            "cleaned_version":
+                cleaned_version,
+
+            "transformed_version":
+                transformed_version,
+
+            "version_summary":
+                version_summary,
         }
     )
 
@@ -4584,6 +6918,10 @@ def download_dataset_version(
     version_id
 ):
 
+    # --------------------------------------------------------
+    # APPROVAL CHECK
+    # --------------------------------------------------------
+
     if not user_is_approved(request):
 
         return render(
@@ -4596,6 +6934,10 @@ def download_dataset_version(
                 )
             }
         )
+
+    # --------------------------------------------------------
+    # GET VERSION
+    # --------------------------------------------------------
 
     version = (
         DatasetVersion.objects
@@ -4618,15 +6960,59 @@ def download_dataset_version(
         )
 
         return redirect(
-            "data_management:data_version_history"
+            "data_management:version_history"
         )
+
+    # --------------------------------------------------------
+    # CHECK FILE
+    # --------------------------------------------------------
 
     try:
 
+        if not version.file:
+
+            messages.error(
+                request,
+                "This dataset version does not have a file."
+            )
+
+            return redirect(
+                f"/data/version-history/"
+                f"?dataset={version.dataset.id}"
+            )
+
+        # ----------------------------------------------------
+        # DETERMINE FILE NAME
+        # ----------------------------------------------------
+
         original_filename = (
-            version.file_name
-            or ""
+            getattr(
+                version,
+                "file_name",
+                ""
+            )
+            or
+            ""
         )
+
+        # If file_name is empty, use actual storage filename
+        if not original_filename:
+
+            try:
+
+                original_filename = (
+                    os.path.basename(
+                        version.file.name
+                    )
+                )
+
+            except Exception:
+
+                original_filename = ""
+
+        # ----------------------------------------------------
+        # FILE EXTENSION
+        # ----------------------------------------------------
 
         extension = os.path.splitext(
             original_filename
@@ -4635,7 +7021,8 @@ def download_dataset_version(
         if extension == ".xlsx":
 
             content_type = (
-                "application/vnd.openxmlformats-officedocument."
+                "application/"
+                "vnd.openxmlformats-officedocument."
                 "spreadsheetml.sheet"
             )
 
@@ -4645,9 +7032,23 @@ def download_dataset_version(
                 "application/vnd.ms-excel"
             )
 
+        elif extension == ".json":
+
+            content_type = (
+                "application/json"
+            )
+
         else:
 
-            content_type = "text/csv"
+            extension = ".csv"
+
+            content_type = (
+                "text/csv"
+            )
+
+        # ----------------------------------------------------
+        # OPEN FILE
+        # ----------------------------------------------------
 
         file_handle = (
             version.file.open("rb")
@@ -4658,25 +7059,36 @@ def download_dataset_version(
             content_type=content_type
         )
 
+        # ----------------------------------------------------
+        # SAFE DATASET NAME
+        # ----------------------------------------------------
+
         safe_name = (
-            version.dataset.name
+            str(
+                version.dataset.name
+            )
+            .strip()
             .replace(" ", "_")
             .replace("/", "_")
+            .replace("\\", "_")
+            .replace(":", "_")
         )
 
-        final_extension = (
-            extension
-            if extension
-            else ".csv"
+        # ----------------------------------------------------
+        # DOWNLOAD NAME
+        # ----------------------------------------------------
+
+        download_filename = (
+            f"{safe_name}_"
+            f"v{version.version_number}"
+            f"{extension}"
         )
 
         response[
             "Content-Disposition"
         ] = (
             "attachment; "
-            f'filename="{safe_name}_'
-            f'v{version.version_number}'
-            f'{final_extension}"'
+            f'filename="{download_filename}"'
         )
 
         return response
@@ -4692,7 +7104,8 @@ def download_dataset_version(
         )
 
         return redirect(
-            "data_management:data_version_history"
+            f"/data/version-history/"
+            f"?dataset={version.dataset.id}"
         )
 
 
@@ -4706,6 +7119,10 @@ def delete_dataset(
     dataset_id
 ):
 
+    # --------------------------------------------------------
+    # APPROVAL CHECK
+    # --------------------------------------------------------
+
     if not user_is_approved(request):
 
         return render(
@@ -4718,6 +7135,10 @@ def delete_dataset(
                 )
             }
         )
+
+    # --------------------------------------------------------
+    # GET DATASET
+    # --------------------------------------------------------
 
     dataset = (
         Dataset.objects
@@ -4739,6 +7160,10 @@ def delete_dataset(
         return redirect(
             "data_management:dataset_management"
         )
+
+    # --------------------------------------------------------
+    # ARCHIVE DATASET
+    # --------------------------------------------------------
 
     if request.method == "POST":
 
@@ -4762,6 +7187,10 @@ def delete_dataset(
         return redirect(
             "data_management:dataset_management"
         )
+
+    # --------------------------------------------------------
+    # CONFIRMATION PAGE
+    # --------------------------------------------------------
 
     return render(
         request,

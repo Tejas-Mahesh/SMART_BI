@@ -1,0 +1,51 @@
+Order_ID,Order_Date,Customer_ID,Product_ID,Product_Name,Category,Quantity,Unit_Price,Discount,Sales_Amount,Sales_Channel,Salesperson,Region,Payment_Method,Order_Status
+ORD001,2026-01-05,CUST001,P001,Laptop Pro,Electronics,1,85000,0,85000,Online,Rahul,North,Card,Completed
+ORD002,2026-01-07,CUST002,P002,Wireless Mouse,Electronics,5,1200,0,6000,Retail,Priya,South,UPI,Completed
+ORD003,2026-01-10,CUST003,P003,Office Chair,Furniture,2,8500,5,16150,Online,Amit,West,Card,Completed
+ORD004,2026-01-15,CUST004,P004,Notebook,Stationery,10,250,0,2500,Retail,Neha,East,Cash,Completed
+ORD005,2026-01-20,CUST005,P005,Monitor 24 inch,Electronics,3,14500,10,39150,Online,Rahul,North,Card,Completed
+ORD006,2026-01-25,CUST006,P006,Desk,Furniture,1,12000,0,12000,Retail,Priya,South,UPI,Completed
+ORD007,2026-02-02,CUST007,P007,Printer,Electronics,2,18500,5,35150,Online,Amit,West,Card,Completed
+ORD008,2026-02-05,CUST008,P008,Pen Pack,Stationery,25,300,0,7500,Retail,Neha,East,Cash,Completed
+ORD009,2026-02-10,CUST009,P009,Office Table,Furniture,4,15000,10,54000,Online,Rahul,North,Card,Completed
+ORD010,2026-02-15,CUST010,P010,Keyboard,Electronics,6,2200,0,13200,Retail,Priya,South,UPI,Completed
+ORD011,2026-02-20,CUST011,P011,Headphones,Electronics,8,3500,5,26600,Online,Amit,West,Card,Completed
+ORD012,2026-02-25,CUST012,P012,File Folder,Stationery,15,180,0,2700,Retail,Neha,East,Cash,Completed
+ORD013,2026-03-01,CUST013,P013,Executive Chair,Furniture,3,18000,10,48600,Online,Rahul,North,Card,Completed
+ORD014,2026-03-05,CUST014,P014,Webcam,Electronics,2,4500,0,9000,Online,Priya,South,UPI,Completed
+ORD015,2026-03-10,CUST015,P015,Whiteboard,Office Supplies,1,6500,0,6500,Retail,Amit,West,Card,Completed
+ORD016,2026-03-15,CUST016,P016,Marker Pack,Stationery,30,450,5,12825,Retail,Neha,East,Cash,Completed
+ORD017,2026-03-20,CUST017,P017,Desktop Computer,Electronics,1,65000,5,61750,Online,Rahul,North,Card,Completed
+ORD018,2026-03-25,CUST018,P018,Bookshelf,Furniture,2,11000,0,22000,Retail,Priya,South,UPI,Completed
+ORD019,2026-04-02,CUST019,P019,USB Hub,Electronics,12,1500,0,18000,Online,Amit,West,Card,Completed
+ORD020,2026-04-05,CUST020,P020,Paper Ream,Stationery,20,500,0,10000,Retail,Neha,East,Cash,Completed
+ORD021,2026-04-10,CUST021,P001,Laptop Pro,Electronics,2,85000,5,161500,Online,Rahul,North,Card,Completed
+ORD022,2026-04-15,CUST022,P003,Office Chair,Furniture,5,8500,10,38250,Online,Priya,South,UPI,Completed
+ORD023,2026-04-20,CUST023,P005,Monitor 24 inch,Electronics,4,14500,5,55100,Retail,Amit,West,Card,Completed
+ORD024,2026-04-25,CUST024,P008,Pen Pack,Stationery,50,300,10,13500,Retail,Neha,East,Cash,Completed
+ORD025,2026-05-01,CUST025,P009,Office Table,Furniture,3,15000,5,42750,Online,Rahul,North,Card,Completed
+ORD026,2026-05-05,CUST026,P010,Keyboard,Electronics,10,2200,0,22000,Retail,Priya,South,UPI,Completed
+ORD027,2026-05-10,CUST027,P011,Headphones,Electronics,7,3500,10,22050,Online,Amit,West,Card,Completed
+ORD028,2026-05-15,CUST028,P012,File Folder,Stationery,26,180,0,4680,Retail,Neha,East,Cash,Completed
+ORD029,2026-05-20,CUST029,P013,Executive Chair,Furniture,6,18000,5,102600,Online,Rahul,North,Card,Completed
+ORD030,2026-05-25,CUST030,P014,Webcam,Electronics,3,4500,0,13500,Online,Priya,South,UPI,Completed
+ORD031,2026-06-01,CUST031,P015,Whiteboard,Office Supplies,2,6500,5,12350,Retail,Amit,West,Card,Completed
+ORD032,2026-06-05,CUST032,P016,Marker Pack,Stationery,40,450,10,16200,Retail,Neha,East,Cash,Completed
+ORD033,2026-06-10,CUST033,P017,Desktop Computer,Electronics,2,65000,10,117000,Online,Rahul,North,Card,Completed
+ORD034,2026-06-15,CUST034,P018,Bookshelf,Furniture,3,11000,0,33000,Retail,Priya,South,UPI,Completed
+ORD035,2026-06-20,CUST035,P019,USB Hub,Electronics,15,1500,5,21375,Online,Amit,West,Card,Completed
+ORD036,2026-06-25,CUST036,P020,Paper Ream,Stationery,35,500,10,15750,Retail,Neha,East,Cash,Completed
+ORD037,2026-07-01,CUST037,P001,Laptop Pro,Electronics,1,85000,0,85000,Online,Rahul,North,Card,Completed
+ORD038,2026-07-05,CUST038,P003,Office Chair,Furniture,7,8500,5,56525,Online,Priya,South,UPI,Completed
+ORD039,2026-07-10,CUST039,P005,Monitor 24 inch,Electronics,5,14500,10,65250,Retail,Amit,West,Card,Completed
+ORD040,2026-07-15,CUST040,P008,Pen Pack,Stationery,60,300,5,17100,Retail,Neha,East,Cash,Completed
+ORD041,2026-07-20,CUST041,P009,Office Table,Furniture,2,15000,0,30000,Online,Rahul,North,Card,Completed
+ORD042,2026-07-25,CUST042,P010,Keyboard,Electronics,12,2200,5,25080,Retail,Priya,South,UPI,Completed
+ORD043,2026-08-01,CUST043,P011,Headphones,Electronics,9,3500,0,31500,Online,Amit,West,Card,Completed
+ORD044,2026-08-05,CUST044,P012,File Folder,Stationery,18,180,0,3240,Retail,Neha,East,Cash,Completed
+ORD045,2026-08-10,CUST045,P013,Executive Chair,Furniture,4,18000,10,64800,Online,Rahul,North,Card,Completed
+ORD046,2026-08-15,CUST046,P014,Webcam,Electronics,5,4500,5,21375,Online,Priya,South,UPI,Completed
+ORD047,2026-08-20,CUST047,P015,Whiteboard,Office Supplies,3,6500,0,19500,Retail,Amit,West,Card,Completed
+ORD048,2026-08-25,CUST048,P016,Marker Pack,Stationery,55,450,10,22275,Retail,Neha,East,Cash,Completed
+ORD049,2026-09-01,CUST049,P017,Desktop Computer,Electronics,1,65000,5,61750,Online,Rahul,North,Card,Completed
+ORD050,2026-09-05,CUST050,P018,Bookshelf,Furniture,5,11000,5,52250,Retail,Priya,South,UPI,Completed

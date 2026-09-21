@@ -1,0 +1,199 @@
+Customer ID,Customer Name,Date,Order ID,Product,Category,Region,City,Quantity,Unit Price,Discount,Revenue,Sales,Channel,Payment Method,Customer Type
+C015,Manish Gowda,2025-02-07,ORD10131,Running Shoes,Sports,South,Bengaluru,3,3569,10,9636.3,9636.3,Marketplace,Card,Returning
+C015,Manish Gowda,2025-02-09,ORD10133,Running Shoes,Sports,South,Bengaluru,1,8978,20,7182.4,7182.4,Marketplace,Net Banking,Returning
+C015,Manish Gowda,2025-02-22,ORD10130,Gym Bag,Sports,South,Bengaluru,1,2222,10,1999.8,1999.8,Mobile App,Card,Returning
+C015,Manish Gowda,2025-02-24,ORD10138,Cricket Bat,Sports,South,Bengaluru,1,4240,20,3392.0,3392.0,Website,Net Banking,Returning
+C004,Priya Nair,2025-02-26,ORD10034,Makeup Kit,Beauty,South,Bengaluru,2,3570,0,7140.0,7140.0,Marketplace,Net Banking,Returning
+C016,Pooja Menon,2025-02-27,ORD10141,T-Shirt,Fashion,South,Kochi,1,5506,10,4955.4,4955.4,Mobile App,Card,Returning
+C003,Vikram Kumar,2025-03-07,ORD10027,Bedsheet,Home,South,Tumakuru,1,6697,10,6027.3,6027.3,Mobile App,Cash,New
+C015,Manish Gowda,2025-03-11,ORD10128,Yoga Mat,Sports,South,Bengaluru,1,3199,0,3199.0,3199.0,Website,UPI,Returning
+C004,Priya Nair,2025-03-12,ORD10040,Skincare Kit,Beauty,South,Bengaluru,1,2115,15,1797.75,1797.75,Store,Card,Returning
+C010,Meera Joshi,2025-03-14,ORD10086,Skincare Kit,Beauty,West,Pune,1,702,15,596.7,596.7,Mobile App,Card,Returning
+C004,Priya Nair,2025-03-19,ORD10043,Hair Care,Beauty,South,Bengaluru,1,3238,0,3238.0,3238.0,Marketplace,UPI,Returning
+C004,Priya Nair,2025-03-19,ORD10044,Perfume,Beauty,South,Bengaluru,1,5637,0,5637.0,5637.0,Marketplace,UPI,Returning
+C014,Neha Kapoor,2025-03-25,ORD10125,Perfume,Beauty,West,Mumbai,1,4095,5,3890.25,3890.25,Marketplace,UPI,Returning
+C012,Ishita Singh,2025-03-30,ORD10098,Bedsheet,Home,North,Delhi,1,1842,0,1842.0,1842.0,Store,Net Banking,Returning
+C010,Meera Joshi,2025-03-31,ORD10090,Makeup Kit,Beauty,West,Pune,1,1569,20,1255.2,1255.2,Mobile App,Card,Returning
+C010,Meera Joshi,2025-04-03,ORD10089,Perfume,Beauty,West,Pune,1,525,0,525.0,525.0,Website,Cash,Returning
+C010,Meera Joshi,2025-04-03,ORD10087,Hair Care,Beauty,West,Pune,3,5021,5,14309.85,14309.85,Store,Net Banking,Returning
+C007,Arjun Mehta,2025-04-04,ORD10068,Yoga Mat,Sports,South,Bengaluru,3,7419,0,22257.0,22257.0,Marketplace,Card,Returning
+C019,Nikhil Jain,2025-04-08,ORD10160,Skincare Kit,Beauty,South,Bengaluru,1,5550,5,5272.5,5272.5,Website,Card,Returning
+C003,Vikram Kumar,2025-04-12,ORD10028,Chair,Home,South,Tumakuru,1,6092,10,5482.8,5482.8,Mobile App,Cash,Returning
+C006,Sneha Reddy,2025-04-16,ORD10060,Jeans,Fashion,South,Hyderabad,2,6212,10,11181.6,11181.6,Website,Card,Returning
+C019,Nikhil Jain,2025-04-23,ORD10165,Perfume,Beauty,South,Bengaluru,1,5199,10,4679.1,4679.1,Marketplace,Cash,Returning
+C016,Pooja Menon,2025-04-24,ORD10143,Shoes,Fashion,South,Kochi,3,3923,0,11769.0,11769.0,Store,UPI,Returning
+C012,Ishita Singh,2025-04-24,ORD10099,Lamp,Home,North,Delhi,1,8484,0,8484.0,8484.0,Mobile App,UPI,Returning
+C020,Shreya Gupta,2025-04-27,ORD10172,Shoes,Fashion,North,Delhi,1,4333,10,3899.7,3899.7,Website,Cash,Returning
+C007,Arjun Mehta,2025-05-01,ORD10063,Yoga Mat,Sports,South,Bengaluru,1,4309,0,4309.0,4309.0,Marketplace,Cash,Returning
+C001,Aarav Sharma,2025-05-03,ORD10005,Laptop,Electronics,South,Bengaluru,1,12427,10,11184.3,11184.3,Mobile App,Cash,Returning
+C010,Meera Joshi,2025-05-06,ORD10083,Perfume,Beauty,West,Pune,1,5099,10,4589.1,4589.1,Mobile App,UPI,Returning
+C003,Vikram Kumar,2025-05-08,ORD10029,Chair,Home,South,Tumakuru,1,1456,10,1310.4,1310.4,Website,Card,Returning
+C019,Nikhil Jain,2025-05-08,ORD10164,Skincare Kit,Beauty,South,Bengaluru,3,5226,10,14110.2,14110.2,Mobile App,UPI,Returning
+C019,Nikhil Jain,2025-05-09,ORD10156,Makeup Kit,Beauty,South,Bengaluru,1,4949,10,4454.1,4454.1,Marketplace,UPI,Returning
+C019,Nikhil Jain,2025-05-11,ORD10158,Hair Care,Beauty,South,Bengaluru,2,2783,10,5009.4,5009.4,Website,Net Banking,Returning
+C014,Neha Kapoor,2025-05-12,ORD10122,Makeup Kit,Beauty,West,Mumbai,1,4808,20,3846.4,3846.4,Store,Net Banking,Returning
+C013,Aditya Verma,2025-05-14,ORD10108,Laptop,Electronics,South,Bengaluru,2,62372,0,124744.0,124744.0,Store,Net Banking,Returning
+C001,Aarav Sharma,2025-05-15,ORD10012,Smartwatch,Electronics,South,Bengaluru,3,15839,5,45141.15,45141.15,Website,Net Banking,Returning
+C019,Nikhil Jain,2025-05-17,ORD10162,Hair Care,Beauty,South,Bengaluru,1,5195,10,4675.5,4675.5,Store,Cash,Returning
+C015,Manish Gowda,2025-05-22,ORD10137,Yoga Mat,Sports,South,Bengaluru,2,4797,0,9594.0,9594.0,Marketplace,Net Banking,Returning
+C001,Aarav Sharma,2025-05-23,ORD10010,Laptop,Electronics,South,Bengaluru,2,51016,20,81625.6,81625.6,Store,Net Banking,Returning
+C007,Arjun Mehta,2025-06-01,ORD10062,Gym Bag,Sports,South,Bengaluru,1,4786,0,4786.0,4786.0,Mobile App,Net Banking,Returning
+C014,Neha Kapoor,2025-06-08,ORD10126,Perfume,Beauty,West,Mumbai,1,5241,5,4978.95,4978.95,Store,Net Banking,Returning
+C014,Neha Kapoor,2025-06-14,ORD10124,Perfume,Beauty,West,Mumbai,3,564,15,1438.2,1438.2,Store,Net Banking,Returning
+C009,Rohan Das,2025-06-15,ORD10079,Smartwatch,Electronics,East,Kolkata,3,6654,10,17965.8,17965.8,Marketplace,Card,New
+C010,Meera Joshi,2025-07-05,ORD10085,Perfume,Beauty,West,Pune,3,4044,0,12132.0,12132.0,Marketplace,UPI,Returning
+C001,Aarav Sharma,2025-07-07,ORD10016,Smartwatch,Electronics,South,Bengaluru,1,45489,10,40940.1,40940.1,Mobile App,Card,Returning
+C013,Aditya Verma,2025-07-13,ORD10115,Smartphone,Electronics,South,Bengaluru,1,9870,0,9870.0,9870.0,Marketplace,Net Banking,Returning
+C001,Aarav Sharma,2025-07-13,ORD10006,Headphones,Electronics,South,Bengaluru,2,60622,15,103057.4,103057.4,Website,Cash,Returning
+C007,Arjun Mehta,2025-07-20,ORD10072,Gym Bag,Sports,South,Bengaluru,1,8049,20,6439.2,6439.2,Website,Card,Returning
+C001,Aarav Sharma,2025-07-21,ORD10002,Smartwatch,Electronics,South,Bengaluru,1,3485,10,3136.5,3136.5,Website,UPI,Returning
+C016,Pooja Menon,2025-07-28,ORD10140,T-Shirt,Fashion,South,Kochi,1,5908,0,5908.0,5908.0,Website,Card,Returning
+C017,Sanjay Rao,2025-07-29,ORD10144,Chair,Home,South,Mysuru,2,7140,15,12138.0,12138.0,Website,UPI,New
+C004,Priya Nair,2025-07-31,ORD10033,Skincare Kit,Beauty,South,Bengaluru,1,2924,10,2631.6,2631.6,Mobile App,Net Banking,Returning
+C005,Rahul Shetty,2025-07-31,ORD10054,Smartwatch,Electronics,South,Mangaluru,3,34279,20,82269.6,82269.6,Website,Net Banking,Returning
+C007,Arjun Mehta,2025-08-13,ORD10067,Cricket Bat,Sports,South,Bengaluru,1,3303,20,2642.4,2642.4,Website,Net Banking,Returning
+C007,Arjun Mehta,2025-08-19,ORD10066,Gym Bag,Sports,South,Bengaluru,3,6790,0,20370.0,20370.0,Website,Card,Returning
+C018,Divya Shah,2025-08-26,ORD10154,Laptop,Electronics,West,Ahmedabad,1,61520,0,61520.0,61520.0,Marketplace,Net Banking,Returning
+C006,Sneha Reddy,2025-08-31,ORD10057,Shoes,Fashion,South,Hyderabad,2,5191,10,9343.8,9343.8,Website,Net Banking,Returning
+C006,Sneha Reddy,2025-08-31,ORD10058,Shoes,Fashion,South,Hyderabad,2,5861,20,9377.6,9377.6,Mobile App,UPI,Returning
+C017,Sanjay Rao,2025-09-09,ORD10145,Mixer,Home,South,Mysuru,2,9002,0,18004.0,18004.0,Mobile App,Net Banking,Returning
+C015,Manish Gowda,2025-09-12,ORD10135,Cricket Bat,Sports,South,Bengaluru,1,753,0,753.0,753.0,Website,UPI,Returning
+C002,Ananya Rao,2025-09-13,ORD10021,Shoes,Fashion,South,Mysuru,1,5949,15,5056.65,5056.65,Marketplace,Net Banking,Returning
+C018,Divya Shah,2025-09-16,ORD10146,Smartphone,Electronics,West,Ahmedabad,1,32386,10,29147.4,29147.4,Store,UPI,New
+C006,Sneha Reddy,2025-09-19,ORD10059,Jacket,Fashion,South,Hyderabad,2,5546,0,11092.0,11092.0,Website,Card,Returning
+C013,Aditya Verma,2025-09-21,ORD10104,Laptop,Electronics,South,Bengaluru,1,20181,20,16144.8,16144.8,Store,Card,Returning
+C010,Meera Joshi,2025-09-27,ORD10081,Perfume,Beauty,West,Pune,1,1160,20,928.0,928.0,Marketplace,Net Banking,New
+C009,Rohan Das,2025-09-28,ORD10080,Laptop,Electronics,East,Kolkata,1,53784,0,53784.0,53784.0,Mobile App,UPI,Returning
+C004,Priya Nair,2025-09-30,ORD10035,Skincare Kit,Beauty,South,Bengaluru,1,2465,0,2465.0,2465.0,Store,Card,Returning
+C013,Aditya Verma,2025-10-02,ORD10117,Smartphone,Electronics,South,Bengaluru,2,29496,0,58992.0,58992.0,Marketplace,Card,Returning
+C005,Rahul Shetty,2025-10-03,ORD10049,Headphones,Electronics,South,Mangaluru,2,19871,0,39742.0,39742.0,Website,UPI,Returning
+C016,Pooja Menon,2025-10-08,ORD10142,Jacket,Fashion,South,Kochi,2,4932,0,9864.0,9864.0,Store,Card,Returning
+C007,Arjun Mehta,2025-10-10,ORD10070,Running Shoes,Sports,South,Bengaluru,2,2181,5,4143.9,4143.9,Website,Card,Returning
+C001,Aarav Sharma,2025-10-19,ORD10004,Smartphone,Electronics,South,Bengaluru,3,55610,5,158488.5,158488.5,Website,Net Banking,Returning
+C004,Priya Nair,2025-10-24,ORD10032,Perfume,Beauty,South,Bengaluru,1,4948,5,4700.6,4700.6,Marketplace,Net Banking,Returning
+C013,Aditya Verma,2025-10-25,ORD10116,Smartphone,Electronics,South,Bengaluru,1,3790,10,3411.0,3411.0,Store,Net Banking,Returning
+C020,Shreya Gupta,2025-10-31,ORD10171,T-Shirt,Fashion,North,Delhi,1,2955,15,2511.75,2511.75,Website,UPI,New
+C015,Manish Gowda,2025-11-03,ORD10136,Running Shoes,Sports,South,Bengaluru,1,6785,0,6785.0,6785.0,Store,Net Banking,Returning
+C019,Nikhil Jain,2025-11-14,ORD10166,Makeup Kit,Beauty,South,Bengaluru,2,1306,20,2089.6,2089.6,Store,Cash,Returning
+C015,Manish Gowda,2025-11-17,ORD10134,Yoga Mat,Sports,South,Bengaluru,3,8315,20,19956.0,19956.0,Marketplace,Net Banking,Returning
+C016,Pooja Menon,2025-11-25,ORD10139,T-Shirt,Fashion,South,Kochi,1,4762,10,4285.8,4285.8,Mobile App,Cash,New
+C006,Sneha Reddy,2025-11-28,ORD10056,Jacket,Fashion,South,Hyderabad,2,3202,10,5763.6,5763.6,Store,Card,New
+C011,Kiran Patil,2025-11-29,ORD10094,Jeans,Fashion,South,Hubballi,1,6551,0,6551.0,6551.0,Mobile App,Cash,Returning
+C012,Ishita Singh,2025-12-01,ORD10097,Mixer,Home,North,Delhi,3,509,0,1527.0,1527.0,Marketplace,Card,New
+C020,Shreya Gupta,2025-12-06,ORD10173,Jeans,Fashion,North,Delhi,1,1226,10,1103.4,1103.4,Website,Card,Returning
+C014,Neha Kapoor,2025-12-07,ORD10121,Skincare Kit,Beauty,West,Mumbai,1,2301,10,2070.9,2070.9,Website,Net Banking,Returning
+C004,Priya Nair,2025-12-07,ORD10039,Makeup Kit,Beauty,South,Bengaluru,3,1566,20,3758.4,3758.4,Store,Card,Returning
+C020,Shreya Gupta,2025-12-09,ORD10174,Jeans,Fashion,North,Delhi,3,816,5,2325.6,2325.6,Marketplace,UPI,Returning
+C008,Kavya Iyer,2025-12-19,ORD10077,Lamp,Home,South,Chennai,2,5173,20,8276.8,8276.8,Mobile App,Cash,Returning
+C008,Kavya Iyer,2025-12-22,ORD10078,Chair,Home,South,Chennai,1,7502,0,7502.0,7502.0,Mobile App,UPI,Returning
+C001,Aarav Sharma,2025-12-27,ORD10018,Headphones,Electronics,South,Bengaluru,3,23759,20,57021.6,57021.6,Store,Card,Returning
+C019,Nikhil Jain,2025-12-28,ORD10168,Hair Care,Beauty,South,Bengaluru,2,2223,15,3779.1,3779.1,Store,Net Banking,Returning
+C015,Manish Gowda,2026-01-05,ORD10129,Running Shoes,Sports,South,Bengaluru,3,674,15,1718.7,1718.7,Mobile App,Cash,Returning
+C004,Priya Nair,2026-01-05,ORD10042,Hair Care,Beauty,South,Bengaluru,1,1035,5,983.25,983.25,Website,Cash,Returning
+C018,Divya Shah,2026-01-19,ORD10147,Smartphone,Electronics,West,Ahmedabad,1,26374,5,25055.3,25055.3,Website,Card,Returning
+C005,Rahul Shetty,2026-01-23,ORD10045,Laptop,Electronics,South,Mangaluru,2,49693,5,94416.7,94416.7,Website,Card,New
+C005,Rahul Shetty,2026-01-24,ORD10055,Laptop,Electronics,South,Mangaluru,3,43355,5,123561.75,123561.75,Store,UPI,Returning
+C004,Priya Nair,2026-01-30,ORD10031,Perfume,Beauty,South,Bengaluru,3,962,5,2741.7,2741.7,Store,Card,Returning
+C001,Aarav Sharma,2026-02-02,ORD10009,Laptop,Electronics,South,Bengaluru,2,10329,10,18592.2,18592.2,Marketplace,UPI,Returning
+C007,Arjun Mehta,2026-02-02,ORD10069,Yoga Mat,Sports,South,Bengaluru,2,6642,15,11291.4,11291.4,Store,UPI,Returning
+C005,Rahul Shetty,2026-02-05,ORD10046,Smartphone,Electronics,South,Mangaluru,2,56140,10,101052.0,101052.0,Store,Cash,Returning
+C014,Neha Kapoor,2026-02-09,ORD10123,Perfume,Beauty,West,Mumbai,1,4075,0,4075.0,4075.0,Store,Cash,Returning
+C005,Rahul Shetty,2026-02-09,ORD10047,Smartphone,Electronics,South,Mangaluru,3,39020,0,117060.0,117060.0,Mobile App,Net Banking,Returning
+C013,Aditya Verma,2026-02-15,ORD10109,Smartphone,Electronics,South,Bengaluru,1,36684,20,29347.2,29347.2,Mobile App,Card,Returning
+C013,Aditya Verma,2026-02-18,ORD10103,Smartwatch,Electronics,South,Bengaluru,3,41511,20,99626.4,99626.4,Website,UPI,Returning
+C019,Nikhil Jain,2026-02-21,ORD10163,Hair Care,Beauty,South,Bengaluru,3,1647,10,4446.9,4446.9,Store,Card,Returning
+C005,Rahul Shetty,2026-02-22,ORD10051,Smartphone,Electronics,South,Mangaluru,2,28922,0,57844.0,57844.0,Mobile App,Card,Returning
+C002,Ananya Rao,2026-02-22,ORD10020,Shoes,Fashion,South,Mysuru,2,3699,10,6658.2,6658.2,Mobile App,Net Banking,Returning
+C018,Divya Shah,2026-02-24,ORD10150,Smartwatch,Electronics,West,Ahmedabad,1,31557,10,28401.3,28401.3,Website,Net Banking,Returning
+C011,Kiran Patil,2026-03-01,ORD10092,Shoes,Fashion,South,Hubballi,3,4148,15,10577.4,10577.4,Store,Cash,Returning
+C018,Divya Shah,2026-03-04,ORD10151,Laptop,Electronics,West,Ahmedabad,1,38132,0,38132.0,38132.0,Website,UPI,Returning
+C010,Meera Joshi,2026-03-04,ORD10088,Hair Care,Beauty,West,Pune,2,2306,0,4612.0,4612.0,Store,UPI,Returning
+C001,Aarav Sharma,2026-03-09,ORD10017,Smartwatch,Electronics,South,Bengaluru,1,12030,0,12030.0,12030.0,Website,Net Banking,Returning
+C002,Ananya Rao,2026-03-10,ORD10024,Jeans,Fashion,South,Mysuru,1,846,10,761.4,761.4,Website,UPI,Returning
+C013,Aditya Verma,2026-03-13,ORD10119,Smartwatch,Electronics,South,Bengaluru,3,61476,5,175206.6,175206.6,Mobile App,UPI,Returning
+C010,Meera Joshi,2026-03-15,ORD10082,Makeup Kit,Beauty,West,Pune,2,680,5,1292.0,1292.0,Store,UPI,Returning
+C014,Neha Kapoor,2026-03-24,ORD10120,Hair Care,Beauty,West,Mumbai,1,2561,5,2432.95,2432.95,Store,Cash,New
+C013,Aditya Verma,2026-04-06,ORD10118,Smartwatch,Electronics,South,Bengaluru,2,64623,5,122783.7,122783.7,Marketplace,Net Banking,Returning
+C018,Divya Shah,2026-04-07,ORD10149,Smartwatch,Electronics,West,Ahmedabad,2,44994,20,71990.4,71990.4,Marketplace,Net Banking,Returning
+C004,Priya Nair,2026-04-09,ORD10041,Skincare Kit,Beauty,South,Bengaluru,1,3451,20,2760.8,2760.8,Marketplace,Card,Returning
+C013,Aditya Verma,2026-04-10,ORD10113,Smartphone,Electronics,South,Bengaluru,2,60349,15,102593.3,102593.3,Store,Net Banking,Returning
+C013,Aditya Verma,2026-04-13,ORD10101,Smartwatch,Electronics,South,Bengaluru,1,43632,10,39268.8,39268.8,Website,Net Banking,Returning
+C002,Ananya Rao,2026-04-15,ORD10022,Jacket,Fashion,South,Mysuru,1,1466,10,1319.4,1319.4,Mobile App,Card,Returning
+C019,Nikhil Jain,2026-04-18,ORD10169,Makeup Kit,Beauty,South,Bengaluru,2,5364,15,9118.8,9118.8,Store,UPI,Returning
+C013,Aditya Verma,2026-04-20,ORD10111,Smartwatch,Electronics,South,Bengaluru,2,62079,0,124158.0,124158.0,Marketplace,Net Banking,Returning
+C011,Kiran Patil,2026-04-24,ORD10091,T-Shirt,Fashion,South,Hubballi,1,3172,0,3172.0,3172.0,Store,Cash,New
+C013,Aditya Verma,2026-04-27,ORD10110,Smartwatch,Electronics,South,Bengaluru,1,12180,10,10962.0,10962.0,Store,Cash,Returning
+C010,Meera Joshi,2026-05-01,ORD10193,Skincare Kit,Beauty,West,Pune,1,3678,10,3310.2,3310.2,Marketplace,UPI,Returning
+C008,Kavya Iyer,2026-05-03,ORD10076,Chair,Home,South,Chennai,1,10676,5,10142.2,10142.2,Website,UPI,Returning
+C004,Priya Nair,2026-05-03,ORD10182,Skincare Kit,Beauty,South,Bengaluru,1,2634,0,2634.0,2634.0,Website,Net Banking,Returning
+C006,Sneha Reddy,2026-05-03,ORD10185,Shoes,Fashion,South,Hyderabad,2,1554,15,2641.8,2641.8,Mobile App,UPI,Returning
+C007,Arjun Mehta,2026-05-06,ORD10065,Gym Bag,Sports,South,Bengaluru,1,4227,10,3804.3,3804.3,Marketplace,UPI,Returning
+C003,Vikram Kumar,2026-05-09,ORD10180,Chair,Home,South,Tumakuru,1,5983,15,5085.55,5085.55,Marketplace,Card,Returning
+C018,Divya Shah,2026-05-09,ORD10148,Smartphone,Electronics,West,Ahmedabad,1,57419,20,45935.2,45935.2,Website,Net Banking,Returning
+C008,Kavya Iyer,2026-05-11,ORD10075,Mixer,Home,South,Chennai,1,10773,20,8618.4,8618.4,Mobile App,Card,New
+C013,Aditya Verma,2026-05-12,ORD10112,Laptop,Electronics,South,Bengaluru,3,22330,15,56941.5,56941.5,Website,UPI,Returning
+C013,Aditya Verma,2026-05-13,ORD10102,Smartphone,Electronics,South,Bengaluru,1,61765,0,61765.0,61765.0,Marketplace,Cash,Returning
+C008,Kavya Iyer,2026-05-14,ORD10189,Mixer,Home,South,Chennai,2,5248,15,8921.6,8921.6,Store,Card,Returning
+C009,Rohan Das,2026-05-16,ORD10192,Smartwatch,Electronics,East,Kolkata,2,7724,15,13130.8,13130.8,Store,Cash,Returning
+C001,Aarav Sharma,2026-05-17,ORD10175,Laptop,Electronics,South,Bengaluru,2,28589,0,57178.0,57178.0,Website,Cash,Returning
+C007,Arjun Mehta,2026-05-18,ORD10188,Yoga Mat,Sports,South,Bengaluru,2,5273,10,9491.4,9491.4,Marketplace,Card,Returning
+C002,Ananya Rao,2026-05-18,ORD10019,Shoes,Fashion,South,Mysuru,2,2553,15,4340.1,4340.1,Store,Card,New
+C001,Aarav Sharma,2026-05-19,ORD10008,Smartphone,Electronics,South,Bengaluru,2,1961,20,3137.6,3137.6,Marketplace,UPI,Returning
+C011,Kiran Patil,2026-05-20,ORD10195,Jeans,Fashion,South,Hubballi,2,1768,10,3182.4,3182.4,Website,UPI,Returning
+C001,Aarav Sharma,2026-05-24,ORD10015,Headphones,Electronics,South,Bengaluru,2,3478,20,5564.8,5564.8,Store,Net Banking,Returning
+C005,Rahul Shetty,2026-05-25,ORD10053,Laptop,Electronics,South,Mangaluru,1,37535,0,37535.0,37535.0,Website,Net Banking,Returning
+C004,Priya Nair,2026-05-25,ORD10037,Perfume,Beauty,South,Bengaluru,1,4741,20,3792.8,3792.8,Website,Card,Returning
+C006,Sneha Reddy,2026-05-31,ORD10186,Shoes,Fashion,South,Hyderabad,2,2871,5,5454.9,5454.9,Store,Cash,Returning
+C007,Arjun Mehta,2026-06-03,ORD10074,Cricket Bat,Sports,South,Bengaluru,2,7845,0,15690.0,15690.0,Mobile App,UPI,Returning
+C003,Vikram Kumar,2026-06-03,ORD10179,Chair,Home,South,Tumakuru,2,2495,10,4491.0,4491.0,Website,Card,Returning
+C009,Rohan Das,2026-06-04,ORD10191,Headphones,Electronics,East,Kolkata,1,15760,5,14972.0,14972.0,Mobile App,Card,Returning
+C001,Aarav Sharma,2026-06-07,ORD10176,Laptop,Electronics,South,Bengaluru,1,32087,0,32087.0,32087.0,Marketplace,UPI,Returning
+C004,Priya Nair,2026-06-08,ORD10030,Makeup Kit,Beauty,South,Bengaluru,1,3135,5,2978.25,2978.25,Store,Card,New
+C007,Arjun Mehta,2026-06-10,ORD10187,Gym Bag,Sports,South,Bengaluru,2,1969,0,3938.0,3938.0,Store,UPI,Returning
+C002,Ananya Rao,2026-06-10,ORD10178,Jeans,Fashion,South,Mysuru,1,1717,5,1631.15,1631.15,Mobile App,Net Banking,Returning
+C012,Ishita Singh,2026-06-12,ORD10198,Chair,Home,North,Delhi,2,6894,5,13098.6,13098.6,Marketplace,Net Banking,Returning
+C002,Ananya Rao,2026-06-15,ORD10177,Jeans,Fashion,South,Mysuru,2,3520,0,7040.0,7040.0,Website,UPI,Returning
+C004,Priya Nair,2026-06-16,ORD10181,Perfume,Beauty,South,Bengaluru,1,707,5,671.65,671.65,Mobile App,Card,Returning
+C005,Rahul Shetty,2026-06-18,ORD10052,Headphones,Electronics,South,Mangaluru,1,22158,10,19942.2,19942.2,Website,UPI,Returning
+C010,Meera Joshi,2026-06-18,ORD10194,Makeup Kit,Beauty,West,Pune,1,1890,5,1795.5,1795.5,Store,UPI,Returning
+C005,Rahul Shetty,2026-06-20,ORD10184,Smartwatch,Electronics,South,Mangaluru,2,22049,15,37483.3,37483.3,Website,Net Banking,Returning
+C001,Aarav Sharma,2026-06-22,ORD10001,Laptop,Electronics,South,Bengaluru,1,56143,5,53335.85,53335.85,Marketplace,UPI,New
+C007,Arjun Mehta,2026-06-22,ORD10064,Running Shoes,Sports,South,Bengaluru,1,1104,20,883.2,883.2,Marketplace,UPI,Returning
+C008,Kavya Iyer,2026-06-25,ORD10190,Mixer,Home,South,Chennai,1,4414,0,4414.0,4414.0,Marketplace,Card,Returning
+C002,Ananya Rao,2026-06-26,ORD10023,T-Shirt,Fashion,South,Mysuru,1,1847,10,1662.3,1662.3,Store,Cash,Returning
+C005,Rahul Shetty,2026-06-27,ORD10183,Laptop,Electronics,South,Mangaluru,1,22022,10,19819.8,19819.8,Store,Cash,Returning
+C005,Rahul Shetty,2026-06-27,ORD10050,Laptop,Electronics,South,Mangaluru,2,42570,10,76626.0,76626.0,Website,Cash,Returning
+C007,Arjun Mehta,2026-06-27,ORD10073,Running Shoes,Sports,South,Bengaluru,1,8775,20,7020.0,7020.0,Mobile App,Cash,Returning
+C015,Manish Gowda,2026-06-27,ORD10127,Running Shoes,Sports,South,Bengaluru,2,1987,0,3974.0,3974.0,Mobile App,Card,New
+C019,Nikhil Jain,2026-06-28,ORD10170,Hair Care,Beauty,South,Bengaluru,1,3998,5,3798.1,3798.1,Marketplace,UPI,Returning
+C012,Ishita Singh,2026-06-28,ORD10197,Lamp,Home,North,Delhi,1,8073,10,7265.7,7265.7,Marketplace,Net Banking,Returning
+C011,Kiran Patil,2026-06-28,ORD10196,Shoes,Fashion,South,Hubballi,1,1808,15,1536.8,1536.8,Mobile App,Cash,Returning
+C001,Aarav Sharma,2026-06-30,ORD10011,Smartwatch,Electronics,South,Bengaluru,1,63658,10,57292.2,57292.2,Store,UPI,Returning
+C001,Aarav Sharma,2026-06-30,ORD10007,Smartwatch,Electronics,South,Bengaluru,2,21257,15,36136.9,36136.9,Website,Net Banking,Returning
+C019,Nikhil Jain,2026-06-30,ORD10161,Hair Care,Beauty,South,Bengaluru,1,2412,0,2412.0,2412.0,Marketplace,UPI,Returning
+C001,Aarav Sharma,2026-06-30,ORD10014,Smartwatch,Electronics,South,Bengaluru,2,58810,10,105858.0,105858.0,Mobile App,UPI,Returning
+C001,Aarav Sharma,2026-06-30,ORD10013,Headphones,Electronics,South,Bengaluru,1,19212,0,19212.0,19212.0,Store,Net Banking,Returning
+C007,Arjun Mehta,2026-06-30,ORD10061,Running Shoes,Sports,South,Bengaluru,1,8094,0,8094.0,8094.0,Website,Cash,New
+C002,Ananya Rao,2026-06-30,ORD10026,Shoes,Fashion,South,Mysuru,1,6123,0,6123.0,6123.0,Website,Net Banking,Returning
+C013,Aditya Verma,2026-06-30,ORD10114,Laptop,Electronics,South,Bengaluru,2,33680,20,53888.0,53888.0,Marketplace,UPI,Returning
+C001,Aarav Sharma,2026-06-30,ORD10003,Smartphone,Electronics,South,Bengaluru,3,8196,0,24588.0,24588.0,Marketplace,Cash,Returning
+C005,Rahul Shetty,2026-06-30,ORD10048,Smartwatch,Electronics,South,Mangaluru,1,43775,20,35020.0,35020.0,Mobile App,UPI,Returning
+C019,Nikhil Jain,2026-06-30,ORD10167,Perfume,Beauty,South,Bengaluru,1,915,10,823.5,823.5,Website,Net Banking,Returning
+C019,Nikhil Jain,2026-06-30,ORD10157,Perfume,Beauty,South,Bengaluru,2,2562,5,4867.8,4867.8,Marketplace,Cash,Returning
+C013,Aditya Verma,2026-06-30,ORD10107,Headphones,Electronics,South,Bengaluru,1,45672,10,41104.8,41104.8,Marketplace,Cash,Returning
+C019,Nikhil Jain,2026-06-30,ORD10155,Skincare Kit,Beauty,South,Bengaluru,1,1818,0,1818.0,1818.0,Marketplace,Cash,New
+C011,Kiran Patil,2026-06-30,ORD10095,Shoes,Fashion,South,Hubballi,1,3462,10,3115.8,3115.8,Website,Cash,Returning
+C018,Divya Shah,2026-06-30,ORD10153,Headphones,Electronics,West,Ahmedabad,1,20650,5,19617.5,19617.5,Marketplace,Net Banking,Returning
+C018,Divya Shah,2026-06-30,ORD10152,Headphones,Electronics,West,Ahmedabad,3,17676,0,53028.0,53028.0,Store,Cash,Returning
+C011,Kiran Patil,2026-06-30,ORD10096,Shoes,Fashion,South,Hubballi,1,5115,5,4859.25,4859.25,Store,Cash,Returning
+C013,Aditya Verma,2026-06-30,ORD10106,Laptop,Electronics,South,Bengaluru,2,33954,15,57721.8,57721.8,Mobile App,Card,Returning
+C010,Meera Joshi,2026-06-30,ORD10084,Skincare Kit,Beauty,West,Pune,1,2993,0,2993.0,2993.0,Website,Net Banking,Returning
+C013,Aditya Verma,2026-06-30,ORD10105,Headphones,Electronics,South,Bengaluru,1,26319,10,23687.1,23687.1,Website,Card,Returning
+C015,Manish Gowda,2026-06-30,ORD10132,Gym Bag,Sports,South,Bengaluru,1,3466,10,3119.4,3119.4,Marketplace,Net Banking,Returning
+C007,Arjun Mehta,2026-06-30,ORD10071,Cricket Bat,Sports,South,Bengaluru,2,8009,5,15217.1,15217.1,Website,UPI,Returning
+C004,Priya Nair,2026-06-30,ORD10038,Hair Care,Beauty,South,Bengaluru,1,3350,10,3015.0,3015.0,Website,Cash,Returning
+C013,Aditya Verma,2026-06-30,ORD10100,Laptop,Electronics,South,Bengaluru,1,20819,15,17696.15,17696.15,Marketplace,Cash,New
+C002,Ananya Rao,2026-06-30,ORD10025,Jeans,Fashion,South,Mysuru,1,6765,10,6088.5,6088.5,Marketplace,Card,Returning
+C004,Priya Nair,2026-06-30,ORD10036,Hair Care,Beauty,South,Bengaluru,3,4414,0,13242.0,13242.0,Store,Net Banking,Returning
+C019,Nikhil Jain,2026-06-30,ORD10159,Makeup Kit,Beauty,South,Bengaluru,1,2116,5,2010.2,2010.2,Mobile App,Cash,Returning
+C011,Kiran Patil,2026-06-30,ORD10093,Jeans,Fashion,South,Hubballi,1,3097,10,2787.3,2787.3,Marketplace,Cash,Returning

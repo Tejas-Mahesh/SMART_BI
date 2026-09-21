@@ -1,0 +1,368 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Future Trends History | Smart Business Intelligence
+{% endblock %}
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'advanced_insights/css/future_trends.css' %}"
+>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="smart-workspace-shell">
+
+
+    <!-- =====================================================
+         LEFT SIDEBAR
+    ====================================================== -->
+
+    <aside class="smart-workspace-sidebar">
+
+        {% include "includes/smart_sidebar.html" %}
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="smart-workspace-main">
+
+        <div class="future-trends-page">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <section class="future-trends-header">
+
+                <div class="future-trends-header-content">
+
+                    <div class="future-trends-eyebrow">
+
+                        <span class="future-trends-eyebrow-dot"></span>
+
+                        ADVANCED INSIGHTS
+
+                    </div>
+
+
+                    <h1>
+                        Future Trends History
+                    </h1>
+
+
+                    <p>
+                        Review previously completed Future Trends
+                        analyses and their selected datasets,
+                        versions, metrics, and frequencies.
+                    </p>
+
+                </div>
+
+
+                <div class="future-trends-header-icon">
+                    ↗
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 WORKSPACE
+            ================================================== -->
+
+            <div class="future-trends-workspace">
+
+
+                <div class="future-trends-card">
+
+
+                    <!-- =================================================
+                         HEADER
+                    ================================================== -->
+
+                    <div class="future-trends-card-header">
+
+                        <div>
+
+                            <span class="section-kicker">
+                                ANALYSIS HISTORY
+                            </span>
+
+
+                            <h2>
+                                Previous Trend Analyses
+                            </h2>
+
+
+                            <p>
+                                Every completed or failed Future Trends
+                                run is retained as an analysis record.
+                            </p>
+
+                        </div>
+
+
+                        <!-- NEW ANALYSIS BUTTON -->
+
+                        <a
+                            href="{% url 'advanced_insights:future_trends' %}"
+                            class="future-trends-history-button"
+                        >
+
+                            New Analysis
+
+                        </a>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         HISTORY
+                    ================================================== -->
+
+                    {% if history %}
+
+
+                        <div class="future-trends-history-list">
+
+
+                            {% for run in history %}
+
+
+                                <div
+                                    class="future-trends-history-item"
+                                >
+
+
+                                    <!-- MAIN -->
+
+                                    <div class="history-main">
+
+
+                                        <div class="history-icon">
+
+                                            {% if run.status == "Completed" %}
+
+                                                ✓
+
+                                            {% elif run.status == "Failed" %}
+
+                                                !
+
+                                            {% else %}
+
+                                                …
+
+                                            {% endif %}
+
+                                        </div>
+
+
+                                        <div class="history-content">
+
+
+                                            <div
+                                                class="history-title-row"
+                                            >
+
+                                                <h3>
+
+                                                    {% if run.trend_result %}
+
+                                                        {{ run.trend_result.metric_column }}
+
+                                                    {% else %}
+
+                                                        Future Trends Analysis
+
+                                                    {% endif %}
+
+                                                </h3>
+
+
+                                                <span
+                                                    class="
+                                                        history-status
+                                                        history-status-{{ run.status|lower }}
+                                                    "
+                                                >
+
+                                                    {{ run.status }}
+
+                                                </span>
+
+                                            </div>
+
+
+                                            <p>
+
+                                                {{ run.dataset.name }}
+
+                                                · Version
+                                                {{ run.dataset_version.version_number }}
+
+                                                {% if run.trend_result %}
+
+                                                    ·
+                                                    {{ run.trend_result.frequency }}
+
+                                                {% endif %}
+
+                                            </p>
+
+
+                                            <span class="history-date">
+
+                                                {{ run.started_at|date:"d M Y, H:i" }}
+
+                                            </span>
+
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- METRICS -->
+
+                                    {% if run.trend_result %}
+
+                                        <div class="history-metrics">
+
+
+                                            <div>
+
+                                                <span>
+                                                    Direction
+                                                </span>
+
+                                                <strong>
+                                                    {{ run.trend_result.trend_direction }}
+                                                </strong>
+
+                                            </div>
+
+
+                                            <div>
+
+                                                <span>
+                                                    Strength
+                                                </span>
+
+                                                <strong>
+                                                    {{ run.trend_result.trend_strength }}
+                                                </strong>
+
+                                            </div>
+
+
+                                            <div>
+
+                                                <span>
+                                                    Change
+                                                </span>
+
+                                                <strong>
+
+                                                    {% if run.trend_result.percentage_change is not None %}
+
+                                                        {% if run.trend_result.percentage_change > 0 %}
+
+                                                            +{{ run.trend_result.percentage_change|floatformat:2 }}%
+
+                                                        {% else %}
+
+                                                            {{ run.trend_result.percentage_change|floatformat:2 }}%
+
+                                                        {% endif %}
+
+                                                    {% else %}
+
+                                                        —
+
+                                                    {% endif %}
+
+                                                </strong>
+
+                                            </div>
+
+
+                                        </div>
+
+                                    {% endif %}
+
+
+                                </div>
+
+
+                            {% endfor %}
+
+
+                        </div>
+
+
+                    {% else %}
+
+
+                        <!-- =================================================
+                             NO HISTORY
+                        ================================================== -->
+
+                        <div class="future-trends-ready-card">
+
+
+                            <div class="ready-icon">
+                                ↗
+                            </div>
+
+
+                            <div>
+
+                                <span class="section-kicker">
+                                    NO HISTORY
+                                </span>
+
+
+                                <h3>
+                                    No Future Trends analyses yet
+                                </h3>
+
+
+                                <p>
+                                    Run your first Future Trends analysis
+                                    to create an analysis history.
+                                </p>
+
+                            </div>
+
+
+                        </div>
+
+
+                    {% endif %}
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+{% endblock %}

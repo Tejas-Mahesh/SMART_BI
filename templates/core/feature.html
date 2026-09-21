@@ -1,0 +1,1019 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Features | Smart BI Business Decision Intelligence{% endblock %}
+
+{% block content %}
+<div class="smart-features" id="smartFeaturesRoot">
+
+    <!-- AMBIENT GLOW BACKDROPS & SUBTLE CYBER GRID -->
+    <div class="feat-ambient-glow feat-glow-top" aria-hidden="true"></div>
+    <div class="feat-ambient-glow feat-glow-mid" aria-hidden="true"></div>
+    <div class="feat-ambient-glow feat-glow-bottom" aria-hidden="true"></div>
+    <div class="feat-ambient-grid" aria-hidden="true"></div>
+
+    <!-- 1. CINEMATIC HERO SECTION -->
+    <section class="feat-hero-section" id="featuresHero" aria-label="Smart BI Features Hero">
+        <div class="feat-shell">
+            <div class="feat-hero-layout">
+
+                <!-- HERO CONTENT (LEFT) -->
+                <div class="feat-hero-content">
+                    <div class="feat-badge-pill feat-reveal">
+                        <span class="feat-pulse-dot" aria-hidden="true"></span>
+                        <span class="feat-badge-text">SMART BI FEATURES</span>
+                    </div>
+
+                    <h1 class="feat-hero-headline feat-reveal">
+                        <span class="feat-headline-row">Everything Your Business Needs</span>
+                        <span class="feat-headline-row">To Become</span>
+                        <span class="feat-headline-row feat-gradient-text">Data Intelligent.</span>
+                    </h1>
+
+                    <p class="feat-hero-lead feat-reveal">
+                        From data management and business analytics to forecasting, decision intelligence and automated reporting, Smart BI brings the complete business intelligence journey into one intelligent platform.
+                    </p>
+
+                    <div class="feat-hero-actions feat-reveal">
+                        <a href="#featureArchitecture" class="feat-btn-primary" id="exploreFeaturesBtn">
+                            <span class="feat-btn-text">Explore Features</span>
+                            <span class="feat-btn-icon" aria-hidden="true">&darr;</span>
+                        </a>
+
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'core:dashboard' %}" class="feat-btn-glass" id="heroStartDataAuth">
+                                <span class="feat-btn-text">Start With Your Data</span>
+                                <span class="feat-btn-icon" aria-hidden="true">&rarr;</span>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'accounts:signup' %}" class="feat-btn-glass" id="heroStartDataAnon">
+                                <span class="feat-btn-text">Start With Your Data</span>
+                                <span class="feat-btn-icon" aria-hidden="true">&rarr;</span>
+                            </a>
+                        {% endif %}
+                    </div>
+
+                    <div class="feat-hero-metrics feat-reveal">
+                        <div class="feat-metric-unit">
+                            <span class="feat-metric-val">5</span>
+                            <span class="feat-metric-lbl">Intelligence Layers</span>
+                        </div>
+                        <div class="feat-metric-divider" aria-hidden="true"></div>
+                        <div class="feat-metric-unit">
+                            <span class="feat-metric-val">34+</span>
+                            <span class="feat-metric-lbl">Core Modules</span>
+                        </div>
+                        <div class="feat-metric-divider" aria-hidden="true"></div>
+                        <div class="feat-metric-unit">
+                            <span class="feat-metric-val">End-to-End</span>
+                            <span class="feat-metric-lbl">Lifecycle Flow</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HERO VISUAL: 5-TIER INTELLIGENCE ARCHITECTURE (RIGHT) -->
+                <div class="feat-hero-visual-col feat-reveal">
+                    <div class="feat-arch-tower" id="heroArchTower" aria-label="5 Connected Intelligence Stages">
+                        <div class="feat-tower-header">
+                            <div class="feat-tower-title">
+                                <span class="feat-tower-dot"></span>
+                                <span>INTELLIGENCE ARCHITECTURE MATRIX</span>
+                            </div>
+                            <span class="feat-tower-tag">SYNCHRONIZED PIPELINE</span>
+                        </div>
+
+                        <div class="feat-tower-nodes-stack">
+                            <div class="feat-tower-wire" aria-hidden="true">
+                                <div class="feat-wire-pulse" id="towerWirePulse"></div>
+                            </div>
+
+                            <!-- NODE 01: DATA -->
+                            <div class="feat-tower-node active" data-tower-stage="1">
+                                <div class="feat-node-idx-badge purple">01</div>
+                                <div class="feat-node-meta">
+                                    <span class="feat-node-title">DATA</span>
+                                    <span class="feat-node-sub">Raw business information ingestion</span>
+                                </div>
+                                <div class="feat-node-status-glow"></div>
+                            </div>
+
+                            <!-- NODE 02: ANALYTICS -->
+                            <div class="feat-tower-node" data-tower-stage="2">
+                                <div class="feat-node-idx-badge blue">02</div>
+                                <div class="feat-node-meta">
+                                    <span class="feat-node-title">ANALYTICS</span>
+                                    <span class="feat-node-sub">Understand performance telemetry</span>
+                                </div>
+                                <div class="feat-node-status-glow"></div>
+                            </div>
+
+                            <!-- NODE 03: INSIGHTS -->
+                            <div class="feat-tower-node" data-tower-stage="3">
+                                <div class="feat-node-idx-badge green">03</div>
+                                <div class="feat-node-meta">
+                                    <span class="feat-node-title">INSIGHTS</span>
+                                    <span class="feat-node-sub">Predict patterns and horizons</span>
+                                </div>
+                                <div class="feat-node-status-glow"></div>
+                            </div>
+
+                            <!-- NODE 04: DECISIONS -->
+                            <div class="feat-tower-node" data-tower-stage="4">
+                                <div class="feat-node-idx-badge orange">04</div>
+                                <div class="feat-node-meta">
+                                    <span class="feat-node-title">DECISIONS</span>
+                                    <span class="feat-node-sub">Act with prescriptive simulation</span>
+                                </div>
+                                <div class="feat-node-status-glow"></div>
+                            </div>
+
+                            <!-- NODE 05: REPORTS -->
+                            <div class="feat-tower-node" data-tower-stage="5">
+                                <div class="feat-node-idx-badge red">05</div>
+                                <div class="feat-node-meta">
+                                    <span class="feat-node-title">REPORTS</span>
+                                    <span class="feat-node-sub">Communicate executive dossiers</span>
+                                </div>
+                                <div class="feat-node-status-glow"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. STICKY FEATURE QUICK NAVIGATION -->
+    <nav class="feat-layer-nav" id="featureArchitecture" aria-label="Feature Layers Navigation">
+        <div class="feat-shell">
+            <div class="feat-nav-pill-wrapper">
+                <a href="#layerData" class="feat-nav-link active" data-layer-target="layerData">
+                    <span class="nav-step">01</span>
+                    <span class="nav-title">Data Management</span>
+                </a>
+                <a href="#layerAnalytics" class="feat-nav-link" data-layer-target="layerAnalytics">
+                    <span class="nav-step">02</span>
+                    <span class="nav-title">Business Analytics</span>
+                </a>
+                <a href="#layerInsights" class="feat-nav-link" data-layer-target="layerInsights">
+                    <span class="nav-step">03</span>
+                    <span class="nav-title">Advanced Insights</span>
+                </a>
+                <a href="#layerDecisions" class="feat-nav-link" data-layer-target="layerDecisions">
+                    <span class="nav-step">04</span>
+                    <span class="nav-title">Decision Intelligence</span>
+                </a>
+                <a href="#layerReporting" class="feat-nav-link" data-layer-target="layerReporting">
+                    <span class="nav-step">05</span>
+                    <span class="nav-title">Reporting</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 3. ARCHITECTURE INTRODUCTION -->
+    <section class="feat-arch-intro text-center">
+        <div class="feat-shell">
+            <div class="feat-badge-pill feat-reveal">
+                <span class="feat-pulse-dot" aria-hidden="true"></span>
+                <span class="feat-badge-text">COMPLETE PLATFORM</span>
+            </div>
+            <h2 class="feat-section-heading feat-reveal">
+                One Platform. <br>
+                <span class="feat-gradient-text">Five Intelligence Layers.</span>
+            </h2>
+            <p class="feat-section-lead feat-reveal">
+                Smart BI connects every stage of the business intelligence lifecycle, from the moment data enters the system to the moment decisions are made.
+            </p>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         LAYER 01: DATA MANAGEMENT
+         ==================================================================== -->
+    <section class="feat-layer-section layer-accent-purple" id="layerData" aria-label="Layer 1: Data Management">
+        <div class="feat-shell">
+            <div class="feat-layer-header-split feat-reveal">
+                <div class="feat-layer-info">
+                    <span class="feat-layer-tag">01 &bull; DATA MANAGEMENT</span>
+                    <h2 class="feat-layer-title">Build a Reliable Foundation for Your Intelligence</h2>
+                    <p class="feat-layer-desc">
+                        Prepare, validate and organize business data before it reaches analytics. Smart BI provides a structured data management workflow so decisions are built on controlled and traceable information.
+                    </p>
+                </div>
+
+                <!-- MOCKUP: DATASET INTEGRITY PANEL -->
+                <div class="feat-mockup-wrapper">
+                    <div class="feat-mockup-card">
+                        <div class="feat-mockup-topbar">
+                            <div class="feat-mockup-lights" aria-hidden="true"><span></span><span></span><span></span></div>
+                            <span class="feat-mockup-header-title">DATASET VALIDATION ENGINE</span>
+                            <span class="feat-status-chip chip-green">LIVE STATE</span>
+                        </div>
+                        <div class="feat-dataset-body">
+                            <div class="feat-dataset-badge-row">
+                                <div class="ds-pill">
+                                    <span class="ds-icon">&#128196;</span>
+                                    <span class="ds-name">Sales_Q2_Master.csv</span>
+                                </div>
+                                <span class="ds-verified-tag">&#10003; Schema Validated</span>
+                            </div>
+                            <div class="feat-dataset-metrics-grid">
+                                <div class="ds-metric-cell">
+                                    <span class="ds-cell-lbl">ROWS INGESTED</span>
+                                    <span class="ds-cell-val">25,430</span>
+                                </div>
+                                <div class="ds-metric-cell">
+                                    <span class="ds-cell-lbl">COLUMNS AUDITED</span>
+                                    <span class="ds-cell-val">14</span>
+                                </div>
+                                <div class="ds-metric-cell">
+                                    <span class="ds-cell-lbl">QUALITY SCORE</span>
+                                    <span class="ds-cell-val val-green">94%</span>
+                                </div>
+                                <div class="ds-metric-cell">
+                                    <span class="ds-cell-lbl">PIPELINE STATUS</span>
+                                    <span class="ds-cell-val val-purple">Validated</span>
+                                </div>
+                            </div>
+                            <div class="feat-ds-progress-tree">
+                                <div class="tree-step done">
+                                    <span class="tree-dot">&#10003;</span>
+                                    <span class="tree-label">Original</span>
+                                </div>
+                                <div class="tree-wire"></div>
+                                <div class="tree-step done">
+                                    <span class="tree-dot">&#10003;</span>
+                                    <span class="tree-label">Cleaned</span>
+                                </div>
+                                <div class="tree-wire"></div>
+                                <div class="tree-step active">
+                                    <span class="tree-dot">&#9679;</span>
+                                    <span class="tree-label">Validated</span>
+                                </div>
+                                <div class="tree-wire"></div>
+                                <div class="tree-step pending">
+                                    <span class="tree-dot">&#9675;</span>
+                                    <span class="tree-label">Transformed</span>
+                                </div>
+                            </div>
+                            <div class="feat-mockup-footer-note">Concept Visualization &bull; Automated Data Quality Pipeline</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8 CARDS: DATA MANAGEMENT -->
+            <div class="feat-grid-cards">
+                <!-- Card 1 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-purple">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Upload Data</h3>
+                    <p class="feat-card-desc">Upload business datasets into the platform with zero configuration multi-format parsing.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-purple">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Dataset Management</h3>
+                    <p class="feat-card-desc">Manage business datasets, storage tiers, schemas and their lifecycle across business departments.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-purple">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Data Quality</h3>
+                    <p class="feat-card-desc">Understand missing values, duplicates, inconsistencies and schema anomalies with automated diagnostics.</p>
+                </div>
+                <!-- Card 4 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-purple">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Data Cleaning</h3>
+                    <p class="feat-card-desc">Prepare datasets for reliable analysis by resolving date collisions, outliers and missing metrics.</p>
+                </div>
+                <!-- Card 5 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-purple">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Data Validation</h3>
+                    <p class="feat-card-desc">Validate datasets against stringent enterprise business rules before analytical processing begins.</p>
+                </div>
+                <!-- Card 6 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-purple">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Data Profiling</h3>
+                    <p class="feat-card-desc">Inspect columns, data types, statistical distributions, cardinality and dataset architectural makeup.</p>
+                </div>
+                <!-- Card 7 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-purple">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Data Transformation</h3>
+                    <p class="feat-card-desc">Transform business data into normalized, indexed and analysis-ready multidimensional representations.</p>
+                </div>
+                <!-- Card 8 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-purple">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Data Version History</h3>
+                    <p class="feat-card-desc">Maintain immutable versions of original, cleaned, validated and transformed datasets for audit integrity.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         LAYER 02: BUSINESS ANALYTICS
+         ==================================================================== -->
+    <section class="feat-layer-section layer-accent-blue" id="layerAnalytics" aria-label="Layer 2: Business Analytics">
+        <div class="feat-shell">
+            <div class="feat-layer-header-split reverse-split feat-reveal">
+                <div class="feat-layer-info">
+                    <span class="feat-layer-tag">02 &bull; BUSINESS ANALYTICS</span>
+                    <h2 class="feat-layer-title">Understand What Is Happening in Your Business</h2>
+                    <p class="feat-layer-desc">
+                        Turn business datasets into interactive KPIs, charts, trends and performance analysis across the major operational domains of the enterprise.
+                    </p>
+                </div>
+
+                <!-- MOCKUP: BUSINESS ANALYTICS TELEMETRY -->
+                <div class="feat-mockup-wrapper">
+                    <div class="feat-mockup-card">
+                        <div class="feat-mockup-topbar">
+                            <div class="feat-mockup-lights" aria-hidden="true"><span></span><span></span><span></span></div>
+                            <span class="feat-mockup-header-title">ENTERPRISE TELEMETRY CONSOLE</span>
+                            <span class="feat-status-chip chip-blue">Q2 TELEMETRY</span>
+                        </div>
+                        <div class="feat-analytics-body">
+                            <div class="feat-kpi-quad-grid">
+                                <div class="feat-kpi-quad-cell">
+                                    <span class="quad-lbl">REVENUE</span>
+                                    <span class="quad-val">&#8377;12.8M</span>
+                                    <span class="quad-chg positive">&uarr; +18.4%</span>
+                                </div>
+                                <div class="feat-kpi-quad-cell">
+                                    <span class="quad-lbl">ORDERS</span>
+                                    <span class="quad-val">24,582</span>
+                                    <span class="quad-chg positive">&uarr; +14.2%</span>
+                                </div>
+                                <div class="feat-kpi-quad-cell">
+                                    <span class="quad-lbl">CUSTOMERS</span>
+                                    <span class="quad-val">8,421</span>
+                                    <span class="quad-chg positive">&uarr; +9.6%</span>
+                                </div>
+                                <div class="feat-kpi-quad-cell">
+                                    <span class="quad-lbl">PROFIT</span>
+                                    <span class="quad-val">&#8377;3.4M</span>
+                                    <span class="quad-chg positive">&uarr; +26.5%</span>
+                                </div>
+                            </div>
+                            <div class="feat-analytics-chart-box">
+                                <div class="chart-box-header">
+                                    <span>Trailing 30-Day Growth Vector</span>
+                                    <span class="chart-sub-tag">Synthesized Demo Stream</span>
+                                </div>
+                                <svg class="feat-spark-svg" viewBox="0 0 380 90" preserveAspectRatio="none">
+                                    <defs>
+                                        <linearGradient id="blueGrad" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stop-color="#3fa9f5" stop-opacity="0.35"/>
+                                            <stop offset="100%" stop-color="#3fa9f5" stop-opacity="0.0"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <path d="M 10 75 Q 60 70 100 50 T 190 45 T 280 25 T 370 15 L 370 90 L 10 90 Z" fill="url(#blueGrad)"/>
+                                    <path d="M 10 75 Q 60 70 100 50 T 190 45 T 280 25 T 370 15" fill="none" stroke="#3fa9f5" stroke-width="3" stroke-linecap="round"/>
+                                    <circle cx="190" cy="45" r="4.5" fill="#081827" stroke="#3fa9f5" stroke-width="2.5"/>
+                                    <circle cx="370" cy="15" r="5" fill="#3fa9f5" stroke="#ffffff" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <div class="feat-mockup-footer-note">Illustrative Preview &bull; Demo Analytics Output</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8 CARDS: BUSINESS ANALYTICS -->
+            <div class="feat-grid-cards">
+                <!-- Card 1 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Business Intelligence</h3>
+                    <p class="feat-card-desc">A centralized, high-density executive command view of real-time enterprise performance.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Sales Intelligence</h3>
+                    <p class="feat-card-desc">Analyze revenue run-rates, order volume, SKU categories, margin spreads and multi-cycle sales trends.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Customer Intelligence</h3>
+                    <p class="feat-card-desc">Understand customer retention, purchasing frequency, behavioral lifetime values and cohort activity.</p>
+                </div>
+                <!-- Card 4 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Product Intelligence</h3>
+                    <p class="feat-card-desc">Examine SKU velocity, inventory inventory turnover, product margins and catalog performance tiers.</p>
+                </div>
+                <!-- Card 5 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Regional Intelligence</h3>
+                    <p class="feat-card-desc">Compare revenue, customer penetration and operational margins across geographical sales zones.</p>
+                </div>
+                <!-- Card 6 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Marketing Intelligence</h3>
+                    <p class="feat-card-desc">Inspect multi-touch marketing campaigns, conversions, acquisition costs, spend efficiency and channel ROI.</p>
+                </div>
+                <!-- Card 7 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Financial Intelligence</h3>
+                    <p class="feat-card-desc">Synthesize top-line revenue, cost of goods sold, net margins, operating expense buffers and cash flows.</p>
+                </div>
+                <!-- Card 8 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Returns Intelligence</h3>
+                    <p class="feat-card-desc">Pinpoint return rates, root cause classification, reversal costs and bottom-line margin drag.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         LAYER 03: ADVANCED INSIGHTS
+         ==================================================================== -->
+    <section class="feat-layer-section layer-accent-green" id="layerInsights" aria-label="Layer 3: Advanced Insights">
+        <div class="feat-shell">
+            <div class="feat-layer-header-split feat-reveal">
+                <div class="feat-layer-info">
+                    <span class="feat-layer-tag">03 &bull; ADVANCED INSIGHTS</span>
+                    <h2 class="feat-layer-title">Discover What Could Happen Next</h2>
+                    <p class="feat-layer-desc">
+                        Move beyond historical reporting with statistical analysis, machine learning algorithms and predictive intelligence designed for proactive enterprise leadership.
+                    </p>
+                </div>
+
+                <!-- MOCKUP: MACHINE LEARNING FORECASTING & ANOMALIES -->
+                <div class="feat-mockup-wrapper">
+                    <div class="feat-mockup-card">
+                        <div class="feat-mockup-topbar">
+                            <div class="feat-mockup-lights" aria-hidden="true"><span></span><span></span><span></span></div>
+                            <span class="feat-mockup-header-title">PREDICTIVE INFERENCE ENGINE</span>
+                            <span class="feat-status-chip chip-green">95% HORIZON</span>
+                        </div>
+                        <div class="feat-insights-body">
+                            <div class="feat-fc-header-row">
+                                <span class="fc-badge-tag">FORECAST MODEL</span>
+                                <span class="fc-state-tag">Historical &rarr; Forward Projection</span>
+                            </div>
+                            <div class="feat-fc-canvas-box">
+                                <svg class="feat-fc-svg" viewBox="0 0 380 130" preserveAspectRatio="none">
+                                    <!-- CONFIDENCE REGION -->
+                                    <polygon points="190,65 370,25 370,105" fill="rgba(57, 217, 138, 0.15)"/>
+                                    <!-- HISTORICAL LINE -->
+                                    <path d="M 10 95 Q 60 90 100 80 T 190 65" fill="none" stroke="#3fa9f5" stroke-width="3" stroke-linecap="round"/>
+                                    <!-- FORECAST LINE -->
+                                    <path d="M 190 65 Q 270 50 370 30" fill="none" stroke="#39d98a" stroke-width="3" stroke-dasharray="6 5" stroke-linecap="round"/>
+                                    <!-- PIVOT LINE -->
+                                    <line x1="190" y1="15" x2="190" y2="115" stroke="rgba(255,255,255,0.2)" stroke-dasharray="4 4"/>
+                                    <!-- ANOMALY MARKER -->
+                                    <circle cx="100" cy="80" r="5" fill="#ff9f43" stroke="#ffffff" stroke-width="1.5"/>
+                                    <!-- FORECAST TARGET ENDPOINT -->
+                                    <circle cx="370" cy="30" r="6" fill="#39d98a" stroke="#ffffff" stroke-width="2" class="pulse-node"/>
+                                </svg>
+                                <div class="fc-labels-line">
+                                    <span>Historical Ground Truth</span>
+                                    <span class="active-today">TODAY</span>
+                                    <span>Projected ML Horizon</span>
+                                </div>
+                            </div>
+                            <div class="feat-mockup-footer-note">Illustrative visualization &bull; Machine Learning Inference Model</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7 CARDS: ADVANCED INSIGHTS -->
+            <div class="feat-grid-cards">
+                <!-- Card 1 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Future Trends</h3>
+                    <p class="feat-card-desc">Identify emerging seasonal rhythms, volume vectors and long-term customer behavioral shifts.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Forecasting</h3>
+                    <p class="feat-card-desc">Estimate future sales, inventory demand and cash trajectories with mathematical confidence bands.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Anomaly Detection</h3>
+                    <p class="feat-card-desc">Automatically identify unusual fluctuations, unexplained spikes and hidden structural risks in transactions.</p>
+                </div>
+                <!-- Card 4 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Root Cause Analysis</h3>
+                    <p class="feat-card-desc">Trace the structural drivers and operational factors behind unexpected business variance.</p>
+                </div>
+                <!-- Card 5 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Customer Segmentation</h3>
+                    <p class="feat-card-desc">Group customers into high-affinity behavioral clusters based on purchasing recency and order value.</p>
+                </div>
+                <!-- Card 6 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Churn / Risk Analysis</h3>
+                    <p class="feat-card-desc">Identify disengaging clients, vulnerable product lines or operational bottlenecks requiring immediate triage.</p>
+                </div>
+                <!-- Card 7 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Opportunity Detection</h3>
+                    <p class="feat-card-desc">Detect high-probability product expansions, underpriced margins and underserved geographical niches.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         LAYER 04: DECISION INTELLIGENCE
+         ==================================================================== -->
+    <section class="feat-layer-section layer-accent-orange" id="layerDecisions" aria-label="Layer 4: Decision Intelligence">
+        <div class="feat-shell">
+            <div class="feat-layer-header-split reverse-split feat-reveal">
+                <div class="feat-layer-info">
+                    <span class="feat-layer-tag">04 &bull; DECISION INTELLIGENCE</span>
+                    <h2 class="feat-layer-title">Turn Intelligence Into Action</h2>
+                    <p class="feat-layer-desc">
+                        Smart BI goes beyond explaining the past. It helps decision-makers explore sandbox scenarios, evaluate actions and quantify potential business impact before committing capital.
+                    </p>
+                </div>
+
+                <!-- MOCKUP: WHAT-IF SIMULATOR -->
+                <div class="feat-mockup-wrapper">
+                    <div class="feat-mockup-card">
+                        <div class="feat-mockup-topbar">
+                            <div class="feat-mockup-lights" aria-hidden="true"><span></span><span></span><span></span></div>
+                            <span class="feat-mockup-header-title">WHAT-IF SCENARIO SIMULATOR</span>
+                            <span class="feat-status-chip chip-orange">INTERACTIVE DEMO</span>
+                        </div>
+                        <div class="feat-sim-body">
+                            <div class="feat-sim-header-row">
+                                <span class="sim-badge">Illustrative Scenario</span>
+                                <span class="sim-note">Demo Elasticity Sandbox</span>
+                            </div>
+
+                            <div class="feat-slider-item">
+                                <div class="slider-meta">
+                                    <label for="priceSlider">Price Change Adjustment</label>
+                                    <span class="slider-display" id="priceDisplay">+8%</span>
+                                </div>
+                                <input type="range" id="priceSlider" min="-5" max="15" value="8" step="1" class="feat-range-input" aria-label="Price Change Slider">
+                            </div>
+
+                            <div class="feat-slider-item">
+                                <div class="slider-meta">
+                                    <label for="mktgSpendSlider">Marketing Spend Adjustment</label>
+                                    <span class="slider-display" id="mktgDisplay">+12%</span>
+                                </div>
+                                <input type="range" id="mktgSpendSlider" min="-20" max="30" value="12" step="2" class="feat-range-input" aria-label="Marketing Spend Slider">
+                            </div>
+
+                            <div class="feat-sim-results-grid">
+                                <div class="sim-res-box">
+                                    <span class="sim-res-lbl">EXPECTED REVENUE</span>
+                                    <div class="sim-res-calc">
+                                        <span class="calc-old">&#8377;12.8M</span>
+                                        <span class="calc-arrow">&rarr;</span>
+                                        <span class="calc-new" id="simResultRevenue">&#8377;14.1M</span>
+                                    </div>
+                                </div>
+                                <div class="sim-res-box">
+                                    <span class="sim-res-lbl">EXPECTED PROFIT</span>
+                                    <div class="sim-res-calc">
+                                        <span class="calc-old">&#8377;3.4M</span>
+                                        <span class="calc-arrow">&rarr;</span>
+                                        <span class="calc-new val-green" id="simResultProfit">&#8377;3.9M</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="feat-mockup-footer-note">Illustrative Preview &bull; Illustrative calculation model</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6 CARDS: DECISION INTELLIGENCE -->
+            <div class="feat-grid-cards">
+                <!-- Card 1 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-orange">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Recommendations</h3>
+                    <p class="feat-card-desc">Generate prioritized data-driven operational recommendations based on discovered anomalies.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-orange">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">What-If Simulator</h3>
+                    <p class="feat-card-desc">Test hypothetical business changes, price shocks and budget shifts to compare projected financial trade-offs.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-orange">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Scenario Planning</h3>
+                    <p class="feat-card-desc">Explore best-case, expected and conservative enterprise trajectories before deploying operational budget.</p>
+                </div>
+                <!-- Card 4 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-orange">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Business Alerts</h3>
+                    <p class="feat-card-desc">Highlight mission-critical variance, margin degradation alerts and abnormal drop-offs requiring urgent action.</p>
+                </div>
+                <!-- Card 5 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-orange">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Action Center</h3>
+                    <p class="feat-card-desc">Organize recommended business initiatives, execution roadmaps and executive priority queues.</p>
+                </div>
+                <!-- Card 6 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-orange">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Decision Impact Analysis</h3>
+                    <p class="feat-card-desc">Audit post-decision results against pre-decision simulation benchmarks to calibrate continuous learning.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         LAYER 05: REPORTING
+         ==================================================================== -->
+    <section class="feat-layer-section layer-accent-red" id="layerReporting" aria-label="Layer 5: Reporting">
+        <div class="feat-shell">
+            <div class="feat-layer-header-split feat-reveal">
+                <div class="feat-layer-info">
+                    <span class="feat-layer-tag">05 &bull; REPORTING</span>
+                    <h2 class="feat-layer-title">Communicate Intelligence Clearly</h2>
+                    <p class="feat-layer-desc">
+                        Turn business intelligence into structured, publication-grade briefings that can be shared, reviewed, exported and tracked across boardroom governance cycles.
+                    </p>
+                </div>
+
+                <!-- MOCKUP: REPORT DOSSIER -->
+                <div class="feat-mockup-wrapper">
+                    <div class="feat-mockup-card">
+                        <div class="feat-mockup-topbar">
+                            <div class="feat-mockup-lights" aria-hidden="true"><span></span><span></span><span></span></div>
+                            <span class="feat-mockup-header-title">EXECUTIVE BRIEFING SUITE</span>
+                            <span class="feat-status-chip chip-red">AUTO-EXPORT</span>
+                        </div>
+                        <div class="feat-report-body">
+                            <div class="feat-doc-preview">
+                                <div class="feat-doc-header-block">
+                                    <span class="doc-corp-title">SMART BI &bull; BUSINESS PERFORMANCE REPORT</span>
+                                    <span class="doc-date-stamp">FY27 Q2 &bull; EXECUTIVE SUMMARY</span>
+                                </div>
+                                <div class="feat-doc-table-strip">
+                                    <div class="strip-row">
+                                        <span>Revenue Trajectory</span>
+                                        <span class="strip-val">&#8377;12.8M</span>
+                                    </div>
+                                    <div class="strip-row">
+                                        <span>Operating Profit</span>
+                                        <span class="strip-val">&#8377;3.4M</span>
+                                    </div>
+                                    <div class="strip-row">
+                                        <span>Orders Delivered</span>
+                                        <span class="strip-val">24,582</span>
+                                    </div>
+                                </div>
+                                <div class="feat-doc-insights-summary">
+                                    <span class="summary-lead">Key Verified Syntheses</span>
+                                    <div class="doc-insight-item">&#10003; Revenue velocity accelerating in Tier-1 regional markets</div>
+                                    <div class="doc-insight-item">&#10003; Customer retention cohort indicates +14% lifetime value</div>
+                                    <div class="doc-insight-item">&#10003; Product return variance requires SKU level remediation</div>
+                                </div>
+                                <div class="feat-doc-chips-row">
+                                    <div class="export-tag-item red-tag">&#128196; PDF Briefing Ready</div>
+                                    <div class="export-tag-item green-tag">&#128202; Excel Workbook Ready</div>
+                                </div>
+                            </div>
+                            <div class="feat-mockup-footer-note">Illustrative Preview &bull; Automated Document Generator</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5 CARDS: REPORTING -->
+            <div class="feat-grid-cards">
+                <!-- Card 1 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-red">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Automated Reports</h3>
+                    <p class="feat-card-desc">Generate scheduled recurring executive briefings without manual analytical compilation.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-red">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Custom Reports</h3>
+                    <p class="feat-card-desc">Construct tailored dossiers around unique boardroom requirements and departmental KPIs.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-red">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">PDF Export</h3>
+                    <p class="feat-card-desc">Export high-resolution boardroom-ready analytical dossiers with complete typographic polish.</p>
+                </div>
+                <!-- Card 4 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-red">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Excel Export</h3>
+                    <p class="feat-card-desc">Export normalized multi-tab workbooks with structured dataframes for spreadsheet analysts.</p>
+                </div>
+                <!-- Card 5 -->
+                <div class="feat-card feat-reveal">
+                    <div class="feat-card-icon-wrap icon-red">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                    </div>
+                    <h3 class="feat-card-title">Report History</h3>
+                    <p class="feat-card-desc">Maintain an immutable audit history of generated intelligence briefings for institutional memory.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. COMPLETE FEATURE MATRIX -->
+    <section class="feat-matrix-section" id="featureMatrix" aria-label="Platform Feature Matrix">
+        <div class="feat-shell">
+            <div class="feat-section-header text-center feat-reveal">
+                <span class="feat-eyebrow">PLATFORM AT A GLANCE</span>
+                <h2 class="feat-section-title">One System. Every Stage of <span class="feat-gradient-text">Business Intelligence.</span></h2>
+                <p class="feat-section-desc">Inspect all 34 core platform capabilities unified under a single cohesive cognitive architecture.</p>
+            </div>
+
+            <div class="feat-matrix-card-stack feat-reveal">
+                <!-- Matrix Row 1 -->
+                <div class="feat-matrix-row row-purple" tabindex="0">
+                    <div class="matrix-layer-col">
+                        <span class="matrix-badge">01</span>
+                        <h3 class="matrix-layer-name">Data Management</h3>
+                    </div>
+                    <div class="matrix-capabilities-col">
+                        <span class="cap-tag">Upload Data</span>
+                        <span class="cap-tag">Dataset Management</span>
+                        <span class="cap-tag">Data Quality</span>
+                        <span class="cap-tag">Data Cleaning</span>
+                        <span class="cap-tag">Data Validation</span>
+                        <span class="cap-tag">Data Profiling</span>
+                        <span class="cap-tag">Data Transformation</span>
+                        <span class="cap-tag">Version History</span>
+                    </div>
+                </div>
+
+                <!-- Matrix Row 2 -->
+                <div class="feat-matrix-row row-blue" tabindex="0">
+                    <div class="matrix-layer-col">
+                        <span class="matrix-badge">02</span>
+                        <h3 class="matrix-layer-name">Business Analytics</h3>
+                    </div>
+                    <div class="matrix-capabilities-col">
+                        <span class="cap-tag">Business Intelligence</span>
+                        <span class="cap-tag">Sales Intelligence</span>
+                        <span class="cap-tag">Customer Intelligence</span>
+                        <span class="cap-tag">Product Intelligence</span>
+                        <span class="cap-tag">Regional Intelligence</span>
+                        <span class="cap-tag">Marketing Intelligence</span>
+                        <span class="cap-tag">Financial Intelligence</span>
+                        <span class="cap-tag">Returns Intelligence</span>
+                    </div>
+                </div>
+
+                <!-- Matrix Row 3 -->
+                <div class="feat-matrix-row row-green" tabindex="0">
+                    <div class="matrix-layer-col">
+                        <span class="matrix-badge">03</span>
+                        <h3 class="matrix-layer-name">Advanced Insights</h3>
+                    </div>
+                    <div class="matrix-capabilities-col">
+                        <span class="cap-tag">Future Trends</span>
+                        <span class="cap-tag">Forecasting</span>
+                        <span class="cap-tag">Anomaly Detection</span>
+                        <span class="cap-tag">Root Cause Analysis</span>
+                        <span class="cap-tag">Customer Segmentation</span>
+                        <span class="cap-tag">Churn / Risk Analysis</span>
+                        <span class="cap-tag">Opportunity Detection</span>
+                    </div>
+                </div>
+
+                <!-- Matrix Row 4 -->
+                <div class="feat-matrix-row row-orange" tabindex="0">
+                    <div class="matrix-layer-col">
+                        <span class="matrix-badge">04</span>
+                        <h3 class="matrix-layer-name">Decision Intelligence</h3>
+                    </div>
+                    <div class="matrix-capabilities-col">
+                        <span class="cap-tag">Recommendations</span>
+                        <span class="cap-tag">What-If Simulator</span>
+                        <span class="cap-tag">Scenario Planning</span>
+                        <span class="cap-tag">Business Alerts</span>
+                        <span class="cap-tag">Action Center</span>
+                        <span class="cap-tag">Decision Impact Analysis</span>
+                    </div>
+                </div>
+
+                <!-- Matrix Row 5 -->
+                <div class="feat-matrix-row row-red" tabindex="0">
+                    <div class="matrix-layer-col">
+                        <span class="matrix-badge">05</span>
+                        <h3 class="matrix-layer-name">Reporting</h3>
+                    </div>
+                    <div class="matrix-capabilities-col">
+                        <span class="cap-tag">Automated Reports</span>
+                        <span class="cap-tag">Custom Reports</span>
+                        <span class="cap-tag">PDF Export</span>
+                        <span class="cap-tag">Excel Export</span>
+                        <span class="cap-tag">Report History</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. PLATFORM JOURNEY SECTION -->
+    <section class="feat-journey-section" aria-label="The Journey from Data to Action">
+        <div class="feat-shell">
+            <div class="feat-section-header text-center feat-reveal">
+                <span class="feat-eyebrow">CONTINUOUS EVOLUTION</span>
+                <h2 class="feat-section-title">From Raw Data to <span class="feat-gradient-text">Business Action</span></h2>
+                <p class="feat-section-desc">
+                    Every feature is connected to one purpose: helping businesses move from information to understanding, from understanding to prediction, and from prediction to action.
+                </p>
+            </div>
+
+            <div class="feat-journey-track feat-reveal">
+                <div class="feat-journey-step">
+                    <span class="j-step-num">01</span>
+                    <span class="j-step-title">YOUR DATA</span>
+                </div>
+                <div class="feat-j-arrow" aria-hidden="true">&rarr;</div>
+                <div class="feat-journey-step">
+                    <span class="j-step-num">02</span>
+                    <span class="j-step-title">MANAGE</span>
+                </div>
+                <div class="feat-j-arrow" aria-hidden="true">&rarr;</div>
+                <div class="feat-journey-step">
+                    <span class="j-step-num">03</span>
+                    <span class="j-step-title">ANALYZE</span>
+                </div>
+                <div class="feat-j-arrow" aria-hidden="true">&rarr;</div>
+                <div class="feat-journey-step">
+                    <span class="j-step-num">04</span>
+                    <span class="j-step-title">UNDERSTAND</span>
+                </div>
+                <div class="feat-j-arrow" aria-hidden="true">&rarr;</div>
+                <div class="feat-journey-step">
+                    <span class="j-step-num">05</span>
+                    <span class="j-step-title">PREDICT</span>
+                </div>
+                <div class="feat-j-arrow" aria-hidden="true">&rarr;</div>
+                <div class="feat-journey-step">
+                    <span class="j-step-num">06</span>
+                    <span class="j-step-title">DECIDE</span>
+                </div>
+                <div class="feat-j-arrow" aria-hidden="true">&rarr;</div>
+                <div class="feat-journey-step highlight-report">
+                    <span class="j-step-num">07</span>
+                    <span class="j-step-title">REPORT</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. FINAL CINEMATIC CTA -->
+    <section class="feat-final-cta-section" id="featuresCta" aria-label="Call to Action">
+        <div class="feat-shell">
+            <div class="feat-cta-monolith feat-reveal">
+                <div class="feat-cta-ambient-beam" aria-hidden="true"></div>
+
+                <div class="feat-cta-inner text-center">
+                    <div class="feat-badge-pill">
+                        <span class="feat-pulse-dot" aria-hidden="true"></span>
+                        <span class="feat-badge-text">ACTIVATE YOUR INTELLIGENCE</span>
+                    </div>
+
+                    <h2 class="feat-cta-headline">
+                        <span class="cta-block">Your Data Already Knows the Story.</span>
+                        <span class="cta-block feat-gradient-text">Smart BI Helps You Read It.</span>
+                    </h2>
+
+                    <p class="feat-cta-lead">
+                        Bring your business data into one intelligent workflow and start turning information into insight, prediction and action.
+                    </p>
+
+                    <div class="feat-cta-actions">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'core:dashboard' %}" class="feat-btn-primary feat-btn-lg" id="finalCtaAuth">
+                                <span class="feat-btn-text">Start With Your Data</span>
+                                <span class="feat-btn-icon" aria-hidden="true">&rarr;</span>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'accounts:signup' %}" class="feat-btn-primary feat-btn-lg" id="finalCtaAnon">
+                                <span class="feat-btn-text">Start With Your Data</span>
+                                <span class="feat-btn-icon" aria-hidden="true">&rarr;</span>
+                            </a>
+                        {% endif %}
+
+                        <a href="{% url 'core:how_it_works' %}" class="feat-btn-glass feat-btn-lg" id="finalCtaExplore">
+                            <span class="feat-btn-text">Explore How It Works</span>
+                            <span class="feat-btn-icon" aria-hidden="true">&rarr;</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/feature.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/feature.js' %}"></script>
+{% endblock %}

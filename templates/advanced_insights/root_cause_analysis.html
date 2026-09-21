@@ -1,0 +1,2039 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Root Cause Analysis | Smart BI</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        /* ============================================================
+           ROOT VARIABLES
+        ============================================================ */
+
+        :root {
+
+            --ft-bg: #07111f;
+            --ft-bg-deep: #040b15;
+
+            --ft-panel: rgba(13, 27, 46, 0.94);
+            --ft-panel-strong: rgba(16, 32, 55, 0.97);
+            --ft-panel-soft: rgba(255, 255, 255, 0.025);
+
+            --ft-border: rgba(255, 255, 255, 0.075);
+            --ft-border-soft: rgba(255, 255, 255, 0.045);
+
+            --ft-text: #f2f7ff;
+            --ft-text-soft: rgba(218, 231, 245, 0.68);
+            --ft-text-muted: rgba(190, 208, 229, 0.46);
+
+            --ft-blue: #4fa3ff;
+            --ft-blue-bright: #74b9ff;
+            --ft-cyan: #22d3ee;
+            --ft-purple: #8b5cf6;
+
+            --ft-green: #48d597;
+            --ft-yellow: #f3c86b;
+            --ft-red: #ff6577;
+
+            --ft-radius: 18px;
+
+            --ft-shadow:
+                0 18px 55px rgba(0, 0, 0, 0.22);
+
+            --ft-glow:
+                0 0 35px rgba(79, 163, 255, 0.12);
+
+            --ft-sidebar-width: 260px;
+        }
+
+
+        /* ============================================================
+           RESET
+        ============================================================ */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background:
+                radial-gradient(
+                    circle at 80% 10%,
+                    rgba(79, 163, 255, 0.08),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 40% 90%,
+                    rgba(34, 211, 238, 0.035),
+                    transparent 30%
+                ),
+                var(--ft-bg-deep);
+
+            color: var(--ft-text);
+
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            overflow: hidden;
+        }
+
+
+        /* ============================================================
+           SIDEBAR
+        ============================================================ */
+
+        #smart-bi-sidebar {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+            bottom: 0;
+
+            width: var(--ft-sidebar-width);
+            height: 100vh;
+
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            z-index: 1000;
+
+            background: var(--ft-bg-deep);
+
+            border-right:
+                1px solid var(--ft-border);
+
+            box-shadow:
+                12px 0 40px rgba(0, 0, 0, 0.18);
+        }
+
+        #smart-bi-sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #smart-bi-sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #smart-bi-sidebar::-webkit-scrollbar-thumb {
+            background: rgba(116, 185, 255, 0.16);
+            border-radius: 20px;
+        }
+
+
+        /* ============================================================
+           MAIN AREA
+        ============================================================ */
+
+        .rca-main {
+
+            margin-left: var(--ft-sidebar-width);
+
+            width:
+                calc(100% - var(--ft-sidebar-width));
+
+            height: 100vh;
+
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            padding: 30px 34px 70px;
+        }
+
+        .rca-main::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .rca-main::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .rca-main::-webkit-scrollbar-thumb {
+            background: rgba(116, 185, 255, 0.18);
+            border-radius: 20px;
+        }
+
+
+        /* ============================================================
+           PAGE CONTAINER
+        ============================================================ */
+
+        .rca-container {
+
+            width: 100%;
+            max-width: 1500px;
+
+            margin: 0 auto;
+        }
+
+
+        /* ============================================================
+           HEADER
+        ============================================================ */
+
+        .page-header {
+
+            display: flex;
+
+            justify-content: space-between;
+            align-items: flex-start;
+
+            gap: 25px;
+
+            margin-bottom: 28px;
+        }
+
+        .header-left {
+            max-width: 850px;
+        }
+
+        .eyebrow {
+
+            display: inline-flex;
+
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 10px;
+
+            padding: 7px 12px;
+
+            border:
+                1px solid rgba(79, 163, 255, 0.16);
+
+            border-radius: 999px;
+
+            background:
+                rgba(79, 163, 255, 0.07);
+
+            color: var(--ft-blue-bright);
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 1.1px;
+            text-transform: uppercase;
+        }
+
+        .eyebrow-dot {
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--ft-cyan);
+
+            box-shadow:
+                0 0 12px rgba(34, 211, 238, 0.7);
+        }
+
+        .page-header h1 {
+
+            margin: 0;
+
+            font-size: clamp(28px, 3vw, 42px);
+
+            line-height: 1.08;
+
+            letter-spacing: -1.2px;
+
+            font-weight: 750;
+        }
+
+        .page-header p {
+
+            margin: 12px 0 0;
+
+            max-width: 760px;
+
+            color: var(--ft-text-soft);
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+
+        /* ============================================================
+           PANEL
+        ============================================================ */
+
+        .panel {
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(16, 32, 55, 0.97),
+                    rgba(10, 23, 39, 0.95)
+                );
+
+            border:
+                1px solid var(--ft-border);
+
+            border-radius: var(--ft-radius);
+
+            box-shadow: var(--ft-shadow);
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+        .panel::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+            right: 0;
+
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(116, 185, 255, 0.3),
+                    transparent
+                );
+        }
+
+        .panel-header {
+
+            padding: 21px 23px 0;
+        }
+
+        .panel-header h2 {
+
+            margin: 0;
+
+            font-size: 16px;
+
+            font-weight: 700;
+        }
+
+        .panel-header p {
+
+            margin: 6px 0 0;
+
+            color: var(--ft-text-muted);
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        /* ============================================================
+           CONTROLS
+        ============================================================ */
+
+        .control-panel {
+
+            padding: 22px;
+
+            margin-bottom: 24px;
+        }
+
+        .control-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 16px;
+
+            margin-top: 20px;
+        }
+
+        .field {
+
+            min-width: 0;
+        }
+
+        .field label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: var(--ft-text-soft);
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.4px;
+
+            text-transform: uppercase;
+        }
+
+        .field select,
+        .field input {
+
+            width: 100%;
+
+            height: 44px;
+
+            padding: 0 13px;
+
+            border:
+                1px solid var(--ft-border);
+
+            border-radius: 11px;
+
+            outline: none;
+
+            background:
+                rgba(4, 11, 21, 0.72);
+
+            color: var(--ft-text);
+
+            font-size: 13px;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .field select:focus,
+        .field input:focus {
+
+            border-color:
+                rgba(79, 163, 255, 0.55);
+
+            box-shadow:
+                0 0 0 3px rgba(79, 163, 255, 0.08);
+        }
+
+        .field select option {
+
+            background: #0b192b;
+            color: #f2f7ff;
+        }
+
+        .control-actions {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            margin-top: 19px;
+        }
+
+        .run-button {
+
+            height: 44px;
+
+            padding: 0 22px;
+
+            border: 0;
+
+            border-radius: 11px;
+
+            cursor: pointer;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--ft-blue),
+                    var(--ft-cyan)
+                );
+
+            color: #03101d;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            box-shadow:
+                0 10px 28px rgba(34, 211, 238, 0.12);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .run-button:hover {
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 14px 34px rgba(34, 211, 238, 0.2);
+        }
+
+
+        /* ============================================================
+           KPI GRID
+        ============================================================ */
+
+        .kpi-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 15px;
+
+            margin-bottom: 24px;
+        }
+
+        .kpi-card {
+
+            padding: 20px;
+
+            background:
+                rgba(13, 27, 46, 0.94);
+
+            border:
+                1px solid var(--ft-border);
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 12px 38px rgba(0, 0, 0, 0.16);
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+        .kpi-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 100px;
+            height: 100px;
+
+            right: -45px;
+            top: -45px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(79, 163, 255, 0.06);
+        }
+
+        .kpi-label {
+
+            color: var(--ft-text-muted);
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.65px;
+
+            font-weight: 700;
+        }
+
+        .kpi-value {
+
+            margin-top: 9px;
+
+            font-size: 25px;
+
+            font-weight: 750;
+
+            letter-spacing: -0.5px;
+        }
+
+        .kpi-sub {
+
+            margin-top: 5px;
+
+            color: var(--ft-text-muted);
+
+            font-size: 11px;
+        }
+
+
+        /* ============================================================
+           PRIMARY CAUSE
+        ============================================================ */
+
+        .primary-cause {
+
+            display: grid;
+
+            grid-template-columns:
+                1.3fr 0.7fr;
+
+            gap: 18px;
+
+            margin-bottom: 24px;
+        }
+
+        .cause-highlight {
+
+            padding: 24px;
+        }
+
+        .cause-label {
+
+            color: var(--ft-text-muted);
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+
+            font-weight: 700;
+        }
+
+        .cause-name {
+
+            margin-top: 10px;
+
+            font-size: 27px;
+
+            font-weight: 750;
+
+            color: var(--ft-blue-bright);
+        }
+
+        .cause-description {
+
+            margin-top: 9px;
+
+            color: var(--ft-text-soft);
+
+            font-size: 13px;
+
+            line-height: 1.65;
+        }
+
+        .cause-percentage {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            min-height: 150px;
+
+            padding: 20px;
+
+            text-align: center;
+        }
+
+        .cause-percentage-value {
+
+            font-size: 38px;
+
+            font-weight: 800;
+
+            color: var(--ft-cyan);
+        }
+
+        .cause-percentage-label {
+
+            margin-top: 5px;
+
+            color: var(--ft-text-muted);
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+        }
+
+
+        /* ============================================================
+           CONTENT GRID
+        ============================================================ */
+
+        .content-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.35fr)
+                minmax(320px, 0.65fr);
+
+            gap: 20px;
+
+            margin-bottom: 24px;
+        }
+
+        .chart-panel {
+
+            padding: 22px;
+
+            min-height: 430px;
+        }
+
+        .chart-wrapper {
+
+            height: 345px;
+
+            margin-top: 20px;
+        }
+
+        .chart-wrapper canvas {
+
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+
+        /* ============================================================
+           SUMMARY
+        ============================================================ */
+
+        .summary-panel {
+
+            padding: 22px;
+        }
+
+        .summary-box {
+
+            margin-top: 20px;
+
+            padding: 17px;
+
+            border:
+                1px solid var(--ft-border-soft);
+
+            border-radius: 13px;
+
+            background:
+                rgba(255, 255, 255, 0.025);
+
+            color: var(--ft-text-soft);
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* ============================================================
+           TABLE
+        ============================================================ */
+
+        .table-panel {
+
+            padding: 22px;
+
+            margin-bottom: 24px;
+        }
+
+        .table-wrapper {
+
+            margin-top: 20px;
+
+            overflow-x: auto;
+        }
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 720px;
+        }
+
+        th {
+
+            padding: 12px 13px;
+
+            border-bottom:
+                1px solid var(--ft-border);
+
+            color: var(--ft-text-muted);
+
+            font-size: 10px;
+
+            text-align: left;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.6px;
+        }
+
+        td {
+
+            padding: 14px 13px;
+
+            border-bottom:
+                1px solid var(--ft-border-soft);
+
+            color: var(--ft-text-soft);
+
+            font-size: 12px;
+        }
+
+        tr:hover td {
+
+            background:
+                rgba(79, 163, 255, 0.025);
+        }
+
+        .positive {
+            color: var(--ft-green);
+        }
+
+        .negative {
+            color: var(--ft-red);
+        }
+
+        .neutral {
+            color: var(--ft-yellow);
+        }
+
+        .direction-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            padding: 5px 9px;
+
+            border-radius: 999px;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+        .badge-increase {
+
+            color: var(--ft-green);
+
+            background:
+                rgba(72, 213, 151, 0.08);
+
+            border:
+                1px solid rgba(72, 213, 151, 0.14);
+        }
+
+        .badge-decrease {
+
+            color: var(--ft-red);
+
+            background:
+                rgba(255, 101, 119, 0.08);
+
+            border:
+                1px solid rgba(255, 101, 119, 0.14);
+        }
+
+        .badge-neutral {
+
+            color: var(--ft-yellow);
+
+            background:
+                rgba(243, 200, 107, 0.08);
+
+            border:
+                1px solid rgba(243, 200, 107, 0.14);
+        }
+
+
+        /* ============================================================
+           EMPTY STATE
+        ============================================================ */
+
+        .empty-state {
+
+            padding: 70px 25px;
+
+            text-align: center;
+
+            border:
+                1px dashed var(--ft-border);
+
+            border-radius: 16px;
+
+            background:
+                rgba(255, 255, 255, 0.018);
+        }
+
+        .empty-icon {
+
+            width: 54px;
+            height: 54px;
+
+            margin: 0 auto 15px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 16px;
+
+            background:
+                rgba(79, 163, 255, 0.08);
+
+            color: var(--ft-blue-bright);
+
+            font-size: 23px;
+        }
+
+        .empty-state h3 {
+
+            margin: 0;
+
+            font-size: 17px;
+        }
+
+        .empty-state p {
+
+            max-width: 520px;
+
+            margin: 9px auto 0;
+
+            color: var(--ft-text-muted);
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+
+        /* ============================================================
+           MESSAGES
+        ============================================================ */
+
+        .messages {
+
+            margin-bottom: 18px;
+        }
+
+        .message {
+
+            padding: 13px 16px;
+
+            margin-bottom: 8px;
+
+            border-radius: 11px;
+
+            border:
+                1px solid var(--ft-border);
+
+            background:
+                rgba(79, 163, 255, 0.06);
+
+            color: var(--ft-text-soft);
+
+            font-size: 12px;
+        }
+
+
+        /* ============================================================
+           RESPONSIVE
+        ============================================================ */
+
+        @media (max-width: 1200px) {
+
+            .control-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .kpi-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+
+            body {
+                overflow: auto;
+            }
+
+            #smart-bi-sidebar {
+
+                position: relative;
+
+                width: 100%;
+                height: auto;
+
+                max-height: none;
+
+                border-right: 0;
+
+                border-bottom:
+                    1px solid var(--ft-border);
+            }
+
+            .rca-main {
+
+                margin-left: 0;
+
+                width: 100%;
+
+                height: auto;
+
+                overflow: visible;
+
+                padding: 22px 16px 50px;
+            }
+
+            .page-header {
+                flex-direction: column;
+            }
+
+            .control-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .primary-cause {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- ============================================================
+         LEFT SIDEBAR
+    ============================================================ -->
+
+    <aside id="smart-bi-sidebar">
+
+        {% include "includes/smart_sidebar.html" %}
+
+    </aside>
+
+
+    <!-- ============================================================
+         RIGHT MAIN CONTENT
+    ============================================================ -->
+
+    <main class="rca-main">
+
+        <div class="rca-container">
+
+
+            <!-- ====================================================
+                 HEADER
+            ==================================================== -->
+
+            <header class="page-header">
+
+                <div class="header-left">
+
+                    <div class="eyebrow">
+
+                        <span class="eyebrow-dot"></span>
+
+                        Advanced Insights
+
+                    </div>
+
+                    <h1>
+                        Root Cause Analysis
+                    </h1>
+
+                    <p>
+                        Identify the factors that contributed most
+                        to a change in your business data and understand
+                        what is driving the result.
+                    </p>
+
+                </div>
+
+            </header>
+
+
+            <!-- ====================================================
+                 MESSAGES
+            ==================================================== -->
+
+            {% if messages %}
+
+                <div class="messages">
+
+                    {% for message in messages %}
+
+                        <div class="message">
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- ====================================================
+                 CONTROL PANEL
+            ==================================================== -->
+
+            <section class="panel control-panel">
+
+                <div class="panel-header">
+
+                    <h2>
+                        Analysis Configuration
+                    </h2>
+
+                    <p>
+                        Select the dataset, metric and business
+                        dimension you want to investigate.
+                    </p>
+
+                </div>
+
+
+                <form method="post">
+
+                    {% csrf_token %}
+
+                    <input
+                        type="hidden"
+                        name="dataset"
+                        value="{{ selected_dataset.id }}"
+                    >
+
+                    <input
+                        type="hidden"
+                        name="version"
+                        value="{{ selected_version.id }}"
+                    >
+
+
+                    <div class="control-grid">
+
+
+                        <!-- DATASET -->
+
+                        <div class="field">
+
+                            <label>
+                                Dataset
+                            </label>
+
+                            <select
+                                onchange="changeDataset(this.value)"
+                            >
+
+                                {% for dataset in datasets %}
+
+                                    <option
+                                        value="{{ dataset.id }}"
+                                        {% if dataset.id == selected_dataset.id %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ dataset.name }}
+                                        — {{ dataset.dataset_type }}
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- VERSION -->
+
+                        <div class="field">
+
+                            <label>
+                                Data Version
+                            </label>
+
+                            <select
+                                onchange="changeVersion(this.value)"
+                            >
+
+                                {% for version in versions %}
+
+                                    <option
+                                        value="{{ version.id }}"
+                                        {% if version.id == selected_version.id %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        Version {{ version.version_number }}
+                                        — {{ version.version_type }}
+                                        {% if version.is_current %}
+                                            (Current)
+                                        {% endif %}
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+<div class="field">
+    <label>
+        Metrics
+    </label>
+<select name="metric_column" required>
+    <option value="">
+        Select metric
+    </option>
+
+    {% for column in numeric_columns %}
+        <option
+            value="{{ column }}"
+            {% if column == selected_metric_column %}
+                selected
+            {% endif %}
+        >
+            {{ column }}
+        </option>
+    {% endfor %}
+</select>
+</div>
+<div class="field">
+    <label>
+        Dimension
+    </label>
+    <select name="dimension_column" required>
+    <option value="">
+        Select dimension
+    </option>
+
+    {% for column in dimension_columns %}
+        <option
+            value="{{ column }}"
+            {% if column == selected_dimension_column %}
+                selected
+            {% endif %}
+        >
+            {{ column }}
+        </option>
+    {% endfor %}
+</select>
+    </div>
+
+<div class="field">
+    <label>
+        Dimension
+    </label>
+    <select
+    name="date_column"
+    onchange="changeDateColumn(this.value)"
+>
+    <option value="">
+        No date / use all data
+    </option>
+
+    {% for column in date_columns %}
+        <option
+            value="{{ column }}"
+            {% if column == selected_date_column %}
+                selected
+            {% endif %}
+        >
+            {{ column }}
+        </option>
+    {% endfor %}
+</select>
+    </div>
+
+
+
+
+
+<!-- TARGET PERIOD -->
+<div class="field">
+    <label>
+        Target Period
+    </label>
+
+    <select
+        name="target_period"
+        required
+    >
+        <option value="">
+            Select target period
+        </option>
+
+        {% for period in available_periods %}
+            <option
+                value="{{ period.value }}"
+                {% if period.value == selected_target_period %}
+                    selected
+                {% endif %}
+            >
+                {{ period.label }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+
+<!-- COMPARISON PERIOD -->
+<div class="field">
+    <label>
+        Comparison Period
+    </label>
+
+    <select
+        name="comparison_period"
+        required
+    >
+        <option value="">
+            Select comparison period
+        </option>
+
+        {% for period in available_periods %}
+            <option
+                value="{{ period.value }}"
+                {% if period.value == selected_comparison_period %}
+                    selected
+                {% endif %}
+            >
+                {{ period.label }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+                    </div>
+
+
+                    <div class="control-actions">
+
+                        <button
+                            type="submit"
+                            class="run-button"
+                        >
+                            Analyze Root Cause
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+
+            <!-- ====================================================
+                 RESULT
+            ==================================================== -->
+
+            {% if root_cause_result %}
+
+
+                <!-- ==================================================
+                     KPI CARDS
+                ================================================== -->
+
+                <section class="kpi-grid">
+
+
+                    <div class="kpi-card">
+
+                        <div class="kpi-label">
+                            Target Value
+                        </div>
+
+                        <div class="kpi-value">
+                            {{ root_cause_result.total_value|floatformat:2 }}
+                        </div>
+
+                        <div class="kpi-sub">
+                            {{ root_cause_result.target_period }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="kpi-card">
+
+                        <div class="kpi-label">
+                            Comparison Value
+                        </div>
+
+                        <div class="kpi-value">
+                            {{ root_cause_result.comparison_value|floatformat:2 }}
+                        </div>
+
+                        <div class="kpi-sub">
+                            {{ root_cause_result.comparison_period }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="kpi-card">
+
+                        <div class="kpi-label">
+                            Change
+                        </div>
+
+                        <div class="kpi-value
+                            {% if root_cause_result.change_value < 0 %}
+                                negative
+                            {% elif root_cause_result.change_value > 0 %}
+                                positive
+                            {% else %}
+                                neutral
+                            {% endif %}
+                        ">
+
+                            {{ root_cause_result.change_value|floatformat:2 }}
+
+                        </div>
+
+                        <div class="kpi-sub">
+
+                            {% if root_cause_result.change_percentage != None %}
+
+                                {{ root_cause_result.change_percentage|floatformat:2 }}%
+
+                            {% else %}
+
+                                Percentage unavailable
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="kpi-card">
+
+                        <div class="kpi-label">
+                            Causes Found
+                        </div>
+
+                        <div class="kpi-value">
+                            {{ root_cause_result.cause_count }}
+                        </div>
+
+                        <div class="kpi-sub">
+                            {{ root_cause_result.dimension_column }}
+                        </div>
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     PRIMARY CAUSE
+                ================================================== -->
+
+                <section class="primary-cause">
+
+
+                    <div class="panel cause-highlight">
+
+                        <div class="cause-label">
+                            Primary Contributing Factor
+                        </div>
+
+                        <div class="cause-name">
+
+                            {{ root_cause_result.primary_cause|default:"No clear cause" }}
+
+                        </div>
+
+                        <div class="cause-description">
+
+                            The dimension value contributing the most
+                            to the observed change.
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="panel cause-percentage">
+
+                        <div>
+
+                            <div class="cause-percentage-value">
+
+                                {% if root_cause_result.primary_cause_contribution != None %}
+
+                                    {{ root_cause_result.primary_cause_contribution|floatformat:1 }}%
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </div>
+
+                            <div class="cause-percentage-label">
+
+                                Contribution to Change
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     CHART + SUMMARY
+                ================================================== -->
+
+                <section class="content-grid">
+
+
+                    <div class="panel chart-panel">
+
+                        <div class="panel-header">
+
+                            <h2>
+                                Contribution Analysis
+                            </h2>
+
+                            <p>
+                                Contribution of each dimension value
+                                to the overall change.
+                            </p>
+
+                        </div>
+
+                        <div class="chart-wrapper">
+
+                            <canvas id="causeChart"></canvas>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="panel summary-panel">
+
+                        <div class="panel-header">
+
+                            <h2>
+                                Analysis Summary
+                            </h2>
+
+                            <p>
+                                Automated interpretation of the result.
+                            </p>
+
+                        </div>
+
+                        <div class="summary-box">
+
+                            {{ root_cause_result.summary }}
+
+                        </div>
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     CAUSE TABLE
+                ================================================== -->
+
+                <section class="panel table-panel">
+
+                    <div class="panel-header">
+
+                        <h2>
+                            Contributing Factors
+                        </h2>
+
+                        <p>
+                            Detailed breakdown of the factors
+                            identified by the analysis.
+                        </p>
+
+                    </div>
+
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Dimension
+                                    </th>
+
+                                    <th>
+                                        Target
+                                    </th>
+
+                                    <th>
+                                        Comparison
+                                    </th>
+
+                                    <th>
+                                        Change
+                                    </th>
+
+                                    <th>
+                                        Change %
+                                    </th>
+
+                                    <th>
+                                        Contribution
+                                    </th>
+
+                                    <th>
+                                        Direction
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                {% for cause in root_cause_result.cause_data %}
+
+                                    <tr>
+
+                                        <td>
+                                            <strong>
+                                                {{ cause.dimension }}
+                                            </strong>
+                                        </td>
+
+                                        <td>
+                                            {{ cause.target_value|floatformat:2 }}
+                                        </td>
+
+                                        <td>
+                                            {{ cause.comparison_value|floatformat:2 }}
+                                        </td>
+
+                                        <td class="
+                                            {% if cause.change_value < 0 %}
+                                                negative
+                                            {% elif cause.change_value > 0 %}
+                                                positive
+                                            {% else %}
+                                                neutral
+                                            {% endif %}
+                                        ">
+
+                                            {{ cause.change_value|floatformat:2 }}
+
+                                        </td>
+
+                                        <td>
+
+                                            {% if cause.change_percentage != None %}
+
+                                                {{ cause.change_percentage|floatformat:2 }}%
+
+                                            {% else %}
+
+                                                —
+
+                                            {% endif %}
+
+                                        </td>
+
+                                        <td>
+
+                                            {{ cause.contribution_percentage|floatformat:2 }}%
+
+                                        </td>
+
+                                        <td>
+
+                                            {% if cause.direction == "Increase" %}
+
+                                                <span class="
+                                                    direction-badge
+                                                    badge-increase
+                                                ">
+                                                    Increase
+                                                </span>
+
+                                            {% elif cause.direction == "Decrease" %}
+
+                                                <span class="
+                                                    direction-badge
+                                                    badge-decrease
+                                                ">
+                                                    Decrease
+                                                </span>
+
+                                            {% else %}
+
+                                                <span class="
+                                                    direction-badge
+                                                    badge-neutral
+                                                ">
+                                                    No Change
+                                                </span>
+
+                                            {% endif %}
+
+                                        </td>
+
+                                    </tr>
+
+                                {% empty %}
+
+                                    <tr>
+
+                                        <td colspan="7">
+
+                                            No contributing factors found.
+
+                                        </td>
+
+                                    </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+
+            {% else %}
+
+
+                <!-- ==================================================
+                     EMPTY STATE
+                ================================================== -->
+
+                <section class="empty-state">
+
+                    <div class="empty-icon">
+                        ◎
+                    </div>
+
+                    <h3>
+                        Ready to Find the Root Cause
+                    </h3>
+
+                    <p>
+                        Select a metric, dimension, target period,
+                        and comparison period above, then run the
+                        analysis to discover which factors contributed
+                        most to the change.
+                    </p>
+
+                </section>
+
+
+            {% endif %}
+
+
+        </div>
+
+    </main>
+
+
+    <!-- ============================================================
+         JAVASCRIPT
+    ============================================================ -->
+
+    {% if root_cause_result %}
+
+        {{ root_cause_result.chart_data|json_script:"root-cause-chart-data" }}
+
+    {% endif %}
+
+
+    <script>
+
+        /* ============================================================
+           DATASET CHANGE
+        ============================================================ */
+
+        function changeDataset(datasetId) {
+
+            const url = new URL(
+                window.location.href
+            );
+
+            url.searchParams.set(
+                "dataset",
+                datasetId
+            );
+
+            url.searchParams.delete(
+                "version"
+            );
+
+            window.location.href =
+                url.toString();
+        }
+
+
+        /* ============================================================
+           VERSION CHANGE
+        ============================================================ */
+
+        function changeVersion(versionId) {
+
+            const url = new URL(
+                window.location.href
+            );
+
+            url.searchParams.set(
+                "version",
+                versionId
+            );
+
+            window.location.href =
+                url.toString();
+        }
+
+
+        /* ============================================================
+           CHART
+        ============================================================ */
+
+        {% if root_cause_result %}
+
+            const chartElement =
+                document.getElementById(
+                    "root-cause-chart-data"
+                );
+
+            if (chartElement) {
+
+                const chartData =
+                    JSON.parse(
+                        chartElement.textContent
+                    );
+
+                const labels =
+                    chartData.map(
+                        item => item.label
+                    );
+
+                const values =
+                    chartData.map(
+                        item => item.contribution
+                    );
+
+                const ctx =
+                    document
+                        .getElementById("causeChart")
+                        .getContext("2d");
+
+
+                new Chart(
+                    ctx,
+                    {
+                        type: "bar",
+
+                        data: {
+
+                            labels: labels,
+
+                            datasets: [
+
+                                {
+                                    label:
+                                        "Contribution %",
+
+                                    data: values,
+
+                                    borderWidth: 1,
+
+                                    borderRadius: 7,
+
+                                    backgroundColor:
+                                        "rgba(79, 163, 255, 0.55)",
+
+                                    borderColor:
+                                        "#4fa3ff"
+                                }
+
+                            ]
+
+                        },
+
+                        options: {
+
+                            responsive: true,
+
+                            maintainAspectRatio: false,
+
+                            plugins: {
+
+                                legend: {
+                                    display: false
+                                },
+
+                                tooltip: {
+
+                                    callbacks: {
+
+                                        label:
+                                            function(context) {
+
+                                                return (
+                                                    " Contribution: "
+                                                    +
+                                                    Number(
+                                                        context.raw
+                                                    ).toFixed(2)
+                                                    +
+                                                    "%"
+                                                );
+
+                                            }
+
+                                    }
+
+                                }
+
+                            },
+
+                            scales: {
+
+                                x: {
+
+                                    ticks: {
+
+                                        color:
+                                            "rgba(218, 231, 245, 0.58)",
+
+                                        font: {
+                                            size: 10
+                                        },
+
+                                        maxRotation: 45,
+
+                                        minRotation: 0
+
+                                    },
+
+                                    grid: {
+
+                                        color:
+                                            "rgba(255,255,255,0.035)"
+
+                                    }
+
+                                },
+
+                                y: {
+
+                                    ticks: {
+
+                                        color:
+                                            "rgba(218, 231, 245, 0.58)",
+
+                                        callback:
+                                            function(value) {
+
+                                                return value + "%";
+
+                                            }
+
+                                    },
+
+                                    grid: {
+
+                                        color:
+                                            "rgba(255,255,255,0.045)"
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+                );
+
+            }
+
+        {% endif %}
+
+    </script>
+<script>
+    function changeDateColumn(dateColumn) {
+
+        const url = new URL(
+            window.location.href
+        );
+
+        if (dateColumn) {
+            url.searchParams.set(
+                "date_column",
+                dateColumn
+            );
+        } else {
+            url.searchParams.delete(
+                "date_column"
+            );
+        }
+
+        url.searchParams.delete(
+            "target_period"
+        );
+
+        url.searchParams.delete(
+            "comparison_period"
+        );
+
+        window.location.href =
+            url.toString();
+    }
+</script>
+</body>
+</html>

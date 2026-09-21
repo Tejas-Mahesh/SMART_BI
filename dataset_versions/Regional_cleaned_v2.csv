@@ -1,0 +1,21 @@
+Region_ID,Region,State,City,Manager,Sales_Target,Revenue_Target,Customers,Region_Status
+R001,South,Karnataka,Bengaluru,Anil Kumar,5000000,6000000,1500,Active
+R002,South,Tamil Nadu,Chennai,Karthik Raja,4500000,5400000,1350,Active
+R003,South,Telangana,Hyderabad,Suresh Reddy,4800000,5800000,1400,Active
+R004,South,Kerala,Kochi,Deepak Nair,3000000,3600000,850,Active
+R005,North,Delhi,New Delhi,Pooja Sharma,6000000,7500000,1800,Active
+R006,North,Punjab,Chandigarh,Aditya Verma,3200000,4000000,920,Active
+R007,North,Rajasthan,Jaipur,Rohan Singh,3500000,4200000,980,Active
+R008,North,Uttar Pradesh,Lucknow,Amit Gupta,3800000,4600000,1050,Active
+R009,West,Maharashtra,Mumbai,Vikram Joshi,7000000,8500000,2200,Active
+R010,West,Maharashtra,Pune,Sneha Kulkarni,4200000,5100000,1250,Active
+R011,West,Gujarat,Ahmedabad,Manoj Patel,4600000,5500000,1300,Active
+R012,West,Gujarat,Surat,Bhavik Shah,3400000,4100000,950,Active
+R013,East,West Bengal,Kolkata,Sunita Bose,3500000,4500000,1100,Active
+R014,East,Odisha,Bhubaneswar,Pradeep Das,2400000,3000000,700,Active
+R015,East,Bihar,Patna,Ritu Choudhury,2600000,3200000,750,Active
+R016,Central,Madhya Pradesh,Bhopal,Sanjay Mishra,2800000,3500000,800,Active
+R017,Central,Madhya Pradesh,Indore,Divya Agrawal,3200000,3900000,910,Active
+R018,Central,Maharashtra,Nagpur,Naveen Rao,2900000,3600000,830,Active
+R019,North,Uttarakhand,Dehradun,Kavita Bisht,1800000,2200000,450,Inactive
+R020,South,Andhra Pradesh,Visakhapatnam,Arjun Prasad,2200000,2700000,520,Under Review

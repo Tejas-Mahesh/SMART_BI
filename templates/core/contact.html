@@ -1,116 +1,470 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}Contact | Smart BI{% endblock %}
+{% block title %}Contact Us | Smart BI Business Decision Intelligence{% endblock %}
 
 {% block content %}
+<div class="smart-contact" id="smartContactRoot">
 
-<section class="page-hero">
+    <!-- AMBIENT ENGINE GLOWS & CYBER GRID -->
+    <div class="cnt-ambient-glow cnt-glow-top" aria-hidden="true"></div>
+    <div class="cnt-ambient-glow cnt-glow-mid" aria-hidden="true"></div>
+    <div class="cnt-ambient-glow cnt-glow-bottom" aria-hidden="true"></div>
+    <div class="cnt-ambient-grid" aria-hidden="true"></div>
+    <canvas id="cntParticleCanvas" class="cnt-particle-canvas" aria-hidden="true"></canvas>
 
-    <div class="hero-badge">
-        CONTACT US
-    </div>
+    <!-- 1. CINEMATIC HERO SECTION -->
+    <section class="cnt-hero-section" id="contactHero" aria-label="Contact Smart BI Hero">
+        <div class="cnt-shell">
+            <div class="cnt-hero-grid">
 
-    <h1>
-        Let's Build Better
-        <span>Business Decisions</span>
-    </h1>
+                <!-- HERO CONTENT (LEFT) -->
+                <div class="cnt-hero-content">
+                    <div class="cnt-badge-pill cnt-reveal cnt-reveal-left">
+                        <span class="cnt-pulse-dot" aria-hidden="true"></span>
+                        <span class="cnt-badge-text">CONTACT SMART BI</span>
+                    </div>
 
-    <p>
-        Have questions about Smart BI?
-        We'd love to hear from you.
-    </p>
+                    <h1 class="cnt-hero-title cnt-reveal cnt-reveal-left">
+                        <span class="cnt-title-line">Let's Build Better</span>
+                        <span class="cnt-title-line cnt-gradient-text">Business Decisions.</span>
+                    </h1>
 
-</section>
+                    <p class="cnt-hero-lead cnt-reveal cnt-reveal-left">
+                        Have questions about Smart BI, the platform, its capabilities, or how it can support your business intelligence journey? We'd love to hear from you.
+                    </p>
 
+                    <div class="cnt-hero-actions cnt-reveal cnt-reveal-left">
+                        <a href="#mainContactSection" class="cnt-btn-primary" id="startConvoBtn">
+                            <span class="cnt-btn-text">Start a Conversation</span>
+                            <span class="cnt-btn-icon" aria-hidden="true">&darr;</span>
+                        </a>
 
-<section class="contact-section">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'core:dashboard' %}" class="cnt-btn-glass" id="heroExploreAuth">
+                                <span class="cnt-btn-text">Explore Smart BI</span>
+                                <span class="cnt-btn-icon" aria-hidden="true">&rarr;</span>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'core:how_it_works' %}" class="cnt-btn-glass" id="heroExploreAnon">
+                                <span class="cnt-btn-text">Explore Smart BI</span>
+                                <span class="cnt-btn-icon" aria-hidden="true">&rarr;</span>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
 
-    <div class="contact-info">
+                <!-- HERO VISUAL: INTELLIGENT COMMUNICATION CIRCUIT (RIGHT) -->
+                <div class="cnt-hero-visual-col cnt-reveal cnt-reveal-right">
+                    <div class="cnt-circuit-card">
+                        <div class="cnt-circuit-header">
+                            <div class="cnt-circuit-title">
+                                <span class="cnt-title-spark" aria-hidden="true">&#10022;</span>
+                                <span>INTELLIGENT COMMUNICATION STREAM</span>
+                            </div>
+                            <span class="cnt-status-pill">ACTIVE CONDUIT</span>
+                        </div>
 
-        <span class="section-label">
-            GET IN TOUCH
-        </span>
+                        <div class="cnt-circuit-body">
+                            <div class="cnt-circuit-rail" aria-hidden="true">
+                                <div class="cnt-rail-flow-beam" id="circuitBeam"></div>
+                            </div>
 
-        <h2>
-            Have a question?
-        </h2>
+                            <!-- NODE 01: YOU -->
+                            <div class="cnt-node-row">
+                                <div class="cnt-node-avatar avatar-you">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="12" cy="7" r="4"/>
+                                    </svg>
+                                </div>
+                                <div class="cnt-node-meta">
+                                    <span class="cnt-node-tag">ENTERPRISE INITIATOR</span>
+                                    <h4 class="cnt-node-name">YOU</h4>
+                                    <p class="cnt-node-detail">Strategic inquiry &bull; Business context</p>
+                                </div>
+                            </div>
 
-        <p>
-            Send us a message and we'll get back to you.
-        </p>
+                            <!-- MID STREAM DATA PULSE -->
+                            <div class="cnt-signal-pill" aria-hidden="true">
+                                <span class="signal-spark">&#10022;</span>
+                                <span class="signal-label">DATA &amp; REQUIREMENTS</span>
+                                <span class="signal-spark">&#10022;</span>
+                            </div>
 
-        <div class="contact-item">
-            <div>✉</div>
-            <div>
-                <small>Email</small>
-                <strong>support@smartbi.local</strong>
+                            <!-- NODE 02: SMART BI CORE -->
+                            <div class="cnt-node-row active-core">
+                                <div class="cnt-node-avatar avatar-core">
+                                    <div class="core-orbit-ring" aria-hidden="true"></div>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                        <line x1="2" y1="12" x2="22" y2="12"/>
+                                    </svg>
+                                </div>
+                                <div class="cnt-node-meta">
+                                    <span class="cnt-node-tag tag-purple">COGNITIVE ENGINE</span>
+                                    <h4 class="cnt-node-name">SMART BI</h4>
+                                    <p class="cnt-node-detail">Synthesis &bull; Decision intelligence</p>
+                                </div>
+                            </div>
+
+                            <!-- NODE 03: RESPONSE -->
+                            <div class="cnt-node-row">
+                                <div class="cnt-node-avatar avatar-resp">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                    </svg>
+                                </div>
+                                <div class="cnt-node-meta">
+                                    <span class="cnt-node-tag tag-green">DIRECT ALIGNMENT</span>
+                                    <h4 class="cnt-node-name">RESPONSE</h4>
+                                    <p class="cnt-node-detail">Dedicated conversation &bull; Strategic pathway</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cnt-circuit-footer">
+                            <span>Concept Visualization &bull; Direct Enquiry Pipeline</span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
+    </section>
 
-        <div class="contact-item">
-            <div>⌂</div>
-            <div>
-                <small>Platform</small>
-                <strong>Smart Business Intelligence</strong>
+    <!-- 2. MAIN CONTACT SECTION (SPLIT LAYOUT) -->
+    <section class="cnt-main-section" id="mainContactSection" aria-label="Get in Touch with Smart BI">
+        <div class="cnt-shell">
+            <div class="cnt-split-layout">
+
+                <!-- LEFT COLUMN: CONTACT INFORMATION & VALUE CARDS -->
+                <div class="cnt-info-col">
+                    <div class="cnt-info-lead-box cnt-reveal cnt-reveal-left">
+                        <span class="cnt-eyebrow">GET IN TOUCH</span>
+                        <h2 class="cnt-info-heading">Have a Question?</h2>
+                        <p class="cnt-info-desc">
+                            Send us a message and our intelligence specialists will connect with you to discuss how Smart BI aligns with your data landscape.
+                        </p>
+                    </div>
+
+                    <!-- DIRECT CONTACT CHANNELS -->
+                    <div class="cnt-channels-stack cnt-reveal cnt-reveal-left">
+                        <!-- EMAIL CARD -->
+                        <a href="mailto:support@smartbi.local" class="cnt-channel-card" id="emailContactCard" aria-label="Send email to support@smartbi.local">
+                            <div class="cnt-channel-icon-wrap icon-purple">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                            </div>
+                            <div class="cnt-channel-text">
+                                <span class="cnt-channel-lbl">EMAIL</span>
+                                <span class="cnt-channel-val">support@smartbi.local</span>
+                                <span class="cnt-channel-hint">Click to open your mail client &rarr;</span>
+                            </div>
+                        </a>
+
+                        <!-- PLATFORM CARD -->
+                        <div class="cnt-channel-card static-card">
+                            <div class="cnt-channel-icon-wrap icon-blue">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                                </svg>
+                            </div>
+                            <div class="cnt-channel-text">
+                                <span class="cnt-channel-lbl">PLATFORM</span>
+                                <span class="cnt-channel-val">Smart Business Intelligence</span>
+                                <span class="cnt-channel-desc">Business intelligence, forecasting and decision intelligence.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- WHY CONTACT SMART BI SUB-GRID -->
+                    <div class="cnt-reasons-block cnt-reveal cnt-reveal-left">
+                        <span class="cnt-reasons-title">WHY CONNECT WITH SMART BI?</span>
+                        <div class="cnt-reasons-grid">
+                            <div class="cnt-reason-card">
+                                <div class="reason-icon-bubble">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                    </svg>
+                                </div>
+                                <h4 class="reason-name">Ask</h4>
+                                <p class="reason-detail">Have specific architectural questions about our decision intelligence engine?</p>
+                            </div>
+
+                            <div class="cnt-reason-card">
+                                <div class="reason-icon-bubble">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+                                    </svg>
+                                </div>
+                                <h4 class="reason-name">Explore</h4>
+                                <p class="reason-detail">Want to map your existing CSV, Excel or SQL data pipeline into Smart BI?</p>
+                            </div>
+
+                            <div class="cnt-reason-card">
+                                <div class="reason-icon-bubble">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="8.5" cy="7" r="4"/>
+                                        <line x1="20" y1="8" x2="20" y2="14"/>
+                                        <line x1="23" y1="11" x2="17" y2="11"/>
+                                    </svg>
+                                </div>
+                                <h4 class="reason-name">Connect</h4>
+                                <p class="reason-detail">Discuss enterprise sandbox possibilities and prescriptive decision modeling.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: CONTACT FORM & INTERACTIVE PROGRESS -->
+                <div class="cnt-form-col cnt-reveal cnt-reveal-right">
+                    <div class="cnt-form-monolith">
+                        <div class="cnt-form-top-accent" aria-hidden="true"></div>
+
+                        <div class="cnt-form-header">
+                            <h3 class="cnt-form-title">Send Us a Message</h3>
+                            <p class="cnt-form-subtitle">Tell us what you would like to know and we'll prepare the right answers.</p>
+                        </div>
+
+                        <!-- COMPLETENESS PROGRESS METER -->
+                        <div class="cnt-meter-wrapper" aria-hidden="true">
+                            <div class="meter-labels">
+                                <span class="meter-text">MESSAGE COMPLETENESS</span>
+                                <span class="meter-pct" id="completenessPct">0%</span>
+                            </div>
+                            <div class="meter-track">
+                                <div class="meter-fill" id="completenessBar"></div>
+                            </div>
+                        </div>
+
+                        <!-- THE INTERACTIVE CONTACT FORM -->
+                        <form id="smartContactForm" class="cnt-form-element" novalidate>
+                            {% csrf_token %}
+
+                            <!-- FIELD: NAME -->
+                            <div class="cnt-field-group" id="groupName">
+                                <label for="contactName" class="cnt-field-label">Name <span class="req-star">*</span></label>
+                                <div class="cnt-input-container">
+                                    <input
+                                        id="contactName"
+                                        name="name"
+                                        type="text"
+                                        class="cnt-input"
+                                        placeholder="Your name"
+                                        autocomplete="name"
+                                        required
+                                    >
+                                    <span class="cnt-field-status" aria-hidden="true"></span>
+                                </div>
+                                <span class="cnt-field-error" id="errName" role="alert"></span>
+                            </div>
+
+                            <!-- FIELD: EMAIL -->
+                            <div class="cnt-field-group" id="groupEmail">
+                                <label for="contactEmail" class="cnt-field-label">Email <span class="req-star">*</span></label>
+                                <div class="cnt-input-container">
+                                    <input
+                                        id="contactEmail"
+                                        name="email"
+                                        type="email"
+                                        class="cnt-input"
+                                        placeholder="Your corporate email address"
+                                        autocomplete="email"
+                                        required
+                                    >
+                                    <span class="cnt-field-status" aria-hidden="true"></span>
+                                </div>
+                                <span class="cnt-field-error" id="errEmail" role="alert"></span>
+                            </div>
+
+                            <!-- FIELD: SUBJECT -->
+                            <div class="cnt-field-group" id="groupSubject">
+                                <label for="contactSubject" class="cnt-field-label">Subject <span class="req-star">*</span></label>
+                                <div class="cnt-input-container">
+                                    <input
+                                        id="contactSubject"
+                                        name="subject"
+                                        type="text"
+                                        class="cnt-input"
+                                        placeholder="How can we help?"
+                                        required
+                                    >
+                                    <span class="cnt-field-status" aria-hidden="true"></span>
+                                </div>
+                                <span class="cnt-field-error" id="errSubject" role="alert"></span>
+                            </div>
+
+                            <!-- FIELD: MESSAGE -->
+                            <div class="cnt-field-group" id="groupMessage">
+                                <label for="contactMessage" class="cnt-field-label">Message <span class="req-star">*</span></label>
+                                <div class="cnt-input-container">
+                                    <textarea
+                                        id="contactMessage"
+                                        name="message"
+                                        rows="6"
+                                        class="cnt-textarea"
+                                        placeholder="Write your message or inquiry here..."
+                                        required
+                                    ></textarea>
+                                    <span class="cnt-field-status" aria-hidden="true"></span>
+                                </div>
+                                <span class="cnt-field-error" id="errMessage" role="alert"></span>
+                            </div>
+
+                            <!-- SUBMIT BUTTON -->
+                            <div class="cnt-form-actions">
+                                <button type="submit" class="cnt-btn-primary cnt-btn-block" id="contactSubmitBtn">
+                                    <span class="cnt-btn-spinner" aria-hidden="true"></span>
+                                    <span class="cnt-btn-text">Send Message</span>
+                                    <span class="cnt-btn-icon" aria-hidden="true">&rarr;</span>
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- IN-PAGE SUCCESS STATE DISPLAY (HIDDEN INITIALLY) -->
+                        <div class="cnt-success-panel" id="contactSuccessPanel" aria-live="polite">
+                            <div class="success-icon-wrap">
+                                <div class="success-ring-pulse" aria-hidden="true"></div>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="success-svg">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                            </div>
+                            <span class="success-badge">✓ MESSAGE READY</span>
+                            <h4 class="success-title">Your enquiry has been prepared successfully.</h4>
+                            <p class="success-desc">
+                                Thank you for your interest in Smart BI. Our enterprise specialists will review your message and connect back with you at your provided email address.
+                            </p>
+                            <button type="button" class="cnt-btn-glass" id="resetFormBtn">
+                                <span class="cnt-btn-text">Send Another Message</span>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
         </div>
+    </section>
 
-    </div>
+    <!-- 3. PHILOSOPHY CONDUIT: FROM QUESTION TO ACTION -->
+    <section class="cnt-philosophy-section" aria-label="Decision Philosophy Pathway">
+        <div class="cnt-shell">
+            <div class="cnt-philosophy-card cnt-reveal cnt-reveal-scale">
+                <div class="cnt-philosophy-header text-center">
+                    <span class="cnt-eyebrow">COGNITIVE CONTINUUM</span>
+                    <h2 class="cnt-phil-title">
+                        Every Good Decision Starts With a <span class="cnt-gradient-text">Good Question.</span>
+                    </h2>
+                    <p class="cnt-phil-desc">
+                        Whether you are exploring the platform, planning your analytics workflow, or thinking about how data can improve your decisions, start the conversation.
+                    </p>
+                </div>
 
+                <div class="cnt-pathway-track">
+                    <div class="pathway-step">
+                        <div class="step-glyph icon-purple">&#10067;</div>
+                        <span class="step-num">01</span>
+                        <h4 class="step-name">QUESTION</h4>
+                        <span class="step-sub">Inquiry &amp; Context</span>
+                    </div>
 
-    <form class="contact-form">
+                    <div class="pathway-connector" aria-hidden="true">
+                        <span class="connector-light"></span>
+                    </div>
 
-        <div class="form-row">
+                    <div class="pathway-step">
+                        <div class="step-glyph icon-blue">&#128269;</div>
+                        <span class="step-num">02</span>
+                        <h4 class="step-name">UNDERSTANDING</h4>
+                        <span class="step-sub">Diagnostic Clarity</span>
+                    </div>
 
-            <div class="form-group">
-                <label>Name</label>
-                <input
-                    type="text"
-                    placeholder="Your name"
-                >
+                    <div class="pathway-connector" aria-hidden="true">
+                        <span class="connector-light"></span>
+                    </div>
+
+                    <div class="pathway-step">
+                        <div class="step-glyph icon-green">&#10022;</div>
+                        <span class="step-num">03</span>
+                        <h4 class="step-name">INTELLIGENCE</h4>
+                        <span class="step-sub">Machine Learning Model</span>
+                    </div>
+
+                    <div class="pathway-connector" aria-hidden="true">
+                        <span class="connector-light"></span>
+                    </div>
+
+                    <div class="pathway-step highlight-step">
+                        <div class="step-glyph icon-orange">&#9678;</div>
+                        <span class="step-num">04</span>
+                        <h4 class="step-name">DECISION</h4>
+                        <span class="step-sub">Prescriptive Action</span>
+                    </div>
+                </div>
             </div>
+        </div>
+    </section>
 
-            <div class="form-group">
-                <label>Email</label>
-                <input
-                    type="email"
-                    placeholder="Your email"
-                >
+    <!-- 4. FINAL CINEMATIC CTA -->
+    <section class="cnt-final-cta-section" id="contactCta" aria-label="Call to Action">
+        <div class="cnt-shell">
+            <div class="cnt-cta-monolith cnt-reveal cnt-reveal-scale">
+                <div class="cnt-cta-ambient-beam" aria-hidden="true"></div>
+
+                <div class="cnt-cta-inner text-center">
+                    <div class="cnt-badge-pill">
+                        <span class="cnt-pulse-dot" aria-hidden="true"></span>
+                        <span class="cnt-badge-text">TRANSFORM YOUR DATA</span>
+                    </div>
+
+                    <h2 class="cnt-cta-headline">
+                        <span class="cta-block">Ready to Explore</span>
+                        <span class="cta-block cnt-gradient-text">Smart BI?</span>
+                    </h2>
+
+                    <p class="cnt-cta-lead">
+                        Discover how data management, analytics, forecasting and decision intelligence can come together in one platform.
+                    </p>
+
+                    <div class="cnt-cta-actions">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'core:dashboard' %}" class="cnt-btn-primary cnt-btn-lg" id="finalCtaAuth">
+                                <span class="cnt-btn-text">Open Smart BI</span>
+                                <span class="cnt-btn-icon" aria-hidden="true">&rarr;</span>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'accounts:signup' %}" class="cnt-btn-primary cnt-btn-lg" id="finalCtaAnon">
+                                <span class="cnt-btn-text">Start Building Intelligence</span>
+                                <span class="cnt-btn-icon" aria-hidden="true">&rarr;</span>
+                            </a>
+                        {% endif %}
+
+                        <a href="{% url 'core:how_it_works' %}" class="cnt-btn-glass cnt-btn-lg" id="finalCtaHow">
+                            <span class="cnt-btn-text">How It Works</span>
+                            <span class="cnt-btn-icon" aria-hidden="true">&rarr;</span>
+                        </a>
+                    </div>
+                </div>
             </div>
-
         </div>
+    </section>
 
+</div>
+{% endblock %}
 
-        <div class="form-group">
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/contact.css' %}">
+{% endblock %}
 
-            <label>Subject</label>
-
-            <input
-                type="text"
-                placeholder="How can we help?"
-            >
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label>Message</label>
-
-            <textarea
-                rows="6"
-                placeholder="Write your message..."
-            ></textarea>
-
-        </div>
-
-
-        <button type="button" class="primary-btn">
-            Send Message →
-        </button>
-
-    </form>
-
-</section>
-
+{% block extra_js %}
+<script src="{% static 'js/contact.js' %}"></script>
 {% endblock %}

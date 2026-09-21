@@ -1,171 +1,696 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}How It Works | Smart BI{% endblock %}
 
 {% block content %}
+<div class="smart-how-it-works" id="smartHowItWorks">
 
-<section class="page-hero">
+    <!-- AMBIENT ENGINE GLOWS & GRID -->
+    <div class="how-ambient-glow how-glow-top" aria-hidden="true"></div>
+    <div class="how-ambient-glow how-glow-mid" aria-hidden="true"></div>
+    <div class="how-ambient-glow how-glow-bottom" aria-hidden="true"></div>
+    <div class="how-ambient-grid" aria-hidden="true"></div>
+    <canvas id="howParticleCanvas" class="how-particle-canvas" aria-hidden="true"></canvas>
 
-    <div class="hero-badge">
-        HOW IT WORKS
-    </div>
+    <!-- 1. CINEMATIC HERO SECTION -->
+    <section class="how-hero-section" id="howHero" aria-label="How Smart BI Works Hero">
+        <div class="how-shell">
+            <div class="how-hero-grid">
 
-    <h1>
-        One Complete Journey From
-        <span>Data to Decision</span>
-    </h1>
+                <!-- HERO CONTENT (LEFT) -->
+                <div class="how-hero-content">
+                    <div class="how-badge-pill how-reveal">
+                        <span class="how-pulse-dot" aria-hidden="true"></span>
+                        <span class="how-badge-text">HOW SMART BI WORKS</span>
+                    </div>
 
-    <p>
-        Smart BI follows a structured data pipeline where
-        every stage prepares information for the next stage.
-    </p>
+                    <h1 class="how-hero-title how-reveal">
+                        <span class="how-title-line">One Complete Journey From</span>
+                        <span class="how-title-line how-gradient-text">Data to Decision.</span>
+                    </h1>
 
-</section>
+                    <p class="how-hero-lead how-reveal">
+                        Smart BI follows a structured intelligence pipeline where every stage transforms business data into increasingly valuable information, insights and decisions.
+                    </p>
 
+                    <div class="how-hero-actions how-reveal">
+                        <a href="#workflowSection" class="how-btn-primary" id="exploreJourneyBtn">
+                            <span class="how-btn-text">Explore the Journey</span>
+                            <span class="how-btn-icon" aria-hidden="true">&darr;</span>
+                        </a>
 
-<section class="workflow-section">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'core:dashboard' %}" class="how-btn-glass" id="heroCtaAuth">
+                                <span class="how-btn-text">Start With Your Data</span>
+                                <span class="how-btn-icon" aria-hidden="true">&rarr;</span>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'accounts:signup' %}" class="how-btn-glass" id="heroCtaAnon">
+                                <span class="how-btn-text">Start With Your Data</span>
+                                <span class="how-btn-icon" aria-hidden="true">&rarr;</span>
+                            </a>
+                        {% endif %}
+                    </div>
 
-    <div class="workflow-step">
+                    <div class="how-hero-stats how-reveal">
+                        <div class="how-stat-unit">
+                            <span class="how-stat-val">5</span>
+                            <span class="how-stat-lbl">Pipeline Stages</span>
+                        </div>
+                        <div class="how-stat-divider" aria-hidden="true"></div>
+                        <div class="how-stat-unit">
+                            <span class="how-stat-val">7</span>
+                            <span class="how-stat-lbl">Data Domains</span>
+                        </div>
+                        <div class="how-stat-divider" aria-hidden="true"></div>
+                        <div class="how-stat-unit">
+                            <span class="how-stat-val">100%</span>
+                            <span class="how-stat-lbl">Action Ready</span>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="workflow-number">01</div>
+                <!-- HERO PIPELINE VISUAL (RIGHT) -->
+                <div class="how-hero-visual-wrap how-reveal" id="heroPipelineVisual">
+                    <div class="how-pipeline-circuit-card">
+                        <div class="how-card-header-bar">
+                            <div class="how-chip-brand">
+                                <span class="how-chip-dot"></span>
+                                <span>SMART BI PIPELINE MATRIX</span>
+                            </div>
+                            <span class="how-chip-live">CONTINUOUS STREAM</span>
+                        </div>
 
-        <div class="workflow-content">
+                        <!-- 5-NODE CONNECTED RUNNER -->
+                        <div class="how-circuit-track">
+                            <div class="how-circuit-rail" aria-hidden="true">
+                                <div class="how-rail-glow-beam" id="heroRailBeam"></div>
+                            </div>
 
-            <span>DATA MANAGEMENT</span>
+                            <!-- NODE 1 -->
+                            <div class="how-circuit-node active" data-node-step="1">
+                                <div class="how-node-indicator">
+                                    <span class="how-node-num">01</span>
+                                    <div class="how-node-halo"></div>
+                                </div>
+                                <div class="how-node-text-col">
+                                    <span class="how-node-label">DATA</span>
+                                    <span class="how-node-desc">Raw business information</span>
+                                </div>
+                            </div>
 
-            <h2>Upload & Prepare Your Data</h2>
+                            <!-- NODE 2 -->
+                            <div class="how-circuit-node" data-node-step="2">
+                                <div class="how-node-indicator">
+                                    <span class="how-node-num">02</span>
+                                    <div class="how-node-halo"></div>
+                                </div>
+                                <div class="how-node-text-col">
+                                    <span class="how-node-label">ANALYTICS</span>
+                                    <span class="how-node-desc">Understand performance</span>
+                                </div>
+                            </div>
 
-            <p>
-                Upload datasets such as Sales, Customers,
-                Products, Regional, Marketing, Financial
-                and Returns.
-            </p>
+                            <!-- NODE 3 -->
+                            <div class="how-circuit-node" data-node-step="3">
+                                <div class="how-node-indicator">
+                                    <span class="how-node-num">03</span>
+                                    <div class="how-node-halo"></div>
+                                </div>
+                                <div class="how-node-text-col">
+                                    <span class="how-node-label">INSIGHTS</span>
+                                    <span class="how-node-desc">Discover patterns</span>
+                                </div>
+                            </div>
 
-            <div class="workflow-list">
-                <span>✓ Data Quality</span>
-                <span>✓ Data Cleaning</span>
-                <span>✓ Data Validation</span>
-                <span>✓ Data Profiling</span>
-                <span>✓ Data Transformation</span>
+                            <!-- NODE 4 -->
+                            <div class="how-circuit-node" data-node-step="4">
+                                <div class="how-node-indicator">
+                                    <span class="how-node-num">04</span>
+                                    <div class="how-node-halo"></div>
+                                </div>
+                                <div class="how-node-text-col">
+                                    <span class="how-node-label">DECISIONS</span>
+                                    <span class="how-node-desc">Choose actions</span>
+                                </div>
+                            </div>
+
+                            <!-- NODE 5 -->
+                            <div class="how-circuit-node" data-node-step="5">
+                                <div class="how-node-indicator">
+                                    <span class="how-node-num">05</span>
+                                    <div class="how-node-halo"></div>
+                                </div>
+                                <div class="how-node-text-col">
+                                    <span class="how-node-label">REPORTS</span>
+                                    <span class="how-node-desc">Communicate results</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. WORKFLOW TIMELINE & INTERACTIVE 5 STAGES -->
+    <section class="how-workflow-section" id="workflowSection" aria-label="Smart BI Complete Workflow">
+        <div class="how-shell">
+            
+            <div class="how-section-header how-reveal text-center">
+                <span class="how-eyebrow">COGNITIVE ENGINE PHASES</span>
+                <h2 class="how-section-title">
+                    The 5-Stage <span class="how-gradient-text">Decision Pipeline</span>
+                </h2>
+                <p class="how-section-desc">
+                    Each stage deepens mathematical confidence, translating dispersed records into actionable executive decisions.
+                </p>
             </div>
 
-        </div>
+            <!-- CENTRAL GLOWING TIMELINE (DESKTOP) -->
+            <div class="how-timeline-track-container" id="howTimelineContainer">
+                <div class="how-central-spine" aria-hidden="true">
+                    <div class="how-spine-tracer" id="howSpineTracer"></div>
+                </div>
 
-    </div>
+                <!-- ==========================================
+                     STEP 01: DATA MANAGEMENT
+                     Layout: TEXT LEFT / VISUAL RIGHT
+                     ========================================== -->
+                <div class="workflow-step-row how-reveal" id="step1" data-step="1">
+                    <div class="workflow-timeline-beacon" aria-hidden="true">
+                        <span class="beacon-circle">01</span>
+                    </div>
 
+                    <div class="workflow-grid-stage">
+                        <!-- TEXT LEFT -->
+                        <div class="workflow-narrative-col">
+                            <div class="workflow-stage-pill stage-pill-purple">
+                                <span>STAGE 01</span> &bull; <span>FOUNDATION</span>
+                            </div>
+                            <span class="workflow-category">DATA MANAGEMENT</span>
+                            <h3 class="workflow-heading">Upload &amp; Prepare Your Data</h3>
+                            <p class="workflow-body">
+                                Upload datasets such as Sales, Customers, Products, Regional, Marketing, Financial and Returns. Smart BI normalizes schemas and repairs dataset anomalies instantly.
+                            </p>
+                            <ul class="workflow-checklist" role="list">
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> Data Quality</li>
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> Data Cleaning</li>
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> Data Validation</li>
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> Data Profiling</li>
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> Data Transformation</li>
+                            </ul>
+                        </div>
 
-    <div class="workflow-step">
+                        <!-- VISUAL RIGHT: DATA PIPELINE MOCK -->
+                        <div class="workflow-mock-col">
+                            <div class="how-mock-card how-data-proc-card">
+                                <div class="how-mock-header">
+                                    <div class="how-mock-lights" aria-hidden="true">
+                                        <span></span><span></span><span></span>
+                                    </div>
+                                    <span class="how-mock-title">INGESTION &amp; SCHEMA INTEGRITY</span>
+                                    <span class="how-mock-badge badge-green">LIVE VERIFICATION</span>
+                                </div>
 
-        <div class="workflow-number">02</div>
+                                <div class="how-proc-flow-body">
+                                    <div class="proc-step-item completed">
+                                        <div class="proc-icon-col">
+                                            <span class="proc-status-dot"></span>
+                                            <div class="proc-line"></div>
+                                        </div>
+                                        <div class="proc-text-col">
+                                            <span class="proc-sub">PHASE 1</span>
+                                            <h4 class="proc-title">Uploaded Dataset</h4>
+                                            <p class="proc-meta">sales_master_fy26.csv &bull; 148,200 records loaded</p>
+                                        </div>
+                                        <span class="proc-tag-state">&#10003; INGESTED</span>
+                                    </div>
 
-        <div class="workflow-content">
+                                    <div class="proc-step-item completed">
+                                        <div class="proc-icon-col">
+                                            <span class="proc-status-dot"></span>
+                                            <div class="proc-line"></div>
+                                        </div>
+                                        <div class="proc-text-col">
+                                            <span class="proc-sub">PHASE 2</span>
+                                            <h4 class="proc-title">Quality Check</h4>
+                                            <p class="proc-meta">Schema evaluated &bull; 0 syntax collations broken</p>
+                                        </div>
+                                        <span class="proc-tag-state">&#10003; PASSED</span>
+                                    </div>
 
-            <span>BUSINESS ANALYTICS</span>
+                                    <div class="proc-step-item completed">
+                                        <div class="proc-icon-col">
+                                            <span class="proc-status-dot"></span>
+                                            <div class="proc-line"></div>
+                                        </div>
+                                        <div class="proc-text-col">
+                                            <span class="proc-sub">PHASE 3</span>
+                                            <h4 class="proc-title">Cleaning &amp; Validation</h4>
+                                            <p class="proc-meta">Null records imputed &bull; Outlier dates standardized</p>
+                                        </div>
+                                        <span class="proc-tag-state">&#10003; PURIFIED</span>
+                                    </div>
 
-            <h2>Understand Your Business</h2>
+                                    <div class="proc-step-item active">
+                                        <div class="proc-icon-col">
+                                            <span class="proc-status-dot"></span>
+                                        </div>
+                                        <div class="proc-text-col">
+                                            <span class="proc-sub">PHASE 4</span>
+                                            <h4 class="proc-title">Ready for Analysis</h4>
+                                            <p class="proc-meta">Transformed into vectorized multidimensional models</p>
+                                        </div>
+                                        <span class="proc-tag-state state-live">COMPUTING</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <p>
-                Interactive visualizations reveal sales,
-                customers, products, regional performance,
-                marketing results, financial performance
-                and returns.
-            </p>
+                <!-- ==========================================
+                     STEP 02: BUSINESS ANALYTICS
+                     Layout: VISUAL LEFT / TEXT RIGHT
+                     ========================================== -->
+                <div class="workflow-step-row how-reveal" id="step2" data-step="2">
+                    <div class="workflow-timeline-beacon" aria-hidden="true">
+                        <span class="beacon-circle">02</span>
+                    </div>
 
-            <div class="workflow-list">
-                <span>✓ KPI Dashboard</span>
-                <span>✓ Trend Analysis</span>
-                <span>✓ Performance Analysis</span>
-                <span>✓ Business Summary</span>
+                    <div class="workflow-grid-stage reverse-order">
+                        <!-- VISUAL LEFT: MINI DASHBOARD MOCKUP -->
+                        <div class="workflow-mock-col">
+                            <div class="how-mock-card how-analytics-card">
+                                <div class="how-mock-header">
+                                    <div class="how-mock-lights" aria-hidden="true">
+                                        <span></span><span></span><span></span>
+                                    </div>
+                                    <span class="how-mock-title">ENTERPRISE TELEMETRY DASHBOARD</span>
+                                    <span class="how-mock-badge badge-blue">REAL-TIME</span>
+                                </div>
+
+                                <div class="how-analytics-content">
+                                    <div class="how-mini-kpis">
+                                        <div class="mini-kpi">
+                                            <span class="mini-kpi-lbl">Revenue</span>
+                                            <span class="mini-kpi-val">&#8377;8.42M</span>
+                                            <span class="mini-kpi-chg positive">+18.4%</span>
+                                        </div>
+                                        <div class="mini-kpi">
+                                            <span class="mini-kpi-lbl">Customers</span>
+                                            <span class="mini-kpi-val">24.8K</span>
+                                            <span class="mini-kpi-chg positive">+12.8%</span>
+                                        </div>
+                                        <div class="mini-kpi">
+                                            <span class="mini-kpi-lbl">Orders</span>
+                                            <span class="mini-kpi-val">12.6K</span>
+                                            <span class="mini-kpi-chg positive">+16.2%</span>
+                                        </div>
+                                        <div class="mini-kpi">
+                                            <span class="mini-kpi-lbl">Profit</span>
+                                            <span class="mini-kpi-val">26.7%</span>
+                                            <span class="mini-kpi-chg positive">+4.6%</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- MINI CHART -->
+                                    <div class="how-chart-shell">
+                                        <div class="how-chart-meta">
+                                            <span>Trailing Performance Distribution</span>
+                                            <span class="how-meta-val">Q1-Q4 Trend</span>
+                                        </div>
+                                        <svg class="how-svg-chart" viewBox="0 0 380 110" preserveAspectRatio="none">
+                                            <defs>
+                                                <linearGradient id="anGrad" x1="0" y1="0" x2="0" y2="1">
+                                                    <stop offset="0%" stop-color="#3fa9f5" stop-opacity="0.4"/>
+                                                    <stop offset="100%" stop-color="#3fa9f5" stop-opacity="0.0"/>
+                                                </linearGradient>
+                                            </defs>
+                                            <path d="M 10 90 Q 60 70 110 80 T 210 40 T 310 50 T 370 15 L 370 110 L 10 110 Z" fill="url(#anGrad)"/>
+                                            <path d="M 10 90 Q 60 70 110 80 T 210 40 T 310 50 T 370 15" fill="none" stroke="#3fa9f5" stroke-width="3" class="how-draw-line"/>
+                                            <circle cx="210" cy="40" r="4.5" fill="#081827" stroke="#39d98a" stroke-width="2.5"/>
+                                            <circle cx="370" cy="15" r="5" fill="#3fa9f5" stroke="#ffffff" stroke-width="2"/>
+                                        </svg>
+                                        <div class="how-chart-ticks">
+                                            <span>Sales</span>
+                                            <span>Customers</span>
+                                            <span>Products</span>
+                                            <span>Regional</span>
+                                            <span>Marketing</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TEXT RIGHT -->
+                        <div class="workflow-narrative-col">
+                            <div class="workflow-stage-pill stage-pill-blue">
+                                <span>STAGE 02</span> &bull; <span>DIAGNOSTIC</span>
+                            </div>
+                            <span class="workflow-category">BUSINESS ANALYTICS</span>
+                            <h3 class="workflow-heading">Understand Your Business</h3>
+                            <p class="workflow-body">
+                                Interactive visualizations reveal sales, customers, products, regional performance, marketing results, financial performance and returns. Transform isolated numbers into operational clarity.
+                            </p>
+                            <ul class="workflow-checklist" role="list">
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> KPI Dashboard</li>
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> Trend Analysis</li>
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> Performance Analysis</li>
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> Business Summary</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==========================================
+                     STEP 03: ADVANCED INSIGHTS
+                     Layout: TEXT LEFT / VISUAL RIGHT
+                     ========================================== -->
+                <div class="workflow-step-row how-reveal" id="step3" data-step="3">
+                    <div class="workflow-timeline-beacon" aria-hidden="true">
+                        <span class="beacon-circle">03</span>
+                    </div>
+
+                    <div class="workflow-grid-stage">
+                        <!-- TEXT LEFT -->
+                        <div class="workflow-narrative-col">
+                            <div class="workflow-stage-pill stage-pill-cyan">
+                                <span>STAGE 03</span> &bull; <span>PREDICTIVE</span>
+                            </div>
+                            <span class="workflow-category">ADVANCED INSIGHTS</span>
+                            <h3 class="workflow-heading">Discover What Comes Next</h3>
+                            <p class="workflow-body">
+                                Statistical and machine learning techniques identify trends, anomalies, customer segments, risks and opportunities. Detect hidden patterns across multi-tier dataset relationships before competitors do.
+                            </p>
+                            <ul class="workflow-checklist" role="list">
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> Forecasting</li>
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> Anomaly Detection</li>
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> Root Cause Analysis</li>
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> Customer Segmentation</li>
+                            </ul>
+                        </div>
+
+                        <!-- VISUAL RIGHT: ML FORECAST & ANOMALY MOCK -->
+                        <div class="workflow-mock-col">
+                            <div class="how-mock-card how-insights-card">
+                                <div class="how-mock-header">
+                                    <div class="how-mock-lights" aria-hidden="true">
+                                        <span></span><span></span><span></span>
+                                    </div>
+                                    <span class="how-mock-title">HORIZON PREDICTOR &bull; AI DISCOVERY</span>
+                                    <span class="how-mock-badge badge-purple">95% CONFIDENCE</span>
+                                </div>
+
+                                <div class="how-insights-graph-box">
+                                    <svg class="how-forecast-svg" viewBox="0 0 400 150" preserveAspectRatio="none">
+                                        <!-- GRID LINES -->
+                                        <line x1="10" y1="30" x2="390" y2="30" class="how-svg-grid" />
+                                        <line x1="10" y1="75" x2="390" y2="75" class="how-svg-grid" />
+                                        <line x1="10" y1="120" x2="390" y2="120" class="how-svg-grid" />
+
+                                        <!-- CONFIDENCE CONE -->
+                                        <polygon points="210,70 380,25 380,105" fill="rgba(117, 103, 248, 0.15)"/>
+
+                                        <!-- HISTORICAL LINE -->
+                                        <path d="M 15 110 Q 70 100 110 85 T 210 70" fill="none" stroke="#3fa9f5" stroke-width="3" stroke-linecap="round"/>
+
+                                        <!-- FORECAST LINE -->
+                                        <path d="M 210 70 Q 290 55 380 35" fill="none" stroke="#7567f8" stroke-width="3.5" stroke-dasharray="6 5" stroke-linecap="round"/>
+
+                                        <!-- TODAY DIVIDER -->
+                                        <line x1="210" y1="20" x2="210" y2="135" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3 3"/>
+
+                                        <!-- NODES -->
+                                        <circle cx="210" cy="70" r="5" fill="#39d98a"/>
+                                        <circle cx="380" cy="35" r="6" fill="#7567f8" stroke="#ffffff" stroke-width="2" class="how-pulse-ring"/>
+                                    </svg>
+
+                                    <!-- AI INSIGHT FLOATING CARD -->
+                                    <div class="how-insight-popover">
+                                        <div class="popover-icon">&#9889;</div>
+                                        <div class="popover-content">
+                                            <span class="popover-title">AI Insight Detected</span>
+                                            <span class="popover-body">Accelerating regional demand curve (+18.4% velocity in Northern cluster).</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==========================================
+                     STEP 04: DECISION INTELLIGENCE
+                     Layout: VISUAL LEFT / TEXT RIGHT
+                     ========================================== -->
+                <div class="workflow-step-row how-reveal" id="step4" data-step="4">
+                    <div class="workflow-timeline-beacon" aria-hidden="true">
+                        <span class="beacon-circle">04</span>
+                    </div>
+
+                    <div class="workflow-grid-stage reverse-order">
+                        <!-- VISUAL LEFT: WHAT-IF SIMULATOR -->
+                        <div class="workflow-mock-col">
+                            <div class="how-mock-card how-decision-card">
+                                <div class="how-mock-header">
+                                    <div class="how-mock-lights" aria-hidden="true">
+                                        <span></span><span></span><span></span>
+                                    </div>
+                                    <span class="how-mock-title">WHAT-IF SCENARIO SIMULATOR</span>
+                                    <span class="how-mock-badge badge-orange">INTERACTIVE DEMO</span>
+                                </div>
+
+                                <div class="how-simulator-body">
+                                    <!-- CURRENT VS PROJECTED SUMMARY -->
+                                    <div class="how-sim-kpi-bar">
+                                        <div class="sim-metric">
+                                            <span class="sim-lbl">CURRENT REVENUE</span>
+                                            <span class="sim-val">&#8377;8.42M</span>
+                                        </div>
+                                        <div class="sim-arrow" aria-hidden="true">&rarr;</div>
+                                        <div class="sim-metric highlighted">
+                                            <span class="sim-lbl">PROJECTED REVENUE</span>
+                                            <span class="sim-val" id="simProjRevenue">&#8377;9.26M</span>
+                                        </div>
+                                        <div class="sim-metric highlighted-green">
+                                            <span class="sim-lbl">NET PROFIT IMPACT</span>
+                                            <span class="sim-val" id="simProjProfit">+7.4%</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- SIMULATOR CONTROLS -->
+                                    <div class="how-slider-group">
+                                        <div class="slider-row">
+                                            <div class="slider-labels">
+                                                <label for="marketingSlider">Marketing Spend Adjust</label>
+                                                <span class="slider-value-display" id="marketingVal">+10%</span>
+                                            </div>
+                                            <input type="range" id="marketingSlider" min="-20" max="40" value="10" step="5" class="how-custom-range" aria-label="Adjust marketing spend percentage">
+                                        </div>
+
+                                        <div class="slider-row">
+                                            <div class="slider-labels">
+                                                <label for="demandSlider">Estimated Market Demand</label>
+                                                <span class="slider-value-display" id="demandVal">+15%</span>
+                                            </div>
+                                            <input type="range" id="demandSlider" min="-10" max="30" value="15" step="5" class="how-custom-range" aria-label="Adjust market demand percentage">
+                                        </div>
+                                    </div>
+
+                                    <div class="how-sim-footer">
+                                        <span class="sim-footer-note">&#9432; Illustrative demonstration model calibrated against historical elasticity curves.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TEXT RIGHT -->
+                        <div class="workflow-narrative-col">
+                            <div class="workflow-stage-pill stage-pill-orange">
+                                <span>STAGE 04</span> &bull; <span>PRESCRIPTIVE</span>
+                            </div>
+                            <span class="workflow-category">DECISION INTELLIGENCE</span>
+                            <h3 class="workflow-heading">Turn Insights Into Actions</h3>
+                            <p class="workflow-body">
+                                Simulate scenarios, receive recommendations, monitor business alerts and measure the impact of decisions. Make confident strategic allocations before committing capital.
+                            </p>
+                            <ul class="workflow-checklist" role="list">
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> Recommendations</li>
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> What-If Simulator</li>
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> Scenario Planning</li>
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> Decision Impact</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==========================================
+                     STEP 05: REPORTING
+                     Layout: TEXT LEFT / VISUAL RIGHT
+                     ========================================== -->
+                <div class="workflow-step-row how-reveal" id="step5" data-step="5">
+                    <div class="workflow-timeline-beacon" aria-hidden="true">
+                        <span class="beacon-circle">05</span>
+                    </div>
+
+                    <div class="workflow-grid-stage">
+                        <!-- TEXT LEFT -->
+                        <div class="workflow-narrative-col">
+                            <div class="workflow-stage-pill stage-pill-green">
+                                <span>STAGE 05</span> &bull; <span>SYNTHESIS</span>
+                            </div>
+                            <span class="workflow-category">REPORTING</span>
+                            <h3 class="workflow-heading">Communicate the Results</h3>
+                            <p class="workflow-body">
+                                Create automated or custom reports and export business intelligence results to PDF and Excel. Empower your executive team and stakeholders with crystal-clear briefing dossiers.
+                            </p>
+                            <ul class="workflow-checklist" role="list">
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> Automated Reports</li>
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> Custom Reports</li>
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> PDF Export</li>
+                                <li><span class="check-icon" aria-hidden="true">&#10003;</span> Excel Export</li>
+                            </ul>
+                        </div>
+
+                        <!-- VISUAL RIGHT: REPORT & EXPORT MOCK -->
+                        <div class="workflow-mock-col">
+                            <div class="how-mock-card how-reporting-card">
+                                <div class="how-mock-header">
+                                    <div class="how-mock-lights" aria-hidden="true">
+                                        <span></span><span></span><span></span>
+                                    </div>
+                                    <span class="how-mock-title">EXECUTIVE BRIEFING BUILDER</span>
+                                    <span class="how-mock-badge badge-green">EXPORT ENGINE</span>
+                                </div>
+
+                                <div class="how-dossier-layout">
+                                    <div class="how-doc-sheet">
+                                        <div class="how-doc-header">
+                                            <div class="how-doc-brand">
+                                                <span class="doc-bar-mark"></span>
+                                                <span>SMART BI REPORT</span>
+                                            </div>
+                                            <span class="doc-date">SEPTEMBER 2026 &bull; FY27 Q2</span>
+                                        </div>
+
+                                        <div class="how-doc-lines">
+                                            <div class="doc-line-row">
+                                                <span class="doc-check">&#10003;</span>
+                                                <span class="doc-title">Executive Summary</span>
+                                                <span class="doc-badge-pill">READY</span>
+                                            </div>
+                                            <div class="doc-line-row">
+                                                <span class="doc-check">&#10003;</span>
+                                                <span class="doc-title">Revenue &amp; Margin Diagnostics</span>
+                                                <span class="doc-badge-pill">VERIFIED</span>
+                                            </div>
+                                            <div class="doc-line-row">
+                                                <span class="doc-check">&#10003;</span>
+                                                <span class="doc-title">Cohort &amp; Customer Analytics</span>
+                                                <span class="doc-badge-pill">COMPILED</span>
+                                            </div>
+                                            <div class="doc-line-row">
+                                                <span class="doc-check">&#10003;</span>
+                                                <span class="doc-title">Horizon 90-Day Forecast</span>
+                                                <span class="doc-badge-pill">COMPUTED</span>
+                                            </div>
+                                            <div class="doc-line-row">
+                                                <span class="doc-check">&#10003;</span>
+                                                <span class="doc-title">Prescriptive Recommendations</span>
+                                                <span class="doc-badge-pill">OPTIMIZED</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- EXPORT CHIPS -->
+                                        <div class="how-export-footer">
+                                            <div class="export-chip chip-pdf">
+                                                <span class="export-icon">&#128196;</span>
+                                                <span>PDF Briefing Dossier</span>
+                                            </div>
+                                            <div class="export-chip chip-xls">
+                                                <span class="export-icon">&#128202;</span>
+                                                <span>Excel Data Workbook</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-
         </div>
+    </section>
 
-    </div>
+    <!-- 3. FINAL CINEMATIC CTA -->
+    <section class="how-final-cta-section" id="howFinalCta" aria-label="Start Your Journey Call to Action">
+        <div class="how-shell">
+            <div class="how-cta-monolith how-reveal">
+                <div class="how-cta-ambient-beam" aria-hidden="true"></div>
 
+                <div class="how-cta-inner text-center">
+                    <div class="how-badge-pill">
+                        <span class="how-pulse-dot" aria-hidden="true"></span>
+                        <span class="how-badge-text">ACCELERATE DECISION VELOCITY</span>
+                    </div>
 
-    <div class="workflow-step">
+                    <h2 class="how-cta-headline">
+                        <span class="how-cta-block">From Data.</span>
+                        <span class="how-cta-block how-gradient-text">To Intelligence.</span>
+                        <span class="how-cta-block">To Better Decisions.</span>
+                    </h2>
 
-        <div class="workflow-number">03</div>
+                    <p class="how-cta-lead">
+                        Start with your business data and let Smart BI guide it through the complete intelligence journey.
+                    </p>
 
-        <div class="workflow-content">
+                    <div class="how-cta-buttons">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'core:dashboard' %}" class="how-btn-primary how-btn-lg" id="finalCtaAuth">
+                                <span class="how-btn-text">Start Building Intelligence</span>
+                                <span class="how-btn-icon" aria-hidden="true">&rarr;</span>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'accounts:signup' %}" class="how-btn-primary how-btn-lg" id="finalCtaAnon">
+                                <span class="how-btn-text">Start Building Intelligence</span>
+                                <span class="how-btn-icon" aria-hidden="true">&rarr;</span>
+                            </a>
+                        {% endif %}
+                    </div>
 
-            <span>ADVANCED INSIGHTS</span>
-
-            <h2>Discover What Comes Next</h2>
-
-            <p>
-                Statistical and machine learning techniques
-                identify trends, anomalies, customer segments,
-                risks and opportunities.
-            </p>
-
-            <div class="workflow-list">
-                <span>✓ Forecasting</span>
-                <span>✓ Anomaly Detection</span>
-                <span>✓ Root Cause Analysis</span>
-                <span>✓ Customer Segmentation</span>
+                    <div class="how-guarantee-strip">
+                        <div class="strip-item">
+                            <span class="strip-check">&#10003;</span>
+                            <span>Direct CSV &amp; XLSX Support</span>
+                        </div>
+                        <div class="strip-item">
+                            <span class="strip-check">&#10003;</span>
+                            <span>Continuous Anomaly Monitoring</span>
+                        </div>
+                        <div class="strip-item">
+                            <span class="strip-check">&#10003;</span>
+                            <span>Prescriptive Action Recommendations</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-
         </div>
+    </section>
 
-    </div>
+</div>
+{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/how_it_works.css' %}">
+{% endblock %}
 
-    <div class="workflow-step">
-
-        <div class="workflow-number">04</div>
-
-        <div class="workflow-content">
-
-            <span>DECISION INTELLIGENCE</span>
-
-            <h2>Turn Insights Into Actions</h2>
-
-            <p>
-                Simulate scenarios, receive recommendations,
-                monitor business alerts and measure the impact
-                of decisions.
-            </p>
-
-            <div class="workflow-list">
-                <span>✓ Recommendations</span>
-                <span>✓ What-If Simulator</span>
-                <span>✓ Scenario Planning</span>
-                <span>✓ Decision Impact</span>
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="workflow-step">
-
-        <div class="workflow-number">05</div>
-
-        <div class="workflow-content">
-
-            <span>REPORTING</span>
-
-            <h2>Communicate the Results</h2>
-
-            <p>
-                Create automated or custom reports and
-                export business intelligence results to
-                PDF and Excel.
-            </p>
-
-            <div class="workflow-list">
-                <span>✓ Automated Reports</span>
-                <span>✓ Custom Reports</span>
-                <span>✓ PDF Export</span>
-                <span>✓ Excel Export</span>
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
+{% block extra_js %}
+<script src="{% static 'js/how_it_works.js' %}"></script>
 {% endblock %}

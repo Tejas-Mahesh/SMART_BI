@@ -1,0 +1,62 @@
+Date,Product,Category,Region,Sales,Quantity,Cost,Profit,Returns
+2026-01-05,Laptop Pro 14,Electronics,South,85000,5,70000,15000,0
+2026-01-07,Wireless Mouse,Accessories,South,4500,15,2700,1800,1
+2026-01-10,Mechanical Keyboard,Accessories,West,12000,10,7200,4800,0
+2026-01-14,Monitor 24,Electronics,North,36000,8,24000,12000,1
+2026-01-18,USB-C Hub,Accessories,East,7500,15,4500,3000,0
+2026-01-22,Laptop Pro 14,Electronics,West,102000,6,84000,18000,0
+2026-01-25,Wireless Mouse,Accessories,North,6000,20,3600,2400,2
+2026-01-28,Mechanical Keyboard,Accessories,South,18000,15,10800,7200,1
+2026-02-03,Monitor 24,Electronics,East,45000,10,30000,15000,0
+2026-02-06,USB-C Hub,Accessories,West,9000,18,5400,3600,1
+2026-02-09,Laptop Pro 14,Electronics,North,119000,7,98000,21000,0
+2026-02-12,Wireless Mouse,Accessories,South,7500,25,4500,3000,1
+2026-02-16,Mechanical Keyboard,Accessories,East,24000,20,14400,9600,0
+2026-02-19,Monitor 24,Electronics,West,54000,12,36000,18000,2
+2026-02-22,USB-C Hub,Accessories,North,11000,22,6600,4400,0
+2026-02-26,Laptop Pro 14,Electronics,South,136000,8,112000,24000,1
+2026-03-02,Wireless Mouse,Accessories,East,9000,30,5400,3600,2
+2026-03-05,Mechanical Keyboard,Accessories,West,30000,25,18000,12000,0
+2026-03-09,Monitor 24,Electronics,South,67500,15,45000,22500,1
+2026-03-12,USB-C Hub,Accessories,North,13500,27,8100,5400,0
+2026-03-16,Laptop Pro 14,Electronics,West,153000,9,126000,27000,0
+2026-03-19,Wireless Mouse,Accessories,South,10500,35,6300,4200,3
+2026-03-22,Mechanical Keyboard,Accessories,East,36000,30,21600,14400,1
+2026-03-26,Monitor 24,Electronics,North,81000,18,54000,27000,2
+2026-03-29,USB-C Hub,Accessories,West,16000,32,9600,6400,1
+2026-04-03,Laptop Pro 14,Electronics,South,170000,10,140000,30000,0
+2026-04-06,Wireless Mouse,Accessories,North,12000,40,7200,4800,2
+2026-04-09,Mechanical Keyboard,Accessories,West,42000,35,25200,16800,1
+2026-04-13,Monitor 24,Electronics,East,90000,20,60000,30000,1
+2026-04-16,USB-C Hub,Accessories,South,18500,37,11100,7400,0
+2026-04-20,Laptop Pro 14,Electronics,North,187000,11,154000,33000,1
+2026-04-23,Wireless Mouse,Accessories,East,13500,45,8100,5400,3
+2026-04-26,Mechanical Keyboard,Accessories,South,48000,40,28800,19200,0
+2026-04-29,Monitor 24,Electronics,West,103500,23,69000,34500,2
+2026-05-03,USB-C Hub,Accessories,North,22000,44,13200,8800,1
+2026-05-06,Laptop Pro 14,Electronics,South,204000,12,168000,36000,0
+2026-05-09,Wireless Mouse,Accessories,West,15000,50,9000,6000,2
+2026-05-12,Mechanical Keyboard,Accessories,East,54000,45,32400,21600,1
+2026-05-16,Monitor 24,Electronics,South,117000,26,78000,39000,2
+2026-05-19,USB-C Hub,Accessories,North,25000,50,15000,10000,0
+2026-05-23,Laptop Pro 14,Electronics,West,221000,13,182000,39000,1
+2026-05-26,Wireless Mouse,Accessories,South,16500,55,9900,6600,3
+2026-05-29,Mechanical Keyboard,Accessories,North,60000,50,36000,24000,1
+2026-06-02,Monitor 24,Electronics,East,135000,30,90000,45000,1
+2026-06-05,USB-C Hub,Accessories,West,28000,56,16800,11200,0
+2026-06-09,Laptop Pro 14,Electronics,South,238000,14,196000,42000,0
+2026-06-12,Wireless Mouse,Accessories,North,18000,60,10800,7200,2
+2026-06-15,Mechanical Keyboard,Accessories,East,66000,55,39600,26400,1
+2026-06-19,Monitor 24,Electronics,West,148500,33,99000,49500,3
+2026-06-22,USB-C Hub,Accessories,South,31500,63,18900,12600,1
+2026-06-26,Laptop Pro 14,Electronics,North,255000,15,210000,45000,0
+2026-06-29,Wireless Mouse,Accessories,East,19500,65,11700,7800,3
+2026-07-03,Mechanical Keyboard,Accessories,South,72000,60,43200,28800,1
+2026-07-06,Monitor 24,Electronics,North,162000,36,108000,54000,2
+2026-07-10,USB-C Hub,Accessories,West,34000,68,20400,13600,0
+2026-07-13,Laptop Pro 14,Electronics,South,272000,16,224000,48000,1
+2026-07-17,Wireless Mouse,Accessories,East,21000,70,12600,8400,4
+2026-07-20,Mechanical Keyboard,Accessories,North,78000,65,46800,31200,1
+2026-07-24,Monitor 24,Electronics,West,175500,39,117000,58500,2
+2026-07-27,USB-C Hub,Accessories,South,37500,75,22500,15000,1
+2026-07-31,Laptop Pro 14,Electronics,North,289000,17,238000,51000,0

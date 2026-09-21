@@ -6,392 +6,1594 @@ Create Account | Smart BI
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+<style>
+/* ==========================================================================
+   SMART BI — SIGNUP / REGISTRATION GATEWAY DESIGN SYSTEM
+   File: templates/accounts/signup.html (Embedded Self-Contained Stylesheet)
+   ========================================================================== */
+
+:root {
+  --auth-bg-base: #06111f;
+  --auth-bg-deep: #071522;
+  --auth-bg-soft: #081827;
+
+  --auth-card: #0d2033;
+  --auth-card-elevated: #102840;
+  --auth-card-glass: rgba(13, 32, 51, 0.72);
+  --auth-card-glass-elevated: rgba(16, 40, 64, 0.85);
+
+  --auth-purple: #7567f8;
+  --auth-purple-light: #9b91ff;
+  --auth-purple-glow: rgba(117, 103, 248, 0.35);
+
+  --auth-blue: #3fa9f5;
+  --auth-blue-glow: rgba(63, 169, 245, 0.32);
+
+  --auth-green: #39d98a;
+  --auth-green-glow: rgba(57, 217, 138, 0.28);
+
+  --auth-orange: #ff9f43;
+  --auth-orange-glow: rgba(255, 159, 67, 0.3);
+
+  --auth-red: #ff5c70;
+  --auth-red-glow: rgba(255, 92, 112, 0.3);
+
+  --auth-text: #f4f7fb;
+  --auth-muted: #8ea1b5;
+  --auth-subtle: #566c82;
+
+  --auth-border: rgba(255, 255, 255, 0.08);
+  --auth-border-bright: rgba(255, 255, 255, 0.16);
+
+  --auth-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --auth-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --auth-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.auth-page *,
+.auth-page *::before,
+.auth-page *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.auth-page.signup-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--auth-bg-base);
+  color: var(--auth-text);
+  font-family: var(--auth-font);
+  line-height: 1.55;
+  overflow-x: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(2.5rem, 5vw, 5rem) 1.5rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --------------------------------------------------------------------------
+   BACKGROUND GRID, ORBS & DATA STREAMS
+   -------------------------------------------------------------------------- */
+.auth-background-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, #000 60%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, #000 60%, transparent 100%);
+  z-index: 0;
+  animation: gridFloat 40s linear infinite alternate;
+}
+
+@keyframes gridFloat {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-30px); }
+}
+
+.auth-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(140px);
+  z-index: 0;
+  opacity: 0.55;
+}
+
+.auth-orb-one {
+  width: 650px;
+  height: 650px;
+  top: -120px;
+  left: -120px;
+  background: radial-gradient(circle, var(--auth-purple-glow) 0%, transparent 70%);
+  animation: orbDriftOne 24s ease-in-out infinite alternate;
+}
+
+.auth-orb-two {
+  width: 750px;
+  height: 700px;
+  bottom: -160px;
+  right: -120px;
+  background: radial-gradient(circle, var(--auth-blue-glow) 0%, rgba(57, 217, 138, 0.12) 50%, transparent 75%);
+  animation: orbDriftTwo 28s ease-in-out infinite alternate;
+}
+
+.auth-orb-three {
+  width: 500px;
+  height: 500px;
+  top: 35%;
+  left: 40%;
+  background: radial-gradient(circle, rgba(57, 217, 138, 0.18) 0%, rgba(117, 103, 248, 0.15) 50%, transparent 70%);
+  animation: orbDriftThree 20s ease-in-out infinite alternate;
+}
+
+@keyframes orbDriftOne {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(70px, 90px) scale(1.08); }
+}
+
+@keyframes orbDriftTwo {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-90px, -70px) scale(1.1); }
+}
+
+@keyframes orbDriftThree {
+  0% { transform: translate(0, 0) scale(0.95); opacity: 0.35; }
+  100% { transform: translate(50px, -60px) scale(1.12); opacity: 0.6; }
+}
+
+.auth-particle-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Background Abstract Data Streams */
+.auth-data-stream-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+  opacity: 0.25;
+}
+
+.data-stream-line {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(117, 103, 248, 0.4), var(--auth-blue), transparent);
+  white-space: nowrap;
+  font-family: monospace;
+  font-size: 0.65rem;
+  color: var(--auth-muted);
+  letter-spacing: 0.18em;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.stream-line-1 {
+  top: 18%;
+  left: -20%;
+  width: 140%;
+  animation: streamTransit 26s linear infinite;
+}
+
+.stream-line-2 {
+  bottom: 22%;
+  left: -30%;
+  width: 150%;
+  animation: streamTransit 32s linear infinite reverse;
+}
+
+@keyframes streamTransit {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(15%); }
+}
+
+/* --------------------------------------------------------------------------
+   SIGNUP CONTAINER & MAIN LAYOUT
+   -------------------------------------------------------------------------- */
+.signup-container {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  max-width: 1240px;
+  display: grid;
+  grid-template-columns: 1.05fr 1.2fr;
+  align-items: flex-start;
+  gap: clamp(2.5rem, 5vw, 5rem);
+}
+
+.auth-gradient-text {
+  background: linear-gradient(135deg, #ffffff 15%, var(--auth-blue) 55%, var(--auth-purple) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+/* --------------------------------------------------------------------------
+   LEFT PANEL: BRAND & INTELLIGENCE JOURNEY
+   -------------------------------------------------------------------------- */
+.signup-brand-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.signup-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.45rem 1rem;
+  background: rgba(117, 103, 248, 0.1);
+  border: 1px solid rgba(117, 103, 248, 0.4);
+  border-radius: 9999px;
+  backdrop-filter: blur(8px);
+  width: fit-content;
+  box-shadow: 0 0 20px rgba(117, 103, 248, 0.15);
+  animation: authFadeUp 0.8s var(--auth-ease) forwards;
+}
+
+.signup-pulse-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--auth-purple-light);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--auth-purple-light);
+  animation: dotPulse 2.2s infinite ease-in-out;
+}
+
+@keyframes dotPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.4; }
+}
+
+.signup-badge-text {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--auth-purple-light);
+  text-transform: uppercase;
+}
+
+/* Brand Identity Header */
+.signup-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  animation: authFadeUp 0.85s var(--auth-ease) 0.05s forwards;
+  opacity: 0;
+}
+
+.signup-brand-mark {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(117, 103, 248, 0.25), rgba(63, 169, 245, 0.25));
+  border: 1.5px solid var(--auth-border-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 18px var(--auth-purple-glow);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.signup-brand-mark::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: brandShimmer 4s infinite linear;
+}
+
+@keyframes brandShimmer {
+  0% { left: -100%; }
+  25%, 100% { left: 150%; }
+}
+
+.brand-glyph-svg {
+  width: 24px;
+  height: 24px;
+  color: #ffffff;
+  position: relative;
+  z-index: 2;
+}
+
+.signup-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-brand-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+
+.signup-brand-subtitle {
+  font-size: 0.72rem;
+  color: var(--auth-blue);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Hero Typography */
+.signup-hero-heading {
+  font-size: clamp(2.2rem, 3.8vw, 3.3rem);
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  animation: authFadeUp 0.9s var(--auth-ease) 0.1s forwards;
+  opacity: 0;
+}
+
+.signup-heading-line {
+  display: block;
+}
+
+.signup-hero-desc {
+  font-size: clamp(0.95rem, 1.2vw, 1.12rem);
+  color: var(--auth-muted);
+  line-height: 1.65;
+  max-width: 500px;
+  animation: authFadeUp 1s var(--auth-ease) 0.15s forwards;
+  opacity: 0;
+}
+
+/* 4-Stage Connected Journey Track */
+.signup-journey-track {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  margin-top: 0.5rem;
+  animation: authFadeUp 1.05s var(--auth-ease) 0.2s forwards;
+  opacity: 0;
+}
+
+.journey-conduit-spine {
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  left: 21px;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.conduit-flow-bead {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: linear-gradient(180deg, transparent, var(--auth-blue), var(--auth-purple), transparent);
+  box-shadow: 0 0 10px var(--auth-blue);
+  animation: conduitTravel 4.5s linear infinite;
+}
+
+@keyframes conduitTravel {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(320px); }
+}
+
+.journey-stage-row {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  position: relative;
+  z-index: 2;
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  background: rgba(13, 32, 51, 0.35);
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.journey-stage-row:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--auth-border);
+  transform: translateX(4px);
+}
+
+.journey-node-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--auth-card);
+  border: 1.5px solid var(--auth-border-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.stage-upload .journey-node-circle { color: var(--auth-blue); border-color: rgba(63, 169, 245, 0.4); }
+.stage-analyze .journey-node-circle { color: var(--auth-purple-light); border-color: rgba(117, 103, 248, 0.4); }
+.stage-understand .journey-node-circle { color: var(--auth-orange); border-color: rgba(255, 159, 67, 0.4); }
+.stage-decide .journey-node-circle { color: var(--auth-green); border-color: rgba(57, 217, 138, 0.4); }
+
+.journey-stage-row.illuminated .journey-node-circle {
+  box-shadow: 0 0 18px currentColor;
+  transform: scale(1.06);
+}
+
+.journey-meta-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.journey-stage-title {
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.stage-accent-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.journey-stage-desc {
+  font-size: 0.75rem;
+  color: var(--auth-muted);
+}
+
+/* Compact Orbital Intelligence Visual */
+.signup-compact-core {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  height: 180px;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: authFadeUp 1.1s var(--auth-ease) 0.25s forwards;
+  opacity: 0;
+}
+
+.compact-orbit-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.compact-ellipse {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-dasharray: 4 6;
+  animation: compactSpin 32s linear infinite;
+  transform-origin: 220px 90px;
+}
+
+.compact-ellipse-inner {
+  fill: none;
+  stroke: rgba(63, 169, 245, 0.22);
+  stroke-dasharray: 4 6;
+  animation: compactSpinRev 22s linear infinite;
+  transform-origin: 220px 90px;
+}
+
+@keyframes compactSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes compactSpinRev {
+  to { transform: rotate(-360deg); }
+}
+
+.compact-nucleus {
+  position: relative;
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #102840 0%, #06111f 90%);
+  border: 1.5px solid var(--auth-border-bright);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 30px var(--auth-purple-glow), inset 0 0 12px rgba(63, 169, 245, 0.35);
+  z-index: 3;
+  animation: nucleusPulse 4s infinite ease-in-out;
+}
+
+@keyframes nucleusPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 25px var(--auth-purple-glow); }
+  50% { transform: scale(1.05); box-shadow: 0 0 40px var(--auth-blue-glow); }
+}
+
+.nucleus-mark {
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  line-height: 1.1;
+}
+
+.nucleus-sub {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--auth-blue);
+}
+
+.orbit-chip {
+  position: absolute;
+  padding: 0.25rem 0.55rem;
+  border-radius: 9999px;
+  background: rgba(13, 32, 51, 0.85);
+  border: 1px solid var(--auth-border-bright);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+  z-index: 4;
+}
+
+.chip-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.chip-data { top: 12px; left: 50%; transform: translateX(-50%); }
+.chip-data .chip-dot { background: var(--auth-purple-light); box-shadow: 0 0 6px var(--auth-purple-light); }
+
+.chip-analytics { top: 50%; left: 15px; transform: translateY(-50%); }
+.chip-analytics .chip-dot { background: var(--auth-blue); box-shadow: 0 0 6px var(--auth-blue); }
+
+.chip-insights { top: 50%; right: 15px; transform: translateY(-50%); }
+.chip-insights .chip-dot { background: var(--auth-orange); box-shadow: 0 0 6px var(--auth-orange); }
+
+.chip-forecast { bottom: 35px; left: 50%; transform: translateX(-50%); }
+.chip-forecast .chip-dot { background: var(--auth-blue); box-shadow: 0 0 6px var(--auth-blue); }
+
+.chip-decisions {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(16, 40, 64, 0.95);
+  border-color: rgba(57, 217, 138, 0.4);
+  color: var(--auth-green);
+}
+.chip-decisions .chip-dot { background: var(--auth-green); box-shadow: 0 0 6px var(--auth-green); }
+
+/* --------------------------------------------------------------------------
+   RIGHT PANEL: REGISTRATION CARD & FORM CONTROLS
+   -------------------------------------------------------------------------- */
+.auth-card.signup-card {
+  position: relative;
+  background: linear-gradient(145deg, var(--auth-card-glass-elevated) 0%, rgba(8, 24, 39, 0.96) 100%);
+  border: 1px solid var(--auth-border-bright);
+  border-radius: 24px;
+  padding: clamp(1.85rem, 4.5vw, 2.75rem);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 30px 80px -15px rgba(0, 0, 0, 0.85), 0 0 45px -10px var(--auth-purple-glow);
+  overflow: hidden;
+  animation: authFadeUp 1s var(--auth-ease) 0.15s forwards;
+  opacity: 0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auth-card.signup-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--auth-purple-light) 40%, var(--auth-blue) 75%, transparent 100%);
+  animation: cardEdgeGlow 6s infinite ease-in-out;
+}
+
+@keyframes cardEdgeGlow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.signup-card-header {
+  margin-bottom: 1.5rem;
+}
+
+.signup-badge-mini {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--auth-blue);
+  text-transform: uppercase;
+  margin-bottom: 0.45rem;
+}
+
+.signup-card-title {
+  font-size: clamp(1.6rem, 2.4vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin-bottom: 0.4rem;
+}
+
+.signup-card-desc {
+  font-size: 0.85rem;
+  color: var(--auth-muted);
+  line-height: 1.5;
+}
+
+/* Registration Progress Meter */
+.signup-progress-meter {
+  margin-bottom: 1.5rem;
+  background: rgba(8, 24, 39, 0.65);
+  border: 1px solid var(--auth-border);
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+}
+
+.meter-meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--auth-muted);
+  margin-bottom: 0.35rem;
+}
+
+.meter-pct-readout {
+  color: var(--auth-blue);
+  font-weight: 800;
+}
+
+.meter-track-bg {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.meter-fill-bar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--auth-purple), var(--auth-blue));
+  box-shadow: 0 0 8px var(--auth-blue);
+  transition: width 0.3s var(--auth-ease);
+}
+
+/* Non-Field Alert */
+.signup-error-alert {
+  background: rgba(255, 92, 112, 0.12);
+  border: 1px solid rgba(255, 92, 112, 0.35);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  color: #ff9da9;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  margin-bottom: 1.25rem;
+  animation: alertShake 0.4s var(--auth-ease);
+}
+
+@keyframes alertShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.alert-svg-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* Form Layout System */
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.form-split-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.auth-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.auth-field-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--auth-text);
+  letter-spacing: 0.02em;
+  transition: color 0.25s ease;
+}
+
+.auth-input-wrap {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.auth-field-icon {
+  position: absolute;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  color: var(--auth-subtle);
+  pointer-events: none;
+  transition: color 0.25s ease;
+  z-index: 2;
+}
+
+/* Django Form Input Target */
+.auth-input-wrap input {
+  width: 100%;
+  background: rgba(8, 24, 39, 0.75);
+  border: 1px solid var(--auth-border-bright);
+  border-radius: 12px;
+  padding: 0.82rem 1.15rem 0.82rem 2.65rem;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.92rem;
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.auth-input-wrap input::placeholder {
+  color: var(--auth-subtle);
+}
+
+.auth-input-wrap input:focus {
+  border-color: var(--auth-purple);
+  box-shadow: 0 0 0 3px rgba(117, 103, 248, 0.22), 0 0 18px rgba(117, 103, 248, 0.15);
+  background: rgba(13, 32, 51, 0.95);
+}
+
+.auth-input-wrap input:focus + .auth-field-icon,
+.auth-input-wrap:focus-within .auth-field-icon {
+  color: var(--auth-purple-light);
+}
+
+/* Password Toggle & Match Badges */
+.auth-pwd-toggle {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--auth-muted);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: color 0.2s ease;
+  z-index: 2;
+}
+
+.auth-pwd-toggle:hover {
+  color: #ffffff;
+}
+
+.auth-pwd-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Password Strength Visual Meter */
+.pwd-strength-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.pwd-strength-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--auth-subtle);
+}
+
+.pwd-strength-bars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  height: 4px;
+}
+
+.strength-bar {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  transition: background 0.3s ease;
+}
+
+.strength-bar.weak { background: var(--auth-red); box-shadow: 0 0 6px var(--auth-red); }
+.strength-bar.good { background: var(--auth-orange); box-shadow: 0 0 6px var(--auth-orange); }
+.strength-bar.strong { background: var(--auth-green); box-shadow: 0 0 6px var(--auth-green); }
+
+/* Password Match Indicator */
+.pwd-match-indicator {
+  font-size: 0.7rem;
+  font-weight: 600;
+  display: none;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
+}
+
+.pwd-match-indicator.matched {
+  display: flex;
+  color: var(--auth-green);
+}
+
+.pwd-match-indicator.mismatched {
+  display: flex;
+  color: var(--auth-red);
+}
+
+/* Django Field Errors */
+.field-error-wrapper {
+  margin-top: 0.2rem;
+}
+
+.field-error-wrapper ul,
+.errorlist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.field-error-wrapper li,
+.errorlist li {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--auth-red);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Submit Action Button */
+.signup-submit-wrap {
+  margin-top: 0.6rem;
+}
+
+.auth-btn-primary {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  background: linear-gradient(135deg, var(--auth-purple) 0%, #5a48eb 100%);
+  color: #ffffff;
+  padding: 0.95rem 1.85rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.98rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 24px var(--auth-purple-glow), 0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+  transition: transform 0.25s var(--auth-ease), box-shadow 0.25s var(--auth-ease);
+}
+
+.auth-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(117, 103, 248, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+}
+
+.auth-btn-primary:active {
+  transform: translateY(0);
+}
+
+.auth-btn-arrow {
+  font-size: 1.15rem;
+  transition: transform 0.25s ease;
+}
+
+.auth-btn-primary:hover .auth-btn-arrow {
+  transform: translateX(3px);
+}
+
+.auth-loader-dots {
+  display: none;
+  gap: 4px;
+}
+
+.auth-loader-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  animation: loaderPulse 1.2s infinite ease-in-out both;
+}
+
+.auth-loader-dots span:nth-child(1) { animation-delay: -0.32s; }
+.auth-loader-dots span:nth-child(2) { animation-delay: -0.16s; }
+.auth-loader-dots span:nth-child(3) { animation-delay: 0s; }
+
+@keyframes loaderPulse {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+.auth-btn-primary.is-submitting .auth-btn-arrow {
+  display: none;
+}
+
+.auth-btn-primary.is-submitting .auth-loader-dots {
+  display: inline-flex;
+}
+
+/* Footer: Login Link & Admin Approval Notice */
+.signup-links-footer {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--auth-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+  color: var(--auth-muted);
+}
+
+.auth-login-link {
+  color: var(--auth-purple-light);
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.auth-login-link:hover {
+  color: #ffffff;
+  text-shadow: 0 0 10px var(--auth-purple);
+}
+
+.auth-login-link span {
+  transition: transform 0.2s ease;
+}
+
+.auth-login-link:hover span {
+  transform: translateX(3px);
+}
+
+.admin-approval-badge {
+  margin-top: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 1rem;
+  background: rgba(8, 24, 39, 0.55);
+  border: 1px solid rgba(63, 169, 245, 0.25);
+  border-radius: 12px;
+}
+
+.approval-icon-wrap {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(57, 217, 138, 0.15);
+  border: 1px solid var(--auth-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--auth-green);
+}
+
+.approval-icon-wrap svg {
+  width: 12px;
+  height: 12px;
+}
+
+.approval-text {
+  font-size: 0.74rem;
+  color: var(--auth-muted);
+  line-height: 1.4;
+}
+
+.approval-text strong {
+  color: var(--auth-text);
+}
+
+/* --------------------------------------------------------------------------
+   STAGGERED ENTRANCE & KEYFRAMES
+   -------------------------------------------------------------------------- */
+@keyframes authFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   ACCESSIBILITY & PREFERS-REDUCED-MOTION
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .auth-page *,
+  .auth-page *::before,
+  .auth-page *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .signup-brand-row,
+  .signup-hero-heading,
+  .signup-hero-desc,
+  .signup-journey-track,
+  .signup-compact-core,
+  .auth-card.signup-card {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE DESIGN (1120, 960, 768, 480, 320)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1120px) {
+  .signup-container {
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+  }
+
+  .signup-brand-panel {
+    text-align: center;
+    align-items: center;
+  }
+
+  .signup-brand-row {
+    justify-content: center;
+  }
+
+  .signup-hero-desc {
+    margin: 0 auto;
+  }
+
+  .signup-journey-track {
+    max-width: 520px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .signup-compact-core {
+    margin: 0 auto;
+  }
+
+  .auth-card.signup-card {
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .auth-page.signup-page {
+    padding: 3rem 1rem;
+  }
+
+  .form-split-row {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+  }
+
+  .signup-compact-core {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-card.signup-card {
+    padding: 1.65rem 1.25rem;
+    border-radius: 18px;
+  }
+
+  .signup-hero-heading {
+    font-size: 2.1rem;
+  }
+
+  .journey-stage-row {
+    gap: 0.85rem;
+    padding: 0.45rem 0.55rem;
+  }
+
+  .journey-node-circle {
+    width: 36px;
+    height: 36px;
+    font-size: 0.78rem;
+  }
+
+  .journey-conduit-spine {
+    left: 17px;
+  }
+
+  .admin-approval-badge {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 320px) {
+  .signup-card-title {
+    font-size: 1.45rem;
+  }
+}
+
+</style>
 {% endblock %}
 
 {% block content %}
+<section class="auth-page signup-page" id="signupPageRoot">
 
-<section class="auth-page signup-page">
+    <!-- BACKGROUND GRID, FLOATING ORBS, DATA STREAMS & CANVAS PARTICLES -->
+    <div class="auth-background-grid" aria-hidden="true"></div>
+    <div class="auth-orb auth-orb-one" aria-hidden="true"></div>
+    <div class="auth-orb auth-orb-two" aria-hidden="true"></div>
+    <div class="auth-orb auth-orb-three" aria-hidden="true"></div>
+    
+    <div class="auth-data-stream-layer" aria-hidden="true">
+        <div class="data-stream-line stream-line-1">
+            <span>DATA_STREAM_01</span>
+            <span>&bull;</span>
+            <span>INFLOW_INGESTION_ACTIVE</span>
+            <span>&bull;</span>
+            <span>ANALYTICS_CONDUIT_STABLE</span>
+            <span>&bull;</span>
+            <span>PREDICTIVE_HORIZON_READY</span>
+        </div>
+        <div class="data-stream-line stream-line-2">
+            <span>COGNITIVE_PIPELINE</span>
+            <span>&bull;</span>
+            <span>PRESCRIPTIVE_OPTIMIZATION</span>
+            <span>&bull;</span>
+            <span>DECISION_NETWORK_ONLINE</span>
+        </div>
+    </div>
 
-    <div class="auth-background-grid"></div>
-
-    <div class="auth-orb auth-orb-one"></div>
-    <div class="auth-orb auth-orb-two"></div>
-
+    <canvas id="signupCanvas" class="auth-particle-canvas" aria-hidden="true"></canvas>
 
     <div class="signup-container">
 
-
-        <!-- LEFT BRAND PANEL -->
-
-        <div class="signup-intro">
-
-            <div class="auth-brand">
-
-                <div class="auth-brand-icon">
-                    S
-                </div>
-
-                <div>
-
-                    <strong>
-                        Smart BI
-                    </strong>
-
-                    <span>
-                        Decision Intelligence
-                    </span>
-
-                </div>
-
+        <!-- ================================================================
+             LEFT PANEL: SMART BI JOURNEY & COGNITIVE VISUALS
+             ================================================================ -->
+        <div class="signup-brand-panel" id="signupBrandPanel">
+            
+            <div class="signup-badge-pill">
+                <span class="signup-pulse-dot" aria-hidden="true"></span>
+                <span class="signup-badge-text">SMART BI PLATFORM</span>
             </div>
 
+            <!-- BRAND IDENTIFIER -->
+            <div class="signup-brand-row">
+                <div class="signup-brand-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="brand-glyph-svg">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                </div>
+                <div class="signup-brand-text">
+                    <span class="signup-brand-title">Smart BI</span>
+                    <span class="signup-brand-subtitle">Decision Intelligence</span>
+                </div>
+            </div>
 
-            <span class="section-label">
-                SMART BI PLATFORM
-            </span>
-
-
-            <h1>
-                Turn business data into
-                <span>intelligent decisions.</span>
+            <!-- HERO HEADLINE & MANIFESTO -->
+            <h1 class="signup-hero-heading">
+                <span class="signup-heading-line">Turn Business Data Into</span>
+                <span class="signup-heading-line auth-gradient-text">Intelligent Decisions.</span>
             </h1>
 
-
-            <p>
-                Create your account and start building
-                a complete data-driven business intelligence
-                workspace.
+            <p class="signup-hero-desc">
+                Create your account and start building a complete data-driven business intelligence workspace.
             </p>
 
-
-            <div class="signup-flow">
-
-                <div class="signup-flow-item">
-
-                    <span>
-                        01
-                    </span>
-
-                    <div>
-                        <strong>
-                            Upload
-                        </strong>
-
-                        <small>
-                            Bring your business data
-                        </small>
-                    </div>
-
+            <!-- 4-STAGE CONNECTED JOURNEY TRACK -->
+            <div class="signup-journey-track" id="journeyTrack" aria-label="Smart BI 4-Stage Intelligence Journey">
+                <div class="journey-conduit-spine" aria-hidden="true">
+                    <div class="conduit-flow-bead" id="conduitFlowBead"></div>
                 </div>
 
-
-                <div class="signup-flow-line"></div>
-
-
-                <div class="signup-flow-item">
-
-                    <span>
-                        02
-                    </span>
-
-                    <div>
-                        <strong>
-                            Analyze
-                        </strong>
-
-                        <small>
-                            Discover business patterns
-                        </small>
+                <!-- STAGE 01: UPLOAD -->
+                <div class="journey-stage-row stage-upload illuminated" data-stage="1">
+                    <div class="journey-node-circle">01</div>
+                    <div class="journey-meta-col">
+                        <span class="journey-stage-title">
+                            UPLOAD
+                            <span class="stage-accent-tag">Data Ingest</span>
+                        </span>
+                        <span class="journey-stage-desc">Bring your business data</span>
                     </div>
-
                 </div>
 
-
-                <div class="signup-flow-line"></div>
-
-
-                <div class="signup-flow-item">
-
-                    <span>
-                        03
-                    </span>
-
-                    <div>
-                        <strong>
-                            Decide
-                        </strong>
-
-                        <small>
-                            Make smarter decisions
-                        </small>
+                <!-- STAGE 02: ANALYZE -->
+                <div class="journey-stage-row stage-analyze" data-stage="2">
+                    <div class="journey-node-circle">02</div>
+                    <div class="journey-meta-col">
+                        <span class="journey-stage-title">
+                            ANALYZE
+                            <span class="stage-accent-tag">Synthesis</span>
+                        </span>
+                        <span class="journey-stage-desc">Discover business patterns</span>
                     </div>
-
                 </div>
 
+                <!-- STAGE 03: UNDERSTAND -->
+                <div class="journey-stage-row stage-understand" data-stage="3">
+                    <div class="journey-node-circle">03</div>
+                    <div class="journey-meta-col">
+                        <span class="journey-stage-title">
+                            UNDERSTAND
+                            <span class="stage-accent-tag">Inference</span>
+                        </span>
+                        <span class="journey-stage-desc">Reveal meaningful insights</span>
+                    </div>
+                </div>
+
+                <!-- STAGE 04: DECIDE -->
+                <div class="journey-stage-row stage-decide" data-stage="4">
+                    <div class="journey-node-circle">04</div>
+                    <div class="journey-meta-col">
+                        <span class="journey-stage-title">
+                            DECIDE
+                            <span class="stage-accent-tag">Action</span>
+                        </span>
+                        <span class="journey-stage-desc">Make smarter decisions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMPACT ORBITAL INTELLIGENCE VISUAL -->
+            <div class="signup-compact-core" id="signupCoreVisual" aria-hidden="true">
+                <svg class="compact-orbit-svg" viewBox="0 0 440 180" preserveAspectRatio="xMidYMid meet">
+                    <ellipse cx="220" cy="90" rx="190" ry="70" class="compact-ellipse" />
+                    <ellipse cx="220" cy="90" rx="120" ry="45" class="compact-ellipse-inner" />
+                    <line x1="220" y1="20" x2="220" y2="90" stroke="rgba(117, 103, 248, 0.35)" stroke-width="1.5" stroke-dasharray="3 3"/>
+                    <line x1="220" y1="90" x2="220" y2="160" stroke="rgba(57, 217, 138, 0.35)" stroke-width="1.5" stroke-dasharray="3 3"/>
+                </svg>
+
+                <div class="orbit-chip chip-data">
+                    <span class="chip-dot"></span>
+                    <span>DATA</span>
+                </div>
+                <div class="orbit-chip chip-analytics">
+                    <span class="chip-dot"></span>
+                    <span>ANALYTICS</span>
+                </div>
+                <div class="orbit-chip chip-insights">
+                    <span class="chip-dot"></span>
+                    <span>INSIGHTS</span>
+                </div>
+                <div class="orbit-chip chip-forecast">
+                    <span class="chip-dot"></span>
+                    <span>FORECAST</span>
+                </div>
+                <div class="orbit-chip chip-decisions">
+                    <span class="chip-dot"></span>
+                    <span>DECISIONS &rarr;</span>
+                </div>
+
+                <div class="compact-nucleus">
+                    <span class="nucleus-mark">SMART</span>
+                    <span class="nucleus-sub">BI</span>
+                </div>
             </div>
 
         </div>
 
-
-        <!-- RIGHT FORM -->
-
-        <div class="auth-card signup-card">
-
-
-            <div class="auth-header">
-
-                <span class="section-label">
-                    ACCOUNT REGISTRATION
-                </span>
-
-                <h1>
-                    Create your
-                    <span>Smart BI</span>
-                    account
-                </h1>
-
-                <p>
-                    Register your business account.
-                    An administrator will review your
-                    account before access is activated.
+        <!-- ================================================================
+             RIGHT PANEL: REGISTRATION CARD & DJANGO FORM
+             ================================================================ -->
+        <div class="auth-card signup-card" id="signupCard">
+            
+            <div class="signup-card-header">
+                <span class="signup-badge-mini">ACCOUNT REGISTRATION</span>
+                <h2 class="signup-card-title">
+                    Create Your <span class="auth-gradient-text">Smart BI</span> Account
+                </h2>
+                <p class="signup-card-desc">
+                    Register your business account. An administrator will review your account before access is activated.
                 </p>
-
             </div>
 
+            <!-- REGISTRATION PROGRESS METER -->
+            <div class="signup-progress-meter" aria-hidden="true">
+                <div class="meter-meta-row">
+                    <span>ACCOUNT SETUP PROGRESS</span>
+                    <span class="meter-pct-readout" id="regProgressPct">0%</span>
+                </div>
+                <div class="meter-track-bg">
+                    <div class="meter-fill-bar" id="regProgressBar"></div>
+                </div>
+            </div>
 
-            <!-- FORM -->
+            <!-- NON-FIELD ERRORS NOTIFICATION CARD -->
+            {% if form.non_field_errors %}
+                <div class="signup-error-alert" role="alert">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="alert-svg-icon" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="12"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                    <div>
+                        {{ form.non_field_errors }}
+                    </div>
+                </div>
+            {% endif %}
 
-            <form method="POST"
-                  class="auth-form">
-
+            <!-- DJANGO SIGNUP FORM -->
+            <form method="POST" class="signup-form" id="signupForm" novalidate>
                 {% csrf_token %}
 
-
-                {% if form.non_field_errors %}
-
-                <div class="form-error">
-                    {{ form.non_field_errors }}
-                </div>
-
-                {% endif %}
-
-
-                <!-- NAME -->
-
-                <div class="form-row">
-
-                    <div class="form-group">
-
-                        <label for="{{ form.first_name.id_for_label }}">
-                            First Name
-                        </label>
-
-                        {{ form.first_name }}
-
+                <!-- ROW: FIRST NAME / LAST NAME -->
+                <div class="form-split-row">
+                    <!-- FIRST NAME -->
+                    <div class="auth-field-group">
+                        <label for="{{ form.first_name.id_for_label }}" class="auth-field-label">First Name</label>
+                        <div class="auth-input-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="auth-field-icon" aria-hidden="true">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                            {{ form.first_name }}
+                        </div>
                         {% if form.first_name.errors %}
-
-                        <div class="field-error">
-                            {{ form.first_name.errors }}
-                        </div>
-
+                            <div class="field-error-wrapper" role="alert">
+                                {{ form.first_name.errors }}
+                            </div>
                         {% endif %}
-
                     </div>
 
-
-                    <div class="form-group">
-
-                        <label for="{{ form.last_name.id_for_label }}">
-                            Last Name
-                        </label>
-
-                        {{ form.last_name }}
-
+                    <!-- LAST NAME -->
+                    <div class="auth-field-group">
+                        <label for="{{ form.last_name.id_for_label }}" class="auth-field-label">Last Name</label>
+                        <div class="auth-input-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="auth-field-icon" aria-hidden="true">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                            {{ form.last_name }}
+                        </div>
                         {% if form.last_name.errors %}
-
-                        <div class="field-error">
-                            {{ form.last_name.errors }}
-                        </div>
-
+                            <div class="field-error-wrapper" role="alert">
+                                {{ form.last_name.errors }}
+                            </div>
                         {% endif %}
-
                     </div>
-
                 </div>
-
 
                 <!-- USERNAME -->
-
-                <div class="form-group">
-
-                    <label for="{{ form.username.id_for_label }}">
-                        Username
-                    </label>
-
-                    {{ form.username }}
-
+                <div class="auth-field-group">
+                    <label for="{{ form.username.id_for_label }}" class="auth-field-label">Username</label>
+                    <div class="auth-input-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="auth-field-icon" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10"/>
+                            <circle cx="12" cy="10" r="3"/>
+                            <path d="M7 18a5 5 0 0 1 10 0"/>
+                        </svg>
+                        {{ form.username }}
+                    </div>
                     {% if form.username.errors %}
-
-                    <div class="field-error">
-                        {{ form.username.errors }}
-                    </div>
-
+                        <div class="field-error-wrapper" role="alert">
+                            {{ form.username.errors }}
+                        </div>
                     {% endif %}
-
                 </div>
 
-
-                <!-- EMAIL -->
-
-                <div class="form-group">
-
-                    <label for="{{ form.email.id_for_label }}">
-                        Business Email
-                    </label>
-
-                    {{ form.email }}
-
+                <!-- BUSINESS EMAIL -->
+                <div class="auth-field-group">
+                    <label for="{{ form.email.id_for_label }}" class="auth-field-label">Business Email</label>
+                    <div class="auth-input-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="auth-field-icon" aria-hidden="true">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                        {{ form.email }}
+                    </div>
                     {% if form.email.errors %}
-
-                    <div class="field-error">
-                        {{ form.email.errors }}
-                    </div>
-
+                        <div class="field-error-wrapper" role="alert">
+                            {{ form.email.errors }}
+                        </div>
                     {% endif %}
-
                 </div>
-
 
                 <!-- COMPANY -->
-
-                <div class="form-group">
-
-                    <label for="{{ form.company_name.id_for_label }}">
-                        Company
-                    </label>
-
-                    {{ form.company_name }}
-
-                    {% if form.company_name.errors %}
-
-                    <div class="field-error">
-                        {{ form.company_name.errors }}
+                <div class="auth-field-group">
+                    <label for="{{ form.company_name.id_for_label }}" class="auth-field-label">Company</label>
+                    <div class="auth-input-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="auth-field-icon" aria-hidden="true">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                        </svg>
+                        {{ form.company_name }}
                     </div>
-
+                    {% if form.company_name.errors %}
+                        <div class="field-error-wrapper" role="alert">
+                            {{ form.company_name.errors }}
+                        </div>
                     {% endif %}
-
                 </div>
-
 
                 <!-- PHONE -->
-
-                <div class="form-group">
-
-                    <label for="{{ form.phone_number.id_for_label }}">
-                        Phone
-                    </label>
-
-                    {{ form.phone_number }}
-
+                <div class="auth-field-group">
+                    <label for="{{ form.phone_number.id_for_label }}" class="auth-field-label">Phone</label>
+                    <div class="auth-input-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="auth-field-icon" aria-hidden="true">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                        {{ form.phone_number }}
+                    </div>
                     {% if form.phone_number.errors %}
-
-                    <div class="field-error">
-                        {{ form.phone_number.errors }}
-                    </div>
-
+                        <div class="field-error-wrapper" role="alert">
+                            {{ form.phone_number.errors }}
+                        </div>
                     {% endif %}
-
                 </div>
 
-
-                <!-- PASSWORD -->
-
-                <div class="form-row">
-
-                    <div class="form-group">
-
-                        <label for="{{ form.password.id_for_label }}">
-                            Password
-                        </label>
-
-                        {{ form.password }}
-
+                <!-- ROW: PASSWORD / CONFIRM PASSWORD -->
+                <div class="form-split-row">
+                    <!-- PASSWORD -->
+                    <div class="auth-field-group">
+                        <label for="{{ form.password.id_for_label }}" class="auth-field-label">Password</label>
+                        <div class="auth-input-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="auth-field-icon" aria-hidden="true">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                            {{ form.password }}
+                            <button type="button" class="auth-pwd-toggle" id="pwdToggleBtn1" aria-label="Show password">
+                                <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                                <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;" aria-hidden="true">
+                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                                    <line x1="1" y1="1" x2="23" y2="23"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="pwd-strength-container" aria-hidden="true">
+                            <div class="pwd-strength-header">
+                                <span>PASSWORD STRENGTH</span>
+                                <span id="strengthLabel">Enter password</span>
+                            </div>
+                            <div class="pwd-strength-bars">
+                                <div class="strength-bar" id="strBar1"></div>
+                                <div class="strength-bar" id="strBar2"></div>
+                                <div class="strength-bar" id="strBar3"></div>
+                            </div>
+                        </div>
                         {% if form.password.errors %}
-
-                        <div class="field-error">
-                            {{ form.password.errors }}
-                        </div>
-
+                            <div class="field-error-wrapper" role="alert">
+                                {{ form.password.errors }}
+                            </div>
                         {% endif %}
-
                     </div>
 
-
-                    <div class="form-group">
-
-                        <label for="{{ form.confirm_password.id_for_label }}">
-                            Confirm Password
-                        </label>
-
-                        {{ form.confirm_password }}
-
+                    <!-- CONFIRM PASSWORD -->
+                    <div class="auth-field-group">
+                        <label for="{{ form.confirm_password.id_for_label }}" class="auth-field-label">Confirm Password</label>
+                        <div class="auth-input-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="auth-field-icon" aria-hidden="true">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                            {{ form.confirm_password }}
+                            <button type="button" class="auth-pwd-toggle" id="pwdToggleBtn2" aria-label="Show password">
+                                <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                                <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;" aria-hidden="true">
+                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                                    <line x1="1" y1="1" x2="23" y2="23"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="pwd-match-indicator" id="pwdMatchStatus" aria-live="polite"></div>
                         {% if form.confirm_password.errors %}
-
-                        <div class="field-error">
-                            {{ form.confirm_password.errors }}
-                        </div>
-
+                            <div class="field-error-wrapper" role="alert">
+                                {{ form.confirm_password.errors }}
+                            </div>
                         {% endif %}
-
                     </div>
-
                 </div>
 
-
-                <!-- SUBMIT -->
-
-                <button type="submit"
-                        class="auth-submit">
-
-                    <span>
-                        Create Account
-                    </span>
-
-                    <span class="auth-submit-arrow">
-                        →
-                    </span>
-
-                </button>
-
-
-                <!-- FOOTER -->
-
-                <div class="auth-footer">
-
-                    <p>
-                        Already have an account?
-
-                        <a href="{% url 'accounts:login' %}">
-                            Login
-                        </a>
-
-                    </p>
-
+                <!-- SUBMIT ACTION -->
+                <div class="signup-submit-wrap">
+                    <button type="submit" class="auth-btn-primary" id="signupSubmitBtn">
+                        <span class="auth-btn-text" id="signupBtnText">Create Account</span>
+                        <span class="auth-btn-arrow" aria-hidden="true">&rarr;</span>
+                        <span class="auth-loader-dots" aria-hidden="true">
+                            <span></span><span></span><span></span>
+                        </span>
+                    </button>
                 </div>
-
-
-                <div class="auth-security">
-
-                    <span>
-                        ✓
-                    </span>
-
-                    Your account requires administrator approval
-
-                </div>
-
             </form>
+
+            <!-- LOGIN REDIRECT LINK -->
+            <div class="signup-links-footer">
+                <span>Already have an account?</span>
+                <a href="{% url 'accounts:login' %}" class="auth-login-link">
+                    Login <span aria-hidden="true">&rarr;</span>
+                </a>
+            </div>
+
+            <!-- MANDATORY ADMINISTRATOR APPROVAL NOTICE -->
+            <div class="admin-approval-badge">
+                <div class="approval-icon-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </div>
+                <div class="approval-text">
+                    <strong>Your account requires administrator approval.</strong><br>
+                    Account registration does not immediately activate access; administrator approval is required.
+                </div>
+            </div>
 
         </div>
 
@@ -399,4 +1601,264 @@ Create Account | Smart BI
 
 </section>
 
+{% block extra_js %}
+<script>
+/**
+ * SMART BI — SIGNUP INTERACTIVE ENGINE SCRIPT
+ * Embedded self-contained vanilla JavaScript implementation for:
+ * 1. Progress completion tracker
+ * 2. Real-time password strength visualization (demo only)
+ * 3. Client-side password match feedback
+ * 4. Password toggles
+ * 5. Sequential journey illuminator
+ * 6. Lightweight particle stream canvas
+ * 7. Form submission loading transition
+ */
+document.addEventListener("DOMContentLoaded", () => {
+  "use strict";
+
+  const rootEl = document.getElementById("signupPageRoot");
+  if (!rootEl) return;
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* --------------------------------------------------------------------------
+     1. FORM FIELDS REGISTRATION PROGRESS METER
+     -------------------------------------------------------------------------- */
+  const signupForm = document.getElementById("signupForm");
+  const progressBar = document.getElementById("regProgressBar");
+  const progressPct = document.getElementById("regProgressPct");
+
+  const monitoredInputs = signupForm
+    ? Array.from(signupForm.querySelectorAll('input:not([type="hidden"]):not([type="submit"])'))
+    : [];
+
+  const updateProgress = () => {
+    if (!monitoredInputs.length || !progressBar || !progressPct) return;
+    const filledCount = monitoredInputs.filter((input) => input.value.trim().length > 0).length;
+    const pct = Math.round((filledCount / monitoredInputs.length) * 100);
+
+    progressBar.style.width = `${pct}%`;
+    progressPct.textContent = `${pct}%`;
+  };
+
+  monitoredInputs.forEach((input) => {
+    input.addEventListener("input", updateProgress);
+  });
+  updateProgress();
+
+  /* --------------------------------------------------------------------------
+     2. PASSWORD VISIBILITY TOGGLES (WIDGET ACCESSIBLE)
+     -------------------------------------------------------------------------- */
+  const setupPwdToggle = (btnId, inputSelector) => {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    const parentWrap = btn.closest(".auth-input-wrap");
+    const input = parentWrap ? parentWrap.querySelector('input') : null;
+    const eyeOpen = btn.querySelector(".eye-open");
+    const eyeClosed = btn.querySelector(".eye-closed");
+
+    if (btn && input && eyeOpen && eyeClosed) {
+      btn.addEventListener("click", () => {
+        const isPassword = input.getAttribute("type") === "password";
+        if (isPassword) {
+          input.setAttribute("type", "text");
+          eyeOpen.style.display = "none";
+          eyeClosed.style.display = "inline-block";
+          btn.setAttribute("aria-label", "Hide password");
+        } else {
+          input.setAttribute("type", "password");
+          eyeOpen.style.display = "inline-block";
+          eyeClosed.style.display = "none";
+          btn.setAttribute("aria-label", "Show password");
+        }
+        input.focus();
+      });
+    }
+  };
+
+  setupPwdToggle("pwdToggleBtn1", 'input[name="password"]');
+  setupPwdToggle("pwdToggleBtn2", 'input[name="confirm_password"]');
+
+  /* --------------------------------------------------------------------------
+     3. PASSWORD STRENGTH VISUAL & MATCH STATUS
+     -------------------------------------------------------------------------- */
+  const pwdInput = document.querySelector('input[name="password"]') || document.getElementById("id_password");
+  const confirmPwdInput = document.querySelector('input[name="confirm_password"]') || document.getElementById("id_confirm_password");
+  const strLabel = document.getElementById("strengthLabel");
+  const strBar1 = document.getElementById("strBar1");
+  const strBar2 = document.getElementById("strBar2");
+  const strBar3 = document.getElementById("strBar3");
+  const matchStatus = document.getElementById("pwdMatchStatus");
+
+  if (pwdInput && strLabel && strBar1 && strBar2 && strBar3) {
+    pwdInput.addEventListener("input", () => {
+      const val = pwdInput.value;
+      strBar1.className = "strength-bar";
+      strBar2.className = "strength-bar";
+      strBar3.className = "strength-bar";
+
+      if (!val.length) {
+        strLabel.textContent = "Enter password";
+      } else if (val.length < 6) {
+        strLabel.textContent = "Weak";
+        strBar1.classList.add("weak");
+      } else if (val.length < 10 || !/[A-Z]/.test(val) || !/[0-9]/.test(val)) {
+        strLabel.textContent = "Good";
+        strBar1.classList.add("good");
+        strBar2.classList.add("good");
+      } else {
+        strLabel.textContent = "Strong";
+        strBar1.classList.add("strong");
+        strBar2.classList.add("strong");
+        strBar3.classList.add("strong");
+      }
+
+      checkMatch();
+    });
+  }
+
+  const checkMatch = () => {
+    if (!pwdInput || !confirmPwdInput || !matchStatus) return;
+    const p1 = pwdInput.value;
+    const p2 = confirmPwdInput.value;
+
+    if (!p2.length) {
+      matchStatus.style.display = "none";
+      return;
+    }
+
+    if (p1 === p2) {
+      matchStatus.textContent = "Passwords match ✓";
+      matchStatus.className = "pwd-match-indicator matched";
+    } else {
+      matchStatus.textContent = "Passwords do not match";
+      matchStatus.className = "pwd-match-indicator mismatched";
+    }
+  };
+
+  if (confirmPwdInput) {
+    confirmPwdInput.addEventListener("input", checkMatch);
+  }
+
+  /* --------------------------------------------------------------------------
+     4. SEQUENTIAL JOURNEY TRACK ILLUMINATION
+     -------------------------------------------------------------------------- */
+  const journeyRows = document.querySelectorAll(".journey-stage-row");
+  if (journeyRows.length && !prefersReducedMotion) {
+    let currentActive = 0;
+    setInterval(() => {
+      journeyRows.forEach((row) => row.classList.remove("illuminated"));
+      journeyRows[currentActive].classList.add("illuminated");
+      currentActive = (currentActive + 1) % journeyRows.length;
+    }, 1800);
+  }
+
+  /* --------------------------------------------------------------------------
+     5. LIGHTWEIGHT CANVAS PARTICLES (28 NODES)
+     -------------------------------------------------------------------------- */
+  const canvas = document.getElementById("signupCanvas");
+  if (canvas && !prefersReducedMotion) {
+    const ctx = canvas.getContext("2d");
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    const particleCount = Math.min(Math.floor(window.innerWidth / 45), 28);
+    const particles = [];
+    const colors = [
+      "rgba(117, 103, 248,",
+      "rgba(63, 169, 245,",
+      "rgba(57, 217, 138,"
+    ];
+
+    class ParticleNode {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.35;
+        this.vy = (Math.random() - 0.5) * 0.35;
+        this.radius = Math.random() * 1.5 + 0.8;
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.alpha = Math.random() * 0.35 + 0.15;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.x < 0) this.x = width;
+        if (this.x > width) this.x = 0;
+        if (this.y < 0) this.y = height;
+        if (this.y > height) this.y = 0;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `${this.color} ${this.alpha})`;
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new ParticleNode());
+    }
+
+    const render = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            const lineAlpha = (1 - dist / 100) * 0.08;
+            ctx.strokeStyle = `rgba(117, 103, 248, ${lineAlpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+
+      particles.forEach((p) => {
+        p.update();
+        p.draw();
+      });
+
+      requestAnimationFrame(render);
+    };
+
+    render();
+
+    window.addEventListener("resize", () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+  }
+
+  /* --------------------------------------------------------------------------
+     6. SUBMISSION LOADING STATE (PRESERVES DJANGO POST)
+     -------------------------------------------------------------------------- */
+  const submitBtn = document.getElementById("signupSubmitBtn");
+  const btnText = document.getElementById("signupBtnText");
+
+  if (signupForm && submitBtn && btnText) {
+    signupForm.addEventListener("submit", () => {
+      submitBtn.classList.add("is-submitting");
+      btnText.textContent = "Creating Account...";
+    });
+  }
+
+
+</script>
+{% endblock %}
 {% endblock %}

@@ -5,48 +5,1342 @@ Registration Submitted | Smart BI
 {% endblock %}
 
 {% block content %}
+<section class="auth-page registration-page" id="registrationPageRoot">
 
-<section class="auth-page">
+    <!-- AMBIENT GLOW ORBS & CYBER GRID -->
+    <div class="auth-background-grid" aria-hidden="true"></div>
+    <div class="auth-orb auth-orb-one" aria-hidden="true"></div>
+    <div class="auth-orb auth-orb-two" aria-hidden="true"></div>
+    <div class="auth-orb auth-orb-three" aria-hidden="true"></div>
 
-    <div class="approval-card">
-
-        <div class="approval-icon">
-            ✓
+    <!-- BACKGROUND DATA STREAMS -->
+    <div class="auth-data-stream-layer" aria-hidden="true">
+        <div class="data-stream-line stream-line-1">
+            <span>DATA_STREAM_INGEST</span>
+            <span>&bull;</span>
+            <span>REGISTRATION_CONFIRMED</span>
+            <span>&bull;</span>
+            <span>SCHEMA_ALLOCATED</span>
+            <span>&bull;</span>
+            <span>PIPELINE_STAGED</span>
         </div>
-
-        <span class="section-label">
-            REGISTRATION SUCCESSFUL
-        </span>
-
-        <h1>
-            Your account is
-            <span>pending approval</span>
-        </h1>
-
-        <p>
-            Thank you for registering with Smart BI.
-            Your account has been created successfully.
-        </p>
-
-        <p>
-            An administrator must approve your account
-            before you can access the platform.
-        </p>
-
-        <div class="approval-status">
-            <span class="status-dot"></span>
-            Waiting for Administrator Approval
+        <div class="data-stream-line stream-line-2">
+            <span>ADMIN_QUEUE_DISPATCHED</span>
+            <span>&bull;</span>
+            <span>GOVERNANCE_CONTROL</span>
+            <span>&bull;</span>
+            <span>DECISION_NETWORK_STABLE</span>
         </div>
+    </div>
 
-        <a
-            href="{% url 'accounts:login' %}"
-            class="primary-btn"
-        >
-            Go to Login →
-        </a>
+    <!-- CANVAS PARTICLES (OPTIMIZED CSS/JS STREAM) -->
+    <canvas id="registrationCanvas" class="auth-particle-canvas" aria-hidden="true"></canvas>
 
+    <div class="registration-container">
+        <!-- MAIN REGISTRATION CARD -->
+        <div class="registration-card" id="registrationCard">
+
+            <!-- BRAND IDENTITY HEADER -->
+            <div class="auth-brand-row">
+                <div class="auth-brand-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="brand-glyph-svg">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                </div>
+                <div class="auth-brand-text">
+                    <span class="auth-brand-title">Smart BI</span>
+                    <span class="auth-brand-subtitle">Decision Intelligence</span>
+                </div>
+            </div>
+
+            <!-- SUCCESS CELEBRATION CORE ORBIT VISUAL -->
+            <div class="success-core-wrapper" id="successCore">
+                <div class="core-orbit-halo" aria-hidden="true"></div>
+                <div class="core-orbit-ring ring-outer" aria-hidden="true">
+                    <span class="orbit-particle-bead"></span>
+                </div>
+                <div class="core-orbit-ring ring-inner" aria-hidden="true"></div>
+
+                <!-- SUCCESS BURST PARTICLES (TRIGGER ON LOAD) -->
+                <div class="success-burst-system" aria-hidden="true">
+                    <span class="burst-spark spark-1"></span>
+                    <span class="burst-spark spark-2"></span>
+                    <span class="burst-spark spark-3"></span>
+                    <span class="burst-spark spark-4"></span>
+                    <span class="burst-spark spark-5"></span>
+                    <span class="burst-spark spark-6"></span>
+                    <span class="burst-spark spark-7"></span>
+                    <span class="burst-spark spark-8"></span>
+                    <span class="burst-spark spark-9"></span>
+                    <span class="burst-spark spark-10"></span>
+                </div>
+
+                <!-- SUCCESS ICON (ANIMATED CHECKMARK) -->
+                <div class="approval-icon" aria-hidden="true">
+                    <svg class="success-checkmark-svg" viewBox="0 0 52 52">
+                        <circle class="checkmark-circle" cx="26" cy="26" r="23" fill="none"/>
+                        <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- STATUS BADGE -->
+            <div class="status-badge-container">
+                <span class="section-label">REGISTRATION SUCCESSFUL</span>
+            </div>
+
+            <!-- MAIN HEADINGS -->
+            <h1 class="registration-heading">
+                <span class="heading-row">Your account is</span>
+                <span class="heading-row auth-gradient-text">pending approval</span>
+            </h1>
+
+            <!-- REGISTRATION SUCCESS MESSAGE PANEL -->
+            <div class="registration-message-glass" role="status">
+                <div class="message-glow-edge" aria-hidden="true"></div>
+                <div class="message-status-lead">
+                    <span class="msg-check-icon" aria-hidden="true">&#10003;</span>
+                    <span class="msg-check-text">Registration received successfully</span>
+                </div>
+                <p class="registration-message-text">
+                    Thank you for registering with Smart BI. Your account has been created successfully.
+                </p>
+            </div>
+
+            <!-- ADMINISTRATOR REVIEW SUB-PANEL -->
+            <div class="admin-review-panel">
+                <span class="review-panel-title">ADMINISTRATOR REVIEW</span>
+                <p class="review-panel-text">
+                    Your account is ready for review. An administrator must approve your account before you can access the platform.
+                </p>
+            </div>
+
+            <!-- REGISTRATION 3-STAGE JOURNEY VISUAL -->
+            <div class="registration-workflow-track" aria-label="Registration Progression Track">
+                <!-- STEP 01: CREATED -->
+                <div class="workflow-stage-node node-completed">
+                    <div class="node-indicator">
+                        <span class="node-check">&#10003;</span>
+                    </div>
+                    <div class="node-meta">
+                        <span class="node-step-tag">01</span>
+                        <h4 class="node-name">ACCOUNT CREATED</h4>
+                        <span class="node-status-text">Completed</span>
+                    </div>
+                </div>
+
+                <div class="workflow-connector-wire wire-completed" aria-hidden="true">
+                    <div class="wire-stream-glow"></div>
+                </div>
+
+                <!-- STEP 02: ADMIN REVIEW (ACTIVE CURRENT STAGE) -->
+                <div class="workflow-stage-node node-active">
+                    <div class="node-indicator">
+                        <span class="node-pulse-ring" aria-hidden="true"></span>
+                        <span class="node-dot"></span>
+                    </div>
+                    <div class="node-meta">
+                        <span class="node-step-tag">02</span>
+                        <h4 class="node-name">ADMIN REVIEW</h4>
+                        <span class="node-status-text status-active-text">Current Stage</span>
+                    </div>
+                </div>
+
+                <div class="workflow-connector-wire wire-pending" aria-hidden="true"></div>
+
+                <!-- STEP 03: PLATFORM ACCESS (WAITING) -->
+                <div class="workflow-stage-node node-waiting">
+                    <div class="node-indicator">
+                        <span class="node-dot"></span>
+                    </div>
+                    <div class="node-meta">
+                        <span class="node-step-tag">03</span>
+                        <h4 class="node-name">PLATFORM ACCESS</h4>
+                        <span class="node-status-text">Pending Approval</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LIVE STATUS INDICATOR STRIP -->
+            <div class="approval-status" aria-live="polite">
+                <span class="status-dot" aria-hidden="true"></span>
+                <span class="status-label">Waiting for Administrator Approval</span>
+            </div>
+
+            <!-- ACTION BUTTON: PRESERVE EXACT LOGIN ROUTE -->
+            <div class="registration-actions">
+                <a href="{% url 'accounts:login' %}" class="primary-btn" id="loginRedirectBtn">
+                    <span class="btn-text">Go to Login</span>
+                    <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+                    <span class="btn-loader-dots" aria-hidden="true">
+                        <span></span><span></span><span></span>
+                    </span>
+                </a>
+            </div>
+
+            <!-- FACTUAL SECURITY ASSURANCE NOTICE -->
+            <div class="registration-security-footer">
+                <div class="sec-icon-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sec-shield-svg">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <polyline points="9 12 11 14 15 10"/>
+                    </svg>
+                </div>
+                <span class="sec-statement">Administrator-controlled access &bull; Smart BI approval workflow</span>
+            </div>
+
+        </div>
     </div>
 
 </section>
 
+<style>
+/* ==========================================================================
+   SMART BI — REGISTRATION SUBMITTED DESIGN SYSTEM
+   Embedded self-contained production stylesheet
+   ========================================================================== */
+
+:root {
+  --auth-bg-base: #06111f;
+  --auth-bg-deep: #071522;
+  --auth-bg-soft: #081827;
+
+  --auth-card: #0d2033;
+  --auth-card-elevated: #102840;
+  --auth-card-glass: rgba(13, 32, 51, 0.72);
+  --auth-card-glass-elevated: rgba(16, 40, 64, 0.88);
+
+  --auth-purple: #7567f8;
+  --auth-purple-light: #9b91ff;
+  --auth-purple-glow: rgba(117, 103, 248, 0.35);
+
+  --auth-blue: #3fa9f5;
+  --auth-blue-glow: rgba(63, 169, 245, 0.32);
+
+  --auth-green: #39d98a;
+  --auth-green-deep: #22c77a;
+  --auth-green-glow: rgba(57, 217, 138, 0.28);
+
+  --auth-orange: #ff9f43;
+  --auth-orange-glow: rgba(255, 159, 67, 0.35);
+
+  --auth-red: #ff5c70;
+  --auth-red-glow: rgba(255, 92, 112, 0.3);
+
+  --auth-text: #f4f7fb;
+  --auth-muted: #8ea1b5;
+  --auth-subtle: #566c82;
+
+  --auth-border: rgba(255, 255, 255, 0.08);
+  --auth-border-bright: rgba(255, 255, 255, 0.16);
+
+  --auth-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --auth-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --auth-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.auth-page *,
+.auth-page *::before,
+.auth-page *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.auth-page.registration-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--auth-bg-base);
+  color: var(--auth-text);
+  font-family: var(--auth-font);
+  line-height: 1.55;
+  overflow-x: hidden;
+  overflow-y: visible !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(2rem, 5vw, 4.5rem) 1.5rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --------------------------------------------------------------------------
+   BACKGROUND GRID, ORBS & DATA STREAMS
+   -------------------------------------------------------------------------- */
+.auth-background-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, #000 60%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, #000 60%, transparent 100%);
+  z-index: 0;
+  animation: gridFloat 40s linear infinite alternate;
+}
+
+@keyframes gridFloat {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-30px); }
+}
+
+.auth-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(140px);
+  z-index: 0;
+  opacity: 0.55;
+}
+
+.auth-orb-one {
+  width: 650px;
+  height: 650px;
+  top: -120px;
+  left: -120px;
+  background: radial-gradient(circle, var(--auth-purple-glow) 0%, transparent 70%);
+  animation: orbDriftOne 24s ease-in-out infinite alternate;
+}
+
+.auth-orb-two {
+  width: 750px;
+  height: 700px;
+  bottom: -160px;
+  right: -120px;
+  background: radial-gradient(circle, var(--auth-blue-glow) 0%, rgba(57, 217, 138, 0.16) 50%, transparent 75%);
+  animation: orbDriftTwo 28s ease-in-out infinite alternate;
+}
+
+.auth-orb-three {
+  width: 520px;
+  height: 520px;
+  top: 35%;
+  left: 40%;
+  background: radial-gradient(circle, var(--auth-green-glow) 0%, rgba(117, 103, 248, 0.12) 50%, transparent 70%);
+  animation: orbDriftThree 20s ease-in-out infinite alternate;
+}
+
+@keyframes orbDriftOne {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(70px, 90px) scale(1.08); }
+}
+
+@keyframes orbDriftTwo {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-90px, -70px) scale(1.1); }
+}
+
+@keyframes orbDriftThree {
+  0% { transform: translate(0, 0) scale(0.95); opacity: 0.35; }
+  100% { transform: translate(50px, -60px) scale(1.12); opacity: 0.6; }
+}
+
+.auth-data-stream-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+  opacity: 0.25;
+}
+
+.data-stream-line {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(57, 217, 138, 0.4), var(--auth-blue), transparent);
+  white-space: nowrap;
+  font-family: monospace;
+  font-size: 0.65rem;
+  color: var(--auth-muted);
+  letter-spacing: 0.18em;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.stream-line-1 {
+  top: 18%;
+  left: -20%;
+  width: 140%;
+  animation: streamTransit 26s linear infinite;
+}
+
+.stream-line-2 {
+  bottom: 20%;
+  left: -30%;
+  width: 150%;
+  animation: streamTransit 32s linear infinite reverse;
+}
+
+@keyframes streamTransit {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(15%); }
+}
+
+.auth-particle-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   CONTAINER & MAIN CARD
+   -------------------------------------------------------------------------- */
+.registration-container {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.auth-gradient-text {
+  background: linear-gradient(135deg, #ffffff 15%, var(--auth-blue) 55%, var(--auth-purple) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.registration-card {
+  position: relative;
+  background: linear-gradient(145deg, var(--auth-card-glass-elevated) 0%, rgba(8, 24, 39, 0.96) 100%);
+  border: 1px solid var(--auth-border-bright);
+  border-radius: 24px;
+  padding: clamp(2rem, 5vw, 3.25rem);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 30px 80px -15px rgba(0, 0, 0, 0.85), 0 0 45px -10px var(--auth-green-glow);
+  overflow: hidden;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: authFadeUp 0.9s var(--auth-ease) forwards;
+}
+
+.registration-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--auth-purple) 25%, var(--auth-blue) 50%, var(--auth-green) 75%, transparent 100%);
+  animation: cardEdgeGlow 6s infinite ease-in-out;
+}
+
+@keyframes cardEdgeGlow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* --------------------------------------------------------------------------
+   BRAND IDENTITY ROW
+   -------------------------------------------------------------------------- */
+.auth-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 2rem;
+  animation: authFadeUp 0.85s var(--auth-ease) 0.1s forwards;
+  opacity: 0;
+}
+
+.auth-brand-mark {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(117, 103, 248, 0.25), rgba(63, 169, 245, 0.25));
+  border: 1.5px solid var(--auth-border-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 18px var(--auth-purple-glow);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-brand-mark::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: brandShimmer 4s infinite linear;
+}
+
+@keyframes brandShimmer {
+  0% { left: -100%; }
+  25%, 100% { left: 150%; }
+}
+
+.brand-glyph-svg {
+  width: 24px;
+  height: 24px;
+  color: #ffffff;
+  position: relative;
+  z-index: 2;
+}
+
+.auth-brand-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.auth-brand-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+
+.auth-brand-subtitle {
+  font-size: 0.72rem;
+  color: var(--auth-blue);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   SUCCESS CORE ORBITAL VISUAL & BURST SYSTEM
+   -------------------------------------------------------------------------- */
+.success-core-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  animation: successCorePop 0.8s var(--auth-bounce) 0.25s forwards;
+  opacity: 0;
+}
+
+@keyframes successCorePop {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.core-orbit-halo {
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--auth-green-glow) 0%, transparent 70%);
+  filter: blur(12px);
+  pointer-events: none;
+}
+
+.core-orbit-ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.ring-outer {
+  width: 114px;
+  height: 114px;
+  border: 1.5px dashed rgba(57, 217, 138, 0.45);
+  animation: ringRotate 24s linear infinite;
+}
+
+.ring-inner {
+  width: 92px;
+  height: 92px;
+  border: 1px solid rgba(63, 169, 245, 0.3);
+  animation: ringRotateRev 18s linear infinite;
+}
+
+@keyframes ringRotate {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ringRotateRev {
+  to { transform: rotate(-360deg); }
+}
+
+.orbit-particle-bead {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--auth-green);
+  box-shadow: 0 0 10px var(--auth-green);
+}
+
+.approval-icon {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #163628 0%, #0d2033 90%);
+  border: 1.5px solid rgba(57, 217, 138, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 30px var(--auth-green-glow), inset 0 0 14px rgba(57, 217, 138, 0.25);
+  z-index: 2;
+}
+
+.success-checkmark-svg {
+  width: 52px;
+  height: 52px;
+  display: block;
+  stroke-width: 3.5;
+  stroke: var(--auth-green);
+  stroke-miterlimit: 10;
+}
+
+.checkmark-circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 3;
+  stroke-miterlimit: 10;
+  stroke: rgba(57, 217, 138, 0.35);
+  fill: none;
+  animation: strokeCircle 0.6s cubic-bezier(0.65, 0, 0.45, 1) 0.4s forwards;
+}
+
+.checkmark-check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  stroke-linecap: round;
+  animation: strokeCheck 0.4s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes strokeCircle {
+  100% { stroke-dashoffset: 0; }
+}
+
+@keyframes strokeCheck {
+  100% { stroke-dashoffset: 0; }
+}
+
+/* Success Burst One-Time Particle Explosion */
+.success-burst-system {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+}
+
+.burst-spark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--auth-green);
+  box-shadow: 0 0 8px var(--auth-green);
+  opacity: 0;
+  animation: sparkBurst 1.2s var(--auth-ease) 0.85s forwards;
+}
+
+.spark-1 { transform: rotate(0deg) translate(0px); }
+.spark-2 { transform: rotate(36deg) translate(0px); }
+.spark-3 { transform: rotate(72deg) translate(0px); }
+.spark-4 { transform: rotate(108deg) translate(0px); }
+.spark-5 { transform: rotate(144deg) translate(0px); }
+.spark-6 { transform: rotate(180deg) translate(0px); }
+.spark-7 { transform: rotate(216deg) translate(0px); }
+.spark-8 { transform: rotate(252deg) translate(0px); }
+.spark-9 { transform: rotate(288deg) translate(0px); }
+.spark-10 { transform: rotate(324deg) translate(0px); }
+
+@keyframes sparkBurst {
+  0% { opacity: 1; transform: rotate(var(--angle, 0deg)) translateY(0px) scale(1); }
+  100% { opacity: 0; transform: rotate(var(--angle, 0deg)) translateY(-45px) scale(0.2); }
+}
+
+.spark-1 { --angle: 0deg; }
+.spark-2 { --angle: 36deg; }
+.spark-3 { --angle: 72deg; }
+.spark-4 { --angle: 108deg; }
+.spark-5 { --angle: 144deg; }
+.spark-6 { --angle: 180deg; }
+.spark-7 { --angle: 216deg; }
+.spark-8 { --angle: 252deg; }
+.spark-9 { --angle: 288deg; }
+.spark-10 { --angle: 324deg; }
+
+/* --------------------------------------------------------------------------
+   STATUS BADGE & HEADINGS
+   -------------------------------------------------------------------------- */
+.status-badge-container {
+  margin-bottom: 0.75rem;
+  animation: authFadeUp 0.9s var(--auth-ease) 0.55s forwards;
+  opacity: 0;
+}
+
+.section-label {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--auth-green);
+  text-transform: uppercase;
+  background: rgba(57, 217, 138, 0.1);
+  border: 1px solid rgba(57, 217, 138, 0.35);
+  padding: 0.35rem 0.9rem;
+  border-radius: 9999px;
+  box-shadow: 0 0 16px rgba(57, 217, 138, 0.15);
+}
+
+.registration-heading {
+  font-size: clamp(1.85rem, 3.5vw, 2.5rem);
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin-bottom: 1.25rem;
+  animation: authFadeUp 0.95s var(--auth-ease) 0.65s forwards;
+  opacity: 0;
+}
+
+.heading-row {
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   SUCCESS MESSAGE & ADMIN REVIEW PANELS
+   -------------------------------------------------------------------------- */
+.registration-message-glass {
+  position: relative;
+  width: 100%;
+  background: rgba(8, 24, 39, 0.75);
+  border: 1px solid rgba(57, 217, 138, 0.3);
+  border-radius: 14px;
+  padding: 1.15rem 1.4rem;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(57, 217, 138, 0.1);
+  text-align: left;
+  animation: authFadeUp 1s var(--auth-ease) 0.8s forwards;
+  opacity: 0;
+}
+
+.message-glow-edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--auth-green), transparent);
+}
+
+.message-status-lead {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.msg-check-icon {
+  color: var(--auth-green);
+  font-weight: 900;
+  font-size: 0.95rem;
+}
+
+.msg-check-text {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--auth-green);
+  text-transform: uppercase;
+}
+
+.registration-message-text {
+  font-size: 0.92rem;
+  color: var(--auth-text);
+  line-height: 1.55;
+}
+
+.admin-review-panel {
+  position: relative;
+  width: 100%;
+  background: rgba(8, 24, 39, 0.5);
+  border: 1px solid var(--auth-border);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  text-align: left;
+  margin-bottom: 1.5rem;
+  animation: authFadeUp 1.05s var(--auth-ease) 0.85s forwards;
+  opacity: 0;
+}
+
+.review-panel-title {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--auth-blue);
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+
+.review-panel-text {
+  font-size: 0.85rem;
+  color: var(--auth-muted);
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   REGISTRATION 3-STAGE WORKFLOW VISUAL
+   -------------------------------------------------------------------------- */
+.registration-workflow-track {
+  position: relative;
+  width: 100%;
+  background: rgba(8, 24, 39, 0.55);
+  border: 1px solid var(--auth-border);
+  border-radius: 16px;
+  padding: 1.25rem 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  animation: authFadeUp 1.1s var(--auth-ease) 0.95s forwards;
+  opacity: 0;
+}
+
+.workflow-stage-node {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: left;
+  position: relative;
+  z-index: 2;
+}
+
+.node-indicator {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.node-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.node-step-tag {
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--auth-subtle);
+}
+
+.node-name {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+}
+
+.node-status-text {
+  font-size: 0.68rem;
+  color: var(--auth-muted);
+}
+
+/* Stage 01: Completed */
+.node-completed .node-indicator {
+  background: rgba(57, 217, 138, 0.15);
+  border: 1.5px solid var(--auth-green);
+  color: var(--auth-green);
+  box-shadow: 0 0 10px var(--auth-green-glow);
+}
+
+.node-check {
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+/* Stage 02: Admin Review (Active) */
+.node-active .node-indicator {
+  background: rgba(117, 103, 248, 0.15);
+  border: 1.5px solid var(--auth-purple-light);
+  box-shadow: 0 0 14px var(--auth-purple-glow);
+}
+
+.node-active .node-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--auth-purple-light);
+  box-shadow: 0 0 8px var(--auth-purple-light);
+}
+
+.node-pulse-ring {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 50%;
+  border: 1.5px solid var(--auth-purple-light);
+  animation: ringPulse 2s infinite ease-out;
+}
+
+@keyframes ringPulse {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+.status-active-text {
+  color: var(--auth-purple-light) !important;
+  font-weight: 700;
+}
+
+/* Stage 03: Platform Access (Waiting) */
+.node-waiting .node-indicator {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1.5px solid var(--auth-border);
+}
+
+.node-waiting .node-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--auth-subtle);
+}
+
+.node-waiting .node-name {
+  color: var(--auth-muted);
+}
+
+/* Connector Wires */
+.workflow-connector-wire {
+  flex-grow: 1;
+  height: 2px;
+  margin: 0 0.85rem;
+  background: rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.wire-completed {
+  background: rgba(57, 217, 138, 0.4);
+}
+
+.wire-stream-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--auth-green), transparent);
+  animation: wireStreamOnce 2.4s ease-out forwards;
+}
+
+@keyframes wireStreamOnce {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* --------------------------------------------------------------------------
+   LIVE STATUS PILL
+   -------------------------------------------------------------------------- */
+.approval-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(57, 217, 138, 0.08);
+  border: 1px solid rgba(57, 217, 138, 0.3);
+  padding: 0.45rem 1.15rem;
+  border-radius: 9999px;
+  margin-bottom: 1.75rem;
+  animation: authFadeUp 1.15s var(--auth-ease) 1s forwards;
+  opacity: 0;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--auth-green);
+  box-shadow: 0 0 8px var(--auth-green);
+  animation: dotBlink 1.8s infinite ease-in-out;
+}
+
+@keyframes dotBlink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.3); }
+}
+
+.status-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--auth-green);
+}
+
+/* --------------------------------------------------------------------------
+   ACTION BUTTON: GO TO LOGIN
+   -------------------------------------------------------------------------- */
+.registration-actions {
+  width: 100%;
+  margin-bottom: 1.75rem;
+  animation: authFadeUp 1.2s var(--auth-ease) 1.1s forwards;
+  opacity: 0;
+}
+
+.primary-btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  background: linear-gradient(135deg, var(--auth-purple) 0%, #5a48eb 100%);
+  color: #ffffff;
+  padding: 0.95rem 1.85rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.98rem;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 24px var(--auth-purple-glow), 0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+  transition: transform 0.25s var(--auth-ease), box-shadow 0.25s var(--auth-ease);
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(117, 103, 248, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+  color: #ffffff;
+}
+
+.primary-btn:active {
+  transform: translateY(0);
+}
+
+.btn-arrow {
+  font-size: 1.15rem;
+  transition: transform 0.25s ease;
+}
+
+.primary-btn:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+.btn-loader-dots {
+  display: none;
+  gap: 4px;
+}
+
+.btn-loader-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  animation: loaderPulse 1.2s infinite ease-in-out both;
+}
+
+.btn-loader-dots span:nth-child(1) { animation-delay: -0.32s; }
+.btn-loader-dots span:nth-child(2) { animation-delay: -0.16s; }
+.btn-loader-dots span:nth-child(3) { animation-delay: 0s; }
+
+@keyframes loaderPulse {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+.primary-btn.is-redirecting .btn-arrow {
+  display: none;
+}
+
+.primary-btn.is-redirecting .btn-loader-dots {
+  display: inline-flex;
+}
+
+/* --------------------------------------------------------------------------
+   SECURITY ASSURANCE FOOTER
+   -------------------------------------------------------------------------- */
+.registration-security-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.65rem 1rem;
+  background: rgba(8, 24, 39, 0.5);
+  border: 1px solid var(--auth-border);
+  border-radius: 10px;
+  animation: authFadeUp 1.25s var(--auth-ease) 1.15s forwards;
+  opacity: 0;
+}
+
+.sec-icon-wrap {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sec-shield-svg {
+  width: 16px;
+  height: 16px;
+  color: var(--auth-green);
+}
+
+.sec-statement {
+  font-size: 0.72rem;
+  color: var(--auth-muted);
+  line-height: 1.4;
+  text-align: left;
+}
+
+/* --------------------------------------------------------------------------
+   ENTRANCE ANIMATION KEYFRAMES
+   -------------------------------------------------------------------------- */
+@keyframes authFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   ACCESSIBILITY & PREFERS-REDUCED-MOTION
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .auth-page *,
+  .auth-page *::before,
+  .auth-page *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .registration-card,
+  .auth-brand-row,
+  .success-core-wrapper,
+  .status-badge-container,
+  .registration-heading,
+  .registration-message-glass,
+  .admin-review-panel,
+  .registration-workflow-track,
+  .approval-status,
+  .registration-actions,
+  .registration-security-footer {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .checkmark-circle,
+  .checkmark-check {
+    stroke-dashoffset: 0 !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE DESIGN (768, 480, 320)
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .registration-workflow-track {
+    flex-direction: column;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+
+  .workflow-connector-wire {
+    width: 2px;
+    height: 18px;
+    margin: 0 0 0 15px;
+  }
+
+  .wire-stream-glow {
+    animation: wireStreamVerticalOnce 2.4s ease-out forwards;
+  }
+
+  @keyframes wireStreamVerticalOnce {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+  }
+}
+
+@media (max-width: 480px) {
+  .registration-card {
+    padding: 1.75rem 1.25rem;
+    border-radius: 18px;
+  }
+
+  .registration-heading {
+    font-size: 1.85rem;
+  }
+
+  .registration-security-footer {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+
+  .sec-statement {
+    text-align: center;
+  }
+}
+
+@media (max-width: 320px) {
+  .registration-heading {
+    font-size: 1.55rem;
+  }
+}
+</style>
+
+<script>
+/**
+ * SMART BI — REGISTRATION SUBMITTED INTERACTIVE SCRIPT
+ * Embedded self-contained vanilla JavaScript implementation for:
+ * 1. Ambient background canvas particles (CSS/JS optimized)
+ * 2. Navigation state transition feedback
+ * 3. Subtle desktop mouse parallax
+ */
+document.addEventListener("DOMContentLoaded", () => {
+  "use strict";
+
+  const rootEl = document.getElementById("registrationPageRoot");
+  if (!rootEl) return;
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* --------------------------------------------------------------------------
+     1. NAVIGATION FEEDBACK (GO TO LOGIN)
+     -------------------------------------------------------------------------- */
+  const loginRedirectBtn = document.getElementById("loginRedirectBtn");
+  if (loginRedirectBtn) {
+    loginRedirectBtn.addEventListener("click", () => {
+      loginRedirectBtn.classList.add("is-redirecting");
+      const btnText = loginRedirectBtn.querySelector(".btn-text");
+      if (btnText) {
+        btnText.textContent = "Opening Login...";
+      }
+    });
+  }
+
+  /* --------------------------------------------------------------------------
+     2. LIGHTWEIGHT CANVAS PARTICLES (20 NODES)
+     -------------------------------------------------------------------------- */
+  const canvas = document.getElementById("registrationCanvas");
+  if (canvas && !prefersReducedMotion) {
+    const ctx = canvas.getContext("2d");
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    const particleCount = Math.min(Math.floor(window.innerWidth / 60), 20);
+    const particles = [];
+    const colors = [
+      "rgba(57, 217, 138,",
+      "rgba(63, 169, 245,",
+      "rgba(117, 103, 248,"
+    ];
+
+    class ParticleNode {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.28;
+        this.vy = (Math.random() - 0.5) * 0.28;
+        this.radius = Math.random() * 1.5 + 0.8;
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.alpha = Math.random() * 0.35 + 0.15;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.x < 0) this.x = width;
+        if (this.x > width) this.x = 0;
+        if (this.y < 0) this.y = height;
+        if (this.y > height) this.y = 0;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `${this.color} ${this.alpha})`;
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new ParticleNode());
+    }
+
+    const render = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            const lineAlpha = (1 - dist / 100) * 0.08;
+            ctx.strokeStyle = `rgba(57, 217, 138, ${lineAlpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+
+      particles.forEach((p) => {
+        p.update();
+        p.draw();
+      });
+
+      requestAnimationFrame(render);
+    };
+
+    render();
+
+    window.addEventListener("resize", () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+  }
+
+
+</script>
 {% endblock %}

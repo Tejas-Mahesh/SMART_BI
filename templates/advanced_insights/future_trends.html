@@ -1,0 +1,1320 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Future Trends | Smart Business Intelligence
+{% endblock %}
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'advanced_insights/css/future_trends.css' %}"
+>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="smart-workspace-shell">
+
+    <!-- =====================================================
+         LEFT SIDEBAR
+    ====================================================== -->
+
+    <aside class="smart-workspace-sidebar">
+
+        {% include "includes/smart_sidebar.html" %}
+
+    </aside>
+
+
+    <!-- =====================================================
+         RIGHT MAIN CONTENT
+    ====================================================== -->
+
+    <main class="smart-workspace-main">
+
+        <div class="future-trends-page">
+
+            <!-- =================================================
+                 PAGE HEADER
+            ================================================== -->
+
+            <section class="future-trends-header">
+
+                <div class="future-trends-header-content">
+
+                    <div class="future-trends-eyebrow">
+
+                        <span class="future-trends-eyebrow-dot"></span>
+
+                        ADVANCED INSIGHTS
+
+                    </div>
+
+                    <h1>
+                        Future Trends
+                    </h1>
+
+                    <p>
+                        Analyze historical business movement and
+                        identify emerging trends across your datasets.
+                    </p>
+
+                </div>
+
+
+                <div class="future-trends-header-icon">
+
+                    <span>
+                        ↗
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 MESSAGES
+            ================================================== -->
+
+            {% if messages %}
+
+                <div class="future-trends-messages">
+
+                    {% for message in messages %}
+
+                        <div
+                            class="
+                                future-trends-message
+                                future-trends-message-{{ message.tags }}
+                            "
+                        >
+
+                            <span class="message-icon">
+
+                                {% if message.tags == "success" %}
+
+                                    ✓
+
+                                {% elif message.tags == "error" %}
+
+                                    !
+
+                                {% else %}
+
+                                    i
+
+                                {% endif %}
+
+                            </span>
+
+                            <span>
+                                {{ message }}
+                            </span>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- =================================================
+                 ANALYSIS WORKSPACE
+            ================================================== -->
+
+            <section class="future-trends-workspace">
+
+
+                <!-- =================================================
+                     CONFIGURATION
+                ================================================== -->
+
+                <div class="future-trends-card">
+
+                    <div class="future-trends-card-header">
+
+                        <div>
+
+                            <span class="section-kicker">
+                                ANALYSIS CONFIGURATION
+                            </span>
+
+                            <h2>
+                                Configure Trend Analysis
+                            </h2>
+
+                            <p>
+                                Select a dataset version, date field,
+                                business metric, and analysis frequency.
+                            </p>
+
+                        </div>
+
+
+                        <div class="section-number">
+                            01
+                        </div>
+
+                    </div>
+
+
+                    <form
+                        method="post"
+                        class="future-trends-form"
+                    >
+
+                        {% csrf_token %}
+
+
+                        <!-- DATASET -->
+
+                        <div class="future-trends-field">
+
+                            <label for="datasetSelector">
+                                Dataset
+                            </label>
+
+                            <select
+                                id="datasetSelector"
+                                name="dataset_display"
+                                class="future-trends-select"
+                                onchange="changeFutureTrendsDataset(this)"
+                            >
+
+                                {% if datasets %}
+
+                                    {% for dataset in datasets %}
+
+                                        <option
+                                            value="{{ dataset.id }}"
+                                            {% if selected_dataset and selected_dataset.id == dataset.id %}
+                                                selected
+                                            {% endif %}
+                                        >
+
+                                            {{ dataset.name }}
+                                            — {{ dataset.dataset_type }}
+
+                                        </option>
+
+                                    {% endfor %}
+
+                                {% else %}
+
+                                    <option value="">
+                                        No datasets available
+                                    </option>
+
+                                {% endif %}
+
+                            </select>
+
+                            <span class="field-help">
+
+                                Select the business dataset to analyze.
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- VERSION -->
+
+                        <div class="future-trends-field">
+
+                            <label for="versionSelector">
+                                Dataset Version
+                            </label>
+
+                            <select
+                                id="versionSelector"
+                                name="version_display"
+                                class="future-trends-select"
+                                onchange="changeFutureTrendsVersion(this)"
+                            >
+
+                                {% if versions %}
+
+                                    {% for version in versions %}
+
+                                        <option
+                                            value="{{ version.id }}"
+                                            {% if selected_version and selected_version.id == version.id %}
+                                                selected
+                                            {% endif %}
+                                        >
+
+                                            Version
+                                            {{ version.version_number }}
+
+                                            —
+                                            {{ version.version_type }}
+
+                                            {% if version.is_current %}
+                                                — Current
+                                            {% endif %}
+
+                                        </option>
+
+                                    {% endfor %}
+
+                                {% else %}
+
+                                    <option value="">
+                                        No versions available
+                                    </option>
+
+                                {% endif %}
+
+                            </select>
+
+                            <span class="field-help">
+
+                                Future Trends analyzes the selected
+                                DatasetVersion without modifying it.
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- DATE COLUMN -->
+
+                        <div class="future-trends-field">
+
+                            <label for="dateColumn">
+                                Date / Time Column
+                            </label>
+
+                            <select
+                                id="dateColumn"
+                                name="date_column"
+                                class="future-trends-select"
+                                required
+                            >
+
+                                {% if date_columns %}
+
+                                    {% for column in date_columns %}
+
+                                        <option
+                                            value="{{ column }}"
+                                            {% if selected_date_column == column %}
+                                                selected
+                                            {% endif %}
+                                        >
+
+                                            {{ column }}
+
+                                        </option>
+
+                                    {% endfor %}
+
+                                {% else %}
+
+                                    <option value="">
+                                        No date columns detected
+                                    </option>
+
+                                {% endif %}
+
+                            </select>
+
+                            <span class="field-help">
+
+                                The date field determines the time axis.
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- METRIC -->
+
+                        <div class="future-trends-field">
+
+                            <label for="metricColumn">
+                                Business Metric
+                            </label>
+
+                            <select
+                                id="metricColumn"
+                                name="metric_column"
+                                class="future-trends-select"
+                                required
+                            >
+
+                                {% if numeric_columns %}
+
+                                    {% for column in numeric_columns %}
+
+                                        <option
+                                            value="{{ column }}"
+                                            {% if selected_metric_column == column %}
+                                                selected
+                                            {% endif %}
+                                        >
+
+                                            {{ column }}
+
+                                        </option>
+
+                                    {% endfor %}
+
+                                {% else %}
+
+                                    <option value="">
+                                        No numeric metrics detected
+                                    </option>
+
+                                {% endif %}
+
+                            </select>
+
+                            <span class="field-help">
+
+                                Select the numeric business measure
+                                whose movement you want to analyze.
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- FREQUENCY -->
+
+                        <div class="future-trends-field">
+
+                            <label for="frequency">
+                                Analysis Frequency
+                            </label>
+
+                            <select
+                                id="frequency"
+                                name="frequency"
+                                class="future-trends-select"
+                                required
+                            >
+
+                                {% for option in frequency_options %}
+
+                                    <option
+                                        value="{{ option.value }}"
+                                        {% if selected_frequency == option.value %}
+                                            selected
+                                        {% endif %}
+                                    >
+
+                                        {{ option.label }}
+
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                            <span class="field-help">
+
+                                Historical values will be aggregated
+                                at this frequency.
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- ACTION -->
+
+                        <div class="future-trends-form-actions">
+
+                            <button
+                                type="submit"
+                                class="future-trends-analyze-button"
+                                {% if not date_columns or not numeric_columns %}
+                                    disabled
+                                {% endif %}
+                            >
+
+                                <span class="button-icon">
+                                    ↗
+                                </span>
+
+                                <span>
+                                    Analyze Future Trends
+                                </span>
+
+                            </button>
+                            <a
+          
+                                class="future-trends-analyze-button"
+                                href="{% url 'advanced_insights:future_trends_history' %}"
+                            >
+
+                                <span>
+                                     History
+                                </span>
+
+                              </a>
+                          
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+
+                <!-- =================================================
+                     SOURCE CARD
+                ================================================== -->
+
+                {% if selected_dataset %}
+
+                    <div class="future-trends-source-card">
+
+                        <div class="source-card-icon">
+                            ◈
+                        </div>
+
+
+                        <div class="source-card-content">
+
+                            <span class="source-card-label">
+                                ANALYSIS SOURCE
+                            </span>
+
+                            <strong>
+                                {{ selected_dataset.name }}
+                            </strong>
+
+                            {% if selected_version %}
+
+                                <span>
+
+                                    Version
+                                    {{ selected_version.version_number }}
+
+                                    ·
+                                    {{ version_label }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        {% if selected_version %}
+
+                            <div
+                                class="
+                                    source-version-badge
+                                    source-version-{{ version_badge }}
+                                "
+                            >
+
+                                {{ version_label }}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- =================================================
+                     DATE WARNING
+                ================================================== -->
+
+                {% if selected_dataset and not date_columns %}
+
+                    <div class="future-trends-empty-state">
+
+                        <div class="empty-state-icon">
+                            !
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                No usable date column detected
+                            </h3>
+
+                            <p>
+                                Future Trends requires a column that
+                                contains recognizable date or time values.
+                                Select another DatasetVersion or prepare
+                                the date field through Data Management.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- =================================================
+                     NUMERIC WARNING
+                ================================================== -->
+
+                {% if selected_dataset and date_columns and not numeric_columns %}
+
+                    <div class="future-trends-empty-state">
+
+                        <div class="empty-state-icon">
+                            !
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                No numeric business metric detected
+                            </h3>
+
+                            <p>
+                                Future Trends requires at least one
+                                numeric column that can be analyzed
+                                over time.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- =================================================
+                     RESULT
+                ================================================== -->
+
+                {% if trend_result %}
+
+                    <section class="future-trends-results">
+
+                        <div class="future-trends-result-header">
+
+                            <div>
+
+                                <span class="section-kicker">
+                                    TREND RESULT
+                                </span>
+
+                                <h2>
+                                    {{ trend_result.metric_column }}
+                                </h2>
+
+                                <p>
+
+                                    {{ trend_result.frequency }}
+                                    analysis using
+                                    {{ trend_result.date_column }}
+
+                                </p>
+
+                            </div>
+
+
+                            <div class="trend-result-status">
+
+                                <span></span>
+
+                                Analysis Complete
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- KPI -->
+
+                        <div class="trend-kpi-grid">
+
+                            <div class="trend-kpi-card">
+
+                                <span class="trend-kpi-label">
+                                    TREND DIRECTION
+                                </span>
+
+                                <strong
+                                    class="
+                                        trend-direction
+                                        trend-{{ trend_result.trend_direction|lower }}
+                                    "
+                                >
+
+                                    {{ trend_result.trend_direction }}
+
+                                </strong>
+
+                                <span class="trend-kpi-description">
+                                    Overall movement
+                                </span>
+
+                            </div>
+
+
+                            <div class="trend-kpi-card">
+
+                                <span class="trend-kpi-label">
+                                    TREND STRENGTH
+                                </span>
+
+                                <strong>
+                                    {{ trend_result.trend_strength }}
+                                </strong>
+
+                                <span class="trend-kpi-description">
+                                    Historical consistency
+                                </span>
+
+                            </div>
+
+
+                            <div class="trend-kpi-card">
+
+                                <span class="trend-kpi-label">
+                                    PERCENTAGE CHANGE
+                                </span>
+
+                                <strong>
+
+                                    {% if trend_result.percentage_change is not None %}
+
+                                        {% if trend_result.percentage_change > 0 %}
+
+                                            +{{ trend_result.percentage_change|floatformat:2 }}%
+
+                                        {% else %}
+
+                                            {{ trend_result.percentage_change|floatformat:2 }}%
+
+                                        {% endif %}
+
+                                    {% else %}
+
+                                        —
+
+                                    {% endif %}
+
+                                </strong>
+
+                                <span class="trend-kpi-description">
+                                    First period to latest
+                                </span>
+
+                            </div>
+
+
+                            <div class="trend-kpi-card">
+
+                                <span class="trend-kpi-label">
+                                    RECENT MOVEMENT
+                                </span>
+
+                                <strong>
+                                    {{ trend_result.recent_direction }}
+                                </strong>
+
+                                <span class="trend-kpi-description">
+                                    Latest periods
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- STATISTICS -->
+
+                        <div class="trend-statistics-grid">
+
+                            <div class="trend-stat-card">
+
+                                <span>
+                                    First Period
+                                </span>
+
+                                <strong>
+                                    {{ trend_result.first_period_value|floatformat:2 }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="trend-stat-card">
+
+                                <span>
+                                    Latest Period
+                                </span>
+
+                                <strong>
+                                    {{ trend_result.latest_period_value|floatformat:2 }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="trend-stat-card">
+
+                                <span>
+                                    Average
+                                </span>
+
+                                <strong>
+                                    {{ trend_result.average_value|floatformat:2 }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="trend-stat-card">
+
+                                <span>
+                                    Minimum
+                                </span>
+
+                                <strong>
+                                    {{ trend_result.minimum_value|floatformat:2 }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="trend-stat-card">
+
+                                <span>
+                                    Maximum
+                                </span>
+
+                                <strong>
+                                    {{ trend_result.maximum_value|floatformat:2 }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- CHART -->
+
+                        <div class="future-trends-chart-card">
+
+                            <div class="chart-card-header">
+
+                                <div>
+
+                                    <span class="section-kicker">
+                                        HISTORICAL MOVEMENT
+                                    </span>
+
+                                    <h3>
+                                        {{ trend_result.metric_column }}
+                                        over time
+                                    </h3>
+
+                                </div>
+
+                                <span class="chart-frequency">
+                                    {{ trend_result.frequency }}
+                                </span>
+
+                            </div>
+
+
+                            <div class="trend-chart-wrapper">
+
+                                <canvas
+                                    id="futureTrendsChart"
+                                ></canvas>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- SUMMARY -->
+
+                        <div class="future-trends-summary-card">
+
+                            <div class="summary-icon">
+                                ✦
+                            </div>
+
+                            <div>
+
+                                <span class="section-kicker">
+                                    INSIGHT SUMMARY
+                                </span>
+
+                                <p>
+                                    {{ trend_result.summary }}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                {% endif %}
+
+
+                <!-- =================================================
+                     READY
+                ================================================== -->
+
+                {% if selected_dataset and not trend_result and not messages %}
+
+                    <div class="future-trends-ready-card">
+
+                        <div class="ready-icon">
+                            ↗
+                        </div>
+
+                        <div>
+
+                            <span class="section-kicker">
+                                READY FOR ANALYSIS
+                            </span>
+
+                            <h3>
+                                Configure your trend analysis
+                            </h3>
+
+                            <p>
+                                Select the required fields above and
+                                run Future Trends to generate a
+                                time-series analysis.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+{% if trend_result %}
+
+    {{ trend_result.chart_data|json_script:"future-trends-chart-data" }}
+
+{% endif %}
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    /* ============================================================
+       DATASET SELECTION
+    ============================================================ */
+
+    function changeFutureTrendsDataset(selectElement) {
+
+        const datasetId = selectElement.value;
+
+        if (!datasetId) {
+            return;
+        }
+
+        window.location.href =
+            "{% url 'advanced_insights:future_trends' %}"
+            + "?dataset="
+            + encodeURIComponent(datasetId);
+
+    }
+
+
+    /* ============================================================
+       VERSION SELECTION
+    ============================================================ */
+
+    function changeFutureTrendsVersion(selectElement) {
+
+        const versionId = selectElement.value;
+
+        const datasetSelect =
+            document.getElementById(
+                "datasetSelector"
+            );
+
+        const datasetId =
+            datasetSelect
+                ? datasetSelect.value
+                : "";
+
+        if (!datasetId || !versionId) {
+            return;
+        }
+
+        window.location.href =
+            "{% url 'advanced_insights:future_trends' %}"
+            + "?dataset="
+            + encodeURIComponent(datasetId)
+            + "&version="
+            + encodeURIComponent(versionId);
+
+    }
+
+
+    /* ============================================================
+       CHART
+    ============================================================ */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const chartElement =
+                document.getElementById(
+                    "futureTrendsChart"
+                );
+
+            const chartDataElement =
+                document.getElementById(
+                    "future-trends-chart-data"
+                );
+
+            if (
+                !chartElement ||
+                !chartDataElement ||
+                typeof Chart === "undefined"
+            ) {
+                return;
+            }
+
+
+            let chartData = [];
+
+
+            try {
+
+                chartData =
+                    JSON.parse(
+                        chartDataElement.textContent
+                    );
+
+            } catch (error) {
+
+                console.error(
+                    "Unable to read Future Trends chart data.",
+                    error
+                );
+
+                return;
+            }
+
+
+            if (
+                !Array.isArray(chartData) ||
+                chartData.length === 0
+            ) {
+                return;
+            }
+
+
+            const labels =
+                chartData.map(
+                    function (item) {
+                        return item.period;
+                    }
+                );
+
+
+            const values =
+                chartData.map(
+                    function (item) {
+                        return item.value;
+                    }
+                );
+
+
+            const chartContext =
+                chartElement.getContext("2d");
+
+
+            const gradient =
+                chartContext.createLinearGradient(
+                    0,
+                    0,
+                    0,
+                    360
+                );
+
+
+            gradient.addColorStop(
+                0,
+                "rgba(79, 163, 255, 0.30)"
+            );
+
+
+            gradient.addColorStop(
+                0.55,
+                "rgba(34, 211, 238, 0.10)"
+            );
+
+
+            gradient.addColorStop(
+                1,
+                "rgba(34, 211, 238, 0)"
+            );
+
+
+            new Chart(
+                chartElement,
+                {
+                    type: "line",
+
+                    data: {
+
+                        labels: labels,
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    "{{ trend_result.metric_column|escapejs }}",
+
+                                data: values,
+
+                                borderColor:
+                                    "#4fa3ff",
+
+                                backgroundColor:
+                                    gradient,
+
+                                pointBackgroundColor:
+                                    "#22d3ee",
+
+                                pointBorderColor:
+                                    "#07111f",
+
+                                pointBorderWidth:
+                                    2,
+
+                                pointRadius:
+                                    3.5,
+
+                                pointHoverRadius:
+                                    7,
+
+                                pointHoverBackgroundColor:
+                                    "#ffffff",
+
+                                pointHoverBorderColor:
+                                    "#4fa3ff",
+
+                                pointHoverBorderWidth:
+                                    3,
+
+                                borderWidth:
+                                    3,
+
+                                tension:
+                                    0.35,
+
+                                fill:
+                                    true
+
+                            }
+
+                        ]
+
+                    },
+
+
+                    options: {
+
+                        responsive:
+                            true,
+
+                        maintainAspectRatio:
+                            false,
+
+                        animation: {
+
+                            duration:
+                                1400,
+
+                            easing:
+                                "easeOutQuart"
+
+                        },
+
+                        interaction: {
+
+                            intersect:
+                                false,
+
+                            mode:
+                                "index"
+
+                        },
+
+
+                        plugins: {
+
+                            legend: {
+
+                                display:
+                                    false
+
+                            },
+
+
+                            tooltip: {
+
+                                enabled:
+                                    true,
+
+                                backgroundColor:
+                                    "rgba(7, 17, 31, 0.94)",
+
+                                borderColor:
+                                    "rgba(79, 163, 255, 0.35)",
+
+                                borderWidth:
+                                    1,
+
+                                titleColor:
+                                    "#ffffff",
+
+                                bodyColor:
+                                    "#cfe4ff",
+
+                                padding:
+                                    12,
+
+                                displayColors:
+                                    false,
+
+                                callbacks: {
+
+                                    label:
+                                        function (context) {
+
+                                            return (
+                                                "Value: "
+                                                +
+                                                Number(
+                                                    context.raw
+                                                ).toLocaleString()
+                                            );
+
+                                        }
+
+                                }
+
+                            }
+
+                        },
+
+
+                        scales: {
+
+                            x: {
+
+                                grid: {
+
+                                    display:
+                                        false
+
+                                },
+
+                                border: {
+
+                                    display:
+                                        false
+
+                                },
+
+                                ticks: {
+
+                                    color:
+                                        "rgba(190, 211, 235, 0.50)",
+
+                                    maxRotation:
+                                        0,
+
+                                    autoSkip:
+                                        true
+
+                                }
+
+                            },
+
+
+                            y: {
+
+                                beginAtZero:
+                                    false,
+
+                                border: {
+
+                                    display:
+                                        false
+
+                                },
+
+                                grid: {
+
+                                    color:
+                                        "rgba(255, 255, 255, 0.055)"
+
+                                },
+
+                                ticks: {
+
+                                    color:
+                                        "rgba(190, 211, 235, 0.50)",
+
+                                    callback:
+                                        function (value) {
+
+                                            return Number(
+                                                value
+                                            ).toLocaleString();
+
+                                        }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+        }
+    );
+
+</script>
+
+{% endblock %}

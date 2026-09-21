@@ -1,1448 +1,3992 @@
-{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}Returns Intelligence | Smart BI{% endblock %}
+<head>
 
-{% block extra_css %}
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+    Returns Intelligence
+</title>
+      <link
+        rel="stylesheet"
+        href="{% static 'css/smart_sidebar.css' %}"
+    >
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
+
+    /* ============================================================
+       ROOT THEME
+    ============================================================ */
+
     :root {
+
         --bg: #06111f;
+        --sidebar: #081827;
         --panel: #0d2033;
         --panel-2: #10283f;
-        --border: rgba(255,255,255,0.08);
+
+        --border: rgba(255,255,255,.075);
+
         --text: #f5f7fb;
         --muted: #8fa4b8;
+
         --purple: #7567f8;
         --green: #39d98a;
         --orange: #ff9f43;
         --red: #ff5c70;
         --blue: #3fa9f5;
+        --cyan: #38d9ff;
+
+        --pink: #ff6fae;
+        --yellow: #ffd166;
+
+        --shadow:
+            0 18px 55px rgba(0,0,0,.22);
+
+        --radius: 17px;
     }
+
+
+    /* ============================================================
+       RESET
+    ============================================================ */
+
+    * {
+        box-sizing: border-box;
+    }
+
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+
+    body {
+
+        font-family:
+            Inter,
+            system-ui,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            sans-serif;
+
+        background: var(--bg);
+
+        color: var(--text);
+
+        overflow: hidden;
+    }
+
+
+    /* ============================================================
+       APPLICATION LAYOUT
+    ============================================================ */
+
+    .returns-app {
+
+        display: flex;
+
+        width: 100%;
+
+        height: 100vh;
+
+        min-height: 100vh;
+
+        overflow: hidden;
+
+        background:
+            radial-gradient(
+                circle at 80% 0%,
+                rgba(117,103,248,.09),
+                transparent 30%
+            ),
+            radial-gradient(
+                circle at 20% 100%,
+                rgba(56,217,255,.06),
+                transparent 28%
+            ),
+            var(--bg);
+    }
+
+
+    /* ============================================================
+       SIDEBAR
+    ============================================================ */
+
+    .returns-sidebar {
+
+        width: 270px;
+
+        min-width: 270px;
+
+        height: 100vh;
+
+        overflow-y: auto;
+
+        overflow-x: hidden;
+
+        background: var(--sidebar);
+
+        border-right:
+            1px solid var(--border);
+
+        scrollbar-width: thin;
+
+        scrollbar-color:
+            rgba(255,255,255,.12)
+            transparent;
+    }
+
+
+    .returns-sidebar::-webkit-scrollbar {
+        width: 6px;
+    }
+
+
+    .returns-sidebar::-webkit-scrollbar-thumb {
+
+        background:
+            rgba(255,255,255,.12);
+
+        border-radius: 10px;
+    }
+
+
+    /* ============================================================
+       MAIN AREA
+    ============================================================ */
+
+    .returns-main {
+
+        flex: 1;
+
+        min-width: 0;
+
+        height: 100vh;
+
+        overflow-y: auto;
+
+        overflow-x: hidden;
+
+        scrollbar-width: thin;
+
+        scrollbar-color:
+            rgba(255,255,255,.13)
+            transparent;
+    }
+
+
+    .returns-main::-webkit-scrollbar {
+        width: 8px;
+    }
+
+
+    .returns-main::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+
+    .returns-main::-webkit-scrollbar-thumb {
+
+        background:
+            rgba(255,255,255,.12);
+
+        border-radius: 10px;
+    }
+
+
+    /* ============================================================
+       PAGE
+    ============================================================ */
 
     .returns-page {
-        padding: 26px;
-        color: var(--text);
-        animation: pageIn .55s ease;
+
+        min-height: 100%;
+
+        padding: 28px;
+
+        background:
+            radial-gradient(
+                circle at 75% 0%,
+                rgba(117,103,248,.08),
+                transparent 27%
+            );
     }
 
-    @keyframes pageIn {
-        from {
-            opacity: 0;
-            transform: translateY(14px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+
+    .returns-container {
+
+        width: 100%;
+
+        max-width: 1650px;
+
+        margin: 0 auto;
     }
 
-    .page-header {
+
+    /* ============================================================
+       HEADER
+    ============================================================ */
+
+    .returns-header {
+
         display: flex;
-        justify-content: space-between;
+
         align-items: flex-start;
+
+        justify-content: space-between;
+
         gap: 20px;
-        margin-bottom: 24px;
-    }
 
-    .title-area h1 {
-        margin: 0;
-        font-size: 28px;
-        font-weight: 800;
-        letter-spacing: -.5px;
-    }
+        margin-bottom: 25px;
 
-    .title-area p {
-        margin: 7px 0 0;
-        color: var(--muted);
-        font-size: 14px;
-    }
-
-    .dataset-box {
-        min-width: 260px;
-    }
-
-    .dataset-box label {
-        display: block;
-        color: var(--muted);
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: .8px;
-        margin-bottom: 7px;
-    }
-
-    .dataset-box select {
-        width: 100%;
-        background: var(--panel);
-        color: var(--text);
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 11px 13px;
-        outline: none;
-    }
-
-    .date-toolbar {
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 13px;
-        margin-bottom: 22px;
-        display: flex;
         flex-wrap: wrap;
-        gap: 9px;
-        align-items: center;
     }
 
-    .date-toolbar button {
-        border: 1px solid var(--border);
-        background: rgba(255,255,255,.025);
-        color: var(--muted);
-        padding: 9px 14px;
-        border-radius: 9px;
-        cursor: pointer;
-        transition: .25s;
-        font-size: 12px;
-    }
 
-    .date-toolbar button:hover,
-    .date-toolbar button.active {
-        background: var(--purple);
-        border-color: var(--purple);
-        color: white;
-        transform: translateY(-1px);
-    }
+    .returns-header-left h1 {
 
-    .custom-dates {
-        display: {% if selected_range == "custom" %}flex{% else %}none{% endif %};
-        gap: 8px;
-        align-items: center;
-        margin-left: auto;
-    }
-
-    .custom-dates input {
-        background: #081827;
-        border: 1px solid var(--border);
-        color: white;
-        border-radius: 8px;
-        padding: 9px;
-    }
-
-    .apply-btn {
-        background: var(--purple) !important;
-        color: white !important;
-        border-color: var(--purple) !important;
-    }
-
-    .period-label {
-        color: var(--muted);
-        font-size: 12px;
-        margin-left: auto;
-    }
-
-    .alert-box {
-        padding: 15px 17px;
-        border-radius: 12px;
-        margin-bottom: 20px;
-        background: rgba(255,92,112,.09);
-        border: 1px solid rgba(255,92,112,.22);
-        color: #ffb1bc;
-    }
-
-    .empty-state {
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 18px;
-        padding: 70px 30px;
-        text-align: center;
-    }
-
-    .empty-state .icon {
-        font-size: 45px;
-        margin-bottom: 15px;
-    }
-
-    .empty-state h2 {
         margin: 0 0 8px;
+
+        font-size: 31px;
+
+        font-weight: 850;
+
+        letter-spacing: -.7px;
+
+        color: var(--text);
     }
 
-    .empty-state p {
-        color: var(--muted);
-    }
 
-    .kpi-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 15px;
-        margin-bottom: 20px;
-    }
+    .returns-header-left p {
 
-    .kpi-card {
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 19px;
-        position: relative;
-        overflow: hidden;
-        transition: .3s;
-    }
-
-    .kpi-card:hover {
-        transform: translateY(-4px);
-        border-color: rgba(117,103,248,.35);
-        box-shadow: 0 12px 35px rgba(0,0,0,.2);
-    }
-
-    .kpi-card::after {
-        content: "";
-        position: absolute;
-        width: 90px;
-        height: 90px;
-        right: -35px;
-        bottom: -45px;
-        background: var(--purple);
-        opacity: .08;
-        border-radius: 50%;
-    }
-
-    .kpi-label {
-        color: var(--muted);
-        font-size: 12px;
-        margin-bottom: 10px;
-    }
-
-    .kpi-value {
-        font-size: 27px;
-        font-weight: 800;
-    }
-
-    .kpi-sub {
-        margin-top: 7px;
-        font-size: 11px;
-        color: var(--muted);
-    }
-
-    .green {
-        color: var(--green);
-    }
-
-    .red {
-        color: var(--red);
-    }
-
-    .orange {
-        color: var(--orange);
-    }
-
-    .blue {
-        color: var(--blue);
-    }
-
-    .status-card {
-        background: linear-gradient(
-            135deg,
-            rgba(255,92,112,.10),
-            rgba(13,32,51,.95)
-        );
-    }
-
-    .section {
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 17px;
-        padding: 20px;
-        margin-bottom: 20px;
-    }
-
-    .section-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 18px;
-    }
-
-    .section-title {
-        font-size: 16px;
-        font-weight: 750;
         margin: 0;
-    }
 
-    .section-description {
-        font-size: 12px;
+        max-width: 720px;
+
         color: var(--muted);
-        margin-top: 4px;
+
+        font-size: 14px;
+
+        line-height: 1.7;
     }
 
-    .chart-grid {
-        display: grid;
-        grid-template-columns: 1.5fr 1fr;
-        gap: 20px;
-    }
 
-    .chart-container {
-        height: 320px;
-        position: relative;
-    }
+    .returns-header-badge {
 
-    .comparison-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 14px;
-    }
-
-    .comparison-card {
-        background: rgba(255,255,255,.025);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 15px;
-    }
-
-    .comparison-title {
-        color: var(--muted);
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: .5px;
-    }
-
-    .comparison-values {
-        display: flex;
-        justify-content: space-between;
-        align-items: end;
-        margin-top: 10px;
-    }
-
-    .comparison-current {
-        font-size: 22px;
-        font-weight: 800;
-    }
-
-    .comparison-previous {
-        color: var(--muted);
-        font-size: 12px;
-    }
-
-    .change {
-        margin-top: 8px;
-        font-size: 12px;
-        font-weight: 700;
-    }
-
-    .table-wrap {
-        overflow-x: auto;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    th {
-        text-align: left;
-        color: var(--muted);
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: .6px;
-        padding: 11px 10px;
-        border-bottom: 1px solid var(--border);
-        white-space: nowrap;
-    }
-
-    td {
-        padding: 13px 10px;
-        border-bottom: 1px solid rgba(255,255,255,.045);
-        font-size: 13px;
-    }
-
-    tbody tr {
-        transition: .2s;
-    }
-
-    tbody tr:hover {
-        background: rgba(117,103,248,.045);
-    }
-
-    .badge {
         display: inline-flex;
+
         align-items: center;
-        padding: 5px 9px;
+
+        gap: 9px;
+
+        padding: 9px 14px;
+
         border-radius: 999px;
-        font-size: 10px;
-        font-weight: 700;
+
+        background:
+            rgba(255,111,174,.09);
+
+        color: var(--pink);
+
+        border:
+            1px solid rgba(255,111,174,.18);
+
+        font-size: 12px;
+
+        font-weight: 800;
+
+        letter-spacing: .2px;
     }
 
-    .badge-danger {
-        color: #ffb1bc;
-        background: rgba(255,92,112,.12);
+
+    .returns-header-badge span {
+
+        width: 8px;
+
+        height: 8px;
+
+        border-radius: 50%;
+
+        display: inline-block;
+
+        background: var(--pink);
+
+        box-shadow:
+            0 0 12px
+            rgba(255,111,174,.75);
     }
 
-    .badge-normal {
-        color: #8ee7bb;
-        background: rgba(57,217,138,.10);
-    }
 
-    .insights-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
+    /* ============================================================
+       ALERTS
+    ============================================================ */
 
-    .insight {
-        background: rgba(255,255,255,.025);
-        border: 1px solid var(--border);
-        border-left: 3px solid var(--orange);
-        border-radius: 11px;
-        padding: 14px;
+    .returns-alert {
+
+        padding: 15px 18px;
+
+        border-radius: 14px;
+
+        margin-bottom: 20px;
+
         font-size: 13px;
+
         line-height: 1.6;
-        color: #d9e2ea;
     }
 
-    .info-grid {
+
+    .returns-alert-error {
+
+        color: #ff9da9;
+
+        background:
+            rgba(255,92,112,.08);
+
+        border:
+            1px solid rgba(255,92,112,.20);
+    }
+
+
+    .returns-alert-warning {
+
+        color: #ffd58a;
+
+        background:
+            rgba(255,159,67,.08);
+
+        border:
+            1px solid rgba(255,159,67,.20);
+    }
+
+
+    /* ============================================================
+       FILTER CARD
+    ============================================================ */
+
+    .returns-filter-card {
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(13,32,51,.98),
+                rgba(16,40,63,.94)
+            );
+
+        border:
+            1px solid var(--border);
+
+        border-radius: var(--radius);
+
+        padding: 20px;
+
+        margin-bottom: 20px;
+
+        box-shadow: var(--shadow);
+    }
+
+
+    .returns-filter-form {
+
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
+
+        grid-template-columns:
+            minmax(220px, 1.5fr)
+            minmax(170px, 1fr)
+            auto;
+
+        gap: 15px;
+
+        align-items: end;
+    }
+
+
+    .returns-filter-field {
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 7px;
+    }
+
+
+    .returns-filter-field label {
+
+        color: var(--muted);
+
+        font-size: 11px;
+
+        font-weight: 800;
+
+        text-transform: uppercase;
+
+        letter-spacing: .55px;
+    }
+
+
+    .returns-filter-field select,
+    .returns-filter-field input {
+
+        width: 100%;
+
+        min-height: 44px;
+
+        padding: 10px 13px;
+
+        border:
+            1px solid
+            rgba(255,255,255,.09);
+
+        border-radius: 11px;
+
+        background: #081a2b;
+
+        color: var(--text);
+
+        font-size: 13px;
+
+        outline: none;
+
+        transition: .2s ease;
+    }
+
+
+    .returns-filter-field select:focus,
+    .returns-filter-field input:focus {
+
+        border-color:
+            rgba(117,103,248,.65);
+
+        box-shadow:
+            0 0 0 3px
+            rgba(117,103,248,.10);
+    }
+
+
+    .returns-filter-actions {
+
+        display: flex;
+
         gap: 10px;
     }
 
-    .info-item {
-        background: rgba(255,255,255,.025);
-        border-radius: 10px;
-        padding: 12px;
+
+    .returns-btn {
+
+        min-height: 44px;
+
+        padding: 10px 18px;
+
+        border: 0;
+
+        border-radius: 11px;
+
+        cursor: pointer;
+
+        font-size: 13px;
+
+        font-weight: 800;
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        text-decoration: none;
+
+        white-space: nowrap;
+
+        transition: .2s ease;
     }
 
-    .info-item span {
+
+    .returns-btn-primary {
+
+        color: #ffffff;
+
+        background:
+            linear-gradient(
+                135deg,
+                var(--purple),
+                #9b8cff
+            );
+
+        box-shadow:
+            0 10px 25px
+            rgba(117,103,248,.23);
+    }
+
+
+    .returns-btn-primary:hover {
+
+        transform:
+            translateY(-1px);
+
+        box-shadow:
+            0 14px 30px
+            rgba(117,103,248,.30);
+    }
+
+
+    .returns-btn-secondary {
+
+        color: #c5d0dc;
+
+        background:
+            rgba(255,255,255,.055);
+
+        border:
+            1px solid var(--border);
+    }
+
+
+    .returns-btn-secondary:hover {
+
+        background:
+            rgba(255,255,255,.09);
+    }
+
+
+    .returns-custom-row {
+
+        display: none;
+
+        grid-template-columns:
+            repeat(2, minmax(180px,1fr));
+
+        gap: 15px;
+
+        margin-top: 15px;
+
+        padding-top: 15px;
+
+        border-top:
+            1px solid
+            var(--border);
+    }
+
+
+    .returns-custom-row.active {
+        display: grid;
+    }
+
+
+    /* ============================================================
+       DATASET INFO
+    ============================================================ */
+
+    .returns-dataset-info {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(4,minmax(0,1fr));
+
+        gap: 12px;
+
+        margin-bottom: 24px;
+    }
+
+
+    .returns-info-item {
+
+        min-width: 0;
+
+        padding: 15px 17px;
+
+        background:
+            linear-gradient(
+                145deg,
+                var(--panel),
+                var(--panel-2)
+            );
+
+        border:
+            1px solid var(--border);
+
+        border-radius: 14px;
+
+        box-shadow:
+            0 10px 30px
+            rgba(0,0,0,.12);
+    }
+
+
+    .returns-info-label {
+
         display: block;
-        color: var(--muted);
+
+        margin-bottom: 6px;
+
+        color: #71869b;
+
         font-size: 10px;
+
+        font-weight: 800;
+
         text-transform: uppercase;
-        margin-bottom: 5px;
+
+        letter-spacing: .55px;
     }
 
-    .info-item strong {
+
+    .returns-info-value {
+
+        display: block;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+        white-space: nowrap;
+
+        color: #dfe8f2;
+
+        font-size: 13px;
+
+        font-weight: 750;
+    }
+
+
+    /* ============================================================
+       SECTION TITLE
+    ============================================================ */
+
+    .returns-section-title {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 15px;
+
+        margin:
+            8px 0 15px;
+    }
+
+
+    .returns-section-title h2 {
+
+        margin: 0 0 4px;
+
+        color: var(--text);
+
+        font-size: 19px;
+
+        font-weight: 850;
+    }
+
+
+    .returns-section-title p {
+
+        margin: 0;
+
+        color: var(--muted);
+
         font-size: 12px;
-        word-break: break-word;
     }
 
-    @media (max-width: 1100px) {
-        .kpi-grid {
-            grid-template-columns: repeat(2, 1fr);
+
+    /* ============================================================
+       KPI GRID
+    ============================================================ */
+
+    .returns-kpi-grid {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(4,minmax(0,1fr));
+
+        gap: 16px;
+
+        margin-bottom: 27px;
+    }
+
+
+    .returns-kpi-card {
+
+        position: relative;
+
+        min-height: 146px;
+
+        overflow: hidden;
+
+        padding: 19px;
+
+        border-radius: 18px;
+
+        color: #ffffff;
+
+        box-shadow:
+            0 15px 35px
+            rgba(0,0,0,.20);
+    }
+
+
+    .returns-kpi-card::after {
+
+        content: "";
+
+        position: absolute;
+
+        width: 120px;
+
+        height: 120px;
+
+        right: -45px;
+
+        top: -50px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(255,255,255,.12);
+    }
+
+
+    .returns-kpi-card::before {
+
+        content: "";
+
+        position: absolute;
+
+        width: 80px;
+
+        height: 80px;
+
+        right: 35px;
+
+        bottom: -50px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(255,255,255,.08);
+    }
+
+
+    .returns-kpi-icon {
+
+        position: relative;
+
+        z-index: 2;
+
+        width: 39px;
+
+        height: 39px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        margin-bottom: 12px;
+
+        border-radius: 11px;
+
+        background:
+            rgba(255,255,255,.16);
+
+        font-size: 17px;
+
+        font-weight: 800;
+    }
+
+
+    .returns-kpi-label {
+
+        position: relative;
+
+        z-index: 2;
+
+        margin: 0 0 5px;
+
+        font-size: 10px;
+
+        font-weight: 800;
+
+        opacity: .86;
+
+        text-transform: uppercase;
+
+        letter-spacing: .55px;
+    }
+
+
+    .returns-kpi-value {
+
+        position: relative;
+
+        z-index: 2;
+
+        margin: 0;
+
+        font-size: 26px;
+
+        line-height: 1.15;
+
+        font-weight: 850;
+
+        letter-spacing: -.45px;
+    }
+
+
+    .returns-kpi-subtitle {
+
+        position: relative;
+
+        z-index: 2;
+
+        margin-top: 7px;
+
+        font-size: 10px;
+
+        opacity: .76;
+    }
+
+
+    .returns-kpi-pink {
+
+        background:
+            linear-gradient(
+                135deg,
+                #c72d68,
+                #ff6fae
+            );
+    }
+
+
+    .returns-kpi-purple {
+
+        background:
+            linear-gradient(
+                135deg,
+                #5d4ed7,
+                #927cff
+            );
+    }
+
+
+    .returns-kpi-orange {
+
+        background:
+            linear-gradient(
+                135deg,
+                #e8751a,
+                #ffb25b
+            );
+    }
+
+
+    .returns-kpi-blue {
+
+        background:
+            linear-gradient(
+                135deg,
+                #1875b9,
+                #49b9ff
+            );
+    }
+
+
+    .returns-kpi-green {
+
+        background:
+            linear-gradient(
+                135deg,
+                #218a58,
+                #48e09a
+            );
+    }
+
+
+    .returns-kpi-red {
+
+        background:
+            linear-gradient(
+                135deg,
+                #b92f46,
+                #ff687b
+            );
+    }
+
+
+    .returns-kpi-teal {
+
+        background:
+            linear-gradient(
+                135deg,
+                #087963,
+                #28d3aa
+            );
+    }
+
+
+    .returns-kpi-indigo {
+
+        background:
+            linear-gradient(
+                135deg,
+                #3045bd,
+                #7188ff
+            );
+    }
+
+
+    /* ============================================================
+       CHART GRID
+    ============================================================ */
+
+    .returns-chart-grid {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+
+        gap: 18px;
+
+        margin-bottom: 25px;
+    }
+
+
+    .returns-chart-card {
+
+        min-width: 0;
+
+        min-height: 390px;
+
+        padding: 19px;
+
+        overflow: hidden;
+
+        border:
+            1px solid var(--border);
+
+        border-radius: var(--radius);
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(13,32,51,.98),
+                rgba(16,40,63,.94)
+            );
+
+        box-shadow: var(--shadow);
+    }
+
+
+    .returns-chart-card-wide {
+
+        grid-column: span 2;
+    }
+
+
+    .returns-chart-header {
+
+        display: flex;
+
+        align-items: flex-start;
+
+        justify-content: space-between;
+
+        gap: 15px;
+
+        margin-bottom: 14px;
+    }
+
+
+    .returns-chart-header h3 {
+
+        margin: 0 0 4px;
+
+        color: #e9f0f7;
+
+        font-size: 14px;
+
+        font-weight: 850;
+    }
+
+
+    .returns-chart-header p {
+
+        margin: 0;
+
+        color: #7890a5;
+
+        font-size: 11px;
+
+        line-height: 1.5;
+    }
+
+
+    .returns-chart-badge {
+
+        flex-shrink: 0;
+
+        padding: 5px 9px;
+
+        border-radius: 999px;
+
+        color: var(--pink);
+
+        background:
+            rgba(255,111,174,.08);
+
+        border:
+            1px solid
+            rgba(255,111,174,.14);
+
+        font-size: 9px;
+
+        font-weight: 850;
+
+        letter-spacing: .5px;
+    }
+
+
+    .returns-chart-wrapper {
+
+        position: relative;
+
+        width: 100%;
+
+        height: 305px;
+    }
+
+
+    .returns-chart-wrapper canvas {
+
+        width: 100% !important;
+
+        height: 100% !important;
+    }
+
+
+    /* ============================================================
+       UNAVAILABLE
+    ============================================================ */
+
+    .returns-unavailable {
+
+        height: 305px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        text-align: center;
+
+        padding: 20px;
+
+        border:
+            1px dashed
+            rgba(255,255,255,.12);
+
+        border-radius: 13px;
+
+        background:
+            rgba(255,255,255,.018);
+    }
+
+
+    .returns-unavailable-icon {
+
+        width: 46px;
+
+        height: 46px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        margin-bottom: 11px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(255,255,255,.055);
+
+        color: #7890a5;
+
+        font-size: 18px;
+    }
+
+
+    .returns-unavailable h4 {
+
+        margin: 0 0 5px;
+
+        color: #aebdcb;
+
+        font-size: 13px;
+
+        font-weight: 800;
+    }
+
+
+    .returns-unavailable p {
+
+        max-width: 340px;
+
+        margin: 0;
+
+        color: #70879b;
+
+        font-size: 11px;
+
+        line-height: 1.6;
+    }
+
+
+    /* ============================================================
+       AVAILABILITY
+    ============================================================ */
+
+    .returns-availability {
+
+        margin-top: 20px;
+
+        padding: 19px;
+
+        background:
+            linear-gradient(
+                145deg,
+                var(--panel),
+                var(--panel-2)
+            );
+
+        border:
+            1px solid var(--border);
+
+        border-radius: var(--radius);
+    }
+
+
+    .returns-availability h3 {
+
+        margin: 0 0 12px;
+
+        color: #e6edf5;
+
+        font-size: 14px;
+
+        font-weight: 850;
+    }
+
+
+    .returns-availability-list {
+
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 8px;
+    }
+
+
+    .returns-availability-item {
+
+        padding: 7px 10px;
+
+        border-radius: 999px;
+
+        color: #ff9caf;
+
+        background:
+            rgba(255,92,112,.08);
+
+        border:
+            1px solid
+            rgba(255,92,112,.13);
+
+        font-size: 10px;
+
+        font-weight: 750;
+    }
+
+
+    /* ============================================================
+       SMART INSIGHTS
+    ============================================================ */
+
+    .returns-insights-section {
+
+        margin-top: 30px;
+
+        margin-bottom: 30px;
+    }
+
+
+    .returns-insights-card {
+
+        padding: 21px;
+
+        background:
+            linear-gradient(
+                145deg,
+                #0d2033,
+                #10283f
+            );
+
+        border:
+            1px solid var(--border);
+
+        border-radius: var(--radius);
+
+        box-shadow: var(--shadow);
+    }
+
+
+    .returns-insights-header {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        margin-bottom: 18px;
+    }
+
+
+    .returns-insights-icon {
+
+        width: 44px;
+
+        height: 44px;
+
+        flex-shrink: 0;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 13px;
+
+        color: #ffffff;
+
+        background:
+            linear-gradient(
+                135deg,
+                var(--pink),
+                var(--purple)
+            );
+
+        box-shadow:
+            0 10px 25px
+            rgba(117,103,248,.18);
+
+        font-size: 19px;
+    }
+
+
+    .returns-insights-header h2 {
+
+        margin: 0 0 3px;
+
+        color: var(--text);
+
+        font-size: 17px;
+
+        font-weight: 850;
+    }
+
+
+    .returns-insights-header p {
+
+        margin: 0;
+
+        color: #7890a5;
+
+        font-size: 11px;
+    }
+
+
+    .returns-insights-list {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+
+        gap: 13px;
+    }
+
+
+    .returns-insight {
+
+        padding: 15px 16px;
+
+        border:
+            1px solid var(--border);
+
+        border-radius: 14px;
+
+        background:
+            rgba(255,255,255,.025);
+    }
+
+
+    .returns-insight.positive {
+
+        background:
+            rgba(57,217,138,.055);
+
+        border-color:
+            rgba(57,217,138,.15);
+    }
+
+
+    .returns-insight.warning {
+
+        background:
+            rgba(255,159,67,.055);
+
+        border-color:
+            rgba(255,159,67,.15);
+    }
+
+
+    .returns-insight.info {
+
+        background:
+            rgba(63,169,245,.055);
+
+        border-color:
+            rgba(63,169,245,.15);
+    }
+
+
+    .returns-insight-title {
+
+        margin: 0 0 6px;
+
+        color: #dce7f1;
+
+        font-size: 12px;
+
+        font-weight: 850;
+    }
+
+
+    .returns-insight-message {
+
+        margin: 0;
+
+        color: #8da2b5;
+
+        font-size: 11px;
+
+        line-height: 1.7;
+    }
+
+
+    .returns-no-insights {
+
+        padding: 22px;
+
+        text-align: center;
+
+        color: #74899c;
+
+        background:
+            rgba(255,255,255,.018);
+
+        border:
+            1px dashed
+            rgba(255,255,255,.10);
+
+        border-radius: 13px;
+
+        font-size: 12px;
+    }
+
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+
+    @media (max-width: 1250px) {
+
+        .returns-kpi-grid {
+
+            grid-template-columns:
+                repeat(2,minmax(0,1fr));
         }
 
-        .chart-grid {
+
+        .returns-dataset-info {
+
+            grid-template-columns:
+                repeat(2,minmax(0,1fr));
+        }
+    }
+
+
+    @media (max-width: 950px) {
+
+        .returns-sidebar {
+
+            width: 220px;
+
+            min-width: 220px;
+        }
+
+
+        .returns-filter-form {
+
             grid-template-columns: 1fr;
         }
 
-        .info-grid {
-            grid-template-columns: repeat(3, 1fr);
+
+        .returns-chart-grid {
+
+            grid-template-columns: 1fr;
+        }
+
+
+        .returns-chart-card-wide {
+
+            grid-column: span 1;
+        }
+
+
+        .returns-insights-list {
+
+            grid-template-columns: 1fr;
         }
     }
 
+
     @media (max-width: 700px) {
+
+        body {
+            overflow: auto;
+        }
+
+
+        .returns-app {
+
+            height: auto;
+
+            min-height: 100vh;
+
+            overflow: visible;
+        }
+
+
+        .returns-sidebar {
+
+            display: none;
+        }
+
+
+        .returns-main {
+
+            width: 100%;
+
+            height: auto;
+
+            overflow: visible;
+        }
+
+
         .returns-page {
+
             padding: 15px;
         }
 
-        .page-header {
-            flex-direction: column;
-        }
 
-        .dataset-box {
-            width: 100%;
-        }
+        .returns-kpi-grid {
 
-        .kpi-grid,
-        .comparison-grid,
-        .insights-grid {
             grid-template-columns: 1fr;
         }
 
-        .info-grid {
-            grid-template-columns: repeat(2, 1fr);
+
+        .returns-dataset-info {
+
+            grid-template-columns: 1fr;
         }
 
-        .custom-dates {
-            width: 100%;
-            margin-left: 0;
-            flex-wrap: wrap;
+
+        .returns-custom-row {
+
+            grid-template-columns: 1fr;
         }
 
-        .period-label {
+
+        .returns-filter-actions {
+
+            flex-direction: column;
+        }
+
+
+        .returns-btn {
+
             width: 100%;
-            margin-left: 0;
+        }
+
+
+        .returns-chart-card {
+
+            min-height: 350px;
+        }
+
+
+        .returns-chart-wrapper,
+        .returns-unavailable {
+
+            height: 270px;
         }
     }
+
 </style>
-{% endblock %}
+```
+
+</head>
+
+<body>
+
+<div class="returns-app">
+
+```
+<!-- ============================================================
+     SIDEBAR
+============================================================= -->
+
+<aside class="returns-sidebar">
+
+    {% include "includes/smart_sidebar.html" %}
+
+</aside>
 
 
-{% block content %}
+<!-- ============================================================
+     MAIN CONTENT
+============================================================= -->
 
-<div class="returns-page">
+<main class="returns-main">
 
-    <div class="page-header">
 
-        <div class="title-area">
-            <h1>🔄 Returns Intelligence</h1>
-            <p>
-                Understand return behavior, identify return risks,
-                and discover where returns are impacting the business.
-            </p>
-        </div>
+    <div class="returns-page">
 
-        {% if datasets %}
-        <div class="dataset-box">
-            <label>Analysis Dataset</label>
+        <div class="returns-container">
 
-            <select
-                onchange="changeDataset(this.value)"
-            >
-                {% for dataset in datasets %}
-                    <option
-                        value="{{ dataset.id }}"
-                        {% if selected_dataset.id == dataset.id %}
-                            selected
-                        {% endif %}
+
+            <!-- ====================================================
+                 HEADER
+            ==================================================== -->
+
+            <div class="returns-header">
+
+                <div class="returns-header-left">
+
+                    <h1>
+                        Returns Intelligence
+                    </h1>
+
+                    <p>
+                        Analyze return activity, returned value,
+                        reasons, products, categories, regions,
+                        and return trends.
+                    </p>
+
+                </div>
+
+
+                <div class="returns-header-badge">
+
+                    <span></span>
+
+                    Returns Analytics
+
+                </div>
+
+            </div>
+
+
+            <!-- ====================================================
+                 ALERTS
+            ==================================================== -->
+
+            {% if error %}
+
+                <div class="returns-alert returns-alert-error">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+
+
+            {% if warning %}
+
+                <div class="returns-alert returns-alert-warning">
+                    {{ warning }}
+                </div>
+
+            {% endif %}
+
+
+            {% if not error %}
+
+
+                <!-- ================================================
+                     FILTERS
+                ================================================= -->
+
+                <div class="returns-filter-card">
+
+                    <form
+                        method="get"
+                        class="returns-filter-form"
+                        id="returnsFilterForm"
                     >
-                        {{ dataset.name }}
-                    </option>
-                {% endfor %}
-            </select>
+
+
+                        <div class="returns-filter-field">
+
+                            <label for="returnsDataset">
+                                Returns Dataset
+                            </label>
+
+                            <select
+                                name="dataset"
+                                id="returnsDataset"
+                            >
+
+                                {% for dataset in returns_datasets %}
+
+                                    <option
+                                        value="{{ dataset.id }}"
+                                        {% if selected_dataset and dataset.id == selected_dataset.id %}
+                                            selected
+                                        {% endif %}
+                                    >
+
+                                        {{ dataset.name }}
+
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="returns-filter-field">
+
+                            <label for="returnsRange">
+                                Date Range
+                            </label>
+
+                            <select
+                                name="range"
+                                id="returnsRange"
+                            >
+
+                                {% for value, label in date_range_options %}
+
+                                    <option
+                                        value="{{ value }}"
+                                        {% if selected_range == value %}
+                                            selected
+                                        {% endif %}
+                                    >
+
+                                        {{ label }}
+
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="returns-filter-actions">
+
+                            <button
+                                type="submit"
+                                class="returns-btn returns-btn-primary"
+                            >
+                                Apply Filters
+                            </button>
+
+
+                            <a
+                                href="{% url 'returns_intelligence' %}"
+                                class="returns-btn returns-btn-secondary"
+                            >
+                                Reset
+                            </a>
+
+                        </div>
+
+                    </form>
+
+
+                    <!-- ==============================================
+                         CUSTOM DATE
+                    =============================================== -->
+
+                    <div
+                        class="
+                            returns-custom-row
+                            {% if selected_range == 'custom' %}active{% endif %}
+                        "
+                        id="returnsCustomRow"
+                    >
+
+
+                        <div class="returns-filter-field">
+
+                            <label for="returnsFromDate">
+                                From Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="returnsFromDate"
+                                value="
+                                    {% if analysis_from_date %}
+                                        {{ analysis_from_date|date:'Y-m-d' }}
+                                    {% endif %}
+                                "
+                            >
+
+                        </div>
+
+
+                        <div class="returns-filter-field">
+
+                            <label for="returnsToDate">
+                                To Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="returnsToDate"
+                                value="
+                                    {% if analysis_to_date %}
+                                        {{ analysis_to_date|date:'Y-m-d' }}
+                                    {% endif %}
+                                "
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     DATASET INFORMATION
+                ================================================== -->
+
+                {% if selected_dataset %}
+
+                    <div class="returns-dataset-info">
+
+
+                        <div class="returns-info-item">
+
+                            <span class="returns-info-label">
+                                Dataset
+                            </span>
+
+                            <span class="returns-info-value">
+                                {{ selected_dataset.name }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="returns-info-item">
+
+                            <span class="returns-info-label">
+                                Current Version
+                            </span>
+
+                            <span class="returns-info-value">
+
+                                {% if selected_version %}
+
+                                    Version
+                                    {{ selected_version.version_number }}
+
+                                    ·
+
+                                    {{ selected_version.version_type }}
+
+                                {% else %}
+
+                                    Not available
+
+                                {% endif %}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="returns-info-item">
+
+                            <span class="returns-info-label">
+                                Analysis Period
+                            </span>
+
+                            <span class="returns-info-value">
+
+                                {% if analysis_from_date and analysis_to_date %}
+
+                                    {{ analysis_from_date|date:"d M Y" }}
+
+                                    –
+
+                                    {{ analysis_to_date|date:"d M Y" }}
+
+                                {% else %}
+
+                                    Not available
+
+                                {% endif %}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="returns-info-item">
+
+                            <span class="returns-info-label">
+                                Available Data
+                            </span>
+
+                            <span class="returns-info-value">
+
+                                {% if available_from_date and available_to_date %}
+
+                                    {{ available_from_date|date:"d M Y" }}
+
+                                    –
+
+                                    {{ available_to_date|date:"d M Y" }}
+
+                                {% else %}
+
+                                    Not available
+
+                                {% endif %}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- =================================================
+                     KPI
+                ================================================== -->
+
+                <div class="returns-section-title">
+
+                    <div>
+
+                        <h2>
+                            Returns Overview
+                        </h2>
+
+                        <p>
+                            Key return performance indicators
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="returns-kpi-grid">
+
+
+                    <!-- Total Returns -->
+
+                    <div class="returns-kpi-card returns-kpi-pink">
+
+                        <div class="returns-kpi-icon">
+                            ↩
+                        </div>
+
+                        <p class="returns-kpi-label">
+                            Total Returns
+                        </p>
+
+                        <p class="returns-kpi-value">
+
+                            {% if metrics.total_returns is not None %}
+                                {{ metrics.total_returns|floatformat:0 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </p>
+
+                        <div class="returns-kpi-subtitle">
+                            Recorded return transactions
+                        </div>
+
+                    </div>
+
+
+                    <!-- Returned Units -->
+
+                    <div class="returns-kpi-card returns-kpi-purple">
+
+                        <div class="returns-kpi-icon">
+                            📦
+                        </div>
+
+                        <p class="returns-kpi-label">
+                            Returned Units
+                        </p>
+
+                        <p class="returns-kpi-value">
+
+                            {% if metrics.returned_units is not None %}
+                                {{ metrics.returned_units|floatformat:0 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </p>
+
+                        <div class="returns-kpi-subtitle">
+                            Units associated with returns
+                        </div>
+
+                    </div>
+
+
+                    <!-- Return Value -->
+
+                    <div class="returns-kpi-card returns-kpi-orange">
+
+                        <div class="returns-kpi-icon">
+                            ₹
+                        </div>
+
+                        <p class="returns-kpi-label">
+                            Return Value
+                        </p>
+
+                        <p class="returns-kpi-value">
+
+                            {% if metrics.return_value is not None %}
+                                {{ metrics.return_value|floatformat:2 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </p>
+
+                        <div class="returns-kpi-subtitle">
+                            Recorded returned value
+                        </div>
+
+                    </div>
+
+
+                    <!-- Return Rate -->
+
+                    <div class="returns-kpi-card returns-kpi-blue">
+
+                        <div class="returns-kpi-icon">
+                            %
+                        </div>
+
+                        <p class="returns-kpi-label">
+                            Return Rate
+                        </p>
+
+                        <p class="returns-kpi-value">
+
+                            {% if metrics.return_rate is not None %}
+                                {{ metrics.return_rate|floatformat:2 }}%
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </p>
+
+                        <div class="returns-kpi-subtitle">
+                            Calculated from available quantity/value data
+                        </div>
+
+                    </div>
+
+
+                    <!-- Average Return Value -->
+
+                    <div class="returns-kpi-card returns-kpi-green">
+
+                        <div class="returns-kpi-icon">
+                            ◈
+                        </div>
+
+                        <p class="returns-kpi-label">
+                            Avg Return Value
+                        </p>
+
+                        <p class="returns-kpi-value">
+
+                            {% if metrics.average_return_value is not None %}
+                                {{ metrics.average_return_value|floatformat:2 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </p>
+
+                        <div class="returns-kpi-subtitle">
+                            Average value per return
+                        </div>
+
+                    </div>
+
+
+                    <!-- Average Return Units -->
+
+                    <div class="returns-kpi-card returns-kpi-red">
+
+                        <div class="returns-kpi-icon">
+                            ≋
+                        </div>
+
+                        <p class="returns-kpi-label">
+                            Avg Return Units
+                        </p>
+
+                        <p class="returns-kpi-value">
+
+                            {% if metrics.average_return_units is not None %}
+                                {{ metrics.average_return_units|floatformat:2 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </p>
+
+                        <div class="returns-kpi-subtitle">
+                            Average units per return
+                        </div>
+
+                    </div>
+
+
+                    <!-- Returning Customers -->
+
+                    <div class="returns-kpi-card returns-kpi-teal">
+
+                        <div class="returns-kpi-icon">
+                            👥
+                        </div>
+
+                        <p class="returns-kpi-label">
+                            Repeat Return Customers
+                        </p>
+
+                        <p class="returns-kpi-value">
+
+                            {% if metrics.returning_customers is not None %}
+                                {{ metrics.returning_customers|floatformat:0 }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </p>
+
+                        <div class="returns-kpi-subtitle">
+                            Customers with multiple return records
+                        </div>
+
+                    </div>
+
+
+                    <!-- Return Growth -->
+
+                    <div class="returns-kpi-card returns-kpi-indigo">
+
+                        <div class="returns-kpi-icon">
+                            ↗
+                        </div>
+
+                        <p class="returns-kpi-label">
+                            Return Growth
+                        </p>
+
+                        <p class="returns-kpi-value">
+
+                            {% if metrics.return_growth is not None %}
+
+                                {% if metrics.return_growth > 0 %}
+
+                                    +{{ metrics.return_growth|floatformat:2 }}%
+
+                                {% else %}
+
+                                    {{ metrics.return_growth|floatformat:2 }}%
+
+                                {% endif %}
+
+                            {% else %}
+
+                                —
+
+                            {% endif %}
+
+                        </p>
+
+                        <div class="returns-kpi-subtitle">
+                            Compared with previous period
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     CHARTS
+                ================================================== -->
+
+                <div class="returns-section-title">
+
+                    <div>
+
+                        <h2>
+                            Returns Analytics
+                        </h2>
+
+                        <p>
+                            Explore return patterns across
+                            the selected dataset
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="returns-chart-grid">
+
+
+                    <!-- Returns Trend -->
+
+                    <div class="returns-chart-card returns-chart-card-wide">
+
+                        <div class="returns-chart-header">
+
+                            <div>
+
+                                <h3>
+                                    Returns Trend
+                                </h3>
+
+                                <p>
+                                    Return activity over time
+                                </p>
+
+                            </div>
+
+                            <div class="returns-chart-badge">
+                                TREND
+                            </div>
+
+                        </div>
+
+
+                        {% if "Returns Trend" in unavailable_charts %}
+
+                            <div class="returns-unavailable">
+
+                                <div class="returns-unavailable-icon">
+                                    ↗
+                                </div>
+
+                                <h4>
+                                    Returns Trend Unavailable
+                                </h4>
+
+                                <p>
+                                    A compatible Return Date
+                                    column is required for
+                                    this visualization.
+                                </p>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="returns-chart-wrapper">
+
+                                <canvas
+                                    id="returnsTrendChart"
+                                ></canvas>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Returns by Reason -->
+
+                    <div class="returns-chart-card">
+
+                        <div class="returns-chart-header">
+
+                            <div>
+
+                                <h3>
+                                    Returns by Reason
+                                </h3>
+
+                                <p>
+                                    Most frequently recorded
+                                    return reasons
+                                </p>
+
+                            </div>
+
+                            <div class="returns-chart-badge">
+                                REASONS
+                            </div>
+
+                        </div>
+
+
+                        {% if "Returns by Reason" in unavailable_charts %}
+
+                            <div class="returns-unavailable">
+
+                                <div class="returns-unavailable-icon">
+                                    ?
+                                </div>
+
+                                <h4>
+                                    Reason Data Unavailable
+                                </h4>
+
+                                <p>
+                                    Add a Return Reason column
+                                    to analyze return causes.
+                                </p>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="returns-chart-wrapper">
+
+                                <canvas
+                                    id="returnsReasonChart"
+                                ></canvas>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Returns by Product -->
+
+                    <div class="returns-chart-card">
+
+                        <div class="returns-chart-header">
+
+                            <div>
+
+                                <h3>
+                                    Returns by Product
+                                </h3>
+
+                                <p>
+                                    Products with the highest
+                                    return activity
+                                </p>
+
+                            </div>
+
+                            <div class="returns-chart-badge">
+                                PRODUCTS
+                            </div>
+
+                        </div>
+
+
+                        {% if "Returns by Product" in unavailable_charts %}
+
+                            <div class="returns-unavailable">
+
+                                <div class="returns-unavailable-icon">
+                                    ◫
+                                </div>
+
+                                <h4>
+                                    Product Data Unavailable
+                                </h4>
+
+                                <p>
+                                    Add Product Name or Product ID
+                                    information to analyze
+                                    returns by product.
+                                </p>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="returns-chart-wrapper">
+
+                                <canvas
+                                    id="returnsProductChart"
+                                ></canvas>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Returns by Category -->
+
+                    <div class="returns-chart-card">
+
+                        <div class="returns-chart-header">
+
+                            <div>
+
+                                <h3>
+                                    Returns by Category
+                                </h3>
+
+                                <p>
+                                    Return activity across
+                                    product categories
+                                </p>
+
+                            </div>
+
+                            <div class="returns-chart-badge">
+                                CATEGORY
+                            </div>
+
+                        </div>
+
+
+                        {% if "Returns by Category" in unavailable_charts %}
+
+                            <div class="returns-unavailable">
+
+                                <div class="returns-unavailable-icon">
+                                    ◈
+                                </div>
+
+                                <h4>
+                                    Category Data Unavailable
+                                </h4>
+
+                                <p>
+                                    Add a Category column to
+                                    analyze return activity
+                                    by category.
+                                </p>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="returns-chart-wrapper">
+
+                                <canvas
+                                    id="returnsCategoryChart"
+                                ></canvas>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Returns by Region -->
+
+                    <div class="returns-chart-card">
+
+                        <div class="returns-chart-header">
+
+                            <div>
+
+                                <h3>
+                                    Returns by Region
+                                </h3>
+
+                                <p>
+                                    Geographic distribution
+                                    of returns
+                                </p>
+
+                            </div>
+
+                            <div class="returns-chart-badge">
+                                REGION
+                            </div>
+
+                        </div>
+
+
+                        {% if "Returns by Region" in unavailable_charts %}
+
+                            <div class="returns-unavailable">
+
+                                <div class="returns-unavailable-icon">
+                                    ◎
+                                </div>
+
+                                <h4>
+                                    Regional Data Unavailable
+                                </h4>
+
+                                <p>
+                                    Add a Region column to
+                                    analyze geographic
+                                    return activity.
+                                </p>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="returns-chart-wrapper">
+
+                                <canvas
+                                    id="returnsRegionChart"
+                                ></canvas>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Return Status -->
+
+                    <div class="returns-chart-card">
+
+                        <div class="returns-chart-header">
+
+                            <div>
+
+                                <h3>
+                                    Return Status Distribution
+                                </h3>
+
+                                <p>
+                                    Distribution of return
+                                    processing statuses
+                                </p>
+
+                            </div>
+
+                            <div class="returns-chart-badge">
+                                STATUS
+                            </div>
+
+                        </div>
+
+
+                        {% if "Return Status Distribution" in unavailable_charts %}
+
+                            <div class="returns-unavailable">
+
+                                <div class="returns-unavailable-icon">
+                                    ✓
+                                </div>
+
+                                <h4>
+                                    Status Data Unavailable
+                                </h4>
+
+                                <p>
+                                    Add a Return Status column
+                                    to analyze processing status.
+                                </p>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="returns-chart-wrapper">
+
+                                <canvas
+                                    id="returnsStatusChart"
+                                ></canvas>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Return Value Distribution -->
+
+                    <div class="returns-chart-card returns-chart-card-wide">
+
+                        <div class="returns-chart-header">
+
+                            <div>
+
+                                <h3>
+                                    Return Value Distribution
+                                </h3>
+
+                                <p>
+                                    Distribution of individual
+                                    return values
+                                </p>
+
+                            </div>
+
+                            <div class="returns-chart-badge">
+                                VALUE
+                            </div>
+
+                        </div>
+
+
+                        {% if "Return Value Distribution" in unavailable_charts %}
+
+                            <div class="returns-unavailable">
+
+                                <div class="returns-unavailable-icon">
+                                    ₹
+                                </div>
+
+                                <h4>
+                                    Return Value Data Unavailable
+                                </h4>
+
+                                <p>
+                                    Add a Return Amount or
+                                    Refund Amount column to
+                                    analyze returned value.
+                                </p>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="returns-chart-wrapper">
+
+                                <canvas
+                                    id="returnValueDistributionChart"
+                                ></canvas>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     DATA AVAILABILITY
+                ================================================== -->
+
+                {% if unavailable_charts %}
+
+                    <div class="returns-availability">
+
+                        <h3>
+                            Data Availability
+                        </h3>
+
+                        <div class="returns-availability-list">
+
+                            {% for chart_name in unavailable_charts %}
+
+                                <span
+                                    class="returns-availability-item"
+                                >
+                                    {{ chart_name }} unavailable
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- =================================================
+                     SMART INSIGHTS
+                ================================================== -->
+
+                <div class="returns-insights-section">
+
+                    <div class="returns-section-title">
+
+                        <div>
+
+                            <h2>
+                                Smart Returns Insights
+                            </h2>
+
+                            <p>
+                                Rule-based observations generated
+                                from the selected return data
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="returns-insights-card">
+
+
+                        <div class="returns-insights-header">
+
+                            <div class="returns-insights-icon">
+                                ✦
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Returns Intelligence
+                                </h2>
+
+                                <p>
+                                    Key patterns identified
+                                    in the selected data
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        {% if insights %}
+
+                            <div class="returns-insights-list">
+
+                                {% for insight in insights %}
+
+                                    <div
+                                        class="
+                                            returns-insight
+                                            {% if insight.type == 'positive' %}
+                                                positive
+                                            {% elif insight.type == 'warning' %}
+                                                warning
+                                            {% else %}
+                                                info
+                                            {% endif %}
+                                        "
+                                    >
+
+                                        <h4
+                                            class="returns-insight-title"
+                                        >
+                                            {{ insight.title }}
+                                        </h4>
+
+                                        <p
+                                            class="returns-insight-message"
+                                        >
+                                            {{ insight.message }}
+                                        </p>
+
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="returns-no-insights">
+
+                                No additional return insights
+                                are available for the selected data.
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+            {% endif %}
+
         </div>
-        {% endif %}
 
     </div>
 
-
-    {% if error_message %}
-
-        <div class="alert-box">
-            ⚠️ {{ error_message }}
-        </div>
-
-    {% endif %}
-
-
-    {% if not datasets %}
-
-        <div class="empty-state">
-            <div class="icon">📂</div>
-            <h2>No Dataset Available</h2>
-            <p>
-                Upload and process a business dataset from
-                Data Management before using Returns Intelligence.
-            </p>
-        </div>
-
-    {% elif has_data %}
-
-        <!-- DATE RANGE -->
-
-        <div class="date-toolbar">
-
-            {% for key,label in date_range_options.items %}
-
-                <button
-                    class="{% if selected_range == key %}active{% endif %}"
-                    onclick="changeDateRange('{{ key }}')"
-                >
-                    {{ label }}
-                </button>
-
-            {% endfor %}
-
-            <button
-                class="{% if selected_range == 'custom' %}active{% endif %}"
-                onclick="changeDateRange('custom')"
-            >
-                Custom Range
-            </button>
-
-
-            <div
-                class="custom-dates"
-                id="customDateGroup"
-            >
-
-                <input
-                    type="date"
-                    id="startDate"
-                    value="{{ custom_start }}"
-                >
-
-                <span>→</span>
-
-                <input
-                    type="date"
-                    id="endDate"
-                    value="{{ custom_end }}"
-                >
-
-                <button
-                    class="apply-btn"
-                    onclick="applyCustomRange()"
-                >
-                    Apply
-                </button>
-
-            </div>
-
-
-            <div class="period-label">
-                {{ date_range.range_label }}
-
-                {% if date_range.start_date %}
-                    ·
-                    {{ date_range.start_date|date:"d M Y" }}
-                    –
-                    {{ date_range.end_date|date:"d M Y" }}
-                {% endif %}
-            </div>
-
-        </div>
-
-
-        <!-- KPI CARDS -->
-
-        <div class="kpi-grid">
-
-            <div class="kpi-card">
-                <div class="kpi-label">
-                    Total Returns
-                </div>
-
-                <div class="kpi-value red">
-                    {{ total_returns|floatformat:0 }}
-                </div>
-
-                <div class="kpi-sub">
-                    Returned units / records
-                </div>
-            </div>
-
-
-            <div class="kpi-card status-card">
-
-                <div class="kpi-label">
-                    Return Rate
-                </div>
-
-                <div class="kpi-value orange">
-                    {{ return_rate|floatformat:2 }}%
-                </div>
-
-                <div class="kpi-sub">
-                    Overall return level:
-                    <strong>{{ overall_status }}</strong>
-                </div>
-
-            </div>
-
-
-            <div class="kpi-card">
-
-                <div class="kpi-label">
-                    Revenue Affected
-                </div>
-
-                <div class="kpi-value">
-                    ₹{{ returned_revenue|floatformat:0 }}
-                </div>
-
-                <div class="kpi-sub">
-                    Estimated revenue exposure
-                </div>
-
-            </div>
-
-
-            <div class="kpi-card">
-
-                <div class="kpi-label">
-                    Return Change
-                </div>
-
-                {% if returns_change >= 0 %}
-                    <div class="kpi-value red">
-                        +{{ returns_change|floatformat:1 }}%
-                    </div>
-                {% else %}
-                    <div class="kpi-value green">
-                        {{ returns_change|floatformat:1 }}%
-                    </div>
-                {% endif %}
-
-                <div class="kpi-sub">
-                    vs previous comparable period
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- COMPARISON -->
-
-        {% if comparison_available %}
-
-        <div class="section">
-
-            <div class="section-header">
-                <div>
-                    <h2 class="section-title">
-                        Period Comparison
-                    </h2>
-
-                    <div class="section-description">
-                        Compare the selected period against the previous equivalent period.
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="comparison-grid">
-
-                <div class="comparison-card">
-
-                    <div class="comparison-title">
-                        Returns
-                    </div>
-
-                    <div class="comparison-values">
-                        <div class="comparison-current">
-                            {{ current_period_returns|floatformat:0 }}
-                        </div>
-
-                        <div class="comparison-previous">
-                            Previous:
-                            {{ previous_period_returns|floatformat:0 }}
-                        </div>
-                    </div>
-
-                    <div class="change {% if returns_change > 0 %}red{% else %}green{% endif %}">
-                        {% if returns_change >= 0 %}+{% endif %}
-                        {{ returns_change|floatformat:1 }}%
-                    </div>
-
-                </div>
-
-
-                <div class="comparison-card">
-
-                    <div class="comparison-title">
-                        Revenue
-                    </div>
-
-                    <div class="comparison-values">
-                        <div class="comparison-current">
-                            ₹{{ current_period_revenue|floatformat:0 }}
-                        </div>
-
-                        <div class="comparison-previous">
-                            Previous:
-                            ₹{{ previous_period_revenue|floatformat:0 }}
-                        </div>
-                    </div>
-
-                    <div class="change {% if revenue_change >= 0 %}green{% else %}red{% endif %}">
-                        {% if revenue_change >= 0 %}+{% endif %}
-                        {{ revenue_change|floatformat:1 }}%
-                    </div>
-
-                </div>
-
-
-                <div class="comparison-card">
-
-                    <div class="comparison-title">
-                        Return Status
-                    </div>
-
-                    <div class="comparison-values">
-                        <div class="comparison-current">
-                            {{ overall_status }}
-                        </div>
-
-                        <div class="comparison-previous">
-                            Current period
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- CHARTS -->
-
-        <div class="chart-grid">
-
-            <div class="section">
-
-                <div class="section-header">
-
-                    <div>
-                        <h2 class="section-title">
-                            Return Trend
-                        </h2>
-
-                        <div class="section-description">
-                            Return volume over the selected period.
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="chart-container">
-                    <canvas id="returnTrendChart"></canvas>
-                </div>
-
-            </div>
-
-
-            <div class="section">
-
-                <div class="section-header">
-
-                    <div>
-                        <h2 class="section-title">
-                            Returns by Region
-                        </h2>
-
-                        <div class="section-description">
-                            Identify regions generating the most returns.
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="chart-container">
-                    <canvas id="regionReturnChart"></canvas>
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- PRODUCT ANALYSIS -->
-
-        {% if product_return_rows %}
-
-        <div class="section">
-
-            <div class="section-header">
-
-                <div>
-                    <h2 class="section-title">
-                        Product Return Risk
-                    </h2>
-
-                    <div class="section-description">
-                        Products with unusually high return volumes.
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="chart-container" style="margin-bottom:25px;">
-                <canvas id="productReturnChart"></canvas>
-            </div>
-
-
-            <div class="table-wrap">
-
-                <table>
-
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Returns</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        {% for row in product_return_rows %}
-
-                        <tr>
-
-                            <td>
-                                {{ row.product }}
-                            </td>
-
-                            <td>
-                                {{ row.returns|floatformat:0 }}
-                            </td>
-
-                            <td>
-
-                                {% if row.status == "High Return Risk" %}
-
-                                    <span class="badge badge-danger">
-                                        ⚠ High Return Risk
-                                    </span>
-
-                                {% else %}
-
-                                    <span class="badge badge-normal">
-                                        ✓ Normal
-                                    </span>
-
-                                {% endif %}
-
-                            </td>
-
-                        </tr>
-
-                        {% endfor %}
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- REGION TABLE -->
-
-        {% if regional_return_rows %}
-
-        <div class="section">
-
-            <div class="section-header">
-
-                <div>
-                    <h2 class="section-title">
-                        Regional Return Analysis
-                    </h2>
-
-                    <div class="section-description">
-                        Compare return volumes across business regions.
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="table-wrap">
-
-                <table>
-
-                    <thead>
-                        <tr>
-                            <th>Region</th>
-                            <th>Returns</th>
-                            <th>Share of Returns</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        {% for row in regional_return_rows %}
-
-                        <tr>
-
-                            <td>
-                                {{ row.region }}
-                            </td>
-
-                            <td>
-                                {{ row.returns|floatformat:0 }}
-                            </td>
-
-                            <td>
-                                {% if total_returns > 0 %}
-                                    {% widthratio row.returns total_returns 100 %}%
-                                {% else %}
-                                    0%
-                                {% endif %}
-                            </td>
-
-                        </tr>
-
-                        {% endfor %}
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- INSIGHTS -->
-
-        {% if return_insights %}
-
-        <div class="section">
-
-            <div class="section-header">
-
-                <div>
-                    <h2 class="section-title">
-                        🧠 Business Insights
-                    </h2>
-
-                    <div class="section-description">
-                        Automatically generated observations from the return data.
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="insights-grid">
-
-                {% for insight in return_insights %}
-
-                    <div class="insight">
-                        {{ insight }}
-                    </div>
-
-                {% endfor %}
-
-            </div>
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- DATA INFORMATION -->
-
-        <div class="section">
-
-            <div class="section-header">
-
-                <div>
-                    <h2 class="section-title">
-                        Analysis Information
-                    </h2>
-
-                    <div class="section-description">
-                        Columns and dataset used for this analysis.
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="info-grid">
-
-                <div class="info-item">
-                    <span>Dataset</span>
-                    <strong>
-                        {{ selected_dataset.name }}
-                    </strong>
-                </div>
-
-                <div class="info-item">
-                    <span>Date Column</span>
-                    <strong>
-                        {{ date_column|default:"Not detected" }}
-                    </strong>
-                </div>
-
-                <div class="info-item">
-                    <span>Returns Column</span>
-                    <strong>
-                        {{ returns_column|default:"Not detected" }}
-                    </strong>
-                </div>
-
-                <div class="info-item">
-                    <span>Product Column</span>
-                    <strong>
-                        {{ product_column|default:"Not detected" }}
-                    </strong>
-                </div>
-
-                <div class="info-item">
-                    <span>Region Column</span>
-                    <strong>
-                        {{ region_column|default:"Not detected" }}
-                    </strong>
-                </div>
-
-            </div>
-
-        </div>
-
-    {% endif %}
+</main>
+```
 
 </div>
 
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- ====================================================================
+     CHART.JS
+===================================================================== -->
 
 <script>
 
-function changeDataset(datasetId) {
-
-    const url = new URL(window.location.href);
-
-    url.searchParams.set(
-        "dataset",
-        datasetId
-    );
-
-    window.location.href =
-        url.toString();
-}
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
 
-function changeDateRange(range) {
+        /* ============================================================
+           DATA FROM DJANGO
+        ============================================================ */
 
-    if (range === "custom") {
+        const returnsTrendData =
+            {{ returns_trend_json|default:"[]"|safe }};
 
-        document.getElementById(
-            "customDateGroup"
-        ).style.display = "flex";
+        const returnsReasonData =
+            {{ returns_by_reason_json|default:"[]"|safe }};
 
-        return;
-    }
+        const returnsProductData =
+            {{ returns_by_product_json|default:"[]"|safe }};
 
-    const url = new URL(
-        window.location.href
-    );
+        const returnsCategoryData =
+            {{ returns_by_category_json|default:"[]"|safe }};
 
-    url.searchParams.set(
-        "range",
-        range
-    );
+        const returnsRegionData =
+            {{ returns_by_region_json|default:"[]"|safe }};
 
-    url.searchParams.delete("start");
-    url.searchParams.delete("end");
+        const returnsStatusData =
+            {{ return_status_json|default:"[]"|safe }};
 
-    window.location.href =
-        url.toString();
-}
+        const returnValueDistributionData =
+            {{ return_value_distribution_json|default:"[]"|safe }};
 
 
-function applyCustomRange() {
+        /* ============================================================
+           CHART DEFAULTS
+        ============================================================ */
 
-    const start =
-        document.getElementById(
-            "startDate"
-        ).value;
+        Chart.defaults.font.family =
+            "Inter, system-ui, -apple-system, BlinkMacSystemFont, " +
+            "\"Segoe UI\", sans-serif";
 
-    const end =
-        document.getElementById(
-            "endDate"
-        ).value;
-
-    if (!start || !end) {
-
-        alert(
-            "Please select both start and end dates."
-        );
-
-        return;
-    }
-
-    if (start > end) {
-
-        alert(
-            "Start date cannot be after end date."
-        );
-
-        return;
-    }
-
-    const url = new URL(
-        window.location.href
-    );
-
-    url.searchParams.set(
-        "range",
-        "custom"
-    );
-
-    url.searchParams.set(
-        "start",
-        start
-    );
-
-    url.searchParams.set(
-        "end",
-        end
-    );
-
-    window.location.href =
-        url.toString();
-}
+        Chart.defaults.color =
+            "#8fa4b8";
 
 
-/* -----------------------------
-   CHART DEFAULTS
------------------------------ */
+        const tooltipSettings = {
 
-Chart.defaults.font.family =
-    "Inter, system-ui, sans-serif";
+            backgroundColor: "#071725",
 
-Chart.defaults.color =
-    "#8fa4b8";
+            titleColor: "#f5f7fb",
+
+            bodyColor: "#b8c7d5",
+
+            borderColor:
+                "rgba(255,255,255,.10)",
+
+            borderWidth: 1,
+
+            padding: 12,
+
+            cornerRadius: 10,
+
+            displayColors: true,
+
+            titleFont: {
+                weight: "800"
+            }
+
+        };
 
 
-/* -----------------------------
-   RETURN TREND
------------------------------ */
-
-const trendLabels =
-    {{ trend_labels|default:"[]"|safe }};
-
-const trendValues =
-    {{ trend_values|default:"[]"|safe }};
+        const gridColor =
+            "rgba(143,164,184,.10)";
 
 
-const trendCanvas =
-    document.getElementById(
-        "returnTrendChart"
-    );
+        const axisTicks = {
 
-if (
-    trendCanvas &&
-    trendLabels.length
-) {
+            color: "#71869b",
 
-    new Chart(
-        trendCanvas,
-        {
-            type: "line",
+            font: {
+                size: 10
+            }
+        };
 
-            data: {
-                labels: trendLabels,
 
-                datasets: [{
-                    label: "Returns",
+        /* ============================================================
+           SAFE CHART CREATOR
+        ============================================================ */
 
-                    data: trendValues,
+        function createChart(
+            elementId,
+            config
+        ) {
 
-                    borderColor:
-                        "#ff5c70",
+            const element =
+                document.getElementById(
+                    elementId
+                );
 
-                    backgroundColor:
-                        "rgba(255,92,112,.10)",
+            if (!element) {
+                return null;
+            }
 
-                    fill: true,
+            return new Chart(
+                element,
+                config
+            );
+        }
 
-                    tension: .4,
 
-                    pointRadius: 3,
+        /* ============================================================
+           GRADIENT HELPER
+        ============================================================ */
 
-                    pointHoverRadius: 6
-                }]
-            },
+        function createGradient(
+            canvas,
+            topColor,
+            bottomColor
+        ) {
 
-            options: {
-                responsive: true,
+            const context =
+                canvas.getContext("2d");
 
-                maintainAspectRatio: false,
+            const gradient =
+                context.createLinearGradient(
+                    0,
+                    0,
+                    0,
+                    canvas.height || 300
+                );
 
-                interaction: {
-                    intersect: false,
-                    mode: "index"
-                },
+            gradient.addColorStop(
+                0,
+                topColor
+            );
 
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
+            gradient.addColorStop(
+                1,
+                bottomColor
+            );
 
-                scales: {
+            return gradient;
+        }
 
-                    x: {
-                        grid: {
-                            display: false
+
+        /* ============================================================
+           RETURNS TREND
+        ============================================================ */
+
+        if (
+            Array.isArray(returnsTrendData)
+            &&
+            returnsTrendData.length
+        ) {
+
+            const canvas =
+                document.getElementById(
+                    "returnsTrendChart"
+                );
+
+            if (canvas) {
+
+                const returnsGradient =
+                    createGradient(
+                        canvas,
+                        "rgba(255,111,174,.30)",
+                        "rgba(255,111,174,.01)"
+                    );
+
+
+                createChart(
+                    "returnsTrendChart",
+                    {
+
+                        type: "line",
+
+                        data: {
+
+                            labels:
+                                returnsTrendData.map(
+                                    item => item.date
+                                ),
+
+                            datasets: [
+
+                                {
+
+                                    label: "Returns",
+
+                                    data:
+                                        returnsTrendData.map(
+                                            item =>
+                                                item.returns ?? null
+                                        ),
+
+                                    borderColor:
+                                        "#ff6fae",
+
+                                    backgroundColor:
+                                        returnsGradient,
+
+                                    borderWidth: 3,
+
+                                    pointRadius: 3,
+
+                                    pointHoverRadius: 6,
+
+                                    pointBackgroundColor:
+                                        "#ff6fae",
+
+                                    pointBorderColor:
+                                        "#ffffff",
+
+                                    pointBorderWidth: 2,
+
+                                    tension: .38,
+
+                                    fill: true
+
+                                },
+
+
+                                {
+
+                                    label:
+                                        "Returned Units",
+
+                                    data:
+                                        returnsTrendData.map(
+                                            item =>
+                                                item.returned_units
+                                                ?? null
+                                        ),
+
+                                    borderColor:
+                                        "#7567f8",
+
+                                    backgroundColor:
+                                        "transparent",
+
+                                    borderWidth: 2,
+
+                                    pointRadius: 2,
+
+                                    pointHoverRadius: 5,
+
+                                    pointBackgroundColor:
+                                        "#7567f8",
+
+                                    tension: .35,
+
+                                    fill: false,
+
+                                    yAxisID: "y1"
+
+                                }
+
+                            ]
+
+                        },
+
+                        options: {
+
+                            responsive: true,
+
+                            maintainAspectRatio: false,
+
+                            interaction: {
+
+                                mode: "index",
+
+                                intersect: false
+
+                            },
+
+                            plugins: {
+
+                                legend: {
+
+                                    position: "top",
+
+                                    labels: {
+
+                                        color:
+                                            "#9eb1c2",
+
+                                        usePointStyle:
+                                            true,
+
+                                        padding: 16,
+
+                                        font: {
+                                            size: 10
+                                        }
+
+                                    }
+
+                                },
+
+                                tooltip:
+                                    tooltipSettings
+
+                            },
+
+                            scales: {
+
+                                x: {
+
+                                    grid: {
+                                        color: gridColor
+                                    },
+
+                                    ticks:
+                                        axisTicks
+
+                                },
+
+                                y: {
+
+                                    beginAtZero: true,
+
+                                    grid: {
+                                        color: gridColor
+                                    },
+
+                                    ticks:
+                                        axisTicks,
+
+                                    title: {
+
+                                        display: true,
+
+                                        color:
+                                            "#71869b",
+
+                                        text:
+                                            "Returns"
+                                    }
+
+                                },
+
+                                y1: {
+
+                                    beginAtZero: true,
+
+                                    position: "right",
+
+                                    grid: {
+
+                                        drawOnChartArea:
+                                            false
+                                    },
+
+                                    ticks:
+                                        axisTicks,
+
+                                    title: {
+
+                                        display: true,
+
+                                        color:
+                                            "#71869b",
+
+                                        text:
+                                            "Units"
+                                    }
+
+                                }
+
+                            }
+
                         }
+
+                    }
+                );
+
+            }
+
+        }
+
+
+        /* ============================================================
+           RETURNS BY REASON
+        ============================================================ */
+
+        if (
+            Array.isArray(returnsReasonData)
+            &&
+            returnsReasonData.length
+        ) {
+
+            createChart(
+                "returnsReasonChart",
+                {
+
+                    type: "doughnut",
+
+                    data: {
+
+                        labels:
+                            returnsReasonData.map(
+                                item => item.reason
+                            ),
+
+                        datasets: [
+
+                            {
+
+                                data:
+                                    returnsReasonData.map(
+                                        item =>
+                                            item.returns ?? 0
+                                    ),
+
+                                backgroundColor: [
+
+                                    "#ff6fae",
+                                    "#7567f8",
+                                    "#3fa9f5",
+                                    "#ff9f43",
+                                    "#39d98a",
+                                    "#ff5c70",
+                                    "#38d9ff",
+                                    "#9b8cff",
+                                    "#ffd166",
+                                    "#b56cff"
+
+                                ],
+
+                                borderColor:
+                                    "#0d2033",
+
+                                borderWidth: 3,
+
+                                hoverOffset: 8
+
+                            }
+
+                        ]
+
                     },
 
-                    y: {
-                        beginAtZero: true,
+                    options: {
 
-                        grid: {
-                            color:
-                                "rgba(255,255,255,.05)"
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        cutout: "62%",
+
+                        plugins: {
+
+                            legend: {
+
+                                position: "right",
+
+                                labels: {
+
+                                    color:
+                                        "#9eb1c2",
+
+                                    usePointStyle:
+                                        true,
+
+                                    padding: 12,
+
+                                    font: {
+                                        size: 10
+                                    }
+                                }
+
+                            },
+
+                            tooltip:
+                                tooltipSettings
                         }
+
                     }
+
                 }
-            }
+            );
+
         }
-    );
-}
 
 
-/* -----------------------------
-   REGION RETURNS
------------------------------ */
+        /* ============================================================
+           RETURNS BY PRODUCT
+        ============================================================ */
 
-const regionLabels =
-    {{ region_labels|default:"[]"|safe }};
+        if (
+            Array.isArray(returnsProductData)
+            &&
+            returnsProductData.length
+        ) {
 
-const regionValues =
-    {{ region_return_values|default:"[]"|safe }};
-
-
-const regionCanvas =
-    document.getElementById(
-        "regionReturnChart"
-    );
-
-if (
-    regionCanvas &&
-    regionLabels.length
-) {
-
-    new Chart(
-        regionCanvas,
-        {
-            type: "doughnut",
-
-            data: {
-
-                labels:
-                    regionLabels,
-
-                datasets: [{
-
-                    data:
-                        regionValues,
-
-                    backgroundColor: [
-                        "#7567f8",
-                        "#ff5c70",
-                        "#39d98a",
-                        "#ff9f43",
-                        "#3fa9f5",
-                        "#a78bfa",
-                        "#22c55e",
-                        "#f97316"
-                    ],
-
-                    borderWidth: 0
-                }]
-            },
-
-            options: {
-
-                responsive: true,
-
-                maintainAspectRatio: false,
-
-                cutout: "64%",
-
-                plugins: {
-
-                    legend: {
-                        position: "bottom",
-
-                        labels: {
-                            padding: 15,
-                            usePointStyle: true
-                        }
-                    }
-                }
-            }
-        }
-    );
-}
+            const productData =
+                returnsProductData.slice(
+                    0,
+                    12
+                );
 
 
-/* -----------------------------
-   PRODUCT RETURNS
------------------------------ */
+            createChart(
+                "returnsProductChart",
+                {
 
-const productLabels =
-    {{ product_labels|default:"[]"|safe }};
+                    type: "bar",
 
-const productValues =
-    {{ product_return_values|default:"[]"|safe }};
+                    data: {
 
+                        labels:
+                            productData.map(
+                                item => item.product
+                            ),
 
-const productCanvas =
-    document.getElementById(
-        "productReturnChart"
-    );
+                        datasets: [
 
-if (
-    productCanvas &&
-    productLabels.length
-) {
+                            {
 
-    new Chart(
-        productCanvas,
-        {
-            type: "bar",
+                                label:
+                                    "Returns",
 
-            data: {
+                                data:
+                                    productData.map(
+                                        item =>
+                                            item.returns ?? 0
+                                    ),
 
-                labels:
-                    productLabels,
+                                backgroundColor:
+                                    "#ff6fae",
 
-                datasets: [{
+                                borderColor:
+                                    "#ff8fbd",
 
-                    label:
-                        "Returns",
+                                borderWidth: 1,
 
-                    data:
-                        productValues,
+                                borderRadius: 8,
 
-                    backgroundColor:
-                        "#ff5c70",
+                                borderSkipped:
+                                    false
 
-                    borderRadius: 7,
+                            }
 
-                    maxBarThickness: 35
-                }]
-            },
+                        ]
 
-            options: {
-
-                indexAxis: "y",
-
-                responsive: true,
-
-                maintainAspectRatio: false,
-
-                plugins: {
-
-                    legend: {
-                        display: false
-                    }
-                },
-
-                scales: {
-
-                    x: {
-                        beginAtZero: true,
-
-                        grid: {
-                            color:
-                                "rgba(255,255,255,.05)"
-                        }
                     },
 
-                    y: {
-                        grid: {
-                            display: false
+                    options: {
+
+                        indexAxis: "y",
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        plugins: {
+
+                            legend: {
+                                display: false
+                            },
+
+                            tooltip:
+                                tooltipSettings
+
+                        },
+
+                        scales: {
+
+                            x: {
+
+                                beginAtZero: true,
+
+                                grid: {
+                                    color: gridColor
+                                },
+
+                                ticks:
+                                    axisTicks
+                            },
+
+                            y: {
+
+                                grid: {
+                                    display: false
+                                },
+
+                                ticks:
+                                    axisTicks
+                            }
+
                         }
+
                     }
+
                 }
-            }
+            );
+
         }
-    );
-}
+
+
+        /* ============================================================
+           RETURNS BY CATEGORY
+        ============================================================ */
+
+        if (
+            Array.isArray(returnsCategoryData)
+            &&
+            returnsCategoryData.length
+        ) {
+
+            createChart(
+                "returnsCategoryChart",
+                {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels:
+                            returnsCategoryData.map(
+                                item => item.category
+                            ),
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    "Returns",
+
+                                data:
+                                    returnsCategoryData.map(
+                                        item =>
+                                            item.returns ?? 0
+                                    ),
+
+                                backgroundColor: [
+
+                                    "#7567f8",
+                                    "#927cff",
+                                    "#6354df",
+                                    "#a394ff",
+                                    "#5b4acb",
+                                    "#8071ed",
+                                    "#4e42b3",
+                                    "#b1a5ff"
+
+                                ],
+
+                                borderColor:
+                                    "rgba(255,255,255,.10)",
+
+                                borderWidth: 1,
+
+                                borderRadius: 8,
+
+                                borderSkipped:
+                                    false
+
+                            }
+
+                        ]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        plugins: {
+
+                            legend: {
+                                display: false
+                            },
+
+                            tooltip:
+                                tooltipSettings
+
+                        },
+
+                        scales: {
+
+                            x: {
+
+                                grid: {
+                                    display: false
+                                },
+
+                                ticks:
+                                    axisTicks
+                            },
+
+                            y: {
+
+                                beginAtZero: true,
+
+                                grid: {
+                                    color: gridColor
+                                },
+
+                                ticks:
+                                    axisTicks
+                            }
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* ============================================================
+           RETURNS BY REGION
+        ============================================================ */
+
+        if (
+            Array.isArray(returnsRegionData)
+            &&
+            returnsRegionData.length
+        ) {
+
+            createChart(
+                "returnsRegionChart",
+                {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels:
+                            returnsRegionData.map(
+                                item => item.region
+                            ),
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    "Returns",
+
+                                data:
+                                    returnsRegionData.map(
+                                        item =>
+                                            item.returns ?? 0
+                                    ),
+
+                                backgroundColor:
+                                    "#3fa9f5",
+
+                                borderColor:
+                                    "#65bdff",
+
+                                borderWidth: 1,
+
+                                borderRadius: 8,
+
+                                borderSkipped:
+                                    false
+
+                            }
+
+                        ]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        plugins: {
+
+                            legend: {
+                                display: false
+                            },
+
+                            tooltip:
+                                tooltipSettings
+
+                        },
+
+                        scales: {
+
+                            x: {
+
+                                grid: {
+                                    display: false
+                                },
+
+                                ticks:
+                                    axisTicks
+                            },
+
+                            y: {
+
+                                beginAtZero: true,
+
+                                grid: {
+                                    color: gridColor
+                                },
+
+                                ticks:
+                                    axisTicks
+                            }
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* ============================================================
+           RETURN STATUS
+        ============================================================ */
+
+        if (
+            Array.isArray(returnsStatusData)
+            &&
+            returnsStatusData.length
+        ) {
+
+            createChart(
+                "returnsStatusChart",
+                {
+
+                    type: "doughnut",
+
+                    data: {
+
+                        labels:
+                            returnsStatusData.map(
+                                item => item.status
+                            ),
+
+                        datasets: [
+
+                            {
+
+                                data:
+                                    returnsStatusData.map(
+                                        item =>
+                                            item.returns ?? 0
+                                    ),
+
+                                backgroundColor: [
+
+                                    "#39d98a",
+                                    "#ff9f43",
+                                    "#ff6fae",
+                                    "#3fa9f5",
+                                    "#7567f8",
+                                    "#38d9ff",
+                                    "#ff5c70"
+
+                                ],
+
+                                borderColor:
+                                    "#0d2033",
+
+                                borderWidth: 3,
+
+                                hoverOffset: 8
+
+                            }
+
+                        ]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        cutout: "58%",
+
+                        plugins: {
+
+                            legend: {
+
+                                position: "right",
+
+                                labels: {
+
+                                    color:
+                                        "#9eb1c2",
+
+                                    usePointStyle:
+                                        true,
+
+                                    padding: 12,
+
+                                    font: {
+                                        size: 10
+                                    }
+                                }
+
+                            },
+
+                            tooltip:
+                                tooltipSettings
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* ============================================================
+           RETURN VALUE DISTRIBUTION
+        ============================================================ */
+
+        if (
+            Array.isArray(
+                returnValueDistributionData
+            )
+            &&
+            returnValueDistributionData.length
+        ) {
+
+            createChart(
+                "returnValueDistributionChart",
+                {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels:
+                            returnValueDistributionData.map(
+                                item => item.band
+                            ),
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    "Returns",
+
+                                data:
+                                    returnValueDistributionData.map(
+                                        item =>
+                                            item.returns ?? 0
+                                    ),
+
+                                backgroundColor: [
+
+                                    "#38d9ff",
+                                    "#3fa9f5",
+                                    "#7567f8",
+                                    "#9b8cff",
+                                    "#39d98a"
+
+                                ],
+
+                                borderColor:
+                                    "rgba(255,255,255,.10)",
+
+                                borderWidth: 1,
+
+                                borderRadius: 8,
+
+                                borderSkipped:
+                                    false
+
+                            }
+
+                        ]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        plugins: {
+
+                            legend: {
+                                display: false
+                            },
+
+                            tooltip:
+                                tooltipSettings
+
+                        },
+
+                        scales: {
+
+                            x: {
+
+                                grid: {
+                                    display: false
+                                },
+
+                                ticks:
+                                    axisTicks
+                            },
+
+                            y: {
+
+                                beginAtZero: true,
+
+                                grid: {
+                                    color: gridColor
+                                },
+
+                                ticks:
+                                    axisTicks
+                            }
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* ============================================================
+           CUSTOM DATE RANGE
+        ============================================================ */
+
+        const rangeSelect =
+            document.getElementById(
+                "returnsRange"
+            );
+
+
+        const customRow =
+            document.getElementById(
+                "returnsCustomRow"
+            );
+
+
+        const filterForm =
+            document.getElementById(
+                "returnsFilterForm"
+            );
+
+
+        const fromDate =
+            document.getElementById(
+                "returnsFromDate"
+            );
+
+
+        const toDate =
+            document.getElementById(
+                "returnsToDate"
+            );
+
+
+        function updateCustomDateVisibility() {
+
+            if (
+                !rangeSelect
+                ||
+                !customRow
+            ) {
+                return;
+            }
+
+
+            if (
+                rangeSelect.value ===
+                "custom"
+            ) {
+
+                customRow.classList.add(
+                    "active"
+                );
+
+            } else {
+
+                customRow.classList.remove(
+                    "active"
+                );
+
+            }
+
+        }
+
+
+        if (rangeSelect) {
+
+            rangeSelect.addEventListener(
+                "change",
+                updateCustomDateVisibility
+            );
+
+        }
+
+
+        if (filterForm) {
+
+            filterForm.addEventListener(
+                "submit",
+                function () {
+
+
+                    if (
+                        !rangeSelect
+                        ||
+                        rangeSelect.value !==
+                        "custom"
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    if (
+                        fromDate
+                        &&
+                        fromDate.value
+                    ) {
+
+                        const hiddenFrom =
+                            document.createElement(
+                                "input"
+                            );
+
+                        hiddenFrom.type =
+                            "hidden";
+
+                        hiddenFrom.name =
+                            "from_date";
+
+                        hiddenFrom.value =
+                            fromDate.value;
+
+                        filterForm.appendChild(
+                            hiddenFrom
+                        );
+
+                    }
+
+
+                    if (
+                        toDate
+                        &&
+                        toDate.value
+                    ) {
+
+                        const hiddenTo =
+                            document.createElement(
+                                "input"
+                            );
+
+                        hiddenTo.type =
+                            "hidden";
+
+                        hiddenTo.name =
+                            "to_date";
+
+                        hiddenTo.value =
+                            toDate.value;
+
+                        filterForm.appendChild(
+                            hiddenTo
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        updateCustomDateVisibility();
+
+    }
+
+);
 
 </script>
 
-{% endblock %}
+</body>
+
+</html>

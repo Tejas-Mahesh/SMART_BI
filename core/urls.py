@@ -31,11 +31,17 @@ urlpatterns = [
         views.contact,
         name="contact"
     ),
+    path(
+      "features/",
+      views.features,
+      name="feature"
+    ),
 
     path(
         "dashboard/",
         views.dashboard,
         name="dashboard"
     ),
+
 
 ]

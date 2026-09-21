@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analytics Foundation Test</title>
+</head>
+
+<body>
+
+<h1>Analytics Foundation Test</h1>
+
+{% for dataset_type, info in datasets.items %}
+
+    <hr>
+
+    <h2>{{ dataset_type }}</h2>
+
+    {% if info.available %}
+
+        <p>
+            <strong>Status:</strong>
+            Available
+        </p>
+
+        <p>
+            Dataset:
+            {{ info.dataset.name }}
+        </p>
+
+        <p>
+            Current Version:
+            {{ info.version.version_number }}
+        </p>
+
+        <p>
+            Version Type:
+            {{ info.version.version_type }}
+        </p>
+
+        <p>
+            Rows:
+            {{ info.rows }}
+        </p>
+
+        <p>
+            Columns:
+            {{ info.columns }}
+        </p>
+
+    {% else %}
+
+        <p>
+            <strong>Status:</strong>
+            Not Available
+        </p>
+
+        <p>
+            {{ info.message }}
+        </p>
+
+    {% endif %}
+
+{% endfor %}
+
+</body>
+</html>

@@ -1366,7 +1366,7 @@ Smart BI | Executive Dashboard
             <!-- BUSINESS ANALYTICS -->
 
             <a
-                href="{% url 'analytics:business_intelligence' %}"
+                href="{% url 'business_intelligence' %}"
                 class="sidebar-link
                 {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'business_intelligence' %}
                     active
@@ -1391,7 +1391,7 @@ Smart BI | Executive Dashboard
             <!-- CUSTOMER -->
 
             <a
-                href="{% url 'analytics:customer_intelligence' %}"
+                href=""
                 class="sidebar-link
                 {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'customer_intelligence' %}
                     active
@@ -1416,7 +1416,7 @@ Smart BI | Executive Dashboard
             <!-- PRODUCT -->
 
             <a
-                href="{% url 'analytics:product_intelligence' %}"
+                href="#"
                 class="sidebar-link
                 {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'product_intelligence' %}
                     active
@@ -1441,7 +1441,7 @@ Smart BI | Executive Dashboard
             <!-- REGIONAL -->
 
             <a
-                href="{% url 'analytics:regional_intelligence' %}"
+                href="#"
                 class="sidebar-link
                 {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'regional_intelligence' %}
                     active
@@ -1466,7 +1466,7 @@ Smart BI | Executive Dashboard
             <!-- SALES -->
 
             <a
-                href="{% url 'analytics:sales_intelligence' %}"
+                href="#"
                 class="sidebar-link
                 {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'sales_intelligence' %}
                     active
@@ -1491,7 +1491,7 @@ Smart BI | Executive Dashboard
             <!-- FINANCIAL -->
 
             <a
-                href="{% url 'analytics:financial_intelligence' %}"
+                href="#"
                 class="sidebar-link
                 {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'financial_intelligence' %}
                     active
@@ -1516,7 +1516,7 @@ Smart BI | Executive Dashboard
             <!-- MARKETING -->
 
             <a
-                href="{% url 'analytics:marketing_intelligence' %}"
+                href="#"
                 class="sidebar-link
                 {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'marketing_intelligence' %}
                     active
@@ -1541,7 +1541,7 @@ Smart BI | Executive Dashboard
             <!-- RETURNS -->
 
             <a
-                href="{% url 'analytics:returns_intelligence' %}"
+                href="#"
                 class="sidebar-link
                 {% if request.resolver_match.app_name == 'analytics' and request.resolver_match.url_name == 'returns_intelligence' %}
                     active
@@ -1580,9 +1580,9 @@ Smart BI | Executive Dashboard
             <!-- ADVANCED INSIGHTS -->
 
             <a
-                href="{% url 'advanced_insights:dashboard' %}"
+                href="{% url 'advanced_insights:future_trends' %}"
                 class="sidebar-link
-                {% if request.resolver_match.app_name == 'advanced_insights' and request.resolver_match.url_name == 'dashboard' %}
+                {% if request.resolver_match.app_name == 'advanced_insights' and request.resolver_match.url_name == 'future_trends' %}
                     active
                 {% endif %}"
             >
@@ -1592,7 +1592,7 @@ Smart BI | Executive Dashboard
                 </span>
 
                 <span class="sidebar-link-text">
-                    Advanced Insights
+                   Future Trends
                 </span>
 
                 <span class="sidebar-link-arrow">
@@ -1605,9 +1605,9 @@ Smart BI | Executive Dashboard
             <!-- ANOMALY -->
 
             <a
-                href="{% url 'advanced_insights:anomaly_detection' %}"
+                href="{% url 'advanced_insights:forecasting' %}"
                 class="sidebar-link
-                {% if request.resolver_match.app_name == 'advanced_insights' and request.resolver_match.url_name == 'anomaly_detection' %}
+                {% if request.resolver_match.app_name == 'advanced_insights' and request.resolver_match.url_name == 'forecasting' %}
                     active
                 {% endif %}"
             >
@@ -1617,7 +1617,7 @@ Smart BI | Executive Dashboard
                 </span>
 
                 <span class="sidebar-link-text">
-                    Anomaly Insights
+                    Forecasting
                 </span>
 
                 <span class="sidebar-link-arrow">
@@ -1630,7 +1630,7 @@ Smart BI | Executive Dashboard
             <!-- ROOT CAUSE -->
 
             <a
-                href="{% url 'advanced_insights:root_cause_analysis' %}"
+                href="#"
                 class="sidebar-link
                 {% if request.resolver_match.app_name == 'advanced_insights' and request.resolver_match.url_name == 'root_cause_analysis' %}
                     active
@@ -1655,7 +1655,7 @@ Smart BI | Executive Dashboard
             <!-- CUSTOMER RISK -->
 
             <a
-                href="{% url 'advanced_insights:customer_risk_analysis' %}"
+                href="#"
                 class="sidebar-link
                 {% if request.resolver_match.app_name == 'advanced_insights' and request.resolver_match.url_name == 'customer_risk_analysis' %}
                     active
@@ -1680,7 +1680,7 @@ Smart BI | Executive Dashboard
             <!-- OPPORTUNITY -->
 
             <a
-                href="{% url 'advanced_insights:opportunity_detection' %}"
+                href="#"
                 class="sidebar-link
                 {% if request.resolver_match.app_name == 'advanced_insights' and request.resolver_match.url_name == 'opportunity_detection' %}
                     active
@@ -1719,7 +1719,7 @@ Smart BI | Executive Dashboard
             <!-- RECOMMENDATIONS -->
 
             <a
-                href="{% url 'decision_intelligence:recommendations' %}"
+                href="#"
                 class="sidebar-link
                 {% if request.resolver_match.app_name == 'decision_intelligence' and request.resolver_match.url_name == 'recommendations' %}
                     active
@@ -1744,7 +1744,7 @@ Smart BI | Executive Dashboard
             <!-- WHAT IF -->
 
             <a
-                href="{% url 'decision_intelligence:what_if' %}"
+                href="#"
                 class="sidebar-link
                 {% if request.resolver_match.app_name == 'decision_intelligence' and request.resolver_match.url_name == 'what_if' %}
                     active
@@ -1769,7 +1769,7 @@ Smart BI | Executive Dashboard
             <!-- SCENARIO -->
 
             <a
-                href="{% url 'decision_intelligence:scenario_planning' %}"
+                href="#"
                 class="sidebar-link
                 {% if request.resolver_match.app_name == 'decision_intelligence' and request.resolver_match.url_name == 'scenario_planning' %}
                     active
@@ -1794,7 +1794,7 @@ Smart BI | Executive Dashboard
             <!-- ALERTS -->
 
             <a
-                href="{% url 'decision_intelligence:business_alerts' %}"
+                href="#"
                 class="sidebar-link
                 {% if request.resolver_match.app_name == 'decision_intelligence' and request.resolver_match.url_name == 'business_alerts' %}
                     active
@@ -1819,7 +1819,7 @@ Smart BI | Executive Dashboard
             <!-- ACTION CENTER -->
 
             <a
-                href="{% url 'decision_intelligence:action_center' %}"
+                href="#"
                 class="sidebar-link
                 {% if request.resolver_match.app_name == 'decision_intelligence' and request.resolver_match.url_name == 'action_center' %}
                     active
@@ -1844,7 +1844,7 @@ Smart BI | Executive Dashboard
             <!-- DECISION IMPACT -->
 
             <a
-                href="{% url 'decision_intelligence:decision_impact' %}"
+                href="#"
                 class="sidebar-link
                 {% if request.resolver_match.app_name == 'decision_intelligence' and request.resolver_match.url_name == 'decision_impact' %}
                     active

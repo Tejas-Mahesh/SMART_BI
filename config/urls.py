@@ -33,14 +33,19 @@ urlpatterns = [
         "admin-dashboard/",
         include("admin_dashboard.urls")
     ),
+      path(
+        "advanced-insights/",
+        include(
+            "advanced_insights.urls"
+        ),
+    ),
+
     path(
-    "insights/",
-    include("advanced_insights.urls"),
-),
-path(
-    "decisions/",
-    include("decision_intelligence.urls"),
-),
+        "decision-intelligence/",
+        include(
+            "decision_intelligence.urls"
+        ),
+    ),
 path(
     "reports/",
     include("reporting.urls"),

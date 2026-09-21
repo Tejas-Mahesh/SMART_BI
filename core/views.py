@@ -17,7 +17,8 @@ def how_it_works(request):
 def contact(request):
     return render(request, "core/contact.html")
 
-
+def features(request):
+    return render(request,"core/feature.html")
 
 
 from django.contrib.auth.decorators import login_required

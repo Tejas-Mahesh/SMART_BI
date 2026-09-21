@@ -1,1785 +1,1614 @@
-{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}
-Financial Intelligence | Smart BI
-{% endblock %}
+<head>
 
-{% block content %}
+    <meta charset="UTF-8">
 
-<style>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-/* ================================================================
-   SMART BI FINANCIAL INTELLIGENCE
-   ================================================================ */
+    <title>
+        Financial Intelligence
+    </title>
+          <link
+        rel="stylesheet"
+        href="{% static 'css/smart_sidebar.css' %}"
+    >
 
-:root {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    --fi-bg: #07111f;
-    --fi-bg-2: #091827;
+    <style>
 
-    --fi-card: rgba(15, 31, 49, .92);
-    --fi-card-soft: rgba(10, 25, 41, .88);
+        /* ============================================================
+           ROOT THEME
+        ============================================================ */
 
-    --fi-border: rgba(255,255,255,.075);
+        :root {
 
-    --fi-text: #f7f9fc;
-    --fi-muted: #8193a7;
+            --bg: #06111f;
+            --sidebar: #081827;
+            --panel: #0d2033;
+            --panel-2: #10283f;
 
-    --fi-primary: #7668ff;
-    --fi-blue: #3ea7f5;
-    --fi-green: #38d991;
-    --fi-orange: #ff9f43;
-    --fi-red: #ff5d73;
-    --fi-yellow: #f5c451;
+            --border: rgba(255,255,255,.075);
 
-    --fi-radius: 18px;
-}
+            --text: #f5f7fb;
+            --muted: #8fa4b8;
 
+            --purple: #7567f8;
+            --green: #39d98a;
+            --orange: #ff9f43;
+            --red: #ff5c70;
+            --blue: #3fa9f5;
+            --cyan: #38d9ff;
 
-/* ================================================================
-   PAGE RESET
-   ================================================================ */
+            --shadow:
+                0 18px 55px rgba(0,0,0,.22);
 
-html,
-body {
+            --sidebar-width: 270px;
 
-    height: 100%;
+        }
 
-}
 
-body {
+        /* ============================================================
+           RESET
+        ============================================================ */
 
-    margin: 0;
+        * {
+            box-sizing: border-box;
+        }
 
-    overflow: hidden;
 
-}
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: var(--bg);
+            color: var(--text);
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+        }
 
 
-/* ================================================================
-   MAIN APPLICATION SHELL
-   ================================================================ */
+        body {
+            min-height: 100vh;
+        }
 
-.financial-shell {
 
-    width: 100%;
+        /* ============================================================
+           SIDEBAR
+        ============================================================ */
 
-    height: 100vh;
+        .smart-sidebar-wrapper {
 
-    display: flex;
+            position: fixed;
 
-    overflow: hidden;
+            top: 0;
+            left: 0;
 
-    background: var(--fi-bg);
+            width: var(--sidebar-width);
+            height: 100vh;
 
-}
+            z-index: 1000;
 
+            overflow-y: auto;
+            overflow-x: hidden;
 
-/* ================================================================
-   SIDEBAR
-   ================================================================ */
+            background: var(--sidebar);
 
-.financial-sidebar {
+            border-right:
+                1px solid var(--border);
 
-    flex: 0 0 270px;
+            box-shadow:
+                10px 0 35px rgba(0,0,0,.16);
 
-    width: 270px;
+            scrollbar-width: thin;
 
-    height: 100vh;
+            scrollbar-color:
+                rgba(117,103,248,.35)
+                transparent;
 
-    overflow-y: auto;
+        }
 
-    overflow-x: hidden;
 
-    overscroll-behavior: contain;
+        .smart-sidebar-wrapper::-webkit-scrollbar {
+            width: 6px;
+        }
 
-    scrollbar-width: thin;
 
-    scrollbar-color:
-        rgba(118,104,255,.45)
-        transparent;
+        .smart-sidebar-wrapper::-webkit-scrollbar-track {
+            background: transparent;
+        }
 
-    position: relative;
 
-    z-index: 20;
+        .smart-sidebar-wrapper::-webkit-scrollbar-thumb {
 
-}
+            background:
+                rgba(117,103,248,.35);
 
+            border-radius: 10px;
 
-.financial-sidebar::-webkit-scrollbar {
+        }
 
-    width: 6px;
 
-}
+        /*
+         * The include may already contain the sidebar itself.
+         * These selectors make common sidebar structures fit
+         * cleanly inside the independent sidebar area.
+         */
 
+        .smart-sidebar-wrapper > * {
+            max-width: 100%;
+        }
 
-.financial-sidebar::-webkit-scrollbar-track {
 
-    background: transparent;
+        /* ============================================================
+           MAIN APPLICATION AREA
+        ============================================================ */
 
-}
+        .financial-main {
 
+            position: fixed;
 
-.financial-sidebar::-webkit-scrollbar-thumb {
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: var(--sidebar-width);
 
-    background:
-        rgba(118,104,255,.45);
+            width: auto;
+            height: 100vh;
 
-    border-radius: 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
 
-}
+            background:
+                radial-gradient(
+                    circle at 85% 0%,
+                    rgba(117,103,248,.08),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at 10% 90%,
+                    rgba(56,217,255,.045),
+                    transparent 28%
+                ),
+                var(--bg);
 
+            scrollbar-width: thin;
 
-/*
-   Prevent included sidebar from creating
-   another viewport-sized scroll area.
-*/
+            scrollbar-color:
+                rgba(117,103,248,.35)
+                transparent;
 
-.financial-sidebar > * {
+        }
 
-    min-height: 100%;
 
-}
+        .financial-main::-webkit-scrollbar {
+            width: 8px;
+        }
 
 
-/* ================================================================
-   MAIN SCROLL AREA
-   ================================================================ */
+        .financial-main::-webkit-scrollbar-track {
+            background: transparent;
+        }
 
-.financial-main {
 
-    flex: 1;
+        .financial-main::-webkit-scrollbar-thumb {
 
-    min-width: 0;
+            background:
+                rgba(117,103,248,.35);
 
-    height: 100vh;
+            border-radius: 10px;
 
-    overflow-y: auto;
+        }
 
-    overflow-x: hidden;
 
-    overscroll-behavior: contain;
+        /* ============================================================
+           PAGE CONTAINER
+        ============================================================ */
 
-    scrollbar-width: thin;
+        .financial-page {
 
-    scrollbar-color:
-        rgba(118,104,255,.45)
-        transparent;
+            width: 100%;
 
-}
+            max-width: 1800px;
 
+            margin: 0 auto;
 
-.financial-main::-webkit-scrollbar {
+            padding:
+                30px 30px 60px;
 
-    width: 8px;
+        }
 
-}
 
+        /* ============================================================
+           HEADER
+        ============================================================ */
 
-.financial-main::-webkit-scrollbar-track {
+        .financial-header {
 
-    background: var(--fi-bg);
+            display: flex;
 
-}
+            justify-content: space-between;
 
+            align-items: flex-start;
 
-.financial-main::-webkit-scrollbar-thumb {
+            gap: 20px;
 
-    background:
-        rgba(118,104,255,.45);
+            margin-bottom: 25px;
 
-    border-radius: 20px;
+            flex-wrap: wrap;
 
-}
+        }
 
 
-/* ================================================================
-   PAGE
-   ================================================================ */
+        .financial-title h1 {
 
-.financial-page {
+            margin: 0;
 
-    min-height: 100%;
+            font-size: 30px;
 
-    padding: 28px;
+            line-height: 1.2;
 
-    box-sizing: border-box;
+            font-weight: 800;
 
-    background:
+            letter-spacing: -.03em;
 
-        radial-gradient(
-            circle at 90% 0%,
-            rgba(118,104,255,.13),
-            transparent 28%
-        ),
+            color: var(--text);
 
-        radial-gradient(
-            circle at 10% 30%,
-            rgba(62,167,245,.06),
-            transparent 25%
-        ),
+        }
 
-        var(--fi-bg);
 
-}
+        .financial-title p {
 
+            margin:
+                8px 0 0;
 
-/* ================================================================
-   HEADER
-   ================================================================ */
+            color: var(--muted);
 
-.financial-header {
+            font-size: 14px;
 
-    display: flex;
+            line-height: 1.6;
 
-    justify-content: space-between;
+        }
 
-    align-items: flex-start;
 
-    gap: 20px;
+        .financial-badge {
 
-    margin-bottom: 22px;
+            display: inline-flex;
 
-}
+            align-items: center;
 
+            gap: 8px;
 
-.financial-title h1 {
+            margin-top: 12px;
 
-    margin: 0;
+            padding:
+                7px 12px;
 
-    color: var(--fi-text);
+            border-radius: 999px;
 
-    font-size: 31px;
+            background:
+                rgba(57,217,138,.10);
 
-    font-weight: 850;
+            border:
+                1px solid rgba(57,217,138,.18);
 
-    letter-spacing: -.8px;
+            color:
+                var(--green);
 
-}
+            font-size: 11px;
 
+            font-weight: 700;
 
-.financial-title p {
+        }
 
-    margin: 8px 0 0;
 
-    max-width: 720px;
+        .financial-badge span {
+            font-size: 9px;
+        }
 
-    color: var(--fi-muted);
 
-    font-size: 13px;
+        /* ============================================================
+           FILTER CARD
+        ============================================================ */
 
-    line-height: 1.7;
+        .filter-card {
 
-}
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(13,32,51,.98),
+                    rgba(16,40,63,.94)
+                );
 
+            border:
+                1px solid var(--border);
 
-.header-status {
+            border-radius: 18px;
 
-    display: flex;
+            padding: 19px;
 
-    flex-wrap: wrap;
+            margin-bottom: 20px;
 
-    justify-content: flex-end;
+            box-shadow: var(--shadow);
 
-    gap: 8px;
+        }
 
-}
 
+        .filter-form {
 
-.status {
+            display: grid;
 
-    display: inline-flex;
+            grid-template-columns:
+                minmax(190px,1.25fr)
+                minmax(170px,1fr)
+                minmax(180px,1fr)
+                auto;
 
-    align-items: center;
+            gap: 14px;
 
-    gap: 7px;
+            align-items: end;
 
-    padding: 9px 12px;
+        }
 
-    border: 1px solid var(--fi-border);
 
-    border-radius: 10px;
+        .filter-group {
 
-    background:
-        rgba(15,31,49,.8);
+            display: flex;
 
-    color: #b9c6d3;
+            flex-direction: column;
 
-    font-size: 10px;
+            gap: 7px;
 
-    font-weight: 750;
+        }
 
-}
 
+        .filter-group label {
 
-.status i {
+            font-size: 11px;
 
-    color: var(--fi-green);
+            font-weight: 700;
 
-}
+            color: var(--muted);
 
+            text-transform: uppercase;
 
-/* ================================================================
-   FILTER PANEL
-   ================================================================ */
+            letter-spacing: .045em;
 
-.filter-panel {
+        }
 
-    margin-bottom: 22px;
 
-    padding: 18px;
+        .filter-group select,
+        .filter-group input {
 
-    border: 1px solid
-        rgba(118,104,255,.18);
+            width: 100%;
 
-    border-radius: var(--fi-radius);
+            height: 42px;
 
-    background:
-        linear-gradient(
-            135deg,
-            rgba(15,31,49,.98),
-            rgba(9,24,40,.96)
-        );
+            border:
+                1px solid var(--border);
 
-    box-shadow:
-        0 20px 55px
-        rgba(0,0,0,.18);
+            border-radius: 10px;
 
-}
+            padding:
+                0 12px;
 
+            background:
+                rgba(6,17,31,.72);
 
-.filter-heading {
+            color:
+                var(--text);
 
-    display: flex;
+            outline: none;
 
-    justify-content: space-between;
+            font-size: 13px;
 
-    align-items: center;
+            transition:
+                border-color .2s ease,
+                box-shadow .2s ease,
+                background .2s ease;
 
-    margin-bottom: 16px;
+        }
 
-}
 
+        .filter-group select:hover,
+        .filter-group input:hover {
 
-.filter-heading h2 {
+            background:
+                rgba(6,17,31,.9);
 
-    margin: 0;
+        }
 
-    color: white;
 
-    font-size: 15px;
+        .filter-group select:focus,
+        .filter-group input:focus {
 
-}
+            border-color:
+                rgba(117,103,248,.7);
 
+            box-shadow:
+                0 0 0 3px
+                rgba(117,103,248,.12);
 
-.filter-heading p {
+        }
 
-    margin: 5px 0 0;
 
-    color: #71869b;
+        .filter-group select option {
 
-    font-size: 10px;
+            background:
+                #0d2033;
 
-}
+            color:
+                var(--text);
 
+        }
 
-.filter-grid {
 
-    display: grid;
+        .filter-button {
 
-    grid-template-columns:
-        minmax(190px,1fr)
-        minmax(190px,1fr)
-        minmax(190px,1fr)
-        auto;
+            height: 42px;
 
-    gap: 12px;
+            border: none;
 
-    align-items: end;
+            border-radius: 10px;
 
-}
+            padding:
+                0 21px;
 
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--purple),
+                    #5d4de8
+                );
 
-.field {
+            color: #ffffff;
 
-    display: flex;
+            font-weight: 700;
 
-    flex-direction: column;
+            font-size: 12px;
 
-    gap: 7px;
+            cursor: pointer;
 
-}
+            box-shadow:
+                0 9px 24px
+                rgba(117,103,248,.18);
 
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease;
 
-.field label {
+        }
 
-    color: #7890a5;
 
-    font-size: 9px;
+        .filter-button:hover {
 
-    font-weight: 800;
+            transform:
+                translateY(-1px);
 
-    text-transform: uppercase;
+            box-shadow:
+                0 12px 28px
+                rgba(117,103,248,.28);
 
-    letter-spacing: .7px;
+        }
 
-}
 
+        .custom-date-row {
 
-.field select,
-.field input {
+            display: none;
 
-    width: 100%;
+            grid-column:
+                1 / -1;
 
-    min-height: 43px;
+            grid-template-columns:
+                1fr 1fr;
 
-    box-sizing: border-box;
+            gap: 14px;
 
-    padding: 10px 12px;
+            margin-top: 3px;
 
-    border: 1px solid
-        rgba(118,104,255,.18);
+        }
 
-    border-radius: 10px;
 
-    outline: none;
+        .custom-date-row.show {
+            display: grid;
+        }
 
-    background: #081827;
 
-    color: white;
+        /* ============================================================
+           DATASET INFO
+        ============================================================ */
 
-}
+        .dataset-info {
 
+            display: flex;
 
-.field select:focus,
-.field input:focus {
+            align-items: center;
 
-    border-color:
-        var(--fi-primary);
+            justify-content: space-between;
 
-    box-shadow:
-        0 0 0 3px
-        rgba(118,104,255,.10);
+            gap: 15px;
 
-}
+            flex-wrap: wrap;
 
+            padding:
+                14px 16px;
 
-.apply-btn {
+            margin-bottom: 22px;
 
-    min-height: 43px;
+            border-radius: 14px;
 
-    padding: 0 19px;
+            background:
+                rgba(13,32,51,.88);
 
-    border: 0;
+            border:
+                1px solid var(--border);
 
-    border-radius: 10px;
+        }
 
-    background:
-        linear-gradient(
-            135deg,
-            #7668ff,
-            #594bd8
-        );
 
-    color: white;
+        .dataset-main {
 
-    font-weight: 800;
+            display: flex;
 
-    cursor: pointer;
+            align-items: center;
 
-    transition: .25s ease;
+            gap: 12px;
 
-}
+        }
 
 
-.apply-btn:hover {
+        .dataset-icon {
 
-    transform:
-        translateY(-2px);
+            width: 42px;
+            height: 42px;
 
-    box-shadow:
-        0 12px 28px
-        rgba(118,104,255,.25);
+            flex: 0 0 42px;
 
-}
+            border-radius: 12px;
 
+            display: flex;
 
-.custom-date-row {
+            align-items: center;
 
-    display: none;
+            justify-content: center;
 
-    gap: 12px;
+            background:
+                rgba(57,217,138,.10);
 
-    margin-top: 13px;
+            border:
+                1px solid
+                rgba(57,217,138,.14);
 
-}
+            color:
+                var(--green);
 
+            font-size: 18px;
 
-.custom-date-row.show {
+            font-weight: 800;
 
-    display: grid;
+        }
 
-    grid-template-columns:
-        1fr 1fr;
 
-    max-width: 500px;
+        .dataset-name {
 
-}
+            font-size: 14px;
 
+            font-weight: 800;
 
-.filter-chips {
+            color: var(--text);
 
-    display: flex;
+        }
 
-    flex-wrap: wrap;
 
-    gap: 8px;
+        .dataset-meta {
 
-    margin-top: 13px;
+            margin-top: 4px;
 
-}
+            font-size: 11px;
 
+            color: var(--muted);
 
-.chip {
+        }
 
-    display: inline-flex;
 
-    align-items: center;
+        .version-badge {
 
-    gap: 6px;
+            padding:
+                7px 11px;
 
-    padding: 7px 10px;
+            border-radius: 9px;
 
-    border-radius: 8px;
+            background:
+                rgba(117,103,248,.10);
 
-    border: 1px solid
-        rgba(118,104,255,.14);
+            border:
+                1px solid
+                rgba(117,103,248,.16);
 
-    background:
-        rgba(118,104,255,.08);
+            color:
+                #aaa2ff;
 
-    color: #a49dff;
+            font-size: 11px;
 
-    font-size: 9px;
+            font-weight: 700;
 
-    font-weight: 750;
+        }
 
-}
 
+        /* ============================================================
+           ALERTS
+        ============================================================ */
 
-/* ================================================================
-   ERROR
-   ================================================================ */
+        .alert-box {
 
-.error-box {
+            border-radius: 13px;
 
-    margin-bottom: 22px;
+            padding:
+                13px 16px;
 
-    padding: 17px;
+            margin-bottom: 19px;
 
-    border: 1px solid
-        rgba(255,93,115,.25);
+            font-size: 12px;
 
-    border-radius: 15px;
+            line-height: 1.6;
 
-    background:
-        rgba(255,93,115,.07);
+        }
 
-}
 
+        .alert-error {
 
-.error-box h3 {
+            background:
+                rgba(255,92,112,.08);
 
-    margin: 0 0 7px;
+            border:
+                1px solid
+                rgba(255,92,112,.20);
 
-    color: var(--fi-red);
+            color:
+                #ff8c9b;
 
-    font-size: 14px;
+        }
 
-}
 
+        .alert-warning {
 
-.error-box p {
+            background:
+                rgba(255,159,67,.08);
 
-    margin: 0;
+            border:
+                1px solid
+                rgba(255,159,67,.20);
 
-    color: #bdc8d3;
+            color:
+                #ffc078;
 
-    font-size: 11px;
+        }
 
-    line-height: 1.6;
 
-}
+        .alert-box ul {
+            color: inherit;
+        }
 
 
-/* ================================================================
-   KPI GRID
-   ================================================================ */
+        /* ============================================================
+           SECTION HEADINGS
+        ============================================================ */
 
-.kpi-grid {
+        .section-heading {
 
-    display: grid;
+            display: flex;
 
-    grid-template-columns:
-        repeat(4, 1fr);
+            align-items: center;
 
-    gap: 14px;
+            justify-content: space-between;
 
-    margin-bottom: 16px;
+            gap: 15px;
 
-}
+            margin:
+                27px 0 14px;
 
+        }
 
-.kpi {
 
-    position: relative;
+        .section-heading h2 {
 
-    min-height: 143px;
+            margin: 0;
 
-    padding: 18px;
+            font-size: 17px;
 
-    box-sizing: border-box;
+            font-weight: 800;
 
-    overflow: hidden;
+            color: var(--text);
 
-    border: 1px solid var(--fi-border);
+            letter-spacing: -.01em;
 
-    border-radius: 17px;
+        }
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(16,34,54,.96),
-            rgba(10,25,41,.96)
-        );
 
-    transition: .25s ease;
+        .section-heading span {
 
-}
+            font-size: 11px;
 
+            color: var(--muted);
 
-.kpi:hover {
+        }
 
-    transform:
-        translateY(-4px);
 
-    border-color:
-        rgba(118,104,255,.3);
+        /* ============================================================
+           KPI GRID
+        ============================================================ */
 
-    box-shadow:
-        0 18px 40px
-        rgba(0,0,0,.2);
+        .kpi-grid {
 
-}
+            display: grid;
 
+            grid-template-columns:
+                repeat(4,minmax(0,1fr));
 
-.kpi::after {
+            gap: 15px;
 
-    content: "";
+            margin-bottom: 25px;
 
-    position: absolute;
+        }
 
-    width: 120px;
 
-    height: 120px;
+        .kpi-card {
 
-    right: -45px;
+            position: relative;
 
-    bottom: -55px;
+            overflow: hidden;
 
-    border-radius: 50%;
+            min-height: 132px;
 
-    background:
-        rgba(118,104,255,.06);
+            border-radius: 17px;
 
-}
+            padding: 18px;
 
+            border:
+                1px solid
+                rgba(255,255,255,.055);
 
-.kpi-icon {
+            box-shadow:
+                0 15px 38px
+                rgba(0,0,0,.20);
 
-    position: absolute;
+            transition:
+                transform .2s ease,
+                border-color .2s ease;
 
-    right: 16px;
+        }
 
-    top: 16px;
 
-    width: 39px;
+        .kpi-card:hover {
 
-    height: 39px;
+            transform:
+                translateY(-2px);
 
-    display: flex;
+            border-color:
+                rgba(255,255,255,.12);
 
-    align-items: center;
+        }
 
-    justify-content: center;
 
-    border-radius: 11px;
+        .kpi-card::before {
 
-    background:
-        rgba(118,104,255,.1);
+            content: "";
 
-    color: var(--fi-primary);
+            position: absolute;
 
-}
+            width: 125px;
+            height: 125px;
 
+            right: -55px;
+            bottom: -65px;
 
-.kpi-label {
+            border-radius: 50%;
 
-    color: #7890a5;
+            background:
+                rgba(255,255,255,.075);
 
-    font-size: 9px;
+        }
 
-    font-weight: 850;
 
-    text-transform: uppercase;
+        .kpi-card::after {
 
-    letter-spacing: .7px;
+            content: "";
 
-}
+            position: absolute;
 
+            width: 70px;
+            height: 70px;
 
-.kpi-value {
+            right: 28px;
+            top: -43px;
 
-    margin-top: 15px;
+            border-radius: 50%;
 
-    color: white;
+            background:
+                rgba(255,255,255,.045);
 
-    font-size: 24px;
+        }
 
-    font-weight: 850;
 
-    letter-spacing: -.6px;
+        .kpi-purple {
 
-}
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(117,103,248,.94),
+                    rgba(83,69,208,.92)
+                );
 
+        }
 
-.kpi-sub {
 
-    margin-top: 7px;
+        .kpi-blue {
 
-    max-width: 220px;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(63,169,245,.94),
+                    rgba(30,125,205,.92)
+                );
 
-    color: #637a90;
+        }
 
-    font-size: 9px;
 
-    line-height: 1.5;
+        .kpi-green {
 
-}
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(57,217,138,.94),
+                    rgba(21,155,94,.92)
+                );
 
+        }
 
-.kpi-blue .kpi-icon {
 
-    color: var(--fi-blue);
+        .kpi-orange {
 
-}
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,159,67,.95),
+                    rgba(226,109,29,.92)
+                );
 
+        }
 
-.kpi-orange .kpi-icon {
 
-    color: var(--fi-orange);
+        .kpi-pink {
 
-}
+            background:
+                linear-gradient(
+                    135deg,
+                    #d94c92,
+                    #b92f70
+                );
 
+        }
 
-.kpi-green .kpi-icon {
 
-    color: var(--fi-green);
+        .kpi-cyan {
 
-}
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(56,217,255,.94),
+                    rgba(20,157,195,.92)
+                );
 
+        }
 
-.kpi-yellow .kpi-icon {
 
-    color: var(--fi-yellow);
+        .kpi-indigo {
 
-}
+            background:
+                linear-gradient(
+                    135deg,
+                    #7064ed,
+                    #4840b8
+                );
 
+        }
 
-.positive {
 
-    color: var(--fi-green) !important;
+        .kpi-red {
 
-}
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,92,112,.95),
+                    rgba(208,50,72,.92)
+                );
 
+        }
 
-.negative {
 
-    color: var(--fi-red) !important;
+        .kpi-label {
 
-}
+            position: relative;
 
+            z-index: 2;
 
-/* ================================================================
-   SECONDARY METRICS
-   ================================================================ */
+            font-size: 10px;
 
-.metric-grid {
+            font-weight: 800;
 
-    display: grid;
+            opacity: .84;
 
-    grid-template-columns:
-        repeat(4,1fr);
+            text-transform: uppercase;
 
-    gap: 12px;
+            letter-spacing: .07em;
 
-    margin-bottom: 23px;
+        }
 
-}
 
+        .kpi-value {
 
-.metric {
+            position: relative;
 
-    padding: 15px;
+            z-index: 2;
 
-    border: 1px solid var(--fi-border);
+            margin-top: 11px;
 
-    border-radius: 14px;
+            font-size: 24px;
 
-    background:
-        var(--fi-card-soft);
+            font-weight: 850;
 
-}
+            letter-spacing: -.035em;
 
+            color: #ffffff;
 
-.metric span {
+            word-break: break-word;
 
-    display: block;
+        }
 
-    color: #71879b;
 
-    font-size: 9px;
+        .kpi-subtitle {
 
-    font-weight: 800;
+            position: relative;
 
-    text-transform: uppercase;
+            z-index: 2;
 
-}
+            margin-top: 7px;
 
+            font-size: 10px;
 
-.metric strong {
+            opacity: .72;
 
-    display: block;
+        }
 
-    margin-top: 8px;
 
-    color: white;
+        .unavailable-value {
 
-    font-size: 17px;
+            font-size: 16px;
 
-}
+            opacity: .75;
 
+        }
 
-.metric small {
 
-    display: block;
+        /* ============================================================
+           CHART GRID
+        ============================================================ */
 
-    margin-top: 5px;
+        .chart-grid {
 
-    color: #61788c;
+            display: grid;
 
-    font-size: 9px;
+            grid-template-columns:
+                repeat(2,minmax(0,1fr));
 
-}
+            gap: 17px;
 
+        }
 
-/* ================================================================
-   SECTIONS
-   ================================================================ */
 
-.section {
+        .chart-card {
 
-    margin-bottom: 25px;
+            min-width: 0;
 
-}
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(13,32,51,.98),
+                    rgba(16,40,63,.94)
+                );
 
+            border:
+                1px solid var(--border);
 
-.section-header {
+            border-radius: 18px;
 
-    display: flex;
+            padding: 18px;
 
-    justify-content: space-between;
+            box-shadow:
+                0 12px 38px
+                rgba(0,0,0,.16);
 
-    align-items: flex-end;
+        }
 
-    gap: 15px;
 
-    margin-bottom: 13px;
+        .chart-card.full-width {
 
-}
+            grid-column:
+                1 / -1;
 
+        }
 
-.section-header h2 {
 
-    margin: 0;
+        .chart-header {
 
-    color: white;
+            display: flex;
 
-    font-size: 17px;
+            align-items: center;
 
-}
+            justify-content: space-between;
 
+            gap: 10px;
 
-.section-header p {
+            margin-bottom: 14px;
 
-    margin: 5px 0 0;
+        }
 
-    color: #6d8398;
 
-    font-size: 10px;
+        .chart-title {
 
-}
+            font-size: 14px;
 
+            font-weight: 800;
 
-.section-tag {
+            color: var(--text);
 
-    padding: 6px 9px;
+        }
 
-    border-radius: 7px;
 
-    background:
-        rgba(118,104,255,.09);
+        .chart-description {
 
-    color: #a39cff;
+            font-size: 10px;
 
-    font-size: 8px;
+            color: var(--muted);
 
-    font-weight: 850;
+            margin-top: 4px;
 
-}
+        }
 
 
-/* ================================================================
-   COMPARISON
-   ================================================================ */
+        .chart-container {
 
-.comparison-grid {
+            position: relative;
 
-    display: grid;
+            width: 100%;
 
-    grid-template-columns:
-        repeat(4,1fr);
+            height: 300px;
 
-    gap: 12px;
+        }
 
-}
 
+        .chart-container.tall {
 
-.comparison {
+            height: 355px;
 
-    padding: 17px;
+        }
 
-    border: 1px solid
-        rgba(118,104,255,.15);
 
-    border-radius: 17px;
+        /* ============================================================
+           UNAVAILABLE CHART
+        ============================================================ */
 
-    background:
-        var(--fi-card);
+        .chart-unavailable {
 
-}
+            height: 300px;
 
+            border:
+                1px dashed
+                rgba(143,164,184,.20);
 
-.comparison-box {
+            border-radius: 13px;
 
-    padding: 14px;
+            background:
+                rgba(6,17,31,.30);
 
-    border-radius: 12px;
+            display: flex;
 
-    border: 1px solid var(--fi-border);
+            flex-direction: column;
 
-    background:
-        rgba(8,24,39,.75);
+            align-items: center;
 
-}
+            justify-content: center;
 
+            text-align: center;
 
-.comparison-box span {
+            padding: 20px;
 
-    display: block;
+        }
 
-    color: #71879b;
 
-    font-size: 9px;
+        .chart-unavailable-icon {
 
-    font-weight: 800;
+            width: 46px;
+            height: 46px;
 
-    text-transform: uppercase;
+            border-radius: 50%;
 
-}
+            background:
+                rgba(117,103,248,.09);
 
+            border:
+                1px solid
+                rgba(117,103,248,.15);
 
-.comparison-box strong {
+            display: flex;
 
-    display: block;
+            align-items: center;
 
-    margin-top: 7px;
+            justify-content: center;
 
-    color: white;
+            color:
+                #9d94ff;
 
-    font-size: 18px;
+            font-size: 18px;
 
-}
+            margin-bottom: 11px;
 
+        }
 
-.comparison-box small {
 
-    display: block;
+        .chart-unavailable strong {
 
-    margin-top: 5px;
+            font-size: 12px;
 
-    color: #62798d;
+            color:
+                #b8c5d3;
 
-    font-size: 9px;
+        }
 
-}
 
+        .chart-unavailable span {
 
-/* ================================================================
-   CHART LAYOUT
-   ================================================================ */
+            max-width: 420px;
 
-.chart-grid {
+            margin-top: 5px;
 
-    display: grid;
+            font-size: 10px;
 
-    grid-template-columns:
-        1.7fr 1fr;
+            color:
+                var(--muted);
 
-    gap: 15px;
+            line-height: 1.5;
 
-}
+        }
 
 
-.chart-grid-two {
+        /* ============================================================
+           INSIGHTS
+        ============================================================ */
 
-    display: grid;
+        .insights-section {
 
-    grid-template-columns:
-        1fr 1fr;
+            margin-top: 31px;
 
-    gap: 15px;
+            margin-bottom: 15px;
 
-}
+        }
 
 
-.chart-card {
+        .insights-card {
 
-    min-width: 0;
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(13,32,51,.99),
+                    rgba(16,40,63,.95)
+                );
 
-    padding: 18px;
+            border:
+                1px solid var(--border);
 
-    border: 1px solid var(--fi-border);
+            border-radius: 18px;
 
-    border-radius: 17px;
+            overflow: hidden;
 
-    background:
-        var(--fi-card);
+            box-shadow:
+                0 12px 38px
+                rgba(0,0,0,.16);
 
-}
+        }
 
 
-.chart-card-header {
+        .insights-header {
 
-    display: flex;
+            padding:
+                18px 20px;
 
-    justify-content: space-between;
+            border-bottom:
+                1px solid var(--border);
 
-    align-items: center;
+            display: flex;
 
-    gap: 12px;
+            align-items: center;
 
-    margin-bottom: 14px;
+            gap: 11px;
 
-}
+        }
 
 
-.chart-card-header h3 {
+        .insights-icon {
 
-    margin: 0;
+            width: 39px;
+            height: 39px;
 
-    color: white;
+            flex: 0 0 39px;
 
-    font-size: 13px;
+            border-radius: 11px;
 
-}
+            background:
+                rgba(255,159,67,.10);
 
+            border:
+                1px solid
+                rgba(255,159,67,.15);
 
-.chart-card-header span {
+            color:
+                var(--orange);
 
-    color: #637b90;
+            display: flex;
 
-    font-size: 9px;
+            align-items: center;
 
-}
+            justify-content: center;
 
+            font-size: 17px;
 
-.chart-wrap {
+        }
 
-    position: relative;
 
-    width: 100%;
+        .insights-header h2 {
 
-    height: 310px;
+            margin: 0;
 
-}
+            font-size: 15px;
 
+            font-weight: 800;
 
-.chart-wrap.small {
+            color: var(--text);
 
-    height: 280px;
+        }
 
-}
 
+        .insights-header p {
 
-/* ================================================================
-   EXPENSE SECTION
-   ================================================================ */
+            margin:
+                3px 0 0;
 
-.expense-grid {
+            font-size: 10px;
 
-    display: grid;
+            color: var(--muted);
 
-    grid-template-columns:
-        1fr 1.45fr;
+        }
 
-    gap: 15px;
 
-}
+        .insights-body {
 
+            padding:
+                17px 20px 20px;
 
-.expense-chart {
+            display: grid;
 
-    height: 320px;
+            gap: 10px;
 
-    position: relative;
+        }
 
-}
 
+        .insight-item {
 
-/* ================================================================
-   TABLE
-   ================================================================ */
+            display: flex;
 
-.table-wrap {
+            gap: 12px;
 
-    width: 100%;
+            padding: 13px;
 
-    overflow-x: auto;
+            border-radius: 12px;
 
-}
+            background:
+                rgba(6,17,31,.35);
 
+            border:
+                1px solid var(--border);
 
-.financial-table {
+        }
 
-    width: 100%;
 
-    border-collapse: collapse;
+        .insight-marker {
 
-}
+            flex:
+                0 0 8px;
 
+            width: 8px;
+            height: 8px;
 
-.financial-table th {
+            border-radius: 50%;
 
-    padding: 11px 13px;
+            margin-top: 6px;
 
-    border-bottom:
-        1px solid
-        rgba(255,255,255,.07);
+            background:
+                var(--purple);
 
-    color: #6d8398;
+            box-shadow:
+                0 0 10px
+                rgba(117,103,248,.45);
 
-    font-size: 9px;
+        }
 
-    font-weight: 800;
 
-    text-align: left;
+        .insight-item.positive .insight-marker {
 
-    text-transform: uppercase;
+            background:
+                var(--green);
 
-    white-space: nowrap;
+            box-shadow:
+                0 0 10px
+                rgba(57,217,138,.40);
 
-}
+        }
 
 
-.financial-table td {
+        .insight-item.warning .insight-marker {
 
-    padding: 13px;
+            background:
+                var(--orange);
 
-    border-bottom:
-        1px solid
-        rgba(255,255,255,.045);
+            box-shadow:
+                0 0 10px
+                rgba(255,159,67,.40);
 
-    color: #b9c6d2;
+        }
 
-    font-size: 10px;
 
-    white-space: nowrap;
+        .insight-item.info .insight-marker {
 
-}
+            background:
+                var(--blue);
 
+            box-shadow:
+                0 0 10px
+                rgba(63,169,245,.40);
 
-.financial-table tbody tr {
+        }
 
-    transition: .2s ease;
 
-}
+        .insight-content strong {
 
+            display: block;
 
-.financial-table tbody tr:hover {
+            font-size: 12px;
 
-    background:
-        rgba(118,104,255,.035);
+            color:
+                #dbe5ef;
 
-}
+            margin-bottom: 3px;
 
+        }
 
-.period {
 
-    color: white !important;
+        .insight-content span {
 
-    font-weight: 750;
+            display: block;
 
-}
+            font-size: 11px;
 
+            color:
+                var(--muted);
 
-.revenue-text {
+            line-height: 1.6;
 
-    color: var(--fi-blue) !important;
+        }
 
-}
 
+        .no-insights {
 
-.expense-text {
+            padding: 23px;
 
-    color: var(--fi-orange) !important;
+            text-align: center;
 
-}
+            color:
+                var(--muted);
 
+            font-size: 11px;
 
-.profit-text {
+        }
 
-    color: var(--fi-green) !important;
 
-    font-weight: 750;
+        /* ============================================================
+           RESPONSIVE
+        ============================================================ */
 
-}
+        @media (max-width: 1250px) {
 
+            .kpi-grid {
 
-/* ================================================================
-   HIGHLIGHTS
-   ================================================================ */
+                grid-template-columns:
+                    repeat(2,minmax(0,1fr));
 
-.highlight-grid {
+            }
 
-    display: grid;
 
-    grid-template-columns:
-        repeat(3,1fr);
+            .filter-form {
 
-    gap: 13px;
+                grid-template-columns:
+                    repeat(2,minmax(0,1fr));
 
-}
+            }
 
+        }
 
-.highlight {
 
-    padding: 17px;
+        @media (max-width: 900px) {
 
-    border: 1px solid var(--fi-border);
+            :root {
+                --sidebar-width: 230px;
+            }
 
-    border-radius: 15px;
 
-    background:
-        var(--fi-card);
+            .financial-page {
 
-}
+                padding:
+                    24px 20px 50px;
 
+            }
 
-.highlight span {
 
-    color: #6e8498;
+            .chart-grid {
 
-    font-size: 9px;
+                grid-template-columns:
+                    1fr;
 
-    font-weight: 800;
+            }
 
-    text-transform: uppercase;
 
-}
+            .chart-card.full-width {
 
+                grid-column:
+                    auto;
 
-.highlight strong {
+            }
 
-    display: block;
+        }
 
-    margin-top: 8px;
 
-    color: white;
+        @media (max-width: 700px) {
 
-    font-size: 18px;
+            /*
+             * On small screens the sidebar becomes part of the
+             * normal page width rather than covering content.
+             */
 
-}
+            html,
+            body {
 
+                overflow: auto;
 
-.highlight small {
+            }
 
-    display: block;
 
-    margin-top: 5px;
+            .smart-sidebar-wrapper {
 
-    color: #637a8f;
+                position: relative;
 
-    font-size: 9px;
+                width: 100%;
 
-}
+                height: auto;
 
+                max-height: 360px;
 
-/* ================================================================
-   INSIGHTS - ALWAYS AT BOTTOM
-   ================================================================ */
+            }
 
-.insights-panel {
 
-    padding: 21px;
+            .financial-main {
 
-    border: 1px solid
-        rgba(118,104,255,.19);
+                position: relative;
 
-    border-radius: 19px;
+                left: auto;
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(16,34,54,.98),
-            rgba(8,24,40,.98)
-        );
+                right: auto;
 
-}
+                top: auto;
 
+                bottom: auto;
 
-.insights-grid {
+                width: 100%;
 
-    display: grid;
+                height: auto;
 
-    grid-template-columns:
-        repeat(2,1fr);
+                min-height: calc(100vh - 360px);
 
-    gap: 12px;
+                overflow: visible;
 
-}
+            }
 
 
-.insight {
+            .financial-page {
 
-    display: flex;
+                padding:
+                    20px 15px 40px;
 
-    gap: 12px;
+            }
 
-    padding: 15px;
 
-    border: 1px solid
-        rgba(255,255,255,.05);
+            .filter-form {
 
-    border-radius: 13px;
+                grid-template-columns:
+                    1fr;
 
-    background:
-        rgba(7,20,34,.72);
+            }
 
-}
 
+            .custom-date-row {
 
-.insight-line {
+                grid-template-columns:
+                    1fr;
 
-    flex: 0 0 4px;
+            }
 
-    border-radius: 10px;
 
-    background:
-        var(--fi-primary);
+            .kpi-grid {
 
-}
+                grid-template-columns:
+                    1fr;
 
+            }
 
-.insight.positive .insight-line {
 
-    background:
-        var(--fi-green);
+            .financial-title h1 {
 
-}
+                font-size: 25px;
 
+            }
 
-.insight.warning .insight-line {
 
-    background:
-        var(--fi-orange);
+            .section-heading {
 
-}
+                align-items:
+                    flex-start;
 
+                flex-direction:
+                    column;
 
-.insight.negative .insight-line {
+            }
 
-    background:
-        var(--fi-red);
+        }
 
-}
 
+    </style>
 
-.insight.info .insight-line {
+</head>
 
-    background:
-        var(--fi-blue);
 
-}
-
-
-.insight.neutral .insight-line {
-
-    background:
-        #8da2b5;
-
-}
-
-
-.insight-icon {
-
-    width: 35px;
-
-    height: 35px;
-
-    flex: 0 0 35px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 9px;
-
-    background:
-        rgba(118,104,255,.09);
-
-    color: #a39cff;
-
-}
-
-
-.insight-content h4 {
-
-    margin: 0 0 5px;
-
-    color: white;
-
-    font-size: 12px;
-
-}
-
-
-.insight-content p {
-
-    margin: 0;
-
-    color: #8094a8;
-
-    font-size: 10px;
-
-    line-height: 1.65;
-
-}
-
-
-/* ================================================================
-   DATA CONFIGURATION
-   ================================================================ */
-
-.data-grid {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(4,1fr);
-
-    gap: 10px;
-
-}
-
-
-.data-item {
-
-    padding: 13px;
-
-    border: 1px solid var(--fi-border);
-
-    border-radius: 12px;
-
-    background:
-        var(--fi-card-soft);
-
-}
-
-
-.data-item span {
-
-    display: block;
-
-    margin-bottom: 6px;
-
-    color: #657c91;
-
-    font-size: 8px;
-
-    font-weight: 800;
-
-    text-transform: uppercase;
-
-}
-
-
-.data-item strong {
-
-    color: #d2dce5;
-
-    font-size: 10px;
-
-    word-break: break-word;
-
-}
-
-
-/* ================================================================
-   EMPTY STATE
-   ================================================================ */
-
-.empty-state {
-
-    padding: 75px 25px;
-
-    text-align: center;
-
-    border: 1px dashed
-        rgba(118,104,255,.25);
-
-    border-radius: 18px;
-
-    background:
-        var(--fi-card);
-
-}
-
-
-.empty-icon {
-
-    width: 65px;
-
-    height: 65px;
-
-    margin:
-        0 auto 15px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 18px;
-
-    background:
-        rgba(118,104,255,.1);
-
-    color: #a39cff;
-
-    font-size: 25px;
-
-}
-
-
-.empty-state h2 {
-
-    margin: 0 0 7px;
-
-    color: white;
-
-    font-size: 19px;
-
-}
-
-
-.empty-state p {
-
-    max-width: 600px;
-
-    margin: auto;
-
-    color: #71879b;
-
-    font-size: 11px;
-
-    line-height: 1.7;
-
-}
-
-
-/* ================================================================
-   RESPONSIVE
-   ================================================================ */
-
-@media (max-width: 1250px) {
-
-    .kpi-grid {
-
-        grid-template-columns:
-            repeat(2,1fr);
-
-    }
-
-    .metric-grid {
-
-        grid-template-columns:
-            repeat(2,1fr);
-
-    }
-
-    .comparison-grid {
-
-        grid-template-columns:
-            repeat(2,1fr);
-
-    }
-
-    .data-grid {
-
-        grid-template-columns:
-            repeat(2,1fr);
-
-    }
-
-}
-
-
-@media (max-width: 1000px) {
-
-    .financial-sidebar {
-
-        flex-basis: 230px;
-
-        width: 230px;
-
-    }
-
-    .financial-page {
-
-        padding: 20px;
-
-    }
-
-    .filter-grid {
-
-        grid-template-columns:
-            repeat(2,1fr);
-
-    }
-
-    .chart-grid,
-    .chart-grid-two,
-    .expense-grid {
-
-        grid-template-columns:
-            1fr;
-
-    }
-
-    .highlight-grid {
-
-        grid-template-columns:
-            1fr;
-
-    }
-
-    .insights-grid {
-
-        grid-template-columns:
-            1fr;
-
-    }
-
-}
-
-
-@media (max-width: 700px) {
-
-    .financial-sidebar {
-
-        display: none;
-
-    }
-
-    .financial-page {
-
-        padding: 15px;
-
-    }
-
-    .financial-header {
-
-        flex-direction: column;
-
-    }
-
-    .header-status {
-
-        justify-content: flex-start;
-
-    }
-
-    .filter-grid {
-
-        grid-template-columns:
-            1fr;
-
-    }
-
-    .custom-date-row.show {
-
-        grid-template-columns:
-            1fr;
-
-    }
-
-    .kpi-grid,
-    .metric-grid,
-    .comparison-grid,
-    .data-grid {
-
-        grid-template-columns:
-            1fr;
-
-    }
-
-    .chart-wrap {
-
-        height: 250px;
-
-    }
-
-}
-
-</style>
-
-
-<!-- ================================================================
-     APPLICATION SHELL
-     ================================================================ -->
-
-<div class="financial-shell">
+<body>
 
 
     <!-- ============================================================
          INDEPENDENT SIDEBAR
-         ============================================================ -->
+    ============================================================= -->
 
-    <aside class="financial-sidebar">
+    <aside class="smart-sidebar-wrapper">
 
         {% include "includes/smart_sidebar.html" %}
 
@@ -1787,8 +1616,8 @@ body {
 
 
     <!-- ============================================================
-         INDEPENDENT MAIN SCROLL
-         ============================================================ -->
+         INDEPENDENT MAIN SCROLL AREA
+    ============================================================= -->
 
     <main class="financial-main">
 
@@ -1797,9 +1626,9 @@ body {
 
             <!-- ====================================================
                  HEADER
-                 ==================================================== -->
+            ===================================================== -->
 
-            <header class="financial-header">
+            <div class="financial-header">
 
                 <div class="financial-title">
 
@@ -1808,101 +1637,60 @@ body {
                     </h1>
 
                     <p>
-                        Advanced financial analytics for
-                        revenue, expenses, profitability,
-                        margins, cost structure and cash flow.
+                        Analyze revenue, costs, profitability,
+                        expenses and cash-flow performance.
                     </p>
-
-                </div>
-
-
-                <div class="header-status">
-
-                    {% if financial_domain_filtered %}
-
-                    <div class="status">
-
-                        <i class="fa-solid fa-shield-check"></i>
-
-                        Financial Data Only
-
-                    </div>
-
-                    {% endif %}
-
 
                     {% if selected_dataset %}
 
-                    <div class="status">
+                        <div class="financial-badge">
 
-                        <i class="fa-solid fa-database"></i>
+                            <span>●</span>
 
-                        {{ selected_dataset.name }}
+                            Financial Analytics Active
 
-                    </div>
+                        </div>
 
                     {% endif %}
 
                 </div>
 
-            </header>
+            </div>
 
 
             <!-- ====================================================
-                 FILTER PANEL
-                 ==================================================== -->
+                 FILTERS
+            ===================================================== -->
 
-            <form
-                method="get"
-                class="filter-panel"
-                id="financialFilterForm"
-            >
+            <div class="filter-card">
 
-                <div class="filter-heading">
+                <form
+                    method="get"
+                    class="filter-form"
+                    id="financialFilterForm"
+                >
 
-                    <div>
+                    <div class="filter-group">
 
-                        <h2>
-                            <i class="fa-solid fa-sliders"></i>
-                            Financial Analysis Filters
-                        </h2>
-
-                        <p>
-                            Select dataset, category and analysis period.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="filter-grid">
-
-
-                    <!-- DATASET -->
-
-                    <div class="field">
-
-                        <label>
-                            Dataset
+                        <label for="financialDataset">
+                            Financial Dataset
                         </label>
 
                         <select
                             name="dataset"
+                            id="financialDataset"
                         >
 
-                            {% for dataset in datasets %}
+                            {% for dataset in financial_datasets %}
 
-                            <option
-                                value="{{ dataset.id }}"
-                                {% if selected_dataset and selected_dataset.id == dataset.id %}
-                                selected
-                                {% endif %}
-                            >
-
-                                {{ dataset.name }}
-
-                            </option>
+                                <option
+                                    value="{{ dataset.id }}"
+                                    {% if selected_dataset and selected_dataset.id == dataset.id %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ dataset.name }}
+                                </option>
 
                             {% endfor %}
 
@@ -1911,753 +1699,488 @@ body {
                     </div>
 
 
-                    <!-- CATEGORY -->
+                    <div class="filter-group">
 
-                    <div class="field">
-
-                        <label>
-                            Financial Category
-                        </label>
-
-                        <select
-                            name="financial_category"
-                        >
-
-                            <option
-                                value="all"
-                                {% if selected_category == "all" %}
-                                selected
-                                {% endif %}
-                            >
-
-                                All Financial Categories
-
-                            </option>
-
-
-                            {% for category in financial_categories %}
-
-                            <option
-                                value="{{ category }}"
-                                {% if selected_category == category %}
-                                selected
-                                {% endif %}
-                            >
-
-                                {{ category }}
-
-                            </option>
-
-                            {% endfor %}
-
-                        </select>
-
-                    </div>
-
-
-                    <!-- DATE RANGE -->
-
-                    <div class="field">
-
-                        <label>
-                            Date Range
+                        <label for="financialRange">
+                            Analysis Period
                         </label>
 
                         <select
                             name="range"
-                            id="rangeSelector"
+                            id="financialRange"
                         >
 
-                            {% for key, label in date_range_options.items %}
+                            {% for value, label in date_range_options %}
 
-                            <option
-                                value="{{ key }}"
-                                {% if selected_range == key %}
-                                selected
-                                {% endif %}
-                            >
-
-                                {{ label }}
-
-                            </option>
+                                <option
+                                    value="{{ value }}"
+                                    {% if selected_range == value %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ label }}
+                                </option>
 
                             {% endfor %}
-
-
-                            <option
-                                value="custom"
-                                {% if selected_range == "custom" %}
-                                selected
-                                {% endif %}
-                            >
-
-                                Custom Date Range
-
-                            </option>
 
                         </select>
 
                     </div>
 
 
-                    <!-- APPLY -->
+                    <div class="filter-group">
+
+                        <label>
+                            Available Data
+                        </label>
+
+                        <input
+                            type="text"
+                            readonly
+                            value="{% if available_from_date and available_to_date %}{{ available_from_date }} → {{ available_to_date }}{% else %}Date range unavailable{% endif %}"
+                        >
+
+                    </div>
+
 
                     <button
                         type="submit"
-                        class="apply-btn"
+                        class="filter-button"
                     >
-
-                        <i class="fa-solid fa-filter"></i>
-
                         Apply Filters
-
                     </button>
 
-                </div>
+
+                    <div
+                        class="custom-date-row"
+                        id="customDateRow"
+                    >
+
+                        <div class="filter-group">
+
+                            <label for="financialFromDate">
+                                From Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="financialFromDate"
+                                name="from_date"
+                                value="{% if analysis_from_date %}{{ analysis_from_date|date:'Y-m-d' }}{% endif %}"
+                            >
+
+                        </div>
 
 
-                <!-- =================================================
-                     CUSTOM DATE
-                     ================================================= -->
+                        <div class="filter-group">
 
-                <div
-                    class="custom-date-row {% if selected_range == 'custom' %}show{% endif %}"
-                    id="customDateFields"
-                >
+                            <label for="financialToDate">
+                                To Date
+                            </label>
 
-                    <div class="field">
+                            <input
+                                type="date"
+                                id="financialToDate"
+                                name="to_date"
+                                value="{% if analysis_to_date %}{{ analysis_to_date|date:'Y-m-d' }}{% endif %}"
+                            >
 
-                        <label>
-                            From Date
-                        </label>
-
-                        <input
-                            type="date"
-                            name="start"
-                            value="{{ custom_start }}"
-                        >
-
-                    </div>
-
-
-                    <div class="field">
-
-                        <label>
-                            To Date
-                        </label>
-
-                        <input
-                            type="date"
-                            name="end"
-                            value="{{ custom_end }}"
-                        >
+                        </div>
 
                     </div>
 
-                </div>
-
-
-                <!-- FILTER STATUS -->
-
-                <div class="filter-chips">
-
-                    {% if financial_domain_filtered %}
-
-                    <div class="chip">
-
-                        <i class="fa-solid fa-check"></i>
-
-                        Financial records isolated
-
-                    </div>
-
-                    {% endif %}
-
-
-                    <div class="chip">
-
-                        <i class="fa-solid fa-calendar"></i>
-
-                        {{ date_range.range_label }}
-
-                    </div>
-
-
-                    {% if selected_category != "all" %}
-
-                    <div class="chip">
-
-                        <i class="fa-solid fa-tag"></i>
-
-                        {{ selected_category }}
-
-                    </div>
-
-                    {% endif %}
-
-                </div>
-
-            </form>
-
-
-            <!-- ====================================================
-                 ERROR
-                 ==================================================== -->
-
-            {% if error_message %}
-
-            <div class="error-box">
-
-                <h3>
-
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-
-                    Financial analysis could not be completed
-
-                </h3>
-
-                <p>
-
-                    {{ error_message }}
-
-                </p>
-
-            </div>
-
-            {% endif %}
-
-
-            <!-- ====================================================
-                 NO DATA
-                 ==================================================== -->
-
-            {% if not datasets %}
-
-            <div class="empty-state">
-
-                <div class="empty-icon">
-
-                    <i class="fa-solid fa-chart-pie"></i>
-
-                </div>
-
-                <h2>
-                    No business dataset available
-                </h2>
-
-                <p>
-                    Upload a cleaned CSV or Excel dataset
-                    through Data Management before opening
-                    Financial Intelligence.
-                </p>
+                </form>
 
             </div>
 
 
-            {% elif not has_data %}
-
-            <div class="empty-state">
-
-                <div class="empty-icon">
-
-                    <i class="fa-solid fa-money-bill-trend-up"></i>
-
-                </div>
-
-                <h2>
-                    Financial data is not available
-                </h2>
-
-                <p>
-                    The selected dataset does not contain
-                    the required financial fields.
-                    Revenue/sales, expenses/costs and
-                    a date column are required.
-                </p>
-
-            </div>
-
-
-            {% else %}
-
-
             <!-- ====================================================
-                 KPI CARDS
-                 ==================================================== -->
+                 DATASET INFORMATION
+            ===================================================== -->
 
-            <section class="kpi-grid">
+            {% if selected_dataset %}
 
+                <div class="dataset-info">
 
-                <!-- REVENUE -->
+                    <div class="dataset-main">
 
-                <div class="kpi kpi-blue">
-
-                    <div class="kpi-icon">
-
-                        <i class="fa-solid fa-indian-rupee-sign"></i>
-
-                    </div>
-
-                    <div class="kpi-label">
-                        Total Revenue
-                    </div>
-
-                    <div class="kpi-value">
-                        ₹{{ total_revenue|floatformat:0 }}
-                    </div>
-
-                    <div class="kpi-sub">
-                        Revenue generated during the selected period.
-                    </div>
-
-                </div>
-
-
-                <!-- EXPENSE -->
-
-                <div class="kpi kpi-orange">
-
-                    <div class="kpi-icon">
-
-                        <i class="fa-solid fa-wallet"></i>
-
-                    </div>
-
-                    <div class="kpi-label">
-                        Total Expenses
-                    </div>
-
-                    <div class="kpi-value">
-                        ₹{{ total_expenses|floatformat:0 }}
-                    </div>
-
-                    <div class="kpi-sub">
-                        Total recorded business expenses.
-                    </div>
-
-                </div>
-
-
-                <!-- GROSS PROFIT -->
-
-                <div class="kpi">
-
-                    <div class="kpi-icon">
-
-                        <i class="fa-solid fa-layer-group"></i>
-
-                    </div>
-
-                    <div class="kpi-label">
-                        Gross Profit
-                    </div>
-
-                    <div class="kpi-value">
-                        ₹{{ gross_profit|floatformat:0 }}
-                    </div>
-
-                    <div class="kpi-sub">
-                        Revenue minus cost of goods sold.
-                    </div>
-
-                </div>
-
-
-                <!-- NET PROFIT -->
-
-                <div class="kpi kpi-green">
-
-                    <div class="kpi-icon">
-
-                        <i class="fa-solid fa-chart-line"></i>
-
-                    </div>
-
-                    <div class="kpi-label">
-                        Net Profit
-                    </div>
-
-                    <div
-                        class="kpi-value {% if net_profit >= 0 %}positive{% else %}negative{% endif %}"
-                    >
-
-                        ₹{{ net_profit|floatformat:0 }}
-
-                    </div>
-
-                    <div class="kpi-sub">
-                        Revenue minus all recorded expenses.
-                    </div>
-
-                </div>
-
-
-                <!-- GROSS MARGIN -->
-
-                <div class="kpi">
-
-                    <div class="kpi-icon">
-                        %
-                    </div>
-
-                    <div class="kpi-label">
-                        Gross Margin
-                    </div>
-
-                    <div class="kpi-value">
-                        {{ gross_margin|floatformat:1 }}%
-                    </div>
-
-                    <div class="kpi-sub">
-                        Gross profit as a percentage of revenue.
-                    </div>
-
-                </div>
-
-
-                <!-- NET MARGIN -->
-
-                <div class="kpi kpi-green">
-
-                    <div class="kpi-icon">
-                        %
-                    </div>
-
-                    <div class="kpi-label">
-                        Net Margin
-                    </div>
-
-                    <div
-                        class="kpi-value {% if net_margin >= 0 %}positive{% else %}negative{% endif %}"
-                    >
-
-                        {{ net_margin|floatformat:1 }}%
-
-                    </div>
-
-                    <div class="kpi-sub">
-                        Net profit as a percentage of revenue.
-                    </div>
-
-                </div>
-
-
-                <!-- OPERATING EXPENSE -->
-
-                <div class="kpi kpi-yellow">
-
-                    <div class="kpi-icon">
-
-                        <i class="fa-solid fa-gears"></i>
-
-                    </div>
-
-                    <div class="kpi-label">
-                        Operating Expenses
-                    </div>
-
-                    <div class="kpi-value">
-                        ₹{{ operating_expenses|floatformat:0 }}
-                    </div>
-
-                    <div class="kpi-sub">
-                        OPEX or estimated expenses after COGS.
-                    </div>
-
-                </div>
-
-
-                <!-- CASH FLOW -->
-
-                <div class="kpi kpi-green">
-
-                    <div class="kpi-icon">
-
-                        <i class="fa-solid fa-money-bill-transfer"></i>
-
-                    </div>
-
-                    <div class="kpi-label">
-                        Net Cash Flow
-                    </div>
-
-                    {% if cash_flow_available %}
-
-                    <div
-                        class="kpi-value {% if net_cash_flow >= 0 %}positive{% else %}negative{% endif %}"
-                    >
-
-                        ₹{{ net_cash_flow|floatformat:0 }}
-
-                    </div>
-
-                    <div class="kpi-sub">
-                        Cash inflows minus cash outflows.
-                    </div>
-
-                    {% else %}
-
-                    <div class="kpi-value">
-                        —
-                    </div>
-
-                    <div class="kpi-sub">
-                        Cash-flow columns not available.
-                    </div>
-
-                    {% endif %}
-
-                </div>
-
-            </section>
-
-
-            <!-- ====================================================
-                 SECONDARY METRICS
-                 ==================================================== -->
-
-            <section class="metric-grid">
-
-
-                <div class="metric">
-
-                    <span>
-                        COGS
-                    </span>
-
-                    <strong>
-                        ₹{{ cogs|floatformat:0 }}
-                    </strong>
-
-                    <small>
-                        Direct cost of goods sold
-                    </small>
-
-                </div>
-
-
-                <div class="metric">
-
-                    <span>
-                        Expense Ratio
-                    </span>
-
-                    <strong>
-                        {{ expense_ratio|floatformat:1 }}%
-                    </strong>
-
-                    <small>
-                        Expenses relative to revenue
-                    </small>
-
-                </div>
-
-
-                <div class="metric">
-
-                    <span>
-                        Cash Inflow
-                    </span>
-
-                    <strong>
-
-                        {% if cash_flow_available %}
-
-                        ₹{{ cash_inflow|floatformat:0 }}
-
-                        {% else %}
-
-                        —
-
-                        {% endif %}
-
-                    </strong>
-
-                    <small>
-                        Recorded cash receipts
-                    </small>
-
-                </div>
-
-
-                <div class="metric">
-
-                    <span>
-                        Cash Outflow
-                    </span>
-
-                    <strong>
-
-                        {% if cash_flow_available %}
-
-                        ₹{{ cash_outflow|floatformat:0 }}
-
-                        {% else %}
-
-                        —
-
-                        {% endif %}
-
-                    </strong>
-
-                    <small>
-                        Recorded cash payments
-                    </small>
-
-                </div>
-
-            </section>
-
-
-            <!-- ====================================================
-                 PERIOD COMPARISON
-                 ==================================================== -->
-
-            {% if comparison_available %}
-
-            <section class="section">
-
-                <div class="comparison">
-
-                    <div class="section-header">
+                        <div class="dataset-icon">
+                            ₹
+                        </div>
 
                         <div>
 
-                            <h2>
-                                Period Performance
-                            </h2>
+                            <div class="dataset-name">
+                                {{ selected_dataset.name }}
+                            </div>
 
-                            <p>
-                                Current period compared with the
-                                previous equivalent period.
-                            </p>
+                            <div class="dataset-meta">
 
-                        </div>
+                                {% if analysis_from_date and analysis_to_date %}
 
-                        <span class="section-tag">
-                            COMPARISON
-                        </span>
+                                    Analysis:
+                                    {{ analysis_from_date }}
+                                    →
+                                    {{ analysis_to_date }}
 
-                    </div>
+                                {% else %}
 
+                                    Full available financial dataset
 
-                    <div class="comparison-grid">
+                                {% endif %}
 
-
-                        <div class="comparison-box">
-
-                            <span>
-                                Revenue Change
-                            </span>
-
-                            <strong
-                                class="{% if revenue_change >= 0 %}positive{% else %}negative{% endif %}"
-                            >
-
-                                {{ revenue_change|floatformat:1 }}%
-
-                            </strong>
-
-                            <small>
-                                Versus previous period
-                            </small>
-
-                        </div>
-
-
-                        <div class="comparison-box">
-
-                            <span>
-                                Expense Change
-                            </span>
-
-                            <strong
-                                class="{% if expense_change <= 0 %}positive{% else %}negative{% endif %}"
-                            >
-
-                                {{ expense_change|floatformat:1 }}%
-
-                            </strong>
-
-                            <small>
-                                Versus previous period
-                            </small>
-
-                        </div>
-
-
-                        <div class="comparison-box">
-
-                            <span>
-                                Profit Change
-                            </span>
-
-                            <strong
-                                class="{% if profit_change >= 0 %}positive{% else %}negative{% endif %}"
-                            >
-
-                                {{ profit_change|floatformat:1 }}%
-
-                            </strong>
-
-                            <small>
-                                Versus previous period
-                            </small>
-
-                        </div>
-
-
-                        <div class="comparison-box">
-
-                            <span>
-                                Margin Change
-                            </span>
-
-                            <strong
-                                class="{% if margin_change >= 0 %}positive{% else %}negative{% endif %}"
-                            >
-
-                                {{ margin_change|floatformat:1 }} pp
-
-                            </strong>
-
-                            <small>
-                                Percentage points
-                            </small>
+                            </div>
 
                         </div>
 
                     </div>
+
+
+                    {% if selected_version %}
+
+                        <div class="version-badge">
+
+                            Version
+                            {{ selected_version.version_number }}
+
+                            {% if selected_version.version_type %}
+
+                                ·
+                                {{ selected_version.version_type }}
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endif %}
 
                 </div>
-
-            </section>
 
             {% endif %}
 
 
             <!-- ====================================================
-                 REVENUE VS EXPENSE + MONTHLY PROFIT
-                 ==================================================== -->
+                 ERROR / WARNING
+            ===================================================== -->
 
-            <section class="section">
+            {% if error %}
 
-                <div class="section-header">
+                <div class="alert-box alert-error">
+                    {{ error }}
+                </div>
 
-                    <div>
+            {% endif %}
 
-                        <h2>
-                            Financial Performance
-                        </h2>
 
-                        <p>
-                            Revenue, expenses and monthly profitability.
-                        </p>
+            {% if warning %}
+
+                <div class="alert-box alert-warning">
+                    {{ warning }}
+                </div>
+
+            {% endif %}
+
+
+            {% if not error %}
+
+
+                <!-- ================================================
+                     KPI SECTION
+                ================================================= -->
+
+                <div class="section-heading">
+
+                    <h2>
+                        Financial Overview
+                    </h2>
+
+                    {% if analysis_from_date and analysis_to_date %}
+
+                        <span>
+                            {{ analysis_from_date }}
+                            →
+                            {{ analysis_to_date }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="kpi-grid">
+
+
+                    <!-- TOTAL REVENUE -->
+
+                    <div class="kpi-card kpi-purple">
+
+                        <div class="kpi-label">
+                            Total Revenue
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.total_revenue is not None %}
+
+                                ₹{{ metrics.total_revenue|floatformat:2 }}
+
+                            {% else %}
+
+                                <span class="unavailable-value">
+                                    Not available
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Recorded revenue
+                        </div>
 
                     </div>
 
-                    <span class="section-tag">
-                        MONTHLY
+
+                    <!-- TOTAL COST -->
+
+                    <div class="kpi-card kpi-orange">
+
+                        <div class="kpi-label">
+                            Total Cost
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.total_cost is not None %}
+
+                                ₹{{ metrics.total_cost|floatformat:2 }}
+
+                            {% else %}
+
+                                <span class="unavailable-value">
+                                    Not available
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Recorded costs
+                        </div>
+
+                    </div>
+
+
+                    <!-- GROSS PROFIT -->
+
+                    <div class="kpi-card kpi-green">
+
+                        <div class="kpi-label">
+                            Gross Profit
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.gross_profit is not None %}
+
+                                ₹{{ metrics.gross_profit|floatformat:2 }}
+
+                            {% else %}
+
+                                <span class="unavailable-value">
+                                    Not available
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Revenue less cost
+                        </div>
+
+                    </div>
+
+
+                    <!-- NET PROFIT -->
+
+                    <div class="kpi-card kpi-blue">
+
+                        <div class="kpi-label">
+                            Net Profit
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.net_profit is not None %}
+
+                                ₹{{ metrics.net_profit|floatformat:2 }}
+
+                            {% else %}
+
+                                <span class="unavailable-value">
+                                    Not available
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            After expenses & tax
+                        </div>
+
+                    </div>
+
+
+                    <!-- PROFIT MARGIN -->
+
+                    <div class="kpi-card kpi-indigo">
+
+                        <div class="kpi-label">
+                            Profit Margin
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.profit_margin is not None %}
+
+                                {{ metrics.profit_margin|floatformat:2 }}%
+
+                            {% else %}
+
+                                <span class="unavailable-value">
+                                    Not available
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Net profit / revenue
+                        </div>
+
+                    </div>
+
+
+                    <!-- EXPENSES -->
+
+                    <div class="kpi-card kpi-pink">
+
+                        <div class="kpi-label">
+                            Total Expenses
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.total_expenses is not None %}
+
+                                ₹{{ metrics.total_expenses|floatformat:2 }}
+
+                            {% else %}
+
+                                <span class="unavailable-value">
+                                    Not available
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Recorded expenses
+                        </div>
+
+                    </div>
+
+
+                    <!-- CASH FLOW -->
+
+                    <div class="kpi-card kpi-cyan">
+
+                        <div class="kpi-label">
+                            Net Cash Flow
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.net_cash_flow is not None %}
+
+                                ₹{{ metrics.net_cash_flow|floatformat:2 }}
+
+                            {% else %}
+
+                                <span class="unavailable-value">
+                                    Not available
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Inflow − outflow
+                        </div>
+
+                    </div>
+
+
+                    <!-- REVENUE GROWTH -->
+
+                    <div class="kpi-card kpi-red">
+
+                        <div class="kpi-label">
+                            Revenue Growth
+                        </div>
+
+                        <div class="kpi-value">
+
+                            {% if metrics.revenue_growth is not None %}
+
+                                {% if metrics.revenue_growth > 0 %}
+
+                                    +{{ metrics.revenue_growth|floatformat:2 }}%
+
+                                {% else %}
+
+                                    {{ metrics.revenue_growth|floatformat:2 }}%
+
+                                {% endif %}
+
+                            {% else %}
+
+                                <span class="unavailable-value">
+                                    Not available
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                        <div class="kpi-subtitle">
+                            Compared with previous period
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ================================================
+                     CHART SECTION
+                ================================================= -->
+
+                <div class="section-heading">
+
+                    <h2>
+                        Financial Analytics
+                    </h2>
+
+                    <span>
+                        Current dataset version
                     </span>
 
                 </div>
@@ -2666,1708 +2189,824 @@ body {
                 <div class="chart-grid">
 
 
-                    <!-- REVENUE VS EXPENSE -->
+                    <!-- ============================================
+                         REVENUE TREND
+                    ============================================= -->
 
-                    <div class="chart-card">
+                    <div class="chart-card full-width">
 
-                        <div class="chart-card-header">
+                        <div class="chart-header">
 
-                            <h3>
-                                Revenue vs Expenses
-                            </h3>
+                            <div>
 
-                            <span>
-                                Monthly performance
-                            </span>
+                                <div class="chart-title">
+                                    Revenue, Cost & Profit Trend
+                                </div>
 
-                        </div>
+                                <div class="chart-description">
+                                    Financial movement over time
+                                </div>
 
-                        <div class="chart-wrap">
-
-                            <canvas
-                                id="revenueExpenseChart"
-                            ></canvas>
+                            </div>
 
                         </div>
+
+
+                        {% if chart_data.revenue_trend %}
+
+                            <div class="chart-container tall">
+
+                                <canvas
+                                    id="revenueTrendChart"
+                                ></canvas>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="chart-unavailable">
+
+                                <div class="chart-unavailable-icon">
+                                    $
+                                </div>
+
+                                <strong>
+                                    Financial trend unavailable
+                                </strong>
+
+                                <span>
+                                    A compatible date and financial
+                                    value column are required.
+                                </span>
+
+                            </div>
+
+                        {% endif %}
 
                     </div>
 
 
-                    <!-- MONTHLY PROFIT -->
+                    <!-- ============================================
+                         REVENUE VS COST
+                    ============================================= -->
 
                     <div class="chart-card">
 
-                        <div class="chart-card-header">
+                        <div class="chart-header">
 
-                            <h3>
-                                Monthly Profit
-                            </h3>
+                            <div>
 
-                            <span>
-                                Net profit
-                            </span>
+                                <div class="chart-title">
+                                    Revenue vs Cost
+                                </div>
 
-                        </div>
+                                <div class="chart-description">
+                                    Overall revenue and cost comparison
+                                </div>
 
-                        <div class="chart-wrap">
-
-                            <canvas
-                                id="monthlyProfitChart"
-                            ></canvas>
+                            </div>
 
                         </div>
+
+
+                        {% if chart_data.revenue_vs_cost %}
+
+                            <div class="chart-container">
+
+                                <canvas
+                                    id="revenueCostChart"
+                                ></canvas>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="chart-unavailable">
+
+                                <div class="chart-unavailable-icon">
+                                    ↔
+                                </div>
+
+                                <strong>
+                                    Revenue vs Cost unavailable
+                                </strong>
+
+                                <span>
+                                    Revenue and cost data are required.
+                                </span>
+
+                            </div>
+
+                        {% endif %}
 
                     </div>
+
+
+                    <!-- ============================================
+                         PROFIT BY CATEGORY
+                    ============================================= -->
+
+                    <div class="chart-card">
+
+                        <div class="chart-header">
+
+                            <div>
+
+                                <div class="chart-title">
+                                    Profit by Category
+                                </div>
+
+                                <div class="chart-description">
+                                    Financial performance across
+                                    categories
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        {% if chart_data.profit_by_category %}
+
+                            <div class="chart-container">
+
+                                <canvas
+                                    id="profitCategoryChart"
+                                ></canvas>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="chart-unavailable">
+
+                                <div class="chart-unavailable-icon">
+                                    ◈
+                                </div>
+
+                                <strong>
+                                    Category analysis unavailable
+                                </strong>
+
+                                <span>
+                                    Category and financial value
+                                    columns are required.
+                                </span>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- ============================================
+                         EXPENSE BREAKDOWN
+                    ============================================= -->
+
+                    <div class="chart-card">
+
+                        <div class="chart-header">
+
+                            <div>
+
+                                <div class="chart-title">
+                                    Expense Breakdown
+                                </div>
+
+                                <div class="chart-description">
+                                    Expense distribution by category
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        {% if chart_data.expense_breakdown %}
+
+                            <div class="chart-container">
+
+                                <canvas
+                                    id="expenseBreakdownChart"
+                                ></canvas>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="chart-unavailable">
+
+                                <div class="chart-unavailable-icon">
+                                    %
+                                </div>
+
+                                <strong>
+                                    Expense breakdown unavailable
+                                </strong>
+
+                                <span>
+                                    Expense and category columns
+                                    are required.
+                                </span>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- ============================================
+                         CASH FLOW
+                    ============================================= -->
+
+                    <div class="chart-card">
+
+                        <div class="chart-header">
+
+                            <div>
+
+                                <div class="chart-title">
+                                    Cash Flow Trend
+                                </div>
+
+                                <div class="chart-description">
+                                    Daily cash inflow, outflow and
+                                    net flow
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        {% if chart_data.cash_flow_trend %}
+
+                            <div class="chart-container">
+
+                                <canvas
+                                    id="cashFlowChart"
+                                ></canvas>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="chart-unavailable">
+
+                                <div class="chart-unavailable-icon">
+                                    ⇅
+                                </div>
+
+                                <strong>
+                                    Cash flow unavailable
+                                </strong>
+
+                                <span>
+                                    Date, cash inflow and cash
+                                    outflow columns are required.
+                                </span>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- ============================================
+                         REGIONAL FINANCIAL PERFORMANCE
+                    ============================================= -->
+
+                    <div class="chart-card full-width">
+
+                        <div class="chart-header">
+
+                            <div>
+
+                                <div class="chart-title">
+                                    Regional Financial Performance
+                                </div>
+
+                                <div class="chart-description">
+                                    Revenue, cost and profit across
+                                    regions
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        {% if chart_data.financial_by_region %}
+
+                            <div class="chart-container tall">
+
+                                <canvas
+                                    id="financialRegionChart"
+                                ></canvas>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="chart-unavailable">
+
+                                <div class="chart-unavailable-icon">
+                                    ◉
+                                </div>
+
+                                <strong>
+                                    Regional financial analysis
+                                    unavailable
+                                </strong>
+
+                                <span>
+                                    Region and financial value columns
+                                    are required.
+                                </span>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- ============================================
+                         TRANSACTION DISTRIBUTION
+                    ============================================= -->
+
+                    <div class="chart-card full-width">
+
+                        <div class="chart-header">
+
+                            <div>
+
+                                <div class="chart-title">
+                                    Transaction Value Distribution
+                                </div>
+
+                                <div class="chart-description">
+                                    Financial transaction concentration
+                                    by value band
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        {% if chart_data.transaction_distribution %}
+
+                            <div class="chart-container">
+
+                                <canvas
+                                    id="transactionDistributionChart"
+                                ></canvas>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="chart-unavailable">
+
+                                <div class="chart-unavailable-icon">
+                                    #
+                                </div>
+
+                                <strong>
+                                    Transaction distribution
+                                    unavailable
+                                </strong>
+
+                                <span>
+                                    Revenue data is required to
+                                    calculate transaction value bands.
+                                </span>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
 
                 </div>
 
-            </section>
+
+                <!-- ================================================
+                     DATA AVAILABILITY
+                ================================================= -->
+
+                {% if unavailable_charts %}
+
+                    <div class="section-heading">
+
+                        <h2>
+                            Data Availability
+                        </h2>
+
+                        <span>
+                            Some analytics could not be calculated
+                        </span>
+
+                    </div>
 
 
-            <!-- ====================================================
-                 MARGIN + CASH FLOW
-                 ==================================================== -->
+                    <div class="alert-box alert-warning">
 
-            <section class="section">
+                        <strong>
+                            The following analytics are unavailable:
+                        </strong>
 
-                <div class="chart-grid-two">
+                        <ul
+                            style="
+                                margin:8px 0 0 18px;
+                                padding:0;
+                            "
+                        >
 
+                            {% for chart in unavailable_charts %}
 
-                    <!-- MARGIN -->
+                                <li>
+                                    {{ chart }}
+                                </li>
 
-                    <div class="chart-card">
+                            {% endfor %}
 
-                        <div class="chart-card-header">
+                        </ul>
 
-                            <h3>
-                                Profit Margin Trend
-                            </h3>
+                        <div style="margin-top:8px;">
 
-                            <span>
-                                Net margin %
-                            </span>
-
-                        </div>
-
-                        <div class="chart-wrap small">
-
-                            <canvas
-                                id="marginTrendChart"
-                            ></canvas>
+                            This is normally caused by a missing
+                            compatible column or unavailable
+                            numeric/date values.
 
                         </div>
 
                     </div>
 
+                {% endif %}
 
-                    <!-- CASH FLOW -->
 
-                    <div class="chart-card">
+                <!-- ================================================
+                     SMART FINANCIAL INSIGHTS
+                     KEEP AT BOTTOM
+                ================================================= -->
 
-                        <div class="chart-card-header">
+                <div class="insights-section">
 
-                            <h3>
-                                Cash Flow Indicators
-                            </h3>
+                    <div class="section-heading">
 
-                            <span>
-                                Inflow / Outflow / Net
-                            </span>
+                        <h2>
+                            Smart Financial Insights
+                        </h2>
 
-                        </div>
+                        <span>
+                            Metric-driven observations
+                        </span>
 
-                        <div class="chart-wrap small">
+                    </div>
 
-                            {% if cash_flow_available %}
 
-                            <canvas
-                                id="cashFlowChart"
-                            ></canvas>
+                    <div class="insights-card">
 
-                            {% else %}
+                        <div class="insights-header">
 
-                            <div class="empty-state"
-                                style="
-                                    padding:45px 20px;
-                                    background:transparent;
-                                    border:0;
-                                "
-                            >
+                            <div class="insights-icon">
+                                ✦
+                            </div>
 
-                                <div class="empty-icon">
+                            <div>
 
-                                    <i class="fa-solid fa-money-bill"></i>
-
-                                </div>
-
-                                <h2
-                                    style="font-size:15px;"
-                                >
-                                    Cash-flow data unavailable
+                                <h2>
+                                    Financial Intelligence
                                 </h2>
 
                                 <p>
-                                    Add cash inflow and cash outflow
-                                    columns to enable cash-flow
-                                    analytics.
+                                    Automatically generated from the
+                                    selected financial data.
                                 </p>
 
                             </div>
 
-                            {% endif %}
-
                         </div>
 
-                    </div>
 
-                </div>
+                        <div class="insights-body">
 
-            </section>
+                            {% if insights %}
 
+                                {% for insight in insights %}
 
-            <!-- ====================================================
-                 HIGHLIGHTS
-                 ==================================================== -->
-
-            <section class="section">
-
-                <div class="highlight-grid">
-
-
-                    <div class="highlight">
-
-                        <span>
-                            Most Profitable Period
-                        </span>
-
-                        <strong>
-                            {{ peak_profit_period }}
-                        </strong>
-
-                        <small>
-                            Highest monthly profit.
-                        </small>
-
-                    </div>
-
-
-                    <div class="highlight">
-
-                        <span>
-                            Lowest Profitability
-                        </span>
-
-                        <strong>
-                            {{ lowest_profit_period }}
-                        </strong>
-
-                        <small>
-                            Lowest monthly profit.
-                        </small>
-
-                    </div>
-
-
-                    <div class="highlight">
-
-                        <span>
-                            Largest Expense Category
-                        </span>
-
-                        <strong>
-                            {{ highest_expense_category }}
-                        </strong>
-
-                        <small>
-                            ₹{{ highest_expense_amount|floatformat:0 }}
-                        </small>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- ====================================================
-                 EXPENSE INTELLIGENCE
-                 ==================================================== -->
-
-            <section class="section">
-
-                <div class="section-header">
-
-                    <div>
-
-                        <h2>
-                            Expense Intelligence
-                        </h2>
-
-                        <p>
-                            Identify major cost categories and
-                            expense concentration.
-                        </p>
-
-                    </div>
-
-                    <span class="section-tag">
-                        COST ANALYSIS
-                    </span>
-
-                </div>
-
-
-                <div class="expense-grid">
-
-
-                    <!-- EXPENSE DONUT -->
-
-                    <div class="chart-card">
-
-                        <div class="chart-card-header">
-
-                            <h3>
-                                Expense Category Breakdown
-                            </h3>
-
-                            <span>
-                                Top cost areas
-                            </span>
-
-                        </div>
-
-                        <div class="expense-chart">
-
-                            {% if expense_rows %}
-
-                            <canvas
-                                id="expenseBreakdownChart"
-                            ></canvas>
-
-                            {% else %}
-
-                            <div class="empty-state"
-                                style="
-                                    padding:50px 20px;
-                                    background:transparent;
-                                    border:0;
-                                "
-                            >
-
-                                <div class="empty-icon">
-
-                                    <i class="fa-solid fa-chart-pie"></i>
-
-                                </div>
-
-                                <h2
-                                    style="font-size:15px;"
-                                >
-                                    No expense categories
-                                </h2>
-
-                                <p>
-                                    Add an expense category column
-                                    to enable expense breakdown.
-                                </p>
-
-                            </div>
-
-                            {% endif %}
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- EXPENSE TABLE -->
-
-                    <div class="chart-card">
-
-                        <div class="chart-card-header">
-
-                            <h3>
-                                Expense Breakdown
-                            </h3>
-
-                            <span>
-                                Category ranking
-                            </span>
-
-                        </div>
-
-                        <div class="table-wrap">
-
-                            <table class="financial-table">
-
-                                <thead>
-
-                                    <tr>
-
-                                        <th>
-                                            Category
-                                        </th>
-
-                                        <th>
-                                            Expenses
-                                        </th>
-
-                                    </tr>
-
-                                </thead>
-
-                                <tbody>
-
-                                    {% for row in expense_rows %}
-
-                                    <tr>
-
-                                        <td class="period">
-                                            {{ row.category }}
-                                        </td>
-
-                                        <td class="expense-text">
-                                            ₹{{ row.expenses|floatformat:0 }}
-                                        </td>
-
-                                    </tr>
-
-                                    {% empty %}
-
-                                    <tr>
-
-                                        <td colspan="2">
-                                            No expense breakdown available.
-                                        </td>
-
-                                    </tr>
-
-                                    {% endfor %}
-
-                                </tbody>
-
-                            </table>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- ====================================================
-                 MONTHLY FINANCIAL STATEMENT
-                 ==================================================== -->
-
-            <section class="section">
-
-                <div class="section-header">
-
-                    <div>
-
-                        <h2>
-                            Monthly Financial Statement
-                        </h2>
-
-                        <p>
-                            Detailed financial performance by month.
-                        </p>
-
-                    </div>
-
-                    <span class="section-tag">
-                        LAST 24 MONTHS
-                    </span>
-
-                </div>
-
-
-                <div class="chart-card">
-
-                    <div class="table-wrap">
-
-                        <table class="financial-table">
-
-                            <thead>
-
-                                <tr>
-
-                                    <th>
-                                        Period
-                                    </th>
-
-                                    <th>
-                                        Revenue
-                                    </th>
-
-                                    <th>
-                                        Expenses
-                                    </th>
-
-                                    <th>
-                                        Gross Profit
-                                    </th>
-
-                                    <th>
-                                        Net Profit
-                                    </th>
-
-                                    <th>
-                                        Net Margin
-                                    </th>
-
-                                </tr>
-
-                            </thead>
-
-                            <tbody>
-
-                                {% for row in financial_rows %}
-
-                                <tr>
-
-                                    <td class="period">
-                                        {{ row.period }}
-                                    </td>
-
-                                    <td class="revenue-text">
-                                        ₹{{ row.revenue|floatformat:0 }}
-                                    </td>
-
-                                    <td class="expense-text">
-                                        ₹{{ row.expenses|floatformat:0 }}
-                                    </td>
-
-                                    <td>
-                                        ₹{{ row.gross_profit|floatformat:0 }}
-                                    </td>
-
-                                    <td
-                                        class="{% if row.profit >= 0 %}profit-text{% else %}negative{% endif %}"
+                                    <div
+                                        class="
+                                            insight-item
+                                            {{ insight.type|default:'info' }}
+                                        "
                                     >
-                                        ₹{{ row.profit|floatformat:0 }}
-                                    </td>
 
-                                    <td
-                                        class="{% if row.margin >= 0 %}profit-text{% else %}negative{% endif %}"
-                                    >
-                                        {{ row.margin|floatformat:1 }}%
-                                    </td>
+                                        <div class="insight-marker"></div>
 
-                                </tr>
+                                        <div class="insight-content">
 
-                                {% empty %}
+                                            <strong>
+                                                {{ insight.title }}
+                                            </strong>
 
-                                <tr>
+                                            <span>
+                                                {{ insight.message }}
+                                            </span>
 
-                                    <td colspan="6">
-                                        No monthly financial records.
-                                    </td>
+                                        </div>
 
-                                </tr>
+                                    </div>
 
                                 {% endfor %}
 
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- ====================================================
-                 DATA CONFIGURATION
-                 ==================================================== -->
-
-            <section class="section">
-
-                <div class="section-header">
-
-                    <div>
-
-                        <h2>
-                            Financial Data Configuration
-                        </h2>
-
-                        <p>
-                            Columns detected from your dataset.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="data-grid">
-
-
-                    <div class="data-item">
-
-                        <span>
-                            Revenue Column
-                        </span>
-
-                        <strong>
-                            {{ revenue_column }}
-                        </strong>
-
-                    </div>
-
-
-                    <div class="data-item">
-
-                        <span>
-                            Expense Column
-                        </span>
-
-                        <strong>
-                            {{ expense_column }}
-                        </strong>
-
-                    </div>
-
-
-                    <div class="data-item">
-
-                        <span>
-                            COGS Column
-                        </span>
-
-                        <strong>
-
-                            {% if cogs_column %}
-                            {{ cogs_column }}
                             {% else %}
-                            Not available
-                            {% endif %}
 
-                        </strong>
+                                <div class="no-insights">
 
-                    </div>
-
-
-                    <div class="data-item">
-
-                        <span>
-                            Operating Expense
-                        </span>
-
-                        <strong>
-
-                            {% if operating_expense_column %}
-                            {{ operating_expense_column }}
-                            {% else %}
-                            Estimated
-                            {% endif %}
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="data-item">
-
-                        <span>
-                            Date Column
-                        </span>
-
-                        <strong>
-                            {{ date_column }}
-                        </strong>
-
-                    </div>
-
-
-                    <div class="data-item">
-
-                        <span>
-                            Financial Domain
-                        </span>
-
-                        <strong>
-
-                            {% if financial_domain_column %}
-                            {{ financial_domain_column }}
-                            {% else %}
-                            Auto detected
-                            {% endif %}
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="data-item">
-
-                        <span>
-                            Category Column
-                        </span>
-
-                        <strong>
-
-                            {% if financial_category_column %}
-                            {{ financial_category_column }}
-                            {% else %}
-                            Not available
-                            {% endif %}
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="data-item">
-
-                        <span>
-                            Analysis Period
-                        </span>
-
-                        <strong>
-                            {{ date_range.range_label }}
-                        </strong>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- ====================================================
-                 INSIGHTS
-                 THIS IS THE BOTTOM SECTION
-                 ==================================================== -->
-
-            <section class="section">
-
-                <div class="insights-panel">
-
-                    <div class="section-header">
-
-                        <div>
-
-                            <h2>
-
-                                <i class="fa-solid fa-brain"></i>
-
-                                Financial Insights
-
-                            </h2>
-
-                            <p>
-                                Automatically generated observations
-                                from the selected financial data.
-                            </p>
-
-                        </div>
-
-                        <span class="section-tag">
-                            INTELLIGENCE
-                        </span>
-
-                    </div>
-
-
-                    <div class="insights-grid">
-
-                        {% for insight in financial_insights %}
-
-                        <div
-                            class="insight {{ insight.type }}"
-                        >
-
-                            <div class="insight-line"></div>
-
-
-                            <div class="insight-icon">
-
-                                <i
-                                    class="fa-solid {{ insight.icon }}"
-                                ></i>
-
-                            </div>
-
-
-                            <div class="insight-content">
-
-                                <h4>
-                                    {{ insight.title }}
-                                </h4>
-
-                                <p>
-                                    {{ insight.text }}
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                        {% empty %}
-
-                        <div class="insight info">
-
-                            <div class="insight-line"></div>
-
-                            <div class="insight-icon">
-
-                                <i class="fa-solid fa-lightbulb"></i>
-
-                            </div>
-
-                            <div class="insight-content">
-
-                                <h4>
-                                    No additional insights
-                                </h4>
-
-                                <p>
-                                    More observations will appear
-                                    when sufficient financial data
+                                    Financial insights will appear
+                                    when sufficient compatible data
                                     is available.
-                                </p>
 
-                            </div>
+                                </div>
+
+                            {% endif %}
 
                         </div>
-
-                        {% endfor %}
 
                     </div>
 
                 </div>
-
-            </section>
-
-
-            <!-- Bottom spacing -->
-
-            <div style="height:40px;"></div>
 
 
             {% endif %}
+
 
         </div>
 
     </main>
 
-</div>
 
+    <!-- ============================================================
+         CHART.JS CONFIGURATION
+    ============================================================= -->
 
-<!-- ================================================================
-     DJANGO JSON DATA
-     
-     This is deliberately better than:
-     
-     const labels = {{ labels|safe }};
-     
-     json_script prevents malformed JavaScript and blank charts.
-     ================================================================ -->
+    <script>
 
-{{ financial_labels|json_script:"financial-labels-data" }}
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
 
-{{ revenue_values|json_script:"revenue-values-data" }}
 
-{{ expense_values|json_script:"expense-values-data" }}
+                /* ====================================================
+                   DATA FROM DJANGO
+                ==================================================== */
 
-{{ profit_values|json_script:"profit-values-data" }}
+                const revenueTrendData =
+                    {{ revenue_trend_json|safe }};
 
-{{ margin_labels|json_script:"margin-labels-data" }}
+                const revenueVsCostData =
+                    {{ revenue_vs_cost_json|safe }};
 
-{{ margin_values|json_script:"margin-values-data" }}
+                const profitCategoryData =
+                    {{ profit_by_category_json|safe }};
 
-{{ expense_category_labels|json_script:"expense-category-labels-data" }}
+                const expenseBreakdownData =
+                    {{ expense_breakdown_json|safe }};
 
-{{ expense_category_values|json_script:"expense-category-values-data" }}
+                const cashFlowData =
+                    {{ cash_flow_trend_json|safe }};
 
-{{ cash_flow_labels|json_script:"cash-flow-labels-data" }}
+                const financialRegionData =
+                    {{ financial_by_region_json|safe }};
 
-{{ cash_inflow_values|json_script:"cash-inflow-values-data" }}
+                const transactionDistributionData =
+                    {{ transaction_distribution_json|safe }};
 
-{{ cash_outflow_values|json_script:"cash-outflow-values-data" }}
 
-{{ net_cash_flow_values|json_script:"net-cash-flow-values-data" }}
+                /* ====================================================
+                   HELPERS
+                ==================================================== */
 
+                function numberValue(value) {
 
-<!-- ================================================================
-     CHART.JS
-     ================================================================ -->
+                    if (
+                        value === null ||
+                        value === undefined ||
+                        value === ""
+                    ) {
+                        return null;
+                    }
 
-<script
-    src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"
-></script>
+                    const number =
+                        Number(value);
 
+                    return Number.isFinite(number)
+                        ? number
+                        : null;
 
-<script>
+                }
 
-/* ================================================================
-   RUN AFTER DOM + CHART.JS
-   ================================================================ */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+                function formatNumber(value) {
 
+                    if (
+                        value === null ||
+                        value === undefined ||
+                        !Number.isFinite(Number(value))
+                    ) {
+                        return "Not available";
+                    }
 
-        /* ========================================================
-           DATE FILTER UI
-           ======================================================== */
-
-        const rangeSelector =
-            document.getElementById(
-                "rangeSelector"
-            );
-
-        const customDateFields =
-            document.getElementById(
-                "customDateFields"
-            );
-
-
-        function updateCustomDateFields() {
-
-            if (!rangeSelector || !customDateFields) {
-                return;
-            }
-
-
-            if (
-                rangeSelector.value === "custom"
-            ) {
-
-                customDateFields.classList.add(
-                    "show"
-                );
-
-            } else {
-
-                customDateFields.classList.remove(
-                    "show"
-                );
-
-            }
-
-        }
-
-
-        if (rangeSelector) {
-
-            rangeSelector.addEventListener(
-                "change",
-                updateCustomDateFields
-            );
-
-            updateCustomDateFields();
-
-        }
-
-
-        /* ========================================================
-           SAFE JSON READER
-           ======================================================== */
-
-        function readJSON(id) {
-
-            const element =
-                document.getElementById(id);
-
-            if (!element) {
-
-                return [];
-
-            }
-
-            try {
-
-                return JSON.parse(
-                    element.textContent
-                );
-
-            } catch (error) {
-
-                console.error(
-                    "Financial chart JSON error:",
-                    id,
-                    error
-                );
-
-                return [];
-
-            }
-
-        }
-
-
-        /* ========================================================
-           DATA
-           ======================================================== */
-
-        const labels =
-            readJSON(
-                "financial-labels-data"
-            );
-
-
-        const revenue =
-            readJSON(
-                "revenue-values-data"
-            );
-
-
-        const expenses =
-            readJSON(
-                "expense-values-data"
-            );
-
-
-        const profit =
-            readJSON(
-                "profit-values-data"
-            );
-
-
-        const marginLabels =
-            readJSON(
-                "margin-labels-data"
-            );
-
-
-        const margins =
-            readJSON(
-                "margin-values-data"
-            );
-
-
-        const expenseLabels =
-            readJSON(
-                "expense-category-labels-data"
-            );
-
-
-        const expenseValues =
-            readJSON(
-                "expense-category-values-data"
-            );
-
-
-        const cashLabels =
-            readJSON(
-                "cash-flow-labels-data"
-            );
-
-
-        const cashInflow =
-            readJSON(
-                "cash-inflow-values-data"
-            );
-
-
-        const cashOutflow =
-            readJSON(
-                "cash-outflow-values-data"
-            );
-
-
-        const netCash =
-            readJSON(
-                "net-cash-flow-values-data"
-            );
-
-
-        /* ========================================================
-           CHART.JS AVAILABILITY
-           ======================================================== */
-
-        if (
-            typeof Chart === "undefined"
-        ) {
-
-            console.error(
-                "Chart.js could not be loaded."
-            );
-
-            return;
-
-        }
-
-
-        /* ========================================================
-           COMMON OPTIONS
-           ======================================================== */
-
-        function money(value) {
-
-            return "₹" +
-                Number(value || 0)
-                    .toLocaleString(
+                    return Number(value).toLocaleString(
                         "en-IN",
                         {
-                            maximumFractionDigits: 0
+                            maximumFractionDigits: 2
                         }
                     );
 
-        }
+                }
 
 
-        function commonOptions(
-            yTitle = ""
-        ) {
+                const gridColor =
+                    "rgba(143,164,184,0.075)";
 
-            return {
+                const tickColor =
+                    "#8fa4b8";
 
-                responsive: true,
+                const textColor =
+                    "#f5f7fb";
 
-                maintainAspectRatio: false,
 
-                interaction: {
+                /* ====================================================
+                   COMMON OPTIONS
+                ==================================================== */
 
-                    mode: "index",
+                const commonOptions = {
 
-                    intersect: false
+                    responsive: true,
 
-                },
+                    maintainAspectRatio: false,
 
-                animation: {
+                    interaction: {
 
-                    duration: 850,
+                        mode: "index",
 
-                    easing: "easeOutQuart"
-
-                },
-
-                plugins: {
-
-                    legend: {
-
-                        labels: {
-
-                            color:
-                                "#8193a7",
-
-                            usePointStyle:
-                                true,
-
-                            padding: 16,
-
-                            font: {
-
-                                size: 10
-
-                            }
-
-                        }
+                        intersect: false
 
                     },
 
-                    tooltip: {
+                    plugins: {
 
-                        backgroundColor:
-                            "#0a1929",
+                        legend: {
 
-                        borderColor:
-                            "rgba(118,104,255,.3)",
+                            position: "top",
 
-                        borderWidth: 1,
+                            labels: {
 
-                        titleColor:
-                            "#ffffff",
+                                usePointStyle: true,
 
-                        bodyColor:
-                            "#b8c6d3",
+                                pointStyle: "circle",
 
-                        padding: 12,
+                                padding: 18,
 
-                        callbacks: {
+                                color: textColor,
 
-                            label:
-                                function (
-                                    context
-                                ) {
+                                font: {
 
-                                    return (
-                                        context.dataset.label
-                                        + ": "
-                                        + money(
-                                            context.parsed.y
-                                        )
-                                    );
+                                    size: 11,
+
+                                    weight: "600"
 
                                 }
 
-                        }
-
-                    }
-
-                },
-
-                scales: {
-
-                    x: {
-
-                        grid: {
-
-                            color:
-                                "rgba(255,255,255,.055)"
+                            }
 
                         },
 
-                        ticks: {
+                        tooltip: {
 
-                            color:
-                                "#7890a5",
+                            backgroundColor:
+                                "rgba(6,17,31,.96)",
 
-                            font: {
+                            borderColor:
+                                "rgba(255,255,255,.10)",
 
-                                size: 9
+                            borderWidth: 1,
 
-                            }
+                            titleColor:
+                                "#ffffff",
 
-                        }
+                            bodyColor:
+                                "#c7d3df",
 
-                    },
+                            padding: 12,
 
-                    y: {
+                            cornerRadius: 10,
 
-                        title: {
+                            displayColors: true,
 
-                            display:
-                                Boolean(yTitle),
-
-                            text:
-                                yTitle,
-
-                            color:
-                                "#71879b"
-
-                        },
-
-                        grid: {
-
-                            color:
-                                "rgba(255,255,255,.055)"
-
-                        },
-
-                        ticks: {
-
-                            color:
-                                "#7890a5",
-
-                            font: {
-
-                                size: 9
-
-                            },
-
-                            callback:
-                                function (
-                                    value
-                                ) {
-
-                                    return money(
-                                        value
-                                    );
-
-                                }
-
-                        }
-
-                    }
-
-                }
-
-            };
-
-        }
-
-
-        /* ========================================================
-           REVENUE VS EXPENSE
-           ======================================================== */
-
-        const revenueExpenseCanvas =
-            document.getElementById(
-                "revenueExpenseChart"
-            );
-
-
-        if (
-            revenueExpenseCanvas &&
-            labels.length > 0
-        ) {
-
-            new Chart(
-                revenueExpenseCanvas,
-                {
-
-                    type: "line",
-
-                    data: {
-
-                        labels: labels,
-
-                        datasets: [
-
-                            {
+                            callbacks: {
 
                                 label:
-                                    "Revenue",
-
-                                data:
-                                    revenue,
-
-                                borderColor:
-                                    "#3ea7f5",
-
-                                backgroundColor:
-                                    "rgba(62,167,245,.10)",
-
-                                borderWidth: 3,
-
-                                pointRadius: 3,
-
-                                pointHoverRadius: 6,
-
-                                tension: .35,
-
-                                fill: true
-
-                            },
-
-                            {
-
-                                label:
-                                    "Expenses",
-
-                                data:
-                                    expenses,
-
-                                borderColor:
-                                    "#ff9f43",
-
-                                backgroundColor:
-                                    "rgba(255,159,67,.07)",
-
-                                borderWidth: 3,
-
-                                pointRadius: 3,
-
-                                pointHoverRadius: 6,
-
-                                tension: .35,
-
-                                fill: true
-
-                            }
-
-                        ]
-
-                    },
-
-                    options:
-                        commonOptions(
-                            "Amount"
-                        )
-
-                }
-            );
-
-        }
-
-
-        /* ========================================================
-           MONTHLY PROFIT
-           ======================================================== */
-
-        const profitCanvas =
-            document.getElementById(
-                "monthlyProfitChart"
-            );
-
-
-        if (
-            profitCanvas &&
-            labels.length > 0
-        ) {
-
-            const options =
-                commonOptions(
-                    "Profit"
-                );
-
-
-            new Chart(
-                profitCanvas,
-                {
-
-                    type: "bar",
-
-                    data: {
-
-                        labels: labels,
-
-                        datasets: [
-
-                            {
-
-                                label:
-                                    "Net Profit",
-
-                                data:
-                                    profit,
-
-                                backgroundColor:
-                                    "rgba(56,217,145,.72)",
-
-                                borderColor:
-                                    "#38d991",
-
-                                borderWidth: 1,
-
-                                borderRadius: 7,
-
-                                borderSkipped:
-                                    false
-
-                            }
-
-                        ]
-
-                    },
-
-                    options: options
-
-                }
-            );
-
-        }
-
-
-        /* ========================================================
-           PROFIT MARGIN TREND
-           ======================================================== */
-
-        const marginCanvas =
-            document.getElementById(
-                "marginTrendChart"
-            );
-
-
-        if (
-            marginCanvas &&
-            marginLabels.length > 0
-        ) {
-
-            new Chart(
-                marginCanvas,
-                {
-
-                    type: "line",
-
-                    data: {
-
-                        labels:
-                            marginLabels,
-
-                        datasets: [
-
-                            {
-
-                                label:
-                                    "Net Margin",
-
-                                data:
-                                    margins,
-
-                                borderColor:
-                                    "#7668ff",
-
-                                backgroundColor:
-                                    "rgba(118,104,255,.12)",
-
-                                borderWidth: 3,
-
-                                tension: .35,
-
-                                fill: true,
-
-                                pointRadius: 3,
-
-                                pointHoverRadius: 6
-
-                            }
-
-                        ]
-
-                    },
-
-                    options: {
-
-                        responsive: true,
-
-                        maintainAspectRatio:
-                            false,
-
-                        interaction: {
-
-                            mode: "index",
-
-                            intersect: false
-
-                        },
-
-                        plugins: {
-
-                            legend: {
-
-                                labels: {
-
-                                    color:
-                                        "#8193a7",
-
-                                    usePointStyle:
-                                        true
-
-                                }
-
-                            },
-
-                            tooltip: {
-
-                                backgroundColor:
-                                    "#0a1929",
-
-                                borderColor:
-                                    "rgba(118,104,255,.3)",
-
-                                borderWidth: 1,
-
-                                callbacks: {
-
-                                    label:
-                                        function (
-                                            context
-                                        ) {
-
-                                            return (
-                                                "Net Margin: "
-                                                +
-                                                Number(
-                                                    context.parsed.y
-                                                ).toFixed(1)
-                                                +
-                                                "%"
+                                    function (context) {
+
+                                        const value =
+                                            numberValue(
+                                                context.raw
                                             );
 
+                                        if (
+                                            value === null
+                                        ) {
+                                            return (
+                                                context.dataset.label +
+                                                ": Not available"
+                                            );
                                         }
 
-                                }
-
-                            }
-
-                        },
-
-                        scales: {
-
-                            x: {
-
-                                grid: {
-
-                                    color:
-                                        "rgba(255,255,255,.055)"
-
-                                },
-
-                                ticks: {
-
-                                    color:
-                                        "#7890a5",
-
-                                    font: {
-
-                                        size: 9
+                                        return (
+                                            context.dataset.label +
+                                            ": ₹" +
+                                            formatNumber(value)
+                                        );
 
                                     }
 
-                                }
-
-                            },
-
-                            y: {
-
-                                grid: {
-
-                                    color:
-                                        "rgba(255,255,255,.055)"
-
-                                },
-
-                                ticks: {
-
-                                    color:
-                                        "#7890a5",
-
-                                    callback:
-                                        function (
-                                            value
-                                        ) {
-
-                                            return (
-                                                value
-                                                + "%"
-                                            );
-
-                                        }
-
-                                }
-
                             }
 
                         }
 
-                    }
-
-                }
-            );
-
-        }
-
-
-        /* ========================================================
-           EXPENSE BREAKDOWN
-           ======================================================== */
-
-        const expenseCanvas =
-            document.getElementById(
-                "expenseBreakdownChart"
-            );
-
-
-        if (
-            expenseCanvas &&
-            expenseLabels.length > 0
-        ) {
-
-            new Chart(
-                expenseCanvas,
-                {
-
-                    type: "doughnut",
-
-                    data: {
-
-                        labels:
-                            expenseLabels,
-
-                        datasets: [
-
-                            {
-
-                                data:
-                                    expenseValues,
-
-                                backgroundColor: [
-
-                                    "#7668ff",
-                                    "#3ea7f5",
-                                    "#38d991",
-                                    "#ff9f43",
-                                    "#ff5d73",
-                                    "#9b91ff",
-                                    "#55b9f5",
-                                    "#59dda0",
-                                    "#ffb45e",
-                                    "#ff7184",
-                                    "#aaa1ff",
-                                    "#73cdf7"
-
-                                ],
-
-                                borderColor:
-                                    "#0f1f31",
-
-                                borderWidth: 3,
-
-                                hoverOffset: 8
-
-                            }
-
-                        ]
-
                     },
 
-                    options: {
+                    scales: {
 
-                        responsive: true,
+                        x: {
 
-                        maintainAspectRatio:
-                            false,
+                            grid: {
 
-                        cutout:
-                            "65%",
-
-                        plugins: {
-
-                            legend: {
-
-                                position:
-                                    "bottom",
-
-                                labels: {
-
-                                    color:
-                                        "#8193a7",
-
-                                    usePointStyle:
-                                        true,
-
-                                    padding: 12,
-
-                                    boxWidth: 8,
-
-                                    font: {
-
-                                        size: 9
-
-                                    }
-
-                                }
+                                display: false
 
                             },
 
-                            tooltip: {
+                            ticks: {
 
-                                backgroundColor:
-                                    "#0a1929",
+                                color: tickColor,
 
-                                borderColor:
-                                    "rgba(118,104,255,.3)",
+                                font: {
 
-                                borderWidth: 1,
+                                    size: 10
 
-                                callbacks: {
+                                }
 
-                                    label:
-                                        function (
-                                            context
-                                        ) {
+                            }
 
-                                            return (
-                                                context.label
-                                                + ": "
-                                                + money(
-                                                    context.parsed
+                        },
+
+                        y: {
+
+                            beginAtZero: true,
+
+                            grid: {
+
+                                color: gridColor
+
+                            },
+
+                            ticks: {
+
+                                color: tickColor,
+
+                                font: {
+
+                                    size: 10
+
+                                },
+
+                                callback:
+                                    function (value) {
+
+                                        return (
+                                            "₹" +
+                                            Number(value)
+                                                .toLocaleString(
+                                                    "en-IN",
+                                                    {
+                                                        notation:
+                                                            "compact",
+                                                        maximumFractionDigits:
+                                                            1
+                                                    }
                                                 )
-                                            );
+                                        );
 
-                                        }
-
-                                }
+                                    }
 
                             }
 
@@ -4375,124 +3014,1016 @@ document.addEventListener(
 
                     }
 
+                };
+
+
+                /* ====================================================
+                   REVENUE / COST / PROFIT TREND
+                ==================================================== */
+
+                const revenueTrendCanvas =
+                    document.getElementById(
+                        "revenueTrendChart"
+                    );
+
+
+                if (
+                    revenueTrendCanvas &&
+                    revenueTrendData.length
+                ) {
+
+                    new Chart(
+                        revenueTrendCanvas,
+                        {
+
+                            type: "line",
+
+                            data: {
+
+                                labels:
+                                    revenueTrendData.map(
+                                        item =>
+                                            item.date
+                                    ),
+
+                                datasets: [
+
+                                    {
+
+                                        label:
+                                            "Revenue",
+
+                                        data:
+                                            revenueTrendData.map(
+                                                item =>
+                                                    numberValue(
+                                                        item.revenue
+                                                    )
+                                            ),
+
+                                        borderColor:
+                                            "#7567f8",
+
+                                        backgroundColor:
+                                            "rgba(117,103,248,.14)",
+
+                                        borderWidth: 3,
+
+                                        fill: true,
+
+                                        tension: .38,
+
+                                        pointRadius: 2.5,
+
+                                        pointHoverRadius: 6,
+
+                                        pointBackgroundColor:
+                                            "#7567f8",
+
+                                        pointBorderColor:
+                                            "#ffffff",
+
+                                        pointBorderWidth: 1
+
+                                    },
+
+
+                                    {
+
+                                        label:
+                                            "Cost",
+
+                                        data:
+                                            revenueTrendData.map(
+                                                item =>
+                                                    numberValue(
+                                                        item.cost
+                                                    )
+                                            ),
+
+                                        borderColor:
+                                            "#ff9f43",
+
+                                        backgroundColor:
+                                            "transparent",
+
+                                        borderWidth: 2.5,
+
+                                        fill: false,
+
+                                        tension: .35,
+
+                                        pointRadius: 2,
+
+                                        pointHoverRadius: 5,
+
+                                        pointBackgroundColor:
+                                            "#ff9f43"
+
+                                    },
+
+
+                                    {
+
+                                        label:
+                                            "Profit",
+
+                                        data:
+                                            revenueTrendData.map(
+                                                item =>
+                                                    numberValue(
+                                                        item.profit
+                                                    )
+                                            ),
+
+                                        borderColor:
+                                            "#39d98a",
+
+                                        backgroundColor:
+                                            "transparent",
+
+                                        borderWidth: 2.7,
+
+                                        fill: false,
+
+                                        tension: .35,
+
+                                        pointRadius: 2,
+
+                                        pointHoverRadius: 5,
+
+                                        pointBackgroundColor:
+                                            "#39d98a"
+
+                                    }
+
+                                ]
+
+                            },
+
+                            options: commonOptions
+
+                        }
+                    );
+
                 }
-            );
-
-        }
 
 
-        /* ========================================================
-           CASH FLOW
-           ======================================================== */
+                /* ====================================================
+                   REVENUE VS COST
+                ==================================================== */
 
-        const cashCanvas =
-            document.getElementById(
-                "cashFlowChart"
-            );
+                const revenueCostCanvas =
+                    document.getElementById(
+                        "revenueCostChart"
+                    );
 
 
-        if (
-            cashCanvas &&
-            cashLabels.length > 0
-        ) {
+                if (
+                    revenueCostCanvas &&
+                    revenueVsCostData.length
+                ) {
 
-            new Chart(
-                cashCanvas,
-                {
+                    new Chart(
+                        revenueCostCanvas,
+                        {
 
-                    type: "line",
+                            type: "doughnut",
 
-                    data: {
+                            data: {
 
-                        labels:
-                            cashLabels,
+                                labels:
+                                    revenueVsCostData.map(
+                                        item =>
+                                            item.metric
+                                    ),
 
-                        datasets: [
+                                datasets: [
 
-                            {
+                                    {
 
-                                label:
-                                    "Cash Inflow",
+                                        data:
+                                            revenueVsCostData.map(
+                                                item =>
+                                                    numberValue(
+                                                        item.value
+                                                    )
+                                            ),
 
-                                data:
-                                    cashInflow,
+                                        backgroundColor: [
 
-                                borderColor:
-                                    "#38d991",
+                                            "#7567f8",
 
-                                backgroundColor:
-                                    "rgba(56,217,145,.08)",
+                                            "#ff9f43"
 
-                                borderWidth: 2,
+                                        ],
 
-                                tension: .35,
+                                        borderColor:
+                                            "#0d2033",
 
-                                fill: true
+                                        borderWidth: 3,
 
-                            },
+                                        hoverOffset: 8
 
-                            {
+                                    }
 
-                                label:
-                                    "Cash Outflow",
-
-                                data:
-                                    cashOutflow,
-
-                                borderColor:
-                                    "#ff5d73",
-
-                                backgroundColor:
-                                    "rgba(255,93,115,.06)",
-
-                                borderWidth: 2,
-
-                                tension: .35,
-
-                                fill: true
+                                ]
 
                             },
 
-                            {
+                            options: {
 
-                                label:
-                                    "Net Cash Flow",
+                                responsive: true,
 
-                                data:
-                                    netCash,
+                                maintainAspectRatio: false,
 
-                                borderColor:
-                                    "#7668ff",
+                                cutout: "64%",
 
-                                borderWidth: 3,
+                                plugins: {
 
-                                borderDash:
-                                    [5,4],
+                                    legend: {
 
-                                tension: .35,
+                                        position: "bottom",
 
-                                fill: false
+                                        labels: {
+
+                                            usePointStyle: true,
+
+                                            padding: 18,
+
+                                            color:
+                                                textColor
+
+                                        }
+
+                                    },
+
+                                    tooltip: {
+
+                                        backgroundColor:
+                                            "rgba(6,17,31,.96)",
+
+                                        borderColor:
+                                            "rgba(255,255,255,.10)",
+
+                                        borderWidth: 1,
+
+                                        padding: 11,
+
+                                        cornerRadius: 9,
+
+                                        callbacks: {
+
+                                            label:
+                                                function (context) {
+
+                                                    return (
+                                                        context.label +
+                                                        ": ₹" +
+                                                        formatNumber(
+                                                            context.raw
+                                                        )
+                                                    );
+
+                                                }
+
+                                        }
+
+                                    }
+
+                                }
 
                             }
 
-                        ]
-
-                    },
-
-                    options:
-                        commonOptions(
-                            "Cash Flow"
-                        )
+                        }
+                    );
 
                 }
-            );
 
-        }
 
-    }
+                /* ====================================================
+                   PROFIT BY CATEGORY
+                ==================================================== */
 
-);
+                const profitCategoryCanvas =
+                    document.getElementById(
+                        "profitCategoryChart"
+                    );
 
-</script>
 
-{% endblock %}
+                if (
+                    profitCategoryCanvas &&
+                    profitCategoryData.length
+                ) {
+
+                    new Chart(
+                        profitCategoryCanvas,
+                        {
+
+                            type: "bar",
+
+                            data: {
+
+                                labels:
+                                    profitCategoryData.map(
+                                        item =>
+                                            item.category
+                                    ),
+
+                                datasets: [
+
+                                    {
+
+                                        label:
+                                            "Revenue",
+
+                                        data:
+                                            profitCategoryData.map(
+                                                item =>
+                                                    numberValue(
+                                                        item.revenue
+                                                    )
+                                            ),
+
+                                        backgroundColor:
+                                            "rgba(117,103,248,.82)",
+
+                                        borderColor:
+                                            "#7567f8",
+
+                                        borderWidth: 1,
+
+                                        borderRadius: 7,
+
+                                        borderSkipped: false
+
+                                    },
+
+
+                                    {
+
+                                        label:
+                                            "Profit",
+
+                                        data:
+                                            profitCategoryData.map(
+                                                item =>
+                                                    numberValue(
+                                                        item.profit
+                                                    )
+                                            ),
+
+                                        backgroundColor:
+                                            "rgba(57,217,138,.82)",
+
+                                        borderColor:
+                                            "#39d98a",
+
+                                        borderWidth: 1,
+
+                                        borderRadius: 7,
+
+                                        borderSkipped: false
+
+                                    }
+
+                                ]
+
+                            },
+
+                            options: commonOptions
+
+                        }
+                    );
+
+                }
+
+
+                /* ====================================================
+                   EXPENSE BREAKDOWN
+                ==================================================== */
+
+                const expenseCanvas =
+                    document.getElementById(
+                        "expenseBreakdownChart"
+                    );
+
+
+                if (
+                    expenseCanvas &&
+                    expenseBreakdownData.length
+                ) {
+
+                    new Chart(
+                        expenseCanvas,
+                        {
+
+                            type: "doughnut",
+
+                            data: {
+
+                                labels:
+                                    expenseBreakdownData.map(
+                                        item =>
+                                            item.category
+                                    ),
+
+                                datasets: [
+
+                                    {
+
+                                        data:
+                                            expenseBreakdownData.map(
+                                                item =>
+                                                    numberValue(
+                                                        item.expense
+                                                    )
+                                            ),
+
+                                        backgroundColor: [
+
+                                            "#ff5c70",
+
+                                            "#ff9f43",
+
+                                            "#7567f8",
+
+                                            "#38d9ff",
+
+                                            "#39d98a",
+
+                                            "#3fa9f5",
+
+                                            "#d86bff",
+
+                                            "#ffd166"
+
+                                        ],
+
+                                        borderColor:
+                                            "#0d2033",
+
+                                        borderWidth: 2,
+
+                                        hoverOffset: 8
+
+                                    }
+
+                                ]
+
+                            },
+
+                            options: {
+
+                                responsive: true,
+
+                                maintainAspectRatio: false,
+
+                                cutout: "57%",
+
+                                plugins: {
+
+                                    legend: {
+
+                                        position: "right",
+
+                                        labels: {
+
+                                            usePointStyle: true,
+
+                                            padding: 11,
+
+                                            color:
+                                                textColor,
+
+                                            font: {
+
+                                                size: 10
+
+                                            }
+
+                                        }
+
+                                    },
+
+                                    tooltip: {
+
+                                        backgroundColor:
+                                            "rgba(6,17,31,.96)",
+
+                                        borderColor:
+                                            "rgba(255,255,255,.10)",
+
+                                        borderWidth: 1,
+
+                                        padding: 11,
+
+                                        cornerRadius: 9,
+
+                                        callbacks: {
+
+                                            label:
+                                                function (context) {
+
+                                                    return (
+                                                        context.label +
+                                                        ": ₹" +
+                                                        formatNumber(
+                                                            context.raw
+                                                        )
+                                                    );
+
+                                                }
+
+                                        }
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                /* ====================================================
+                   CASH FLOW
+                ==================================================== */
+
+                const cashFlowCanvas =
+                    document.getElementById(
+                        "cashFlowChart"
+                    );
+
+
+                if (
+                    cashFlowCanvas &&
+                    cashFlowData.length
+                ) {
+
+                    new Chart(
+                        cashFlowCanvas,
+                        {
+
+                            type: "line",
+
+                            data: {
+
+                                labels:
+                                    cashFlowData.map(
+                                        item =>
+                                            item.date
+                                    ),
+
+                                datasets: [
+
+                                    {
+
+                                        label:
+                                            "Cash Inflow",
+
+                                        data:
+                                            cashFlowData.map(
+                                                item =>
+                                                    numberValue(
+                                                        item.cash_inflow
+                                                    )
+                                            ),
+
+                                        borderColor:
+                                            "#39d98a",
+
+                                        backgroundColor:
+                                            "rgba(57,217,138,.10)",
+
+                                        borderWidth: 2.6,
+
+                                        tension: .35,
+
+                                        fill: true,
+
+                                        pointRadius: 2
+
+                                    },
+
+
+                                    {
+
+                                        label:
+                                            "Cash Outflow",
+
+                                        data:
+                                            cashFlowData.map(
+                                                item =>
+                                                    numberValue(
+                                                        item.cash_outflow
+                                                    )
+                                            ),
+
+                                        borderColor:
+                                            "#ff5c70",
+
+                                        backgroundColor:
+                                            "rgba(255,92,112,.035)",
+
+                                        borderWidth: 2.5,
+
+                                        tension: .35,
+
+                                        fill: false,
+
+                                        pointRadius: 2
+
+                                    },
+
+
+                                    {
+
+                                        label:
+                                            "Net Cash Flow",
+
+                                        data:
+                                            cashFlowData.map(
+                                                item =>
+                                                    numberValue(
+                                                        item.net_cash_flow
+                                                    )
+                                            ),
+
+                                        borderColor:
+                                            "#38d9ff",
+
+                                        backgroundColor:
+                                            "transparent",
+
+                                        borderWidth: 3,
+
+                                        tension: .35,
+
+                                        fill: false,
+
+                                        pointRadius: 2.5,
+
+                                        pointHoverRadius: 6
+
+                                    }
+
+                                ]
+
+                            },
+
+                            options: commonOptions
+
+                        }
+                    );
+
+                }
+
+
+                /* ====================================================
+                   REGIONAL FINANCIAL PERFORMANCE
+                ==================================================== */
+
+                const regionCanvas =
+                    document.getElementById(
+                        "financialRegionChart"
+                    );
+
+
+                if (
+                    regionCanvas &&
+                    financialRegionData.length
+                ) {
+
+                    new Chart(
+                        regionCanvas,
+                        {
+
+                            type: "bar",
+
+                            data: {
+
+                                labels:
+                                    financialRegionData.map(
+                                        item =>
+                                            item.region
+                                    ),
+
+                                datasets: [
+
+                                    {
+
+                                        label:
+                                            "Revenue",
+
+                                        data:
+                                            financialRegionData.map(
+                                                item =>
+                                                    numberValue(
+                                                        item.revenue
+                                                    )
+                                            ),
+
+                                        backgroundColor:
+                                            "rgba(63,169,245,.84)",
+
+                                        borderColor:
+                                            "#3fa9f5",
+
+                                        borderWidth: 1,
+
+                                        borderRadius: 7,
+
+                                        borderSkipped: false
+
+                                    },
+
+
+                                    {
+
+                                        label:
+                                            "Cost",
+
+                                        data:
+                                            financialRegionData.map(
+                                                item =>
+                                                    numberValue(
+                                                        item.cost
+                                                    )
+                                            ),
+
+                                        backgroundColor:
+                                            "rgba(255,159,67,.84)",
+
+                                        borderColor:
+                                            "#ff9f43",
+
+                                        borderWidth: 1,
+
+                                        borderRadius: 7,
+
+                                        borderSkipped: false
+
+                                    },
+
+
+                                    {
+
+                                        label:
+                                            "Profit",
+
+                                        data:
+                                            financialRegionData.map(
+                                                item =>
+                                                    numberValue(
+                                                        item.profit
+                                                    )
+                                            ),
+
+                                        backgroundColor:
+                                            "rgba(57,217,138,.84)",
+
+                                        borderColor:
+                                            "#39d98a",
+
+                                        borderWidth: 1,
+
+                                        borderRadius: 7,
+
+                                        borderSkipped: false
+
+                                    }
+
+                                ]
+
+                            },
+
+                            options: commonOptions
+
+                        }
+                    );
+
+                }
+
+
+                /* ====================================================
+                   TRANSACTION VALUE DISTRIBUTION
+                ==================================================== */
+
+                const transactionCanvas =
+                    document.getElementById(
+                        "transactionDistributionChart"
+                    );
+
+
+                if (
+                    transactionCanvas &&
+                    transactionDistributionData.length
+                ) {
+
+                    new Chart(
+                        transactionCanvas,
+                        {
+
+                            type: "bar",
+
+                            data: {
+
+                                labels:
+                                    transactionDistributionData.map(
+                                        item =>
+                                            item.band
+                                    ),
+
+                                datasets: [
+
+                                    {
+
+                                        label:
+                                            "Transactions",
+
+                                        data:
+                                            transactionDistributionData.map(
+                                                item =>
+                                                    numberValue(
+                                                        item.transactions
+                                                    )
+                                            ),
+
+                                        backgroundColor: [
+
+                                            "rgba(117,103,248,.88)",
+
+                                            "rgba(63,169,245,.88)",
+
+                                            "rgba(56,217,255,.88)",
+
+                                            "rgba(255,159,67,.88)",
+
+                                            "rgba(255,92,112,.88)"
+
+                                        ],
+
+                                        borderColor: [
+
+                                            "#7567f8",
+
+                                            "#3fa9f5",
+
+                                            "#38d9ff",
+
+                                            "#ff9f43",
+
+                                            "#ff5c70"
+
+                                        ],
+
+                                        borderWidth: 1,
+
+                                        borderRadius: 8,
+
+                                        borderSkipped: false
+
+                                    }
+
+                                ]
+
+                            },
+
+                            options: {
+
+                                ...commonOptions,
+
+                                plugins: {
+
+                                    ...commonOptions.plugins,
+
+                                    tooltip: {
+
+                                        ...commonOptions.plugins.tooltip,
+
+                                        callbacks: {
+
+                                            label:
+                                                function (context) {
+
+                                                    return (
+                                                        "Transactions: " +
+                                                        formatNumber(
+                                                            context.raw
+                                                        )
+                                                    );
+
+                                                },
+
+                                            afterLabel:
+                                                function (context) {
+
+                                                    const item =
+                                                        transactionDistributionData[
+                                                            context.dataIndex
+                                                        ];
+
+                                                    if (
+                                                        item &&
+                                                        item.value !== null &&
+                                                        item.value !== undefined
+                                                    ) {
+
+                                                        return (
+                                                            "Value: ₹" +
+                                                            formatNumber(
+                                                                item.value
+                                                            )
+                                                        );
+
+                                                    }
+
+                                                    return "";
+
+                                                }
+
+                                        }
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                /* ====================================================
+                   CUSTOM DATE VISIBILITY
+                ==================================================== */
+
+                const rangeSelect =
+                    document.getElementById(
+                        "financialRange"
+                    );
+
+                const customDateRow =
+                    document.getElementById(
+                        "customDateRow"
+                    );
+
+
+                function updateCustomDateVisibility() {
+
+                    if (
+                        !rangeSelect ||
+                        !customDateRow
+                    ) {
+                        return;
+                    }
+
+
+                    if (
+                        rangeSelect.value === "custom"
+                    ) {
+
+                        customDateRow.classList.add(
+                            "show"
+                        );
+
+                    } else {
+
+                        customDateRow.classList.remove(
+                            "show"
+                        );
+
+                    }
+
+                }
+
+
+                if (rangeSelect) {
+
+                    rangeSelect.addEventListener(
+                        "change",
+                        updateCustomDateVisibility
+                    );
+
+                    updateCustomDateVisibility();
+
+                }
+
+
+            }
+
+        );
+
+    </script>
+
+</body>
+
+</html>
+
+

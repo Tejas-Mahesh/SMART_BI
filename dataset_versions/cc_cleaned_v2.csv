@@ -1,0 +1,21 @@
+Customer_ID,Registration_Date,Last_Order_Date,Order_Count,Total_Spend,Order_Value,Region,City,State,Country,Gender,Age,Customer_Segment,Customer_Status
+CUST001,2026-01-05,2026-08-25,12,85450,7120,South,Bengaluru,Karnataka,India,Male,32,Premium,Active
+CUST002,2026-01-08,2026-08-20,8,42300,5287,South,Chennai,Tamil Nadu,India,Female,28,Regular,Active
+CUST003,2026-01-12,2026-07-15,3,12600,4200,West,Mumbai,Maharashtra,India,Male,41,Regular,Inactive
+CUST004,2026-01-18,2026-08-28,18,125800,6990,North,Delhi,Delhi,India,Female,35,Premium,Active
+CUST005,2026-01-25,2026-06-05,2,5800,2900,East,Kolkata,West Bengal,India,Male,24,New,Inactive
+CUST006,2026-02-02,2026-08-30,15,98400,6560,South,Hyderabad,Telangana,India,Female,31,Premium,Active
+CUST007,2026-02-10,2026-08-18,7,35100,5014,West,Pune,Maharashtra,India,Male,29,Regular,Active
+CUST008,2026-02-15,2026-05-12,1,2200,2200,North,Jaipur,Rajasthan,India,Female,22,New,Inactive
+CUST009,2026-02-22,2026-08-27,11,76500,6955,South,Bengaluru,Karnataka,India,Male,38,Premium,Active
+CUST010,2026-03-01,2026-08-22,6,29800,4967,East,Bhubaneswar,Odisha,India,Female,27,Regular,Active
+CUST011,2026-03-07,2026-07-10,4,18900,4725,North,Lucknow,Uttar Pradesh,India,Male,45,Regular,Inactive
+CUST012,2026-03-14,2026-08-29,14,112500,8036,West,Mumbai,Maharashtra,India,Female,36,Premium,Active
+CUST013,2026-03-20,2026-08-16,9,47500,5278,South,Chennai,Tamil Nadu,India,Male,33,Regular,Active
+CUST014,2026-03-28,2026-04-03,1,1500,1500,East,Kolkata,West Bengal,India,Female,21,New,Inactive
+CUST015,2026-04-05,2026-08-25,13,89200,6862,South,Hyderabad,Telangana,India,Male,40,Premium,Active
+CUST016,2026-04-12,2026-08-19,5,24700,4940,North,Delhi,Delhi,India,Female,30,Regular,Active
+CUST017,2026-04-18,2026-06-14,2,6200,3100,West,Ahmedabad,Gujarat,India,Male,26,New,Inactive
+CUST018,2026-04-25,2026-08-31,16,134500,8406,South,Bengaluru,Karnataka,India,Female,34,Premium,Active
+CUST019,2026-05-02,2026-08-21,8,39800,4975,West,Pune,Maharashtra,India,Male,37,Regular,Active
+CUST020,2026-05-10,2026-08-08,3,11200,3733,North,Jaipur,Rajasthan,India,Female,25,Regular,Inactive
