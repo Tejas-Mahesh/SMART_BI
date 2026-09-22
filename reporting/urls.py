@@ -2,34 +2,39 @@ from django.urls import path
 
 from . import views
 
-
 app_name = "reporting"
-
 
 urlpatterns = [
 
-    path(
-        "",
-        views.dashboard,
-        name="dashboard",
-    ),
 
-    path(
-        "generate/",
-        views.generate_report,
-        name="generate_report",
-    ),
+# ============================================================
+# AUTOMATED REPORTS
+# ============================================================
 
-    path(
-        "<int:report_id>/download/pdf/",
-        views.download_pdf,
-        name="download_pdf",
-    ),
+path(
+    "automated-reports/",
+    views.automated_reports,
+    name="automated_reports",
+),
 
-    path(
-        "<int:report_id>/download/excel/",
-        views.download_excel,
-        name="download_excel",
-    ),
+# ============================================================
+# CUSTOM REPORTS
+# ============================================================
+
+path(
+    "custom-reports/",
+    views.custom_reports,
+    name="custom_reports",
+),
+
+# ============================================================
+# CUSTOM REPORT PDF EXPORT
+# ============================================================
+
+path(
+    "custom-reports/<int:report_id>/pdf/",
+    views.custom_report_pdf,
+    name="custom_report_pdf",
+),
 
 ]

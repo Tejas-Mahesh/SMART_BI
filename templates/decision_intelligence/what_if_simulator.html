@@ -1,0 +1,3098 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>What-If Simulator | Smart BI</title>
+
+    <style>
+
+        /* ============================================================
+           ROOT VARIABLES
+        ============================================================ */
+
+        :root {
+            --ft-bg: #07111f;
+            --ft-bg-deep: #040b15;
+
+            --ft-panel: rgba(13, 27, 46, 0.94);
+            --ft-panel-strong: rgba(16, 32, 55, 0.97);
+            --ft-panel-soft: rgba(255, 255, 255, 0.025);
+
+            --ft-border: rgba(255, 255, 255, 0.075);
+            --ft-border-soft: rgba(255, 255, 255, 0.045);
+
+            --ft-text: #f2f7ff;
+            --ft-text-soft: rgba(218, 231, 245, 0.68);
+            --ft-text-muted: rgba(190, 208, 229, 0.46);
+
+            --ft-blue: #4fa3ff;
+            --ft-blue-bright: #74b9ff;
+            --ft-cyan: #22d3ee;
+            --ft-purple: #8b5cf6;
+            --ft-green: #48d597;
+            --ft-yellow: #f3c86b;
+            --ft-red: #ff6577;
+
+            --ft-radius: 18px;
+
+            --ft-shadow:
+                0 18px 55px rgba(0, 0, 0, 0.22);
+
+            --ft-glow:
+                0 0 35px rgba(79, 163, 255, 0.12);
+
+            --ft-sidebar-width: 260px;
+        }
+
+
+        /* ============================================================
+           RESET
+        ============================================================ */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(79, 163, 255, 0.07),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(34, 211, 238, 0.045),
+                    transparent 24%
+                ),
+                var(--ft-bg-deep);
+
+            color: var(--ft-text);
+
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            overflow-x: hidden;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+
+        /* ============================================================
+           PAGE LAYOUT
+        ============================================================ */
+
+        .app-layout {
+            min-height: 100vh;
+            display: flex;
+            width: 100%;
+        }
+
+
+        /* ============================================================
+           LEFT SIDEBAR
+        ============================================================ */
+
+        .sidebar {
+            width: var(--ft-sidebar-width);
+            min-width: var(--ft-sidebar-width);
+
+            min-height: 100vh;
+
+            position: fixed;
+
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            z-index: 1000;
+        }
+
+
+        /* ============================================================
+           MAIN CONTENT
+        ============================================================ */
+
+        .main-content {
+            width: calc(100% - var(--ft-sidebar-width));
+
+            min-height: 100vh;
+
+            margin-left: var(--ft-sidebar-width);
+
+            padding: 30px;
+        }
+
+        .page-container {
+            width: 100%;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+
+        /* ============================================================
+           HEADER
+        ============================================================ */
+
+        .page-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            gap: 24px;
+
+            margin-bottom: 26px;
+        }
+
+        .header-content {
+            min-width: 0;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+
+            gap: 8px;
+
+            color: var(--ft-blue-bright);
+
+            font-size: 12px;
+            font-weight: 700;
+
+            letter-spacing: 0.12em;
+
+            text-transform: uppercase;
+
+            margin-bottom: 10px;
+        }
+
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--ft-cyan);
+
+            box-shadow:
+                0 0 12px rgba(34, 211, 238, 0.55);
+        }
+
+        .page-title {
+            font-size: clamp(28px, 3vw, 40px);
+
+            line-height: 1.08;
+
+            font-weight: 800;
+
+            letter-spacing: -0.035em;
+        }
+
+        .page-description {
+            margin-top: 10px;
+
+            max-width: 780px;
+
+            color: var(--ft-text-soft);
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+        .header-badge {
+            flex-shrink: 0;
+
+            display: inline-flex;
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 10px 14px;
+
+            border:
+                1px solid rgba(79, 163, 255, 0.18);
+
+            border-radius: 999px;
+
+            background:
+                rgba(79, 163, 255, 0.06);
+
+            color: var(--ft-blue-bright);
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+
+        /* ============================================================
+           MESSAGES
+        ============================================================ */
+
+        .messages {
+            display: grid;
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 13px 16px;
+
+            border:
+                1px solid var(--ft-border);
+
+            border-radius: 12px;
+
+            background:
+                var(--ft-panel);
+
+            color: var(--ft-text-soft);
+
+            font-size: 13px;
+        }
+
+        .message.success {
+            border-color:
+                rgba(72, 213, 151, 0.25);
+
+            background:
+                rgba(72, 213, 151, 0.07);
+
+            color: #9df0c7;
+        }
+
+        .message.error {
+            border-color:
+                rgba(255, 101, 119, 0.25);
+
+            background:
+                rgba(255, 101, 119, 0.07);
+
+            color: #ffb2bc;
+        }
+
+        .message.warning {
+            border-color:
+                rgba(243, 200, 107, 0.25);
+
+            background:
+                rgba(243, 200, 107, 0.07);
+
+            color: #f9d991;
+        }
+
+
+        /* ============================================================
+           COMMON PANEL
+        ============================================================ */
+
+        .panel {
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(16, 32, 55, 0.97),
+                    rgba(10, 23, 40, 0.94)
+                );
+
+            border:
+                1px solid var(--ft-border);
+
+            border-radius:
+                var(--ft-radius);
+
+            box-shadow:
+                var(--ft-shadow);
+        }
+
+
+        /* ============================================================
+           DATASET SELECTOR
+        ============================================================ */
+
+        .selector-panel {
+            padding: 22px;
+
+            margin-bottom: 22px;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 16px;
+
+            margin-bottom: 18px;
+        }
+
+        .section-heading-left {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .section-icon {
+            width: 38px;
+            height: 38px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 11px;
+
+            background:
+                rgba(79, 163, 255, 0.09);
+
+            border:
+                1px solid rgba(79, 163, 255, 0.15);
+
+            color:
+                var(--ft-blue-bright);
+
+            font-size: 17px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 750;
+        }
+
+        .section-subtitle {
+            margin-top: 3px;
+
+            color: var(--ft-text-muted);
+
+            font-size: 12px;
+        }
+
+        .selector-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.35fr)
+                minmax(0, 1fr)
+                auto;
+
+            gap: 14px;
+
+            align-items: end;
+        }
+
+        .field {
+            min-width: 0;
+        }
+
+        .field-label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: var(--ft-text-soft);
+
+            font-size: 12px;
+
+            font-weight: 650;
+        }
+
+        .field-control {
+            width: 100%;
+
+            height: 46px;
+
+            padding: 0 13px;
+
+            border:
+                1px solid var(--ft-border);
+
+            border-radius: 11px;
+
+            outline: none;
+
+            background:
+                rgba(4, 11, 21, 0.72);
+
+            color:
+                var(--ft-text);
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .field-control:hover {
+            border-color:
+                rgba(79, 163, 255, 0.22);
+        }
+
+        .field-control:focus {
+            border-color:
+                rgba(79, 163, 255, 0.5);
+
+            box-shadow:
+                0 0 0 3px rgba(79, 163, 255, 0.08);
+
+            background:
+                rgba(4, 11, 21, 0.9);
+        }
+
+        select.field-control option {
+            background: #0b1a2c;
+            color: var(--ft-text);
+        }
+
+
+        /* ============================================================
+           BUTTON
+        ============================================================ */
+
+        .action-button {
+            height: 46px;
+
+            padding: 0 19px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 9px;
+
+            border:
+                1px solid rgba(79, 163, 255, 0.32);
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(79, 163, 255, 0.24),
+                    rgba(34, 211, 238, 0.12)
+                );
+
+            color:
+                var(--ft-text);
+
+            font-size: 13px;
+            font-weight: 750;
+
+            cursor: pointer;
+
+            white-space: nowrap;
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .action-button:hover {
+            transform: translateY(-1px);
+
+            border-color:
+                rgba(116, 185, 255, 0.62);
+
+            box-shadow:
+                var(--ft-glow);
+        }
+
+        .action-button:active {
+            transform: translateY(0);
+        }
+
+        .action-button:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .action-button.primary {
+            min-width: 170px;
+        }
+
+
+        /* ============================================================
+           DATASET INFORMATION
+        ============================================================ */
+
+        .dataset-info {
+            display: grid;
+
+            grid-template-columns:
+                1fr auto;
+
+            gap: 18px;
+
+            padding: 20px 22px;
+
+            margin-bottom: 22px;
+        }
+
+        .dataset-info-main {
+            min-width: 0;
+        }
+
+        .dataset-name {
+            font-size: 18px;
+
+            font-weight: 750;
+
+            margin-bottom: 7px;
+
+            word-break: break-word;
+        }
+
+        .dataset-meta {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 8px 18px;
+
+            color:
+                var(--ft-text-muted);
+
+            font-size: 12px;
+        }
+
+        .dataset-meta span {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+        }
+
+        .dataset-meta strong {
+            color:
+                var(--ft-text-soft);
+        }
+
+        .version-badge {
+            align-self: center;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 9px 12px;
+
+            border-radius: 999px;
+
+            border:
+                1px solid rgba(34, 211, 238, 0.18);
+
+            background:
+                rgba(34, 211, 238, 0.06);
+
+            color:
+                var(--ft-cyan);
+
+            font-size: 11px;
+
+            font-weight: 750;
+
+            white-space: nowrap;
+        }
+
+
+        /* ============================================================
+           SIMULATION AREA
+        ============================================================ */
+
+        .simulation-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 0.9fr)
+                minmax(0, 1.1fr);
+
+            gap: 22px;
+
+            margin-bottom: 22px;
+        }
+
+        .assumptions-panel,
+        .results-panel {
+            padding: 22px;
+        }
+
+        .panel-header {
+            margin-bottom: 20px;
+        }
+
+        .panel-title {
+            font-size: 17px;
+            font-weight: 750;
+        }
+
+        .panel-description {
+            margin-top: 5px;
+
+            color:
+                var(--ft-text-muted);
+
+            font-size: 12px;
+
+            line-height: 1.55;
+        }
+
+
+        /* ============================================================
+           ASSUMPTIONS
+        ============================================================ */
+
+        .assumption-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .assumption-row {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                120px;
+
+            align-items: center;
+
+            gap: 14px;
+
+            padding: 13px 14px;
+
+            border:
+                1px solid var(--ft-border-soft);
+
+            border-radius: 13px;
+
+            background:
+                var(--ft-panel-soft);
+        }
+
+        .assumption-info {
+            min-width: 0;
+        }
+
+        .assumption-name {
+            font-size: 13px;
+            font-weight: 650;
+        }
+
+        .assumption-help {
+            margin-top: 3px;
+
+            color:
+                var(--ft-text-muted);
+
+            font-size: 11px;
+
+            line-height: 1.45;
+        }
+
+        .percentage-input {
+            width: 100%;
+
+            height: 40px;
+
+            padding: 0 11px;
+
+            border:
+                1px solid var(--ft-border);
+
+            border-radius: 9px;
+
+            background:
+                rgba(4, 11, 21, 0.76);
+
+            color:
+                var(--ft-text);
+
+            text-align: right;
+
+            outline: none;
+        }
+
+        .percentage-input:focus {
+            border-color:
+                rgba(79, 163, 255, 0.48);
+
+            box-shadow:
+                0 0 0 3px rgba(79, 163, 255, 0.07);
+        }
+
+        .assumption-note {
+            margin-top: 15px;
+
+            padding: 12px 13px;
+
+            border-left:
+                3px solid var(--ft-blue);
+
+            border-radius: 8px;
+
+            background:
+                rgba(79, 163, 255, 0.055);
+
+            color:
+                var(--ft-text-muted);
+
+            font-size: 11px;
+
+            line-height: 1.55;
+        }
+
+        .simulate-button-wrap {
+            margin-top: 18px;
+        }
+
+        .simulate-button {
+            width: 100%;
+            height: 48px;
+        }
+
+
+        /* ============================================================
+           RESULT SUMMARY
+        ============================================================ */
+
+        .result-status {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            margin-top: 9px;
+
+            padding: 7px 10px;
+
+            border-radius: 999px;
+
+            background:
+                rgba(72, 213, 151, 0.07);
+
+            border:
+                1px solid rgba(72, 213, 151, 0.15);
+
+            color:
+                var(--ft-green);
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .result-status-dot {
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+
+            background:
+                currentColor;
+        }
+
+
+        /* ============================================================
+           RESULT KPI CARDS
+        ============================================================ */
+
+        .metrics-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 12px;
+        }
+
+        .metric-card {
+            padding: 16px;
+
+            border:
+                1px solid var(--ft-border-soft);
+
+            border-radius: 14px;
+
+            background:
+                rgba(255, 255, 255, 0.018);
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+
+            border-color:
+                rgba(79, 163, 255, 0.18);
+        }
+
+        .metric-label {
+            color:
+                var(--ft-text-muted);
+
+            font-size: 11px;
+
+            font-weight: 650;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.055em;
+        }
+
+        .metric-values {
+            display: grid;
+
+            grid-template-columns:
+                1fr auto;
+
+            align-items: end;
+
+            gap: 12px;
+
+            margin-top: 9px;
+        }
+
+        .metric-value {
+            font-size: 20px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.02em;
+        }
+
+        .metric-baseline {
+            margin-top: 6px;
+
+            color:
+                var(--ft-text-muted);
+
+            font-size: 10px;
+        }
+
+        .metric-change {
+            font-size: 11px;
+
+            font-weight: 750;
+
+            white-space: nowrap;
+        }
+
+        .metric-change.positive {
+            color:
+                var(--ft-green);
+        }
+
+        .metric-change.negative {
+            color:
+                var(--ft-red);
+        }
+
+        .metric-change.neutral {
+            color:
+                var(--ft-text-muted);
+        }
+
+
+        /* ============================================================
+           COMPARISON TABLE
+        ============================================================ */
+
+        .comparison-block {
+            margin-top: 18px;
+
+            padding-top: 18px;
+
+            border-top:
+                1px solid var(--ft-border-soft);
+        }
+
+        .comparison-title {
+            margin-bottom: 11px;
+
+            color:
+                var(--ft-text-soft);
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+        .comparison-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .comparison-table {
+            width: 100%;
+
+            min-width: 560px;
+
+            border-collapse: collapse;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 11px 9px;
+
+            border-bottom:
+                1px solid var(--ft-border-soft);
+
+            text-align: left;
+
+            font-size: 12px;
+        }
+
+        .comparison-table th {
+            color:
+                var(--ft-text-muted);
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.05em;
+
+            font-weight: 700;
+        }
+
+        .comparison-table td {
+            color:
+                var(--ft-text-soft);
+        }
+
+        .comparison-table td strong {
+            color:
+                var(--ft-text);
+        }
+
+        .change-positive {
+            color:
+                var(--ft-green) !important;
+
+            font-weight: 700;
+        }
+
+        .change-negative {
+            color:
+                var(--ft-red) !important;
+
+            font-weight: 700;
+        }
+
+        .change-neutral {
+            color:
+                var(--ft-text-muted) !important;
+
+            font-weight: 700;
+        }
+
+
+        /* ============================================================
+           EMPTY RESULT
+        ============================================================ */
+
+        .empty-result {
+            min-height: 340px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 30px;
+
+            text-align: center;
+
+            border:
+                1px dashed rgba(79, 163, 255, 0.16);
+
+            border-radius: 14px;
+
+            background:
+                rgba(79, 163, 255, 0.025);
+        }
+
+        .empty-icon {
+            width: 58px;
+            height: 58px;
+
+            display: grid;
+            place-items: center;
+
+            margin-bottom: 15px;
+
+            border-radius: 17px;
+
+            border:
+                1px solid rgba(79, 163, 255, 0.16);
+
+            background:
+                rgba(79, 163, 255, 0.07);
+
+            color:
+                var(--ft-blue-bright);
+
+            font-size: 24px;
+        }
+
+        .empty-title {
+            font-size: 15px;
+            font-weight: 750;
+        }
+
+        .empty-description {
+            max-width: 420px;
+
+            margin-top: 7px;
+
+            color:
+                var(--ft-text-muted);
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+
+        /* ============================================================
+           SAVED SIMULATIONS
+        ============================================================ */
+
+        .saved-panel {
+            padding: 22px;
+
+            margin-bottom: 22px;
+        }
+
+        .saved-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .saved-item {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                auto;
+
+            gap: 16px;
+
+            align-items: center;
+
+            padding: 15px 16px;
+
+            border:
+                1px solid var(--ft-border-soft);
+
+            border-radius: 13px;
+
+            background:
+                var(--ft-panel-soft);
+        }
+
+        .saved-name {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .saved-meta {
+            margin-top: 4px;
+
+            color:
+                var(--ft-text-muted);
+
+            font-size: 11px;
+        }
+
+        .saved-status {
+            padding: 7px 10px;
+
+            border-radius: 999px;
+
+            background:
+                rgba(72, 213, 151, 0.07);
+
+            border:
+                1px solid rgba(72, 213, 151, 0.14);
+
+            color:
+                var(--ft-green);
+
+            font-size: 10px;
+
+            font-weight: 750;
+
+            white-space: nowrap;
+        }
+
+
+        /* ============================================================
+           METHODOLOGY
+        ============================================================ */
+
+        .methodology {
+            padding: 18px 20px;
+
+            border:
+                1px solid var(--ft-border-soft);
+
+            border-radius: 14px;
+
+            background:
+                rgba(255, 255, 255, 0.018);
+        }
+
+        .methodology-title {
+            margin-bottom: 6px;
+
+            color:
+                var(--ft-text-soft);
+
+            font-size: 12px;
+
+            font-weight: 750;
+        }
+
+        .methodology-text {
+            color:
+                var(--ft-text-muted);
+
+            font-size: 11px;
+
+            line-height: 1.65;
+        }
+
+
+        /* ============================================================
+           RESPONSIVE
+        ============================================================ */
+
+        @media (max-width: 1180px) {
+
+            .selector-grid {
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+            .selector-action {
+                grid-column:
+                    1 / -1;
+            }
+
+            .selector-action .action-button {
+                width: 100%;
+            }
+
+            .simulation-grid {
+                grid-template-columns:
+                    1fr;
+            }
+        }
+
+
+        @media (max-width: 900px) {
+
+            :root {
+                --ft-sidebar-width: 0px;
+            }
+
+            .sidebar {
+                width: 0;
+                min-width: 0;
+            }
+
+            .main-content {
+                width: 100%;
+                margin-left: 0;
+                padding: 22px;
+            }
+
+            .page-header {
+                flex-direction: column;
+            }
+
+            .dataset-info {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .version-badge {
+                justify-self: start;
+            }
+        }
+
+
+        @media (max-width: 680px) {
+
+            .main-content {
+                padding: 16px;
+            }
+
+            .selector-grid {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .selector-action {
+                grid-column:
+                    auto;
+            }
+
+            .metrics-grid {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .assumption-row {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .percentage-input {
+                text-align: left;
+            }
+
+            .saved-item {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .saved-status {
+                justify-self: start;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="app-layout">
+
+
+    <!-- ============================================================
+         LEFT SIDEBAR
+    ============================================================= -->
+
+    <aside class="sidebar">
+
+        {% include "includes/smart_sidebar.html" %}
+
+    </aside>
+
+
+    <!-- ============================================================
+         RIGHT MAIN CONTENT
+    ============================================================= -->
+
+    <main class="main-content">
+
+        <div class="page-container">
+
+
+            <!-- ====================================================
+                 PAGE HEADER
+            ===================================================== -->
+
+            <header class="page-header">
+
+                <div class="header-content">
+
+                    <div class="eyebrow">
+
+                        <span class="eyebrow-dot"></span>
+
+                        Decision Intelligence
+
+                    </div>
+
+
+                    <h1 class="page-title">
+                        What-If Simulator
+                    </h1>
+
+
+                    <p class="page-description">
+
+                        Explore hypothetical business changes and compare
+                        projected outcomes against the selected dataset's
+                        baseline performance.
+
+                    </p>
+
+                </div>
+
+
+                <div class="header-badge">
+
+                    <span>↗</span>
+
+                    Scenario Simulation
+
+                </div>
+
+            </header>
+
+
+            <!-- ====================================================
+                 DJANGO MESSAGES
+            ===================================================== -->
+
+            {% if messages %}
+
+                <div class="messages">
+
+                    {% for message in messages %}
+
+                        <div class="message {{ message.tags }}">
+
+                            {{ message }}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- ====================================================
+                 DATASET SELECTOR
+            ===================================================== -->
+
+            <section class="panel selector-panel">
+
+                <div class="section-heading">
+
+                    <div class="section-heading-left">
+
+                        <div class="section-icon">
+                            ◈
+                        </div>
+
+                        <div>
+
+                            <div class="section-title">
+                                Select Dataset
+                            </div>
+
+                            <div class="section-subtitle">
+
+                                Choose the cleaned dataset and version
+                                used for this simulation.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <form method="get">
+
+                    <div class="selector-grid">
+
+
+                        <!-- DATASET -->
+
+                        <div class="field">
+
+                            <label
+                                class="field-label"
+                                for="dataset"
+                            >
+                                Dataset
+                            </label>
+
+
+                            <select
+                                id="dataset"
+                                name="dataset"
+                                class="field-control"
+                                onchange="this.form.submit()"
+                            >
+
+                                <option value="">
+                                    Select dataset
+                                </option>
+
+
+                                {% for dataset in datasets %}
+
+                                    <option
+                                        value="{{ dataset.id }}"
+                                        {% if selected_dataset and selected_dataset.id == dataset.id %}
+                                            selected
+                                        {% endif %}
+                                    >
+
+                                        {{ dataset.name }}
+                                        — {{ dataset.dataset_type }}
+
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- VERSION -->
+
+                        <div class="field">
+
+                            <label
+                                class="field-label"
+                                for="version"
+                            >
+                                Dataset Version
+                            </label>
+
+
+                            <select
+                                id="version"
+                                name="version"
+                                class="field-control"
+
+                                onchange="this.form.submit()"
+
+                                {% if not selected_dataset %}
+                                    disabled
+                                {% endif %}
+                            >
+
+                                {% if versions %}
+
+                                    {% for version in versions %}
+
+                                        <option
+                                            value="{{ version.id }}"
+
+                                            {% if selected_version and selected_version.id == version.id %}
+                                                selected
+                                            {% endif %}
+                                        >
+
+                                            Version
+                                            {{ version.version_number }}
+
+                                            —
+                                            {{ version.version_type }}
+
+                                            {% if version.is_current %}
+                                                · Current
+                                            {% endif %}
+
+                                        </option>
+
+                                    {% endfor %}
+
+                                {% else %}
+
+                                    <option value="">
+                                        No versions available
+                                    </option>
+
+                                {% endif %}
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- REFRESH -->
+
+                        <div class="selector-action">
+
+                            <button
+                                type="submit"
+                                class="action-button"
+                            >
+
+                                Refresh Dataset
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+
+            <!-- ====================================================
+                 DATASET INFORMATION
+            ===================================================== -->
+
+            {% if selected_dataset %}
+
+                <section class="panel dataset-info">
+
+                    <div class="dataset-info-main">
+
+                        <div class="dataset-name">
+
+                            {{ selected_dataset.name }}
+
+                        </div>
+
+
+                        <div class="dataset-meta">
+
+                            <span>
+
+                                Type:
+
+                                <strong>
+                                    {{ selected_dataset.dataset_type }}
+                                </strong>
+
+                            </span>
+
+
+                            {% if selected_version %}
+
+                                <span>
+
+                                    Rows:
+
+                                    <strong>
+                                        {{ selected_version.total_rows }}
+                                    </strong>
+
+                                </span>
+
+
+                                <span>
+
+                                    Columns:
+
+                                    <strong>
+                                        {{ selected_version.total_columns }}
+                                    </strong>
+
+                                </span>
+
+
+                                <span>
+
+                                    Quality:
+
+                                    <strong>
+                                        {{ selected_version.quality_score }}%
+                                    </strong>
+
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    {% if selected_version %}
+
+                        <div class="version-badge">
+
+                            <span>●</span>
+
+                            Version
+                            {{ selected_version.version_number }}
+
+                            ·
+
+                            {{ selected_version.version_type }}
+
+                            {% if selected_version.is_current %}
+                                · Current
+                            {% endif %}
+
+                        </div>
+
+                    {% endif %}
+
+                </section>
+
+            {% endif %}
+
+
+            <!-- ====================================================
+                 SIMULATION GRID
+            ===================================================== -->
+
+            <section class="simulation-grid">
+
+
+                <!-- =================================================
+                     ASSUMPTIONS
+                ================================================== -->
+
+                <div class="panel assumptions-panel">
+
+
+                    <div class="panel-header">
+
+                        <div class="panel-title">
+                            Simulation Assumptions
+                        </div>
+
+                        <div class="panel-description">
+
+                            Enter percentage changes to test how different
+                            business assumptions could affect the baseline.
+
+                        </div>
+
+                    </div>
+
+
+                    <form
+                        method="post"
+                        id="simulation-form"
+                    >
+
+                        {% csrf_token %}
+
+
+                        <input
+                            type="hidden"
+                            name="action"
+                            value="simulate"
+                        >
+
+
+                        <input
+                            type="hidden"
+                            name="dataset"
+
+                            value="
+                                {% if selected_dataset %}
+                                    {{ selected_dataset.id }}
+                                {% endif %}
+                            "
+                        >
+
+
+                        <input
+                            type="hidden"
+                            name="version"
+
+                            value="
+                                {% if selected_version %}
+                                    {{ selected_version.id }}
+                                {% endif %}
+                            "
+                        >
+
+
+                        <div class="assumption-list">
+
+
+                            <!-- SALES -->
+
+                            <div class="assumption-row">
+
+                                <div class="assumption-info">
+
+                                    <div class="assumption-name">
+                                        Sales
+                                    </div>
+
+                                    <div class="assumption-help">
+
+                                        Increase or decrease total sales.
+
+                                    </div>
+
+                                </div>
+
+
+                                <input
+                                    class="percentage-input"
+                                    type="number"
+                                    step="0.01"
+                                    name="sales_change"
+                                    value="{{ assumptions.sales_change|default:0 }}"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+
+                            <!-- PROFIT -->
+
+                            <div class="assumption-row">
+
+                                <div class="assumption-info">
+
+                                    <div class="assumption-name">
+                                        Profit
+                                    </div>
+
+                                    <div class="assumption-help">
+
+                                        Model a percentage change in profit.
+
+                                    </div>
+
+                                </div>
+
+
+                                <input
+                                    class="percentage-input"
+                                    type="number"
+                                    step="0.01"
+                                    name="profit_change"
+                                    value="{{ assumptions.profit_change|default:0 }}"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+
+                            <!-- COST -->
+
+                            <div class="assumption-row">
+
+                                <div class="assumption-info">
+
+                                    <div class="assumption-name">
+                                        Cost
+                                    </div>
+
+                                    <div class="assumption-help">
+
+                                        Simulate higher or lower costs.
+
+                                    </div>
+
+                                </div>
+
+
+                                <input
+                                    class="percentage-input"
+                                    type="number"
+                                    step="0.01"
+                                    name="cost_change"
+                                    value="{{ assumptions.cost_change|default:0 }}"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+
+                            <!-- QUANTITY -->
+
+                            <div class="assumption-row">
+
+                                <div class="assumption-info">
+
+                                    <div class="assumption-name">
+                                        Quantity
+                                    </div>
+
+                                    <div class="assumption-help">
+
+                                        Change units or quantities sold.
+
+                                    </div>
+
+                                </div>
+
+
+                                <input
+                                    class="percentage-input"
+                                    type="number"
+                                    step="0.01"
+                                    name="quantity_change"
+                                    value="{{ assumptions.quantity_change|default:0 }}"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+
+                            <!-- CUSTOMERS -->
+
+                            <div class="assumption-row">
+
+                                <div class="assumption-info">
+
+                                    <div class="assumption-name">
+                                        Customers
+                                    </div>
+
+                                    <div class="assumption-help">
+
+                                        Simulate growth or decline in customers.
+
+                                    </div>
+
+                                </div>
+
+
+                                <input
+                                    class="percentage-input"
+                                    type="number"
+                                    step="0.01"
+                                    name="customer_change"
+                                    value="{{ assumptions.customer_change|default:0 }}"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+
+                            <!-- ORDERS -->
+
+                            <div class="assumption-row">
+
+                                <div class="assumption-info">
+
+                                    <div class="assumption-name">
+                                        Orders
+                                    </div>
+
+                                    <div class="assumption-help">
+
+                                        Model changes in order volume.
+
+                                    </div>
+
+                                </div>
+
+
+                                <input
+                                    class="percentage-input"
+                                    type="number"
+                                    step="0.01"
+                                    name="order_change"
+                                    value="{{ assumptions.order_change|default:0 }}"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+
+                            <!-- MARKETING SPEND -->
+
+                            <div class="assumption-row">
+
+                                <div class="assumption-info">
+
+                                    <div class="assumption-name">
+                                        Marketing Spend
+                                    </div>
+
+                                    <div class="assumption-help">
+
+                                        Test changes in marketing investment.
+
+                                    </div>
+
+                                </div>
+
+
+                                <input
+                                    class="percentage-input"
+                                    type="number"
+                                    step="0.01"
+                                    name="marketing_spend_change"
+                                    value="{{ assumptions.marketing_spend_change|default:0 }}"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+
+                            <!-- RETURNS -->
+
+                            <div class="assumption-row">
+
+                                <div class="assumption-info">
+
+                                    <div class="assumption-name">
+                                        Returns
+                                    </div>
+
+                                    <div class="assumption-help">
+
+                                        Simulate an increase or reduction
+                                        in returns.
+
+                                    </div>
+
+                                </div>
+
+
+                                <input
+                                    class="percentage-input"
+                                    type="number"
+                                    step="0.01"
+                                    name="returns_change"
+                                    value="{{ assumptions.returns_change|default:0 }}"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="assumption-note">
+
+                            Positive values represent increases and negative
+                            values represent decreases. The simulation only
+                            calculates hypothetical results and does not modify
+                            the stored dataset or dataset version.
+
+                        </div>
+
+
+                        <div class="simulate-button-wrap">
+
+                            <button
+                                type="submit"
+                                class="action-button primary simulate-button"
+
+                                {% if not selected_dataset or not selected_version %}
+                                    disabled
+                                {% endif %}
+                            >
+
+                                <span>▶</span>
+
+                                Run Simulation
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+
+                <!-- =================================================
+                     RESULTS
+                ================================================== -->
+
+                <div class="panel results-panel">
+
+
+                    {% if simulation_result %}
+
+
+                        <div class="panel-header">
+
+                            <div class="panel-title">
+                                Simulation Results
+                            </div>
+
+                            <div class="panel-description">
+
+                                Baseline performance compared with the
+                                simulated scenario.
+
+                            </div>
+
+
+                            <div class="result-status">
+
+                                <span class="result-status-dot"></span>
+
+                                Simulation Completed
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             KPI CARDS
+                        ================================================== -->
+
+                        <div class="metrics-grid">
+
+
+                            <!-- RECORDS -->
+
+                            {% if simulation_result.summary.records %}
+
+                                <div class="metric-card">
+
+                                    <div class="metric-label">
+                                        Records
+                                    </div>
+
+                                    <div class="metric-values">
+
+                                        <div>
+
+                                            <div class="metric-value">
+                                                {{ simulation_result.summary.records.simulated|floatformat:0 }}
+                                            </div>
+
+                                            <div class="metric-baseline">
+
+                                                Baseline:
+                                                {{ simulation_result.summary.records.baseline|floatformat:0 }}
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="
+                                            metric-change
+                                            {% if simulation_result.summary.records.percentage_change > 0 %}
+                                                positive
+                                            {% elif simulation_result.summary.records.percentage_change < 0 %}
+                                                negative
+                                            {% else %}
+                                                neutral
+                                            {% endif %}
+                                        ">
+
+                                            {% if simulation_result.summary.records.percentage_change > 0 %}
+                                                +
+                                            {% endif %}
+
+                                            {{ simulation_result.summary.records.percentage_change }}%
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- SALES -->
+
+                            {% if simulation_result.summary.sales %}
+
+                                <div class="metric-card">
+
+                                    <div class="metric-label">
+                                        Sales
+                                    </div>
+
+                                    <div class="metric-values">
+
+                                        <div>
+
+                                            <div class="metric-value">
+                                                {{ simulation_result.summary.sales.simulated|floatformat:2 }}
+                                            </div>
+
+                                            <div class="metric-baseline">
+
+                                                Baseline:
+                                                {{ simulation_result.summary.sales.baseline|floatformat:2 }}
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="
+                                            metric-change
+                                            {% if simulation_result.summary.sales.percentage_change > 0 %}
+                                                positive
+                                            {% elif simulation_result.summary.sales.percentage_change < 0 %}
+                                                negative
+                                            {% else %}
+                                                neutral
+                                            {% endif %}
+                                        ">
+
+                                            {% if simulation_result.summary.sales.percentage_change > 0 %}
+                                                +
+                                            {% endif %}
+
+                                            {{ simulation_result.summary.sales.percentage_change }}%
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- PROFIT -->
+
+                            {% if simulation_result.summary.profit %}
+
+                                <div class="metric-card">
+
+                                    <div class="metric-label">
+                                        Profit
+                                    </div>
+
+                                    <div class="metric-values">
+
+                                        <div>
+
+                                            <div class="metric-value">
+                                                {{ simulation_result.summary.profit.simulated|floatformat:2 }}
+                                            </div>
+
+                                            <div class="metric-baseline">
+
+                                                Baseline:
+                                                {{ simulation_result.summary.profit.baseline|floatformat:2 }}
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="
+                                            metric-change
+                                            {% if simulation_result.summary.profit.percentage_change > 0 %}
+                                                positive
+                                            {% elif simulation_result.summary.profit.percentage_change < 0 %}
+                                                negative
+                                            {% else %}
+                                                neutral
+                                            {% endif %}
+                                        ">
+
+                                            {% if simulation_result.summary.profit.percentage_change > 0 %}
+                                                +
+                                            {% endif %}
+
+                                            {{ simulation_result.summary.profit.percentage_change }}%
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- COST -->
+
+                            {% if simulation_result.summary.cost %}
+
+                                <div class="metric-card">
+
+                                    <div class="metric-label">
+                                        Cost
+                                    </div>
+
+                                    <div class="metric-values">
+
+                                        <div>
+
+                                            <div class="metric-value">
+                                                {{ simulation_result.summary.cost.simulated|floatformat:2 }}
+                                            </div>
+
+                                            <div class="metric-baseline">
+
+                                                Baseline:
+                                                {{ simulation_result.summary.cost.baseline|floatformat:2 }}
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="
+                                            metric-change
+                                            {% if simulation_result.summary.cost.percentage_change > 0 %}
+                                                positive
+                                            {% elif simulation_result.summary.cost.percentage_change < 0 %}
+                                                negative
+                                            {% else %}
+                                                neutral
+                                            {% endif %}
+                                        ">
+
+                                            {% if simulation_result.summary.cost.percentage_change > 0 %}
+                                                +
+                                            {% endif %}
+
+                                            {{ simulation_result.summary.cost.percentage_change }}%
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- QUANTITY -->
+
+                            {% if simulation_result.summary.quantity %}
+
+                                <div class="metric-card">
+
+                                    <div class="metric-label">
+                                        Quantity
+                                    </div>
+
+                                    <div class="metric-values">
+
+                                        <div>
+
+                                            <div class="metric-value">
+                                                {{ simulation_result.summary.quantity.simulated|floatformat:2 }}
+                                            </div>
+
+                                            <div class="metric-baseline">
+
+                                                Baseline:
+                                                {{ simulation_result.summary.quantity.baseline|floatformat:2 }}
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="
+                                            metric-change
+                                            {% if simulation_result.summary.quantity.percentage_change > 0 %}
+                                                positive
+                                            {% elif simulation_result.summary.quantity.percentage_change < 0 %}
+                                                negative
+                                            {% else %}
+                                                neutral
+                                            {% endif %}
+                                        ">
+
+                                            {% if simulation_result.summary.quantity.percentage_change > 0 %}
+                                                +
+                                            {% endif %}
+
+                                            {{ simulation_result.summary.quantity.percentage_change }}%
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- CUSTOMERS -->
+
+                            {% if simulation_result.summary.customers %}
+
+                                <div class="metric-card">
+
+                                    <div class="metric-label">
+                                        Customers
+                                    </div>
+
+                                    <div class="metric-values">
+
+                                        <div>
+
+                                            <div class="metric-value">
+                                                {{ simulation_result.summary.customers.simulated|floatformat:0 }}
+                                            </div>
+
+                                            <div class="metric-baseline">
+
+                                                Baseline:
+                                                {{ simulation_result.summary.customers.baseline|floatformat:0 }}
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="
+                                            metric-change
+                                            {% if simulation_result.summary.customers.percentage_change > 0 %}
+                                                positive
+                                            {% elif simulation_result.summary.customers.percentage_change < 0 %}
+                                                negative
+                                            {% else %}
+                                                neutral
+                                            {% endif %}
+                                        ">
+
+                                            {% if simulation_result.summary.customers.percentage_change > 0 %}
+                                                +
+                                            {% endif %}
+
+                                            {{ simulation_result.summary.customers.percentage_change }}%
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- ORDERS -->
+
+                            {% if simulation_result.summary.orders %}
+
+                                <div class="metric-card">
+
+                                    <div class="metric-label">
+                                        Orders
+                                    </div>
+
+                                    <div class="metric-values">
+
+                                        <div>
+
+                                            <div class="metric-value">
+                                                {{ simulation_result.summary.orders.simulated|floatformat:0 }}
+                                            </div>
+
+                                            <div class="metric-baseline">
+
+                                                Baseline:
+                                                {{ simulation_result.summary.orders.baseline|floatformat:0 }}
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="
+                                            metric-change
+                                            {% if simulation_result.summary.orders.percentage_change > 0 %}
+                                                positive
+                                            {% elif simulation_result.summary.orders.percentage_change < 0 %}
+                                                negative
+                                            {% else %}
+                                                neutral
+                                            {% endif %}
+                                        ">
+
+                                            {% if simulation_result.summary.orders.percentage_change > 0 %}
+                                                +
+                                            {% endif %}
+
+                                            {{ simulation_result.summary.orders.percentage_change }}%
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- MARKETING SPEND -->
+
+                            {% if simulation_result.summary.marketing_spend %}
+
+                                <div class="metric-card">
+
+                                    <div class="metric-label">
+                                        Marketing Spend
+                                    </div>
+
+                                    <div class="metric-values">
+
+                                        <div>
+
+                                            <div class="metric-value">
+                                                {{ simulation_result.summary.marketing_spend.simulated|floatformat:2 }}
+                                            </div>
+
+                                            <div class="metric-baseline">
+
+                                                Baseline:
+                                                {{ simulation_result.summary.marketing_spend.baseline|floatformat:2 }}
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="
+                                            metric-change
+                                            {% if simulation_result.summary.marketing_spend.percentage_change > 0 %}
+                                                positive
+                                            {% elif simulation_result.summary.marketing_spend.percentage_change < 0 %}
+                                                negative
+                                            {% else %}
+                                                neutral
+                                            {% endif %}
+                                        ">
+
+                                            {% if simulation_result.summary.marketing_spend.percentage_change > 0 %}
+                                                +
+                                            {% endif %}
+
+                                            {{ simulation_result.summary.marketing_spend.percentage_change }}%
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- RETURNS -->
+
+                            {% if simulation_result.summary.returns %}
+
+                                <div class="metric-card">
+
+                                    <div class="metric-label">
+                                        Returns
+                                    </div>
+
+                                    <div class="metric-values">
+
+                                        <div>
+
+                                            <div class="metric-value">
+                                                {{ simulation_result.summary.returns.simulated|floatformat:2 }}
+                                            </div>
+
+                                            <div class="metric-baseline">
+
+                                                Baseline:
+                                                {{ simulation_result.summary.returns.baseline|floatformat:2 }}
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="
+                                            metric-change
+                                            {% if simulation_result.summary.returns.percentage_change > 0 %}
+                                                positive
+                                            {% elif simulation_result.summary.returns.percentage_change < 0 %}
+                                                negative
+                                            {% else %}
+                                                neutral
+                                            {% endif %}
+                                        ">
+
+                                            {% if simulation_result.summary.returns.percentage_change > 0 %}
+                                                +
+                                            {% endif %}
+
+                                            {{ simulation_result.summary.returns.percentage_change }}%
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- AVERAGE ORDER VALUE -->
+
+                            {% if simulation_result.summary.average_order_value %}
+
+                                <div class="metric-card">
+
+                                    <div class="metric-label">
+                                        Average Order Value
+                                    </div>
+
+                                    <div class="metric-values">
+
+                                        <div>
+
+                                            <div class="metric-value">
+                                                {{ simulation_result.summary.average_order_value.simulated|floatformat:2 }}
+                                            </div>
+
+                                            <div class="metric-baseline">
+
+                                                Baseline:
+                                                {{ simulation_result.summary.average_order_value.baseline|floatformat:2 }}
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="
+                                            metric-change
+                                            {% if simulation_result.summary.average_order_value.percentage_change > 0 %}
+                                                positive
+                                            {% elif simulation_result.summary.average_order_value.percentage_change < 0 %}
+                                                negative
+                                            {% else %}
+                                                neutral
+                                            {% endif %}
+                                        ">
+
+                                            {% if simulation_result.summary.average_order_value.percentage_change > 0 %}
+                                                +
+                                            {% endif %}
+
+                                            {{ simulation_result.summary.average_order_value.percentage_change }}%
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- PROFIT MARGIN -->
+
+                            {% if simulation_result.summary.profit_margin %}
+
+                                <div class="metric-card">
+
+                                    <div class="metric-label">
+                                        Profit Margin
+                                    </div>
+
+                                    <div class="metric-values">
+
+                                        <div>
+
+                                            <div class="metric-value">
+                                                {{ simulation_result.summary.profit_margin.simulated|floatformat:2 }}%
+                                            </div>
+
+                                            <div class="metric-baseline">
+
+                                                Baseline:
+                                                {{ simulation_result.summary.profit_margin.baseline|floatformat:2 }}%
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="
+                                            metric-change
+                                            {% if simulation_result.summary.profit_margin.percentage_change > 0 %}
+                                                positive
+                                            {% elif simulation_result.summary.profit_margin.percentage_change < 0 %}
+                                                negative
+                                            {% else %}
+                                                neutral
+                                            {% endif %}
+                                        ">
+
+                                            {% if simulation_result.summary.profit_margin.percentage_change > 0 %}
+                                                +
+                                            {% endif %}
+
+                                            {{ simulation_result.summary.profit_margin.percentage_change }}%
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- RETURN RATE -->
+
+                            {% if simulation_result.summary.return_rate %}
+
+                                <div class="metric-card">
+
+                                    <div class="metric-label">
+                                        Return Rate
+                                    </div>
+
+                                    <div class="metric-values">
+
+                                        <div>
+
+                                            <div class="metric-value">
+                                                {{ simulation_result.summary.return_rate.simulated|floatformat:2 }}%
+                                            </div>
+
+                                            <div class="metric-baseline">
+
+                                                Baseline:
+                                                {{ simulation_result.summary.return_rate.baseline|floatformat:2 }}%
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="
+                                            metric-change
+                                            {% if simulation_result.summary.return_rate.percentage_change > 0 %}
+                                                positive
+                                            {% elif simulation_result.summary.return_rate.percentage_change < 0 %}
+                                                negative
+                                            {% else %}
+                                                neutral
+                                            {% endif %}
+                                        ">
+
+                                            {% if simulation_result.summary.return_rate.percentage_change > 0 %}
+                                                +
+                                            {% endif %}
+
+                                            {{ simulation_result.summary.return_rate.percentage_change }}%
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- =================================================
+                             COMPLETE COMPARISON TABLE
+                        ================================================== -->
+
+                        {% if simulation_result.summary %}
+
+                            <div class="comparison-block">
+
+                                <div class="comparison-title">
+
+                                    Baseline vs Simulated
+
+                                </div>
+
+
+                                <div class="comparison-table-wrapper">
+
+                                    <table class="comparison-table">
+
+                                        <thead>
+
+                                            <tr>
+
+                                                <th>
+                                                    Metric
+                                                </th>
+
+                                                <th>
+                                                    Baseline
+                                                </th>
+
+                                                <th>
+                                                    Simulated
+                                                </th>
+
+                                                <th>
+                                                    Absolute Change
+                                                </th>
+
+                                                <th>
+                                                    Percentage Change
+                                                </th>
+
+                                            </tr>
+
+                                        </thead>
+
+
+                                        <tbody>
+
+                                            {% for key, result in simulation_result.summary.items %}
+
+                                                <tr>
+
+                                                    <td>
+                                                        {{ key|title }}
+                                                    </td>
+
+
+                                                    <td>
+                                                        {{ result.baseline|floatformat:2 }}
+                                                    </td>
+
+
+                                                    <td>
+
+                                                        <strong>
+                                                            {{ result.simulated|floatformat:2 }}
+                                                        </strong>
+
+                                                    </td>
+
+
+                                                    <td>
+
+                                                        {% if result.absolute_change > 0 %}
+                                                            +
+                                                        {% endif %}
+
+                                                        {{ result.absolute_change|floatformat:2 }}
+
+                                                    </td>
+
+
+                                                    <td
+                                                        class="
+                                                            {% if result.percentage_change > 0 %}
+                                                                change-positive
+                                                            {% elif result.percentage_change < 0 %}
+                                                                change-negative
+                                                            {% else %}
+                                                                change-neutral
+                                                            {% endif %}
+                                                        "
+                                                    >
+
+                                                        {% if result.percentage_change > 0 %}
+                                                            +
+                                                        {% endif %}
+
+                                                        {{ result.percentage_change|floatformat:2 }}%
+
+                                                    </td>
+
+                                                </tr>
+
+                                            {% endfor %}
+
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+
+                            </div>
+
+                        {% endif %}
+
+
+                    {% else %}
+
+
+                        <!-- =================================================
+                             EMPTY RESULT
+                        ================================================== -->
+
+                        <div class="panel-header">
+
+                            <div class="panel-title">
+                                Simulation Results
+                            </div>
+
+                            <div class="panel-description">
+
+                                Run a simulation to compare your baseline
+                                performance with a hypothetical scenario.
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="empty-result">
+
+                            <div class="empty-icon">
+                                ◇
+                            </div>
+
+
+                            <div class="empty-title">
+
+                                No Simulation Yet
+
+                            </div>
+
+
+                            <div class="empty-description">
+
+                                Select a dataset and version, enter your
+                                assumptions, and click
+                                <strong>Run Simulation</strong>
+                                to generate decision intelligence results.
+
+                            </div>
+
+                        </div>
+
+
+                    {% endif %}
+
+                </div>
+
+            </section>
+
+
+            <!-- ====================================================
+                 SAVED SIMULATIONS
+            ===================================================== -->
+
+            {% if simulations %}
+
+                <section class="panel saved-panel">
+
+
+                    <div class="panel-header">
+
+                        <div class="panel-title">
+                            Recent Simulations
+                        </div>
+
+                        <div class="panel-description">
+
+                            Previously completed simulations for the selected
+                            dataset and dataset version.
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="saved-list">
+
+                        {% for simulation in simulations %}
+
+                            <div class="saved-item">
+
+                                <div>
+
+                                    <div class="saved-name">
+
+                                        {{ simulation.name }}
+
+                                    </div>
+
+
+                                    <div class="saved-meta">
+
+                                        Version
+                                        {{ simulation.dataset_version.version_number }}
+
+                                        ·
+
+                                        {{ simulation.created_at|date:"d M Y, H:i" }}
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="saved-status">
+
+                                    {{ simulation.status }}
+
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </section>
+
+            {% endif %}
+
+
+            <!-- ====================================================
+                 METHODOLOGY
+            ===================================================== -->
+
+            <section class="methodology">
+
+                <div class="methodology-title">
+
+                    Simulation Methodology
+
+                </div>
+
+
+                <div class="methodology-text">
+
+                    The What-If Simulator uses the selected dataset version
+                    as the baseline and applies the entered percentage
+                    assumptions to supported business measures. The resulting
+                    values are hypothetical calculations stored as a
+                    simulation record. The underlying cleaned dataset and
+                    its version remain unchanged.
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    /* ================================================================
+       DATASET / VERSION SELECTION
+    ================================================================ */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const datasetSelect =
+                document.getElementById(
+                    "dataset"
+                );
+
+            const versionSelect =
+                document.getElementById(
+                    "version"
+                );
+
+
+            if (
+                datasetSelect &&
+                versionSelect
+            ) {
+
+                datasetSelect.addEventListener(
+                    "change",
+                    function () {
+
+                        if (!this.value) {
+
+                            versionSelect.disabled =
+                                true;
+
+                        } else {
+
+                            versionSelect.disabled =
+                                false;
+
+                        }
+
+                    }
+                );
+
+            }
+
+
+            /* ========================================================
+               PREVENT DOUBLE SUBMISSION
+            ======================================================== */
+
+            const simulationForm =
+                document.getElementById(
+                    "simulation-form"
+                );
+
+
+            if (simulationForm) {
+
+                simulationForm.addEventListener(
+                    "submit",
+                    function () {
+
+                        const button =
+                            simulationForm.querySelector(
+                                'button[type="submit"]'
+                            );
+
+
+                        if (!button) {
+                            return;
+                        }
+
+
+                        if (
+                            button.disabled
+                        ) {
+                            return;
+                        }
+
+
+                        button.dataset.originalText =
+                            button.innerHTML;
+
+
+                        button.innerHTML = `
+                            <span>⟳</span>
+                            Running Simulation...
+                        `;
+
+
+                        button.disabled =
+                            true;
+
+                    }
+                );
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+</html>

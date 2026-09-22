@@ -7,11 +7,20 @@ app_name = "admin_dashboard"
 
 
 urlpatterns = [
+
+    # ========================================================
+    # DASHBOARD
+    # ========================================================
+
     path(
         "",
         views.dashboard,
         name="dashboard",
     ),
+
+    # ========================================================
+    # USERS
+    # ========================================================
 
     path(
         "users/",
@@ -24,6 +33,10 @@ urlpatterns = [
         views.user_detail,
         name="user_detail",
     ),
+
+    # ========================================================
+    # USER ACTIONS
+    # ========================================================
 
     path(
         "users/<int:user_id>/approve/",
@@ -47,5 +60,15 @@ urlpatterns = [
         "users/<int:user_id>/deactivate/",
         views.deactivate_user,
         name="deactivate_user",
+    ),
+
+    # ========================================================
+    # DATASETS
+    # ========================================================
+
+    path(
+        "datasets/<int:dataset_id>/",
+        views.dataset_detail,
+        name="dataset_detail",
     ),
 ]

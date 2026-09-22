@@ -1,0 +1,1895 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Decision Impact Analysis | Smart BI</title>
+
+    <style>
+        :root {
+            --ft-bg: #07111f;
+            --ft-bg-deep: #040b15;
+
+            --ft-panel: rgba(13, 27, 46, 0.94);
+            --ft-panel-strong: rgba(16, 32, 55, 0.97);
+            --ft-panel-soft: rgba(255, 255, 255, 0.025);
+
+            --ft-border: rgba(255, 255, 255, 0.075);
+            --ft-border-soft: rgba(255, 255, 255, 0.045);
+
+            --ft-text: #f2f7ff;
+            --ft-text-soft: rgba(218, 231, 245, 0.68);
+            --ft-text-muted: rgba(190, 208, 229, 0.46);
+
+            --ft-blue: #4fa3ff;
+            --ft-blue-bright: #74b9ff;
+            --ft-cyan: #22d3ee;
+            --ft-purple: #8b5cf6;
+            --ft-green: #48d597;
+            --ft-yellow: #f3c86b;
+            --ft-red: #ff6577;
+
+            --ft-radius: 18px;
+
+            --ft-shadow:
+                0 18px 55px rgba(0, 0, 0, 0.22);
+
+            --ft-glow:
+                0 0 35px rgba(79, 163, 255, 0.12);
+
+            --ft-sidebar-width: 260px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+        }
+
+        body {
+            background:
+                radial-gradient(
+                    circle at 78% 8%,
+                    rgba(79, 163, 255, 0.08),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 15% 80%,
+                    rgba(34, 211, 238, 0.035),
+                    transparent 28%
+                ),
+                var(--ft-bg);
+            color: var(--ft-text);
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .impact-page {
+            width: 100%;
+            min-height: 100vh;
+            padding: 28px 30px 60px;
+            margin-left: var(--ft-sidebar-width);
+            width: calc(100% - var(--ft-sidebar-width));
+        }
+
+        .impact-container {
+            width: 100%;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .impact-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .impact-header-left {
+            min-width: 0;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+
+            color: var(--ft-blue-bright);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--ft-cyan);
+            box-shadow:
+                0 0 12px rgba(34, 211, 238, 0.65);
+        }
+
+        .impact-title {
+            margin: 0;
+            font-size: clamp(28px, 3vw, 42px);
+            line-height: 1.08;
+            letter-spacing: -0.035em;
+            font-weight: 800;
+        }
+
+        .impact-subtitle {
+            max-width: 760px;
+            margin: 10px 0 0;
+
+            color: var(--ft-text-soft);
+            font-size: 14px;
+            line-height: 1.65;
+        }
+
+        /* =====================================================
+           DATASET SELECTOR
+        ===================================================== */
+
+        .selector-panel {
+            min-width: 330px;
+            max-width: 450px;
+
+            padding: 16px;
+
+            background: var(--ft-panel);
+            border: 1px solid var(--ft-border);
+            border-radius: var(--ft-radius);
+            box-shadow: var(--ft-shadow);
+        }
+
+        .selector-title {
+            margin: 0 0 11px;
+
+            color: var(--ft-text-muted);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .selector-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .field-group {
+            min-width: 0;
+        }
+
+        .field-label {
+            display: block;
+            margin-bottom: 7px;
+
+            color: var(--ft-text-soft);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .control {
+            width: 100%;
+            min-height: 42px;
+
+            padding: 0 12px;
+
+            color: var(--ft-text);
+            background: rgba(4, 11, 21, 0.72);
+
+            border: 1px solid var(--ft-border);
+            border-radius: 11px;
+
+            outline: none;
+            transition:
+                border-color 0.18s ease,
+                box-shadow 0.18s ease,
+                background 0.18s ease;
+        }
+
+        select.control {
+            cursor: pointer;
+        }
+
+        .control:focus {
+            border-color: rgba(79, 163, 255, 0.6);
+            box-shadow:
+                0 0 0 3px rgba(79, 163, 255, 0.08),
+                var(--ft-glow);
+        }
+
+        .control::placeholder {
+            color: var(--ft-text-muted);
+        }
+
+        select.control option {
+            color: #f2f7ff;
+            background: #0d1b2e;
+        }
+
+        /* =====================================================
+           MESSAGES
+        ===================================================== */
+
+        .messages {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 13px 15px;
+
+            border: 1px solid var(--ft-border);
+            border-radius: 12px;
+
+            background: var(--ft-panel);
+            color: var(--ft-text-soft);
+
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .message.success {
+            border-color: rgba(72, 213, 151, 0.25);
+            color: var(--ft-green);
+        }
+
+        .message.error {
+            border-color: rgba(255, 101, 119, 0.25);
+            color: var(--ft-red);
+        }
+
+        /* =====================================================
+           SUMMARY CARDS
+        ===================================================== */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 13px;
+            margin-bottom: 22px;
+        }
+
+        .summary-card {
+            position: relative;
+            overflow: hidden;
+
+            padding: 17px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255, 255, 255, 0.035),
+                    rgba(255, 255, 255, 0.012)
+                ),
+                var(--ft-panel);
+
+            border: 1px solid var(--ft-border);
+            border-radius: 16px;
+
+            box-shadow: var(--ft-shadow);
+        }
+
+        .summary-card::after {
+            content: "";
+            position: absolute;
+            right: -35px;
+            bottom: -45px;
+
+            width: 110px;
+            height: 110px;
+
+            border-radius: 50%;
+            background: rgba(79, 163, 255, 0.07);
+            filter: blur(3px);
+        }
+
+        .summary-label {
+            color: var(--ft-text-muted);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .summary-value {
+            margin-top: 8px;
+
+            font-size: 25px;
+            line-height: 1;
+            font-weight: 800;
+        }
+
+        .summary-card.total .summary-value {
+            color: var(--ft-blue-bright);
+        }
+
+        .summary-card.monitoring .summary-value {
+            color: var(--ft-cyan);
+        }
+
+        .summary-card.completed .summary-value {
+            color: var(--ft-purple);
+        }
+
+        .summary-card.positive .summary-value {
+            color: var(--ft-green);
+        }
+
+        .summary-card.neutral .summary-value {
+            color: var(--ft-yellow);
+        }
+
+        .summary-card.negative .summary-value {
+            color: var(--ft-red);
+        }
+
+        /* =====================================================
+           MAIN GRID
+        ===================================================== */
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(340px, 0.82fr) minmax(500px, 1.18fr);
+            gap: 20px;
+            align-items: start;
+        }
+
+        .panel {
+            background: var(--ft-panel);
+            border: 1px solid var(--ft-border);
+            border-radius: var(--ft-radius);
+            box-shadow: var(--ft-shadow);
+        }
+
+        .panel-header {
+            padding: 19px 20px 16px;
+            border-bottom: 1px solid var(--ft-border-soft);
+        }
+
+        .panel-title {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 750;
+        }
+
+        .panel-description {
+            margin: 5px 0 0;
+
+            color: var(--ft-text-muted);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .panel-body {
+            padding: 20px;
+        }
+
+        /* =====================================================
+           FORM
+        ===================================================== */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .form-field.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 7px;
+
+            color: var(--ft-text-soft);
+            font-size: 12px;
+            font-weight: 650;
+        }
+
+        .required {
+            color: var(--ft-red);
+        }
+
+        .textarea {
+            min-height: 92px;
+            padding: 11px 12px;
+            resize: vertical;
+        }
+
+        .input-prefix {
+            position: relative;
+        }
+
+        .input-prefix .control {
+            padding-left: 32px;
+        }
+
+        .prefix-symbol {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+
+            color: var(--ft-text-muted);
+            font-size: 13px;
+            pointer-events: none;
+        }
+
+        .input-suffix {
+            position: relative;
+        }
+
+        .input-suffix .control {
+            padding-right: 36px;
+        }
+
+        .suffix-symbol {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+
+            color: var(--ft-text-muted);
+            font-size: 13px;
+            pointer-events: none;
+        }
+
+        .form-help {
+            margin-top: 6px;
+
+            color: var(--ft-text-muted);
+            font-size: 11px;
+            line-height: 1.45;
+        }
+
+        .submit-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .primary-button {
+            min-height: 43px;
+            padding: 0 18px;
+
+            border: 0;
+            border-radius: 11px;
+
+            color: #04101d;
+            background: linear-gradient(
+                135deg,
+                var(--ft-blue-bright),
+                var(--ft-cyan)
+            );
+
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+
+            box-shadow:
+                0 8px 24px rgba(79, 163, 255, 0.18);
+
+            transition:
+                transform 0.18s ease,
+                box-shadow 0.18s ease;
+        }
+
+        .primary-button:hover {
+            transform: translateY(-1px);
+            box-shadow:
+                0 12px 30px rgba(79, 163, 255, 0.25);
+        }
+
+        /* =====================================================
+           SELECTED ANALYSIS
+        ===================================================== */
+
+        .analysis-card {
+            padding: 20px;
+        }
+
+        .analysis-heading {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .analysis-title {
+            margin: 0;
+            font-size: 19px;
+            line-height: 1.3;
+        }
+
+        .analysis-meta {
+            margin-top: 6px;
+
+            color: var(--ft-text-muted);
+            font-size: 11px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-height: 27px;
+            padding: 0 10px;
+
+            border-radius: 999px;
+
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+        }
+
+        .badge-positive {
+            color: var(--ft-green);
+            background: rgba(72, 213, 151, 0.09);
+            border: 1px solid rgba(72, 213, 151, 0.18);
+        }
+
+        .badge-neutral {
+            color: var(--ft-yellow);
+            background: rgba(243, 200, 107, 0.08);
+            border: 1px solid rgba(243, 200, 107, 0.18);
+        }
+
+        .badge-negative {
+            color: var(--ft-red);
+            background: rgba(255, 101, 119, 0.08);
+            border: 1px solid rgba(255, 101, 119, 0.18);
+        }
+
+        .badge-monitoring {
+            color: var(--ft-cyan);
+            background: rgba(34, 211, 238, 0.08);
+            border: 1px solid rgba(34, 211, 238, 0.18);
+        }
+
+        .badge-completed {
+            color: var(--ft-purple);
+            background: rgba(139, 92, 246, 0.09);
+            border: 1px solid rgba(139, 92, 246, 0.18);
+        }
+
+        .impact-highlight {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .highlight-box {
+            padding: 15px;
+
+            background: var(--ft-panel-soft);
+            border: 1px solid var(--ft-border-soft);
+            border-radius: 13px;
+        }
+
+        .highlight-label {
+            color: var(--ft-text-muted);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .highlight-value {
+            margin-top: 7px;
+
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .highlight-value.expected {
+            color: var(--ft-blue-bright);
+        }
+
+        .highlight-value.actual {
+            color: var(--ft-cyan);
+        }
+
+        .highlight-value.impact {
+            color: var(--ft-green);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .metric-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+
+            padding: 12px 13px;
+
+            background: rgba(255, 255, 255, 0.018);
+            border: 1px solid var(--ft-border-soft);
+            border-radius: 11px;
+        }
+
+        .metric-name {
+            color: var(--ft-text-muted);
+            font-size: 11px;
+        }
+
+        .metric-value {
+            color: var(--ft-text);
+            font-size: 12px;
+            font-weight: 750;
+            text-align: right;
+        }
+
+        .analysis-notes {
+            padding: 14px;
+
+            background: rgba(79, 163, 255, 0.045);
+            border: 1px solid rgba(79, 163, 255, 0.11);
+            border-radius: 12px;
+        }
+
+        .analysis-notes-title {
+            margin-bottom: 6px;
+
+            color: var(--ft-blue-bright);
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .analysis-notes-text {
+            color: var(--ft-text-soft);
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* =====================================================
+           HISTORY
+        ===================================================== */
+
+        .history-panel {
+            margin-top: 20px;
+        }
+
+        .history-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .history-item {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 15px;
+            align-items: center;
+
+            padding: 14px;
+
+            background: rgba(255, 255, 255, 0.018);
+            border: 1px solid var(--ft-border-soft);
+            border-radius: 13px;
+
+            transition:
+                border-color 0.18s ease,
+                background 0.18s ease;
+        }
+
+        .history-item:hover {
+            background: rgba(255, 255, 255, 0.028);
+            border-color: var(--ft-border);
+        }
+
+        .history-main {
+            min-width: 0;
+        }
+
+        .history-title {
+            display: block;
+
+            color: var(--ft-text);
+            font-size: 13px;
+            font-weight: 750;
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .history-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 6px;
+
+            color: var(--ft-text-muted);
+            font-size: 10px;
+        }
+
+        .history-result {
+            text-align: right;
+        }
+
+        .history-impact {
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .history-impact.positive {
+            color: var(--ft-green);
+        }
+
+        .history-impact.neutral {
+            color: var(--ft-yellow);
+        }
+
+        .history-impact.negative {
+            color: var(--ft-red);
+        }
+
+        .empty-state {
+            padding: 45px 20px;
+            text-align: center;
+        }
+
+        .empty-icon {
+            width: 48px;
+            height: 48px;
+
+            margin: 0 auto 13px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 14px;
+
+            background: rgba(79, 163, 255, 0.07);
+            border: 1px solid rgba(79, 163, 255, 0.12);
+
+            color: var(--ft-blue-bright);
+            font-size: 20px;
+        }
+
+        .empty-title {
+            margin: 0;
+
+            font-size: 15px;
+            font-weight: 750;
+        }
+
+        .empty-text {
+            max-width: 420px;
+            margin: 7px auto 0;
+
+            color: var(--ft-text-muted);
+            font-size: 12px;
+            line-height: 1.55;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1250px) {
+            .summary-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .impact-page {
+                margin-left: 0;
+                width: 100%;
+                padding: 22px 18px 50px;
+            }
+
+            .impact-header {
+                flex-direction: column;
+            }
+
+            .selector-panel {
+                width: 100%;
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .selector-grid,
+            .form-grid,
+            .impact-highlight,
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-field.full {
+                grid-column: auto;
+            }
+
+            .history-item {
+                grid-template-columns: 1fr;
+            }
+
+            .history-result {
+                text-align: left;
+            }
+
+            .impact-page {
+                padding: 18px 13px 40px;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include "includes/smart_sidebar.html" %}
+
+    <main class="impact-page">
+
+        <div class="impact-container">
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="impact-header">
+
+                <div class="impact-header-left">
+
+                    <div class="eyebrow">
+                        <span class="eyebrow-dot"></span>
+                        Decision Intelligence
+                    </div>
+
+                    <h1 class="impact-title">
+                        Decision Impact Analysis
+                    </h1>
+
+                    <p class="impact-subtitle">
+                        Measure how an implemented decision performed against
+                        its expected target using the selected cleaned dataset
+                        version.
+                    </p>
+
+                </div>
+
+                <!-- =================================================
+                     DATASET SELECTOR
+                ================================================== -->
+
+                <form
+                    method="get"
+                    class="selector-panel"
+                    id="datasetSelectorForm"
+                >
+
+                    <div class="selector-title">
+                        Analysis Dataset
+                    </div>
+
+                    <div class="selector-grid">
+
+                        <div class="field-group">
+
+                            <label
+                                class="field-label"
+                                for="datasetSelect"
+                            >
+                                Dataset
+                            </label>
+
+                            <select
+                                class="control"
+                                id="datasetSelect"
+                                name="dataset"
+                            >
+
+                                {% if datasets %}
+
+                                    {% for dataset in datasets %}
+
+                                        <option
+                                            value="{{ dataset.id }}"
+                                            {% if selected_dataset and dataset.id == selected_dataset.id %}
+                                                selected
+                                            {% endif %}
+                                        >
+                                            {{ dataset.name }}
+                                            — {{ dataset.dataset_type }}
+                                        </option>
+
+                                    {% endfor %}
+
+                                {% else %}
+
+                                    <option value="">
+                                        No datasets available
+                                    </option>
+
+                                {% endif %}
+
+                            </select>
+
+                        </div>
+
+                        <div class="field-group">
+
+                            <label
+                                class="field-label"
+                                for="versionSelect"
+                            >
+                                Data Version
+                            </label>
+
+                            <select
+                                class="control"
+                                id="versionSelect"
+                                name="version"
+                            >
+
+                                {% if versions %}
+
+                                    {% for version in versions %}
+
+                                        <option
+                                            value="{{ version.id }}"
+                                            {% if selected_version and version.id == selected_version.id %}
+                                                selected
+                                            {% endif %}
+                                        >
+                                            V{{ version.version_number }}
+                                            — {{ version.version_type }}
+                                            {% if version.is_current %}
+                                                — Current
+                                            {% endif %}
+                                        </option>
+
+                                    {% endfor %}
+
+                                {% else %}
+
+                                    <option value="">
+                                        No versions available
+                                    </option>
+
+                                {% endif %}
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </header>
+
+
+            <!-- =================================================
+                 MESSAGES
+            ================================================== -->
+
+            {% if messages %}
+
+                <div class="messages">
+
+                    {% for message in messages %}
+
+                        <div class="message {{ message.tags }}">
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- =================================================
+                 SUMMARY
+            ================================================== -->
+
+            <section class="summary-grid">
+
+                <div class="summary-card total">
+                    <div class="summary-label">
+                        Total Analyses
+                    </div>
+
+                    <div class="summary-value">
+                        {{ summary.total|default:0 }}
+                    </div>
+                </div>
+
+                <div class="summary-card monitoring">
+                    <div class="summary-label">
+                        Monitoring
+                    </div>
+
+                    <div class="summary-value">
+                        {{ summary.monitoring|default:0 }}
+                    </div>
+                </div>
+
+                <div class="summary-card completed">
+                    <div class="summary-label">
+                        Completed
+                    </div>
+
+                    <div class="summary-value">
+                        {{ summary.completed|default:0 }}
+                    </div>
+                </div>
+
+                <div class="summary-card positive">
+                    <div class="summary-label">
+                        Positive
+                    </div>
+
+                    <div class="summary-value">
+                        {{ summary.positive|default:0 }}
+                    </div>
+                </div>
+
+                <div class="summary-card neutral">
+                    <div class="summary-label">
+                        Neutral
+                    </div>
+
+                    <div class="summary-value">
+                        {{ summary.neutral|default:0 }}
+                    </div>
+                </div>
+
+                <div class="summary-card negative">
+                    <div class="summary-label">
+                        Negative
+                    </div>
+
+                    <div class="summary-value">
+                        {{ summary.negative|default:0 }}
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 MAIN CONTENT
+            ================================================== -->
+
+            <section class="content-grid">
+
+                <!-- =================================================
+                     CREATE ANALYSIS
+                ================================================== -->
+
+                <section class="panel">
+
+                    <div class="panel-header">
+
+                        <h2 class="panel-title">
+                            Analyze Decision Impact
+                        </h2>
+
+                        <p class="panel-description">
+                            Define the baseline and expected change,
+                            then compare it with the actual result
+                            from the selected dataset version.
+                        </p>
+
+                    </div>
+
+                    <div class="panel-body">
+
+                        {% if selected_dataset and selected_version %}
+
+                            <form method="post">
+
+                                {% csrf_token %}
+
+                                <input
+                                    type="hidden"
+                                    name="action"
+                                    value="analyze"
+                                >
+
+                                <div class="form-grid">
+
+                                    <!-- TITLE -->
+
+                                    <div class="form-field full">
+
+                                        <label
+                                            class="form-label"
+                                            for="title"
+                                        >
+                                            Analysis Title
+                                        </label>
+
+                                        <input
+                                            class="control"
+                                            type="text"
+                                            id="title"
+                                            name="title"
+                                            placeholder="Example: Q3 Pricing Decision Impact"
+                                        >
+
+                                    </div>
+
+
+                                    <!-- CATEGORY -->
+
+                                    <div class="form-field">
+
+                                        <label
+                                            class="form-label"
+                                            for="category"
+                                        >
+                                            Category
+                                        </label>
+
+                                        <select
+                                            class="control"
+                                            id="category"
+                                            name="category"
+                                        >
+
+                                            <option value="General">
+                                                General
+                                            </option>
+
+                                            <option value="Sales">
+                                                Sales
+                                            </option>
+
+                                            <option value="Customer">
+                                                Customer
+                                            </option>
+
+                                            <option value="Product">
+                                                Product
+                                            </option>
+
+                                            <option value="Regional">
+                                                Regional
+                                            </option>
+
+                                            <option value="Marketing">
+                                                Marketing
+                                            </option>
+
+                                            <option value="Financial">
+                                                Financial
+                                            </option>
+
+                                            <option value="Returns">
+                                                Returns
+                                            </option>
+
+                                            <option value="Operational">
+                                                Operational
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- METRIC -->
+
+                                    <div class="form-field">
+
+                                        <label
+                                            class="form-label"
+                                            for="metric_name"
+                                        >
+                                            Metric
+                                            <span class="required">*</span>
+                                        </label>
+
+                                        <select
+                                            class="control"
+                                            id="metric_name"
+                                            name="metric_name"
+                                            required
+                                        >
+
+                                            <option value="">
+                                                Select metric
+                                            </option>
+
+                                            {% for metric in available_metrics %}
+
+                                                <option
+                                                    value="{{ metric.value }}"
+                                                >
+                                                    {{ metric.label }}
+                                                </option>
+
+                                            {% endfor %}
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- BASELINE -->
+
+                                    <div class="form-field">
+
+                                        <label
+                                            class="form-label"
+                                            for="baseline_value"
+                                        >
+                                            Baseline Value
+                                            <span class="required">*</span>
+                                        </label>
+
+                                        <div class="input-prefix">
+
+                                            <span class="prefix-symbol">
+                                                #
+                                            </span>
+
+                                            <input
+                                                class="control"
+                                                type="number"
+                                                id="baseline_value"
+                                                name="baseline_value"
+                                                step="any"
+                                                placeholder="100000"
+                                                required
+                                            >
+
+                                        </div>
+
+                                        <div class="form-help">
+                                            Value before the decision was implemented.
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- EXPECTED CHANGE -->
+
+                                    <div class="form-field">
+
+                                        <label
+                                            class="form-label"
+                                            for="expected_change"
+                                        >
+                                            Expected Change
+                                            <span class="required">*</span>
+                                        </label>
+
+                                        <div class="input-suffix">
+
+                                            <input
+                                                class="control"
+                                                type="number"
+                                                id="expected_change"
+                                                name="expected_change"
+                                                step="any"
+                                                placeholder="10"
+                                                required
+                                            >
+
+                                            <span class="suffix-symbol">
+                                                %
+                                            </span>
+
+                                        </div>
+
+                                        <div class="form-help">
+                                            Expected percentage change from baseline.
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- DESCRIPTION -->
+
+                                    <div class="form-field full">
+
+                                        <label
+                                            class="form-label"
+                                            for="description"
+                                        >
+                                            Description
+                                        </label>
+
+                                        <textarea
+                                            class="control textarea"
+                                            id="description"
+                                            name="description"
+                                            placeholder="Describe the decision being evaluated..."
+                                        ></textarea>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="submit-row">
+
+                                    <button
+                                        type="submit"
+                                        class="primary-button"
+                                    >
+                                        Analyze Decision Impact
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                        {% else %}
+
+                            <div class="empty-state">
+
+                                <div class="empty-icon">
+                                    ◈
+                                </div>
+
+                                <h3 class="empty-title">
+                                    Select a Dataset
+                                </h3>
+
+                                <p class="empty-text">
+                                    Select an available dataset and version
+                                    above before running a Decision Impact Analysis.
+                                </p>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     SELECTED RESULT
+                ================================================== -->
+
+                <section class="panel">
+
+                    <div class="panel-header">
+
+                        <h2 class="panel-title">
+                            Impact Result
+                        </h2>
+
+                        <p class="panel-description">
+                            Current decision impact for the selected
+                            dataset and version.
+                        </p>
+
+                    </div>
+
+                    {% if selected_analysis %}
+
+                        <div class="analysis-card">
+
+                            <div class="analysis-heading">
+
+                                <div>
+
+                                    <h3 class="analysis-title">
+                                        {{ selected_analysis.title }}
+                                    </h3>
+
+                                    <div class="analysis-meta">
+
+                                        {{ selected_analysis.category }}
+                                        ·
+                                        {{ selected_analysis.metric_name }}
+                                        ·
+                                        {{ selected_analysis.created_at|date:"d M Y, H:i" }}
+
+                                    </div>
+
+                                </div>
+
+
+                                {% if selected_analysis.impact_type == "Positive" %}
+
+                                    <span class="badge badge-positive">
+                                        Positive
+                                    </span>
+
+                                {% elif selected_analysis.impact_type == "Negative" %}
+
+                                    <span class="badge badge-negative">
+                                        Negative
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge badge-neutral">
+                                        Neutral
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- HIGHLIGHTS -->
+
+                            <div class="impact-highlight">
+
+                                <div class="highlight-box">
+
+                                    <div class="highlight-label">
+                                        Baseline
+                                    </div>
+
+                                    <div class="highlight-value">
+                                        {{ selected_analysis.baseline_value|floatformat:2 }}
+                                    </div>
+
+                                </div>
+
+
+                                <div class="highlight-box">
+
+                                    <div class="highlight-label">
+                                        Expected
+                                    </div>
+
+                                    <div class="highlight-value expected">
+                                        {{ selected_analysis.expected_value|floatformat:2 }}
+                                    </div>
+
+                                </div>
+
+
+                                <div class="highlight-box">
+
+                                    <div class="highlight-label">
+                                        Actual
+                                    </div>
+
+                                    <div class="highlight-value actual">
+                                        {{ selected_analysis.actual_value|floatformat:2 }}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- COMPARISON -->
+
+                            <div class="comparison-grid">
+
+                                <div class="metric-row">
+
+                                    <span class="metric-name">
+                                        Expected Change
+                                    </span>
+
+                                    <span class="metric-value">
+                                        {{ selected_analysis.expected_change|floatformat:2 }}%
+                                    </span>
+
+                                </div>
+
+
+                                <div class="metric-row">
+
+                                    <span class="metric-name">
+                                        Actual Change
+                                    </span>
+
+                                    <span class="metric-value">
+                                        {{ selected_analysis.actual_change|floatformat:2 }}%
+                                    </span>
+
+                                </div>
+
+
+                                <div class="metric-row">
+
+                                    <span class="metric-name">
+                                        Impact Value
+                                    </span>
+
+                                    <span class="metric-value">
+                                        {{ selected_analysis.impact_value|floatformat:2 }}
+                                    </span>
+
+                                </div>
+
+
+                                <div class="metric-row">
+
+                                    <span class="metric-name">
+                                        Impact Percentage
+                                    </span>
+
+                                    <span class="metric-value">
+                                        {{ selected_analysis.impact_percentage|floatformat:2 }}%
+                                    </span>
+
+                                </div>
+
+
+                                <div class="metric-row">
+
+                                    <span class="metric-name">
+                                        Status
+                                    </span>
+
+                                    <span class="metric-value">
+
+                                        {% if selected_analysis.status == "Monitoring" %}
+
+                                            <span class="badge badge-monitoring">
+                                                Monitoring
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="badge badge-completed">
+                                                {{ selected_analysis.status }}
+                                            </span>
+
+                                        {% endif %}
+
+                                    </span>
+
+                                </div>
+
+
+                                <div class="metric-row">
+
+                                    <span class="metric-name">
+                                        Analyzed
+                                    </span>
+
+                                    <span class="metric-value">
+                                        {{ selected_analysis.analyzed_at|date:"d M Y, H:i" }}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            {% if selected_analysis.analysis_notes %}
+
+                                <div class="analysis-notes">
+
+                                    <div class="analysis-notes-title">
+                                        Analysis Notes
+                                    </div>
+
+                                    <div class="analysis-notes-text">
+                                        {{ selected_analysis.analysis_notes }}
+                                    </div>
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="empty-state">
+
+                            <div class="empty-icon">
+                                ◎
+                            </div>
+
+                            <h3 class="empty-title">
+                                No Impact Analysis Yet
+                            </h3>
+
+                            <p class="empty-text">
+                                Enter the decision baseline and expected
+                                change to generate the first impact analysis.
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                </section>
+
+            </section>
+
+
+            <!-- =================================================
+                 ANALYSIS HISTORY
+            ================================================== -->
+
+            <section class="panel history-panel">
+
+                <div class="panel-header">
+
+                    <h2 class="panel-title">
+                        Analysis History
+                    </h2>
+
+                    <p class="panel-description">
+                        Previous impact analyses for the selected dataset version.
+                    </p>
+
+                </div>
+
+                <div class="panel-body">
+
+                    {% if analyses %}
+
+                        <div class="history-list">
+
+                            {% for analysis in analyses %}
+
+                                <a
+                                    class="history-item"
+                                    href="?dataset={{ selected_dataset.id }}&version={{ selected_version.id }}&analysis={{ analysis.id }}"
+                                >
+
+                                    <div class="history-main">
+
+                                        <span class="history-title">
+                                            {{ analysis.title }}
+                                        </span>
+
+                                        <div class="history-meta">
+
+                                            <span>
+                                                {{ analysis.category }}
+                                            </span>
+
+                                            <span>
+                                                •
+                                            </span>
+
+                                            <span>
+                                                {{ analysis.metric_name }}
+                                            </span>
+
+                                            <span>
+                                                •
+                                            </span>
+
+                                            <span>
+                                                {{ analysis.created_at|date:"d M Y, H:i" }}
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="history-result">
+
+                                        {% if analysis.impact_type == "Positive" %}
+
+                                            <div class="history-impact positive">
+                                                +{{ analysis.impact_percentage|floatformat:2 }}%
+                                            </div>
+
+                                        {% elif analysis.impact_type == "Negative" %}
+
+                                            <div class="history-impact negative">
+                                                {{ analysis.impact_percentage|floatformat:2 }}%
+                                            </div>
+
+                                        {% else %}
+
+                                            <div class="history-impact neutral">
+                                                {{ analysis.impact_percentage|floatformat:2 }}%
+                                            </div>
+
+                                        {% endif %}
+
+                                        <div style="margin-top:5px;">
+
+                                            {% if analysis.impact_type == "Positive" %}
+
+                                                <span class="badge badge-positive">
+                                                    Positive
+                                                </span>
+
+                                            {% elif analysis.impact_type == "Negative" %}
+
+                                                <span class="badge badge-negative">
+                                                    Negative
+                                                </span>
+
+                                            {% else %}
+
+                                                <span class="badge badge-neutral">
+                                                    Neutral
+                                                </span>
+
+                                            {% endif %}
+
+                                        </div>
+
+                                    </div>
+
+                                </a>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="empty-state">
+
+                            <div class="empty-icon">
+                                ≋
+                            </div>
+
+                            <h3 class="empty-title">
+                                No Analysis History
+                            </h3>
+
+                            <p class="empty-text">
+                                Completed Decision Impact Analyses will appear
+                                here for the selected dataset version.
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         DATASET / VERSION NAVIGATION
+    ====================================================== -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const datasetSelect =
+                document.getElementById("datasetSelect");
+
+            const versionSelect =
+                document.getElementById("versionSelect");
+
+            const selectorForm =
+                document.getElementById("datasetSelectorForm");
+
+
+            if (datasetSelect) {
+
+                datasetSelect.addEventListener(
+                    "change",
+                    function () {
+
+                        const datasetId = this.value;
+
+                        if (!datasetId) {
+                            return;
+                        }
+
+                        window.location.href =
+                            "?dataset=" +
+                            encodeURIComponent(datasetId);
+
+                    }
+                );
+
+            }
+
+
+            if (versionSelect) {
+
+                versionSelect.addEventListener(
+                    "change",
+                    function () {
+
+                        const datasetId =
+                            datasetSelect
+                                ? datasetSelect.value
+                                : "";
+
+                        const versionId = this.value;
+
+                        if (!datasetId || !versionId) {
+                            return;
+                        }
+
+                        window.location.href =
+                            "?dataset=" +
+                            encodeURIComponent(datasetId) +
+                            "&version=" +
+                            encodeURIComponent(versionId);
+
+                    }
+                );
+
+            }
+
+        });
+    </script>
+
+</body>
+</html>

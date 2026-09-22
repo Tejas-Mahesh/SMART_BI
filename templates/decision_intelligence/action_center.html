@@ -1,600 +1,1990 @@
+
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Action Center | Smart BI</title>
 
     <style>
+        :root {
+            --ft-bg: #07111f;
+            --ft-bg-deep: #040b15;
+
+            --ft-panel: rgba(13, 27, 46, 0.94);
+            --ft-panel-strong: rgba(16, 32, 55, 0.97);
+            --ft-panel-soft: rgba(255, 255, 255, 0.025);
+
+            --ft-border: rgba(255, 255, 255, 0.075);
+            --ft-border-soft: rgba(255, 255, 255, 0.045);
+
+            --ft-text: #f2f7ff;
+            --ft-text-soft: rgba(218, 231, 245, 0.68);
+            --ft-text-muted: rgba(190, 208, 229, 0.46);
+
+            --ft-blue: #4fa3ff;
+            --ft-blue-bright: #74b9ff;
+            --ft-cyan: #22d3ee;
+            --ft-purple: #8b5cf6;
+            --ft-green: #48d597;
+            --ft-yellow: #f3c86b;
+            --ft-red: #ff6577;
+
+            --ft-radius: 18px;
+
+            --ft-shadow:
+                0 18px 55px rgba(0, 0, 0, 0.22);
+
+            --ft-glow:
+                0 0 35px rgba(79, 163, 255, 0.12);
+
+            --ft-sidebar-width: 260px;
+        }
 
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        }
+
+        html {
+            min-height: 100%;
+            background: var(--ft-bg-deep);
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #06111f;
-            color: #fff;
+            margin: 0;
             min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at 15% 0%,
+                    rgba(79, 163, 255, 0.08),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at 90% 15%,
+                    rgba(34, 211, 238, 0.045),
+                    transparent 28%
+                ),
+                linear-gradient(
+                    135deg,
+                    var(--ft-bg-deep),
+                    var(--ft-bg)
+                );
+
+            color: var(--ft-text);
+
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
         }
 
-        .page {
-            max-width: 1450px;
-            margin: auto;
-            padding: 35px;
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
         }
 
-        .header {
-            margin-bottom: 30px;
+        /* ============================================================
+           PAGE LAYOUT
+        ============================================================ */
+
+        .action-center-layout {
+            min-height: 100vh;
+            display: flex;
+            width: 100%;
+        }
+
+        .smart-sidebar-wrapper {
+            width: var(--ft-sidebar-width);
+            min-width: var(--ft-sidebar-width);
+            position: relative;
+            z-index: 20;
+        }
+
+        .action-center-main {
+            flex: 1;
+            min-width: 0;
+            padding: 28px 30px 60px;
+        }
+
+        .action-center-content {
+            width: 100%;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        /* ============================================================
+           HEADER
+        ============================================================ */
+
+        .page-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 26px;
+        }
+
+        .page-header-copy {
+            min-width: 0;
         }
 
         .eyebrow {
-            color: #7567f8;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 10px;
+
+            color: var(--ft-blue-bright);
+
             font-size: 12px;
             font-weight: 700;
-            letter-spacing: 2px;
+            letter-spacing: 0.13em;
             text-transform: uppercase;
-            margin-bottom: 10px;
         }
 
-        h1 {
-            font-size: 36px;
-            margin-bottom: 8px;
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--ft-blue);
+
+            box-shadow:
+                0 0 12px rgba(79, 163, 255, 0.75);
         }
 
-        .subtitle {
-            color: #8fa4b8;
-            line-height: 1.6;
+        .page-title {
+            margin: 0;
+
+            color: var(--ft-text);
+
+            font-size: clamp(28px, 3vw, 40px);
+            line-height: 1.08;
+            font-weight: 750;
+            letter-spacing: -0.035em;
         }
 
-        .toolbar {
-            background: #0d2033;
-            border: 1px solid rgba(255,255,255,.07);
-            padding: 18px;
-            border-radius: 16px;
-            margin-bottom: 25px;
+        .page-description {
+            max-width: 760px;
+
+            margin: 11px 0 0;
+
+            color: var(--ft-text-soft);
+
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        /* ============================================================
+           DATASET SELECTOR
+        ============================================================ */
+
+        .dataset-selector-card {
+            padding: 20px;
+
+            margin-bottom: 22px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(16, 32, 55, 0.98),
+                    rgba(10, 23, 40, 0.96)
+                );
+
+            border: 1px solid var(--ft-border);
+
+            border-radius: var(--ft-radius);
+
+            box-shadow: var(--ft-shadow);
+        }
+
+        .selector-header {
             display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
+            justify-content: space-between;
+            align-items: center;
 
-        select {
-            background: #081827;
-            border: 1px solid #263d52;
-            color: white;
-            padding: 11px 14px;
-            border-radius: 9px;
-            min-width: 180px;
-        }
+            gap: 18px;
 
-        .filter-btn {
-            border: 0;
-            background: #7567f8;
-            color: white;
-            border-radius: 9px;
-            padding: 11px 20px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .kpis {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 16px;
-            margin-bottom: 28px;
-        }
-
-        .kpi {
-            background: #0d2033;
-            border: 1px solid rgba(255,255,255,.07);
-            border-radius: 16px;
-            padding: 22px;
-        }
-
-        .kpi-label {
-            color: #8fa4b8;
-            font-size: 13px;
-            margin-bottom: 12px;
-        }
-
-        .kpi-value {
-            font-size: 30px;
-            font-weight: 700;
-        }
-
-        .critical {
-            color: #ff5c70;
-        }
-
-        .high {
-            color: #ff9f43;
-        }
-
-        .medium {
-            color: #7567f8;
-        }
-
-        .low {
-            color: #39d98a;
+            margin-bottom: 17px;
         }
 
         .section-title {
-            margin: 30px 0 15px;
-            font-size: 20px;
+            margin: 0;
+
+            color: var(--ft-text);
+
+            font-size: 16px;
+            font-weight: 700;
         }
 
-        .actions {
+        .section-subtitle {
+            margin: 5px 0 0;
+
+            color: var(--ft-text-muted);
+
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .selector-grid {
             display: grid;
-            gap: 16px;
+            grid-template-columns:
+                minmax(0, 1.3fr)
+                minmax(0, 1fr);
+
+            gap: 15px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .field label {
+            color: var(--ft-text-soft);
+
+            font-size: 12px;
+            font-weight: 650;
+        }
+
+        .field select,
+        .field input,
+        .field textarea {
+            width: 100%;
+
+            padding: 12px 13px;
+
+            color: var(--ft-text);
+
+            background: rgba(4, 11, 21, 0.72);
+
+            border: 1px solid var(--ft-border);
+
+            border-radius: 11px;
+
+            outline: none;
+
+            transition:
+                border-color 0.18s ease,
+                box-shadow 0.18s ease,
+                background 0.18s ease;
+        }
+
+        .field select {
+            cursor: pointer;
+        }
+
+        .field select option {
+            color: #0b1727;
+            background: #ffffff;
+        }
+
+        .field input::placeholder,
+        .field textarea::placeholder {
+            color: var(--ft-text-muted);
+        }
+
+        .field select:focus,
+        .field input:focus,
+        .field textarea:focus {
+            border-color: rgba(79, 163, 255, 0.62);
+
+            background: rgba(5, 15, 28, 0.92);
+
+            box-shadow:
+                0 0 0 3px rgba(79, 163, 255, 0.08);
+        }
+
+        /* ============================================================
+           DATASET INFO
+        ============================================================ */
+
+        .dataset-info {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 9px;
+
+            margin-top: 15px;
+        }
+
+        .info-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            padding: 7px 11px;
+
+            color: var(--ft-text-soft);
+
+            background: rgba(255, 255, 255, 0.025);
+
+            border: 1px solid var(--ft-border-soft);
+
+            border-radius: 999px;
+
+            font-size: 11px;
+        }
+
+        .info-pill strong {
+            color: var(--ft-text);
+        }
+
+        /* ============================================================
+           SUMMARY
+        ============================================================ */
+
+        .summary-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(6, minmax(0, 1fr));
+
+            gap: 13px;
+
+            margin-bottom: 22px;
+        }
+
+        .summary-card {
+            min-height: 112px;
+
+            padding: 17px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(13, 27, 46, 0.95),
+                    rgba(8, 20, 35, 0.95)
+                );
+
+            border: 1px solid var(--ft-border);
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 12px 32px rgba(0, 0, 0, 0.16);
+        }
+
+        .summary-label {
+            color: var(--ft-text-muted);
+
+            font-size: 11px;
+            font-weight: 650;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+        }
+
+        .summary-value {
+            margin-top: 10px;
+
+            color: var(--ft-text);
+
+            font-size: 28px;
+            line-height: 1;
+
+            font-weight: 750;
+            letter-spacing: -0.025em;
+        }
+
+        .summary-card.blue {
+            border-color: rgba(79, 163, 255, 0.16);
+        }
+
+        .summary-card.blue .summary-value {
+            color: var(--ft-blue-bright);
+        }
+
+        .summary-card.green {
+            border-color: rgba(72, 213, 151, 0.16);
+        }
+
+        .summary-card.green .summary-value {
+            color: var(--ft-green);
+        }
+
+        .summary-card.yellow {
+            border-color: rgba(243, 200, 107, 0.16);
+        }
+
+        .summary-card.yellow .summary-value {
+            color: var(--ft-yellow);
+        }
+
+        .summary-card.red {
+            border-color: rgba(255, 101, 119, 0.16);
+        }
+
+        .summary-card.red .summary-value {
+            color: var(--ft-red);
+        }
+
+        /* ============================================================
+           MAIN GRID
+        ============================================================ */
+
+        .main-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(330px, 390px)
+                minmax(0, 1fr);
+
+            gap: 20px;
+
+            align-items: start;
+        }
+
+        .panel {
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(13, 27, 46, 0.96),
+                    rgba(8, 20, 35, 0.96)
+                );
+
+            border: 1px solid var(--ft-border);
+
+            border-radius: var(--ft-radius);
+
+            box-shadow: var(--ft-shadow);
+
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 19px 20px;
+
+            border-bottom: 1px solid var(--ft-border-soft);
+        }
+
+        .panel-body {
+            padding: 20px;
+        }
+
+        /* ============================================================
+           CREATE ACTION
+        ============================================================ */
+
+        .form-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        textarea {
+            min-height: 92px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 12px;
+        }
+
+        .primary-button {
+            width: 100%;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            margin-top: 4px;
+
+            padding: 12px 16px;
+
+            color: #ffffff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #348be8,
+                    #4fa3ff
+                );
+
+            border: 1px solid rgba(116, 185, 255, 0.3);
+
+            border-radius: 11px;
+
+            cursor: pointer;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            box-shadow:
+                0 10px 26px rgba(31, 110, 190, 0.22);
+
+            transition:
+                transform 0.18s ease,
+                box-shadow 0.18s ease;
+        }
+
+        .primary-button:hover {
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 14px 32px rgba(31, 110, 190, 0.3);
+        }
+
+        .primary-button:active {
+            transform: translateY(0);
+        }
+
+        /* ============================================================
+           ACTION LIST
+        ============================================================ */
+
+        .actions-panel {
+            min-width: 0;
+        }
+
+        .actions-header-row {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+        }
+
+        .action-count {
+            display: inline-flex;
+            align-items: center;
+
+            padding: 6px 10px;
+
+            color: var(--ft-blue-bright);
+
+            background: rgba(79, 163, 255, 0.08);
+
+            border: 1px solid rgba(79, 163, 255, 0.14);
+
+            border-radius: 999px;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .actions-list {
+            display: flex;
+            flex-direction: column;
+
+            gap: 12px;
         }
 
         .action-card {
-            background: #0d2033;
-            border: 1px solid rgba(255,255,255,.07);
-            border-radius: 18px;
-            padding: 23px;
-            transition: .25s;
+            padding: 17px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(16, 32, 55, 0.82),
+                    rgba(8, 20, 35, 0.76)
+                );
+
+            border: 1px solid var(--ft-border-soft);
+
+            border-radius: 15px;
+
+            transition:
+                border-color 0.18s ease,
+                transform 0.18s ease,
+                background 0.18s ease;
         }
 
         .action-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(117,103,248,.5);
+            transform: translateY(-1px);
+
+            border-color: rgba(79, 163, 255, 0.16);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(18, 36, 61, 0.9),
+                    rgba(9, 22, 39, 0.84)
+                );
         }
 
         .action-top {
             display: flex;
+
             justify-content: space-between;
-            gap: 20px;
             align-items: flex-start;
+
+            gap: 15px;
         }
 
         .action-title {
-            font-size: 19px;
-            margin-bottom: 8px;
+            margin: 0;
+
+            color: var(--ft-text);
+
+            font-size: 15px;
+            line-height: 1.4;
+            font-weight: 700;
         }
 
         .action-description {
-            color: #8fa4b8;
-            line-height: 1.6;
-            font-size: 14px;
+            margin: 7px 0 0;
+
+            color: var(--ft-text-soft);
+
+            font-size: 12px;
+            line-height: 1.65;
+        }
+
+        .badge-group {
+            display: flex;
+            flex-wrap: wrap;
+
+            justify-content: flex-end;
+
+            gap: 6px;
+
+            flex-shrink: 0;
         }
 
         .badge {
-            display: inline-block;
-            padding: 6px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+
+            padding: 5px 8px;
+
+            border-radius: 7px;
+
+            font-size: 10px;
+            font-weight: 750;
+
             white-space: nowrap;
         }
 
         .badge-critical {
-            background: rgba(255,92,112,.15);
-            color: #ff5c70;
+            color: var(--ft-red);
+
+            background: rgba(255, 101, 119, 0.09);
+
+            border: 1px solid rgba(255, 101, 119, 0.17);
         }
 
         .badge-high {
-            background: rgba(255,159,67,.15);
-            color: #ff9f43;
+            color: #ff9d8c;
+
+            background: rgba(255, 101, 119, 0.065);
+
+            border: 1px solid rgba(255, 101, 119, 0.12);
         }
 
         .badge-medium {
-            background: rgba(117,103,248,.15);
-            color: #7567f8;
+            color: var(--ft-yellow);
+
+            background: rgba(243, 200, 107, 0.075);
+
+            border: 1px solid rgba(243, 200, 107, 0.14);
         }
 
         .badge-low {
-            background: rgba(57,217,138,.15);
-            color: #39d98a;
+            color: var(--ft-blue-bright);
+
+            background: rgba(79, 163, 255, 0.075);
+
+            border: 1px solid rgba(79, 163, 255, 0.14);
+        }
+
+        .badge-new {
+            color: var(--ft-blue-bright);
+
+            background: rgba(79, 163, 255, 0.075);
+
+            border: 1px solid rgba(79, 163, 255, 0.14);
+        }
+
+        .badge-planned {
+            color: var(--ft-purple);
+
+            background: rgba(139, 92, 246, 0.08);
+
+            border: 1px solid rgba(139, 92, 246, 0.15);
+        }
+
+        .badge-progress {
+            color: var(--ft-cyan);
+
+            background: rgba(34, 211, 238, 0.07);
+
+            border: 1px solid rgba(34, 211, 238, 0.13);
+        }
+
+        .badge-completed {
+            color: var(--ft-green);
+
+            background: rgba(72, 213, 151, 0.07);
+
+            border: 1px solid rgba(72, 213, 151, 0.13);
+        }
+
+        .badge-cancelled {
+            color: var(--ft-text-muted);
+
+            background: rgba(255, 255, 255, 0.035);
+
+            border: 1px solid var(--ft-border-soft);
         }
 
         .action-meta {
-            display: flex;
-            gap: 25px;
-            flex-wrap: wrap;
-            margin-top: 18px;
-            padding-top: 16px;
-            border-top: 1px solid rgba(255,255,255,.06);
-            color: #7890a5;
-            font-size: 12px;
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 9px;
+
+            margin-top: 15px;
         }
 
-        .action-meta strong {
-            color: #d9e4ee;
+        .meta-box {
+            padding: 10px;
+
+            background: rgba(255, 255, 255, 0.022);
+
+            border: 1px solid var(--ft-border-soft);
+
+            border-radius: 10px;
+        }
+
+        .meta-label {
+            color: var(--ft-text-muted);
+
+            font-size: 9px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .meta-value {
+            margin-top: 5px;
+
+            color: var(--ft-text-soft);
+
+            font-size: 11px;
+            line-height: 1.35;
+        }
+
+        .action-text-box {
+            margin-top: 13px;
+            padding: 12px 13px;
+
+            background: rgba(79, 163, 255, 0.035);
+
+            border-left: 2px solid rgba(79, 163, 255, 0.5);
+
+            border-radius: 0 9px 9px 0;
+        }
+
+        .action-text-label {
+            margin-bottom: 5px;
+
+            color: var(--ft-blue-bright);
+
+            font-size: 10px;
+            font-weight: 750;
+
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .action-text-content {
+            color: var(--ft-text-soft);
+
+            font-size: 12px;
+            line-height: 1.6;
         }
 
         .action-footer {
-            margin-top: 18px;
             display: flex;
+
             justify-content: space-between;
             align-items: center;
-            gap: 15px;
+
+            gap: 12px;
+
+            margin-top: 14px;
+            padding-top: 13px;
+
+            border-top: 1px solid var(--ft-border-soft);
         }
 
-        .status {
-            color: #fff;
-            background: #172b3e;
-            padding: 7px 12px;
+        .created-time {
+            color: var(--ft-text-muted);
+
+            font-size: 10px;
+        }
+
+        .status-form {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .status-form select {
+            padding: 7px 9px;
+
+            color: var(--ft-text-soft);
+
+            background: rgba(4, 11, 21, 0.72);
+
+            border: 1px solid var(--ft-border);
+
             border-radius: 8px;
+
+            outline: none;
+
+            font-size: 10px;
+        }
+
+        .status-form select option {
+            color: #0b1727;
+            background: #ffffff;
+        }
+
+        .status-update-button {
+            padding: 7px 10px;
+
+            color: var(--ft-blue-bright);
+
+            background: rgba(79, 163, 255, 0.07);
+
+            border: 1px solid rgba(79, 163, 255, 0.14);
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .status-update-button:hover {
+            background: rgba(79, 163, 255, 0.12);
+        }
+
+        /* ============================================================
+           EMPTY STATE
+        ============================================================ */
+
+        .empty-state {
+            padding: 55px 25px;
+
+            text-align: center;
+        }
+
+        .empty-icon {
+            width: 52px;
+            height: 52px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin: 0 auto 15px;
+
+            color: var(--ft-blue-bright);
+
+            background: rgba(79, 163, 255, 0.07);
+
+            border: 1px solid rgba(79, 163, 255, 0.12);
+
+            border-radius: 15px;
+
+            font-size: 22px;
+        }
+
+        .empty-title {
+            margin: 0;
+
+            color: var(--ft-text);
+
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .empty-description {
+            max-width: 460px;
+
+            margin: 8px auto 0;
+
+            color: var(--ft-text-muted);
+
+            font-size: 12px;
+            line-height: 1.65;
+        }
+
+        /* ============================================================
+           MESSAGES
+        ============================================================ */
+
+        .messages {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+
+            margin-bottom: 18px;
+        }
+
+        .message {
+            padding: 12px 14px;
+
+            color: var(--ft-text-soft);
+
+            background: rgba(79, 163, 255, 0.055);
+
+            border: 1px solid rgba(79, 163, 255, 0.12);
+
+            border-radius: 10px;
+
             font-size: 12px;
         }
 
-        .status.completed {
-            color: #39d98a;
-        }
+        /* ============================================================
+           NO DATASET STATE
+        ============================================================ */
 
-        .status.progress {
-            color: #7567f8;
-        }
+        .no-dataset {
+            padding: 60px 25px;
 
-        .status.dismissed {
-            color: #8fa4b8;
-        }
-
-        .actions-form {
-            display: flex;
-            gap: 8px;
-        }
-
-        .status-btn {
-            background: #172b3e;
-            color: white;
-            border: 1px solid #263d52;
-            border-radius: 8px;
-            padding: 8px 11px;
-            cursor: pointer;
-            font-size: 11px;
-        }
-
-        .status-btn:hover {
-            border-color: #7567f8;
-        }
-
-        .empty {
             text-align: center;
-            padding: 70px 20px;
-            background: #0d2033;
-            border-radius: 18px;
-            color: #8fa4b8;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(13, 27, 46, 0.95),
+                    rgba(8, 20, 35, 0.95)
+                );
+
+            border: 1px solid var(--ft-border);
+
+            border-radius: var(--ft-radius);
+
+            box-shadow: var(--ft-shadow);
         }
 
-        @media (max-width: 1100px) {
+        .no-dataset h2 {
+            margin: 0;
 
-            .kpis {
-                grid-template-columns: repeat(3, 1fr);
-            }
+            color: var(--ft-text);
 
+            font-size: 20px;
         }
 
-        @media (max-width: 700px) {
+        .no-dataset p {
+            max-width: 500px;
 
-            .page {
-                padding: 20px;
+            margin: 9px auto 0;
+
+            color: var(--ft-text-muted);
+
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+        ============================================================ */
+
+        @media (max-width: 1250px) {
+            .summary-grid {
+                grid-template-columns:
+                    repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 1050px) {
+            .main-grid {
+                grid-template-columns: 1fr;
             }
 
-            .kpis {
-                grid-template-columns: 1fr 1fr;
+            .create-panel {
+                order: 1;
+            }
+
+            .actions-panel {
+                order: 2;
+            }
+        }
+
+        @media (max-width: 800px) {
+            .smart-sidebar-wrapper {
+                width: 0;
+                min-width: 0;
+            }
+
+            .action-center-main {
+                padding: 20px 16px 45px;
+            }
+
+            .page-header {
+                flex-direction: column;
+            }
+
+            .selector-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .action-meta {
+                grid-template-columns: 1fr;
             }
 
             .action-top {
                 flex-direction: column;
             }
 
-            .action-footer {
-                align-items: flex-start;
-                flex-direction: column;
+            .badge-group {
+                justify-content: flex-start;
             }
-
         }
 
-    </style>
+        @media (max-width: 520px) {
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
 
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .action-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .status-form {
+                width: 100%;
+            }
+
+            .status-form select {
+                flex: 1;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="page">
+<div class="action-center-layout">
 
-    <div class="header">
+    <!-- ============================================================
+         LEFT SMART SIDEBAR
+    ============================================================ -->
 
-        <div class="eyebrow">
-            Smart BI / Decision Intelligence
-        </div>
-
-        <h1>⚡ Action Center</h1>
-
-        <p class="subtitle">
-            Turn business recommendations and alerts into trackable actions.
-        </p>
-
-    </div>
+    <aside class="smart-sidebar-wrapper">
+        {% include "includes/smart_sidebar.html" %}
+    </aside>
 
 
-    <form method="get" class="toolbar">
+    <!-- ============================================================
+         MAIN CONTENT
+    ============================================================ -->
 
-        <select name="dataset">
+    <main class="action-center-main">
 
-            <option value="">
-                All Datasets
-            </option>
+        <div class="action-center-content">
 
-            {% for dataset in datasets %}
+            <!-- ====================================================
+                 HEADER
+            ==================================================== -->
 
-                <option
-                    value="{{ dataset.id }}"
-                    {% if selected_dataset and selected_dataset.id == dataset.id %}
-                        selected
-                    {% endif %}
-                >
-                    {{ dataset.name }}
-                </option>
+            <header class="page-header">
 
-            {% endfor %}
+                <div class="page-header-copy">
 
-        </select>
+                    <div class="eyebrow">
+                        <span class="eyebrow-dot"></span>
+                        Decision Intelligence
+                    </div>
 
+                    <h1 class="page-title">
+                        Action Center
+                    </h1>
 
-        <select name="priority">
-
-            <option value="">
-                All Priorities
-            </option>
-
-            <option value="Critical"
-                {% if priority_filter == "Critical" %}selected{% endif %}>
-                Critical
-            </option>
-
-            <option value="High"
-                {% if priority_filter == "High" %}selected{% endif %}>
-                High
-            </option>
-
-            <option value="Medium"
-                {% if priority_filter == "Medium" %}selected{% endif %}>
-                Medium
-            </option>
-
-            <option value="Low"
-                {% if priority_filter == "Low" %}selected{% endif %}>
-                Low
-            </option>
-
-        </select>
-
-
-        <select name="status">
-
-            <option value="">
-                All Statuses
-            </option>
-
-            <option value="Open"
-                {% if status_filter == "Open" %}selected{% endif %}>
-                Open
-            </option>
-
-            <option value="In Progress"
-                {% if status_filter == "In Progress" %}selected{% endif %}>
-                In Progress
-            </option>
-
-            <option value="Completed"
-                {% if status_filter == "Completed" %}selected{% endif %}>
-                Completed
-            </option>
-
-            <option value="Dismissed"
-                {% if status_filter == "Dismissed" %}selected{% endif %}>
-                Dismissed
-            </option>
-
-        </select>
-
-
-        <button class="filter-btn" type="submit">
-            Apply Filters
-        </button>
-
-    </form>
-
-
-    <div class="kpis">
-
-        <div class="kpi">
-            <div class="kpi-label">Total Actions</div>
-            <div class="kpi-value">
-                {{ total_actions }}
-            </div>
-        </div>
-
-        <div class="kpi">
-            <div class="kpi-label">Critical</div>
-            <div class="kpi-value critical">
-                {{ critical_count }}
-            </div>
-        </div>
-
-        <div class="kpi">
-            <div class="kpi-label">High Priority</div>
-            <div class="kpi-value high">
-                {{ high_count }}
-            </div>
-        </div>
-
-        <div class="kpi">
-            <div class="kpi-label">In Progress</div>
-            <div class="kpi-value medium">
-                {{ in_progress_count }}
-            </div>
-        </div>
-
-        <div class="kpi">
-            <div class="kpi-label">Completed</div>
-            <div class="kpi-value low">
-                {{ completed_count }}
-            </div>
-        </div>
-
-    </div>
-
-
-    <h2 class="section-title">
-        Business Actions
-    </h2>
-
-
-    <div class="actions">
-
-        {% for action in actions %}
-
-        <div class="action-card">
-
-            <div class="action-top">
-
-                <div>
-
-                    <h3 class="action-title">
-                        {{ action.title }}
-                    </h3>
-
-                    <p class="action-description">
-                        {{ action.description|default:action.recommendation }}
+                    <p class="page-description">
+                        Turn business recommendations and alerts into
+                        trackable actions. Create, prioritize, assign,
+                        and monitor actions through completion.
                     </p>
 
                 </div>
 
+            </header>
 
-                <span class="badge
-                    {% if action.priority == 'Critical' %}
-                        badge-critical
-                    {% elif action.priority == 'High' %}
-                        badge-high
-                    {% elif action.priority == 'Medium' %}
-                        badge-medium
-                    {% else %}
-                        badge-low
+
+            <!-- ====================================================
+                 MESSAGES
+            ==================================================== -->
+
+            {% if messages %}
+                <div class="messages">
+
+                    {% for message in messages %}
+
+                        <div class="message">
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+            {% endif %}
+
+
+            {% if datasets %}
+
+                <!-- ================================================
+                     DATASET SELECTOR
+                ================================================= -->
+
+                <section class="dataset-selector-card">
+
+                    <div class="selector-header">
+
+                        <div>
+                            <h2 class="section-title">
+                                Action Workspace
+                            </h2>
+
+                            <p class="section-subtitle">
+                                Select the dataset and version that
+                                the actions belong to.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="selector-grid">
+
+                        <div class="field">
+
+                            <label for="datasetSelector">
+                                Dataset
+                            </label>
+
+                            <select
+                                id="datasetSelector"
+                                onchange="changeDataset(this.value)"
+                            >
+
+                                {% for dataset in datasets %}
+
+                                    <option
+                                        value="{{ dataset.id }}"
+                                        {% if selected_dataset and dataset.id == selected_dataset.id %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ dataset.name }}
+                                        — {{ dataset.dataset_type }}
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label for="versionSelector">
+                                Dataset Version
+                            </label>
+
+                            <select
+                                id="versionSelector"
+                                onchange="changeVersion(this.value)"
+                            >
+
+                                {% for version in versions %}
+
+                                    <option
+                                        value="{{ version.id }}"
+                                        {% if selected_version and version.id == selected_version.id %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        Version {{ version.version_number }}
+                                        — {{ version.version_type }}
+                                        {% if version.is_current %}
+                                            — Current
+                                        {% endif %}
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    {% if selected_dataset and selected_version %}
+
+                        <div class="dataset-info">
+
+                            <div class="info-pill">
+                                Dataset:
+                                <strong>
+                                    {{ selected_dataset.name }}
+                                </strong>
+                            </div>
+
+                            <div class="info-pill">
+                                Type:
+                                <strong>
+                                    {{ selected_dataset.dataset_type }}
+                                </strong>
+                            </div>
+
+                            <div class="info-pill">
+                                Version:
+                                <strong>
+                                    {{ selected_version.version_number }}
+                                </strong>
+                            </div>
+
+                            <div class="info-pill">
+                                Rows:
+                                <strong>
+                                    {{ selected_version.total_rows|default:selected_dataset.total_rows }}
+                                </strong>
+                            </div>
+
+                        </div>
+
                     {% endif %}
-                ">
-                    {{ action.priority }}
-                </span>
 
-            </div>
+                </section>
 
 
-            <div class="action-meta">
+                {% if selected_dataset and selected_version %}
 
-                <span>
-                    Type:
-                    <strong>{{ action.action_type }}</strong>
-                </span>
+                    <!-- ============================================
+                         SUMMARY
+                    ============================================= -->
 
-                <span>
-                    Expected Impact:
-                    <strong>
-                        {{ action.expected_impact|default:"Not specified" }}
-                    </strong>
-                </span>
+                    <section class="summary-grid">
 
-                <span>
-                    Score:
-                    <strong>
-                        {{ action.impact_score|floatformat:0 }}
-                    </strong>
-                </span>
+                        <div class="summary-card blue">
+                            <div class="summary-label">
+                                Total Actions
+                            </div>
 
-                <span>
-                    Created:
-                    <strong>
-                        {{ action.created_at|date:"d M Y" }}
-                    </strong>
-                </span>
-
-            </div>
+                            <div class="summary-value">
+                                {{ total_actions }}
+                            </div>
+                        </div>
 
 
-            <div class="action-footer">
+                        <div class="summary-card blue">
+                            <div class="summary-label">
+                                New
+                            </div>
 
-                <span class="status
-                    {% if action.status == 'Completed' %}
-                        completed
-                    {% elif action.status == 'In Progress' %}
-                        progress
-                    {% elif action.status == 'Dismissed' %}
-                        dismissed
-                    {% endif %}
-                ">
-                    {{ action.status }}
-                </span>
+                            <div class="summary-value">
+                                {{ status_summary.new }}
+                            </div>
+                        </div>
 
 
-                <form
-                    method="post"
-                    action="{% url 'decision_intelligence:update_action_status' action.id %}"
-                    class="actions-form"
-                >
+                        <div class="summary-card yellow">
+                            <div class="summary-label">
+                                Planned
+                            </div>
 
-                    {% csrf_token %}
+                            <div class="summary-value">
+                                {{ status_summary.planned }}
+                            </div>
+                        </div>
 
-                    {% if action.status != "In Progress" %}
-                    <button
-                        class="status-btn"
-                        name="status"
-                        value="In Progress"
-                    >
-                        Start
-                    </button>
-                    {% endif %}
 
-                    {% if action.status != "Completed" %}
-                    <button
-                        class="status-btn"
-                        name="status"
-                        value="Completed"
-                    >
-                        Complete
-                    </button>
-                    {% endif %}
+                        <div class="summary-card">
+                            <div class="summary-label">
+                                In Progress
+                            </div>
 
-                    {% if action.status != "Dismissed" %}
-                    <button
-                        class="status-btn"
-                        name="status"
-                        value="Dismissed"
-                    >
-                        Dismiss
-                    </button>
-                    {% endif %}
+                            <div class="summary-value">
+                                {{ status_summary.in_progress }}
+                            </div>
+                        </div>
 
-                </form>
 
-            </div>
+                        <div class="summary-card green">
+                            <div class="summary-label">
+                                Completed
+                            </div>
+
+                            <div class="summary-value">
+                                {{ status_summary.completed }}
+                            </div>
+                        </div>
+
+
+                        <div class="summary-card red">
+                            <div class="summary-label">
+                                Critical
+                            </div>
+
+                            <div class="summary-value">
+                                {{ priority_summary.critical }}
+                            </div>
+                        </div>
+
+                    </section>
+
+
+                    <!-- ============================================
+                         MAIN GRID
+                    ============================================= -->
+
+                    <section class="main-grid">
+
+
+                        <!-- ========================================
+                             CREATE ACTION
+                        ========================================= -->
+
+                        <div class="panel create-panel">
+
+                            <div class="panel-header">
+
+                                <h2 class="section-title">
+                                    Create Action
+                                </h2>
+
+                                <p class="section-subtitle">
+                                    Add a business action for the
+                                    selected dataset version.
+                                </p>
+
+                            </div>
+
+
+                            <div class="panel-body">
+
+                                <form
+                                    method="post"
+                                    class="form-stack"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <input
+                                        type="hidden"
+                                        name="action"
+                                        value="create"
+                                    >
+
+                                    <input
+                                        type="hidden"
+                                        name="dataset"
+                                        value="{{ selected_dataset.id }}"
+                                    >
+
+                                    <input
+                                        type="hidden"
+                                        name="version"
+                                        value="{{ selected_version.id }}"
+                                    >
+
+
+                                    <div class="field">
+
+                                        <label for="title">
+                                            Action Title
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="title"
+                                            name="title"
+                                            placeholder="Enter action title"
+                                            maxlength="255"
+                                            required
+                                        >
+
+                                    </div>
+
+
+                                    <div class="field">
+
+                                        <label for="description">
+                                            Description
+                                        </label>
+
+                                        <textarea
+                                            id="description"
+                                            name="description"
+                                            placeholder="Describe the business situation..."
+                                        ></textarea>
+
+                                    </div>
+
+
+                                    <div class="field">
+
+                                        <label for="action_text">
+                                            Action
+                                        </label>
+
+                                        <textarea
+                                            id="action_text"
+                                            name="action_text"
+                                            placeholder="What needs to be done?"
+                                            required
+                                        ></textarea>
+
+                                    </div>
+
+
+                                    <div class="field">
+
+                                        <label for="expected_outcome">
+                                            Expected Outcome
+                                        </label>
+
+                                        <textarea
+                                            id="expected_outcome"
+                                            name="expected_outcome"
+                                            placeholder="What outcome is expected?"
+                                        ></textarea>
+
+                                    </div>
+
+
+                                    <div class="form-row">
+
+                                        <div class="field">
+
+                                            <label for="category">
+                                                Category
+                                            </label>
+
+                                            <select
+                                                id="category"
+                                                name="category"
+                                            >
+
+                                                {% for value, label in category_choices %}
+
+                                                    <option value="{{ value }}">
+                                                        {{ label }}
+                                                    </option>
+
+                                                {% endfor %}
+
+                                            </select>
+
+                                        </div>
+
+
+                                        <div class="field">
+
+                                            <label for="priority">
+                                                Priority
+                                            </label>
+
+                                            <select
+                                                id="priority"
+                                                name="priority"
+                                            >
+
+                                                {% for value, label in priority_choices %}
+
+                                                    <option
+                                                        value="{{ value }}"
+                                                        {% if value == "Medium" %}
+                                                            selected
+                                                        {% endif %}
+                                                    >
+                                                        {{ label }}
+                                                    </option>
+
+                                                {% endfor %}
+
+                                            </select>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="field">
+
+                                        <label for="due_date">
+                                            Due Date
+                                        </label>
+
+                                        <input
+                                            type="date"
+                                            id="due_date"
+                                            name="due_date"
+                                        >
+
+                                    </div>
+
+
+                                    <button
+                                        type="submit"
+                                        class="primary-button"
+                                    >
+                                        + Create Action
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ========================================
+                             ACTION LIST
+                        ========================================= -->
+
+                        <div class="panel actions-panel">
+
+                            <div class="panel-header">
+
+                                <div class="actions-header-row">
+
+                                    <div>
+
+                                        <h2 class="section-title">
+                                            Action Items
+                                        </h2>
+
+                                        <p class="section-subtitle">
+                                            Track and manage actions
+                                            associated with this
+                                            dataset version.
+                                        </p>
+
+                                    </div>
+
+                                    <span class="action-count">
+                                        {{ total_actions }} Actions
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="panel-body">
+
+                                {% if action_items %}
+
+                                    <div class="actions-list">
+
+                                        {% for item in action_items %}
+
+                                            <article class="action-card">
+
+                                                <div class="action-top">
+
+                                                    <div>
+
+                                                        <h3 class="action-title">
+                                                            {{ item.title }}
+                                                        </h3>
+
+                                                        {% if item.description %}
+
+                                                            <p class="action-description">
+                                                                {{ item.description }}
+                                                            </p>
+
+                                                        {% endif %}
+
+                                                    </div>
+
+
+                                                    <div class="badge-group">
+
+                                                        {% if item.priority == "Critical" %}
+
+                                                            <span class="badge badge-critical">
+                                                                Critical
+                                                            </span>
+
+                                                        {% elif item.priority == "High" %}
+
+                                                            <span class="badge badge-high">
+                                                                High
+                                                            </span>
+
+                                                        {% elif item.priority == "Medium" %}
+
+                                                            <span class="badge badge-medium">
+                                                                Medium
+                                                            </span>
+
+                                                        {% else %}
+
+                                                            <span class="badge badge-low">
+                                                                Low
+                                                            </span>
+
+                                                        {% endif %}
+
+
+                                                        {% if item.status == "New" %}
+
+                                                            <span class="badge badge-new">
+                                                                New
+                                                            </span>
+
+                                                        {% elif item.status == "Planned" %}
+
+                                                            <span class="badge badge-planned">
+                                                                Planned
+                                                            </span>
+
+                                                        {% elif item.status == "In Progress" %}
+
+                                                            <span class="badge badge-progress">
+                                                                In Progress
+                                                            </span>
+
+                                                        {% elif item.status == "Completed" %}
+
+                                                            <span class="badge badge-completed">
+                                                                Completed
+                                                            </span>
+
+                                                        {% else %}
+
+                                                            <span class="badge badge-cancelled">
+                                                                Cancelled
+                                                            </span>
+
+                                                        {% endif %}
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <div class="action-meta">
+
+                                                    <div class="meta-box">
+
+                                                        <div class="meta-label">
+                                                            Category
+                                                        </div>
+
+                                                        <div class="meta-value">
+                                                            {{ item.category }}
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="meta-box">
+
+                                                        <div class="meta-label">
+                                                            Source
+                                                        </div>
+
+                                                        <div class="meta-value">
+                                                            {{ item.source_type }}
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="meta-box">
+
+                                                        <div class="meta-label">
+                                                            Due Date
+                                                        </div>
+
+                                                        <div class="meta-value">
+
+                                                            {% if item.due_date %}
+                                                                {{ item.due_date|date:"d M Y" }}
+                                                            {% else %}
+                                                                No due date
+                                                            {% endif %}
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <div class="action-text-box">
+
+                                                    <div class="action-text-label">
+                                                        Recommended Action
+                                                    </div>
+
+                                                    <div class="action-text-content">
+                                                        {{ item.action }}
+                                                    </div>
+
+                                                </div>
+
+
+                                                {% if item.expected_outcome %}
+
+                                                    <div class="action-text-box">
+
+                                                        <div class="action-text-label">
+                                                            Expected Outcome
+                                                        </div>
+
+                                                        <div class="action-text-content">
+                                                            {{ item.expected_outcome }}
+                                                        </div>
+
+                                                    </div>
+
+                                                {% endif %}
+
+
+                                                {% if item.recommendation %}
+
+                                                    <div class="action-text-box">
+
+                                                        <div class="action-text-label">
+                                                            Source Recommendation
+                                                        </div>
+
+                                                        <div class="action-text-content">
+                                                            {{ item.recommendation.title }}
+                                                        </div>
+
+                                                    </div>
+
+                                                {% endif %}
+
+
+                                                {% if item.alert %}
+
+                                                    <div class="action-text-box">
+
+                                                        <div class="action-text-label">
+                                                            Source Alert
+                                                        </div>
+
+                                                        <div class="action-text-content">
+                                                            {{ item.alert.title }}
+                                                        </div>
+
+                                                    </div>
+
+                                                {% endif %}
+
+
+                                                <div class="action-footer">
+
+                                                    <div class="created-time">
+
+                                                        Created
+                                                        {{ item.created_at|date:"d M Y, H:i" }}
+
+                                                    </div>
+
+
+                                                    <form
+                                                        method="post"
+                                                        class="status-form"
+                                                    >
+
+                                                        {% csrf_token %}
+
+                                                        <input
+                                                            type="hidden"
+                                                            name="action"
+                                                            value="update_status"
+                                                        >
+
+                                                        <input
+                                                            type="hidden"
+                                                            name="action_item_id"
+                                                            value="{{ item.id }}"
+                                                        >
+
+
+                                                        <select name="status">
+
+                                                            {% for value, label in status_choices %}
+
+                                                                <option
+                                                                    value="{{ value }}"
+                                                                    {% if item.status == value %}
+                                                                        selected
+                                                                    {% endif %}
+                                                                >
+                                                                    {{ label }}
+                                                                </option>
+
+                                                            {% endfor %}
+
+                                                        </select>
+
+
+                                                        <button
+                                                            type="submit"
+                                                            class="status-update-button"
+                                                        >
+                                                            Update
+                                                        </button>
+
+                                                    </form>
+
+                                                </div>
+
+                                            </article>
+
+                                        {% endfor %}
+
+                                    </div>
+
+                                {% else %}
+
+                                    <div class="empty-state">
+
+                                        <div class="empty-icon">
+                                            ✓
+                                        </div>
+
+                                        <h3 class="empty-title">
+                                            No action items yet
+                                        </h3>
+
+                                        <p class="empty-description">
+                                            Create an action using the
+                                            form on the left. Actions
+                                            can later be connected to
+                                            recommendations and business
+                                            alerts.
+                                        </p>
+
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                {% else %}
+
+                    <section class="no-dataset">
+
+                        <h2>
+                            Select a dataset version
+                        </h2>
+
+                        <p>
+                            Choose an available dataset and version
+                            above to open its Action Center workspace.
+                        </p>
+
+                    </section>
+
+                {% endif %}
+
+            {% else %}
+
+                <section class="no-dataset">
+
+                    <h2>
+                        No datasets available
+                    </h2>
+
+                    <p>
+                        Upload and process a dataset in Data Management
+                        before creating Action Center items.
+                    </p>
+
+                </section>
+
+            {% endif %}
 
         </div>
 
-        {% empty %}
-
-        <div class="empty">
-
-            <h2>No business actions yet</h2>
-
-            <p style="margin-top:10px;">
-                Actions generated from recommendations and alerts
-                will appear here.
-            </p>
-
-        </div>
-
-        {% endfor %}
-
-    </div>
+    </main>
 
 </div>
+
+
+<script>
+    function changeDataset(datasetId) {
+        if (!datasetId) {
+            return;
+        }
+
+        window.location.href =
+            "{% url 'decision_intelligence:action_center' %}" +
+            "?dataset=" +
+            encodeURIComponent(datasetId);
+    }
+
+
+    function changeVersion(versionId) {
+        if (!versionId) {
+            return;
+        }
+
+        const datasetSelector =
+            document.getElementById("datasetSelector");
+
+        const datasetId =
+            datasetSelector
+                ? datasetSelector.value
+                : "";
+
+        if (!datasetId) {
+            return;
+        }
+
+        window.location.href =
+            "{% url 'decision_intelligence:action_center' %}" +
+            "?dataset=" +
+            encodeURIComponent(datasetId) +
+            "&version=" +
+            encodeURIComponent(versionId);
+    }
+</script>
 
 </body>
 </html>

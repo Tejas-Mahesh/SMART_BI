@@ -131,3 +131,815 @@ class Recommendation(models.Model):
 
     def __str__(self):
         return self.title
+
+
+# ============================================================
+# WHAT-IF SIMULATOR
+# ============================================================
+
+class WhatIfSimulation(models.Model):
+
+    STATUS_CHOICES = [
+        ("Draft", "Draft"),
+        ("Running", "Running"),
+        ("Completed", "Completed"),
+        ("Failed", "Failed"),
+    ]
+
+    dataset = models.ForeignKey(
+        "data_management.Dataset",
+        on_delete=models.CASCADE,
+        related_name="what_if_simulations",
+    )
+
+    dataset_version = models.ForeignKey(
+        "data_management.DatasetVersion",
+        on_delete=models.CASCADE,
+        related_name="what_if_simulations",
+    )
+
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="what_if_simulations",
+    )
+
+    name = models.CharField(
+        max_length=255,
+        default="What-If Simulation",
+    )
+
+    description = models.TextField(
+        blank=True,
+        default="",
+    )
+
+    # --------------------------------------------------------
+    # SIMULATION INPUTS
+    # --------------------------------------------------------
+
+    assumptions = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text=(
+            "Stores the assumptions and changes "
+            "used for the simulation."
+        ),
+    )
+
+    # --------------------------------------------------------
+    # BASELINE RESULTS
+    # --------------------------------------------------------
+
+    baseline_results = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text=(
+            "Stores the original dataset results "
+            "before simulation."
+        ),
+    )
+
+    # --------------------------------------------------------
+    # SIMULATED RESULTS
+    # --------------------------------------------------------
+
+    simulated_results = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text=(
+            "Stores the calculated results "
+            "after applying simulation assumptions."
+        ),
+    )
+
+    # --------------------------------------------------------
+    # RESULT SUMMARY
+    # --------------------------------------------------------
+
+    result_summary = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text=(
+            "Stores summarized changes between "
+            "baseline and simulated results."
+        ),
+    )
+
+    # --------------------------------------------------------
+    # STATUS
+    # --------------------------------------------------------
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="Draft",
+    )
+
+    error_message = models.TextField(
+        blank=True,
+        default="",
+    )
+
+    # --------------------------------------------------------
+    # TIMESTAMPS
+    # --------------------------------------------------------
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
+
+    completed_at = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+
+        ordering = [
+            "-created_at",
+        ]
+
+        indexes = [
+
+            models.Index(
+                fields=[
+                    "dataset",
+                    "dataset_version",
+                ],
+            ),
+
+            models.Index(
+                fields=[
+                    "created_by",
+                ],
+            ),
+
+            models.Index(
+                fields=[
+                    "status",
+                ],
+            ),
+
+            models.Index(
+                fields=[
+                    "created_at",
+                ],
+            ),
+        ]
+
+    def __str__(self):
+
+        return self.name
+
+
+class ScenarioPlanning(models.Model):
+    STATUS_CHOICES = [
+        ("Draft", "Draft"),
+        ("Running", "Running"),
+        ("Completed", "Completed"),
+        ("Failed", "Failed"),
+    ]
+
+    dataset = models.ForeignKey(
+        "data_management.Dataset",
+        on_delete=models.CASCADE,
+        related_name="scenario_plans",
+    )
+
+    dataset_version = models.ForeignKey(
+        "data_management.DatasetVersion",
+        on_delete=models.CASCADE,
+        related_name="scenario_plans",
+    )
+
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="scenario_plans",
+    )
+
+    name = models.CharField(
+        max_length=255,
+        default="Business Scenario",
+    )
+
+    description = models.TextField(
+        blank=True,
+        default="",
+    )
+
+    scenario_type = models.CharField(
+        max_length=50,
+        default="Custom",
+        help_text="Type of business scenario being planned.",
+    )
+
+    assumptions = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text="Stores the assumptions and business changes used for the scenario.",
+    )
+
+    baseline_results = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text="Stores baseline results from the selected dataset version.",
+    )
+
+    projected_results = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text="Stores projected results after applying the scenario assumptions.",
+    )
+
+    comparison_results = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text="Stores the comparison between baseline and projected results.",
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="Draft",
+    )
+
+    error_message = models.TextField(
+        blank=True,
+        default="",
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
+
+    completed_at = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        ordering = ["-created_at"]
+
+        indexes = [
+            models.Index(
+                fields=["dataset", "dataset_version"]
+            ),
+            models.Index(
+                fields=["created_by"]
+            ),
+            models.Index(
+                fields=["scenario_type"]
+            ),
+            models.Index(
+                fields=["status"]
+            ),
+            models.Index(
+                fields=["created_at"]
+            ),
+        ]
+
+    def __str__(self):
+        return self.name
+
+
+class BusinessAlert(models.Model):
+    SEVERITY_CHOICES = [
+        ("Info", "Info"),
+        ("Low", "Low"),
+        ("Medium", "Medium"),
+        ("High", "High"),
+        ("Critical", "Critical"),
+    ]
+
+    STATUS_CHOICES = [
+        ("New", "New"),
+        ("Acknowledged", "Acknowledged"),
+        ("Resolved", "Resolved"),
+        ("Dismissed", "Dismissed"),
+    ]
+
+    CATEGORY_CHOICES = [
+        ("Sales", "Sales"),
+        ("Customer", "Customer"),
+        ("Product", "Product"),
+        ("Regional", "Regional"),
+        ("Marketing", "Marketing"),
+        ("Financial", "Financial"),
+        ("Returns", "Returns"),
+        ("Operational", "Operational"),
+        ("General", "General"),
+    ]
+
+    dataset = models.ForeignKey(
+        "data_management.Dataset",
+        on_delete=models.CASCADE,
+        related_name="business_alerts",
+    )
+
+    dataset_version = models.ForeignKey(
+        "data_management.DatasetVersion",
+        on_delete=models.CASCADE,
+        related_name="business_alerts",
+    )
+
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="business_alerts",
+    )
+
+    title = models.CharField(max_length=255)
+
+    category = models.CharField(
+        max_length=50,
+        choices=CATEGORY_CHOICES,
+        default="General",
+    )
+
+    severity = models.CharField(
+        max_length=20,
+        choices=SEVERITY_CHOICES,
+        default="Medium",
+    )
+
+    description = models.TextField()
+
+    trigger_type = models.CharField(
+        max_length=100,
+        default="Threshold",
+        help_text="Type of business condition that triggered the alert.",
+    )
+
+    metric_name = models.CharField(
+        max_length=100,
+        blank=True,
+        default="",
+    )
+
+    metric_value = models.FloatField(
+        default=0,
+    )
+
+    threshold_value = models.FloatField(
+        default=0,
+    )
+
+    comparison_operator = models.CharField(
+        max_length=10,
+        default=">",
+    )
+
+    recommended_action = models.TextField(
+        blank=True,
+        default="",
+    )
+
+    metadata = models.JSONField(
+        default=dict,
+        blank=True,
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="New",
+    )
+
+    detected_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
+
+    resolved_at = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        ordering = ["-detected_at"]
+
+        indexes = [
+            models.Index(
+                fields=["dataset", "dataset_version"]
+            ),
+            models.Index(
+                fields=["category"]
+            ),
+            models.Index(
+                fields=["severity"]
+            ),
+            models.Index(
+                fields=["status"]
+            ),
+            models.Index(
+                fields=["detected_at"]
+            ),
+        ]
+
+    def __str__(self):
+        return self.title
+
+class ActionItem(models.Model):
+    SOURCE_TYPE_CHOICES = [
+        ("Recommendation", "Recommendation"),
+        ("Alert", "Alert"),
+        ("Manual", "Manual"),
+    ]
+
+    PRIORITY_CHOICES = [
+        ("Low", "Low"),
+        ("Medium", "Medium"),
+        ("High", "High"),
+        ("Critical", "Critical"),
+    ]
+
+    STATUS_CHOICES = [
+        ("New", "New"),
+        ("Planned", "Planned"),
+        ("In Progress", "In Progress"),
+        ("Completed", "Completed"),
+        ("Cancelled", "Cancelled"),
+    ]
+
+    CATEGORY_CHOICES = [
+        ("Sales", "Sales"),
+        ("Customer", "Customer"),
+        ("Product", "Product"),
+        ("Regional", "Regional"),
+        ("Marketing", "Marketing"),
+        ("Financial", "Financial"),
+        ("Returns", "Returns"),
+        ("Operational", "Operational"),
+        ("General", "General"),
+    ]
+
+    dataset = models.ForeignKey(
+        "data_management.Dataset",
+        on_delete=models.CASCADE,
+        related_name="action_items",
+    )
+
+    dataset_version = models.ForeignKey(
+        "data_management.DatasetVersion",
+        on_delete=models.CASCADE,
+        related_name="action_items",
+    )
+
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="created_action_items",
+    )
+
+    assigned_to = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="assigned_action_items",
+    )
+
+    recommendation = models.ForeignKey(
+        "decision_intelligence.Recommendation",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="action_items",
+    )
+
+    alert = models.ForeignKey(
+        "decision_intelligence.BusinessAlert",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="action_items",
+    )
+
+    title = models.CharField(max_length=255)
+
+    description = models.TextField(
+        blank=True,
+        default="",
+    )
+
+    action = models.TextField(
+        help_text="The specific business action that should be performed.",
+    )
+
+    expected_outcome = models.TextField(
+        blank=True,
+        default="",
+    )
+
+    category = models.CharField(
+        max_length=50,
+        choices=CATEGORY_CHOICES,
+        default="General",
+    )
+
+    source_type = models.CharField(
+        max_length=30,
+        choices=SOURCE_TYPE_CHOICES,
+        default="Manual",
+    )
+
+    priority = models.CharField(
+        max_length=20,
+        choices=PRIORITY_CHOICES,
+        default="Medium",
+    )
+
+    status = models.CharField(
+        max_length=30,
+        choices=STATUS_CHOICES,
+        default="New",
+    )
+
+    due_date = models.DateField(
+        null=True,
+        blank=True,
+    )
+
+    completed_at = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
+
+    notes = models.TextField(
+        blank=True,
+        default="",
+    )
+
+    metadata = models.JSONField(
+        default=dict,
+        blank=True,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
+
+    class Meta:
+        ordering = ["-created_at"]
+
+        indexes = [
+            models.Index(
+                fields=["dataset", "dataset_version"]
+            ),
+            models.Index(
+                fields=["created_by"]
+            ),
+            models.Index(
+                fields=["assigned_to"]
+            ),
+            models.Index(
+                fields=["recommendation"]
+            ),
+            models.Index(
+                fields=["alert"]
+            ),
+            models.Index(
+                fields=["source_type"]
+            ),
+            models.Index(
+                fields=["category"]
+            ),
+            models.Index(
+                fields=["priority"]
+            ),
+            models.Index(
+                fields=["status"]
+            ),
+            models.Index(
+                fields=["due_date"]
+            ),
+            models.Index(
+                fields=["created_at"]
+            ),
+        ]
+
+    def __str__(self):
+        return self.title
+
+class DecisionImpactAnalysis(models.Model):
+    STATUS_CHOICES = [
+        ("Draft", "Draft"),
+        ("Monitoring", "Monitoring"),
+        ("Completed", "Completed"),
+    ]
+
+    IMPACT_CHOICES = [
+        ("Positive", "Positive"),
+        ("Neutral", "Neutral"),
+        ("Negative", "Negative"),
+        ("Mixed", "Mixed"),
+    ]
+
+    CATEGORY_CHOICES = [
+        ("Sales", "Sales"),
+        ("Customer", "Customer"),
+        ("Product", "Product"),
+        ("Regional", "Regional"),
+        ("Marketing", "Marketing"),
+        ("Financial", "Financial"),
+        ("Returns", "Returns"),
+        ("Operational", "Operational"),
+        ("General", "General"),
+    ]
+
+    dataset = models.ForeignKey(
+        "data_management.Dataset",
+        on_delete=models.CASCADE,
+        related_name="decision_impact_analyses",
+    )
+
+    dataset_version = models.ForeignKey(
+        "data_management.DatasetVersion",
+        on_delete=models.CASCADE,
+        related_name="decision_impact_analyses",
+    )
+
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="decision_impact_analyses",
+    )
+
+    action_item = models.ForeignKey(
+        "decision_intelligence.ActionItem",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="impact_analyses",
+    )
+
+    recommendation = models.ForeignKey(
+        "decision_intelligence.Recommendation",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="impact_analyses",
+    )
+
+    alert = models.ForeignKey(
+        "decision_intelligence.BusinessAlert",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="impact_analyses",
+    )
+
+    title = models.CharField(
+        max_length=255,
+    )
+
+    description = models.TextField(
+        blank=True,
+        default="",
+    )
+
+    category = models.CharField(
+        max_length=50,
+        choices=CATEGORY_CHOICES,
+        default="General",
+    )
+
+    metric_name = models.CharField(
+        max_length=100,
+        blank=True,
+        default="",
+    )
+
+    baseline_value = models.FloatField(
+        default=0,
+    )
+
+    expected_value = models.FloatField(
+        default=0,
+    )
+
+    actual_value = models.FloatField(
+        default=0,
+    )
+
+    expected_change = models.FloatField(
+        default=0,
+        help_text="Expected percentage change.",
+    )
+
+    actual_change = models.FloatField(
+        default=0,
+        help_text="Actual percentage change.",
+    )
+
+    impact_value = models.FloatField(
+        default=0,
+        help_text="Difference between actual and baseline value.",
+    )
+
+    impact_percentage = models.FloatField(
+        default=0,
+        help_text="Percentage impact compared with the baseline.",
+    )
+
+    impact_type = models.CharField(
+        max_length=20,
+        choices=IMPACT_CHOICES,
+        default="Neutral",
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="Draft",
+    )
+
+    analysis_notes = models.TextField(
+        blank=True,
+        default="",
+    )
+
+    metadata = models.JSONField(
+        default=dict,
+        blank=True,
+    )
+
+    analyzed_at = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
+
+    class Meta:
+        ordering = ["-created_at"]
+
+        indexes = [
+            models.Index(
+                fields=["dataset", "dataset_version"]
+            ),
+            models.Index(
+                fields=["created_by"]
+            ),
+            models.Index(
+                fields=["action_item"]
+            ),
+            models.Index(
+                fields=["recommendation"]
+            ),
+            models.Index(
+                fields=["alert"]
+            ),
+            models.Index(
+                fields=["category"]
+            ),
+            models.Index(
+                fields=["metric_name"]
+            ),
+            models.Index(
+                fields=["impact_type"]
+            ),
+            models.Index(
+                fields=["status"]
+            ),
+            models.Index(
+                fields=["created_at"]
+            ),
+        ]
+
+    def __str__(self):
+        return self.title
+

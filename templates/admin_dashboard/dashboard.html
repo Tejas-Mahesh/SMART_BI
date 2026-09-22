@@ -1,372 +1,2473 @@
-{% extends "base.html" %}
+{% load static %}
 
-{% block title %}
-Smart BI Admin Dashboard
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard</title>
+
+    <style>
+
+        /* =========================================================
+           ROOT
+        ========================================================= */
+
+        :root {
+            --ft-bg: #07111f;
+            --ft-bg-deep: #040b15;
+
+            --ft-panel: rgba(13, 27, 46, 0.94);
+            --ft-panel-strong: rgba(16, 32, 55, 0.97);
+            --ft-panel-soft: rgba(255, 255, 255, 0.025);
+
+            --ft-border: rgba(255, 255, 255, 0.075);
+            --ft-border-soft: rgba(255, 255, 255, 0.045);
+
+            --ft-text: #f2f7ff;
+            --ft-text-soft: rgba(218, 231, 245, 0.68);
+            --ft-text-muted: rgba(190, 208, 229, 0.46);
+
+            --ft-blue: #4fa3ff;
+            --ft-blue-bright: #74b9ff;
+            --ft-cyan: #22d3ee;
+            --ft-purple: #8b5cf6;
+            --ft-green: #48d597;
+            --ft-yellow: #f3c86b;
+            --ft-red: #ff6577;
+            --ft-pink: #f472b6;
+            --ft-orange: #fb923c;
+
+            --ft-radius: 18px;
+
+            --ft-shadow:
+                0 18px 55px rgba(0, 0, 0, 0.22);
+
+            --ft-glow:
+                0 0 35px rgba(79, 163, 255, 0.12);
+        }
 
 
-{% block content %}
+        /* =========================================================
+           RESET
+        ========================================================= */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+
+            font-family:
+                Inter,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+
+            color: var(--ft-text);
+
+            background:
+                radial-gradient(
+                    circle at 8% 8%,
+                    rgba(79, 163, 255, 0.10),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 92% 12%,
+                    rgba(139, 92, 246, 0.09),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 50% 100%,
+                    rgba(34, 211, 238, 0.06),
+                    transparent 34%
+                ),
+                linear-gradient(
+                    135deg,
+                    var(--ft-bg-deep),
+                    var(--ft-bg)
+                );
+
+            overflow-x: hidden;
+        }
+
+
+        /* =========================================================
+           ANIMATED BACKGROUND
+        ========================================================= */
+
+        body::before {
+            content: "";
+
+            position: fixed;
+            inset: 0;
+
+            pointer-events: none;
+
+            background:
+                linear-gradient(
+                    120deg,
+                    transparent 20%,
+                    rgba(79, 163, 255, 0.025),
+                    transparent 80%
+                );
+
+            background-size: 240% 240%;
+
+            animation:
+                backgroundMove 16s ease-in-out infinite;
+
+            z-index: -1;
+        }
+
+        @keyframes backgroundMove {
+
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+
+        /* =========================================================
+           PAGE
+        ========================================================= */
+
+        .admin-page {
+            width: 100%;
+            max-width: 1550px;
+
+            margin: 0 auto;
+
+            padding:
+                30px
+                32px
+                70px;
+        }
+
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        .page-header {
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 25px;
+
+            margin-bottom: 28px;
+
+            animation:
+                fadeDown 0.55s ease both;
+        }
+
+        @keyframes fadeDown {
+
+            from {
+                opacity: 0;
+                transform: translateY(-18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-left {
+
+            display: flex;
+            align-items: center;
+
+            gap: 16px;
+        }
+
+        .header-icon {
+
+            width: 56px;
+            height: 56px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 17px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(79, 163, 255, 0.18),
+                    rgba(34, 211, 238, 0.08)
+                );
+
+            border:
+                1px solid
+                rgba(79, 163, 255, 0.20);
+
+            box-shadow:
+                0 0 30px
+                rgba(79, 163, 255, 0.10);
+
+            font-size: 25px;
+
+            animation:
+                iconPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes iconPulse {
+
+            0%,
+            100% {
+                box-shadow:
+                    0 0 25px
+                    rgba(79, 163, 255, 0.08);
+            }
+
+            50% {
+                box-shadow:
+                    0 0 38px
+                    rgba(79, 163, 255, 0.17);
+            }
+        }
+
+        .header-title h1 {
+
+            font-size: 29px;
+
+            font-weight: 760;
+
+            letter-spacing: -0.7px;
+        }
+
+        .header-title p {
+
+            margin-top: 5px;
+
+            color:
+                var(--ft-text-soft);
+
+            font-size: 14px;
+        }
+
+        .admin-badge {
+
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            padding:
+                10px 14px;
+
+            border-radius: 999px;
+
+            color:
+                var(--ft-blue-bright);
+
+            background:
+                rgba(79, 163, 255, 0.08);
+
+            border:
+                1px solid
+                rgba(79, 163, 255, 0.17);
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+        .admin-dot {
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background:
+                var(--ft-green);
+
+            box-shadow:
+                0 0 12px
+                rgba(72, 213, 151, 0.8);
+
+            animation:
+                dotPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes dotPulse {
+
+            0%,
+            100% {
+                opacity: 0.65;
+                transform: scale(0.9);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.15);
+            }
+        }
+
+
+        /* =========================================================
+           COMMON PANEL
+        ========================================================= */
+
+        .panel {
+
+            position: relative;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(16, 32, 55, 0.96),
+                    rgba(10, 22, 39, 0.96)
+                );
+
+            border:
+                1px solid
+                var(--ft-border);
+
+            border-radius:
+                var(--ft-radius);
+
+            box-shadow:
+                var(--ft-shadow);
+
+            overflow: hidden;
+
+            animation:
+                panelAppear 0.65s ease both;
+        }
+
+        .panel::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(79, 163, 255, 0.40),
+                    transparent
+                );
+        }
+
+        @keyframes panelAppear {
+
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .panel-header {
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding:
+                19px 21px;
+
+            border-bottom:
+                1px solid
+                var(--ft-border-soft);
+        }
+
+        .panel-title {
+
+            font-size: 15px;
+
+            font-weight: 720;
+        }
+
+        .panel-subtitle {
+
+            margin-top: 4px;
+
+            font-size: 11px;
+
+            color:
+                var(--ft-text-muted);
+        }
+
+        .panel-body {
+            padding: 20px;
+        }
+
+
+        /* =========================================================
+           QUICK STATISTICS
+        ========================================================= */
+
+        .stats-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(6, minmax(0, 1fr));
+
+            gap: 13px;
+
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+
+            position: relative;
+
+            min-height: 125px;
+
+            padding: 18px;
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,0.035),
+                    rgba(255,255,255,0.015)
+                );
+
+            border:
+                1px solid
+                var(--ft-border-soft);
+
+            overflow: hidden;
+
+            transition:
+                transform 0.28s ease,
+                border-color 0.28s ease,
+                box-shadow 0.28s ease;
+        }
+
+        .stat-card:hover {
+
+            transform:
+                translateY(-5px);
+
+            border-color:
+                rgba(79, 163, 255, 0.20);
+
+            box-shadow:
+                0 14px 35px
+                rgba(0, 0, 0, 0.17);
+        }
+
+        .stat-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 100px;
+            height: 100px;
+
+            right: -48px;
+            bottom: -52px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(79, 163, 255, 0.07);
+
+            filter: blur(5px);
+
+            animation:
+                statGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes statGlow {
+
+            0%,
+            100% {
+                transform: scale(0.8);
+                opacity: 0.45;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        .stat-icon {
+
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            margin-bottom: 13px;
+
+            font-size: 15px;
+
+            background:
+                rgba(79, 163, 255, 0.09);
+
+            color:
+                var(--ft-blue-bright);
+
+            border:
+                1px solid
+                rgba(79, 163, 255, 0.13);
+        }
+
+        .stat-label {
+
+            color:
+                var(--ft-text-muted);
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.6px;
+        }
+
+        .stat-value {
+
+            margin-top: 7px;
+
+            font-size: 24px;
+
+            font-weight: 760;
+
+            letter-spacing: -0.5px;
+        }
+
+        .stat-blue .stat-icon {
+            color: var(--ft-blue-bright);
+        }
+
+        .stat-yellow .stat-icon {
+            color: var(--ft-yellow);
+            background: rgba(243, 200, 107, 0.08);
+        }
+
+        .stat-green .stat-icon {
+            color: var(--ft-green);
+            background: rgba(72, 213, 151, 0.08);
+        }
+
+        .stat-red .stat-icon {
+            color: var(--ft-red);
+            background: rgba(255, 101, 119, 0.08);
+        }
+
+        .stat-purple .stat-icon {
+            color: #ae91ff;
+            background: rgba(139, 92, 246, 0.09);
+        }
+
+        .stat-cyan .stat-icon {
+            color: var(--ft-cyan);
+            background: rgba(34, 211, 238, 0.08);
+        }
+
+
+        /* =========================================================
+           APPROVAL SECTION
+        ========================================================= */
+
+        .approval-panel {
+
+            margin-bottom: 22px;
+
+            border-color:
+                rgba(243, 200, 107, 0.12);
+        }
+
+        .approval-header-left {
+
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .approval-icon {
+
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 11px;
+
+            color:
+                var(--ft-yellow);
+
+            background:
+                rgba(243, 200, 107, 0.09);
+
+            border:
+                1px solid
+                rgba(243, 200, 107, 0.14);
+
+            animation:
+                approvalPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes approvalPulse {
+
+            0%,
+            100% {
+                box-shadow:
+                    0 0 0
+                    rgba(243, 200, 107, 0);
+            }
+
+            50% {
+                box-shadow:
+                    0 0 22px
+                    rgba(243, 200, 107, 0.10);
+            }
+        }
+
+        .count-badge {
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-width: 27px;
+            height: 27px;
+
+            padding: 0 8px;
+
+            border-radius: 999px;
+
+            color:
+                var(--ft-yellow);
+
+            background:
+                rgba(243, 200, 107, 0.09);
+
+            border:
+                1px solid
+                rgba(243, 200, 107, 0.17);
+
+            font-size: 11px;
+
+            font-weight: 750;
+        }
+
+
+        /* =========================================================
+           TABLE
+        ========================================================= */
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 700px;
+        }
+
+        th {
+
+            padding:
+                11px 14px;
+
+            text-align: left;
+
+            color:
+                var(--ft-text-muted);
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.6px;
+
+            font-weight: 650;
+
+            border-bottom:
+                1px solid
+                var(--ft-border-soft);
+        }
+
+        td {
+
+            padding:
+                14px;
+
+            border-bottom:
+                1px solid
+                var(--ft-border-soft);
+
+            font-size: 12px;
+
+            color:
+                var(--ft-text-soft);
+        }
+
+        tbody tr {
+
+            transition:
+                background 0.2s ease;
+        }
+
+        tbody tr:hover {
+
+            background:
+                rgba(79, 163, 255, 0.035);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+
+        /* =========================================================
+           USER
+        ========================================================= */
+
+        .user-cell {
+
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+        }
+
+        .avatar {
+
+            width: 34px;
+            height: 34px;
+
+            flex: 0 0 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(79, 163, 255, 0.16),
+                    rgba(139, 92, 246, 0.12)
+                );
+
+            border:
+                1px solid
+                rgba(79, 163, 255, 0.14);
+
+            color:
+                var(--ft-blue-bright);
+
+            font-size: 12px;
+
+            font-weight: 750;
+        }
+
+        .user-name {
+
+            color:
+                var(--ft-text);
+
+            font-weight: 650;
+        }
+
+        .user-email {
+
+            margin-top: 2px;
+
+            color:
+                var(--ft-text-muted);
+
+            font-size: 10px;
+        }
+
+
+        /* =========================================================
+           STATUS
+        ========================================================= */
+
+        .status {
+
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            padding:
+                5px 9px;
+
+            border-radius: 999px;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            border: 1px solid transparent;
+        }
+
+        .status-dot {
+
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+        }
+
+        .status-pending {
+
+            color:
+                var(--ft-yellow);
+
+            background:
+                rgba(243, 200, 107, 0.08);
+
+            border-color:
+                rgba(243, 200, 107, 0.14);
+        }
+
+        .status-pending .status-dot {
+            background: var(--ft-yellow);
+        }
+
+        .status-approved {
+
+            color:
+                var(--ft-green);
+
+            background:
+                rgba(72, 213, 151, 0.08);
+
+            border-color:
+                rgba(72, 213, 151, 0.14);
+        }
+
+        .status-approved .status-dot {
+            background: var(--ft-green);
+        }
+
+        .status-rejected {
+
+            color:
+                var(--ft-red);
+
+            background:
+                rgba(255, 101, 119, 0.08);
+
+            border-color:
+                rgba(255, 101, 119, 0.14);
+        }
+
+        .status-rejected .status-dot {
+            background: var(--ft-red);
+        }
+
+
+        /* =========================================================
+           ACTION BUTTONS
+        ========================================================= */
+
+        .actions {
+
+            display: flex;
+            align-items: center;
+
+            gap: 7px;
+
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding:
+                7px 10px;
+
+            border-radius: 8px;
+
+            border: 1px solid transparent;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            text-decoration: none;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.22s ease,
+                background 0.22s ease,
+                border-color 0.22s ease,
+                box-shadow 0.22s ease;
+        }
+
+        .action-btn:hover {
+
+            transform:
+                translateY(-2px);
+        }
+
+        .btn-view {
+
+            color:
+                var(--ft-blue-bright);
+
+            background:
+                rgba(79, 163, 255, 0.07);
+
+            border-color:
+                rgba(79, 163, 255, 0.14);
+        }
+
+        .btn-view:hover {
+
+            background:
+                rgba(79, 163, 255, 0.13);
+
+            box-shadow:
+                0 5px 18px
+                rgba(79, 163, 255, 0.08);
+        }
+
+        .btn-approve {
+
+            color:
+                var(--ft-green);
+
+            background:
+                rgba(72, 213, 151, 0.07);
+
+            border-color:
+                rgba(72, 213, 151, 0.14);
+        }
+
+        .btn-approve:hover {
+
+            background:
+                rgba(72, 213, 151, 0.14);
+
+            box-shadow:
+                0 5px 18px
+                rgba(72, 213, 151, 0.08);
+        }
+
+        .btn-reject {
+
+            color:
+                var(--ft-red);
+
+            background:
+                rgba(255, 101, 119, 0.07);
+
+            border-color:
+                rgba(255, 101, 119, 0.14);
+        }
+
+        .btn-reject:hover {
+
+            background:
+                rgba(255, 101, 119, 0.14);
+
+            box-shadow:
+                0 5px 18px
+                rgba(255, 101, 119, 0.08);
+        }
+
+
+        /* =========================================================
+           TWO COLUMN AREA
+        ========================================================= */
+
+        .two-column {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.45fr)
+                minmax(310px, 0.85fr);
+
+            gap: 22px;
+
+            margin-bottom: 22px;
+        }
+
+
+        /* =========================================================
+           DATASET ROW
+        ========================================================= */
+
+        .dataset-row {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                110px
+                120px
+                90px;
+
+            align-items: center;
+
+            gap: 14px;
+
+            padding:
+                13px 0;
+
+            border-bottom:
+                1px solid
+                var(--ft-border-soft);
+        }
+
+        .dataset-row:last-child {
+            border-bottom: none;
+        }
+
+        .dataset-name {
+
+            color:
+                var(--ft-text);
+
+            font-size: 12px;
+
+            font-weight: 650;
+
+            word-break: break-word;
+        }
+
+        .dataset-owner {
+
+            margin-top: 3px;
+
+            color:
+                var(--ft-text-muted);
+
+            font-size: 10px;
+        }
+
+        .dataset-type {
+
+            display: inline-flex;
+
+            width: fit-content;
+
+            padding:
+                5px 8px;
+
+            border-radius: 7px;
+
+            color:
+                var(--ft-purple);
+
+            background:
+                rgba(139, 92, 246, 0.08);
+
+            border:
+                1px solid
+                rgba(139, 92, 246, 0.13);
+
+            font-size: 9px;
+
+            font-weight: 700;
+        }
+
+        .dataset-date {
+
+            color:
+                var(--ft-text-muted);
+
+            font-size: 10px;
+        }
+
+
+        /* =========================================================
+           TYPE OVERVIEW
+        ========================================================= */
+
+        .type-list {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 11px;
+        }
+
+        .type-item {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                42px;
+
+            align-items: center;
+
+            gap: 15px;
+        }
+
+        .type-info {
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 6px;
+        }
+
+        .type-name {
+
+            font-size: 11px;
+
+            color:
+                var(--ft-text-soft);
+        }
+
+        .type-count {
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            color:
+                var(--ft-text);
+        }
+
+        .type-track {
+
+            width: 100%;
+            height: 5px;
+
+            border-radius: 999px;
+
+            background:
+                rgba(255, 255, 255, 0.055);
+
+            overflow: hidden;
+        }
+
+        .type-fill {
+
+            height: 100%;
+
+            min-width: 3px;
+
+            border-radius: inherit;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--ft-blue),
+                    var(--ft-cyan)
+                );
+
+            animation:
+                fillGrow 1s ease both;
+        }
+
+        @keyframes fillGrow {
+
+            from {
+                width: 0 !important;
+            }
+        }
+
+        .type-number {
+
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 11px;
+
+            color:
+                var(--ft-blue-bright);
+
+            background:
+                rgba(79, 163, 255, 0.07);
+
+            border:
+                1px solid
+                rgba(79, 163, 255, 0.12);
+
+            font-size: 11px;
+
+            font-weight: 750;
+        }
+
+
+        /* =========================================================
+           USERS WITH DATA
+        ========================================================= */
+
+        .upload-user {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding:
+                12px 0;
+
+            border-bottom:
+                1px solid
+                var(--ft-border-soft);
+        }
+
+        .upload-user:last-child {
+            border-bottom: none;
+        }
+
+        .upload-user-left {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .mini-avatar {
+
+            width: 31px;
+            height: 31px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background:
+                rgba(139, 92, 246, 0.09);
+
+            border:
+                1px solid
+                rgba(139, 92, 246, 0.14);
+
+            color:
+                #b69cff;
+
+            font-size: 10px;
+
+            font-weight: 750;
+        }
+
+        .upload-user-name {
+
+            color:
+                var(--ft-text);
+
+            font-size: 11px;
+
+            font-weight: 650;
+        }
+
+        .upload-user-count {
+
+            color:
+                var(--ft-cyan);
+
+            font-size: 11px;
+
+            font-weight: 750;
+        }
+
+
+        /* =========================================================
+           EMPTY
+        ========================================================= */
+
+        .empty-state {
+
+            padding:
+                30px 15px;
+
+            text-align: center;
+
+            color:
+                var(--ft-text-muted);
+
+            font-size: 12px;
+        }
+
+
+        /* =========================================================
+           FOOTER ACTION
+        ========================================================= */
+
+        .footer-actions {
+
+            display: flex;
+
+            justify-content: center;
+
+            margin-top: 22px;
+        }
+
+        .manage-users {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            padding:
+                12px 18px;
+
+            border-radius: 11px;
+
+            color:
+                var(--ft-blue-bright);
+
+            background:
+                rgba(79, 163, 255, 0.07);
+
+            border:
+                1px solid
+                rgba(79, 163, 255, 0.14);
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            transition:
+                transform 0.25s ease,
+                background 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+        .manage-users:hover {
+
+            transform:
+                translateY(-2px);
+
+            background:
+                rgba(79, 163, 255, 0.12);
+
+            box-shadow:
+                0 8px 25px
+                rgba(79, 163, 255, 0.08);
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 1250px) {
+
+            .stats-grid {
+                grid-template-columns:
+                    repeat(3, minmax(0, 1fr));
+            }
+
+        }
+
+        @media (max-width: 950px) {
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .admin-page {
+                padding:
+                    20px
+                    15px
+                    50px;
+            }
+
+            .page-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .stats-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .dataset-row {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+        @media (max-width: 480px) {
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dataset-row {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
 
 <div class="admin-page">
 
-    <div class="admin-header">
 
-        <div>
-            <span class="admin-eyebrow">
-                SYSTEM ADMINISTRATION
-            </span>
+    <!-- =========================================================
+         HEADER
+    ========================================================= -->
 
-            <h1>
-                Admin Dashboard
-            </h1>
+    <header class="page-header">
 
-            <p>
-                Manage Smart BI users, approvals and system access.
-            </p>
-        </div>
+        <div class="header-left">
 
-        <div class="admin-header-actions">
-
-            <a
-                href="{% url 'admin_dashboard:users' %}"
-                class="admin-btn primary"
-            >
-                Manage Users
-            </a>
-
-            <a
-                href="/admin/"
-                class="admin-btn secondary"
-            >
-                Django Admin
-            </a>
-
-        </div>
-
-    </div>
-
-
-    <!-- KPI CARDS -->
-
-    <div class="admin-kpi-grid">
-
-        <div class="admin-kpi-card">
-
-            <div class="admin-kpi-icon">
-                👥
+            <div class="header-icon">
+                ◈
             </div>
 
-            <div>
-                <span>Total Users</span>
+            <div class="header-title">
 
-                <strong>
-                    {{ total_users }}
-                </strong>
+                <h1>Admin Dashboard</h1>
+
+                <p>
+                    Manage users, approvals and uploaded datasets
+                </p>
+
             </div>
 
         </div>
 
 
-        <div class="admin-kpi-card warning">
+        <div class="admin-badge">
 
-            <div class="admin-kpi-icon">
-                ⏳
+            <span class="admin-dot"></span>
+
+            Administrator
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================================================
+         STATISTICS
+    ========================================================= -->
+
+    <section class="stats-grid">
+
+
+        <div class="stat-card stat-blue">
+
+            <div class="stat-icon">
+                ◉
             </div>
 
-            <div>
-                <span>Pending Approval</span>
+            <div class="stat-label">
+                Total Users
+            </div>
 
-                <strong>
-                    {{ pending_users }}
-                </strong>
+            <div class="stat-value">
+                {{ total_users }}
             </div>
 
         </div>
 
 
-        <div class="admin-kpi-card success">
+        <div class="stat-card stat-yellow">
 
-            <div class="admin-kpi-icon">
+            <div class="stat-icon">
+                ◷
+            </div>
+
+            <div class="stat-label">
+                Pending
+            </div>
+
+            <div class="stat-value">
+                {{ pending_users }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card stat-green">
+
+            <div class="stat-icon">
                 ✓
             </div>
 
-            <div>
-                <span>Approved Users</span>
+            <div class="stat-label">
+                Approved
+            </div>
 
-                <strong>
-                    {{ approved_users }}
-                </strong>
+            <div class="stat-value">
+                {{ approved_users }}
             </div>
 
         </div>
 
 
-        <div class="admin-kpi-card danger">
+        <div class="stat-card stat-red">
 
-            <div class="admin-kpi-icon">
-                !
+            <div class="stat-icon">
+                ×
             </div>
 
-            <div>
-                <span>Rejected Users</span>
+            <div class="stat-label">
+                Rejected
+            </div>
 
-                <strong>
-                    {{ rejected_users }}
-                </strong>
+            <div class="stat-value">
+                {{ rejected_users }}
+            </div>
 
+        </div>
+
+
+        <div class="stat-card stat-purple">
+
+            <div class="stat-icon">
+                ◉
+            </div>
+
+            <div class="stat-label">
+                Active Users
+            </div>
+
+            <div class="stat-value">
+                {{ active_users }}
             </div>
 
         </div>
 
 
-        <div class="admin-kpi-card blue">
+        <div class="stat-card stat-cyan">
 
-            <div class="admin-kpi-icon">
-                📊
+            <div class="stat-icon">
+                ▦
             </div>
 
-            <div>
-                <span>Active Datasets</span>
+            <div class="stat-label">
+                Datasets
+            </div>
 
-                <strong>
-                    {{ total_datasets }}
-                </strong>
+            <div class="stat-value">
+                {{ total_datasets }}
             </div>
 
         </div>
+
+
+    </section>
+
+
+
+    <!-- =========================================================
+         PENDING APPROVALS
+    ========================================================= -->
+
+    <section class="panel approval-panel">
+
+        <div class="panel-header">
+
+            <div class="approval-header-left">
+
+                <div class="approval-icon">
+                    !
+                </div>
+
+                <div>
+
+                    <div class="panel-title">
+                        Pending User Approvals
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Review newly registered users directly from the dashboard
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <span class="count-badge">
+                {{ pending_users }}
+            </span>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            {% if pending_user_list %}
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>User</th>
+
+                                <th>Company</th>
+
+                                <th>Registered</th>
+
+                                <th>Status</th>
+
+                                <th>Actions</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                        {% for user in pending_user_list %}
+
+                            <tr>
+
+                                <td>
+
+                                    <div class="user-cell">
+
+                                        <div class="avatar">
+
+                                            {{ user.username|first|upper }}
+
+                                        </div>
+
+                                        <div>
+
+                                            <div class="user-name">
+                                                {{ user.username }}
+                                            </div>
+
+                                            <div class="user-email">
+                                                {{ user.email }}
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+
+                                    {{ user.company_name|default:"—" }}
+
+                                </td>
+
+
+                                <td>
+
+                                    {{ user.date_joined|date:"d M Y" }}
+
+                                </td>
+
+
+                                <td>
+
+                                    <span class="status status-pending">
+
+                                        <span class="status-dot"></span>
+
+                                        Pending
+
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    <div class="actions">
+
+
+                                        <a
+                                            href="{% url 'admin_dashboard:user_detail' user.id %}"
+                                            class="action-btn btn-view"
+                                        >
+                                            View
+                                        </a>
+
+
+                                        <form
+                                            method="post"
+                                            action="{% url 'admin_dashboard:approve_user' user.id %}"
+                                        >
+
+                                            {% csrf_token %}
+
+                                            <button
+                                                type="submit"
+                                                class="action-btn btn-approve"
+                                            >
+                                                Approve
+                                            </button>
+
+                                        </form>
+
+
+                                        <form
+                                            method="post"
+                                            action="{% url 'admin_dashboard:reject_user' user.id %}"
+                                        >
+
+                                            {% csrf_token %}
+
+                                            <button
+                                                type="submit"
+                                                class="action-btn btn-reject"
+                                            >
+                                                Reject
+                                            </button>
+
+                                        </form>
+
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    No users are currently waiting for approval.
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         RECENT USERS + DATASET TYPES
+    ========================================================= -->
+
+    <div class="two-column">
+
+
+        <!-- =====================================================
+             RECENT USERS
+        ===================================================== -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        Recent Users
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Latest registered users
+                    </div>
+
+                </div>
+
+                <a
+                    href="{% url 'admin_dashboard:users' %}"
+                    class="action-btn btn-view"
+                >
+                    View All
+                </a>
+
+            </div>
+
+
+            <div class="panel-body">
+
+                {% if recent_users %}
+
+                    <div class="table-wrap">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>User</th>
+
+                                    <th>Status</th>
+
+                                    <th>Datasets</th>
+
+                                    <th>Action</th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                            {% for user in recent_users %}
+
+                                <tr>
+
+                                    <td>
+
+                                        <div class="user-cell">
+
+                                            <div class="avatar">
+
+                                                {{ user.username|first|upper }}
+
+                                            </div>
+
+                                            <div>
+
+                                                <div class="user-name">
+                                                    {{ user.username }}
+                                                </div>
+
+                                                <div class="user-email">
+                                                    {{ user.email }}
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        {% if user.approval_status == "Approved" %}
+
+                                            <span class="status status-approved">
+
+                                                <span class="status-dot"></span>
+
+                                                Approved
+
+                                            </span>
+
+                                        {% elif user.approval_status == "Rejected" %}
+
+                                            <span class="status status-rejected">
+
+                                                <span class="status-dot"></span>
+
+                                                Rejected
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="status status-pending">
+
+                                                <span class="status-dot"></span>
+
+                                                Pending
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <td>
+
+                                        {{ user.dataset_count }}
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <a
+                                            href="{% url 'admin_dashboard:user_detail' user.id %}"
+                                            class="action-btn btn-view"
+                                        >
+                                            View
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                {% else %}
+
+                    <div class="empty-state">
+                        No users found.
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             DATASET TYPE OVERVIEW
+        ===================================================== -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        Dataset Overview
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Uploaded datasets by category
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel-body">
+
+                {% if dataset_type_counts %}
+
+                    <div class="type-list">
+
+                        {% for item in dataset_type_counts %}
+
+                            <div class="type-item">
+
+                                <div>
+
+                                    <div class="type-info">
+
+                                        <span class="type-name">
+                                            {{ item.dataset_type }}
+                                        </span>
+
+                                        <span class="type-count">
+                                            {{ item.total }}
+                                        </span>
+
+                                    </div>
+
+                                    <div class="type-track">
+
+                                        <div
+                                            class="type-fill"
+                                            style="
+                                                width:
+                                                {% widthratio item.total total_datasets 100 %}%;
+                                            "
+                                        ></div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="type-number">
+                                    {{ item.total }}
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <div class="empty-state">
+                        No datasets have been uploaded yet.
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
 
     </div>
 
 
-    <!-- PENDING APPROVAL -->
 
-    <section class="admin-section">
+    <!-- =========================================================
+         RECENT DATASET UPLOADS
+    ========================================================= -->
 
-        <div class="section-heading">
+    <section class="panel">
+
+        <div class="panel-header">
 
             <div>
-                <span class="section-label">
-                    ACTION REQUIRED
-                </span>
 
-                <h2>
-                    Pending User Approvals
-                </h2>
+                <div class="panel-title">
+                    Recent Dataset Uploads
+                </div>
+
+                <div class="panel-subtitle">
+                    Latest datasets uploaded by users
+                </div>
+
             </div>
-
-            <a
-                href="{% url 'admin_dashboard:users' %}?status=Pending"
-                class="view-all"
-            >
-                View All
-            </a>
 
         </div>
 
 
-        {% if pending_user_list %}
+        <div class="panel-body">
 
-        <div class="admin-table-wrapper">
+            {% if recent_datasets %}
 
-            <table class="admin-table">
+                {% for dataset in recent_datasets %}
 
-                <thead>
-
-                    <tr>
-                        <th>User</th>
-                        <th>Email</th>
-                        <th>Company</th>
-                        <th>Type</th>
-                        <th>Registered</th>
-                        <th>Action</th>
-                    </tr>
-
-                </thead>
+                    <div class="dataset-row">
 
 
-                <tbody>
+                        <div>
 
-                {% for user in pending_user_list %}
+                            <div class="dataset-name">
+                                {{ dataset.name }}
+                            </div>
 
-                    <tr>
+                            <div class="dataset-owner">
 
-                        <td>
+                                Uploaded by
+                                {{ dataset.owner.username }}
 
-                            <div class="user-cell">
+                            </div>
 
-                                <div class="user-avatar">
+                        </div>
+
+
+                        <div>
+
+                            <span class="dataset-type">
+                                {{ dataset.dataset_type }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="dataset-date">
+
+                            {{ dataset.uploaded_at|date:"d M Y, h:i A" }}
+
+                        </div>
+
+
+                        <div>
+
+                            <a
+                                href="{% url 'admin_dashboard:dataset_detail' dataset.id %}"
+                                class="action-btn btn-view"
+                            >
+                                View
+                            </a>
+
+                        </div>
+
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="empty-state">
+                    No datasets have been uploaded yet.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         USERS WITH DATASETS
+    ========================================================= -->
+
+    <div class="two-column" style="margin-top:22px;">
+
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        Users With Uploaded Data
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Users with the highest number of active datasets
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel-body">
+
+                {% if users_with_datasets %}
+
+                    {% for user in users_with_datasets %}
+
+                        <div class="upload-user">
+
+
+                            <div class="upload-user-left">
+
+                                <div class="mini-avatar">
+
                                     {{ user.username|first|upper }}
+
                                 </div>
 
                                 <div>
 
-                                    <strong>
-                                        {{ user.get_full_name|default:user.username }}
-                                    </strong>
+                                    <div class="upload-user-name">
+                                        {{ user.username }}
+                                    </div>
 
-                                    <small>
-                                        @{{ user.username }}
-                                    </small>
+                                    <div class="user-email">
+                                        {{ user.email }}
+                                    </div>
 
                                 </div>
 
                             </div>
 
-                        </td>
 
+                            <div class="upload-user-count">
 
-                        <td>
-                            {{ user.email }}
-                        </td>
-
-
-                        <td>
-                            {{ user.company_name|default:"—" }}
-                        </td>
-
-
-                        <td>
-                            {{ user.user_type }}
-                        </td>
-
-
-                        <td>
-                            {{ user.date_joined|date:"d M Y" }}
-                        </td>
-
-
-                        <td>
-
-                            <div class="table-actions">
-
-                                <a
-                                    href="{% url 'admin_dashboard:user_detail' user.id %}"
-                                    class="action-view"
-                                >
-                                    View
-                                </a>
-
-
-                                <form
-                                    method="post"
-                                    action="{% url 'admin_dashboard:approve_user' user.id %}"
-                                >
-
-                                    {% csrf_token %}
-
-                                    <button
-                                        type="submit"
-                                        class="action-approve"
-                                    >
-                                        Approve
-                                    </button>
-
-                                </form>
-
-
-                                <form
-                                    method="post"
-                                    action="{% url 'admin_dashboard:reject_user' user.id %}"
-                                >
-
-                                    {% csrf_token %}
-
-                                    <button
-                                        type="submit"
-                                        class="action-reject"
-                                    >
-                                        Reject
-                                    </button>
-
-                                </form>
+                                {{ user.dataset_count }}
+                                dataset{{ user.dataset_count|pluralize }}
 
                             </div>
 
-                        </td>
 
-                    </tr>
+                        </div>
 
-                {% endfor %}
+                    {% endfor %}
 
-                </tbody>
+                {% else %}
 
-            </table>
+                    <div class="empty-state">
 
-        </div>
+                        No users have uploaded datasets yet.
 
-        {% else %}
+                    </div>
 
-        <div class="empty-admin">
+                {% endif %}
 
-            <div class="empty-icon">
-                ✓
             </div>
 
-            <h3>
-                No Pending Approvals
-            </h3>
-
-            <p>
-                All registered users have been processed.
-            </p>
-
-        </div>
-
-        {% endif %}
-
-    </section>
+        </section>
 
 
-    <!-- SYSTEM SUMMARY -->
 
-    <section class="admin-section">
+        <!-- =====================================================
+             ADMIN SUMMARY
+        ===================================================== -->
 
-        <div class="section-heading">
+        <section class="panel">
 
-            <div>
-                <span class="section-label">
-                    SYSTEM OVERVIEW
-                </span>
+            <div class="panel-header">
 
-                <h2>
-                    User Status
-                </h2>
+                <div>
+
+                    <div class="panel-title">
+                        System Summary
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Current platform status
+                    </div>
+
+                </div>
+
             </div>
 
-        </div>
+
+            <div class="panel-body">
+
+                <div class="type-list">
 
 
-        <div class="status-grid">
+                    <div class="type-item">
 
-            <div class="status-card">
-                <span>Approved</span>
-                <strong>{{ approved_users }}</strong>
+                        <div>
+
+                            <div class="type-info">
+
+                                <span class="type-name">
+                                    Active Users
+                                </span>
+
+                                <span class="type-count">
+                                    {{ active_users }}
+                                </span>
+
+                            </div>
+
+                            <div class="type-track">
+
+                                <div
+                                    class="type-fill"
+                                    style="
+                                        width:
+                                        {% widthratio active_users total_users 100 %}%;
+                                    "
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="type-number">
+                            {{ active_users }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="type-item">
+
+                        <div>
+
+                            <div class="type-info">
+
+                                <span class="type-name">
+                                    Approved Users
+                                </span>
+
+                                <span class="type-count">
+                                    {{ approved_users }}
+                                </span>
+
+                            </div>
+
+                            <div class="type-track">
+
+                                <div
+                                    class="type-fill"
+                                    style="
+                                        width:
+                                        {% widthratio approved_users total_users 100 %}%;
+                                    "
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="type-number">
+                            {{ approved_users }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="type-item">
+
+                        <div>
+
+                            <div class="type-info">
+
+                                <span class="type-name">
+                                    Pending Approvals
+                                </span>
+
+                                <span class="type-count">
+                                    {{ pending_users }}
+                                </span>
+
+                            </div>
+
+                            <div class="type-track">
+
+                                <div
+                                    class="type-fill"
+                                    style="
+                                        width:
+                                        {% widthratio pending_users total_users 100 %}%;
+                                    "
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="type-number">
+                            {{ pending_users }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="type-item">
+
+                        <div>
+
+                            <div class="type-info">
+
+                                <span class="type-name">
+                                    Total Datasets
+                                </span>
+
+                                <span class="type-count">
+                                    {{ total_datasets }}
+                                </span>
+
+                            </div>
+
+                            <div class="type-track">
+
+                                <div
+                                    class="type-fill"
+                                    style="
+                                        width:100%;
+                                    "
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="type-number">
+                            {{ total_datasets }}
+                        </div>
+
+                    </div>
+
+
+                </div>
+
             </div>
 
-            <div class="status-card">
-                <span>Pending</span>
-                <strong>{{ pending_users }}</strong>
-            </div>
+        </section>
 
-            <div class="status-card">
-                <span>Rejected</span>
-                <strong>{{ rejected_users }}</strong>
-            </div>
 
-            <div class="status-card">
-                <span>Active</span>
-                <strong>{{ active_users }}</strong>
-            </div>
+    </div>
 
-            <div class="status-card">
-                <span>Inactive</span>
-                <strong>{{ inactive_users }}</strong>
-            </div>
 
-        </div>
 
-    </section>
+    <!-- =========================================================
+         USER MANAGEMENT BUTTON
+    ========================================================= -->
+
+    <div class="footer-actions">
+
+        <a
+            href="{% url 'admin_dashboard:users' %}"
+            class="manage-users"
+        >
+            Manage All Users →
+        </a>
+
+    </div>
+
 
 </div>
 
-{% endblock %}
+</body>
+</html>

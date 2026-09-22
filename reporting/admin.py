@@ -1,35 +1,39 @@
+
 from django.contrib import admin
-from .models import Report
+
+from .models import AutomatedReport
 
 
-@admin.register(Report)
-class ReportAdmin(admin.ModelAdmin):
-
+@admin.register(AutomatedReport)
+class AutomatedReportAdmin(admin.ModelAdmin):
     list_display = (
         "title",
         "report_type",
-        "output_format",
-        "status",
-        "owner",
         "dataset",
+        "dataset_version",
+        "status",
+        "output_format",
+        "created_by",
+        "generated_at",
         "created_at",
     )
 
     list_filter = (
         "report_type",
-        "output_format",
         "status",
+        "output_format",
         "created_at",
     )
 
     search_fields = (
         "title",
         "description",
-        "owner__username",
-        "owner__email",
+        "dataset__name",
+        "created_by__username",
     )
 
     readonly_fields = (
+        "generated_at",
         "created_at",
         "updated_at",
     )

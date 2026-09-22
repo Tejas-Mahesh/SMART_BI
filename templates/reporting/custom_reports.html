@@ -1,0 +1,2128 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>Custom Reports | Smart BI</title>
+
+<style>
+    :root {
+        --ft-bg: #07111f;
+        --ft-bg-deep: #040b15;
+
+        --ft-panel: rgba(13, 27, 46, 0.94);
+        --ft-panel-strong: rgba(16, 32, 55, 0.97);
+        --ft-panel-soft: rgba(255, 255, 255, 0.025);
+
+        --ft-border: rgba(255, 255, 255, 0.075);
+        --ft-border-soft: rgba(255, 255, 255, 0.045);
+
+        --ft-text: #f2f7ff;
+        --ft-text-soft: rgba(218, 231, 245, 0.68);
+        --ft-text-muted: rgba(190, 208, 229, 0.46);
+
+        --ft-blue: #4fa3ff;
+        --ft-blue-bright: #74b9ff;
+        --ft-cyan: #22d3ee;
+        --ft-purple: #8b5cf6;
+
+        --ft-green: #48d597;
+        --ft-yellow: #f3c86b;
+        --ft-red: #ff6577;
+        --ft-pink: #f472b6;
+
+        --ft-radius: 18px;
+        --ft-shadow: 0 18px 55px rgba(0, 0, 0, 0.22);
+        --ft-glow: 0 0 35px rgba(79, 163, 255, 0.12);
+
+        --ft-sidebar-width: 260px;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+
+        background:
+            radial-gradient(
+                circle at 12% 8%,
+                rgba(79, 163, 255, 0.11),
+                transparent 28%
+            ),
+            radial-gradient(
+                circle at 88% 15%,
+                rgba(139, 92, 246, 0.09),
+                transparent 28%
+            ),
+            radial-gradient(
+                circle at 50% 90%,
+                rgba(34, 211, 238, 0.045),
+                transparent 30%
+            ),
+            var(--ft-bg);
+
+        color: var(--ft-text);
+
+        font-family:
+            Inter,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            sans-serif;
+    }
+
+    /* =====================================================
+       PAGE
+    ===================================================== */
+
+    .custom-reports-page {
+        width: calc(100% - var(--ft-sidebar-width));
+        margin-left: var(--ft-sidebar-width);
+        min-height: 100vh;
+        padding: 30px;
+    }
+
+    .page-container {
+        width: 100%;
+        max-width: 1500px;
+        margin: 0 auto;
+    }
+
+    /* =====================================================
+       HEADER
+    ===================================================== */
+
+    .page-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 28px;
+    }
+
+    .header-copy {
+        max-width: 850px;
+    }
+
+    .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+
+        color: var(--ft-blue-bright);
+
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+    }
+
+    .eyebrow-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+
+        background: var(--ft-cyan);
+
+        box-shadow:
+            0 0 8px rgba(34, 211, 238, 0.7),
+            0 0 18px rgba(34, 211, 238, 0.4);
+    }
+
+    .page-title {
+        margin: 0;
+
+        font-size: clamp(28px, 3vw, 40px);
+        line-height: 1.1;
+        letter-spacing: -0.035em;
+    }
+
+    .page-subtitle {
+        margin: 12px 0 0;
+
+        max-width: 760px;
+
+        color: var(--ft-text-soft);
+
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .header-badge {
+        flex-shrink: 0;
+
+        padding: 11px 16px;
+
+        border: 1px solid rgba(79, 163, 255, 0.2);
+        border-radius: 999px;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(79, 163, 255, 0.08),
+                rgba(34, 211, 238, 0.045)
+            );
+
+        color: var(--ft-blue-bright);
+
+        font-size: 12px;
+        font-weight: 700;
+
+        white-space: nowrap;
+
+        box-shadow: var(--ft-glow);
+    }
+
+    /* =====================================================
+       MESSAGES
+    ===================================================== */
+
+    .messages {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 22px;
+    }
+
+    .message {
+        padding: 13px 16px;
+
+        border: 1px solid var(--ft-border);
+        border-radius: 12px;
+
+        background: var(--ft-panel);
+
+        color: var(--ft-text-soft);
+
+        font-size: 13px;
+    }
+
+    .message.success {
+        border-color: rgba(72, 213, 151, 0.3);
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(72, 213, 151, 0.10),
+                rgba(72, 213, 151, 0.025)
+            );
+
+        color: #9ce9c5;
+    }
+
+    .message.error {
+        border-color: rgba(255, 101, 119, 0.3);
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(255, 101, 119, 0.11),
+                rgba(255, 101, 119, 0.025)
+            );
+
+        color: #ff9ca9;
+    }
+
+    /* =====================================================
+       SUMMARY CARDS
+    ===================================================== */
+
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+
+        margin-bottom: 25px;
+    }
+
+    .summary-card {
+        position: relative;
+
+        min-height: 145px;
+
+        overflow: hidden;
+
+        padding: 21px;
+
+        border: 1px solid var(--ft-border);
+        border-radius: var(--ft-radius);
+
+        box-shadow: var(--ft-shadow);
+
+        transition:
+            transform 0.2s ease,
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+    .summary-card:hover {
+        transform: translateY(-3px);
+
+        box-shadow:
+            0 22px 55px rgba(0, 0, 0, 0.28);
+    }
+
+    .summary-card::before {
+        content: "";
+
+        position: absolute;
+
+        top: -55px;
+        right: -45px;
+
+        width: 145px;
+        height: 145px;
+
+        border-radius: 50%;
+
+        opacity: 0.42;
+
+        filter: blur(2px);
+    }
+
+    .summary-card::after {
+        content: "";
+
+        position: absolute;
+
+        left: 0;
+        bottom: 0;
+
+        width: 100%;
+        height: 3px;
+    }
+
+    /* TOTAL */
+
+    .summary-total {
+        border-color: rgba(79, 163, 255, 0.28);
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(79, 163, 255, 0.16),
+                rgba(13, 27, 46, 0.94) 65%
+            );
+    }
+
+    .summary-total::before {
+        background: rgba(79, 163, 255, 0.32);
+    }
+
+    .summary-total::after {
+        background: linear-gradient(
+            90deg,
+            #4fa3ff,
+            #22d3ee
+        );
+    }
+
+    /* COMPLETED */
+
+    .summary-completed {
+        border-color: rgba(72, 213, 151, 0.30);
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(72, 213, 151, 0.15),
+                rgba(13, 27, 46, 0.94) 65%
+            );
+    }
+
+    .summary-completed::before {
+        background: rgba(72, 213, 151, 0.28);
+    }
+
+    .summary-completed::after {
+        background: linear-gradient(
+            90deg,
+            #48d597,
+            #22d3a0
+        );
+    }
+
+    /* DRAFT */
+
+    .summary-draft {
+        border-color: rgba(243, 200, 107, 0.30);
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(243, 200, 107, 0.14),
+                rgba(13, 27, 46, 0.94) 65%
+            );
+    }
+
+    .summary-draft::before {
+        background: rgba(243, 200, 107, 0.25);
+    }
+
+    .summary-draft::after {
+        background: linear-gradient(
+            90deg,
+            #f3c86b,
+            #f59e0b
+        );
+    }
+
+    /* FAILED */
+
+    .summary-failed {
+        border-color: rgba(255, 101, 119, 0.30);
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(255, 101, 119, 0.15),
+                rgba(13, 27, 46, 0.94) 65%
+            );
+    }
+
+    .summary-failed::before {
+        background: rgba(255, 101, 119, 0.27);
+    }
+
+    .summary-failed::after {
+        background: linear-gradient(
+            90deg,
+            #ff6577,
+            #f472b6
+        );
+    }
+
+    .summary-icon {
+        position: relative;
+        z-index: 2;
+
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        width: 34px;
+        height: 34px;
+
+        margin-bottom: 14px;
+
+        border-radius: 10px;
+
+        font-size: 15px;
+        font-weight: 800;
+    }
+
+    .summary-total .summary-icon {
+        background: rgba(79, 163, 255, 0.14);
+        color: var(--ft-blue-bright);
+    }
+
+    .summary-completed .summary-icon {
+        background: rgba(72, 213, 151, 0.14);
+        color: var(--ft-green);
+    }
+
+    .summary-draft .summary-icon {
+        background: rgba(243, 200, 107, 0.14);
+        color: var(--ft-yellow);
+    }
+
+    .summary-failed .summary-icon {
+        background: rgba(255, 101, 119, 0.14);
+        color: var(--ft-red);
+    }
+
+    .summary-label {
+        position: relative;
+        z-index: 2;
+
+        color: var(--ft-text-soft);
+
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+
+    .summary-value {
+        position: relative;
+        z-index: 2;
+
+        margin-top: 5px;
+
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+    }
+
+    .summary-description {
+        position: relative;
+        z-index: 2;
+
+        margin-top: 4px;
+
+        color: var(--ft-text-muted);
+
+        font-size: 11px;
+    }
+
+    /* =====================================================
+       MAIN LAYOUT
+    ===================================================== */
+
+    .main-grid {
+        display: grid;
+
+        grid-template-columns:
+            minmax(0, 1.55fr)
+            minmax(320px, 0.75fr);
+
+        gap: 22px;
+
+        align-items: start;
+    }
+
+    .panel {
+        border: 1px solid var(--ft-border);
+        border-radius: var(--ft-radius);
+
+        background: var(--ft-panel);
+
+        box-shadow: var(--ft-shadow);
+
+        overflow: hidden;
+    }
+
+    .panel-header {
+        padding: 21px 22px 17px;
+
+        border-bottom: 1px solid var(--ft-border-soft);
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.018),
+                transparent
+            );
+    }
+
+    .panel-title {
+        margin: 0;
+
+        font-size: 17px;
+        letter-spacing: -0.015em;
+    }
+
+    .panel-description {
+        margin: 6px 0 0;
+
+        color: var(--ft-text-muted);
+
+        font-size: 12px;
+        line-height: 1.55;
+    }
+
+    .panel-body {
+        padding: 22px;
+    }
+
+    /* =====================================================
+       FORM
+    ===================================================== */
+
+    .form-section {
+        margin-bottom: 25px;
+    }
+
+    .form-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .section-heading {
+        display: flex;
+        align-items: center;
+
+        gap: 10px;
+
+        margin-bottom: 13px;
+    }
+
+    .section-number {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        width: 25px;
+        height: 25px;
+
+        border-radius: 8px;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(79, 163, 255, 0.16),
+                rgba(34, 211, 238, 0.08)
+            );
+
+        color: var(--ft-blue-bright);
+
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+    .section-title {
+        margin: 0;
+
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .section-note {
+        margin-left: auto;
+
+        color: var(--ft-text-muted);
+
+        font-size: 11px;
+    }
+
+    .field-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 14px;
+    }
+
+    .field.full {
+        grid-column: 1 / -1;
+    }
+
+    .field-label {
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: var(--ft-text-soft);
+
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .field-input,
+    .field-select,
+    .field-textarea {
+        width: 100%;
+
+        border: 1px solid var(--ft-border);
+        border-radius: 11px;
+
+        outline: none;
+
+        background: rgba(4, 11, 21, 0.65);
+
+        color: var(--ft-text);
+
+        padding: 11px 12px;
+
+        font: inherit;
+        font-size: 13px;
+
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+    }
+
+    .field-input:hover,
+    .field-select:hover,
+    .field-textarea:hover {
+        border-color: rgba(79, 163, 255, 0.25);
+    }
+
+    .field-input:focus,
+    .field-select:focus,
+    .field-textarea:focus {
+        border-color: rgba(79, 163, 255, 0.5);
+
+        background: rgba(4, 11, 21, 0.85);
+
+        box-shadow:
+            0 0 0 3px rgba(79, 163, 255, 0.08),
+            0 0 25px rgba(79, 163, 255, 0.05);
+    }
+
+    .field-textarea {
+        min-height: 85px;
+        resize: vertical;
+    }
+
+    .field-select option {
+        background: #0b1829;
+        color: var(--ft-text);
+    }
+
+    /* =====================================================
+       CHECKBOX COLLECTIONS
+    ===================================================== */
+
+    .selection-box {
+        min-height: 70px;
+        max-height: 235px;
+
+        overflow-y: auto;
+
+        padding: 10px;
+
+        border: 1px solid var(--ft-border);
+        border-radius: 12px;
+
+        background: rgba(4, 11, 21, 0.4);
+    }
+
+    .selection-box::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .selection-box::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .selection-box::-webkit-scrollbar-thumb {
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .check-item {
+        display: flex;
+        align-items: center;
+
+        gap: 10px;
+
+        padding: 9px 10px;
+
+        border-radius: 9px;
+
+        cursor: pointer;
+
+        transition: background 0.15s ease;
+    }
+
+    .check-item:hover {
+        background: rgba(79, 163, 255, 0.07);
+    }
+
+    .check-item input {
+        width: 15px;
+        height: 15px;
+
+        accent-color: var(--ft-blue);
+    }
+
+    .check-name {
+        min-width: 0;
+
+        overflow: hidden;
+
+        color: var(--ft-text-soft);
+
+        font-size: 12px;
+
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .empty-selection {
+        padding: 15px;
+
+        color: var(--ft-text-muted);
+
+        font-size: 12px;
+        text-align: center;
+    }
+
+    /* =====================================================
+       ACTIONS
+    ===================================================== */
+
+    .form-actions {
+        display: flex;
+
+        align-items: center;
+        justify-content: flex-end;
+
+        gap: 10px;
+
+        margin-top: 25px;
+        padding-top: 19px;
+
+        border-top: 1px solid var(--ft-border-soft);
+    }
+
+    .btn {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 8px;
+
+        min-height: 41px;
+
+        padding: 0 17px;
+
+        border-radius: 11px;
+
+        border: 1px solid var(--ft-border);
+
+        cursor: pointer;
+
+        font: inherit;
+        font-size: 12px;
+        font-weight: 700;
+
+        text-decoration: none;
+
+        transition:
+            transform 0.18s ease,
+            border-color 0.18s ease,
+            background 0.18s ease,
+            box-shadow 0.18s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .btn-primary {
+        border-color: rgba(79, 163, 255, 0.35);
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(79, 163, 255, 0.95),
+                rgba(34, 211, 238, 0.85)
+            );
+
+        color: #03101d;
+
+        box-shadow:
+            0 9px 25px rgba(79, 163, 255, 0.14);
+    }
+
+    .btn-primary:hover {
+        box-shadow:
+            0 13px 32px rgba(79, 163, 255, 0.22);
+    }
+
+    .btn-secondary {
+        background: rgba(255, 255, 255, 0.035);
+        color: var(--ft-text-soft);
+    }
+
+    .btn-secondary:hover {
+        border-color: rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.06);
+    }
+
+    /* =====================================================
+       SELECTED DATASET
+    ===================================================== */
+
+    .dataset-card {
+        padding: 17px;
+
+        border: 1px solid rgba(79, 163, 255, 0.15);
+        border-radius: 13px;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(79, 163, 255, 0.065),
+                rgba(255, 255, 255, 0.015)
+            );
+    }
+
+    .dataset-name {
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .dataset-type {
+        margin-top: 4px;
+
+        color: var(--ft-blue-bright);
+
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .dataset-meta {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 8px;
+
+        margin-top: 15px;
+    }
+
+    .meta-item {
+        padding: 10px;
+
+        border: 1px solid var(--ft-border-soft);
+        border-radius: 10px;
+
+        background: rgba(255, 255, 255, 0.018);
+    }
+
+    .meta-label {
+        color: var(--ft-text-muted);
+
+        font-size: 10px;
+        text-transform: uppercase;
+    }
+
+    .meta-value {
+        margin-top: 4px;
+
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    /* =====================================================
+       REPORT HISTORY
+    ===================================================== */
+
+    .history-list {
+        display: grid;
+        gap: 10px;
+    }
+
+    .history-item {
+        padding: 14px;
+
+        border: 1px solid var(--ft-border-soft);
+        border-radius: 12px;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.018),
+                rgba(255, 255, 255, 0.008)
+            );
+
+        transition:
+            transform 0.18s ease,
+            border-color 0.18s ease,
+            background 0.18s ease;
+    }
+
+    .history-item:hover {
+        transform: translateY(-1px);
+
+        border-color: rgba(79, 163, 255, 0.18);
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(79, 163, 255, 0.045),
+                rgba(255, 255, 255, 0.01)
+            );
+    }
+
+    .history-title {
+        color: var(--ft-text);
+
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .history-meta {
+        margin-top: 5px;
+
+        color: var(--ft-text-muted);
+
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .history-actions {
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 7px;
+
+        margin-top: 10px;
+    }
+
+    .history-download {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 5px;
+
+        min-height: 28px;
+
+        padding: 0 9px;
+
+        border: 1px solid rgba(79, 163, 255, 0.2);
+        border-radius: 8px;
+
+        background: rgba(79, 163, 255, 0.07);
+
+        color: var(--ft-blue-bright);
+
+        font-size: 10px;
+        font-weight: 700;
+
+        text-decoration: none;
+
+        transition:
+            background 0.18s ease,
+            transform 0.18s ease;
+    }
+
+    .history-download:hover {
+        transform: translateY(-1px);
+
+        background: rgba(79, 163, 255, 0.13);
+    }
+
+    .history-download.pdf {
+        border-color: rgba(255, 101, 119, 0.22);
+
+        background: rgba(255, 101, 119, 0.07);
+
+        color: #ff9ca9;
+    }
+
+    .history-download.pdf:hover {
+        background: rgba(255, 101, 119, 0.13);
+    }
+
+    .status {
+        display: inline-flex;
+
+        padding: 4px 8px;
+
+        border-radius: 999px;
+
+        font-size: 9px;
+        font-weight: 800;
+
+        letter-spacing: 0.05em;
+
+        text-transform: uppercase;
+    }
+
+    .status-draft {
+        background: rgba(243, 200, 107, 0.09);
+        color: var(--ft-yellow);
+    }
+
+    .status-completed {
+        background: rgba(72, 213, 151, 0.09);
+        color: var(--ft-green);
+    }
+
+    .status-failed {
+        background: rgba(255, 101, 119, 0.09);
+        color: var(--ft-red);
+    }
+
+    .status-generating {
+        background: rgba(79, 163, 255, 0.09);
+        color: var(--ft-blue-bright);
+    }
+
+    .empty-history {
+        padding: 24px 10px;
+
+        color: var(--ft-text-muted);
+
+        font-size: 12px;
+        text-align: center;
+    }
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 1180px) {
+        .main-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .summary-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 850px) {
+        .custom-reports-page {
+            width: 100%;
+            margin-left: 0;
+
+            padding: 22px 17px 45px;
+        }
+
+        .page-header {
+            flex-direction: column;
+        }
+
+        .field-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .field.full {
+            grid-column: auto;
+        }
+    }
+
+    @media (max-width: 560px) {
+        .summary-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .panel-body,
+        .panel-header {
+            padding: 17px;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+        }
+
+        .form-actions .btn {
+            width: 100%;
+        }
+    }
+</style>
+
+
+</head>
+
+<body>
+
+{% include "includes/smart_sidebar.html" %}
+
+<main class="custom-reports-page">
+
+
+<div class="page-container">
+
+    <!-- =================================================
+         HEADER
+    ================================================== -->
+
+    <header class="page-header">
+
+        <div class="header-copy">
+
+            <div class="eyebrow">
+                <span class="eyebrow-dot"></span>
+                Reporting
+            </div>
+
+            <h1 class="page-title">
+                Custom Reports
+            </h1>
+
+            <p class="page-subtitle">
+                Build a report around the exact dataset fields,
+                metrics, dimensions, and output format you need.
+                Reports are created from your selected cleaned
+                dataset version.
+            </p>
+
+        </div>
+
+        <div class="header-badge">
+            Custom Report Builder
+        </div>
+
+    </header>
+
+
+    <!-- =================================================
+         MESSAGES
+    ================================================== -->
+
+    {% if messages %}
+
+        <div class="messages">
+
+            {% for message in messages %}
+
+                <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- =================================================
+         SUMMARY
+    ================================================== -->
+
+    <section class="summary-grid">
+
+        <div class="summary-card summary-total">
+
+            <div class="summary-icon">
+                ◈
+            </div>
+
+            <div class="summary-label">
+                Total Reports
+            </div>
+
+            <div class="summary-value">
+                {{ summary.total|default:0 }}
+            </div>
+
+            <div class="summary-description">
+                Custom reports created
+            </div>
+
+        </div>
+
+
+        <div class="summary-card summary-completed">
+
+            <div class="summary-icon">
+                ✓
+            </div>
+
+            <div class="summary-label">
+                Completed
+            </div>
+
+            <div class="summary-value">
+                {{ summary.completed|default:0 }}
+            </div>
+
+            <div class="summary-description">
+                Successfully generated
+            </div>
+
+        </div>
+
+
+        <div class="summary-card summary-draft">
+
+            <div class="summary-icon">
+                ◌
+            </div>
+
+            <div class="summary-label">
+                Drafts
+            </div>
+
+            <div class="summary-value">
+                {{ summary.draft|default:0 }}
+            </div>
+
+            <div class="summary-description">
+                Saved configurations
+            </div>
+
+        </div>
+
+
+        <div class="summary-card summary-failed">
+
+            <div class="summary-icon">
+                !
+            </div>
+
+            <div class="summary-label">
+                Failed
+            </div>
+
+            <div class="summary-value">
+                {{ summary.failed|default:0 }}
+            </div>
+
+            <div class="summary-description">
+                Reports requiring attention
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         MAIN GRID
+    ================================================== -->
+
+    <div class="main-grid">
+
+
+        <!-- =================================================
+             BUILDER
+        ================================================= -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2 class="panel-title">
+                    Build Custom Report
+                </h2>
+
+                <p class="panel-description">
+                    Select your source dataset and configure
+                    the fields that should appear in the report.
+                </p>
+
+            </div>
+
+
+            <div class="panel-body">
+
+                <form
+                    method="post"
+                    id="customReportForm"
+                >
+
+                    {% csrf_token %}
+
+                    <!-- IMPORTANT:
+                         Current custom_reports view expects generate.
+                    -->
+
+                    <input
+                        type="hidden"
+                        name="action"
+                        value="generate"
+                    >
+
+
+                    <!-- =================================================
+                         DATA SOURCE
+                    ================================================== -->
+
+                    <div class="form-section">
+
+                        <div class="section-heading">
+
+                            <span class="section-number">
+                                01
+                            </span>
+
+                            <h3 class="section-title">
+                                Data Source
+                            </h3>
+
+                            <span class="section-note">
+                                Required
+                            </span>
+
+                        </div>
+
+
+                        <div class="field-grid">
+
+                            <div class="field">
+
+                                <label
+                                    class="field-label"
+                                    for="dataset"
+                                >
+                                    Dataset
+                                </label>
+
+                                <select
+                                    class="field-select"
+                                    id="dataset"
+                                    name="dataset"
+                                    onchange="changeDataset(this)"
+                                    required
+                                >
+
+                                    {% for dataset in datasets %}
+
+                                        <option
+                                            value="{{ dataset.id }}"
+                                            {% if selected_dataset and dataset.id == selected_dataset.id %}
+                                                selected
+                                            {% endif %}
+                                        >
+                                            {{ dataset.name }} — {{ dataset.dataset_type }}
+                                        </option>
+
+                                    {% empty %}
+
+                                        <option value="">
+                                            No datasets available
+                                        </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="field">
+
+                                <label
+                                    class="field-label"
+                                    for="version"
+                                >
+                                    Dataset Version
+                                </label>
+
+                                <select
+                                    class="field-select"
+                                    id="version"
+                                    name="version"
+                                    onchange="changeVersion(this)"
+                                    required
+                                >
+
+                                    {% for version in versions %}
+
+                                        <option
+                                            value="{{ version.id }}"
+                                            {% if selected_version and version.id == selected_version.id %}
+                                                selected
+                                            {% endif %}
+                                        >
+                                            Version {{ version.version_number }}
+                                            — {{ version.version_type }}
+
+                                            {% if version.is_current %}
+                                                — Current
+                                            {% endif %}
+
+                                        </option>
+
+                                    {% empty %}
+
+                                        <option value="">
+                                            No versions available
+                                        </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         REPORT DETAILS
+                    ================================================== -->
+
+                    <div class="form-section">
+
+                        <div class="section-heading">
+
+                            <span class="section-number">
+                                02
+                            </span>
+
+                            <h3 class="section-title">
+                                Report Details
+                            </h3>
+
+                        </div>
+
+
+                        <div class="field-grid">
+
+                            <div class="field">
+
+                                <label
+                                    class="field-label"
+                                    for="title"
+                                >
+                                    Report Title
+                                </label>
+
+                                <input
+                                    class="field-input"
+                                    type="text"
+                                    id="title"
+                                    name="title"
+                                    placeholder="Enter report title"
+                                >
+
+                            </div>
+
+
+                            <div class="field">
+
+                                <label
+                                    class="field-label"
+                                    for="report_type"
+                                >
+                                    Report Type
+                                </label>
+
+                                <select
+                                    class="field-select"
+                                    id="report_type"
+                                    name="report_type"
+                                >
+
+                                    {% for value, label in report_types %}
+
+                                        <option value="{{ value }}">
+                                            {{ label }}
+                                        </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="field">
+
+                                <label
+                                    class="field-label"
+                                    for="output_format"
+                                >
+                                    Output Format
+                                </label>
+
+                                <select
+                                    class="field-select"
+                                    id="output_format"
+                                    name="output_format"
+                                >
+
+                                    {% for value, label in output_formats %}
+
+                                        <option value="{{ value }}">
+                                            {{ label }}
+                                        </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="field full">
+
+                                <label
+                                    class="field-label"
+                                    for="description"
+                                >
+                                    Description
+                                </label>
+
+                                <textarea
+                                    class="field-textarea"
+                                    id="description"
+                                    name="description"
+                                    placeholder="Describe the purpose of this report..."
+                                ></textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         COLUMNS
+                    ================================================== -->
+
+                    <div class="form-section">
+
+                        <div class="section-heading">
+
+                            <span class="section-number">
+                                03
+                            </span>
+
+                            <h3 class="section-title">
+                                Columns
+                            </h3>
+
+                            <span class="section-note">
+                                Select fields
+                            </span>
+
+                        </div>
+
+
+                        <div class="selection-box">
+
+                            {% for column in columns %}
+
+                                <label class="check-item">
+
+                                    <input
+                                        type="checkbox"
+                                        name="selected_columns"
+                                        value="{{ column }}"
+                                    >
+
+                                    <span class="check-name">
+                                        {{ column }}
+                                    </span>
+
+                                </label>
+
+                            {% empty %}
+
+                                <div class="empty-selection">
+                                    No columns available.
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         METRICS
+                    ================================================== -->
+
+                    <div class="form-section">
+
+                        <div class="section-heading">
+
+                            <span class="section-number">
+                                04
+                            </span>
+
+                            <h3 class="section-title">
+                                Metrics
+                            </h3>
+
+                            <span class="section-note">
+                                Numeric fields
+                            </span>
+
+                        </div>
+
+
+                        <div class="selection-box">
+
+                            {% for column in numeric_columns %}
+
+                                <label class="check-item">
+
+                                    <input
+                                        type="checkbox"
+                                        name="selected_metrics"
+                                        value="{{ column }}"
+                                    >
+
+                                    <span class="check-name">
+                                        {{ column }}
+                                    </span>
+
+                                </label>
+
+                            {% empty %}
+
+                                <div class="empty-selection">
+                                    No numeric columns detected.
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         DIMENSIONS
+                    ================================================== -->
+
+                    <div class="form-section">
+
+                        <div class="section-heading">
+
+                            <span class="section-number">
+                                05
+                            </span>
+
+                            <h3 class="section-title">
+                                Dimensions
+                            </h3>
+
+                            <span class="section-note">
+                                Grouping fields
+                            </span>
+
+                        </div>
+
+
+                        <div class="selection-box">
+
+                            {% for column in categorical_columns %}
+
+                                <label class="check-item">
+
+                                    <input
+                                        type="checkbox"
+                                        name="selected_dimensions"
+                                        value="{{ column }}"
+                                    >
+
+                                    <span class="check-name">
+                                        {{ column }}
+                                    </span>
+
+                                </label>
+
+                            {% empty %}
+
+                                <div class="empty-selection">
+                                    No categorical columns detected.
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         DATE FIELDS
+                    ================================================== -->
+
+                    {% if date_columns %}
+
+                        <div class="form-section">
+
+                            <div class="section-heading">
+
+                                <span class="section-number">
+                                    06
+                                </span>
+
+                                <h3 class="section-title">
+                                    Date Fields
+                                </h3>
+
+                                <span class="section-note">
+                                    Available date columns
+                                </span>
+
+                            </div>
+
+
+                            <div class="selection-box">
+
+                                {% for column in date_columns %}
+
+                                    <label class="check-item">
+
+                                        <input
+                                            type="checkbox"
+                                            name="selected_columns"
+                                            value="{{ column }}"
+                                        >
+
+                                        <span class="check-name">
+                                            {{ column }}
+                                        </span>
+
+                                    </label>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- =================================================
+                         ACTIONS
+                    ================================================== -->
+
+                    <div class="form-actions">
+
+                        <button
+                            type="reset"
+                            class="btn btn-secondary"
+                        >
+                            Reset
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            id="generateReportButton"
+                        >
+                            Generate Custom Report
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SIDEBAR
+        ================================================== -->
+
+        <aside>
+
+
+            <!-- =================================================
+                 DATASET INFORMATION
+            ================================================== -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <h2 class="panel-title">
+                        Selected Dataset
+                    </h2>
+
+                    <p class="panel-description">
+                        Current source used by the report builder.
+                    </p>
+
+                </div>
+
+
+                <div class="panel-body">
+
+                    {% if selected_dataset %}
+
+                        <div class="dataset-card">
+
+                            <div class="dataset-name">
+                                {{ selected_dataset.name }}
+                            </div>
+
+                            <div class="dataset-type">
+                                {{ selected_dataset.dataset_type }}
+                            </div>
+
+
+                            <div class="dataset-meta">
+
+                                <div class="meta-item">
+
+                                    <div class="meta-label">
+                                        Rows
+                                    </div>
+
+                                    <div class="meta-value">
+                                        {% if selected_version %}
+                                            {{ selected_version.total_rows }}
+                                        {% else %}
+                                            {{ selected_dataset.total_rows }}
+                                        {% endif %}
+                                    </div>
+
+                                </div>
+
+
+                                <div class="meta-item">
+
+                                    <div class="meta-label">
+                                        Columns
+                                    </div>
+
+                                    <div class="meta-value">
+                                        {% if selected_version %}
+                                            {{ selected_version.total_columns }}
+                                        {% else %}
+                                            {{ selected_dataset.total_columns }}
+                                        {% endif %}
+                                    </div>
+
+                                </div>
+
+
+                                <div class="meta-item">
+
+                                    <div class="meta-label">
+                                        Version
+                                    </div>
+
+                                    <div class="meta-value">
+
+                                        {% if selected_version %}
+                                            V{{ selected_version.version_number }}
+                                        {% else %}
+                                            —
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="meta-item">
+
+                                    <div class="meta-label">
+                                        Quality
+                                    </div>
+
+                                    <div class="meta-value">
+
+                                        {% if selected_version %}
+                                            {{ selected_version.quality_score }}%
+                                        {% else %}
+                                            {{ selected_dataset.quality_score }}%
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="empty-history">
+                            No dataset is currently available.
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 REPORT HISTORY
+            ================================================== -->
+
+            <section
+                class="panel"
+                style="margin-top: 22px;"
+            >
+
+                <div class="panel-header">
+
+                    <h2 class="panel-title">
+                        Custom Report History
+                    </h2>
+
+                    <p class="panel-description">
+                        Recently generated custom reports.
+                    </p>
+
+                </div>
+
+
+                <div class="panel-body">
+
+                    {% if reports %}
+
+                        <div class="history-list">
+
+                            {% for report in reports|slice:":8" %}
+
+                                <div class="history-item">
+
+                                    <div class="history-title">
+                                        {{ report.title }}
+                                    </div>
+
+
+                                    <div class="history-meta">
+
+                                        {{ report.report_type }}
+                                        ·
+                                        {{ report.dataset.name }}
+
+                                        <br>
+
+                                        Version
+                                        {{ report.dataset_version.version_number }}
+
+                                        ·
+
+                                        {{ report.created_at|date:"d M Y, H:i" }}
+
+                                    </div>
+
+
+                                    <div style="margin-top: 9px;">
+
+                                        <span
+                                            class="status
+                                            {% if report.status == 'Completed' %}
+                                                status-completed
+                                            {% elif report.status == 'Failed' %}
+                                                status-failed
+                                            {% elif report.status == 'Generating' %}
+                                                status-generating
+                                            {% else %}
+                                                status-draft
+                                            {% endif %}
+                                            "
+                                        >
+                                            {{ report.status }}
+                                        </span>
+
+                                    </div>
+
+
+                                    {% if report.status == "Completed" %}
+
+                                        <div class="history-actions">
+
+                                            <a
+                                                href="{% url 'reporting:custom_report_pdf' report.id %}"
+                                                class="history-download pdf"
+                                                target="_blank"
+                                            >
+                                                ↓ Download PDF
+                                            </a>
+
+                                        </div>
+
+                                    {% endif %}
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="empty-history">
+                            No custom reports have been generated yet.
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </section>
+
+        </aside>
+
+    </div>
+
+</div>
+
+</main>
+
+<script>
+
+    function changeDataset(selectElement) {
+
+        const datasetId = selectElement.value;
+
+        if (!datasetId) {
+            return;
+        }
+
+        const url = new URL(
+            window.location.href
+        );
+
+        url.searchParams.set(
+            "dataset",
+            datasetId
+        );
+
+        url.searchParams.delete(
+            "version"
+        );
+
+        window.location.href =
+            url.toString();
+    }
+
+
+    function changeVersion(selectElement) {
+
+        const versionId =
+            selectElement.value;
+
+        if (!versionId) {
+            return;
+        }
+
+        const url = new URL(
+            window.location.href
+        );
+
+        url.searchParams.set(
+            "version",
+            versionId
+        );
+
+        window.location.href =
+            url.toString();
+    }
+
+
+    document
+        .getElementById("customReportForm")
+        .addEventListener(
+            "submit",
+            function () {
+
+                const button =
+                    document.getElementById(
+                        "generateReportButton"
+                    );
+
+                button.disabled = true;
+
+                button.textContent =
+                    "Generating Report...";
+
+            }
+        );
+
+</script>
+
+</body>
+</html>
