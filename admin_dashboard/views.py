@@ -10,7 +10,7 @@ from data_management.models import (
     Dataset,
     DatasetVersion,
 )
-
+from core.models import ContactMessage
 
 User = get_user_model()
 
@@ -56,6 +56,10 @@ def normal_user_queryset():
         is_superuser=False
     )
 
+
+# ============================================================
+# ADMIN DASHBOARD
+# ============================================================
 
 # ============================================================
 # ADMIN DASHBOARD
@@ -109,7 +113,9 @@ def dashboard(request):
     dataset_type_counts = (
         active_datasets
         .values("dataset_type")
-        .annotate(total=Count("id"))
+        .annotate(
+            total=Count("id")
+        )
         .order_by("dataset_type")
     )
 
@@ -174,6 +180,37 @@ def dashboard(request):
         .order_by("-dataset_count")[:8]
     )
 
+    # ========================================================
+    # CONTACT MESSAGE COUNTS
+    # ========================================================
+
+    total_contact_messages = ContactMessage.objects.count()
+
+    new_contact_messages = ContactMessage.objects.filter(
+        status="New"
+    ).count()
+
+    read_contact_messages = ContactMessage.objects.filter(
+        status="Read"
+    ).count()
+
+    replied_contact_messages = ContactMessage.objects.filter(
+        status="Replied"
+    ).count()
+
+    archived_contact_messages = ContactMessage.objects.filter(
+        status="Archived"
+    ).count()
+
+    # --------------------------------------------------------
+    # RECENT CONTACT MESSAGES
+    # --------------------------------------------------------
+
+    recent_contact_messages = (
+        ContactMessage.objects
+        .order_by("-created_at")[:8]
+    )
+
     # --------------------------------------------------------
     # CONTEXT
     # --------------------------------------------------------
@@ -197,6 +234,14 @@ def dashboard(request):
         "pending_user_list": pending_user_list,
         "recent_datasets": recent_datasets,
         "users_with_datasets": users_with_datasets,
+
+        # Contact messages
+        "total_contact_messages": total_contact_messages,
+        "new_contact_messages": new_contact_messages,
+        "read_contact_messages": read_contact_messages,
+        "replied_contact_messages": replied_contact_messages,
+        "archived_contact_messages": archived_contact_messages,
+        "recent_contact_messages": recent_contact_messages,
     }
 
     return render(
@@ -204,7 +249,6 @@ def dashboard(request):
         "admin_dashboard/dashboard.html",
         context
     )
-
 
 # ============================================================
 # USER MANAGEMENT
@@ -630,3 +674,25 @@ def deactivate_user(request, user_id):
             "admin_dashboard:users"
         )
     )
+from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
+from django.shortcuts import get_object_or_404, redirect
+
+from core.models import ContactMessage
+
+
+@staff_member_required
+def delete_contact_message(request, message_id):
+    if request.method != "POST":
+        return redirect("admin_dashboard:dashboard")
+
+    message = get_object_or_404(ContactMessage, id=message_id)
+
+    message.delete()
+
+    messages.success(
+        request,
+        "Contact message deleted successfully."
+    )
+
+    return redirect("admin_dashboard:dashboard")

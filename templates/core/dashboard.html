@@ -1,0 +1,1523 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Executive Dashboard for Smart Business Decision Intelligence"
+    >
+
+    <title>
+        Executive Dashboard | Smart Business Decision Intelligence
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'core/css/dashboard.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+<!-- =========================================================
+     EXECUTIVE DASHBOARD
+========================================================= -->
+
+<div class="dashboard-page">
+
+
+    <!-- =====================================================
+         ANIMATED BACKGROUND
+    ====================================================== -->
+
+    <div
+        class="background-orb orb-one"
+        aria-hidden="true"
+    ></div>
+
+    <div
+        class="background-orb orb-two"
+        aria-hidden="true"
+    ></div>
+
+    <div
+        class="background-orb orb-three"
+        aria-hidden="true"
+    ></div>
+
+    <div
+        class="background-grid"
+        aria-hidden="true"
+    ></div>
+
+
+    <!-- =====================================================
+         MAIN CONTAINER
+    ====================================================== -->
+
+    <main class="dashboard-container">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <header class="dashboard-header">
+
+
+            <!-- LEFT -->
+
+            <div class="header-left">
+
+                <div class="welcome-badge">
+
+                    <span
+                        class="status-dot"
+                        aria-hidden="true"
+                    ></span>
+
+                    <span>
+                        Executive Workspace
+                    </span>
+
+                </div>
+
+
+                <div class="greeting-row">
+
+                    <span
+                        class="greeting-icon"
+                        aria-hidden="true"
+                    >
+                        {{ greeting_icon }}
+                    </span>
+
+                    <h1 id="greeting">
+
+                        {{ greeting }},
+
+                        <span class="user-name">
+                            {{ display_name }}
+                        </span>
+
+                    </h1>
+
+                </div>
+
+
+                <p class="welcome-message">
+
+                    Welcome back.
+
+                    <span>
+                        Your intelligent business management
+                        workspace is ready.
+                    </span>
+
+                </p>
+
+
+                <div class="header-description">
+
+                    <span class="description-line"></span>
+
+                    <span>
+                        Explore your data, discover insights,
+                        make decisions and generate reports.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT -->
+
+            <div class="header-right">
+
+
+                <div class="header-date">
+
+                    <span
+                        class="date-icon"
+                        aria-hidden="true"
+                    >
+                        📅
+                    </span>
+
+                    <div class="date-content">
+
+                        <span class="date-label">
+                            TODAY
+                        </span>
+
+                        <span id="current-date">
+                            —
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <a
+                    href="#"
+                    class="profile-button"
+                    aria-label="Open profile"
+                >
+
+                    <span
+                        class="profile-icon"
+                        aria-hidden="true"
+                    >
+                        👤
+                    </span>
+
+                    <span>
+                        Profile
+                    </span>
+
+                    <span
+                        class="profile-arrow"
+                        aria-hidden="true"
+                    >
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             DASHBOARD INTRO
+        ================================================== -->
+
+        <section class="dashboard-intro">
+
+            <div class="intro-line"></div>
+
+            <p>
+                Everything you need to manage your
+                intelligent business workspace from one place.
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             DATA MANAGEMENT
+        ================================================== -->
+
+        <section
+            class="dashboard-section quick-section"
+            id="data-management"
+        >
+
+
+            <div class="section-heading">
+
+
+                <div class="section-heading-left">
+
+                    <span class="section-label">
+                        DATA FOUNDATION
+                    </span>
+
+                    <h2>
+                        Data Management
+                    </h2>
+
+                    <p>
+                        Prepare, organize and maintain
+                        the business data that powers
+                        your intelligence system.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="{% url 'data_management:dataset_management' %}"
+                    class="section-link"
+                >
+
+                    <span>
+                        Open Data Management
+                    </span>
+
+                    <span
+                        class="section-link-arrow"
+                        aria-hidden="true"
+                    >
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+
+
+            <div class="quick-grid">
+
+
+                {% for item in data_management_links %}
+
+                <a
+                    href="{% url item.url %}"
+                    class="quick-card dashboard-card card-animate"
+                    style="--card-index: {{ forloop.counter0 }};"
+                >
+
+
+                    <div class="card-top-row">
+
+                        <div class="card-icon">
+
+                            {% if item.icon == "upload" %}
+
+                                <span>↑</span>
+
+                            {% elif item.icon == "database" %}
+
+                                <span>◈</span>
+
+                            {% elif item.icon == "quality" %}
+
+                                <span>✓</span>
+
+                            {% elif item.icon == "cleaning" %}
+
+                                <span>✦</span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <span class="card-index">
+
+                            {{ forloop.counter|stringformat:"02d" }}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="card-content">
+
+                        <h3>
+                            {{ item.title }}
+                        </h3>
+
+                        <p>
+                            {{ item.description }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="card-footer">
+
+                        <span>
+                            Open
+                        </span>
+
+                        <span
+                            class="card-arrow"
+                            aria-hidden="true"
+                        >
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+                {% endfor %}
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             BUSINESS ANALYTICS
+        ================================================== -->
+
+        <section
+            class="dashboard-section"
+            id="business-analytics"
+        >
+
+
+            <div class="section-heading">
+
+
+                <div class="section-heading-left">
+
+                    <span class="section-label">
+                        INTELLIGENCE
+                    </span>
+
+                    <h2>
+                        Business Analytics
+                    </h2>
+
+                    <p>
+                        Explore detailed intelligence
+                        across every major area of your business.
+                    </p>
+
+                </div>
+
+
+                <div class="section-number">
+                    01
+                </div>
+
+            </div>
+
+
+
+            <div class="analytics-grid">
+
+
+                {% for item in analytics_links %}
+
+                <a
+                    href="{% url item.url %}"
+                    class="feature-card analytics-card card-animate"
+                    style="--card-index: {{ forloop.counter0 }};"
+                >
+
+
+                    <div class="feature-card-top">
+
+
+                        <div class="feature-icon">
+
+                            {% if item.icon == "business" %}
+                                ◉
+
+                            {% elif item.icon == "sales" %}
+                                ↗
+
+                            {% elif item.icon == "customer" %}
+                                ◎
+
+                            {% elif item.icon == "product" %}
+                                ◇
+
+                            {% elif item.icon == "regional" %}
+                                ◌
+
+                            {% elif item.icon == "marketing" %}
+                                ✦
+
+                            {% elif item.icon == "financial" %}
+                                $
+
+                            {% elif item.icon == "returns" %}
+                                ↻
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <span class="open-label">
+                            ANALYTICS
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="feature-card-body">
+
+                        <h3>
+                            {{ item.title }}
+                        </h3>
+
+                        <p>
+                            {{ item.description }}
+                        </p>
+
+                    </div>
+
+
+
+                    <div class="feature-card-footer">
+
+                        <span>
+                            Explore
+                        </span>
+
+                        <span
+                            class="feature-arrow"
+                            aria-hidden="true"
+                        >
+                            →
+                        </span>
+
+                    </div>
+
+
+                </a>
+
+                {% endfor %}
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ADVANCED INSIGHTS
+        ================================================== -->
+
+        <section
+            class="dashboard-section"
+            id="advanced-insights"
+        >
+
+
+            <div class="section-heading">
+
+
+                <div class="section-heading-left">
+
+                    <span class="section-label">
+                        DISCOVERY
+                    </span>
+
+                    <h2>
+                        Advanced Insights
+                    </h2>
+
+                    <p>
+                        Turn business data into predictions,
+                        discoveries and deeper understanding.
+                    </p>
+
+                </div>
+
+
+                <div class="section-number">
+                    02
+                </div>
+
+            </div>
+
+
+
+            <div class="analytics-grid insights-grid">
+
+
+                {% for item in insight_links %}
+
+                <a
+                    href="{% url item.url %}"
+                    class="feature-card insight-card card-animate"
+                    style="--card-index: {{ forloop.counter0 }};"
+                >
+
+
+                    <div class="feature-card-top">
+
+
+                        <div class="feature-icon">
+
+                            {% if item.icon == "trends" %}
+                                ◒
+
+                            {% elif item.icon == "forecast" %}
+                                ↗
+
+                            {% elif item.icon == "anomaly" %}
+                                !
+
+                            {% elif item.icon == "root-cause" %}
+                                ⌕
+
+                            {% elif item.icon == "segmentation" %}
+                                ◎
+
+                            {% elif item.icon == "risk" %}
+                                ⚠
+
+                            {% elif item.icon == "opportunity" %}
+                                ✧
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <span class="open-label">
+                            INSIGHT
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="feature-card-body">
+
+                        <h3>
+                            {{ item.title }}
+                        </h3>
+
+                        <p>
+                            {{ item.description }}
+                        </p>
+
+                    </div>
+
+
+
+                    <div class="feature-card-footer">
+
+                        <span>
+                            Discover
+                        </span>
+
+                        <span
+                            class="feature-arrow"
+                            aria-hidden="true"
+                        >
+                            →
+                        </span>
+
+                    </div>
+
+
+                </a>
+
+                {% endfor %}
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             DECISION INTELLIGENCE
+        ================================================== -->
+
+        <section
+            class="dashboard-section"
+            id="decision-intelligence"
+        >
+
+
+            <div class="section-heading">
+
+
+                <div class="section-heading-left">
+
+                    <span class="section-label">
+                        ACTION
+                    </span>
+
+                    <h2>
+                        Decision Intelligence
+                    </h2>
+
+                    <p>
+                        Convert insights into informed
+                        business actions and scenarios.
+                    </p>
+
+                </div>
+
+
+                <div class="section-number">
+                    03
+                </div>
+
+            </div>
+
+
+
+            <div class="analytics-grid decision-grid">
+
+
+                {% for item in decision_links %}
+
+                <a
+                    href="{% url item.url %}"
+                    class="feature-card decision-card card-animate"
+                    style="--card-index: {{ forloop.counter0 }};"
+                >
+
+
+                    <div class="feature-card-top">
+
+
+                        <div class="feature-icon">
+
+                            {% if item.icon == "recommendation" %}
+                                ◆
+
+                            {% elif item.icon == "what-if" %}
+                                ?
+
+                            {% elif item.icon == "scenario" %}
+                                ◈
+
+                            {% elif item.icon == "alerts" %}
+                                !
+
+                            {% elif item.icon == "action" %}
+                                ✓
+
+                            {% elif item.icon == "impact" %}
+                                ◉
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <span class="open-label">
+                            ACTION
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="feature-card-body">
+
+                        <h3>
+                            {{ item.title }}
+                        </h3>
+
+                        <p>
+                            {{ item.description }}
+                        </p>
+
+                    </div>
+
+
+
+                    <div class="feature-card-footer">
+
+                        <span>
+                            Open
+                        </span>
+
+                        <span
+                            class="feature-arrow"
+                            aria-hidden="true"
+                        >
+                            →
+                        </span>
+
+                    </div>
+
+
+                </a>
+
+                {% endfor %}
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             REPORTING
+        ================================================== -->
+
+        <section
+            class="dashboard-section"
+            id="reporting"
+        >
+
+
+            <div class="section-heading">
+
+
+                <div class="section-heading-left">
+
+                    <span class="section-label">
+                        OUTPUT
+                    </span>
+
+                    <h2>
+                        Reporting
+                    </h2>
+
+                    <p>
+                        Generate, export and manage
+                        business reports.
+                    </p>
+
+                </div>
+
+
+                <div class="section-number">
+                    04
+                </div>
+
+            </div>
+
+
+
+            <div class="analytics-grid reporting-grid">
+
+
+                {% for item in reporting_links %}
+
+                <a
+                    href="{% url item.url %}"
+                    class="feature-card reporting-card card-animate"
+                    style="--card-index: {{ forloop.counter0 }};"
+                >
+
+
+                    <div class="feature-card-top">
+
+
+                        <div class="feature-icon">
+
+                            {% if item.icon == "automated-report" %}
+                                ▤
+
+                            {% elif item.icon == "custom-report" %}
+                                ✎
+
+                            {% elif item.icon == "pdf" %}
+                                PDF
+
+                            {% elif item.icon == "excel" %}
+                                XLS
+
+                            {% elif item.icon == "history" %}
+                                ↺
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <span class="open-label">
+                            REPORT
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="feature-card-body">
+
+                        <h3>
+                            {{ item.title }}
+                        </h3>
+
+                        <p>
+                            {{ item.description }}
+                        </p>
+
+                    </div>
+
+
+
+                    <div class="feature-card-footer">
+
+                        <span>
+                            Open
+                        </span>
+
+                        <span
+                            class="feature-arrow"
+                            aria-hidden="true"
+                        >
+                            →
+                        </span>
+
+                    </div>
+
+
+                </a>
+
+                {% endfor %}
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SYSTEM STATUS
+        ================================================== -->
+
+        <section
+            class="system-status-section"
+            id="system-status"
+        >
+
+
+            <div class="status-header">
+
+
+                <div>
+
+                    <span class="section-label">
+                        PLATFORM
+                    </span>
+
+                    <h2>
+                        System Status
+                    </h2>
+
+                    <p class="status-description">
+                        Core platform services and workspace availability.
+                    </p>
+
+                </div>
+
+
+                <div class="system-online">
+
+                    <span
+                        class="online-dot"
+                        aria-hidden="true"
+                    ></span>
+
+                    <span>
+                        Workspace Ready
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="status-grid">
+
+
+                <!-- DATABASE -->
+
+                <div class="status-item">
+
+                    <div class="status-item-icon">
+                        ◉
+                    </div>
+
+                    <div class="status-item-content">
+
+                        <span>
+                            Database
+                        </span>
+
+                        <strong>
+                            Connected
+                        </strong>
+
+                    </div>
+
+                    <span class="status-check">
+                        ✓
+                    </span>
+
+                </div>
+
+
+
+                <!-- ANALYTICS -->
+
+                <div class="status-item">
+
+                    <div class="status-item-icon">
+                        ◈
+                    </div>
+
+                    <div class="status-item-content">
+
+                        <span>
+                            Analytics Engine
+                        </span>
+
+                        <strong>
+                            Ready
+                        </strong>
+
+                    </div>
+
+                    <span class="status-check">
+                        ✓
+                    </span>
+
+                </div>
+
+
+
+                <!-- INSIGHTS -->
+
+                <div class="status-item">
+
+                    <div class="status-item-icon">
+                        ◇
+                    </div>
+
+                    <div class="status-item-content">
+
+                        <span>
+                            Insight Engine
+                        </span>
+
+                        <strong>
+                            Ready
+                        </strong>
+
+                    </div>
+
+                    <span class="status-check">
+                        ✓
+                    </span>
+
+                </div>
+
+
+
+                <!-- DECISION -->
+
+                <div class="status-item">
+
+                    <div class="status-item-icon">
+                        ◆
+                    </div>
+
+                    <div class="status-item-content">
+
+                        <span>
+                            Decision Engine
+                        </span>
+
+                        <strong>
+                            Ready
+                        </strong>
+
+                    </div>
+
+                    <span class="status-check">
+                        ✓
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer class="dashboard-footer">
+
+
+            <div class="footer-brand">
+
+                <span class="footer-brand-mark">
+                    S
+                </span>
+
+                <span>
+                    Smart Business Decision Intelligence
+                </span>
+
+            </div>
+
+
+            <div class="footer-center">
+                Executive Workspace
+            </div>
+
+
+            <div class="footer-right">
+                <span id="footer-year"></span>
+            </div>
+
+
+        </footer>
+
+
+    </main>
+
+</div>
+
+
+
+<!-- =========================================================
+     DASHBOARD JAVASCRIPT
+========================================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    /* =====================================================
+       CURRENT DATE
+    ====================================================== */
+
+    const dateElement =
+        document.getElementById("current-date");
+
+    if (dateElement) {
+
+        const today = new Date();
+
+        const formattedDate =
+            today.toLocaleDateString(
+                undefined,
+                {
+                    weekday: "short",
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric"
+                }
+            );
+
+        dateElement.textContent =
+            formattedDate;
+    }
+
+
+
+    /* =====================================================
+       FOOTER YEAR
+    ====================================================== */
+
+    const footerYear =
+        document.getElementById("footer-year");
+
+    if (footerYear) {
+
+        footerYear.textContent =
+            new Date().getFullYear();
+
+    }
+
+
+
+    /* =====================================================
+       SCROLL REVEAL
+    ====================================================== */
+
+    const sections =
+        document.querySelectorAll(
+            ".dashboard-section, .system-status-section"
+        );
+
+
+    if ("IntersectionObserver" in window) {
+
+        const sectionObserver =
+            new IntersectionObserver(
+                function (entries) {
+
+                    entries.forEach(
+                        function (entry) {
+
+                            if (
+                                entry.isIntersecting
+                            ) {
+
+                                entry.target.classList.add(
+                                    "section-visible"
+                                );
+
+                                sectionObserver.unobserve(
+                                    entry.target
+                                );
+
+                            }
+
+                        }
+                    );
+
+                },
+                {
+                    threshold: 0.10
+                }
+            );
+
+
+        sections.forEach(
+            function (section) {
+
+                section.classList.add(
+                    "section-hidden"
+                );
+
+                sectionObserver.observe(
+                    section
+                );
+
+            }
+        );
+
+    }
+    else {
+
+        sections.forEach(
+            function (section) {
+
+                section.classList.add(
+                    "section-visible"
+                );
+
+            }
+        );
+
+    }
+
+
+
+    /* =====================================================
+       CARD MOUSE TILT
+    ====================================================== */
+
+    const cards =
+        document.querySelectorAll(
+            ".dashboard-card, .feature-card"
+        );
+
+
+    cards.forEach(
+        function (card) {
+
+
+            card.addEventListener(
+                "mousemove",
+                function (event) {
+
+                    /*
+                     * Keep the effect very subtle.
+                     * The card should still feel professional.
+                     */
+
+                    const rect =
+                        card.getBoundingClientRect();
+
+                    const x =
+                        event.clientX - rect.left;
+
+                    const y =
+                        event.clientY - rect.top;
+
+                    const centerX =
+                        rect.width / 2;
+
+                    const centerY =
+                        rect.height / 2;
+
+                    const rotateX =
+                        ((y - centerY) / centerY) * -1.2;
+
+                    const rotateY =
+                        ((x - centerX) / centerX) * 1.2;
+
+
+                    card.style.transform =
+                        `
+                        perspective(900px)
+                        rotateX(${rotateX}deg)
+                        rotateY(${rotateY}deg)
+                        translateY(-5px)
+                        scale(1.01)
+                        `;
+                }
+            );
+
+
+            card.addEventListener(
+                "mouseleave",
+                function () {
+
+                    card.style.transform = "";
+
+                }
+            );
+
+
+            card.addEventListener(
+                "focus",
+                function () {
+
+                    card.classList.add(
+                        "card-focused"
+                    );
+
+                }
+            );
+
+
+            card.addEventListener(
+                "blur",
+                function () {
+
+                    card.classList.remove(
+                        "card-focused"
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+
+    /* =====================================================
+       MOUSE GLOW POSITION
+    ====================================================== */
+
+    cards.forEach(
+        function (card) {
+
+            card.addEventListener(
+                "mousemove",
+                function (event) {
+
+                    const rect =
+                        card.getBoundingClientRect();
+
+                    const x =
+                        ((event.clientX - rect.left)
+                        / rect.width) * 100;
+
+                    const y =
+                        ((event.clientY - rect.top)
+                        / rect.height) * 100;
+
+                    card.style.setProperty(
+                        "--mouse-x",
+                        `${x}%`
+                    );
+
+                    card.style.setProperty(
+                        "--mouse-y",
+                        `${y}%`
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+
+    /* =====================================================
+       SECTION LINK HOVER
+    ====================================================== */
+
+    const sectionLinks =
+        document.querySelectorAll(
+            ".section-link"
+        );
+
+
+    sectionLinks.forEach(
+        function (link) {
+
+            link.addEventListener(
+                "mouseenter",
+                function () {
+
+                    link.classList.add(
+                        "section-link-active"
+                    );
+
+                }
+            );
+
+
+            link.addEventListener(
+                "mouseleave",
+                function () {
+
+                    link.classList.remove(
+                        "section-link-active"
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+
+    /* =====================================================
+       SMOOTH INTERNAL NAVIGATION
+    ====================================================== */
+
+    const internalLinks =
+        document.querySelectorAll(
+            'a[href^="#"]'
+        );
+
+
+    internalLinks.forEach(
+        function (link) {
+
+            link.addEventListener(
+                "click",
+                function (event) {
+
+                    const targetId =
+                        link.getAttribute("href");
+
+                    if (
+                        !targetId ||
+                        targetId === "#"
+                    ) {
+                        return;
+                    }
+
+
+                    const target =
+                        document.querySelector(
+                            targetId
+                        );
+
+
+                    if (target) {
+
+                        event.preventDefault();
+
+                        target.scrollIntoView(
+                            {
+                                behavior: "smooth",
+                                block: "start"
+                            }
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+
+    /* =====================================================
+       ACTIVE SECTION OBSERVER
+    ====================================================== */
+
+    const dashboardSections =
+        document.querySelectorAll(
+            ".dashboard-section"
+        );
+
+
+    const navObserver =
+        "IntersectionObserver" in window
+            ? new IntersectionObserver(
+                function (entries) {
+
+                    entries.forEach(
+                        function (entry) {
+
+                            if (
+                                entry.isIntersecting
+                            ) {
+
+                                entry.target.classList.add(
+                                    "section-in-view"
+                                );
+
+                            }
+                            else {
+
+                                entry.target.classList.remove(
+                                    "section-in-view"
+                                );
+
+                            }
+
+                        }
+                    );
+
+                },
+                {
+                    threshold: 0.25
+                }
+            )
+            : null;
+
+
+    if (navObserver) {
+
+        dashboardSections.forEach(
+            function (section) {
+
+                navObserver.observe(
+                    section
+                );
+
+            }
+        );
+
+    }
+
+
+
+    /* =====================================================
+       PAGE READY
+    ====================================================== */
+
+    document.body.classList.add(
+        "dashboard-ready"
+    );
+
+});
+
+</script>
+
+
+</body>
+
+</html>

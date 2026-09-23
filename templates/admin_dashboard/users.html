@@ -2,513 +2,975 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management | Smart BI Command Center</title>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>User Management | Smart BI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
+        /* =========================================================
+           ROOT & DESIGN TOKENS
+        ========================================================= */
+        :root {
+            --bg-base: #060b14;
+            --bg-subtle: #091322;
+            --panel-bg: rgba(13, 24, 43, 0.72);
+            --panel-bg-elevated: rgba(18, 33, 58, 0.85);
+            --panel-glass: rgba(14, 27, 49, 0.55);
 
+            --border-dim: rgba(255, 255, 255, 0.06);
+            --border-subtle: rgba(255, 255, 255, 0.09);
+            --border-glow: rgba(56, 189, 248, 0.28);
+
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --text-accent: #38bdf8;
+
+            --cyan: #06b6d4;
+            --cyan-glow: rgba(6, 182, 212, 0.25);
+            --blue: #3b82f6;
+            --blue-glow: rgba(59, 130, 246, 0.25);
+            --indigo: #6366f1;
+            --purple: #a855f7;
+            --green: #10b981;
+            --green-glow: rgba(16, 185, 129, 0.22);
+            --amber: #f59e0b;
+            --amber-glow: rgba(245, 158, 11, 0.25);
+            --rose: #f43f5e;
+            --rose-glow: rgba(244, 63, 94, 0.25);
+            --pink: #ec4899;
+
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 26px;
+
+            --shadow-subtle: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+            --shadow-panel: 0 20px 45px -12px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.05);
+            --shadow-neon: 0 0 35px -5px rgba(56, 189, 248, 0.15);
+
+            --transition-smooth: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* =========================================================
+           RESET & BASE
+        ========================================================= */
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body {
-            margin: 0;
-            font-family:
-                Inter,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                sans-serif;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #f8fafc,
-                    #eef2ff,
-                    #f8fafc
-                );
-
-            color: #172033;
+            min-height: 100vh;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.5;
         }
 
-        /* =====================================================
-           PAGE
-        ===================================================== */
+        /* =========================================================
+           AMBIENT BACKGROUND AURA
+        ========================================================= */
+        .ambient-canvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
 
-        .users-page {
+        .ambient-canvas::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: 
+                radial-gradient(circle at 12% 16%, rgba(56, 189, 248, 0.09) 0%, transparent 36%),
+                radial-gradient(circle at 88% 22%, rgba(99, 102, 241, 0.10) 0%, transparent 40%),
+                radial-gradient(circle at 50% 88%, rgba(16, 185, 129, 0.06) 0%, transparent 45%);
+            filter: blur(40px);
+            animation: auraPulse 15s ease-in-out infinite alternate;
+        }
+
+        .ambient-canvas::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 48px 48px;
+            mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+        }
+
+        @keyframes auraPulse {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.8; }
+            50% { transform: scale(1.08) translate(-1%, 2%); opacity: 1; }
+            100% { transform: scale(0.96) translate(1%, -1%); opacity: 0.8; }
+        }
+
+        /* =========================================================
+           TOP TELEMETRY NAVIGATION RIBBON
+        ========================================================= */
+        .telemetry-ribbon {
+            position: sticky;
+            top: 0;
+            z-index: 100;
             width: 100%;
-            min-height: 100vh;
-            padding: 32px;
+            background: rgba(6, 11, 20, 0.82);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border-dim);
+            padding: 0 2rem;
+            height: 66px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-cluster {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .brand-icon-box {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #0ea5e9, #6366f1);
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            box-shadow: 0 0 22px rgba(14, 165, 233, 0.4);
+        }
+
+        .brand-icon-box svg {
+            width: 22px;
+            height: 22px;
+            stroke-width: 2.2;
+        }
+
+        .brand-labels h1 {
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: -0.2px;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+
+        .brand-labels span {
+            display: block;
+            font-size: 10px;
+            color: var(--cyan);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+        }
+
+        .telemetry-controls {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .live-cluster-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--green);
+            font-weight: 600;
+        }
+
+        .live-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 10px var(--green);
+            animation: pulseSignal 2s infinite;
+        }
+
+        @keyframes pulseSignal {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.35; transform: scale(0.8); }
+        }
+
+        .back-nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            color: #e0f2fe;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+            transition: var(--transition-smooth);
+        }
+
+        .back-nav-btn:hover {
+            background: rgba(56, 189, 248, 0.18);
+            border-color: rgba(56, 189, 248, 0.5);
+            transform: translateX(-2px);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+        }
+
+        .back-nav-btn svg {
+            width: 14px;
+            height: 14px;
+            transition: transform 0.2s ease;
+        }
+
+        .back-nav-btn:hover svg {
+            transform: translateX(-2px);
+        }
+
+        /* =========================================================
+           SHELL & LAYOUT
+        ========================================================= */
+        .users-page {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            min-height: calc(100vh - 66px);
         }
 
         .users-container {
             width: 100%;
-            max-width: 1500px;
+            max-width: 1680px;
             margin: 0 auto;
+            padding: 32px 28px 80px 28px;
         }
 
-        /* =====================================================
-           HEADER
-        ===================================================== */
-
-        .page-header {
+        /* =========================================================
+           HERO COMMAND HEADER BANNER
+        ========================================================= */
+        .command-header-banner {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: flex-end;
-            gap: 20px;
+            background: linear-gradient(135deg, rgba(20, 36, 64, 0.65) 0%, rgba(9, 19, 34, 0.75) 100%);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-xl);
+            padding: 28px 36px;
             margin-bottom: 28px;
+            box-shadow: var(--shadow-panel);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+        }
+
+        .command-header-banner::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--cyan), var(--indigo));
         }
 
         .page-title-area h1 {
-            margin: 0;
-            font-size: 30px;
+            font-size: 26px;
             font-weight: 800;
-            letter-spacing: -0.7px;
+            letter-spacing: -0.6px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .page-title-area p {
-            margin: 8px 0 0;
-            color: #64748b;
+            margin-top: 6px;
+            color: var(--text-secondary);
             font-size: 14px;
+            max-width: 680px;
+            font-weight: 400;
         }
 
-        .back-btn {
-            text-decoration: none;
-            padding: 11px 18px;
-            border-radius: 12px;
-            background: #ffffff;
-            color: #334155;
-            border: 1px solid #e2e8f0;
-            font-size: 14px;
-            font-weight: 600;
-            transition: 0.25s ease;
+        .banner-telemetry-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .back-btn:hover {
-            transform: translateY(-2px);
-            border-color: #c7d2fe;
-            box-shadow:
-                0 8px 22px rgba(15, 23, 42, 0.08);
+        .badge-counter-hero {
+            padding: 10px 18px;
+            border-radius: var(--radius-md);
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: #e0f2fe;
         }
 
-        /* =====================================================
-           FILTER PANEL
-        ===================================================== */
+        .badge-counter-hero span.count-num {
+            color: var(--cyan);
+            font-size: 16px;
+            font-weight: 800;
+        }
 
+        /* =========================================================
+           SMART FILTER & SEARCH COMMAND CONSOLE
+        ========================================================= */
         .filter-card {
-            background: rgba(255, 255, 255, 0.92);
-            border: 1px solid #e2e8f0;
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 24px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-xl);
+            padding: 22px 28px;
+            margin-bottom: 28px;
+            box-shadow: var(--shadow-panel);
+            backdrop-filter: blur(14px);
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.25s ease;
+        }
 
-            box-shadow:
-                0 12px 35px rgba(15, 23, 42, 0.06);
-
-            backdrop-filter: blur(10px);
+        .filter-card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
         }
 
         .filter-form {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             flex-wrap: wrap;
         }
 
         .search-box {
             position: relative;
             flex: 1;
-            min-width: 260px;
+            min-width: 290px;
+        }
+
+        .search-box-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            color: var(--text-muted);
+            pointer-events: none;
+            transition: color 0.2s ease;
         }
 
         .search-box input {
             width: 100%;
-            height: 46px;
-            border: 1px solid #dbe2ea;
-            border-radius: 12px;
-            padding: 0 16px;
+            height: 48px;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 0 16px 0 46px;
             outline: none;
             font-size: 14px;
-            background: #f8fafc;
-            transition: 0.25s ease;
+            font-family: inherit;
+            background: rgba(4, 9, 18, 0.6);
+            color: #fff;
+            transition: var(--transition-smooth);
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-muted);
         }
 
         .search-box input:focus {
-            background: #ffffff;
-            border-color: #818cf8;
-            box-shadow:
-                0 0 0 4px rgba(99, 102, 241, 0.10);
+            background: rgba(8, 17, 34, 0.85);
+            border-color: var(--cyan);
+            box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.12), 0 0 20px rgba(6, 182, 212, 0.1);
+        }
+
+        .search-box input:focus + .search-box-icon {
+            color: var(--cyan);
+        }
+
+        .select-wrapper {
+            position: relative;
+            min-width: 210px;
         }
 
         .status-select {
-            height: 46px;
-            min-width: 180px;
-            border: 1px solid #dbe2ea;
-            border-radius: 12px;
-            padding: 0 14px;
-            background: #f8fafc;
-            color: #334155;
+            width: 100%;
+            height: 48px;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 0 40px 0 16px;
+            background: rgba(4, 9, 18, 0.6);
+            color: #e2e8f0;
             outline: none;
             font-size: 14px;
+            font-family: inherit;
             cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            transition: var(--transition-smooth);
+        }
+
+        .status-select:focus {
+            border-color: var(--indigo);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+            background: rgba(8, 17, 34, 0.85);
+        }
+
+        .status-select option {
+            background: #091322;
+            color: #f8fafc;
+            padding: 10px;
+        }
+
+        .select-chevron {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            color: var(--text-muted);
+            pointer-events: none;
         }
 
         .filter-btn {
-            height: 46px;
-            border: none;
-            border-radius: 12px;
-            padding: 0 20px;
-            background: #4f46e5;
-            color: white;
+            height: 48px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: var(--radius-md);
+            padding: 0 24px;
+            background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
+            color: #ffffff;
             font-size: 14px;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 18px rgba(2, 132, 199, 0.3);
+            font-family: inherit;
+        }
+
+        .filter-btn svg {
+            width: 16px;
+            height: 16px;
         }
 
         .filter-btn:hover {
             transform: translateY(-2px);
-            box-shadow:
-                0 10px 22px rgba(79, 70, 229, 0.25);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
+            border-color: rgba(255, 255, 255, 0.35);
         }
 
         .clear-btn {
-            height: 46px;
+            height: 48px;
             display: inline-flex;
             align-items: center;
-            padding: 0 18px;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-            background: #ffffff;
-            color: #64748b;
+            gap: 8px;
+            padding: 0 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(244, 63, 94, 0.25);
+            background: rgba(244, 63, 94, 0.08);
+            color: #fda4af;
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 700;
+            transition: var(--transition-smooth);
+            font-family: inherit;
         }
 
-        /* =====================================================
-           TABLE CARD
-        ===================================================== */
+        .clear-btn svg {
+            width: 14px;
+            height: 14px;
+        }
 
+        .clear-btn:hover {
+            background: rgba(244, 63, 94, 0.18);
+            border-color: rgba(244, 63, 94, 0.45);
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(244, 63, 94, 0.2);
+        }
+
+        /* =========================================================
+           DATA TABLE WORKSTATION PANEL
+        ========================================================= */
         .table-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 20px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-xl);
             overflow: hidden;
+            box-shadow: var(--shadow-panel);
+            backdrop-filter: blur(16px);
+            transition: border-color 0.25s ease;
+        }
 
-            box-shadow:
-                0 14px 40px rgba(15, 23, 42, 0.07);
+        .table-card:hover {
+            border-color: rgba(255, 255, 255, 0.1);
         }
 
         .table-header {
-            padding: 20px 24px;
-            border-bottom: 1px solid #eef2f7;
+            padding: 22px 28px;
+            border-bottom: 1px solid var(--border-dim);
+            background: rgba(255, 255, 255, 0.015);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 16px;
+        }
+
+        .table-title-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .table-title-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--cyan);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+        }
+
+        .table-title-icon svg {
+            width: 20px;
+            height: 20px;
         }
 
         .table-header h2 {
             margin: 0;
             font-size: 17px;
             font-weight: 750;
+            color: #fff;
+            letter-spacing: -0.3px;
+        }
+
+        .table-header p.subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
         }
 
         .user-count {
-            color: #64748b;
-            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 14px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-dim);
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+
+        .user-count strong {
+            color: var(--cyan);
         }
 
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
+            background: rgba(4, 9, 18, 0.45);
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
-            min-width: 950px;
-        }
-
-        th {
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 1000px;
             text-align: left;
-            padding: 15px 20px;
-            background: #f8fafc;
-            color: #64748b;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 750;
         }
 
-        td {
-            padding: 17px 20px;
-            border-top: 1px solid #f1f5f9;
-            font-size: 14px;
+        thead th {
+            background: rgba(15, 28, 49, 0.7);
+            padding: 15px 22px;
+            color: var(--text-secondary);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.75px;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-dim);
+            white-space: nowrap;
+        }
+
+        tbody td {
+            padding: 18px 22px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.035);
+            font-size: 13px;
+            color: var(--text-secondary);
             vertical-align: middle;
+            transition: background 0.18s ease;
         }
 
         tbody tr {
-            transition: 0.22s ease;
+            transition: background 0.18s ease;
         }
 
         tbody tr:hover {
-            background: #fafbff;
+            background: rgba(56, 189, 248, 0.035);
         }
 
-        /* =====================================================
-           USER
-        ===================================================== */
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
 
+        /* =========================================================
+           USER ENTITY COLUMN
+        ========================================================= */
         .user-cell {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
         }
 
         .avatar {
             width: 42px;
             height: 42px;
-            border-radius: 50%;
-
+            flex-shrink: 0;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #6366f1,
-                    #8b5cf6
-                );
-
-            color: white;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(99, 102, 241, 0.25));
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: #7dd3fc;
             font-weight: 800;
             font-size: 15px;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
 
-            box-shadow:
-                0 6px 16px rgba(99, 102, 241, 0.22);
+        tbody tr:hover .avatar {
+            transform: scale(1.06);
+            box-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
         }
 
         .user-name {
             font-weight: 700;
-            color: #1e293b;
+            color: #ffffff;
+            font-size: 14px;
+            letter-spacing: -0.2px;
         }
 
         .user-username {
-            margin-top: 3px;
-            font-size: 12px;
-            color: #94a3b8;
+            margin-top: 2px;
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
         }
 
-        /* =====================================================
-           STATUS
-        ===================================================== */
+        .email-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #cbd5e1;
+        }
 
+        .date-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        /* =========================================================
+           STATUS BADGES
+        ========================================================= */
         .status-badge {
             display: inline-flex;
             align-items: center;
             gap: 7px;
-
-            padding: 7px 11px;
-            border-radius: 999px;
-
-            font-size: 12px;
-            font-weight: 750;
-
+            padding: 5px 12px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 700;
             white-space: nowrap;
+            letter-spacing: 0.3px;
         }
 
         .status-dot {
-            width: 7px;
-            height: 7px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
         }
 
         .status-pending {
-            background: #fff7ed;
-            color: #c2410c;
+            background: rgba(245, 158, 11, 0.12);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.3);
         }
 
         .status-pending .status-dot {
-            background: #f97316;
-            animation: pulse 1.7s infinite;
+            background: #fbbf24;
+            box-shadow: 0 0 10px #fbbf24;
+            animation: pulseOrange 1.8s infinite;
         }
 
         .status-approved {
-            background: #ecfdf5;
-            color: #047857;
+            background: rgba(16, 185, 129, 0.12);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
         }
 
         .status-approved .status-dot {
-            background: #10b981;
+            background: #34d399;
+            box-shadow: 0 0 10px #34d399;
         }
 
         .status-rejected {
-            background: #fef2f2;
-            color: #b91c1c;
+            background: rgba(244, 63, 94, 0.12);
+            color: #fb7185;
+            border: 1px solid rgba(244, 63, 94, 0.3);
         }
 
         .status-rejected .status-dot {
-            background: #ef4444;
+            background: #fb7185;
+            box-shadow: 0 0 10px #fb7185;
         }
 
         .status-deactivated {
-            background: #f1f5f9;
-            color: #475569;
+            background: rgba(148, 163, 184, 0.1);
+            color: #94a3b8;
+            border: 1px solid rgba(148, 163, 184, 0.22);
         }
 
         .status-deactivated .status-dot {
             background: #64748b;
         }
 
-        @keyframes pulse {
-
-            0% {
-                box-shadow:
-                    0 0 0 0 rgba(249, 115, 22, 0.45);
-            }
-
-            70% {
-                box-shadow:
-                    0 0 0 7px rgba(249, 115, 22, 0);
-            }
-
-            100% {
-                box-shadow:
-                    0 0 0 0 rgba(249, 115, 22, 0);
-            }
-
+        @keyframes pulseOrange {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
         }
 
-        /* =====================================================
-           DATASET COUNT
-        ===================================================== */
-
+        /* =========================================================
+           DATASET METRIC BADGE
+        ========================================================= */
         .dataset-count {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-
-            min-width: 34px;
-            height: 30px;
-
-            padding: 0 9px;
-
-            border-radius: 9px;
-            background: #eef2ff;
-            color: #4338ca;
-
-            font-weight: 750;
-            font-size: 13px;
+            gap: 7px;
+            padding: 5px 12px;
+            border-radius: var(--radius-sm);
+            background: rgba(6, 182, 212, 0.08);
+            border: 1px solid rgba(6, 182, 212, 0.24);
+            color: var(--cyan);
+            font-weight: 700;
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
         }
 
-        /* =====================================================
-           ACTIONS
-        ===================================================== */
+        .dataset-count svg {
+            width: 14px;
+            height: 14px;
+        }
 
+        /* =========================================================
+           ACTIONS & CLUSTERS
+        ========================================================= */
         .actions {
             display: flex;
             align-items: center;
-            gap: 7px;
+            gap: 8px;
             flex-wrap: wrap;
         }
 
+        .action-form-wrap {
+            display: inline-flex;
+            margin: 0;
+            padding: 0;
+        }
+
         .action-btn {
-            border: none;
-            border-radius: 9px;
-            padding: 8px 12px;
-            font-size: 12px;
+            border: 1px solid transparent;
+            border-radius: var(--radius-sm);
+            padding: 7px 12px;
+            font-size: 11px;
             font-weight: 700;
             cursor: pointer;
             text-decoration: none;
-            transition: 0.22s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition-smooth);
+            font-family: inherit;
+            line-height: 1.2;
+            white-space: nowrap;
         }
 
-        .action-btn:hover {
-            transform: translateY(-2px);
+        .action-btn svg {
+            width: 13px;
+            height: 13px;
         }
 
         .view-btn {
-            background: #eef2ff;
-            color: #4338ca;
+            background: rgba(56, 189, 248, 0.08);
+            color: #38bdf8;
+            border-color: rgba(56, 189, 248, 0.25);
+        }
+
+        .view-btn:hover {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: rgba(56, 189, 248, 0.5);
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(56, 189, 248, 0.2);
         }
 
         .approve-btn {
-            background: #ecfdf5;
-            color: #047857;
+            background: rgba(16, 185, 129, 0.08);
+            color: #34d399;
+            border-color: rgba(16, 185, 129, 0.25);
         }
 
         .approve-btn:hover {
-            box-shadow:
-                0 7px 16px rgba(16, 185, 129, 0.18);
+            background: rgba(16, 185, 129, 0.22);
+            border-color: rgba(16, 185, 129, 0.5);
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.25);
         }
 
         .reject-btn {
-            background: #fef2f2;
-            color: #b91c1c;
+            background: rgba(244, 63, 94, 0.08);
+            color: #fb7185;
+            border-color: rgba(244, 63, 94, 0.25);
         }
 
         .reject-btn:hover {
-            box-shadow:
-                0 7px 16px rgba(239, 68, 68, 0.18);
+            background: rgba(244, 63, 94, 0.22);
+            border-color: rgba(244, 63, 94, 0.5);
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(244, 63, 94, 0.25);
         }
 
         .deactivate-btn {
-            background: #fff7ed;
-            color: #c2410c;
+            background: rgba(245, 158, 11, 0.08);
+            color: #fbbf24;
+            border-color: rgba(245, 158, 11, 0.25);
         }
 
         .deactivate-btn:hover {
-            box-shadow:
-                0 7px 16px rgba(249, 115, 22, 0.18);
+            background: rgba(245, 158, 11, 0.22);
+            border-color: rgba(245, 158, 11, 0.5);
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(245, 158, 11, 0.25);
         }
 
         .activate-btn {
-            background: #ecfdf5;
-            color: #047857;
+            background: rgba(16, 185, 129, 0.08);
+            color: #34d399;
+            border-color: rgba(16, 185, 129, 0.25);
         }
 
-        /* =====================================================
-           EMPTY
-        ===================================================== */
+        .activate-btn:hover {
+            background: rgba(16, 185, 129, 0.22);
+            border-color: rgba(16, 185, 129, 0.5);
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.25);
+        }
 
+        /* =========================================================
+           EMPTY STATE
+        ========================================================= */
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
+            padding: 72px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .empty-state-icon {
+            width: 58px;
+            height: 58px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-dim);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .empty-state-icon svg {
+            width: 30px;
+            height: 30px;
         }
 
         .empty-state h3 {
             margin: 0 0 8px;
             font-size: 18px;
+            font-weight: 700;
+            color: #f1f5f9;
         }
 
         .empty-state p {
             margin: 0;
-            color: #94a3b8;
+            color: var(--text-muted);
             font-size: 14px;
+            max-width: 400px;
         }
 
-        /* =====================================================
-           RESPONSIVE
-        ===================================================== */
-
-        @media (max-width: 700px) {
-
-            .users-page {
-                padding: 20px 14px;
+        /* =========================================================
+           RESPONSIVE REFINEMENTS
+        ========================================================= */
+        @media (max-width: 900px) {
+            .command-header-banner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+                padding: 24px;
             }
 
-            .page-header {
-                align-items: flex-start;
-                flex-direction: column;
+            .filter-card {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .telemetry-ribbon {
+                padding: 0 1.2rem;
+            }
+
+            .users-container {
+                padding: 16px 14px 60px 14px;
             }
 
             .filter-form {
@@ -517,488 +979,449 @@
             }
 
             .search-box,
+            .select-wrapper,
             .status-select,
             .filter-btn,
             .clear-btn {
                 width: 100%;
+                min-width: 100%;
             }
 
+            .filter-btn,
+            .clear-btn {
+                justify-content: center;
+            }
         }
 
+        /* =========================================================
+           REDUCED MOTION ACCESSIBILITY
+        ========================================================= */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            .ambient-canvas::before,
+            .live-dot,
+            .status-pending .status-dot {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
     </style>
-
 </head>
-
 
 <body>
 
-<div class="users-page">
+    <!-- Ambient Grid & Aura Canvas -->
+    <div class="ambient-canvas" aria-hidden="true"></div>
 
-    <div class="users-container">
+    <!-- Navigation Ribbon -->
+    <header class="telemetry-ribbon">
+        <a href="{% url 'admin_dashboard:dashboard' %}" class="brand-cluster" title="Smart BI Dashboard">
+            <div class="brand-icon-box">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+            </div>
+            <div class="brand-labels">
+                <h1>Smart BI Admin</h1>
+                <span>USER ACCESS INTELLIGENCE</span>
+            </div>
+        </a>
 
-        <!-- =================================================
-             HEADER
-        ================================================== -->
-
-        <div class="page-header">
-
-            <div class="page-title-area">
-
-                <h1>User Management</h1>
-
-                <p>
-                    Manage registered users, approvals,
-                    account status and uploaded datasets.
-                </p>
-
+        <div class="telemetry-controls">
+            <div class="live-cluster-pill">
+                <span class="live-dot"></span>
+                <span>SYSTEM ONLINE</span>
             </div>
 
-            <a
-                href="{% url 'admin_dashboard:dashboard' %}"
-                class="back-btn"
-            >
-                ← Dashboard
+            <a href="{% url 'admin_dashboard:dashboard' %}" class="back-nav-btn" title="Return to Dashboard">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Dashboard</span>
             </a>
-
         </div>
-
-
-        <!-- =================================================
-             FILTERS
-        ================================================== -->
-
-        <div class="filter-card">
-
-            <form
-                method="GET"
-                class="filter-form"
-            >
-
-                <div class="search-box">
-
-                    <input
-                        type="text"
-                        name="search"
-                        value="{{ search }}"
-                        placeholder="Search user by name..."
-                    >
-
-                </div>
-
-
-                <select
-                    name="status"
-                    class="status-select"
-                >
-
-                    <option value="">
-                        All Users
-                    </option>
-
-                    <option
-                        value="pending"
-                        {% if current_status == "pending" %}
-                            selected
-                        {% endif %}
-                    >
-                        Pending
-                    </option>
-
-                    <option
-                        value="approved"
-                        {% if current_status == "approved" %}
-                            selected
-                        {% endif %}
-                    >
-                        Approved
-                    </option>
-
-                    <option
-                        value="rejected"
-                        {% if current_status == "rejected" %}
-                            selected
-                        {% endif %}
-                    >
-                        Rejected
-                    </option>
-
-                    <option
-                        value="deactivated"
-                        {% if current_status == "deactivated" %}
-                            selected
-                        {% endif %}
-                    >
-                        Deactivated
-                    </option>
-
-                </select>
-
-
-                <button
-                    type="submit"
-                    class="filter-btn"
-                >
-                    Search
-                </button>
-
-
-                {% if search or current_status %}
-
-                    <a
-                        href="{% url 'admin_dashboard:users' %}"
-                        class="clear-btn"
-                    >
-                        Clear
-                    </a>
-
-                {% endif %}
-
-            </form>
-
-        </div>
-
-
-        <!-- =================================================
-             USERS TABLE
-        ================================================== -->
-
-        <div class="table-card">
-
-            <div class="table-header">
-
-                <h2>Registered Users</h2>
-
-                <span class="user-count">
-                    {{ users|length }} shown
-                </span>
-
-            </div>
-
-
-            {% if users %}
-
-                <div class="table-wrapper">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-
-                                <th>
-                                    User
-                                </th>
-
-                                <th>
-                                    Email
-                                </th>
-
-                                <th>
-                                    Status
-                                </th>
-
-                                <th>
-                                    Datasets
-                                </th>
-
-                                <th>
-                                    Joined
-                                </th>
-
-                                <th>
-                                    Actions
-                                </th>
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody>
-
-                        {% for user in users %}
-
-                            <tr>
-
-                                <!-- USER -->
-
-                                <td>
-
-                                    <div class="user-cell">
-
-                                        <div class="avatar">
-
-                                            {% if user.first_name %}
-
-                                                {{ user.first_name|first|upper }}
-
-                                            {% else %}
-
-                                                {{ user.username|first|upper }}
-
-                                            {% endif %}
-
-                                        </div>
-
-
-                                        <div>
-
-                                            <div class="user-name">
-
-                                                {% if user.get_full_name %}
-
-                                                    {{ user.get_full_name }}
-
-                                                {% else %}
-
-                                                    {{ user.username }}
-
-                                                {% endif %}
-
-                                            </div>
-
-                                            <div class="user-username">
-
-                                                @{{ user.username }}
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </td>
-
-
-                                <!-- EMAIL -->
-
-                                <td>
-
-                                    {{ user.email }}
-
-                                </td>
-
-
-                                <!-- STATUS -->
-
-                                <td>
-
-                                    {% if user.approval_status == "Pending" %}
-
-                                        <span class="status-badge status-pending">
-
-                                            <span class="status-dot"></span>
-
-                                            Pending
-
-                                        </span>
-
-
-                                    {% elif user.approval_status == "Rejected" %}
-
-                                        <span class="status-badge status-rejected">
-
-                                            <span class="status-dot"></span>
-
-                                            Rejected
-
-                                        </span>
-
-
-                                    {% elif user.approval_status == "Approved" and not user.is_active %}
-
-                                        <span class="status-badge status-deactivated">
-
-                                            <span class="status-dot"></span>
-
-                                            Deactivated
-
-                                        </span>
-
-
-                                    {% else %}
-
-                                        <span class="status-badge status-approved">
-
-                                            <span class="status-dot"></span>
-
-                                            Approved
-
-                                        </span>
-
-                                    {% endif %}
-
-                                </td>
-
-
-                                <!-- DATASETS -->
-
-                                <td>
-
-                                    <span class="dataset-count">
-
-                                        {{ user.dataset_count }}
-
-                                    </span>
-
-                                </td>
-
-
-                                <!-- JOINED -->
-
-                                <td>
-
-                                    {{ user.date_joined|date:"d M Y" }}
-
-                                </td>
-
-
-                                <!-- ACTIONS -->
-
-                                <td>
-
-                                    <div class="actions">
-
-
-                                        <a
-                                            href="{% url 'admin_dashboard:user_detail' user.id %}"
-                                            class="action-btn view-btn"
-                                        >
-                                            View
-                                        </a>
-
-
-                                        {% if user.approval_status == "Pending" %}
-
-                                            <form
-                                                method="POST"
-                                                action="{% url 'admin_dashboard:approve_user' user.id %}"
-                                            >
-
-                                                {% csrf_token %}
-
-                                                <button
-                                                    type="submit"
-                                                    class="action-btn approve-btn"
-                                                >
-                                                    Approve
-                                                </button>
-
-                                            </form>
-
-
-                                            <form
-                                                method="POST"
-                                                action="{% url 'admin_dashboard:reject_user' user.id %}"
-                                            >
-
-                                                {% csrf_token %}
-
-                                                <button
-                                                    type="submit"
-                                                    class="action-btn reject-btn"
-                                                >
-                                                    Reject
-                                                </button>
-
-                                            </form>
-
-
-                                        {% elif user.approval_status == "Rejected" %}
-
-                                            <form
-                                                method="POST"
-                                                action="{% url 'admin_dashboard:approve_user' user.id %}"
-                                            >
-
-                                                {% csrf_token %}
-
-                                                <button
-                                                    type="submit"
-                                                    class="action-btn approve-btn"
-                                                >
-                                                    Approve
-                                                </button>
-
-                                            </form>
-
-
-                                        {% elif user.approval_status == "Approved" and user.is_active %}
-
-                                            <form
-                                                method="POST"
-                                                action="{% url 'admin_dashboard:deactivate_user' user.id %}"
-                                            >
-
-                                                {% csrf_token %}
-
-                                                <button
-                                                    type="submit"
-                                                    class="action-btn deactivate-btn"
-                                                >
-                                                    Deactivate
-                                                </button>
-
-                                            </form>
-
-
-                                        {% elif user.approval_status == "Approved" and not user.is_active %}
-
-                                            <form
-                                                method="POST"
-                                                action="{% url 'admin_dashboard:activate_user' user.id %}"
-                                            >
-
-                                                {% csrf_token %}
-
-                                                <button
-                                                    type="submit"
-                                                    class="action-btn activate-btn"
-                                                >
-                                                    Activate
-                                                </button>
-
-                                            </form>
-
-                                        {% endif %}
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-                        {% endfor %}
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-
-            {% else %}
-
-                <div class="empty-state">
-
-                    <h3>
-                        No users found
-                    </h3>
-
+    </header>
+
+    <div class="users-page">
+        <div class="users-container">
+
+            <!-- =====================================================
+                 HERO OVERVIEW BANNER
+            ====================================================== -->
+            <section class="command-header-banner">
+                <div class="page-title-area">
+                    <h1>User Directory & Access Control</h1>
                     <p>
-                        Try changing your search or status filter.
+                        Audit member profiles, authorize pending access permissions, review analytical dataset ownership, and adjust active credentials.
                     </p>
-
                 </div>
 
-            {% endif %}
+                <div class="banner-telemetry-badge">
+                    <div class="badge-counter-hero">
+                        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        <span>Active Record Set: <span class="count-num">{{ users|length }}</span></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =====================================================
+                 SEARCH & FILTER CONSOLE
+            ====================================================== -->
+            <section class="filter-card">
+                <form method="GET" class="filter-form">
+                    <div class="search-box">
+                        <svg class="search-box-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input
+                            type="text"
+                            name="search"
+                            value="{{ search }}"
+                            placeholder="Search user by name..."
+                            autocomplete="off"
+                        >
+                    </div>
+
+                    <div class="select-wrapper">
+                        <select name="status" class="status-select">
+                            <option value="">
+                                All Users
+                            </option>
+
+                            <option
+                                value="pending"
+                                {% if current_status == "pending" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Pending
+                            </option>
+
+                            <option
+                                value="approved"
+                                {% if current_status == "approved" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Approved
+                            </option>
+
+                            <option
+                                value="rejected"
+                                {% if current_status == "rejected" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Rejected
+                            </option>
+
+                            <option
+                                value="deactivated"
+                                {% if current_status == "deactivated" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Deactivated
+                            </option>
+                        </select>
+                        <svg class="select-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+
+                    <button type="submit" class="filter-btn">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <span>Search</span>
+                    </button>
+
+                    {% if search or current_status %}
+                        <a href="{% url 'admin_dashboard:users' %}" class="clear-btn" title="Reset all applied filters">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            <span>Clear</span>
+                        </a>
+                    {% endif %}
+                </form>
+            </section>
+
+            <!-- =====================================================
+                 USERS MANAGEMENT WORKSTATION TABLE
+            ====================================================== -->
+            <section class="table-card">
+                <div class="table-header">
+                    <div class="table-title-group">
+                        <div class="table-title-icon">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2>Registered Users</h2>
+                            <p class="subtitle">Complete list of system participants and authorization privileges</p>
+                        </div>
+                    </div>
+
+                    <span class="user-count">
+                        <strong>{{ users|length }}</strong> shown
+                    </span>
+                </div>
+
+                {% if users %}
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>Datasets</th>
+                                    <th>Joined</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for user in users %}
+                                    <tr>
+                                        <!-- USER IDENTITY -->
+                                        <td>
+                                            <div class="user-cell">
+                                                <div class="avatar">
+                                                    {% if user.first_name %}
+                                                        {{ user.first_name|first|upper }}
+                                                    {% else %}
+                                                        {{ user.username|first|upper }}
+                                                    {% endif %}
+                                                </div>
+
+                                                <div>
+                                                    <div class="user-name">
+                                                        {% if user.get_full_name %}
+                                                            {{ user.get_full_name }}
+                                                        {% else %}
+                                                            {{ user.username }}
+                                                        {% endif %}
+                                                    </div>
+
+                                                    <div class="user-username">
+                                                        @{{ user.username }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <!-- EMAIL -->
+                                        <td>
+                                            <span class="email-display">{{ user.email }}</span>
+                                        </td>
+
+                                        <!-- STATUS -->
+                                        <td>
+                                            {% if user.approval_status == "Pending" %}
+                                                <span class="status-badge status-pending">
+                                                    <span class="status-dot"></span>
+                                                    Pending
+                                                </span>
+                                            {% elif user.approval_status == "Rejected" %}
+                                                <span class="status-badge status-rejected">
+                                                    <span class="status-dot"></span>
+                                                    Rejected
+                                                </span>
+                                            {% elif user.approval_status == "Approved" and not user.is_active %}
+                                                <span class="status-badge status-deactivated">
+                                                    <span class="status-dot"></span>
+                                                    Deactivated
+                                                </span>
+                                            {% else %}
+                                                <span class="status-badge status-approved">
+                                                    <span class="status-dot"></span>
+                                                    Approved
+                                                </span>
+                                            {% endif %}
+                                        </td>
+
+                                        <!-- DATASETS -->
+                                        <td>
+                                            <span class="dataset-count">
+                                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                                                </svg>
+                                                {{ user.dataset_count }}
+                                            </span>
+                                        </td>
+
+                                        <!-- JOINED -->
+                                        <td>
+                                            <span class="date-display">{{ user.date_joined|date:"d M Y" }}</span>
+                                        </td>
+
+                                        <!-- ACTIONS -->
+                                        <td>
+                                            <div class="actions">
+                                                <a
+                                                    href="{% url 'admin_dashboard:user_detail' user.id %}"
+                                                    class="action-btn view-btn"
+                                                    title="View user specifications"
+                                                >
+                                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                    </svg>
+                                                    View
+                                                </a>
+
+                                                {% if user.approval_status == "Pending" %}
+                                                    <form
+                                                        method="POST"
+                                                        action="{% url 'admin_dashboard:approve_user' user.id %}"
+                                                        class="action-form-wrap"
+                                                    >
+                                                        {% csrf_token %}
+                                                        <button
+                                                            type="submit"
+                                                            class="action-btn approve-btn"
+                                                            title="Authorize member"
+                                                        >
+                                                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                            </svg>
+                                                            Approve
+                                                        </button>
+                                                    </form>
+
+                                                    <form
+                                                        method="POST"
+                                                        action="{% url 'admin_dashboard:reject_user' user.id %}"
+                                                        class="action-form-wrap"
+                                                    >
+                                                        {% csrf_token %}
+                                                        <button
+                                                            type="submit"
+                                                            class="action-btn reject-btn"
+                                                            title="Reject member"
+                                                        >
+                                                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                            </svg>
+                                                            Reject
+                                                        </button>
+                                                    </form>
+
+                                                {% elif user.approval_status == "Rejected" %}
+                                                    <form
+                                                        method="POST"
+                                                        action="{% url 'admin_dashboard:approve_user' user.id %}"
+                                                        class="action-form-wrap"
+                                                    >
+                                                        {% csrf_token %}
+                                                        <button
+                                                            type="submit"
+                                                            class="action-btn approve-btn"
+                                                            title="Re-authorize rejected member"
+                                                        >
+                                                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                            </svg>
+                                                            Approve
+                                                        </button>
+                                                    </form>
+
+                                                {% elif user.approval_status == "Approved" and user.is_active %}
+                                                    <form
+                                                        method="POST"
+                                                        action="{% url 'admin_dashboard:deactivate_user' user.id %}"
+                                                        class="action-form-wrap"
+                                                    >
+                                                        {% csrf_token %}
+                                                        <button
+                                                            type="submit"
+                                                            class="action-btn deactivate-btn"
+                                                            title="Temporarily revoke access"
+                                                        >
+                                                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                                            </svg>
+                                                            Deactivate
+                                                        </button>
+                                                    </form>
+
+                                                {% elif user.approval_status == "Approved" and not user.is_active %}
+                                                    <form
+                                                        method="POST"
+                                                        action="{% url 'admin_dashboard:activate_user' user.id %}"
+                                                        class="action-form-wrap"
+                                                    >
+                                                        {% csrf_token %}
+                                                        <button
+                                                            type="submit"
+                                                            class="action-btn activate-btn"
+                                                            title="Restore access permissions"
+                                                        >
+                                                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                            </svg>
+                                                            Activate
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                {% else %}
+                    <!-- EMPTY STATE -->
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                        </div>
+                        <h3>No users found</h3>
+                        <p>Try changing your search or status filter.</p>
+                    </div>
+                {% endif %}
+            </section>
 
         </div>
-
     </div>
 
-</div>
+    <!-- UI Interaction Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Progressive entrance animation for dashboard components
+            const elements = document.querySelectorAll('.command-header-banner, .filter-card, .table-card');
+            elements.forEach((el, idx) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(14px)';
+                el.style.transition = 'opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 70 * idx);
+            });
 
+            // Smooth row reveal
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach((row, i) => {
+                row.style.opacity = '0';
+                row.style.transform = 'translateY(8px)';
+                row.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+                setTimeout(() => {
+                    row.style.opacity = '1';
+                    row.style.transform = 'translateY(0)';
+                }, 180 + (i * 25));
+            });
+        });
+    </script>
 </body>
 
 </html>

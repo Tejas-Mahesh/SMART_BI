@@ -71,4 +71,9 @@ urlpatterns = [
         views.dataset_detail,
         name="dataset_detail",
     ),
+    path(
+    "contact-messages/<int:message_id>/delete/",
+    views.delete_contact_message,
+    name="delete_contact_message",
+),
 ]

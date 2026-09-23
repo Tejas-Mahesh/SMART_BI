@@ -1,2473 +1,1921 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart BI Administration Command Center</title>
 
-    <title>Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-
-        /* =========================================================
-           ROOT
-        ========================================================= */
-
         :root {
-            --ft-bg: #07111f;
-            --ft-bg-deep: #040b15;
+            --bg-base: #060b14;
+            --bg-subtle: #091322;
+            --panel-bg: rgba(13, 24, 43, 0.72);
+            --panel-bg-elevated: rgba(18, 33, 58, 0.85);
+            --panel-glass: rgba(14, 27, 49, 0.55);
+            
+            --border-dim: rgba(255, 255, 255, 0.06);
+            --border-glow: rgba(56, 189, 248, 0.2);
+            --border-glow-accent: rgba(129, 140, 248, 0.3);
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --text-accent: #38bdf8;
 
-            --ft-panel: rgba(13, 27, 46, 0.94);
-            --ft-panel-strong: rgba(16, 32, 55, 0.97);
-            --ft-panel-soft: rgba(255, 255, 255, 0.025);
+            --cyan: #06b6d4;
+            --cyan-glow: rgba(6, 182, 212, 0.25);
+            --blue: #3b82f6;
+            --blue-glow: rgba(59, 130, 246, 0.25);
+            --indigo: #6366f1;
+            --purple: #a855f7;
+            --green: #10b981;
+            --green-glow: rgba(16, 185, 129, 0.22);
+            --amber: #f59e0b;
+            --amber-glow: rgba(245, 158, 11, 0.22);
+            --rose: #f43f5e;
+            --rose-glow: rgba(244, 63, 94, 0.25);
+            --pink: #ec4899;
+            --pink-glow: rgba(236, 72, 153, 0.22);
 
-            --ft-border: rgba(255, 255, 255, 0.075);
-            --ft-border-soft: rgba(255, 255, 255, 0.045);
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 26px;
 
-            --ft-text: #f2f7ff;
-            --ft-text-soft: rgba(218, 231, 245, 0.68);
-            --ft-text-muted: rgba(190, 208, 229, 0.46);
-
-            --ft-blue: #4fa3ff;
-            --ft-blue-bright: #74b9ff;
-            --ft-cyan: #22d3ee;
-            --ft-purple: #8b5cf6;
-            --ft-green: #48d597;
-            --ft-yellow: #f3c86b;
-            --ft-red: #ff6577;
-            --ft-pink: #f472b6;
-            --ft-orange: #fb923c;
-
-            --ft-radius: 18px;
-
-            --ft-shadow:
-                0 18px 55px rgba(0, 0, 0, 0.22);
-
-            --ft-glow:
-                0 0 35px rgba(79, 163, 255, 0.12);
+            --shadow-subtle: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+            --shadow-panel: 0 20px 45px -12px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.05);
+            --shadow-neon: 0 0 35px -5px rgba(56, 189, 248, 0.15);
+            
+            --transition-smooth: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
-
-
-        /* =========================================================
-           RESET
-        ========================================================= */
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body {
             min-height: 100vh;
-
-            font-family:
-                Inter,
-                "Segoe UI",
-                Roboto,
-                Arial,
-                sans-serif;
-
-            color: var(--ft-text);
-
-            background:
-                radial-gradient(
-                    circle at 8% 8%,
-                    rgba(79, 163, 255, 0.10),
-                    transparent 28%
-                ),
-                radial-gradient(
-                    circle at 92% 12%,
-                    rgba(139, 92, 246, 0.09),
-                    transparent 28%
-                ),
-                radial-gradient(
-                    circle at 50% 100%,
-                    rgba(34, 211, 238, 0.06),
-                    transparent 34%
-                ),
-                linear-gradient(
-                    135deg,
-                    var(--ft-bg-deep),
-                    var(--ft-bg)
-                );
-
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
             overflow-x: hidden;
+            position: relative;
+            line-height: 1.5;
         }
 
-
-        /* =========================================================
-           ANIMATED BACKGROUND
-        ========================================================= */
-
-        body::before {
-            content: "";
-
+        /* Ambient Animated Grid & Aura Layers */
+        .ambient-canvas {
             position: fixed;
             inset: 0;
-
             pointer-events: none;
-
-            background:
-                linear-gradient(
-                    120deg,
-                    transparent 20%,
-                    rgba(79, 163, 255, 0.025),
-                    transparent 80%
-                );
-
-            background-size: 240% 240%;
-
-            animation:
-                backgroundMove 16s ease-in-out infinite;
-
-            z-index: -1;
+            z-index: 0;
+            overflow: hidden;
         }
 
-        @keyframes backgroundMove {
-
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
+        .ambient-canvas::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.08) 0%, transparent 35%),
+                radial-gradient(circle at 85% 20%, rgba(99, 102, 241, 0.09) 0%, transparent 40%),
+                radial-gradient(circle at 50% 85%, rgba(16, 185, 129, 0.06) 0%, transparent 45%);
+            filter: blur(40px);
+            animation: auraPulse 14s ease-in-out infinite alternate;
         }
 
+        .ambient-canvas::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 48px 48px;
+            mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+        }
 
-        /* =========================================================
-           PAGE
-        ========================================================= */
+        @keyframes auraPulse {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.8; }
+            50% { transform: scale(1.08) translate(-1%, 2%); opacity: 1; }
+            100% { transform: scale(0.96) translate(1%, -1%); opacity: 0.8; }
+        }
 
-        .admin-page {
+        /* Top Bar & Telemetry Ribbon */
+        .top-telemetry-ribbon {
+            position: sticky;
+            top: 0;
+            z-index: 100;
             width: 100%;
-            max-width: 1550px;
-
-            margin: 0 auto;
-
-            padding:
-                30px
-                32px
-                70px;
-        }
-
-
-        /* =========================================================
-           HEADER
-        ========================================================= */
-
-        .page-header {
-
+            background: rgba(6, 11, 20, 0.82);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border-dim);
+            padding: 0 2rem;
+            height: 64px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-
-            gap: 25px;
-
-            margin-bottom: 28px;
-
-            animation:
-                fadeDown 0.55s ease both;
         }
 
-        @keyframes fadeDown {
-
-            from {
-                opacity: 0;
-                transform: translateY(-18px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .header-left {
-
+        .telemetry-brand {
             display: flex;
             align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            color: inherit;
+        }
 
+        .brand-gem {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #0ea5e9, #6366f1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(14, 165, 233, 0.4);
+            position: relative;
+        }
+
+        .brand-gem svg {
+            width: 22px;
+            height: 22px;
+            stroke-width: 2.2;
+        }
+
+        .brand-text h1 {
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: -0.2px;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+
+        .brand-text span {
+            display: block;
+            font-size: 10px;
+            color: var(--cyan);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+        }
+
+        .telemetry-actions {
+            display: flex;
+            align-items: center;
             gap: 16px;
         }
 
-        .header-icon {
-
-            width: 56px;
-            height: 56px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 17px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(79, 163, 255, 0.18),
-                    rgba(34, 211, 238, 0.08)
-                );
-
-            border:
-                1px solid
-                rgba(79, 163, 255, 0.20);
-
-            box-shadow:
-                0 0 30px
-                rgba(79, 163, 255, 0.10);
-
-            font-size: 25px;
-
-            animation:
-                iconPulse 4s ease-in-out infinite;
-        }
-
-        @keyframes iconPulse {
-
-            0%,
-            100% {
-                box-shadow:
-                    0 0 25px
-                    rgba(79, 163, 255, 0.08);
-            }
-
-            50% {
-                box-shadow:
-                    0 0 38px
-                    rgba(79, 163, 255, 0.17);
-            }
-        }
-
-        .header-title h1 {
-
-            font-size: 29px;
-
-            font-weight: 760;
-
-            letter-spacing: -0.7px;
-        }
-
-        .header-title p {
-
-            margin-top: 5px;
-
-            color:
-                var(--ft-text-soft);
-
-            font-size: 14px;
-        }
-
-        .admin-badge {
-
+        .system-pill {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-
-            padding:
-                10px 14px;
-
-            border-radius: 999px;
-
-            color:
-                var(--ft-blue-bright);
-
-            background:
-                rgba(79, 163, 255, 0.08);
-
-            border:
-                1px solid
-                rgba(79, 163, 255, 0.17);
-
-            font-size: 12px;
-
-            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--green);
+            font-weight: 600;
         }
 
-        .admin-dot {
-
+        .live-dot {
             width: 7px;
             height: 7px;
-
             border-radius: 50%;
-
-            background:
-                var(--ft-green);
-
-            box-shadow:
-                0 0 12px
-                rgba(72, 213, 151, 0.8);
-
-            animation:
-                dotPulse 2s ease-in-out infinite;
+            background: var(--green);
+            box-shadow: 0 0 10px var(--green);
+            animation: pulseSignal 2s infinite;
         }
 
-        @keyframes dotPulse {
-
-            0%,
-            100% {
-                opacity: 0.65;
-                transform: scale(0.9);
-            }
-
-            50% {
-                opacity: 1;
-                transform: scale(1.15);
-            }
+        @keyframes pulseSignal {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.35; transform: scale(0.8); }
         }
 
+        .sidebar-logout {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 16px;
+            border-radius: var(--radius-sm);
+            background: rgba(244, 63, 94, 0.07);
+            border: 1px solid rgba(244, 63, 94, 0.22);
+            color: #fda4af;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
 
-        /* =========================================================
-           COMMON PANEL
-        ========================================================= */
+        .sidebar-logout:hover {
+            background: rgba(244, 63, 94, 0.16);
+            border-color: rgba(244, 63, 94, 0.45);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(244, 63, 94, 0.25);
+        }
 
-        .panel {
+        .sidebar-logout svg {
+            width: 15px;
+            height: 15px;
+            transition: transform 0.2s ease;
+        }
 
+        .sidebar-logout:hover svg {
+            transform: translateX(2px);
+        }
+
+        /* Container Layout */
+        .dashboard-shell {
             position: relative;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(16, 32, 55, 0.96),
-                    rgba(10, 22, 39, 0.96)
-                );
-
-            border:
-                1px solid
-                var(--ft-border);
-
-            border-radius:
-                var(--ft-radius);
-
-            box-shadow:
-                var(--ft-shadow);
-
-            overflow: hidden;
-
-            animation:
-                panelAppear 0.65s ease both;
+            z-index: 1;
+            max-width: 1680px;
+            margin: 0 auto;
+            padding: 32px 28px 80px 28px;
         }
 
-        .panel::before {
-
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            left: 0;
-
-            width: 100%;
-            height: 1px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    rgba(79, 163, 255, 0.40),
-                    transparent
-                );
-        }
-
-        @keyframes panelAppear {
-
-            from {
-                opacity: 0;
-                transform: translateY(16px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .panel-header {
-
+        /* Command Banner */
+        .command-banner {
             display: flex;
             align-items: center;
             justify-content: space-between;
-
-            gap: 15px;
-
-            padding:
-                19px 21px;
-
-            border-bottom:
-                1px solid
-                var(--ft-border-soft);
-        }
-
-        .panel-title {
-
-            font-size: 15px;
-
-            font-weight: 720;
-        }
-
-        .panel-subtitle {
-
-            margin-top: 4px;
-
-            font-size: 11px;
-
-            color:
-                var(--ft-text-muted);
-        }
-
-        .panel-body {
-            padding: 20px;
-        }
-
-
-        /* =========================================================
-           QUICK STATISTICS
-        ========================================================= */
-
-        .stats-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(6, minmax(0, 1fr));
-
-            gap: 13px;
-
-            margin-bottom: 22px;
-        }
-
-        .stat-card {
-
+            background: linear-gradient(135deg, rgba(20, 36, 64, 0.6) 0%, rgba(9, 19, 34, 0.7) 100%);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-xl);
+            padding: 28px 36px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-panel);
             position: relative;
-
-            min-height: 125px;
-
-            padding: 18px;
-
-            border-radius: 16px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(255,255,255,0.035),
-                    rgba(255,255,255,0.015)
-                );
-
-            border:
-                1px solid
-                var(--ft-border-soft);
-
             overflow: hidden;
-
-            transition:
-                transform 0.28s ease,
-                border-color 0.28s ease,
-                box-shadow 0.28s ease;
+            backdrop-filter: blur(12px);
         }
 
-        .stat-card:hover {
-
-            transform:
-                translateY(-5px);
-
-            border-color:
-                rgba(79, 163, 255, 0.20);
-
-            box-shadow:
-                0 14px 35px
-                rgba(0, 0, 0, 0.17);
-        }
-
-        .stat-card::after {
-
+        .command-banner::before {
             content: "";
-
             position: absolute;
-
-            width: 100px;
-            height: 100px;
-
-            right: -48px;
-            bottom: -52px;
-
-            border-radius: 50%;
-
-            background:
-                rgba(79, 163, 255, 0.07);
-
-            filter: blur(5px);
-
-            animation:
-                statGlow 4s ease-in-out infinite;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--cyan), var(--indigo));
         }
 
-        @keyframes statGlow {
-
-            0%,
-            100% {
-                transform: scale(0.8);
-                opacity: 0.45;
-            }
-
-            50% {
-                transform: scale(1.2);
-                opacity: 1;
-            }
-        }
-
-        .stat-icon {
-
-            width: 34px;
-            height: 34px;
-
+        .banner-lead h2 {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.6px;
+            color: #fff;
             display: flex;
             align-items: center;
-            justify-content: center;
-
-            border-radius: 10px;
-
-            margin-bottom: 13px;
-
-            font-size: 15px;
-
-            background:
-                rgba(79, 163, 255, 0.09);
-
-            color:
-                var(--ft-blue-bright);
-
-            border:
-                1px solid
-                rgba(79, 163, 255, 0.13);
-        }
-
-        .stat-label {
-
-            color:
-                var(--ft-text-muted);
-
-            font-size: 10px;
-
-            text-transform: uppercase;
-
-            letter-spacing: 0.6px;
-        }
-
-        .stat-value {
-
-            margin-top: 7px;
-
-            font-size: 24px;
-
-            font-weight: 760;
-
-            letter-spacing: -0.5px;
-        }
-
-        .stat-blue .stat-icon {
-            color: var(--ft-blue-bright);
-        }
-
-        .stat-yellow .stat-icon {
-            color: var(--ft-yellow);
-            background: rgba(243, 200, 107, 0.08);
-        }
-
-        .stat-green .stat-icon {
-            color: var(--ft-green);
-            background: rgba(72, 213, 151, 0.08);
-        }
-
-        .stat-red .stat-icon {
-            color: var(--ft-red);
-            background: rgba(255, 101, 119, 0.08);
-        }
-
-        .stat-purple .stat-icon {
-            color: #ae91ff;
-            background: rgba(139, 92, 246, 0.09);
-        }
-
-        .stat-cyan .stat-icon {
-            color: var(--ft-cyan);
-            background: rgba(34, 211, 238, 0.08);
-        }
-
-
-        /* =========================================================
-           APPROVAL SECTION
-        ========================================================= */
-
-        .approval-panel {
-
-            margin-bottom: 22px;
-
-            border-color:
-                rgba(243, 200, 107, 0.12);
-        }
-
-        .approval-header-left {
-
-            display: flex;
-            align-items: center;
-
             gap: 12px;
         }
 
-        .approval-icon {
+        .banner-lead p {
+            margin-top: 6px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            max-width: 650px;
+            font-weight: 400;
+        }
 
-            width: 38px;
-            height: 38px;
-
+        .banner-meta {
             display: flex;
             align-items: center;
-            justify-content: center;
-
-            border-radius: 11px;
-
-            color:
-                var(--ft-yellow);
-
-            background:
-                rgba(243, 200, 107, 0.09);
-
-            border:
-                1px solid
-                rgba(243, 200, 107, 0.14);
-
-            animation:
-                approvalPulse 3s ease-in-out infinite;
+            gap: 16px;
         }
 
-        @keyframes approvalPulse {
-
-            0%,
-            100% {
-                box-shadow:
-                    0 0 0
-                    rgba(243, 200, 107, 0);
-            }
-
-            50% {
-                box-shadow:
-                    0 0 22px
-                    rgba(243, 200, 107, 0.10);
-            }
-        }
-
-        .count-badge {
-
+        .quick-nav-btn {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-
-            min-width: 27px;
-            height: 27px;
-
-            padding: 0 8px;
-
-            border-radius: 999px;
-
-            color:
-                var(--ft-yellow);
-
-            background:
-                rgba(243, 200, 107, 0.09);
-
-            border:
-                1px solid
-                rgba(243, 200, 107, 0.17);
-
-            font-size: 11px;
-
-            font-weight: 750;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(99, 102, 241, 0.12));
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: #e0f2fe;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: var(--transition-smooth);
         }
 
-
-        /* =========================================================
-           TABLE
-        ========================================================= */
-
-        .table-wrap {
-            overflow-x: auto;
+        .quick-nav-btn:hover {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(99, 102, 241, 0.22));
+            border-color: rgba(56, 189, 248, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(56, 189, 248, 0.2);
+            color: #fff;
         }
 
-        table {
-
-            width: 100%;
-
-            border-collapse: collapse;
-
-            min-width: 700px;
+        /* KPI Matrix Grid */
+        .kpi-matrix {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 18px;
+            margin-bottom: 32px;
         }
 
-        th {
-
-            padding:
-                11px 14px;
-
-            text-align: left;
-
-            color:
-                var(--ft-text-muted);
-
-            font-size: 10px;
-
-            text-transform: uppercase;
-
-            letter-spacing: 0.6px;
-
-            font-weight: 650;
-
-            border-bottom:
-                1px solid
-                var(--ft-border-soft);
+        .kpi-tile {
+            position: relative;
+            background: var(--panel-bg);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-lg);
+            padding: 22px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 140px;
+            transition: var(--transition-smooth);
+            overflow: hidden;
+            box-shadow: var(--shadow-subtle);
         }
 
-        td {
-
-            padding:
-                14px;
-
-            border-bottom:
-                1px solid
-                var(--ft-border-soft);
-
-            font-size: 12px;
-
-            color:
-                var(--ft-text-soft);
+        .kpi-tile:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.7);
         }
 
-        tbody tr {
-
-            transition:
-                background 0.2s ease;
+        .kpi-tile::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            filter: blur(28px);
+            opacity: 0.18;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
         }
 
-        tbody tr:hover {
-
-            background:
-                rgba(79, 163, 255, 0.035);
+        .kpi-tile:hover::after {
+            opacity: 0.35;
         }
 
-        tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-
-        /* =========================================================
-           USER
-        ========================================================= */
-
-        .user-cell {
-
+        .kpi-head {
             display: flex;
             align-items: center;
-
-            gap: 11px;
+            justify-content: space-between;
+            margin-bottom: 12px;
         }
 
-        .avatar {
-
-            width: 34px;
-            height: 34px;
-
-            flex: 0 0 34px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
+        .kpi-icon-bubble {
+            width: 40px;
+            height: 40px;
             border-radius: 10px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(79, 163, 255, 0.16),
-                    rgba(139, 92, 246, 0.12)
-                );
-
-            border:
-                1px solid
-                rgba(79, 163, 255, 0.14);
-
-            color:
-                var(--ft-blue-bright);
-
-            font-size: 12px;
-
-            font-weight: 750;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
         }
 
-        .user-name {
-
-            color:
-                var(--ft-text);
-
-            font-weight: 650;
+        .kpi-icon-bubble svg {
+            width: 20px;
+            height: 20px;
         }
 
-        .user-email {
-
-            margin-top: 2px;
-
-            color:
-                var(--ft-text-muted);
-
+        .kpi-code {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 2px 7px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-muted);
         }
 
+        .kpi-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
 
-        /* =========================================================
-           STATUS
-        ========================================================= */
+        .kpi-value-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-top: 4px;
+        }
 
-        .status {
+        .kpi-value {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            font-family: 'JetBrains Mono', monospace;
+            color: #fff;
+        }
 
+        /* KPI Variant Glows */
+        .kpi-blue .kpi-icon-bubble { background: rgba(59, 130, 246, 0.12); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.25); }
+        .kpi-blue::after { background: #3b82f6; }
+        .kpi-blue:hover { border-color: rgba(59, 130, 246, 0.4); }
+
+        .kpi-yellow .kpi-icon-bubble { background: rgba(245, 158, 11, 0.12); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.25); }
+        .kpi-yellow::after { background: #f59e0b; }
+        .kpi-yellow:hover { border-color: rgba(245, 158, 11, 0.4); }
+
+        .kpi-green .kpi-icon-bubble { background: rgba(16, 185, 129, 0.12); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.25); }
+        .kpi-green::after { background: #10b981; }
+        .kpi-green:hover { border-color: rgba(16, 185, 129, 0.4); }
+
+        .kpi-red .kpi-icon-bubble { background: rgba(244, 63, 94, 0.12); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.25); }
+        .kpi-red::after { background: #f43f5e; }
+        .kpi-red:hover { border-color: rgba(244, 63, 94, 0.4); }
+
+        .kpi-purple .kpi-icon-bubble { background: rgba(168, 85, 247, 0.12); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.25); }
+        .kpi-purple::after { background: #a855f7; }
+        .kpi-purple:hover { border-color: rgba(168, 85, 247, 0.4); }
+
+        .kpi-cyan .kpi-icon-bubble { background: rgba(6, 182, 212, 0.12); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.25); }
+        .kpi-cyan::after { background: #06b6d4; }
+        .kpi-cyan:hover { border-color: rgba(6, 182, 212, 0.4); }
+
+        /* Unified Card Structure */
+        .glass-panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-panel);
+            margin-bottom: 30px;
+            overflow: hidden;
+            transition: border-color 0.25s ease;
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .panel-header-pro {
+            padding: 22px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-dim);
+            background: rgba(255, 255, 255, 0.015);
+            gap: 16px;
+        }
+
+        .panel-heading-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .panel-icon-stamp {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .panel-icon-stamp svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .stamp-amber { background: rgba(245, 158, 11, 0.1); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.25); }
+        .stamp-pink { background: rgba(236, 72, 153, 0.1); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.25); }
+        .stamp-cyan { background: rgba(6, 182, 212, 0.1); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.25); }
+        .stamp-blue { background: rgba(59, 130, 246, 0.1); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.25); }
+        .stamp-indigo { background: rgba(99, 102, 241, 0.1); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.25); }
+
+        .panel-titles h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.3px;
+        }
+
+        .panel-titles p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+
+        .badge-counter {
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-
-            padding:
-                5px 9px;
-
-            border-radius: 999px;
-
-            font-size: 10px;
-
-            font-weight: 700;
-
-            border: 1px solid transparent;
         }
 
-        .status-dot {
-
-            width: 6px;
-            height: 6px;
-
-            border-radius: 50%;
+        .badge-amber {
+            background: rgba(245, 158, 11, 0.12);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.3);
         }
 
-        .status-pending {
-
-            color:
-                var(--ft-yellow);
-
-            background:
-                rgba(243, 200, 107, 0.08);
-
-            border-color:
-                rgba(243, 200, 107, 0.14);
+        .badge-pink {
+            background: rgba(236, 72, 153, 0.12);
+            color: #f472b6;
+            border: 1px solid rgba(236, 72, 153, 0.3);
         }
 
-        .status-pending .status-dot {
-            background: var(--ft-yellow);
+        .panel-inner {
+            padding: 24px 28px;
         }
 
-        .status-approved {
-
-            color:
-                var(--ft-green);
-
-            background:
-                rgba(72, 213, 151, 0.08);
-
-            border-color:
-                rgba(72, 213, 151, 0.14);
-        }
-
-        .status-approved .status-dot {
-            background: var(--ft-green);
-        }
-
-        .status-rejected {
-
-            color:
-                var(--ft-red);
-
-            background:
-                rgba(255, 101, 119, 0.08);
-
-            border-color:
-                rgba(255, 101, 119, 0.14);
-        }
-
-        .status-rejected .status-dot {
-            background: var(--ft-red);
-        }
-
-
-        /* =========================================================
-           ACTION BUTTONS
-        ========================================================= */
-
-        .actions {
-
-            display: flex;
-            align-items: center;
-
-            gap: 7px;
-
-            flex-wrap: wrap;
-        }
-
-        .action-btn {
-
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-
-            padding:
-                7px 10px;
-
-            border-radius: 8px;
-
-            border: 1px solid transparent;
-
-            font-size: 10px;
-
-            font-weight: 700;
-
-            text-decoration: none;
-
-            cursor: pointer;
-
-            transition:
-                transform 0.22s ease,
-                background 0.22s ease,
-                border-color 0.22s ease,
-                box-shadow 0.22s ease;
-        }
-
-        .action-btn:hover {
-
-            transform:
-                translateY(-2px);
-        }
-
-        .btn-view {
-
-            color:
-                var(--ft-blue-bright);
-
-            background:
-                rgba(79, 163, 255, 0.07);
-
-            border-color:
-                rgba(79, 163, 255, 0.14);
-        }
-
-        .btn-view:hover {
-
-            background:
-                rgba(79, 163, 255, 0.13);
-
-            box-shadow:
-                0 5px 18px
-                rgba(79, 163, 255, 0.08);
-        }
-
-        .btn-approve {
-
-            color:
-                var(--ft-green);
-
-            background:
-                rgba(72, 213, 151, 0.07);
-
-            border-color:
-                rgba(72, 213, 151, 0.14);
-        }
-
-        .btn-approve:hover {
-
-            background:
-                rgba(72, 213, 151, 0.14);
-
-            box-shadow:
-                0 5px 18px
-                rgba(72, 213, 151, 0.08);
-        }
-
-        .btn-reject {
-
-            color:
-                var(--ft-red);
-
-            background:
-                rgba(255, 101, 119, 0.07);
-
-            border-color:
-                rgba(255, 101, 119, 0.14);
-        }
-
-        .btn-reject:hover {
-
-            background:
-                rgba(255, 101, 119, 0.14);
-
-            box-shadow:
-                0 5px 18px
-                rgba(255, 101, 119, 0.08);
-        }
-
-
-        /* =========================================================
-           TWO COLUMN AREA
-        ========================================================= */
-
-        .two-column {
-
+        /* Analytics Sub-Grid (Contact Messages) */
+        .status-metric-cards {
             display: grid;
-
-            grid-template-columns:
-                minmax(0, 1.45fr)
-                minmax(310px, 0.85fr);
-
-            gap: 22px;
-
-            margin-bottom: 22px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
         }
 
-
-        /* =========================================================
-           DATASET ROW
-        ========================================================= */
-
-        .dataset-row {
-
-            display: grid;
-
-            grid-template-columns:
-                1fr
-                110px
-                120px
-                90px;
-
-            align-items: center;
-
-            gap: 14px;
-
-            padding:
-                13px 0;
-
-            border-bottom:
-                1px solid
-                var(--ft-border-soft);
-        }
-
-        .dataset-row:last-child {
-            border-bottom: none;
-        }
-
-        .dataset-name {
-
-            color:
-                var(--ft-text);
-
-            font-size: 12px;
-
-            font-weight: 650;
-
-            word-break: break-word;
-        }
-
-        .dataset-owner {
-
-            margin-top: 3px;
-
-            color:
-                var(--ft-text-muted);
-
-            font-size: 10px;
-        }
-
-        .dataset-type {
-
-            display: inline-flex;
-
-            width: fit-content;
-
-            padding:
-                5px 8px;
-
-            border-radius: 7px;
-
-            color:
-                var(--ft-purple);
-
-            background:
-                rgba(139, 92, 246, 0.08);
-
-            border:
-                1px solid
-                rgba(139, 92, 246, 0.13);
-
-            font-size: 9px;
-
-            font-weight: 700;
-        }
-
-        .dataset-date {
-
-            color:
-                var(--ft-text-muted);
-
-            font-size: 10px;
-        }
-
-
-        /* =========================================================
-           TYPE OVERVIEW
-        ========================================================= */
-
-        .type-list {
-
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 11px;
-        }
-
-        .type-item {
-
-            display: grid;
-
-            grid-template-columns:
-                1fr
-                42px;
-
-            align-items: center;
-
-            gap: 15px;
-        }
-
-        .type-info {
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            margin-bottom: 6px;
-        }
-
-        .type-name {
-
-            font-size: 11px;
-
-            color:
-                var(--ft-text-soft);
-        }
-
-        .type-count {
-
-            font-size: 11px;
-
-            font-weight: 700;
-
-            color:
-                var(--ft-text);
-        }
-
-        .type-track {
-
-            width: 100%;
-            height: 5px;
-
-            border-radius: 999px;
-
-            background:
-                rgba(255, 255, 255, 0.055);
-
+        .metric-mini-box {
+            padding: 18px 20px;
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-dim);
+            transition: var(--transition-smooth);
+            position: relative;
             overflow: hidden;
         }
 
-        .type-fill {
-
-            height: 100%;
-
-            min-width: 3px;
-
-            border-radius: inherit;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    var(--ft-blue),
-                    var(--ft-cyan)
-                );
-
-            animation:
-                fillGrow 1s ease both;
+        .metric-mini-box:hover {
+            background: rgba(255, 255, 255, 0.035);
+            border-color: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
         }
 
-        @keyframes fillGrow {
-
-            from {
-                width: 0 !important;
-            }
-        }
-
-        .type-number {
-
-            width: 38px;
-            height: 38px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 11px;
-
-            color:
-                var(--ft-blue-bright);
-
-            background:
-                rgba(79, 163, 255, 0.07);
-
-            border:
-                1px solid
-                rgba(79, 163, 255, 0.12);
-
+        .mini-label {
             font-size: 11px;
-
-            font-weight: 750;
-        }
-
-
-        /* =========================================================
-           USERS WITH DATA
-        ========================================================= */
-
-        .upload-user {
-
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
             display: flex;
-
             align-items: center;
-            justify-content: space-between;
-
-            gap: 15px;
-
-            padding:
-                12px 0;
-
-            border-bottom:
-                1px solid
-                var(--ft-border-soft);
+            gap: 6px;
         }
 
-        .upload-user:last-child {
+        .mini-val {
+            font-size: 24px;
+            font-weight: 800;
+            color: #fff;
+            margin-top: 8px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .metric-mini-box.new-box .mini-val { color: var(--pink); }
+        .metric-mini-box.read-box .mini-val { color: var(--cyan); }
+        .metric-mini-box.replied-box .mini-val { color: var(--green); }
+        .metric-mini-box.archived-box .mini-val { color: var(--text-muted); }
+
+        /* Modernized Interactive Tables */
+        .table-responsive-box {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-dim);
+            background: rgba(4, 9, 18, 0.45);
+        }
+
+        .pro-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            text-align: left;
+        }
+
+        .pro-table thead th {
+            background: rgba(15, 28, 49, 0.7);
+            padding: 14px 18px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.75px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-dim);
+            white-space: nowrap;
+        }
+
+        .pro-table tbody tr {
+            transition: background 0.18s ease;
+        }
+
+        .pro-table tbody tr:hover {
+            background: rgba(56, 189, 248, 0.035);
+        }
+
+        .pro-table tbody td {
+            padding: 16px 18px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.035);
+            vertical-align: middle;
+        }
+
+        .pro-table tbody tr:last-child td {
             border-bottom: none;
         }
 
-        .upload-user-left {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 10px;
-        }
-
-        .mini-avatar {
-
-            width: 31px;
-            height: 31px;
-
+        /* User Entity Cell */
+        .user-identity {
             display: flex;
             align-items: center;
-            justify-content: center;
-
-            border-radius: 9px;
-
-            background:
-                rgba(139, 92, 246, 0.09);
-
-            border:
-                1px solid
-                rgba(139, 92, 246, 0.14);
-
-            color:
-                #b69cff;
-
-            font-size: 10px;
-
-            font-weight: 750;
+            gap: 12px;
         }
 
-        .upload-user-name {
-
-            color:
-                var(--ft-text);
-
-            font-size: 11px;
-
-            font-weight: 650;
-        }
-
-        .upload-user-count {
-
-            color:
-                var(--ft-cyan);
-
-            font-size: 11px;
-
-            font-weight: 750;
-        }
-
-
-        /* =========================================================
-           EMPTY
-        ========================================================= */
-
-        .empty-state {
-
-            padding:
-                30px 15px;
-
-            text-align: center;
-
-            color:
-                var(--ft-text-muted);
-
-            font-size: 12px;
-        }
-
-
-        /* =========================================================
-           FOOTER ACTION
-        ========================================================= */
-
-        .footer-actions {
-
+        .avatar-initial {
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(99, 102, 241, 0.25));
+            border: 1px solid rgba(56, 189, 248, 0.3);
             display: flex;
-
-            justify-content: center;
-
-            margin-top: 22px;
-        }
-
-        .manage-users {
-
-            display: inline-flex;
-
             align-items: center;
             justify-content: center;
-
-            gap: 8px;
-
-            padding:
-                12px 18px;
-
-            border-radius: 11px;
-
-            color:
-                var(--ft-blue-bright);
-
-            background:
-                rgba(79, 163, 255, 0.07);
-
-            border:
-                1px solid
-                rgba(79, 163, 255, 0.14);
-
-            text-decoration: none;
-
-            font-size: 12px;
-
             font-weight: 700;
-
-            transition:
-                transform 0.25s ease,
-                background 0.25s ease,
-                box-shadow 0.25s ease;
+            font-size: 14px;
+            color: #7dd3fc;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
         }
 
-        .manage-users:hover {
-
-            transform:
-                translateY(-2px);
-
-            background:
-                rgba(79, 163, 255, 0.12);
-
-            box-shadow:
-                0 8px 25px
-                rgba(79, 163, 255, 0.08);
+        .user-meta-name {
+            font-weight: 600;
+            color: #fff;
+            font-size: 13px;
         }
 
+        .user-meta-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 1px;
+            font-family: 'JetBrains Mono', monospace;
+        }
 
-        /* =========================================================
-           RESPONSIVE
-        ========================================================= */
+        /* Subject and Message Truncation */
+        .subject-cell {
+            max-width: 200px;
+            font-weight: 600;
+            color: #e2e8f0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-        @media (max-width: 1250px) {
+        .message-excerpt {
+            max-width: 340px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
 
-            .stats-grid {
-                grid-template-columns:
-                    repeat(3, minmax(0, 1fr));
+        .date-stamp {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        /* Status Indicators & Pills */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: capitalize;
+            letter-spacing: 0.2px;
+        }
+
+        .status-badge .badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .status-badge.status-pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.25);
+        }
+        .status-badge.status-pending .badge-dot { background: #fbbf24; box-shadow: 0 0 8px #fbbf24; }
+
+        .status-badge.status-approved {
+            background: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+        .status-badge.status-approved .badge-dot { background: #34d399; box-shadow: 0 0 8px #34d399; }
+
+        .status-badge.status-rejected {
+            background: rgba(244, 63, 94, 0.1);
+            color: #fb7185;
+            border: 1px solid rgba(244, 63, 94, 0.25);
+        }
+        .status-badge.status-rejected .badge-dot { background: #fb7185; box-shadow: 0 0 8px #fb7185; }
+
+        .status-badge.status-new {
+            background: rgba(236, 72, 153, 0.12);
+            color: #f472b6;
+            border: 1px solid rgba(236, 72, 153, 0.3);
+        }
+        .status-badge.status-new .badge-dot { background: #f472b6; box-shadow: 0 0 8px #f472b6; }
+
+        .status-badge.status-read {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+        }
+        .status-badge.status-read .badge-dot { background: #38bdf8; }
+
+        .status-badge.status-replied {
+            background: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+        .status-badge.status-replied .badge-dot { background: #34d399; }
+
+        .status-badge.status-archived {
+            background: rgba(148, 163, 184, 0.08);
+            color: #94a3b8;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .status-badge.status-archived .badge-dot { background: #94a3b8; }
+
+        /* Action Buttons */
+        .actions-cluster {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: nowrap;
+        }
+
+        .action-btn-pro {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            border: 1px solid transparent;
+            font-family: inherit;
+            line-height: 1.2;
+        }
+
+        .action-btn-pro svg {
+            width: 13px;
+            height: 13px;
+        }
+
+        .btn-view-pro {
+            background: rgba(56, 189, 248, 0.08);
+            color: #38bdf8;
+            border-color: rgba(56, 189, 248, 0.25);
+        }
+        .btn-view-pro:hover {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: rgba(56, 189, 248, 0.5);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .btn-approve-pro {
+            background: rgba(16, 185, 129, 0.08);
+            color: #34d399;
+            border-color: rgba(16, 185, 129, 0.25);
+        }
+        .btn-approve-pro:hover {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: rgba(16, 185, 129, 0.5);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .btn-reject-pro {
+            background: rgba(244, 63, 94, 0.08);
+            color: #fb7185;
+            border-color: rgba(244, 63, 94, 0.25);
+        }
+        .btn-reject-pro:hover {
+            background: rgba(244, 63, 94, 0.2);
+            border-color: rgba(244, 63, 94, 0.5);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .btn-delete-pro {
+            background: rgba(244, 63, 94, 0.06);
+            color: #fb7185;
+            border-color: rgba(244, 63, 94, 0.2);
+        }
+        .btn-delete-pro:hover {
+            background: rgba(244, 63, 94, 0.18);
+            border-color: rgba(244, 63, 94, 0.4);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .form-sub-wrapper {
+            display: inline-flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Two Column Dynamic Layout */
+        .twin-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 26px;
+            margin-bottom: 30px;
+        }
+
+        /* Dataset Category Stack Bars */
+        .progression-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .prog-item {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .prog-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .prog-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .prog-counter {
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: var(--cyan);
+        }
+
+        .prog-track-groove {
+            width: 100%;
+            height: 7px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.06);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .prog-fill-neon {
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #0ea5e9, #6366f1);
+            box-shadow: 0 0 12px rgba(14, 165, 233, 0.5);
+            transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .prog-badge-count {
+            min-width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-dim);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        /* Dataset List Cards */
+        .dataset-grid-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .dataset-item-card {
+            display: grid;
+            grid-template-columns: 1fr 140px 180px 110px;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid var(--border-dim);
+            transition: var(--transition-smooth);
+        }
+
+        .dataset-item-card:hover {
+            background: rgba(56, 189, 248, 0.025);
+            border-color: rgba(56, 189, 248, 0.25);
+            transform: translateX(4px);
+        }
+
+        .ds-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            word-break: break-word;
+        }
+
+        .ds-owner {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+
+        .ds-type-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            background: rgba(168, 85, 247, 0.1);
+            color: #c084fc;
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            font-family: 'JetBrains Mono', monospace;
+            width: fit-content;
+        }
+
+        /* Empty States */
+        .empty-void-state {
+            padding: 44px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .empty-void-state svg {
+            width: 44px;
+            height: 44px;
+            color: var(--text-muted);
+            opacity: 0.45;
+        }
+
+        .empty-void-state p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Uploaded Users List */
+        .data-user-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid var(--border-dim);
+            margin-bottom: 10px;
+            transition: var(--transition-smooth);
+        }
+
+        .data-user-row:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .data-user-count-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 9999px;
+            background: rgba(6, 182, 212, 0.09);
+            border: 1px solid rgba(6, 182, 212, 0.25);
+            color: var(--cyan);
+            font-size: 11px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Center Primary Footer Action */
+        .footer-terminal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-dim);
+            margin-top: 16px;
+        }
+
+        .hero-manage-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 32px;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(2, 132, 199, 0.35);
+            transition: var(--transition-smooth);
+        }
+
+        .hero-manage-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 40px rgba(79, 70, 229, 0.45);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .hero-manage-btn svg {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.2s ease;
+        }
+
+        .hero-manage-btn:hover svg {
+            transform: translateX(4px);
+        }
+
+        /* Responsiveness */
+        @media (max-width: 1440px) {
+            .kpi-matrix {
+                grid-template-columns: repeat(3, 1fr);
             }
-
         }
 
-        @media (max-width: 950px) {
-
-            .two-column {
+        @media (max-width: 1100px) {
+            .twin-grid {
                 grid-template-columns: 1fr;
             }
-
+            .dataset-item-card {
+                grid-template-columns: 1fr 1fr;
+                gap: 14px;
+            }
+            .status-metric-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
-        @media (max-width: 700px) {
-
-            .admin-page {
-                padding:
-                    20px
-                    15px
-                    50px;
+        @media (max-width: 768px) {
+            .dashboard-shell {
+                padding: 16px 14px 60px 14px;
             }
-
-            .page-header {
-                align-items: flex-start;
+            .top-telemetry-ribbon {
+                padding: 0 1rem;
+            }
+            .kpi-matrix {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            .command-banner {
                 flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+                padding: 22px 20px;
             }
-
-            .stats-grid {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
+            .dataset-item-card {
+                grid-template-columns: 1fr;
             }
-
-            .dataset-row {
-                grid-template-columns: 1fr 1fr;
+            .status-metric-cards {
+                grid-template-columns: 1fr;
             }
-
         }
 
         @media (max-width: 480px) {
-
-            .stats-grid {
+            .kpi-matrix {
                 grid-template-columns: 1fr;
             }
-
-            .dataset-row {
-                grid-template-columns: 1fr;
-            }
-
         }
 
+        /* Accessibility: reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, body::before, .live-dot, .kpi-tile, .prog-fill-neon {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
     </style>
 </head>
-
-
 <body>
 
-<div class="admin-page">
+    <!-- Ambient Aura Surface -->
+    <div class="ambient-canvas" aria-hidden="true"></div>
 
-
-    <!-- =========================================================
-         HEADER
-    ========================================================= -->
-
-    <header class="page-header">
-
-        <div class="header-left">
-
-            <div class="header-icon">
-                ◈
+    <!-- Top Telemetry Ribbon -->
+    <nav class="top-telemetry-ribbon">
+        <a href="{% url 'admin_dashboard:users' %}" class="telemetry-brand" title="Smart BI System Administration">
+            <div class="brand-gem">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
             </div>
-
-            <div class="header-title">
-
-                <h1>Admin Dashboard</h1>
-
-                <p>
-                    Manage users, approvals and uploaded datasets
-                </p>
-
+            <div class="brand-text">
+                <h1>Smart BI Admin</h1>
+                <span>DECISION INTELLIGENCE CLUSTER</span>
             </div>
-
-        </div>
-
-
-        <div class="admin-badge">
-
-            <span class="admin-dot"></span>
-
-            Administrator
-
-        </div>
-
-    </header>
-
-
-
-    <!-- =========================================================
-         STATISTICS
-    ========================================================= -->
-
-    <section class="stats-grid">
-
-
-        <div class="stat-card stat-blue">
-
-            <div class="stat-icon">
-                ◉
-            </div>
-
-            <div class="stat-label">
-                Total Users
-            </div>
-
-            <div class="stat-value">
-                {{ total_users }}
-            </div>
-
-        </div>
-
-
-        <div class="stat-card stat-yellow">
-
-            <div class="stat-icon">
-                ◷
-            </div>
-
-            <div class="stat-label">
-                Pending
-            </div>
-
-            <div class="stat-value">
-                {{ pending_users }}
-            </div>
-
-        </div>
-
-
-        <div class="stat-card stat-green">
-
-            <div class="stat-icon">
-                ✓
-            </div>
-
-            <div class="stat-label">
-                Approved
-            </div>
-
-            <div class="stat-value">
-                {{ approved_users }}
-            </div>
-
-        </div>
-
-
-        <div class="stat-card stat-red">
-
-            <div class="stat-icon">
-                ×
-            </div>
-
-            <div class="stat-label">
-                Rejected
-            </div>
-
-            <div class="stat-value">
-                {{ rejected_users }}
-            </div>
-
-        </div>
-
-
-        <div class="stat-card stat-purple">
-
-            <div class="stat-icon">
-                ◉
-            </div>
-
-            <div class="stat-label">
-                Active Users
-            </div>
-
-            <div class="stat-value">
-                {{ active_users }}
-            </div>
-
-        </div>
-
-
-        <div class="stat-card stat-cyan">
-
-            <div class="stat-icon">
-                ▦
-            </div>
-
-            <div class="stat-label">
-                Datasets
-            </div>
-
-            <div class="stat-value">
-                {{ total_datasets }}
-            </div>
-
-        </div>
-
-
-    </section>
-
-
-
-    <!-- =========================================================
-         PENDING APPROVALS
-    ========================================================= -->
-
-    <section class="panel approval-panel">
-
-        <div class="panel-header">
-
-            <div class="approval-header-left">
-
-                <div class="approval-icon">
-                    !
-                </div>
-
-                <div>
-
-                    <div class="panel-title">
-                        Pending User Approvals
-                    </div>
-
-                    <div class="panel-subtitle">
-                        Review newly registered users directly from the dashboard
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <span class="count-badge">
-                {{ pending_users }}
-            </span>
-
-        </div>
-
-
-        <div class="panel-body">
-
-            {% if pending_user_list %}
-
-                <div class="table-wrap">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-
-                                <th>User</th>
-
-                                <th>Company</th>
-
-                                <th>Registered</th>
-
-                                <th>Status</th>
-
-                                <th>Actions</th>
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody>
-
-                        {% for user in pending_user_list %}
-
-                            <tr>
-
-                                <td>
-
-                                    <div class="user-cell">
-
-                                        <div class="avatar">
-
-                                            {{ user.username|first|upper }}
-
-                                        </div>
-
-                                        <div>
-
-                                            <div class="user-name">
-                                                {{ user.username }}
-                                            </div>
-
-                                            <div class="user-email">
-                                                {{ user.email }}
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </td>
-
-
-                                <td>
-
-                                    {{ user.company_name|default:"—" }}
-
-                                </td>
-
-
-                                <td>
-
-                                    {{ user.date_joined|date:"d M Y" }}
-
-                                </td>
-
-
-                                <td>
-
-                                    <span class="status status-pending">
-
-                                        <span class="status-dot"></span>
-
-                                        Pending
-
-                                    </span>
-
-                                </td>
-
-
-                                <td>
-
-                                    <div class="actions">
-
-
-                                        <a
-                                            href="{% url 'admin_dashboard:user_detail' user.id %}"
-                                            class="action-btn btn-view"
-                                        >
-                                            View
-                                        </a>
-
-
-                                        <form
-                                            method="post"
-                                            action="{% url 'admin_dashboard:approve_user' user.id %}"
-                                        >
-
-                                            {% csrf_token %}
-
-                                            <button
-                                                type="submit"
-                                                class="action-btn btn-approve"
-                                            >
-                                                Approve
-                                            </button>
-
-                                        </form>
-
-
-                                        <form
-                                            method="post"
-                                            action="{% url 'admin_dashboard:reject_user' user.id %}"
-                                        >
-
-                                            {% csrf_token %}
-
-                                            <button
-                                                type="submit"
-                                                class="action-btn btn-reject"
-                                            >
-                                                Reject
-                                            </button>
-
-                                        </form>
-
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-                        {% endfor %}
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            {% else %}
-
-                <div class="empty-state">
-
-                    No users are currently waiting for approval.
-
-                </div>
-
-            {% endif %}
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =========================================================
-         RECENT USERS + DATASET TYPES
-    ========================================================= -->
-
-    <div class="two-column">
-
-
-        <!-- =====================================================
-             RECENT USERS
-        ===================================================== -->
-
-        <section class="panel">
-
-            <div class="panel-header">
-
-                <div>
-
-                    <div class="panel-title">
-                        Recent Users
-                    </div>
-
-                    <div class="panel-subtitle">
-                        Latest registered users
-                    </div>
-
-                </div>
-
-                <a
-                    href="{% url 'admin_dashboard:users' %}"
-                    class="action-btn btn-view"
-                >
-                    View All
-                </a>
-
-            </div>
-
-
-            <div class="panel-body">
-
-                {% if recent_users %}
-
-                    <div class="table-wrap">
-
-                        <table>
-
-                            <thead>
-
-                                <tr>
-
-                                    <th>User</th>
-
-                                    <th>Status</th>
-
-                                    <th>Datasets</th>
-
-                                    <th>Action</th>
-
-                                </tr>
-
-                            </thead>
-
-
-                            <tbody>
-
-                            {% for user in recent_users %}
-
-                                <tr>
-
-                                    <td>
-
-                                        <div class="user-cell">
-
-                                            <div class="avatar">
-
-                                                {{ user.username|first|upper }}
-
-                                            </div>
-
-                                            <div>
-
-                                                <div class="user-name">
-                                                    {{ user.username }}
-                                                </div>
-
-                                                <div class="user-email">
-                                                    {{ user.email }}
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </td>
-
-
-                                    <td>
-
-                                        {% if user.approval_status == "Approved" %}
-
-                                            <span class="status status-approved">
-
-                                                <span class="status-dot"></span>
-
-                                                Approved
-
-                                            </span>
-
-                                        {% elif user.approval_status == "Rejected" %}
-
-                                            <span class="status status-rejected">
-
-                                                <span class="status-dot"></span>
-
-                                                Rejected
-
-                                            </span>
-
-                                        {% else %}
-
-                                            <span class="status status-pending">
-
-                                                <span class="status-dot"></span>
-
-                                                Pending
-
-                                            </span>
-
-                                        {% endif %}
-
-                                    </td>
-
-
-                                    <td>
-
-                                        {{ user.dataset_count }}
-
-                                    </td>
-
-
-                                    <td>
-
-                                        <a
-                                            href="{% url 'admin_dashboard:user_detail' user.id %}"
-                                            class="action-btn btn-view"
-                                        >
-                                            View
-                                        </a>
-
-                                    </td>
-
-                                </tr>
-
-                            {% endfor %}
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                {% else %}
-
-                    <div class="empty-state">
-                        No users found.
-                    </div>
-
-                {% endif %}
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =====================================================
-             DATASET TYPE OVERVIEW
-        ===================================================== -->
-
-        <section class="panel">
-
-            <div class="panel-header">
-
-                <div>
-
-                    <div class="panel-title">
-                        Dataset Overview
-                    </div>
-
-                    <div class="panel-subtitle">
-                        Uploaded datasets by category
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="panel-body">
-
-                {% if dataset_type_counts %}
-
-                    <div class="type-list">
-
-                        {% for item in dataset_type_counts %}
-
-                            <div class="type-item">
-
-                                <div>
-
-                                    <div class="type-info">
-
-                                        <span class="type-name">
-                                            {{ item.dataset_type }}
-                                        </span>
-
-                                        <span class="type-count">
-                                            {{ item.total }}
-                                        </span>
-
-                                    </div>
-
-                                    <div class="type-track">
-
-                                        <div
-                                            class="type-fill"
-                                            style="
-                                                width:
-                                                {% widthratio item.total total_datasets 100 %}%;
-                                            "
-                                        ></div>
-
-                                    </div>
-
-                                </div>
-
-
-                                <div class="type-number">
-                                    {{ item.total }}
-                                </div>
-
-                            </div>
-
-                        {% endfor %}
-
-                    </div>
-
-                {% else %}
-
-                    <div class="empty-state">
-                        No datasets have been uploaded yet.
-                    </div>
-
-                {% endif %}
-
-            </div>
-
-        </section>
-
-
-    </div>
-
-
-
-    <!-- =========================================================
-         RECENT DATASET UPLOADS
-    ========================================================= -->
-
-    <section class="panel">
-
-        <div class="panel-header">
-
-            <div>
-
-                <div class="panel-title">
-                    Recent Dataset Uploads
-                </div>
-
-                <div class="panel-subtitle">
-                    Latest datasets uploaded by users
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="panel-body">
-
-            {% if recent_datasets %}
-
-                {% for dataset in recent_datasets %}
-
-                    <div class="dataset-row">
-
-
-                        <div>
-
-                            <div class="dataset-name">
-                                {{ dataset.name }}
-                            </div>
-
-                            <div class="dataset-owner">
-
-                                Uploaded by
-                                {{ dataset.owner.username }}
-
-                            </div>
-
-                        </div>
-
-
-                        <div>
-
-                            <span class="dataset-type">
-                                {{ dataset.dataset_type }}
-                            </span>
-
-                        </div>
-
-
-                        <div class="dataset-date">
-
-                            {{ dataset.uploaded_at|date:"d M Y, h:i A" }}
-
-                        </div>
-
-
-                        <div>
-
-                            <a
-                                href="{% url 'admin_dashboard:dataset_detail' dataset.id %}"
-                                class="action-btn btn-view"
-                            >
-                                View
-                            </a>
-
-                        </div>
-
-
-                    </div>
-
-                {% endfor %}
-
-            {% else %}
-
-                <div class="empty-state">
-                    No datasets have been uploaded yet.
-                </div>
-
-            {% endif %}
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =========================================================
-         USERS WITH DATASETS
-    ========================================================= -->
-
-    <div class="two-column" style="margin-top:22px;">
-
-
-        <section class="panel">
-
-            <div class="panel-header">
-
-                <div>
-
-                    <div class="panel-title">
-                        Users With Uploaded Data
-                    </div>
-
-                    <div class="panel-subtitle">
-                        Users with the highest number of active datasets
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="panel-body">
-
-                {% if users_with_datasets %}
-
-                    {% for user in users_with_datasets %}
-
-                        <div class="upload-user">
-
-
-                            <div class="upload-user-left">
-
-                                <div class="mini-avatar">
-
-                                    {{ user.username|first|upper }}
-
-                                </div>
-
-                                <div>
-
-                                    <div class="upload-user-name">
-                                        {{ user.username }}
-                                    </div>
-
-                                    <div class="user-email">
-                                        {{ user.email }}
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="upload-user-count">
-
-                                {{ user.dataset_count }}
-                                dataset{{ user.dataset_count|pluralize }}
-
-                            </div>
-
-
-                        </div>
-
-                    {% endfor %}
-
-                {% else %}
-
-                    <div class="empty-state">
-
-                        No users have uploaded datasets yet.
-
-                    </div>
-
-                {% endif %}
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =====================================================
-             ADMIN SUMMARY
-        ===================================================== -->
-
-        <section class="panel">
-
-            <div class="panel-header">
-
-                <div>
-
-                    <div class="panel-title">
-                        System Summary
-                    </div>
-
-                    <div class="panel-subtitle">
-                        Current platform status
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="panel-body">
-
-                <div class="type-list">
-
-
-                    <div class="type-item">
-
-                        <div>
-
-                            <div class="type-info">
-
-                                <span class="type-name">
-                                    Active Users
-                                </span>
-
-                                <span class="type-count">
-                                    {{ active_users }}
-                                </span>
-
-                            </div>
-
-                            <div class="type-track">
-
-                                <div
-                                    class="type-fill"
-                                    style="
-                                        width:
-                                        {% widthratio active_users total_users 100 %}%;
-                                    "
-                                ></div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="type-number">
-                            {{ active_users }}
-                        </div>
-
-                    </div>
-
-
-                    <div class="type-item">
-
-                        <div>
-
-                            <div class="type-info">
-
-                                <span class="type-name">
-                                    Approved Users
-                                </span>
-
-                                <span class="type-count">
-                                    {{ approved_users }}
-                                </span>
-
-                            </div>
-
-                            <div class="type-track">
-
-                                <div
-                                    class="type-fill"
-                                    style="
-                                        width:
-                                        {% widthratio approved_users total_users 100 %}%;
-                                    "
-                                ></div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="type-number">
-                            {{ approved_users }}
-                        </div>
-
-                    </div>
-
-
-                    <div class="type-item">
-
-                        <div>
-
-                            <div class="type-info">
-
-                                <span class="type-name">
-                                    Pending Approvals
-                                </span>
-
-                                <span class="type-count">
-                                    {{ pending_users }}
-                                </span>
-
-                            </div>
-
-                            <div class="type-track">
-
-                                <div
-                                    class="type-fill"
-                                    style="
-                                        width:
-                                        {% widthratio pending_users total_users 100 %}%;
-                                    "
-                                ></div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="type-number">
-                            {{ pending_users }}
-                        </div>
-
-                    </div>
-
-
-                    <div class="type-item">
-
-                        <div>
-
-                            <div class="type-info">
-
-                                <span class="type-name">
-                                    Total Datasets
-                                </span>
-
-                                <span class="type-count">
-                                    {{ total_datasets }}
-                                </span>
-
-                            </div>
-
-                            <div class="type-track">
-
-                                <div
-                                    class="type-fill"
-                                    style="
-                                        width:100%;
-                                    "
-                                ></div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="type-number">
-                            {{ total_datasets }}
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-    </div>
-
-
-
-    <!-- =========================================================
-         USER MANAGEMENT BUTTON
-    ========================================================= -->
-
-    <div class="footer-actions">
-
-        <a
-            href="{% url 'admin_dashboard:users' %}"
-            class="manage-users"
-        >
-            Manage All Users →
         </a>
 
-    </div>
+        <div class="telemetry-actions">
+            <div class="system-pill">
+                <span class="live-dot"></span>
+                <span>SYSTEM ACTIVE</span>
+            </div>
 
+            <a href="{% url 'accounts:logout' %}" class="sidebar-logout" title="Log out of Smart BI">
+                <span>Logout</span>
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+            </a>
+        </div>
+    </nav>
 
-</div>
+    <!-- Main Command Shell -->
+    <main class="dashboard-shell">
 
+        <!-- Top Command Overview Banner -->
+        <header class="command-banner">
+            <div class="banner-lead">
+                <h2>
+                    <span>Admin Operations Center</span>
+                </h2>
+                <p>Real-time supervisory console for user access authorisations, dataset catalog ingestions, and direct inbound communications.</p>
+            </div>
+            <div class="banner-meta">
+                <a href="{% url 'admin_dashboard:users' %}" class="quick-nav-btn">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <span>Manage User Access Directory</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- KPI Executive Matrix -->
+        <section class="kpi-matrix" aria-label="Key Performance Indicators">
+            
+            <!-- Total Users -->
+            <div class="kpi-tile kpi-blue">
+                <div class="kpi-head">
+                    <div class="kpi-icon-bubble">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                    <span class="kpi-code">USR-TOT</span>
+                </div>
+                <div>
+                    <span class="kpi-title">Total Users</span>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value">{{ total_users }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Approvals -->
+            <div class="kpi-tile kpi-yellow">
+                <div class="kpi-head">
+                    <div class="kpi-icon-bubble">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <span class="kpi-code">PND-REV</span>
+                </div>
+                <div>
+                    <span class="kpi-title">Pending Users</span>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value">{{ pending_users }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Approved Users -->
+            <div class="kpi-tile kpi-green">
+                <div class="kpi-head">
+                    <div class="kpi-icon-bubble">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <span class="kpi-code">USR-APP</span>
+                </div>
+                <div>
+                    <span class="kpi-title">Approved</span>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value">{{ approved_users }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rejected Users -->
+            <div class="kpi-tile kpi-red">
+                <div class="kpi-head">
+                    <div class="kpi-icon-bubble">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <span class="kpi-code">USR-REJ</span>
+                </div>
+                <div>
+                    <span class="kpi-title">Rejected</span>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value">{{ rejected_users }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Users -->
+            <div class="kpi-tile kpi-purple">
+                <div class="kpi-head">
+                    <div class="kpi-icon-bubble">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <span class="kpi-code">SYS-ACT</span>
+                </div>
+                <div>
+                    <span class="kpi-title">Active Users</span>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value">{{ active_users }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Datasets -->
+            <div class="kpi-tile kpi-cyan">
+                <div class="kpi-head">
+                    <div class="kpi-icon-bubble">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                        </svg>
+                    </div>
+                    <span class="kpi-code">DAT-SRC</span>
+                </div>
+                <div>
+                    <span class="kpi-title">Datasets</span>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value">{{ total_datasets }}</span>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Pending Approvals Workstation -->
+        <section class="glass-panel" aria-labelledby="pending-approvals-heading">
+            <div class="panel-header-pro">
+                <div class="panel-heading-group">
+                    <div class="panel-icon-stamp stamp-amber">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <div class="panel-titles">
+                        <h3 id="pending-approvals-heading">Pending User Approvals</h3>
+                        <p>Authenticate and grant platform privileges for newly onboarded organization members</p>
+                    </div>
+                </div>
+                <span class="badge-counter badge-amber">
+                    <span class="badge-dot" style="background:#fbbf24;"></span>
+                    {{ pending_users }} Pending
+                </span>
+            </div>
+
+            <div class="panel-inner">
+                {% if pending_user_list %}
+                    <div class="table-responsive-box">
+                        <table class="pro-table">
+                            <thead>
+                                <tr>
+                                    <th>User Profile</th>
+                                    <th>Company</th>
+                                    <th>Registered</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in pending_user_list %}
+                                    <tr>
+                                        <td>
+                                            <div class="user-identity">
+                                                <div class="avatar-initial">
+                                                    {{ user.username|first|upper }}
+                                                </div>
+                                                <div>
+                                                    <div class="user-meta-name">{{ user.username }}</div>
+                                                    <div class="user-meta-sub">{{ user.email }}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span style="color: #cbd5e1; font-weight: 500;">{{ user.company_name|default:"—" }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="date-stamp">{{ user.date_joined|date:"d M Y" }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="status-badge status-pending">
+                                                <span class="badge-dot"></span>
+                                                Pending
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="actions-cluster">
+                                                <a href="{% url 'admin_dashboard:user_detail' user.id %}" class="action-btn-pro btn-view-pro" title="View details">
+                                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                    </svg>
+                                                    View
+                                                </a>
+
+                                                <form method="post" action="{% url 'admin_dashboard:approve_user' user.id %}" class="form-sub-wrapper">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="action-btn-pro btn-approve-pro" title="Approve user registration">
+                                                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                        </svg>
+                                                        Approve
+                                                    </button>
+                                                </form>
+
+                                                <form method="post" action="{% url 'admin_dashboard:reject_user' user.id %}" class="form-sub-wrapper">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="action-btn-pro btn-reject-pro" title="Reject user registration">
+                                                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                        </svg>
+                                                        Reject
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="empty-void-state">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <p>No users are currently waiting for approval.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- Communications & Contact Hub -->
+        <section class="glass-panel" aria-labelledby="contact-messages-heading">
+            <div class="panel-header-pro">
+                <div class="panel-heading-group">
+                    <div class="panel-icon-stamp stamp-pink">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <div class="panel-titles">
+                        <h3 id="contact-messages-heading">Contact & Inbound Telemetry</h3>
+                        <p>Inquiries and support messages submitted through the public touchpoints</p>
+                    </div>
+                </div>
+                <span class="badge-counter badge-pink">
+                    <span class="badge-dot" style="background:#f472b6;"></span>
+                    {{ new_contact_messages }} New
+                </span>
+            </div>
+
+            <div class="panel-inner">
+                <!-- Status Micro Summaries -->
+                <div class="status-metric-cards">
+                    <div class="metric-mini-box">
+                        <span class="mini-label">Total Volume</span>
+                        <div class="mini-val">{{ total_contact_messages }}</div>
+                    </div>
+                    <div class="metric-mini-box new-box">
+                        <span class="mini-label">Unprocessed (New)</span>
+                        <div class="mini-val">{{ new_contact_messages }}</div>
+                    </div>
+                    <div class="metric-mini-box read-box">
+                        <span class="mini-label">Acknowledged (Read)</span>
+                        <div class="mini-val">{{ read_contact_messages }}</div>
+                    </div>
+                    <div class="metric-mini-box replied-box">
+                        <span class="mini-label">Resolved (Replied)</span>
+                        <div class="mini-val">{{ replied_contact_messages }}</div>
+                    </div>
+                </div>
+
+                <!-- Messages Table -->
+                {% if recent_contact_messages %}
+                    <div class="table-responsive-box">
+                        <table class="pro-table">
+                            <thead>
+                                <tr>
+                                    <th>Sender</th>
+                                    <th>Subject</th>
+                                    <th>Message Body</th>
+                                    <th>Status</th>
+                                    <th>Timestamp</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for contact in recent_contact_messages %}
+                                    <tr>
+                                        <td>
+                                            <div class="user-identity">
+                                                <div class="avatar-initial" style="background: linear-gradient(135deg, rgba(236,72,153,0.2), rgba(168,85,247,0.2)); color: #f472b6; border-color: rgba(236,72,153,0.3);">
+                                                    {{ contact.name|first|upper }}
+                                                </div>
+                                                <div>
+                                                    <div class="user-meta-name">{{ contact.name }}</div>
+                                                    <div class="user-meta-sub">{{ contact.email }}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="subject-cell" title="{{ contact.subject }}">
+                                                {{ contact.subject|default:"No subject" }}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="message-excerpt" title="{{ contact.message }}">
+                                                {{ contact.message }}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {% if contact.status == "New" %}
+                                                <span class="status-badge status-new">
+                                                    <span class="badge-dot"></span>
+                                                    New
+                                                </span>
+                                            {% elif contact.status == "Read" %}
+                                                <span class="status-badge status-read">
+                                                    <span class="badge-dot"></span>
+                                                    Read
+                                                </span>
+                                            {% elif contact.status == "Replied" %}
+                                                <span class="status-badge status-replied">
+                                                    <span class="badge-dot"></span>
+                                                    Replied
+                                                </span>
+                                            {% elif contact.status == "Archived" %}
+                                                <span class="status-badge status-archived">
+                                                    <span class="badge-dot"></span>
+                                                    Archived
+                                                </span>
+                                            {% else %}
+                                                <span class="status-badge status-read">
+                                                    <span class="badge-dot"></span>
+                                                    {{ contact.status }}
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <span class="date-stamp">{{ contact.created_at|date:"d M Y, h:i A" }}</span>
+                                        </td>
+                                        <td>
+                                            <form method="post" action="{% url 'admin_dashboard:delete_contact_message' contact.id %}" class="form-sub-wrapper" onsubmit="return confirm('Are you sure you want to permanently delete this contact message?');">
+                                                {% csrf_token %}
+                                                <button type="submit" class="action-btn-pro btn-delete-pro" title="Delete this message">
+                                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="empty-void-state">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                        </svg>
+                        <p>No contact messages have been received yet.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- Twin Section: Recent Users & Dataset Classification -->
+        <div class="twin-grid">
+            
+            <!-- Recent Users -->
+            <section class="glass-panel" style="margin-bottom:0;" aria-labelledby="recent-users-heading">
+                <div class="panel-header-pro">
+                    <div class="panel-heading-group">
+                        <div class="panel-icon-stamp stamp-blue">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                        </div>
+                        <div class="panel-titles">
+                            <h3 id="recent-users-heading">Recent Users</h3>
+                            <p>Latest registered members on the platform</p>
+                        </div>
+                    </div>
+                    <a href="{% url 'admin_dashboard:users' %}" class="action-btn-pro btn-view-pro">
+                        <span>View All</span>
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="panel-inner">
+                    {% if recent_users %}
+                        <div class="table-responsive-box">
+                            <table class="pro-table">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Status</th>
+                                        <th>Datasets</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for user in recent_users %}
+                                        <tr>
+                                            <td>
+                                                <div class="user-identity">
+                                                    <div class="avatar-initial">
+                                                        {{ user.username|first|upper }}
+                                                    </div>
+                                                    <div>
+                                                        <div class="user-meta-name">{{ user.username }}</div>
+                                                        <div class="user-meta-sub">{{ user.email }}</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                {% if user.approval_status == "Approved" %}
+                                                    <span class="status-badge status-approved">
+                                                        <span class="badge-dot"></span>
+                                                        Approved
+                                                    </span>
+                                                {% elif user.approval_status == "Rejected" %}
+                                                    <span class="status-badge status-rejected">
+                                                        <span class="badge-dot"></span>
+                                                        Rejected
+                                                    </span>
+                                                {% else %}
+                                                    <span class="status-badge status-pending">
+                                                        <span class="badge-dot"></span>
+                                                        Pending
+                                                    </span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <span style="font-family:'JetBrains Mono', monospace; font-weight:700; color:#38bdf8;">{{ user.dataset_count }}</span>
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'admin_dashboard:user_detail' user.id %}" class="action-btn-pro btn-view-pro" title="View user details">
+                                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                    </svg>
+                                                    View
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="empty-void-state">
+                            <p>No users found.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
+
+            <!-- Dataset Type Categorization -->
+            <section class="glass-panel" style="margin-bottom:0;" aria-labelledby="dataset-overview-heading">
+                <div class="panel-header-pro">
+                    <div class="panel-heading-group">
+                        <div class="panel-icon-stamp stamp-indigo">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+                            </svg>
+                        </div>
+                        <div class="panel-titles">
+                            <h3 id="dataset-overview-heading">Dataset Overview</h3>
+                            <p>Uploaded datasets distributed by category</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-inner">
+                    {% if dataset_type_counts %}
+                        <div class="progression-stack">
+                            {% for item in dataset_type_counts %}
+                                <div class="prog-item">
+                                    <div>
+                                        <div class="prog-info">
+                                            <span class="prog-name">{{ item.dataset_type }}</span>
+                                            <span class="prog-counter">{{ item.total }} Units</span>
+                                        </div>
+                                        <div class="prog-track-groove">
+                                            <div class="prog-fill-neon" style="width: {% widthratio item.total total_datasets 100 %}%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="prog-badge-count">
+                                        {{ item.total }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-void-state">
+                            <p>No datasets have been uploaded yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Recent Dataset Upload Activity -->
+        <section class="glass-panel" aria-labelledby="dataset-uploads-heading" style="margin-top: 26px;">
+            <div class="panel-header-pro">
+                <div class="panel-heading-group">
+                    <div class="panel-icon-stamp stamp-cyan">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                    </div>
+                    <div class="panel-titles">
+                        <h3 id="dataset-uploads-heading">Recent Dataset Uploads</h3>
+                        <p>Latest repository contributions ingestions by data managers</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-inner">
+                {% if recent_datasets %}
+                    <div class="dataset-grid-flow">
+                        {% for dataset in recent_datasets %}
+                            <div class="dataset-item-card">
+                                <div>
+                                    <div class="ds-title">{{ dataset.name }}</div>
+                                    <div class="ds-owner">
+                                        Uploaded by <span style="color:#e2e8f0; font-weight:600;">{{ dataset.owner.username }}</span>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <span class="ds-type-tag">{{ dataset.dataset_type }}</span>
+                                </div>
+
+                                <div>
+                                    <span class="date-stamp">{{ dataset.uploaded_at|date:"d M Y, h:i A" }}</span>
+                                </div>
+
+                                <div>
+                                    <a href="{% url 'admin_dashboard:dataset_detail' dataset.id %}" class="action-btn-pro btn-view-pro" title="Inspect dataset">
+                                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                        View
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-void-state">
+                        <p>No datasets have been uploaded yet.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- Twin Section: Top Data Contributors & Platform System Summary -->
+        <div class="twin-grid" style="margin-top: 26px;">
+            
+            <!-- Users with Uploaded Data -->
+            <section class="glass-panel" style="margin-bottom:0;" aria-labelledby="contributors-heading">
+                <div class="panel-header-pro">
+                    <div class="panel-heading-group">
+                        <div class="panel-icon-stamp stamp-blue">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                        </div>
+                        <div class="panel-titles">
+                            <h3 id="contributors-heading">Users With Uploaded Data</h3>
+                            <p>Members maintaining active analytical datasets in the system</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-inner">
+                    {% if users_with_datasets %}
+                        {% for user in users_with_datasets %}
+                            <div class="data-user-row">
+                                <div class="user-identity">
+                                    <div class="avatar-initial" style="width:34px; height:34px; font-size:12px;">
+                                        {{ user.username|first|upper }}
+                                    </div>
+                                    <div>
+                                        <div class="user-meta-name" style="font-size:12px;">{{ user.username }}</div>
+                                        <div class="user-meta-sub" style="font-size:10px;">{{ user.email }}</div>
+                                    </div>
+                                </div>
+
+                                <div class="data-user-count-pill">
+                                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4" />
+                                    </svg>
+                                    <span>{{ user.dataset_count }} dataset{{ user.dataset_count|pluralize }}</span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-void-state">
+                            <p>No users have uploaded datasets yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
+
+            <!-- Platform System Summary -->
+            <section class="glass-panel" style="margin-bottom:0;" aria-labelledby="platform-summary-heading">
+                <div class="panel-header-pro">
+                    <div class="panel-heading-group">
+                        <div class="panel-icon-stamp stamp-indigo">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                            </svg>
+                        </div>
+                        <div class="panel-titles">
+                            <h3 id="platform-summary-heading">System Summary</h3>
+                            <p>Real-time platform distribution ratios and health metrics</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-inner">
+                    <div class="progression-stack">
+                        <!-- Active Users -->
+                        <div class="prog-item">
+                            <div>
+                                <div class="prog-info">
+                                    <span class="prog-name">Active Users</span>
+                                    <span class="prog-counter">{{ active_users }}</span>
+                                </div>
+                                <div class="prog-track-groove">
+                                    <div class="prog-fill-neon" style="width: {% widthratio active_users total_users 100 %}%;"></div>
+                                </div>
+                            </div>
+                            <div class="prog-badge-count">{{ active_users }}</div>
+                        </div>
+
+                        <!-- Approved Users -->
+                        <div class="prog-item">
+                            <div>
+                                <div class="prog-info">
+                                    <span class="prog-name">Approved Users</span>
+                                    <span class="prog-counter">{{ approved_users }}</span>
+                                </div>
+                                <div class="prog-track-groove">
+                                    <div class="prog-fill-neon" style="width: {% widthratio approved_users total_users 100 %}%; background: linear-gradient(90deg, #10b981, #06b6d4);"></div>
+                                </div>
+                            </div>
+                            <div class="prog-badge-count">{{ approved_users }}</div>
+                        </div>
+
+                        <!-- Pending Approvals -->
+                        <div class="prog-item">
+                            <div>
+                                <div class="prog-info">
+                                    <span class="prog-name">Pending Approvals</span>
+                                    <span class="prog-counter">{{ pending_users }}</span>
+                                </div>
+                                <div class="prog-track-groove">
+                                    <div class="prog-fill-neon" style="width: {% widthratio pending_users total_users 100 %}%; background: linear-gradient(90deg, #f59e0b, #ef4444);"></div>
+                                </div>
+                            </div>
+                            <div class="prog-badge-count">{{ pending_users }}</div>
+                        </div>
+
+                        <!-- Total Datasets -->
+                        <div class="prog-item">
+                            <div>
+                                <div class="prog-info">
+                                    <span class="prog-name">Total Datasets</span>
+                                    <span class="prog-counter">{{ total_datasets }}</span>
+                                </div>
+                                <div class="prog-track-groove">
+                                    <div class="prog-fill-neon" style="width: 100%; background: linear-gradient(90deg, #3b82f6, #06b6d4);"></div>
+                                </div>
+                            </div>
+                            <div class="prog-badge-count">{{ total_datasets }}</div>
+                        </div>
+
+                        <!-- Contact Messages -->
+                        <div class="prog-item">
+                            <div>
+                                <div class="prog-info">
+                                    <span class="prog-name">Contact Messages</span>
+                                    <span class="prog-counter">{{ total_contact_messages }}</span>
+                                </div>
+                                <div class="prog-track-groove">
+                                    <div class="prog-fill-neon" style="width: 100%; background: linear-gradient(90deg, #ec4899, #8b5cf6);"></div>
+                                </div>
+                            </div>
+                            <div class="prog-badge-count">{{ total_contact_messages }}</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Master Directory Command Footer -->
+        <footer class="footer-terminal">
+            <a href="{% url 'admin_dashboard:users' %}" class="hero-manage-btn">
+                <span>Manage Complete Users Directory</span>
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+            </a>
+        </footer>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Optional micro-interaction: smooth entrance reveal
+            const panels = document.querySelectorAll('.glass-panel, .kpi-tile, .command-banner');
+            panels.forEach((panel, index) => {
+                panel.style.opacity = '0';
+                panel.style.transform = 'translateY(12px)';
+                panel.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                setTimeout(() => {
+                    panel.style.opacity = '1';
+                    panel.style.transform = 'translateY(0)';
+                }, 40 * index);
+            });
+        });
+    </script>
 </body>
 </html>
