@@ -11,7 +11,7 @@ from analytics.views.financial import financial_intelligence
 from analytics.views.returns import returns_intelligence
 from analytics.views.business import business_intelligence
 
-
+app_name = "analytics"
 urlpatterns = [
 
     # Executive Dashboard

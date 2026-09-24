@@ -1,1523 +1,1193 @@
+{% extends "base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
+{% block title %}
+    {{ dashboard_title|default:"Executive Dashboard" }} | Smart Business Intelligence
+{% endblock %}
 
-<head>
+{% block content %}
+<style>
+/* ==========================================================================
+   GLOBAL VARIABLES & RESET
+   ========================================================================== */
+:root {
+    --bg: #030712;
+    --bg-deep: #020617;
+    --bg-soft: #071525;
 
-    <meta charset="UTF-8">
+    --card: #0B1B2D;
+    --card-light: #10243A;
+    --card-glass: rgba(11, 27, 45, 0.72);
+    --card-glass-subtle: rgba(16, 36, 58, 0.45);
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    --purple: #7C5CFF;
+    --purple-light: #A99CFF;
+    --purple-glow: rgba(124, 92, 255, 0.35);
 
-    <meta
-        name="description"
-        content="Executive Dashboard for Smart Business Decision Intelligence"
-    >
+    --blue: #35B8FF;
+    --blue-glow: rgba(53, 184, 255, 0.30);
 
-    <title>
-        Executive Dashboard | Smart Business Decision Intelligence
-    </title>
+    --cyan: #22D3EE;
+    --cyan-glow: rgba(34, 211, 238, 0.28);
 
-    <link
-        rel="stylesheet"
-        href="{% static 'core/css/dashboard.css' %}"
-    >
+    --green: #39E58C;
+    --green-glow: rgba(57, 229, 140, 0.25);
 
-</head>
+    --orange: #FFB454;
+    --orange-glow: rgba(255, 180, 84, 0.25);
 
+    --red: #FF5C70;
+    --red-glow: rgba(255, 92, 112, 0.25);
 
-<body>
+    --text: #F7FAFF;
+    --muted: #8294A8;
+    --subtle: #4D6277;
 
-<!-- =========================================================
-     EXECUTIVE DASHBOARD
-========================================================= -->
+    --border: rgba(255, 255, 255, 0.08);
+    --border-bright: rgba(255, 255, 255, 0.16);
+    --border-cyan: rgba(34, 211, 238, 0.35);
+    --border-purple: rgba(124, 92, 255, 0.35);
 
-<div class="dashboard-page">
+    --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
 
+.sbi-workspace * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-    <!-- =====================================================
-         ANIMATED BACKGROUND
-    ====================================================== -->
+/* ==========================================================================
+   LAYOUT & INDEPENDENT DUAL-SCROLL ARCHITECTURE
+   ========================================================================== */
+.sbi-workspace {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    overflow: hidden;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    position: relative;
+}
 
-    <div
-        class="background-orb orb-one"
-        aria-hidden="true"
-    ></div>
+/* Ambient animated background grid and glow */
+.sbi-workspace::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: 
+        radial-gradient(circle at 15% 15%, rgba(124, 92, 255, 0.09) 0%, transparent 45%),
+        radial-gradient(circle at 85% 75%, rgba(34, 211, 238, 0.07) 0%, transparent 50%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+    pointer-events: none;
+    z-index: 1;
+}
 
-    <div
-        class="background-orb orb-two"
-        aria-hidden="true"
-    ></div>
+/* Sidebar Wrapper: Stays fixed, scrolls its own overflow independently */
+.sbi-sidebar-dock {
+    width: 270px;
+    height: 100vh;
+    flex-shrink: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    z-index: 20;
+    background: var(--bg-deep);
+    border-right: 1px solid var(--border);
+    scrollbar-width: thin;
+    scrollbar-color: var(--subtle) transparent;
+}
 
-    <div
-        class="background-orb orb-three"
-        aria-hidden="true"
-    ></div>
+.sbi-sidebar-dock::-webkit-scrollbar {
+    width: 4px;
+}
+.sbi-sidebar-dock::-webkit-scrollbar-thumb {
+    background: var(--subtle);
+    border-radius: 4px;
+}
 
-    <div
-        class="background-grid"
-        aria-hidden="true"
-    ></div>
+/* Main Dashboard Viewport: Independent high-performance scrolling area */
+.sbi-main-viewport {
+    flex: 1;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    z-index: 10;
+    padding: 32px 40px 60px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--card-light) transparent;
+}
 
+.sbi-main-viewport::-webkit-scrollbar {
+    width: 6px;
+}
+.sbi-main-viewport::-webkit-scrollbar-thumb {
+    background: var(--card-light);
+    border-radius: 4px;
+}
 
-    <!-- =====================================================
-         MAIN CONTAINER
-    ====================================================== -->
+.sbi-content-container {
+    max-width: 1540px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
 
-    <main class="dashboard-container">
+/* ==========================================================================
+   HEADER COMPONENT
+   ========================================================================== */
+.sbi-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    padding: 32px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(11, 27, 45, 0.85) 0%, rgba(7, 21, 37, 0.65) 100%);
+    border: 1px solid var(--border-bright);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+}
 
+.sbi-header::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: 10%;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, var(--purple-glow) 0%, transparent 70%);
+    pointer-events: none;
+    filter: blur(40px);
+    opacity: 0.6;
+}
 
-        <!-- =================================================
-             HEADER
-        ================================================== -->
+.sbi-greeting-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 30px;
+    background: rgba(124, 92, 255, 0.12);
+    border: 1px solid var(--border-purple);
+    color: var(--purple-light);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    margin-bottom: 12px;
+}
 
-        <header class="dashboard-header">
+.sbi-header-title {
+    font-size: clamp(24px, 2.4vw, 34px);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    color: #FFFFFF;
+}
 
+.sbi-header-subtitle {
+    margin-top: 8px;
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 400;
+    max-width: 640px;
+}
 
-            <!-- LEFT -->
+.sbi-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    z-index: 5;
+}
 
-            <div class="header-left">
+.sbi-action-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--card-glass);
+    border: 1px solid var(--border);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 17px;
+    transition: transform 0.25s var(--transition-smooth), border-color 0.25s, box-shadow 0.25s;
+    outline: none;
+}
 
-                <div class="welcome-badge">
+.sbi-action-btn:hover {
+    transform: translateY(-3px);
+    border-color: var(--cyan);
+    box-shadow: 0 0 15px var(--cyan-glow);
+}
 
-                    <span
-                        class="status-dot"
-                        aria-hidden="true"
-                    ></span>
+/* ==========================================================================
+   EXECUTIVE OVERVIEW STATS (Navigation / System Matrix)
+   ========================================================================== */
+.sbi-overview-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
 
-                    <span>
-                        Executive Workspace
-                    </span>
+.sbi-stat-node {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    background: var(--card-glass);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    backdrop-filter: blur(12px);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s var(--transition-smooth), border-color 0.3s;
+}
 
-                </div>
+.sbi-stat-node:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-bright);
+}
 
+.sbi-stat-node::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+}
 
-                <div class="greeting-row">
+.sbi-stat-node.stat-blue::before { background: var(--blue); }
+.sbi-stat-node.stat-cyan::before { background: var(--cyan); }
+.sbi-stat-node.stat-purple::before { background: var(--purple); }
+.sbi-stat-node.stat-orange::before { background: var(--orange); }
 
-                    <span
-                        class="greeting-icon"
-                        aria-hidden="true"
-                    >
-                        {{ greeting_icon }}
-                    </span>
+.sbi-stat-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 4px;
+}
 
-                    <h1 id="greeting">
+.sbi-stat-meta {
+    font-size: 13px;
+    color: var(--subtle);
+}
 
-                        {{ greeting }},
+.sbi-stat-val {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
 
-                        <span class="user-name">
-                            {{ display_name }}
-                        </span>
+/* ==========================================================================
+   SECTION COMMON SHELL
+   ========================================================================== */
+.sbi-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
 
+.sbi-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sbi-sec-heading-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sbi-sec-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    background: var(--card-light);
+    border: 1px solid var(--border);
+}
+
+.sbi-sec-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    color: #FFFFFF;
+}
+
+.sbi-sec-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+}
+
+.sbi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+/* ==========================================================================
+   SECTION 1: DATA MANAGEMENT (Blue / Cyan Database Architecture)
+   ========================================================================== */
+.sbi-card-dm {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 170px;
+    padding: 22px;
+    background: linear-gradient(145deg, rgba(11, 27, 45, 0.9) 0%, rgba(7, 21, 37, 0.7) 100%);
+    border: 1px solid rgba(53, 184, 255, 0.12);
+    border-radius: 16px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s var(--transition-smooth), border-color 0.3s, box-shadow 0.3s;
+}
+
+.sbi-card-dm:hover {
+    transform: translateY(-5px);
+    border-color: var(--border-cyan);
+    box-shadow: 0 12px 30px rgba(34, 211, 238, 0.12);
+}
+
+.sbi-dm-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.sbi-dm-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: rgba(53, 184, 255, 0.1);
+    border: 1px solid rgba(53, 184, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: var(--blue);
+}
+
+.sbi-dm-pulse {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 8px var(--cyan);
+}
+
+.sbi-card-dm h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-top: 14px;
+}
+
+.sbi-card-dm p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-top: 6px;
+}
+
+.sbi-dm-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   SECTION 2: BUSINESS ANALYTICS (Cyan / Blue / Chart Viz Engine)
+   ========================================================================== */
+.sbi-card-ba {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 180px;
+    padding: 22px;
+    background: linear-gradient(160deg, rgba(16, 36, 58, 0.6) 0%, rgba(11, 27, 45, 0.8) 100%);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s var(--transition-smooth), border-color 0.3s, box-shadow 0.3s;
+}
+
+.sbi-card-ba:hover {
+    transform: translateY(-5px);
+    border-color: rgba(53, 184, 255, 0.4);
+    box-shadow: 0 12px 30px rgba(53, 184, 255, 0.12);
+}
+
+.sbi-ba-chart-slot {
+    height: 38px;
+    margin: 12px 0;
+    display: flex;
+    align-items: flex-end;
+}
+
+.sbi-ba-svg-line {
+    width: 100%;
+    height: 100%;
+}
+
+.sbi-ba-svg-line path {
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    transition: stroke-dashoffset 1s var(--transition-smooth);
+}
+
+.sbi-card-ba:hover .sbi-ba-svg-line path {
+    stroke-dashoffset: 0;
+}
+
+.sbi-ba-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    width: 100%;
+    height: 28px;
+}
+
+.sbi-ba-bar {
+    flex: 1;
+    background: rgba(34, 211, 238, 0.25);
+    border-radius: 2px 2px 0 0;
+    transition: height 0.3s ease, background-color 0.3s;
+}
+
+.sbi-card-ba:hover .sbi-ba-bar {
+    background: var(--cyan);
+}
+
+.sbi-ba-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sbi-card-ba h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+.sbi-card-ba p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.4;
+    margin-top: 4px;
+}
+
+/* ==========================================================================
+   SECTION 3: ADVANCED INSIGHTS (Deep Purple Neural / Predictive Lab)
+   ========================================================================== */
+.sbi-card-ai {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 180px;
+    padding: 22px;
+    background: radial-gradient(circle at 10% 10%, rgba(124, 92, 255, 0.12) 0%, transparent 60%),
+                linear-gradient(145deg, rgba(16, 22, 45, 0.8) 0%, rgba(11, 15, 30, 0.9) 100%);
+    border: 1px solid rgba(124, 92, 255, 0.2);
+    border-radius: 16px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s var(--transition-smooth), border-color 0.3s, box-shadow 0.3s;
+}
+
+.sbi-card-ai:hover {
+    transform: translateY(-5px);
+    border-color: var(--purple-light);
+    box-shadow: 0 12px 35px var(--purple-glow);
+}
+
+.sbi-ai-constellation {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 10px 0;
+}
+
+.sbi-node-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--purple-light);
+    box-shadow: 0 0 6px var(--purple);
+}
+
+.sbi-node-connector {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(124, 92, 255, 0.4), rgba(34, 211, 238, 0.4));
+}
+
+.sbi-ai-badge {
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--purple-light);
+    letter-spacing: 0.8px;
+}
+
+.sbi-card-ai h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-top: 4px;
+}
+
+.sbi-card-ai p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.4;
+    margin-top: 4px;
+}
+
+.sbi-ai-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 14px;
+    font-size: 11px;
+    color: var(--purple-light);
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   SECTION 4: DECISION INTELLIGENCE (Orange / Green / Action Command)
+   ========================================================================== */
+.sbi-card-di {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 175px;
+    padding: 22px;
+    background: linear-gradient(155deg, rgba(23, 27, 36, 0.75) 0%, rgba(15, 23, 30, 0.85) 100%);
+    border: 1px solid rgba(255, 180, 84, 0.15);
+    border-radius: 16px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s var(--transition-smooth), border-color 0.3s, box-shadow 0.3s;
+}
+
+.sbi-card-di:hover {
+    transform: translateY(-5px);
+    border-color: var(--orange);
+    box-shadow: 0 12px 30px var(--orange-glow);
+}
+
+.sbi-di-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sbi-di-action-tag {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(255, 180, 84, 0.1);
+    color: var(--orange);
+    border: 1px solid rgba(255, 180, 84, 0.25);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.sbi-card-di h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-top: 10px;
+}
+
+.sbi-card-di p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.4;
+    margin-top: 4px;
+}
+
+.sbi-di-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 14px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--green);
+}
+
+/* ==========================================================================
+   SECTION 5: REPORTING (Blue / Cyan Ledger & Exports)
+   ========================================================================== */
+.sbi-card-rp {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 160px;
+    padding: 20px;
+    background: var(--card-glass);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    text-decoration: none;
+    position: relative;
+    transition: transform 0.3s var(--transition-smooth), border-color 0.3s;
+}
+
+.sbi-card-rp:hover {
+    transform: translateY(-4px);
+    border-color: var(--blue);
+}
+
+.sbi-card-rp h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-top: 8px;
+}
+
+.sbi-card-rp p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+/* ==========================================================================
+   SECTION 6: SYSTEM STATUS PANEL
+   ========================================================================== */
+.sbi-status-panel {
+    background: var(--card-glass);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 22px 28px;
+    backdrop-filter: blur(12px);
+}
+
+.sbi-status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 14px;
+}
+
+.sbi-status-node {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: rgba(16, 36, 58, 0.4);
+    border: 1px solid var(--border);
+}
+
+.sbi-status-beacon {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 10px var(--green);
+    position: relative;
+}
+
+.sbi-status-beacon.beacon-warn {
+    background: var(--orange);
+    box-shadow: 0 0 10px var(--orange);
+}
+
+.sbi-status-beacon.beacon-err {
+    background: var(--red);
+    box-shadow: 0 0 10px var(--red);
+}
+
+.sbi-status-node-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.sbi-status-node-state {
+    font-size: 11px;
+    color: var(--muted);
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.sbi-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 4px 0;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--subtle);
+}
+
+/* ==========================================================================
+   ANIMATIONS & SCROLL OBSERVER CLASSES
+   ========================================================================== */
+.sbi-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.65s var(--transition-smooth), transform 0.65s var(--transition-smooth);
+}
+
+.sbi-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger items inside grids */
+.sbi-grid > *:nth-child(1) { transition-delay: 0.04s; }
+.sbi-grid > *:nth-child(2) { transition-delay: 0.08s; }
+.sbi-grid > *:nth-child(3) { transition-delay: 0.12s; }
+.sbi-grid > *:nth-child(4) { transition-delay: 0.16s; }
+.sbi-grid > *:nth-child(5) { transition-delay: 0.20s; }
+.sbi-grid > *:nth-child(6) { transition-delay: 0.24s; }
+.sbi-grid > *:nth-child(7) { transition-delay: 0.28s; }
+.sbi-grid > *:nth-child(8) { transition-delay: 0.32s; }
+
+/* ==========================================================================
+   RESPONSIVE DESIGN SYSTEM
+   ========================================================================== */
+@media (max-width: 1400px) {
+    .sbi-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1100px) {
+    .sbi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .sbi-overview-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .sbi-main-viewport {
+        padding: 24px 24px 50px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sbi-workspace {
+        flex-direction: column;
+        height: auto;
+        overflow-y: visible;
+    }
+    .sbi-sidebar-dock {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+    .sbi-main-viewport {
+        width: 100%;
+        height: auto;
+        overflow-y: visible;
+        padding: 20px 16px 80px;
+    }
+    .sbi-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 24px;
+    }
+    .sbi-header-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+    .sbi-grid {
+        grid-template-columns: 1fr;
+    }
+    .sbi-overview-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+</style>
+
+<div class="sbi-workspace">
+
+    <!-- ====================================================================
+         LEFT DOCK: SHARED SMART SIDEBAR (INDEPENDENT SCROLL)
+         ==================================================================== -->
+    <aside class="sbi-sidebar-dock" aria-label="System Navigation">
+        {% include "includes/smart_sidebar.html" %}
+    </aside>
+
+    <!-- ====================================================================
+         RIGHT DOCK: EXECUTIVE DASHBOARD CONTENT (INDEPENDENT SCROLL)
+         ==================================================================== -->
+    <main class="sbi-main-viewport" id="sbi-scroll-container" role="main">
+        <div class="sbi-content-container">
+
+            <!-- HEADER -->
+            <header class="sbi-header sbi-reveal">
+                <div class="sbi-header-left">
+                    <div class="sbi-greeting-pill">
+                        <span>{{ greeting_icon|default:"✦" }}</span>
+                        <span>{{ greeting|default:"Welcome" }}, <strong>{{ display_name|default:"Executive" }}</strong></span>
+                    </div>
+                    <h1 class="sbi-header-title">
+                        {{ dashboard_title|default:"Executive Command Center" }}
                     </h1>
-
+                    <p class="sbi-header-subtitle">
+                        {{ dashboard_subtitle|default:"Smart Business Decision Intelligence & Autonomous Strategy Platform" }}
+                    </p>
                 </div>
 
-
-                <p class="welcome-message">
-
-                    Welcome back.
-
-                    <span>
-                        Your intelligent business management
-                        workspace is ready.
-                    </span>
-
-                </p>
-
-
-                <div class="header-description">
-
-                    <span class="description-line"></span>
-
-                    <span>
-                        Explore your data, discover insights,
-                        make decisions and generate reports.
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- RIGHT -->
-
-            <div class="header-right">
-
-
-                <div class="header-date">
-
-                    <span
-                        class="date-icon"
-                        aria-hidden="true"
-                    >
+                <div class="sbi-header-actions">
+                    <button type="button" class="sbi-action-btn" title="Alerts & Telemetry" aria-label="Telemetry Notifications">
+                        🔔
+                    </button>
+                    <button type="button" class="sbi-action-btn" title="Intelligence Timeline" aria-label="System Calendar">
                         📅
-                    </span>
-
-                    <div class="date-content">
-
-                        <span class="date-label">
-                            TODAY
-                        </span>
-
-                        <span id="current-date">
-                            —
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <a
-                    href="#"
-                    class="profile-button"
-                    aria-label="Open profile"
-                >
-
-                    <span
-                        class="profile-icon"
-                        aria-hidden="true"
-                    >
+                    </button>
+                    <button type="button" class="sbi-action-btn" title="Operator Profile" aria-label="Operator Profile">
                         👤
-                    </span>
+                    </button>
+                </div>
+            </header>
 
-                    <span>
-                        Profile
-                    </span>
+            <!-- EXECUTIVE SYSTEM MATRIX OVERVIEW (Counts derived safely from existing context) -->
+            <section class="sbi-overview-grid sbi-reveal" aria-label="Workspace Status Counts">
+                <div class="sbi-stat-node stat-blue">
+                    <div>
+                        <div class="sbi-stat-label">Data Pipelines</div>
+                        <div class="sbi-stat-meta">Active Ingestion Feeds</div>
+                    </div>
+                    <div class="sbi-stat-val">
+                        {% if data_management_links %}{{ data_management_links|length|stringformat:"02d" }}{% else %}04{% endif %}
+                    </div>
+                </div>
+                <div class="sbi-stat-node stat-cyan">
+                    <div>
+                        <div class="sbi-stat-label">Analytics Modules</div>
+                        <div class="sbi-stat-meta">Domain Classifiers</div>
+                    </div>
+                    <div class="sbi-stat-val">
+                        {% if analytics_links %}{{ analytics_links|length|stringformat:"02d" }}{% else %}08{% endif %}
+                    </div>
+                </div>
+                <div class="sbi-stat-node stat-purple">
+                    <div>
+                        <div class="sbi-stat-label">Predictive Models</div>
+                        <div class="sbi-stat-meta">Inference Engines</div>
+                    </div>
+                    <div class="sbi-stat-val">
+                        {% if insight_links %}{{ insight_links|length|stringformat:"02d" }}{% else %}07{% endif %}
+                    </div>
+                </div>
+                <div class="sbi-stat-node stat-orange">
+                    <div>
+                        <div class="sbi-stat-label">Decision Trees</div>
+                        <div class="sbi-stat-meta">Scenario Optimizers</div>
+                    </div>
+                    <div class="sbi-stat-val">
+                        {% if decision_links %}{{ decision_links|length|stringformat:"02d" }}{% else %}06{% endif %}
+                    </div>
+                </div>
+            </section>
 
-                    <span
-                        class="profile-arrow"
-                        aria-hidden="true"
-                    >
-                        →
-                    </span>
-
-                </a>
-
-            </div>
-
-        </header>
-
-
-
-        <!-- =================================================
-             DASHBOARD INTRO
-        ================================================== -->
-
-        <section class="dashboard-intro">
-
-            <div class="intro-line"></div>
-
-            <p>
-                Everything you need to manage your
-                intelligent business workspace from one place.
-            </p>
-
-        </section>
-
-
-
-        <!-- =================================================
-             DATA MANAGEMENT
-        ================================================== -->
-
-        <section
-            class="dashboard-section quick-section"
-            id="data-management"
-        >
-
-
-            <div class="section-heading">
-
-
-                <div class="section-heading-left">
-
-                    <span class="section-label">
-                        DATA FOUNDATION
-                    </span>
-
-                    <h2>
-                        Data Management
-                    </h2>
-
-                    <p>
-                        Prepare, organize and maintain
-                        the business data that powers
-                        your intelligence system.
-                    </p>
-
+            <!-- SECTION 1: DATA MANAGEMENT -->
+            {% if data_management_links %}
+            <section class="sbi-section sbi-reveal" id="data-management">
+                <div class="sbi-section-header">
+                    <div class="sbi-sec-heading-group">
+                        <div class="sbi-sec-badge" style="color: var(--cyan);">🗄️</div>
+                        <div>
+                            <h2 class="sbi-sec-title">Data Management</h2>
+                            <p class="sbi-sec-subtitle">Data pipeline orchestrations, schemas, and cleaning pipelines</p>
+                        </div>
+                    </div>
                 </div>
 
+                <div class="sbi-grid">
+                    {% for item in data_management_links %}
+                    <a href="{% if ':' in item.url %}{% url item.url %}{% else %}{% url 'data_management:'|add:item.url %}{% endif %}" class="sbi-card-dm sbi-reveal">
+                        <div class="sbi-dm-top">
+                            <div class="sbi-dm-icon">
+                                {% if item.icon == "upload" %}⬆️{% elif item.icon == "database" %}🗄️{% elif item.icon == "quality" %}🛡️{% elif item.icon == "cleaning" %}🧹{% else %}📂{% endif %}
+                            </div>
+                            <span class="sbi-dm-pulse" title="Feed Connected"></span>
+                        </div>
+                        <div>
+                            <h3>{{ item.title }}</h3>
+                            <p>{{ item.description }}</p>
+                        </div>
+                        <div class="sbi-dm-footer">
+                            <span>Inspect Schema</span>
+                            <span>→</span>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
 
-                <a
-                    href="{% url 'data_management:dataset_management' %}"
-                    class="section-link"
-                >
+            <!-- SECTION 2: BUSINESS ANALYTICS -->
+            {% if analytics_links %}
+            <section class="sbi-section sbi-reveal" id="business-analytics">
+                <div class="sbi-section-header">
+                    <div class="sbi-sec-heading-group">
+                        <div class="sbi-sec-badge" style="color: var(--blue);">📊</div>
+                        <div>
+                            <h2 class="sbi-sec-title">Business Analytics</h2>
+                            <p class="sbi-sec-subtitle">High-fidelity multi-vector telemetry across enterprise operations</p>
+                        </div>
+                    </div>
+                </div>
 
-                    <span>
-                        Open Data Management
-                    </span>
-
-                    <span
-                        class="section-link-arrow"
-                        aria-hidden="true"
-                    >
-                        →
-                    </span>
-
-                </a>
-
-            </div>
-
-
-
-            <div class="quick-grid">
-
-
-                {% for item in data_management_links %}
-
-                <a
-                    href="{% url item.url %}"
-                    class="quick-card dashboard-card card-animate"
-                    style="--card-index: {{ forloop.counter0 }};"
-                >
-
-
-                    <div class="card-top-row">
-
-                        <div class="card-icon">
-
-                            {% if item.icon == "upload" %}
-
-                                <span>↑</span>
-
-                            {% elif item.icon == "database" %}
-
-                                <span>◈</span>
-
-                            {% elif item.icon == "quality" %}
-
-                                <span>✓</span>
-
-                            {% elif item.icon == "cleaning" %}
-
-                                <span>✦</span>
-
+                <div class="sbi-grid">
+                    {% for item in analytics_links %}
+                    <a href="{% if ':' in item.url %}{% url item.url %}{% else %}{% url 'analytics:'|add:item.url %}{% endif %}" class="sbi-card-ba sbi-reveal">
+                        <div class="sbi-ba-title-row">
+                            <div style="font-size: 18px;">
+                                {% if item.icon == "business" %}📈{% elif item.icon == "sales" %}💰{% elif item.icon == "customer" %}👥{% elif item.icon == "product" %}📦{% elif item.icon == "regional" %}🌍{% elif item.icon == "marketing" %}📣{% elif item.icon == "financial" %}💵{% elif item.icon == "returns" %}🔄{% else %}📊{% endif %}
+                            </div>
+                            <span style="font-size: 11px; color: var(--blue); font-weight: 700;">ACTIVE VIZ</span>
+                        </div>
+                        
+                        <!-- UI Structured Analytics Mini-Graphic -->
+                        <div class="sbi-ba-chart-slot">
+                            {% if forloop.counter|divisibleby:2 %}
+                            <div class="sbi-ba-bars">
+                                <div class="sbi-ba-bar" style="height: 45%;"></div>
+                                <div class="sbi-ba-bar" style="height: 70%;"></div>
+                                <div class="sbi-ba-bar" style="height: 55%;"></div>
+                                <div class="sbi-ba-bar" style="height: 90%;"></div>
+                                <div class="sbi-ba-bar" style="height: 65%;"></div>
+                                <div class="sbi-ba-bar" style="height: 80%;"></div>
+                            </div>
+                            {% else %}
+                            <svg class="sbi-ba-svg-line" viewBox="0 0 120 30" fill="none">
+                                <path d="M0 24 C 30 24, 40 6, 70 12 C 90 16, 100 2, 120 4" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
                             {% endif %}
-
                         </div>
 
+                        <div>
+                            <h3>{{ item.title }}</h3>
+                            <p>{{ item.description }}</p>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
 
-                        <span class="card-index">
-
-                            {{ forloop.counter|stringformat:"02d" }}
-
-                        </span>
-
+            <!-- SECTION 3: ADVANCED INSIGHTS -->
+            {% if insight_links %}
+            <section class="sbi-section sbi-reveal" id="advanced-insights">
+                <div class="sbi-section-header">
+                    <div class="sbi-sec-heading-group">
+                        <div class="sbi-sec-badge" style="color: var(--purple);">🧠</div>
+                        <div>
+                            <h2 class="sbi-sec-title">Advanced Insights</h2>
+                            <p class="sbi-sec-subtitle">Autonomous discovery, predictive clustering, and anomaly forecasting</p>
+                        </div>
                     </div>
-
-
-                    <div class="card-content">
-
-                        <h3>
-                            {{ item.title }}
-                        </h3>
-
-                        <p>
-                            {{ item.description }}
-                        </p>
-
-                    </div>
-
-
-                    <div class="card-footer">
-
-                        <span>
-                            Open
-                        </span>
-
-                        <span
-                            class="card-arrow"
-                            aria-hidden="true"
-                        >
-                            →
-                        </span>
-
-                    </div>
-
-                </a>
-
-                {% endfor %}
-
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             BUSINESS ANALYTICS
-        ================================================== -->
-
-        <section
-            class="dashboard-section"
-            id="business-analytics"
-        >
-
-
-            <div class="section-heading">
-
-
-                <div class="section-heading-left">
-
-                    <span class="section-label">
-                        INTELLIGENCE
-                    </span>
-
-                    <h2>
-                        Business Analytics
-                    </h2>
-
-                    <p>
-                        Explore detailed intelligence
-                        across every major area of your business.
-                    </p>
-
                 </div>
 
-
-                <div class="section-number">
-                    01
-                </div>
-
-            </div>
-
-
-
-            <div class="analytics-grid">
-
-
-                {% for item in analytics_links %}
-
-                <a
-                    href="{% url item.url %}"
-                    class="feature-card analytics-card card-animate"
-                    style="--card-index: {{ forloop.counter0 }};"
-                >
-
-
-                    <div class="feature-card-top">
-
-
-                        <div class="feature-icon">
-
-                            {% if item.icon == "business" %}
-                                ◉
-
-                            {% elif item.icon == "sales" %}
-                                ↗
-
-                            {% elif item.icon == "customer" %}
-                                ◎
-
-                            {% elif item.icon == "product" %}
-                                ◇
-
-                            {% elif item.icon == "regional" %}
-                                ◌
-
-                            {% elif item.icon == "marketing" %}
-                                ✦
-
-                            {% elif item.icon == "financial" %}
-                                $
-
-                            {% elif item.icon == "returns" %}
-                                ↻
-
-                            {% endif %}
-
+                <div class="sbi-grid">
+                    {% for item in insight_links %}
+                    <a href="{% if ':' in item.url %}{% url item.url %}{% else %}{% url 'advanced_insights:'|add:item.url %}{% endif %}" class="sbi-card-ai sbi-reveal">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div class="sbi-ai-badge">Predictive Node</div>
+                                <span>{% if item.icon == "trends" %}🔮{% elif item.icon == "forecast" %}📈{% elif item.icon == "anomaly" %}🚨{% elif item.icon == "root-cause" %}🔍{% elif item.icon == "segmentation" %}👥{% elif item.icon == "risk" %}⚠️{% elif item.icon == "opportunity" %}💡{% else %}🧠{% endif %}</span>
+                            </div>
+                            <h3>{{ item.title }}</h3>
+                            <p>{{ item.description }}</p>
                         </div>
 
-
-                        <span class="open-label">
-                            ANALYTICS
-                        </span>
-
-                    </div>
-
-
-
-                    <div class="feature-card-body">
-
-                        <h3>
-                            {{ item.title }}
-                        </h3>
-
-                        <p>
-                            {{ item.description }}
-                        </p>
-
-                    </div>
-
-
-
-                    <div class="feature-card-footer">
-
-                        <span>
-                            Explore
-                        </span>
-
-                        <span
-                            class="feature-arrow"
-                            aria-hidden="true"
-                        >
-                            →
-                        </span>
-
-                    </div>
-
-
-                </a>
-
-                {% endfor %}
-
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             ADVANCED INSIGHTS
-        ================================================== -->
-
-        <section
-            class="dashboard-section"
-            id="advanced-insights"
-        >
-
-
-            <div class="section-heading">
-
-
-                <div class="section-heading-left">
-
-                    <span class="section-label">
-                        DISCOVERY
-                    </span>
-
-                    <h2>
-                        Advanced Insights
-                    </h2>
-
-                    <p>
-                        Turn business data into predictions,
-                        discoveries and deeper understanding.
-                    </p>
-
-                </div>
-
-
-                <div class="section-number">
-                    02
-                </div>
-
-            </div>
-
-
-
-            <div class="analytics-grid insights-grid">
-
-
-                {% for item in insight_links %}
-
-                <a
-                    href="{% url item.url %}"
-                    class="feature-card insight-card card-animate"
-                    style="--card-index: {{ forloop.counter0 }};"
-                >
-
-
-                    <div class="feature-card-top">
-
-
-                        <div class="feature-icon">
-
-                            {% if item.icon == "trends" %}
-                                ◒
-
-                            {% elif item.icon == "forecast" %}
-                                ↗
-
-                            {% elif item.icon == "anomaly" %}
-                                !
-
-                            {% elif item.icon == "root-cause" %}
-                                ⌕
-
-                            {% elif item.icon == "segmentation" %}
-                                ◎
-
-                            {% elif item.icon == "risk" %}
-                                ⚠
-
-                            {% elif item.icon == "opportunity" %}
-                                ✧
-
-                            {% endif %}
-
+                        <div>
+                            <!-- Constellation node line -->
+                            <div class="sbi-ai-constellation">
+                                <span class="sbi-node-dot"></span>
+                                <span class="sbi-node-connector"></span>
+                                <span class="sbi-node-dot" style="background: var(--cyan);"></span>
+                                <span class="sbi-node-connector"></span>
+                                <span class="sbi-node-dot"></span>
+                            </div>
+                            <div class="sbi-ai-footer">
+                                <span>Query Model</span>
+                                <span>→</span>
+                            </div>
                         </div>
-
-
-                        <span class="open-label">
-                            INSIGHT
-                        </span>
-
-                    </div>
-
-
-
-                    <div class="feature-card-body">
-
-                        <h3>
-                            {{ item.title }}
-                        </h3>
-
-                        <p>
-                            {{ item.description }}
-                        </p>
-
-                    </div>
-
-
-
-                    <div class="feature-card-footer">
-
-                        <span>
-                            Discover
-                        </span>
-
-                        <span
-                            class="feature-arrow"
-                            aria-hidden="true"
-                        >
-                            →
-                        </span>
-
-                    </div>
-
-
-                </a>
-
-                {% endfor %}
-
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             DECISION INTELLIGENCE
-        ================================================== -->
-
-        <section
-            class="dashboard-section"
-            id="decision-intelligence"
-        >
-
-
-            <div class="section-heading">
-
-
-                <div class="section-heading-left">
-
-                    <span class="section-label">
-                        ACTION
-                    </span>
-
-                    <h2>
-                        Decision Intelligence
-                    </h2>
-
-                    <p>
-                        Convert insights into informed
-                        business actions and scenarios.
-                    </p>
-
+                    </a>
+                    {% endfor %}
                 </div>
+            </section>
+            {% endif %}
 
-
-                <div class="section-number">
-                    03
-                </div>
-
-            </div>
-
-
-
-            <div class="analytics-grid decision-grid">
-
-
-                {% for item in decision_links %}
-
-                <a
-                    href="{% url item.url %}"
-                    class="feature-card decision-card card-animate"
-                    style="--card-index: {{ forloop.counter0 }};"
-                >
-
-
-                    <div class="feature-card-top">
-
-
-                        <div class="feature-icon">
-
-                            {% if item.icon == "recommendation" %}
-                                ◆
-
-                            {% elif item.icon == "what-if" %}
-                                ?
-
-                            {% elif item.icon == "scenario" %}
-                                ◈
-
-                            {% elif item.icon == "alerts" %}
-                                !
-
-                            {% elif item.icon == "action" %}
-                                ✓
-
-                            {% elif item.icon == "impact" %}
-                                ◉
-
-                            {% endif %}
-
+            <!-- SECTION 4: DECISION INTELLIGENCE -->
+            {% if decision_links %}
+            <section class="sbi-section sbi-reveal" id="decision-intelligence">
+                <div class="sbi-section-header">
+                    <div class="sbi-sec-heading-group">
+                        <div class="sbi-sec-badge" style="color: var(--orange);">🎯</div>
+                        <div>
+                            <h2 class="sbi-sec-title">Decision Intelligence</h2>
+                            <p class="sbi-sec-subtitle">Action recommendation engine, scenario simulation, and mitigation workflows</p>
                         </div>
-
-
-                        <span class="open-label">
-                            ACTION
-                        </span>
-
                     </div>
-
-
-
-                    <div class="feature-card-body">
-
-                        <h3>
-                            {{ item.title }}
-                        </h3>
-
-                        <p>
-                            {{ item.description }}
-                        </p>
-
-                    </div>
-
-
-
-                    <div class="feature-card-footer">
-
-                        <span>
-                            Open
-                        </span>
-
-                        <span
-                            class="feature-arrow"
-                            aria-hidden="true"
-                        >
-                            →
-                        </span>
-
-                    </div>
-
-
-                </a>
-
-                {% endfor %}
-
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             REPORTING
-        ================================================== -->
-
-        <section
-            class="dashboard-section"
-            id="reporting"
-        >
-
-
-            <div class="section-heading">
-
-
-                <div class="section-heading-left">
-
-                    <span class="section-label">
-                        OUTPUT
-                    </span>
-
-                    <h2>
-                        Reporting
-                    </h2>
-
-                    <p>
-                        Generate, export and manage
-                        business reports.
-                    </p>
-
                 </div>
 
-
-                <div class="section-number">
-                    04
-                </div>
-
-            </div>
-
-
-
-            <div class="analytics-grid reporting-grid">
-
-
-                {% for item in reporting_links %}
-
-                <a
-                    href="{% url item.url %}"
-                    class="feature-card reporting-card card-animate"
-                    style="--card-index: {{ forloop.counter0 }};"
-                >
-
-
-                    <div class="feature-card-top">
-
-
-                        <div class="feature-icon">
-
-                            {% if item.icon == "automated-report" %}
-                                ▤
-
-                            {% elif item.icon == "custom-report" %}
-                                ✎
-
-                            {% elif item.icon == "pdf" %}
-                                PDF
-
-                            {% elif item.icon == "excel" %}
-                                XLS
-
-                            {% elif item.icon == "history" %}
-                                ↺
-
-                            {% endif %}
-
+                <div class="sbi-grid">
+                    {% for item in decision_links %}
+                    <a href="{% if ':' in item.url %}{% url item.url %}{% else %}{% url 'decision_intelligence:'|add:item.url %}{% endif %}" class="sbi-card-di sbi-reveal">
+                        <div class="sbi-di-top">
+                            <span class="sbi-di-action-tag">Autonomous Run</span>
+                            <span>{% if item.icon == "recommendation" %}💡{% elif item.icon == "what-if" %}🎲{% elif item.icon == "scenario" %}🧩{% elif item.icon == "alerts" %}🚨{% elif item.icon == "action" %}✅{% elif item.icon == "impact" %}📊{% else %}🎯{% endif %}</span>
                         </div>
+                        <div>
+                            <h3>{{ item.title }}</h3>
+                            <p>{{ item.description }}</p>
+                        </div>
+                        <div class="sbi-di-footer">
+                            <span>Execute Protocol</span>
+                            <span>→</span>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
 
-
-                        <span class="open-label">
-                            REPORT
-                        </span>
-
+            <!-- SECTION 5: REPORTING (Rendered conditionally) -->
+            {% if reporting_links %}
+            <section class="sbi-section sbi-reveal" id="reporting">
+                <div class="sbi-section-header">
+                    <div class="sbi-sec-heading-group">
+                        <div class="sbi-sec-badge" style="color: var(--cyan);">📑</div>
+                        <div>
+                            <h2 class="sbi-sec-title">Reporting & Exports</h2>
+                            <p class="sbi-sec-subtitle">Executive briefs, scheduled compilations, and compliance ledgers</p>
+                        </div>
                     </div>
-
-
-
-                    <div class="feature-card-body">
-
-                        <h3>
-                            {{ item.title }}
-                        </h3>
-
-                        <p>
-                            {{ item.description }}
-                        </p>
-
-                    </div>
-
-
-
-                    <div class="feature-card-footer">
-
-                        <span>
-                            Open
-                        </span>
-
-                        <span
-                            class="feature-arrow"
-                            aria-hidden="true"
-                        >
-                            →
-                        </span>
-
-                    </div>
-
-
-                </a>
-
-                {% endfor %}
-
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             SYSTEM STATUS
-        ================================================== -->
-
-        <section
-            class="system-status-section"
-            id="system-status"
-        >
-
-
-            <div class="status-header">
-
-
-                <div>
-
-                    <span class="section-label">
-                        PLATFORM
-                    </span>
-
-                    <h2>
-                        System Status
-                    </h2>
-
-                    <p class="status-description">
-                        Core platform services and workspace availability.
-                    </p>
-
                 </div>
 
-
-                <div class="system-online">
-
-                    <span
-                        class="online-dot"
-                        aria-hidden="true"
-                    ></span>
-
-                    <span>
-                        Workspace Ready
-                    </span>
-
+                <div class="sbi-grid">
+                    {% for item in reporting_links %}
+                    <a href="{% if ':' in item.url %}{% url item.url %}{% else %}{% url 'reporting:'|add:item.url %}{% endif %}" class="sbi-card-rp sbi-reveal">
+                        <div>
+                            <span style="font-size: 20px;">📄</span>
+                            <h3>{{ item.title }}</h3>
+                            <p>{{ item.description }}</p>
+                        </div>
+                        <div style="font-size: 11px; color: var(--blue); font-weight: 700; text-transform: uppercase; margin-top: 12px;">
+                            Compile →
+                        </div>
+                    </a>
+                    {% endfor %}
                 </div>
+            </section>
+            {% endif %}
 
-            </div>
-
-
-
-            <div class="status-grid">
-
-
-                <!-- DATABASE -->
-
-                <div class="status-item">
-
-                    <div class="status-item-icon">
-                        ◉
+            <!-- SECTION 6: SYSTEM STATUS -->
+            {% if system_status %}
+            <section class="sbi-status-panel sbi-reveal" aria-label="System Pipeline Health">
+                <div class="sbi-sec-heading-group">
+                    <div class="sbi-status-beacon"></div>
+                    <div>
+                        <h2 class="sbi-sec-title" style="font-size: 15px;">Pipeline Telemetry & Engine Health</h2>
                     </div>
-
-                    <div class="status-item-content">
-
-                        <span>
-                            Database
-                        </span>
-
-                        <strong>
-                            Connected
-                        </strong>
-
-                    </div>
-
-                    <span class="status-check">
-                        ✓
-                    </span>
-
                 </div>
-
-
-
-                <!-- ANALYTICS -->
-
-                <div class="status-item">
-
-                    <div class="status-item-icon">
-                        ◈
+                <div class="sbi-status-grid">
+                    {% for item in system_status %}
+                    <div class="sbi-status-node">
+                        <span class="sbi-status-beacon {% if 'warn' in item.status|lower %}beacon-warn{% elif 'err' in item.status|lower or 'fail' in item.status|lower %}beacon-err{% endif %}"></span>
+                        <div>
+                            <div class="sbi-status-node-name">{{ item.name }}</div>
+                            <div class="sbi-status-node-state">{{ item.status }}</div>
+                        </div>
                     </div>
-
-                    <div class="status-item-content">
-
-                        <span>
-                            Analytics Engine
-                        </span>
-
-                        <strong>
-                            Ready
-                        </strong>
-
-                    </div>
-
-                    <span class="status-check">
-                        ✓
-                    </span>
-
+                    {% endfor %}
                 </div>
+            </section>
+            {% endif %}
 
+            <!-- FOOTER -->
+            <footer class="sbi-footer sbi-reveal">
+                <div>Smart Business Intelligence Command System &bull; Version 4.8 Core</div>
+                <div>Connected to Enterprise Decision Plane</div>
+            </footer>
 
-
-                <!-- INSIGHTS -->
-
-                <div class="status-item">
-
-                    <div class="status-item-icon">
-                        ◇
-                    </div>
-
-                    <div class="status-item-content">
-
-                        <span>
-                            Insight Engine
-                        </span>
-
-                        <strong>
-                            Ready
-                        </strong>
-
-                    </div>
-
-                    <span class="status-check">
-                        ✓
-                    </span>
-
-                </div>
-
-
-
-                <!-- DECISION -->
-
-                <div class="status-item">
-
-                    <div class="status-item-icon">
-                        ◆
-                    </div>
-
-                    <div class="status-item-content">
-
-                        <span>
-                            Decision Engine
-                        </span>
-
-                        <strong>
-                            Ready
-                        </strong>
-
-                    </div>
-
-                    <span class="status-check">
-                        ✓
-                    </span>
-
-                </div>
-
-
-            </div>
-
-
-        </section>
-
-
-
-        <!-- =================================================
-             FOOTER
-        ================================================== -->
-
-        <footer class="dashboard-footer">
-
-
-            <div class="footer-brand">
-
-                <span class="footer-brand-mark">
-                    S
-                </span>
-
-                <span>
-                    Smart Business Decision Intelligence
-                </span>
-
-            </div>
-
-
-            <div class="footer-center">
-                Executive Workspace
-            </div>
-
-
-            <div class="footer-right">
-                <span id="footer-year"></span>
-            </div>
-
-
-        </footer>
-
-
+        </div>
     </main>
-
 </div>
 
-
-
-<!-- =========================================================
-     DASHBOARD JAVASCRIPT
-========================================================= -->
-
+<!-- ==========================================================================
+     INTERSECTION OBSERVER SCRIPT
+     ========================================================================== -->
 <script>
-
 document.addEventListener("DOMContentLoaded", function () {
-
-
-    /* =====================================================
-       CURRENT DATE
-    ====================================================== */
-
-    const dateElement =
-        document.getElementById("current-date");
-
-    if (dateElement) {
-
-        const today = new Date();
-
-        const formattedDate =
-            today.toLocaleDateString(
-                undefined,
-                {
-                    weekday: "short",
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric"
-                }
-            );
-
-        dateElement.textContent =
-            formattedDate;
-    }
-
-
-
-    /* =====================================================
-       FOOTER YEAR
-    ====================================================== */
-
-    const footerYear =
-        document.getElementById("footer-year");
-
-    if (footerYear) {
-
-        footerYear.textContent =
-            new Date().getFullYear();
-
-    }
-
-
-
-    /* =====================================================
-       SCROLL REVEAL
-    ====================================================== */
-
-    const sections =
-        document.querySelectorAll(
-            ".dashboard-section, .system-status-section"
-        );
-
-
-    if ("IntersectionObserver" in window) {
-
-        const sectionObserver =
-            new IntersectionObserver(
-                function (entries) {
-
-                    entries.forEach(
-                        function (entry) {
-
-                            if (
-                                entry.isIntersecting
-                            ) {
-
-                                entry.target.classList.add(
-                                    "section-visible"
-                                );
-
-                                sectionObserver.unobserve(
-                                    entry.target
-                                );
-
-                            }
-
-                        }
-                    );
-
-                },
-                {
-                    threshold: 0.10
-                }
-            );
-
-
-        sections.forEach(
-            function (section) {
-
-                section.classList.add(
-                    "section-hidden"
-                );
-
-                sectionObserver.observe(
-                    section
-                );
-
-            }
-        );
-
-    }
-    else {
-
-        sections.forEach(
-            function (section) {
-
-                section.classList.add(
-                    "section-visible"
-                );
-
-            }
-        );
-
-    }
-
-
-
-    /* =====================================================
-       CARD MOUSE TILT
-    ====================================================== */
-
-    const cards =
-        document.querySelectorAll(
-            ".dashboard-card, .feature-card"
-        );
-
-
-    cards.forEach(
-        function (card) {
-
-
-            card.addEventListener(
-                "mousemove",
-                function (event) {
-
-                    /*
-                     * Keep the effect very subtle.
-                     * The card should still feel professional.
-                     */
-
-                    const rect =
-                        card.getBoundingClientRect();
-
-                    const x =
-                        event.clientX - rect.left;
-
-                    const y =
-                        event.clientY - rect.top;
-
-                    const centerX =
-                        rect.width / 2;
-
-                    const centerY =
-                        rect.height / 2;
-
-                    const rotateX =
-                        ((y - centerY) / centerY) * -1.2;
-
-                    const rotateY =
-                        ((x - centerX) / centerX) * 1.2;
-
-
-                    card.style.transform =
-                        `
-                        perspective(900px)
-                        rotateX(${rotateX}deg)
-                        rotateY(${rotateY}deg)
-                        translateY(-5px)
-                        scale(1.01)
-                        `;
-                }
-            );
-
-
-            card.addEventListener(
-                "mouseleave",
-                function () {
-
-                    card.style.transform = "";
-
-                }
-            );
-
-
-            card.addEventListener(
-                "focus",
-                function () {
-
-                    card.classList.add(
-                        "card-focused"
-                    );
-
-                }
-            );
-
-
-            card.addEventListener(
-                "blur",
-                function () {
-
-                    card.classList.remove(
-                        "card-focused"
-                    );
-
-                }
-            );
-
-        }
-    );
-
-
-
-    /* =====================================================
-       MOUSE GLOW POSITION
-    ====================================================== */
-
-    cards.forEach(
-        function (card) {
-
-            card.addEventListener(
-                "mousemove",
-                function (event) {
-
-                    const rect =
-                        card.getBoundingClientRect();
-
-                    const x =
-                        ((event.clientX - rect.left)
-                        / rect.width) * 100;
-
-                    const y =
-                        ((event.clientY - rect.top)
-                        / rect.height) * 100;
-
-                    card.style.setProperty(
-                        "--mouse-x",
-                        `${x}%`
-                    );
-
-                    card.style.setProperty(
-                        "--mouse-y",
-                        `${y}%`
-                    );
-
-                }
-            );
-
-        }
-    );
-
-
-
-    /* =====================================================
-       SECTION LINK HOVER
-    ====================================================== */
-
-    const sectionLinks =
-        document.querySelectorAll(
-            ".section-link"
-        );
-
-
-    sectionLinks.forEach(
-        function (link) {
-
-            link.addEventListener(
-                "mouseenter",
-                function () {
-
-                    link.classList.add(
-                        "section-link-active"
-                    );
-
-                }
-            );
-
-
-            link.addEventListener(
-                "mouseleave",
-                function () {
-
-                    link.classList.remove(
-                        "section-link-active"
-                    );
-
-                }
-            );
-
-        }
-    );
-
-
-
-    /* =====================================================
-       SMOOTH INTERNAL NAVIGATION
-    ====================================================== */
-
-    const internalLinks =
-        document.querySelectorAll(
-            'a[href^="#"]'
-        );
-
-
-    internalLinks.forEach(
-        function (link) {
-
-            link.addEventListener(
-                "click",
-                function (event) {
-
-                    const targetId =
-                        link.getAttribute("href");
-
-                    if (
-                        !targetId ||
-                        targetId === "#"
-                    ) {
-                        return;
+    const scrollContainer = document.getElementById("sbi-scroll-container");
+    const elementsToReveal = document.querySelectorAll(".sbi-reveal");
+
+    if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const observer = new IntersectionObserver(
+            (entries, obs) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("revealed");
+                        obs.unobserve(entry.target);
                     }
-
-
-                    const target =
-                        document.querySelector(
-                            targetId
-                        );
-
-
-                    if (target) {
-
-                        event.preventDefault();
-
-                        target.scrollIntoView(
-                            {
-                                behavior: "smooth",
-                                block: "start"
-                            }
-                        );
-
-                    }
-
-                }
-            );
-
-        }
-    );
-
-
-
-    /* =====================================================
-       ACTIVE SECTION OBSERVER
-    ====================================================== */
-
-    const dashboardSections =
-        document.querySelectorAll(
-            ".dashboard-section"
-        );
-
-
-    const navObserver =
-        "IntersectionObserver" in window
-            ? new IntersectionObserver(
-                function (entries) {
-
-                    entries.forEach(
-                        function (entry) {
-
-                            if (
-                                entry.isIntersecting
-                            ) {
-
-                                entry.target.classList.add(
-                                    "section-in-view"
-                                );
-
-                            }
-                            else {
-
-                                entry.target.classList.remove(
-                                    "section-in-view"
-                                );
-
-                            }
-
-                        }
-                    );
-
-                },
-                {
-                    threshold: 0.25
-                }
-            )
-            : null;
-
-
-    if (navObserver) {
-
-        dashboardSections.forEach(
-            function (section) {
-
-                navObserver.observe(
-                    section
-                );
-
+                });
+            },
+            {
+                root: window.innerWidth > 768 ? scrollContainer : null,
+                threshold: 0.1,
+                rootMargin: "0px 0px -40px 0px"
             }
         );
 
+        elementsToReveal.forEach((el) => observer.observe(el));
+    } else {
+        elementsToReveal.forEach((el) => el.classList.add("revealed"));
     }
-
-
-
-    /* =====================================================
-       PAGE READY
-    ====================================================== */
-
-    document.body.classList.add(
-        "dashboard-ready"
-    );
-
 });
-
 </script>
-
-
-</body>
-
-</html>
+{% endblock %}

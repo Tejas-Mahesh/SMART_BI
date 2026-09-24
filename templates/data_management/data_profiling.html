@@ -1,737 +1,1755 @@
-{% extends "base.html" %}
-
 {% load static %}
-
-{% block title %}
-Data Profiling | Smart BI
-{% endblock %}
-
-
-{% block content %}
-
-<div class="profiling-page">
-
-    <!-- HEADER -->
-
-    <div class="profiling-header">
-
-        <div>
-
-            <span class="section-label">
-                DATA MANAGEMENT
-            </span>
-
-            <h1>
-                Data <span>Profiling</span>
-            </h1>
-
-            <p>
-                Understand the structure, statistics and
-                distribution of your business dataset.
-            </p>
-
-        </div>
-
-        <a
-            href="{% url 'data_management:upload' %}"
-            class="profiling-upload-btn"
-        >
-            + Upload Dataset
-        </a>
-
-    </div>
-
-
-    <!-- DATASET SELECTOR -->
-
-    <div class="profiling-selector">
-
-        <div class="selector-information">
-
-            <div class="selector-icon">
-                ◉
-            </div>
-
-            <div>
-
-                <span>
-                    SELECT DATASET
-                </span>
-
-                <h3>
-                    Choose dataset to profile
-                </h3>
-
-            </div>
-
-        </div>
-
-
-        {% if datasets %}
-
-        <form
-            method="GET"
-            action="{% url 'data_management:data_profiling' %}"
-            class="profiling-form"
-        >
-
-            <select
-                name="dataset"
-                onchange="this.form.submit()"
-            >
-
-                {% for dataset in datasets %}
-
-                    <option
-                        value="{{ dataset.id }}"
-                        {% if selected_dataset.id == dataset.id %}
-                            selected
-                        {% endif %}
-                    >
-
-                        {{ dataset.name }}
-                        — {{ dataset.dataset_type }}
-
-                    </option>
-
-                {% endfor %}
-
-            </select>
-
-        </form>
-
-        {% endif %}
-
-    </div>
-
-
-    {% if selected_dataset and profiling %}
-
-
-    <!-- DATASET INFO -->
-
-    <div class="profiling-info">
-
-        <div>
-
-            <span>
-                DATASET
-            </span>
-
-            <strong>
-                {{ selected_dataset.name }}
-            </strong>
-
-        </div>
-
-
-        <div>
-
-            <span>
-                TYPE
-            </span>
-
-            <strong>
-                {{ selected_dataset.dataset_type }}
-            </strong>
-
-        </div>
-
-
-        <div>
-
-            <span>
-                FILE
-            </span>
-
-            <strong>
-                {{ selected_dataset.original_filename }}
-            </strong>
-
-        </div>
-
-
-        <div>
-
-            <span>
-                SIZE
-            </span>
-
-            <strong>
-                {{ profiling.total_cells }}
-                cells
-            </strong>
-
-        </div>
-
-    </div>
-
-
-    <!-- OVERVIEW CARDS -->
-
-    <div class="profiling-overview">
-
-
-        <div class="profile-card">
-
-            <div class="profile-card-icon purple">
-                #
-            </div>
-
-            <span>
-                TOTAL ROWS
-            </span>
-
-            <strong>
-                {{ profiling.total_rows }}
-            </strong>
-
-        </div>
-
-
-        <div class="profile-card">
-
-            <div class="profile-card-icon blue">
-                ▦
-            </div>
-
-            <span>
-                TOTAL COLUMNS
-            </span>
-
-            <strong>
-                {{ profiling.total_columns }}
-            </strong>
-
-        </div>
-
-
-        <div class="profile-card">
-
-            <div class="profile-card-icon green">
-                ✓
-            </div>
-
-            <span>
-                COMPLETENESS
-            </span>
-
-            <strong>
-                {{ profiling.completeness }}%
-            </strong>
-
-        </div>
-
-
-        <div class="profile-card">
-
-            <div class="profile-card-icon orange">
-                ◇
-            </div>
-
-            <span>
-                NUMERIC COLUMNS
-            </span>
-
-            <strong>
-                {{ profiling.numeric_count }}
-            </strong>
-
-        </div>
-
-
-        <div class="profile-card">
-
-            <div class="profile-card-icon red">
-                !
-            </div>
-
-            <span>
-                MISSING VALUES
-            </span>
-
-            <strong>
-                {{ profiling.missing_values }}
-            </strong>
-
-        </div>
-
-    </div>
-
-
-    <!-- DATASET HEALTH -->
-
-    <div class="health-panel">
-
-        <div class="health-left">
-
-            <div class="health-icon">
-                ✓
-            </div>
-
-            <div>
-
-                <span class="section-label">
-                    DATASET HEALTH
-                </span>
-
-                <h2>
-                    {{ profiling.health_status }}
-                </h2>
-
-                <p>
-                    Based on overall data completeness
-                    and missing-value analysis.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="health-meter">
-
-            <div class="meter-background">
-
-                <div
-                    class="meter-progress {{ profiling.health_class }}"
-                    style="width: {{ profiling.completeness }}%;"
-                ></div>
-
-            </div>
-
-            <strong>
-                {{ profiling.completeness }}%
-            </strong>
-
-        </div>
-
-    </div>
-
-
-    <!-- COLUMN PROFILE -->
-
-    <div class="profiling-section">
-
-        <div class="profiling-section-heading">
-
-            <div>
-
-                <span class="section-label">
-                    COLUMN ANALYSIS
-                </span>
-
-                <h2>
-                    Column Profile
-                </h2>
-
-            </div>
-
-            <span class="column-count">
-                {{ profiling.total_columns }}
-                columns
-            </span>
-
-        </div>
-
-
-        <div class="profile-table-wrapper">
-
-            <table class="profile-table">
-
-                <thead>
-
-                    <tr>
-
-                        <th>
-                            COLUMN
-                        </th>
-
-                        <th>
-                            TYPE
-                        </th>
-
-                        <th>
-                            NON-NULL
-                        </th>
-
-                        <th>
-                            MISSING
-                        </th>
-
-                        <th>
-                            UNIQUE
-                        </th>
-
-                        <th>
-                            MIN
-                        </th>
-
-                        <th>
-                            MAX
-                        </th>
-
-                        <th>
-                            MEAN
-                        </th>
-
-                        <th>
-                            MEDIAN
-                        </th>
-
-                        <th>
-                            HEALTH
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody>
-
-                    {% for column in profiling.column_profiles %}
-
-                    <tr>
-
-                        <td class="column-name">
-                            {{ column.name }}
-                        </td>
-
-                        <td>
-
-                            <span
-                                class="type-badge {{ column.type_class }}"
-                            >
-                                {{ column.column_type }}
-                            </span>
-
-                        </td>
-
-                        <td>
-                            {{ column.non_null }}
-                        </td>
-
-                        <td>
-
-                            <div class="missing-cell">
-
-                                <span>
-                                    {{ column.missing }}
-                                </span>
-
-                                <small>
-                                    {{ column.missing_percentage }}%
-                                </small>
-
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Profiling | Smart Business Decision Intelligence</title>
+
+    <style>
+        /* ============================================================
+           SMART BI DESIGN SYSTEM & PALETTE
+        ============================================================ */
+        :root {
+            --bg: #030712;
+            --bg-deep: #020617;
+            --bg-soft: #071525;
+
+            --card: #0B1B2D;
+            --card-light: #10243A;
+            --card-glass: rgba(11, 27, 45, 0.72);
+            --card-glass-subtle: rgba(16, 36, 58, 0.45);
+
+            --purple: #7C5CFF;
+            --purple-light: #A99CFF;
+            --purple-glow: rgba(124, 92, 255, 0.35);
+
+            --blue: #35B8FF;
+            --blue-glow: rgba(53, 184, 255, 0.30);
+
+            --cyan: #22D3EE;
+            --cyan-glow: rgba(34, 211, 238, 0.28);
+
+            --green: #39E58C;
+            --green-glow: rgba(57, 229, 140, 0.25);
+
+            --orange: #FFB454;
+            --orange-glow: rgba(255, 180, 84, 0.25);
+
+            --red: #FF5C70;
+            --red-glow: rgba(255, 92, 112, 0.25);
+
+            --text: #F7FAFF;
+            --muted: #8294A8;
+            --subtle: #4D6277;
+
+            --border: rgba(255, 255, 255, 0.08);
+            --border-bright: rgba(255, 255, 255, 0.16);
+            --border-cyan: rgba(34, 211, 238, 0.35);
+            --border-purple: rgba(124, 92, 255, 0.35);
+
+            --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+            --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* ============================================================
+           RESET & VIEWPORT ROOT
+        ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button, select {
+            font: inherit;
+            outline: none;
+        }
+
+        /* ============================================================
+           DUAL INDEPENDENT SCROLL LAYOUT
+        ============================================================ */
+        .smart-app-layout {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(circle at 10% 12%, rgba(124, 92, 255, 0.10) 0%, transparent 40%),
+                radial-gradient(circle at 90% 88%, rgba(34, 211, 238, 0.08) 0%, transparent 45%),
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+        }
+
+        /* Sidebar: Fixed left dock, scrolls independently */
+        .smart-sidebar-container {
+            width: 270px;
+            height: 100vh;
+            flex-shrink: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 50;
+            background: var(--bg-deep);
+            border-right: 1px solid var(--border);
+            scrollbar-width: thin;
+            scrollbar-color: var(--subtle) transparent;
+        }
+
+        .smart-sidebar-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .smart-sidebar-container::-webkit-scrollbar-thumb {
+            background: var(--subtle);
+            border-radius: 4px;
+        }
+
+        /* Main Viewport: Independent scroll */
+        .smart-main-content {
+            flex: 1;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 10;
+            padding: 34px 44px 80px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--card-light) transparent;
+        }
+
+        .smart-main-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .smart-main-content::-webkit-scrollbar-thumb {
+            background: var(--card-light);
+            border-radius: 4px;
+        }
+
+        .profiling-page {
+            max-width: 1540px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Ambient floating light orbs */
+        .ambient-orb-top {
+            position: fixed;
+            width: 420px;
+            height: 420px;
+            top: -180px;
+            right: -100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--purple-glow), transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            animation: orbFloat 9s ease-in-out infinite alternate;
+        }
+
+        .ambient-orb-bottom {
+            position: fixed;
+            width: 380px;
+            height: 380px;
+            bottom: -160px;
+            left: 220px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--cyan-glow), transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            animation: orbFloat 11s ease-in-out infinite alternate-reverse;
+        }
+
+        /* ============================================================
+           HEADER
+        ============================================================ */
+        .profiling-header {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+            padding: 30px 34px;
+            border: 1px solid var(--border-bright);
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(11, 27, 45, 0.92) 0%, rgba(7, 21, 37, 0.80) 100%);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(16px);
+            overflow: hidden;
+            animation: fadeUp 0.65s var(--transition-smooth) both;
+        }
+
+        .profiling-header::before {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            top: -140px;
+            right: 80px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(124, 92, 255, 0.22), transparent 70%);
+            pointer-events: none;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--cyan);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+        }
+
+        .section-label::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 0 0 10px var(--cyan);
+            animation: pulseDot 2s infinite;
+        }
+
+        .profiling-header h1 {
+            margin-top: 10px;
+            font-size: clamp(28px, 3.2vw, 42px);
+            line-height: 1.1;
+            letter-spacing: -1.2px;
+            font-weight: 850;
+        }
+
+        .profiling-header h1 span {
+            background: linear-gradient(90deg, var(--purple-light), var(--cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .profiling-header p {
+            max-width: 680px;
+            margin-top: 10px;
+            color: var(--muted);
+            font-size: 13.5px;
+            line-height: 1.6;
+        }
+
+        .profiling-upload-btn {
+            position: relative;
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            padding: 0 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(124, 92, 255, 0.4);
+            background: linear-gradient(135deg, var(--purple), #6245e8);
+            color: #FFFFFF;
+            font-size: 12px;
+            font-weight: 750;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            box-shadow: 0 10px 24px var(--purple-glow);
+            transition: transform 0.3s var(--transition-bounce), box-shadow 0.3s ease;
+        }
+
+        .profiling-upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px var(--purple-glow);
+        }
+
+        /* ============================================================
+           DATASET + VERSION SELECTOR
+        ============================================================ */
+        .profiling-selector {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            padding: 24px 28px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+            animation: fadeUp 0.75s var(--transition-smooth) both;
+        }
+
+        .selector-information {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .selector-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 13px;
+            background: rgba(34, 211, 238, 0.1);
+            border: 1px solid rgba(34, 211, 238, 0.25);
+            color: var(--cyan);
+            font-size: 18px;
+            font-weight: 850;
+            box-shadow: 0 0 18px var(--cyan-glow);
+        }
+
+        .selector-information span {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: var(--subtle);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .selector-information h3 {
+            font-size: 16px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+
+        .profiling-form {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .selector-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 220px;
+        }
+
+        .selector-field label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--muted);
+        }
+
+        .selector-field select {
+            height: 42px;
+            padding: 0 16px;
+            border: 1px solid var(--border-bright);
+            border-radius: 12px;
+            background: #081525;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 12.5px;
+            font-weight: 500;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .selector-field select:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.10);
+        }
+
+        .selector-field select option {
+            background: #081525;
+            color: var(--text);
+            padding: 8px;
+        }
+
+        /* ============================================================
+           SELECTED VERSION BAR
+        ============================================================ */
+        .selected-version-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 16px 22px;
+            border-radius: 14px;
+            background: var(--card-glass-subtle);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(12px);
+            animation: fadeUp 0.8s var(--transition-smooth) both;
+        }
+
+        .selected-version-main h3 {
+            font-size: 16px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-top: 4px;
+        }
+
+        .selected-version-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .current-version-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--cyan);
+            background: rgba(34, 211, 238, 0.10);
+            border: 1px solid rgba(34, 211, 238, 0.25);
+        }
+
+        .version-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+
+        .version-badge.original {
+            color: var(--blue);
+            background: rgba(53, 184, 255, 0.10);
+            border: 1px solid rgba(53, 184, 255, 0.25);
+        }
+
+        .version-badge.cleaned {
+            color: var(--green);
+            background: rgba(57, 229, 140, 0.10);
+            border: 1px solid rgba(57, 229, 140, 0.25);
+        }
+
+        .version-badge.transformed {
+            color: var(--purple-light);
+            background: rgba(124, 92, 255, 0.10);
+            border: 1px solid rgba(124, 92, 255, 0.25);
+        }
+
+        .version-badge.dataset,
+        .version-badge.version {
+            color: var(--muted);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+        }
+
+        /* ============================================================
+           DATASET INFO GRID
+        ============================================================ */
+        .profiling-info {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            animation: fadeUp 0.82s var(--transition-smooth) both;
+        }
+
+        .profiling-info > div {
+            padding: 16px 18px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: var(--card-glass-subtle);
+            backdrop-filter: blur(12px);
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .profiling-info > div:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-bright);
+        }
+
+        .profiling-info span {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--subtle);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .profiling-info strong {
+            display: block;
+            color: var(--text);
+            font-size: 13.5px;
+            font-weight: 750;
+            word-break: break-word;
+        }
+
+        /* ============================================================
+           OVERVIEW CARDS (METRICS)
+        ============================================================ */
+        .profiling-overview {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 14px;
+            animation: fadeUp 0.85s var(--transition-smooth) both;
+        }
+
+        .profile-card {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: linear-gradient(145deg, rgba(11, 27, 45, 0.86), rgba(7, 21, 37, 0.72));
+            backdrop-filter: blur(14px);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s var(--transition-bounce), border-color 0.3s ease;
+            animation: cardReveal 0.75s var(--transition-smooth) both;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-cyan);
+        }
+
+        .profile-card-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 850;
+            margin-bottom: 6px;
+        }
+
+        .profile-card-icon.purple {
+            color: var(--purple-light);
+            background: rgba(124, 92, 255, 0.12);
+            border: 1px solid rgba(124, 92, 255, 0.25);
+            box-shadow: 0 0 15px var(--purple-glow);
+        }
+
+        .profile-card-icon.blue {
+            color: var(--blue);
+            background: rgba(53, 184, 255, 0.12);
+            border: 1px solid rgba(53, 184, 255, 0.25);
+            box-shadow: 0 0 15px var(--blue-glow);
+        }
+
+        .profile-card-icon.green {
+            color: var(--green);
+            background: rgba(57, 229, 140, 0.12);
+            border: 1px solid rgba(57, 229, 140, 0.25);
+            box-shadow: 0 0 15px var(--green-glow);
+        }
+
+        .profile-card-icon.orange {
+            color: var(--orange);
+            background: rgba(255, 180, 84, 0.12);
+            border: 1px solid rgba(255, 180, 84, 0.25);
+            box-shadow: 0 0 15px var(--orange-glow);
+        }
+
+        .profile-card-icon.red {
+            color: var(--red);
+            background: rgba(255, 92, 112, 0.12);
+            border: 1px solid rgba(255, 92, 112, 0.25);
+            box-shadow: 0 0 15px var(--red-glow);
+        }
+
+        .profile-card span {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            color: var(--subtle);
+            text-transform: uppercase;
+        }
+
+        .profile-card strong {
+            font-size: 24px;
+            font-weight: 850;
+            color: #FFFFFF;
+            letter-spacing: -0.5px;
+        }
+
+        /* ============================================================
+           DATASET HEALTH PANEL
+        ============================================================ */
+        .health-panel {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            padding: 24px 30px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+            animation: fadeUp 0.88s var(--transition-smooth) both;
+        }
+
+        .health-left {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .health-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: rgba(57, 229, 140, 0.12);
+            border: 1px solid var(--green);
+            color: var(--green);
+            font-size: 20px;
+            font-weight: 850;
+            box-shadow: 0 0 20px var(--green-glow);
+            flex-shrink: 0;
+        }
+
+        .health-left h2 {
+            font-size: 20px;
+            font-weight: 850;
+            color: #FFFFFF;
+            margin-top: 4px;
+        }
+
+        .health-left p {
+            color: var(--muted);
+            font-size: 12.5px;
+            margin-top: 2px;
+        }
+
+        .health-meter {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            min-width: 280px;
+        }
+
+        .meter-background {
+            flex: 1;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+        }
+
+        .meter-progress {
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #20c878, var(--green));
+            box-shadow: 0 0 15px var(--green-glow);
+            transition: width 1s var(--transition-smooth);
+        }
+
+        .meter-progress.attention,
+        .meter-progress.warning {
+            background: linear-gradient(90deg, #f29b32, var(--orange));
+            box-shadow: 0 0 15px var(--orange-glow);
+        }
+
+        .meter-progress.critical,
+        .meter-progress.danger {
+            background: linear-gradient(90deg, #ed4056, var(--red));
+            box-shadow: 0 0 15px var(--red-glow);
+        }
+
+        .health-meter strong {
+            font-size: 18px;
+            font-weight: 850;
+            color: #FFFFFF;
+            min-width: 50px;
+            text-align: right;
+        }
+
+        /* ============================================================
+           SECTIONS (TABLE & GRIDS)
+        ============================================================ */
+        .profiling-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            animation: fadeUp 0.9s var(--transition-smooth) both;
+        }
+
+        .profiling-section-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .profiling-section-heading h2 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-top: 4px;
+        }
+
+        .column-count {
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: rgba(34, 211, 238, 0.10);
+            border: 1px solid rgba(34, 211, 238, 0.25);
+            color: var(--cyan);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+        }
+
+        /* Column Profile Table */
+        .profile-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-table {
+            width: 100%;
+            min-width: 950px;
+            border-collapse: collapse;
+        }
+
+        .profile-table th {
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.035);
+            border-bottom: 1px solid var(--border);
+            color: var(--subtle);
+            text-align: left;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .profile-table td {
+            padding: 15px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            font-size: 12.5px;
+        }
+
+        .profile-table tbody tr {
+            transition: background 0.25s ease;
+        }
+
+        .profile-table tbody tr:hover {
+            background: rgba(124, 92, 255, 0.04);
+        }
+
+        .profile-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .column-name {
+            font-weight: 750;
+            color: #FFFFFF;
+        }
+
+        .type-badge {
+            display: inline-flex;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 750;
+            background: rgba(53, 184, 255, 0.10);
+            border: 1px solid rgba(53, 184, 255, 0.25);
+            color: var(--blue);
+        }
+
+        .missing-cell {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .missing-cell small {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .health-badge {
+            display: inline-flex;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .health-badge.good,
+        .health-badge.healthy,
+        .health-badge.excellent {
+            color: var(--green);
+            background: rgba(57, 229, 140, 0.12);
+            border: 1px solid rgba(57, 229, 140, 0.25);
+        }
+
+        .health-badge.attention,
+        .health-badge.warning {
+            color: var(--orange);
+            background: rgba(255, 180, 84, 0.12);
+            border: 1px solid rgba(255, 180, 84, 0.25);
+        }
+
+        .health-badge.critical,
+        .health-badge.danger {
+            color: var(--red);
+            background: rgba(255, 92, 112, 0.12);
+            border: 1px solid rgba(255, 92, 112, 0.25);
+        }
+
+        .empty-table {
+            text-align: center;
+            color: var(--muted);
+            padding: 30px !important;
+        }
+
+        /* ============================================================
+           STATISTICAL ANALYSIS (NUMERIC GRID)
+        ============================================================ */
+        .numeric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .numeric-card {
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: var(--card-glass);
+            backdrop-filter: blur(14px);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .numeric-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-cyan);
+        }
+
+        .numeric-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .numeric-card-header h3 {
+            font-size: 15px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+
+        .numeric-card-header span {
+            font-size: 9px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(34, 211, 238, 0.1);
+            color: var(--cyan);
+            border: 1px solid rgba(34, 211, 238, 0.25);
+            letter-spacing: 0.6px;
+        }
+
+        .stat-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .stat-row > div {
+            padding: 8px 12px;
+            background: rgba(16, 36, 58, 0.4);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .stat-row span,
+        .std-stat span {
+            display: block;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            color: var(--subtle);
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .stat-row strong,
+        .std-stat strong {
+            display: block;
+            font-size: 14px;
+            font-weight: 750;
+            color: #FFFFFF;
+        }
+
+        .std-stat {
+            padding: 10px 14px;
+            background: rgba(124, 92, 255, 0.08);
+            border-radius: 8px;
+            border: 1px solid rgba(124, 92, 255, 0.2);
+        }
+
+        .std-stat strong {
+            color: var(--purple-light);
+        }
+
+        /* ============================================================
+           CATEGORY ANALYSIS (TOP CATEGORIES GRID)
+        ============================================================ */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .category-card {
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: var(--card-glass);
+            backdrop-filter: blur(14px);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-purple);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .category-header h3 {
+            font-size: 15px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+
+        .category-header span {
+            font-size: 9px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(124, 92, 255, 0.1);
+            color: var(--purple-light);
+            border: 1px solid rgba(124, 92, 255, 0.25);
+            letter-spacing: 0.6px;
+        }
+
+        .category-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: rgba(16, 36, 58, 0.4);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .category-row span {
+            font-size: 12px;
+            color: var(--muted);
+            max-width: 180px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .category-row strong {
+            font-size: 13px;
+            font-weight: 750;
+            color: #FFFFFF;
+        }
+
+        .no-values {
+            font-size: 12px;
+            color: var(--muted);
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        /* ============================================================
+           VERSION NAVIGATION PANEL
+        ============================================================ */
+        .version-navigation-panel {
+            padding: 24px 28px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+            animation: fadeUp 0.92s var(--transition-smooth) both;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .version-navigation-panel h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin: 4px 0 2px;
+        }
+
+        .version-navigation-panel p {
+            font-size: 12.5px;
+            color: var(--muted);
+        }
+
+        .version-navigation-list {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .version-navigation-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            border-radius: 12px;
+            background: rgba(16, 36, 58, 0.5);
+            border: 1px solid var(--border);
+            transition: all 0.25s ease;
+        }
+
+        .version-navigation-item:hover {
+            border-color: var(--border-cyan);
+            background: rgba(34, 211, 238, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .version-navigation-item.active {
+            border-color: var(--cyan);
+            background: rgba(34, 211, 238, 0.12);
+            box-shadow: 0 0 15px var(--cyan-glow);
+        }
+
+        .version-number {
+            font-size: 12px;
+            font-weight: 850;
+            color: var(--cyan);
+        }
+
+        .version-details strong {
+            display: block;
+            font-size: 12px;
+            color: var(--text);
+        }
+
+        .version-details small {
+            display: block;
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        .no-version-message {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* ============================================================
+           ACTION AREA / NEXT STEP PANEL
+        ============================================================ */
+        .profiling-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            padding: 26px 30px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+            animation: fadeUp 0.95s var(--transition-smooth) both;
+        }
+
+        .profiling-actions h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin: 6px 0 4px;
+        }
+
+        .profiling-actions p {
+            color: var(--muted);
+            font-size: 12.5px;
+            line-height: 1.6;
+            max-width: 600px;
+        }
+
+        .action-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .secondary-action,
+        .primary-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            padding: 0 20px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 750;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            transition: transform 0.3s var(--transition-bounce), box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .secondary-action {
+            border: 1px solid var(--border-bright);
+            background: var(--card-glass);
+            color: var(--text);
+        }
+
+        .secondary-action:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-cyan);
+            background: rgba(34, 211, 238, 0.08);
+            box-shadow: 0 8px 22px rgba(34, 211, 238, 0.12);
+        }
+
+        .primary-action {
+            border: 1px solid rgba(124, 92, 255, 0.4);
+            background: linear-gradient(135deg, var(--purple), #6245e8);
+            color: #FFFFFF;
+            box-shadow: 0 10px 24px var(--purple-glow);
+        }
+
+        .primary-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px var(--purple-glow);
+        }
+
+        /* ============================================================
+           EMPTY STATE
+        ============================================================ */
+        .profiling-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 420px;
+            padding: 50px;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            background: linear-gradient(145deg, rgba(11, 27, 45, 0.88), rgba(7, 21, 37, 0.65));
+            text-align: center;
+            animation: fadeUp 0.8s var(--transition-smooth) both;
+        }
+
+        .empty-icon {
+            width: 75px;
+            height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-purple);
+            border-radius: 20px;
+            background: rgba(124, 92, 255, 0.08);
+            color: var(--purple-light);
+            font-size: 30px;
+            box-shadow: 0 0 35px rgba(124, 92, 255, 0.12);
+            animation: emptyFloat 3s ease-in-out infinite;
+        }
+
+        .profiling-empty h2 {
+            font-size: 24px;
+            font-weight: 850;
+            color: #FFFFFF;
+            margin-top: 10px;
+        }
+
+        .profiling-empty p {
+            max-width: 480px;
+            margin-top: 8px;
+            margin-bottom: 24px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* ============================================================
+           KEYFRAME ANIMATIONS
+        ============================================================ */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes cardReveal {
+            from {
+                opacity: 0;
+                transform: translateY(16px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4); }
+            50% { box-shadow: 0 0 0 6px rgba(34, 211, 238, 0); }
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-25px, 25px); }
+        }
+
+        @keyframes emptyFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        /* ============================================================
+           RESPONSIVE DESIGN
+        ============================================================ */
+        @media (max-width: 1300px) {
+            .profiling-overview {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+            .profiling-info {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 900px) {
+            .smart-app-layout {
+                flex-direction: column;
+                height: auto;
+                overflow-y: visible;
+            }
+            .smart-sidebar-container {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            .smart-main-content {
+                height: auto;
+                overflow-y: visible;
+                padding: 24px 20px 80px;
+            }
+            .profiling-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .profiling-selector {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .profiling-form {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .health-panel {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .health-meter {
+                min-width: 100%;
+            }
+            .profiling-overview {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .profiling-actions {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .profiling-overview {
+                grid-template-columns: 1fr;
+            }
+            .profiling-info {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="smart-app-layout">
+        <!-- Ambient floating neon light orbs -->
+        <div class="ambient-orb-top"></div>
+        <div class="ambient-orb-bottom"></div>
+
+        <!-- =====================================================
+             LEFT SIDEBAR (INDEPENDENT SCROLL)
+        ====================================================== -->
+        <aside class="smart-sidebar-container" aria-label="Main Navigation">
+            {% include "includes/smart_sidebar.html" %}
+        </aside>
+
+        <!-- =====================================================
+             RIGHT MAIN CONTENT (INDEPENDENT SCROLL)
+        ====================================================== -->
+        <main class="smart-main-content" role="main">
+            <div class="profiling-page">
+
+                <!-- HEADER -->
+                <div class="profiling-header">
+                    <div>
+                        <span class="section-label">DATA MANAGEMENT</span>
+                        <h1>Data <span>Profiling</span></h1>
+                        <p>Understand the structure, statistical characteristics, type distribution, and column health of your business dataset.</p>
+                    </div>
+
+                    <a href="{% url 'data_management:upload_data' %}" class="profiling-upload-btn">
+                        + Upload Dataset
+                    </a>
+                </div>
+
+                <!-- DATASET + VERSION SELECTOR -->
+                <div class="profiling-selector">
+                    <div class="selector-information">
+                        <div class="selector-icon">◉</div>
+                        <div>
+                            <span>DATA &amp; VERSION</span>
+                            <h3>Choose dataset and version to profile</h3>
+                        </div>
+                    </div>
+
+                    {% if datasets %}
+                        <form method="GET" action="{% url 'data_management:profiling' %}" class="profiling-form">
+                            <!-- DATASET FIELD -->
+                            <div class="selector-field">
+                                <label for="dataset-select">Dataset</label>
+                                <select id="dataset-select" name="dataset" onchange="changeDataset(this)">
+                                    {% for dataset in datasets %}
+                                        <option value="{{ dataset.id }}" {% if selected_dataset and selected_dataset.id == dataset.id %}selected{% endif %}>
+                                            {{ dataset.name }} — {{ dataset.dataset_type }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
                             </div>
 
-                        </td>
+                            <!-- VERSION FIELD -->
+                            <div class="selector-field">
+                                <label for="version-select">Data Version</label>
+                                <select id="version-select" name="version" onchange="this.form.submit()">
+                                    {% if versions %}
+                                        {% for version in versions %}
+                                            <option value="{{ version.id }}" {% if selected_version and selected_version.id == version.id %}selected{% endif %}>
+                                                Version {{ version.version_number }} — {% if version.version_type %}{{ version.version_type }}{% else %}Version{% endif %}{% if version.is_current %} — Current{% endif %}
+                                            </option>
+                                        {% endfor %}
+                                    {% else %}
+                                        <option value="">Dataset File</option>
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
 
-                        <td>
-                            {{ column.unique }}
-                        </td>
+                {% if selected_dataset and profiling %}
 
-                        <td>
-                            {{ column.minimum }}
-                        </td>
+                    <!-- SELECTED VERSION BAR -->
+                    <div class="selected-version-bar">
+                        <div class="selected-version-main">
+                            <span class="section-label">PROFILING VERSION</span>
+                            <h3>{{ profiling.version_label }}</h3>
+                        </div>
 
-                        <td>
-                            {{ column.maximum }}
-                        </td>
-
-                        <td>
-                            {{ column.mean }}
-                        </td>
-
-                        <td>
-                            {{ column.median }}
-                        </td>
-
-                        <td>
-
-                            <span
-                                class="health-badge {{ column.health_class }}"
-                            >
-                                {{ column.health }}
+                        <div class="selected-version-meta">
+                            {% if profiling.is_current %}
+                                <span class="current-version-badge">CURRENT VERSION</span>
+                            {% endif %}
+                            <span class="version-badge {{ profiling.version_badge }}">
+                                {{ profiling.version_type }}
                             </span>
-
-                        </td>
-
-                    </tr>
-
-                    {% endfor %}
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-
-    <!-- NUMERIC SUMMARY -->
-
-    {% if profiling.numeric_summary %}
-
-    <div class="profiling-section">
-
-        <div class="profiling-section-heading">
-
-            <div>
-
-                <span class="section-label">
-                    STATISTICAL ANALYSIS
-                </span>
-
-                <h2>
-                    Numeric Column Statistics
-                </h2>
-
-            </div>
-
-        </div>
-
-
-        <div class="numeric-grid">
-
-            {% for item in profiling.numeric_summary %}
-
-            <div class="numeric-card">
-
-                <div class="numeric-card-header">
-
-                    <h3>
-                        {{ item.name }}
-                    </h3>
-
-                    <span>
-                        NUMERIC
-                    </span>
-
-                </div>
-
-
-                <div class="stat-row">
-
-                    <div>
-                        <span>MINIMUM</span>
-                        <strong>{{ item.minimum }}</strong>
+                        </div>
                     </div>
 
-                    <div>
-                        <span>MAXIMUM</span>
-                        <strong>{{ item.maximum }}</strong>
+                    <!-- DATASET INFO -->
+                    <div class="profiling-info">
+                        <div>
+                            <span>DATASET</span>
+                            <strong>{{ selected_dataset.name }}</strong>
+                        </div>
+                        <div>
+                            <span>TYPE</span>
+                            <strong>{{ selected_dataset.dataset_type }}</strong>
+                        </div>
+                        <div>
+                            <span>FILE</span>
+                            <strong>
+                                {% if selected_version and selected_version.file_name %}
+                                    {{ selected_version.file_name }}
+                                {% elif selected_version and selected_version.file %}
+                                    {{ selected_version.file.name }}
+                                {% else %}
+                                    {{ selected_dataset.original_filename }}
+                                {% endif %}
+                            </strong>
+                        </div>
+                        <div>
+                            <span>SIZE</span>
+                            <strong>{{ profiling.total_cells }} cells</strong>
+                        </div>
                     </div>
 
-                </div>
+                    <!-- OVERVIEW CARDS -->
+                    <div class="profiling-overview">
+                        <div class="profile-card">
+                            <div class="profile-card-icon purple">#</div>
+                            <span>TOTAL ROWS</span>
+                            <strong>{{ profiling.total_rows }}</strong>
+                        </div>
 
+                        <div class="profile-card">
+                            <div class="profile-card-icon blue">▦</div>
+                            <span>TOTAL COLUMNS</span>
+                            <strong>{{ profiling.total_columns }}</strong>
+                        </div>
 
-                <div class="stat-row">
+                        <div class="profile-card">
+                            <div class="profile-card-icon green">✓</div>
+                            <span>COMPLETENESS</span>
+                            <strong>{{ profiling.completeness }}%</strong>
+                        </div>
 
-                    <div>
-                        <span>MEAN</span>
-                        <strong>{{ item.mean }}</strong>
+                        <div class="profile-card">
+                            <div class="profile-card-icon orange">◇</div>
+                            <span>NUMERIC COLUMNS</span>
+                            <strong>{{ profiling.numeric_count }}</strong>
+                        </div>
+
+                        <div class="profile-card">
+                            <div class="profile-card-icon red">!</div>
+                            <span>MISSING VALUES</span>
+                            <strong>{{ profiling.missing_values }}</strong>
+                        </div>
                     </div>
 
-                    <div>
-                        <span>MEDIAN</span>
-                        <strong>{{ item.median }}</strong>
+                    <!-- DATASET HEALTH -->
+                    <div class="health-panel">
+                        <div class="health-left">
+                            <div class="health-icon">✓</div>
+                            <div>
+                                <span class="section-label">DATASET HEALTH</span>
+                                <h2>{{ profiling.health_status }}</h2>
+                                <p>Based on overall data completeness, column density, and missing-value analysis.</p>
+                            </div>
+                        </div>
+
+                        <div class="health-meter">
+                            <div class="meter-background">
+                                <div class="meter-progress {{ profiling.health_class }}" style="width: {{ profiling.completeness }}%;"></div>
+                            </div>
+                            <strong>{{ profiling.completeness }}%</strong>
+                        </div>
                     </div>
 
-                </div>
+                    <!-- COLUMN PROFILE -->
+                    <div class="profiling-section">
+                        <div class="profiling-section-heading">
+                            <div>
+                                <span class="section-label">COLUMN ANALYSIS</span>
+                                <h2>Column Profile</h2>
+                            </div>
+                            <span class="column-count">{{ profiling.total_columns }} columns</span>
+                        </div>
 
-
-                <div class="std-stat">
-
-                    <span>
-                        STANDARD DEVIATION
-                    </span>
-
-                    <strong>
-                        {{ item.std }}
-                    </strong>
-
-                </div>
-
-            </div>
-
-            {% endfor %}
-
-        </div>
-
-    </div>
-
-    {% endif %}
-
-
-    <!-- CATEGORICAL SUMMARY -->
-
-    {% if profiling.categorical_summary %}
-
-    <div class="profiling-section">
-
-        <div class="profiling-section-heading">
-
-            <div>
-
-                <span class="section-label">
-                    CATEGORY ANALYSIS
-                </span>
-
-                <h2>
-                    Top Categorical Values
-                </h2>
-
-            </div>
-
-        </div>
-
-
-        <div class="category-grid">
-
-            {% for item in profiling.categorical_summary %}
-
-            <div class="category-card">
-
-                <div class="category-header">
-
-                    <h3>
-                        {{ item.name }}
-                    </h3>
-
-                    <span>
-                        TOP 5
-                    </span>
-
-                </div>
-
-
-                {% if item.values %}
-
-                    {% for value in item.values %}
-
-                    <div class="category-row">
-
-                        <span>
-                            {{ value.value }}
-                        </span>
-
-                        <strong>
-                            {{ value.count }}
-                        </strong>
-
+                        <div class="profile-table-wrapper">
+                            <table class="profile-table">
+                                <thead>
+                                    <tr>
+                                        <th>COLUMN</th>
+                                        <th>TYPE</th>
+                                        <th>NON-NULL</th>
+                                        <th>MISSING</th>
+                                        <th>UNIQUE</th>
+                                        <th>MIN</th>
+                                        <th>MAX</th>
+                                        <th>MEAN</th>
+                                        <th>MEDIAN</th>
+                                        <th>HEALTH</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for column in profiling.column_profiles %}
+                                        <tr>
+                                            <td class="column-name">{{ column.name }}</td>
+                                            <td>
+                                                <span class="type-badge {{ column.type_class }}">
+                                                    {{ column.column_type }}
+                                                </span>
+                                            </td>
+                                            <td>{{ column.non_null }}</td>
+                                            <td>
+                                                <div class="missing-cell">
+                                                    <span>{{ column.missing }}</span>
+                                                    <small>({{ column.missing_percentage }}%)</small>
+                                                </div>
+                                            </td>
+                                            <td>{{ column.unique }}</td>
+                                            <td>{{ column.minimum }}</td>
+                                            <td>{{ column.maximum }}</td>
+                                            <td>{{ column.mean }}</td>
+                                            <td>{{ column.median }}</td>
+                                            <td>
+                                                <span class="health-badge {{ column.health_class }}">
+                                                    {{ column.health }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="10" class="empty-table">
+                                                No columns available for profiling.
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
-                    {% endfor %}
+                    <!-- NUMERIC SUMMARY -->
+                    {% if profiling.numeric_summary %}
+                        <div class="profiling-section">
+                            <div class="profiling-section-heading">
+                                <div>
+                                    <span class="section-label">STATISTICAL ANALYSIS</span>
+                                    <h2>Numeric Column Statistics</h2>
+                                </div>
+                            </div>
 
-                {% else %}
+                            <div class="numeric-grid">
+                                {% for item in profiling.numeric_summary %}
+                                    <div class="numeric-card">
+                                        <div class="numeric-card-header">
+                                            <h3>{{ item.name }}</h3>
+                                            <span>NUMERIC</span>
+                                        </div>
 
-                    <p class="no-values">
-                        No categorical values available.
-                    </p>
+                                        <div class="stat-row">
+                                            <div>
+                                                <span>MINIMUM</span>
+                                                <strong>{{ item.minimum }}</strong>
+                                            </div>
+                                            <div>
+                                                <span>MAXIMUM</span>
+                                                <strong>{{ item.maximum }}</strong>
+                                            </div>
+                                        </div>
+
+                                        <div class="stat-row">
+                                            <div>
+                                                <span>MEAN</span>
+                                                <strong>{{ item.mean }}</strong>
+                                            </div>
+                                            <div>
+                                                <span>MEDIAN</span>
+                                                <strong>{{ item.median }}</strong>
+                                            </div>
+                                        </div>
+
+                                        <div class="std-stat">
+                                            <span>STANDARD DEVIATION</span>
+                                            <strong>{{ item.std }}</strong>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <!-- CATEGORICAL SUMMARY -->
+                    {% if profiling.categorical_summary %}
+                        <div class="profiling-section">
+                            <div class="profiling-section-heading">
+                                <div>
+                                    <span class="section-label">CATEGORY ANALYSIS</span>
+                                    <h2>Top Categorical Values</h2>
+                                </div>
+                            </div>
+
+                            <div class="category-grid">
+                                {% for item in profiling.categorical_summary %}
+                                    <div class="category-card">
+                                        <div class="category-header">
+                                            <h3>{{ item.name }}</h3>
+                                            <span>TOP 5</span>
+                                        </div>
+
+                                        {% if item.values %}
+                                            {% for value in item.values %}
+                                                <div class="category-row">
+                                                    <span>{{ value.value }}</span>
+                                                    <strong>{{ value.count }}</strong>
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            <p class="no-values">No categorical values available.</p>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <!-- VERSION NAVIGATION -->
+                    <div class="version-navigation-panel">
+                        <div>
+                            <span class="section-label">DATA VERSION</span>
+                            <h3>Profile another version</h3>
+                            <p>Select a different version from this dataset to inspect its structure and statistical changes.</p>
+                        </div>
+
+                        <div class="version-navigation-list">
+                            {% for version in versions %}
+                                <a href="?dataset={{ selected_dataset.id }}&amp;version={{ version.id }}"
+                                   class="version-navigation-item {% if selected_version and selected_version.id == version.id %}active{% endif %}">
+                                    <span class="version-number">V{{ version.version_number }}</span>
+                                    <span class="version-details">
+                                        <strong>{% if version.version_type %}{{ version.version_type }}{% else %}Version{% endif %}</strong>
+                                        {% if version.is_current %}<small>Current</small>{% endif %}
+                                    </span>
+                                </a>
+                            {% empty %}
+                                <span class="no-version-message">No stored versions available.</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- NEXT ACTION -->
+                    <div class="profiling-actions">
+                        <div>
+                            <span class="section-label">DATA MANAGEMENT</span>
+                            <h3>Profiling completed successfully</h3>
+                            <p>Use the structural breakdown to inform your data preparation and validation rules before running analytical models.</p>
+                        </div>
+
+                        <div class="action-links">
+                            <a href="{% url 'data_management:quality' %}?dataset={{ selected_dataset.id }}&amp;version={{ selected_version.id }}" class="secondary-action">
+                                Data Quality
+                            </a>
+                            <a href="{% url 'data_management:validation' %}?dataset={{ selected_dataset.id }}&amp;version={{ selected_version.id }}" class="secondary-action">
+                                Data Validation
+                            </a>
+                            <a href="{% url 'data_management:cleaning' %}?dataset={{ selected_dataset.id }}&amp;version={{ selected_version.id }}" class="primary-action">
+                                Data Cleaning →
+                            </a>
+                        </div>
+                    </div>
+
+                {% elif selected_dataset %}
+
+                    <!-- PROFILE ERROR / EMPTY VERSION -->
+                    <div class="profiling-empty">
+                        <div class="empty-icon">◉</div>
+                        <span class="section-label">PROFILING UNAVAILABLE</span>
+                        <h2>Unable to profile the selected dataset</h2>
+                        <p>Check the dataset and ensure the associated version file exists on the server before trying again.</p>
+                    </div>
+
+                {% elif not datasets %}
+
+                    <!-- EMPTY DATASET STATE -->
+                    <div class="profiling-empty">
+                        <div class="empty-icon">◉</div>
+                        <span class="section-label">NO DATASET AVAILABLE</span>
+                        <h2>Upload a dataset to begin profiling</h2>
+                        <p>Data Profiling analyzes the distribution, types, and summary metrics across all columns in your uploaded files.</p>
+                        <a href="{% url 'data_management:upload_data' %}" class="primary-action">
+                            Upload Your First Dataset →
+                        </a>
+                    </div>
 
                 {% endif %}
 
             </div>
-
-            {% endfor %}
-
-        </div>
-
+        </main>
     </div>
 
-    {% endif %}
+    <!-- =========================================================
+         DATASET CHANGE SCRIPT
+    ========================================================== -->
+    <script>
+        function changeDataset(selectElement) {
+            const datasetId = selectElement.value;
+            if (!datasetId) {
+                return;
+            }
+            window.location.href = "{% url 'data_management:profiling' %}" + "?dataset=" + encodeURIComponent(datasetId);
+        }
+    </script>
 
-
-    <!-- NEXT ACTION -->
-
-    <div class="profiling-actions">
-
-        <div>
-
-            <span class="section-label">
-                DATA MANAGEMENT
-            </span>
-
-            <h3>
-                Profiling completed successfully
-            </h3>
-
-            <p>
-                Use the profiling results to understand
-                your data before beginning business analytics.
-            </p>
-
-        </div>
-
-
-        <div class="action-links">
-
-            <a
-                href="{% url 'data_management:data_quality' %}?dataset={{ selected_dataset.id }}"
-                class="secondary-action"
-            >
-                Data Quality
-            </a>
-
-
-            <a
-                href="{% url 'data_management:data_validation' %}?dataset={{ selected_dataset.id }}"
-                class="secondary-action"
-            >
-                Data Validation
-            </a>
-
-
-            <a
-                href="{% url 'data_management:data_cleaning' %}?dataset={{ selected_dataset.id }}"
-                class="primary-action"
-            >
-                Data Cleaning →
-            </a>
-
-        </div>
-
-    </div>
-
-
-    {% elif not datasets %}
-
-
-    <!-- EMPTY -->
-
-    <div class="profiling-empty">
-
-        <div class="empty-icon">
-            ◉
-        </div>
-
-        <span class="section-label">
-            NO DATASET AVAILABLE
-        </span>
-
-        <h2>
-            Upload a dataset to begin profiling
-        </h2>
-
-        <p>
-            Data Profiling analyzes the structure and
-            statistical characteristics of your uploaded data.
-        </p>
-
-        <a
-            href="{% url 'data_management:upload' %}"
-            class="primary-action"
-        >
-            Upload Your First Dataset →
-        </a>
-
-    </div>
-
-    {% endif %}
-
-</div>
-
-{% endblock %}
+</body>
+</html>

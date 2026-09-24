@@ -854,7 +854,61 @@
     background:
         var(--workspace-card);
 }
+/* =========================================================
+   DATASET DELETE BUTTON
+========================================================= */
 
+.delete-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    min-height: 40px;
+    padding: 0 16px;
+
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    border-radius: 10px;
+
+    background: rgba(239, 68, 68, 0.08);
+
+    color: #ef4444;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.delete-btn:hover {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.45);
+    color: #dc2626;
+
+    transform: translateY(-1px);
+}
+
+.delete-icon {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 18px;
+    height: 18px;
+
+    font-size: 18px;
+    line-height: 1;
+    font-weight: 500;
+}
 
 .quality-inner {
 

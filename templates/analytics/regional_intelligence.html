@@ -687,255 +687,433 @@
            KPI GRID
         ====================================================== */
 
-        .kpi-grid {
+.kpi-grid {
 
-            display: grid;
+    display: grid;
 
-            grid-template-columns:
-                repeat(4, minmax(0,1fr));
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
 
-            gap: 15px;
-        }
+    gap: 15px;
+}
 
 
-        .kpi-card {
+/* =========================================================
+   KPI CARD BASE
+   ========================================================= */
 
-            position: relative;
+.kpi-card {
 
-            min-height: 142px;
+    position: relative;
 
-            overflow: hidden;
+    min-height: 142px;
 
-            padding: 19px;
+    overflow: hidden;
 
-            border-radius: 16px;
+    padding: 19px;
 
-            color: #ffffff;
+    border-radius: 16px;
 
-            border:
-                1px solid
-                rgba(255,255,255,.08);
+    color: #ffffff;
 
-            box-shadow:
-                0 18px 40px
-                rgba(0,0,0,.18);
-        }
+    background:
+        var(--kpi-bg);
 
+    border:
+        1px solid
+        var(--kpi-border);
 
-        .kpi-card::before {
+    box-shadow:
+        0 14px 32px
+        var(--kpi-shadow);
 
-            content: "";
+    transition:
+        transform .22s ease,
+        box-shadow .22s ease,
+        border-color .22s ease;
+}
 
-            position: absolute;
 
-            width: 150px;
-            height: 150px;
+/* =========================================================
+   HOVER
+   ========================================================= */
 
-            right: -60px;
-            bottom: -75px;
+.kpi-card:hover {
 
-            border-radius: 50%;
+    transform:
+        translateY(-3px);
 
-            background:
-                rgba(255,255,255,.08);
-        }
+    border-color:
+        rgba(255,255,255,.28);
 
+    box-shadow:
+        0 20px 42px
+        var(--kpi-shadow);
+}
 
-        .kpi-card::after {
 
-            content: "";
+/* =========================================================
+   DECORATIVE CIRCLES
+   ========================================================= */
 
-            position: absolute;
+.kpi-card::before {
 
-            width: 65px;
-            height: 65px;
+    content: "";
 
-            left: -30px;
-            top: -30px;
+    position: absolute;
 
-            border-radius: 50%;
+    width: 150px;
+    height: 150px;
 
-            background:
-                rgba(255,255,255,.045);
-        }
+    right: -60px;
+    bottom: -75px;
 
+    border-radius: 50%;
 
-        .kpi-blue {
+    background:
+        rgba(255,255,255,.075);
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #163d7a,
-                    #17458f
-                );
-        }
+    pointer-events: none;
+}
 
 
-        .kpi-purple {
+.kpi-card::after {
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #38256f,
-                    #4b3192
-                );
-        }
+    content: "";
 
+    position: absolute;
 
-        .kpi-green {
+    width: 65px;
+    height: 65px;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #075c50,
-                    #087765
-                );
-        }
+    left: -30px;
+    top: -30px;
 
+    border-radius: 50%;
 
-        .kpi-orange {
+    background:
+        rgba(255,255,255,.045);
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #713c19,
-                    #9a5420
-                );
-        }
+    pointer-events: none;
+}
 
 
-        .kpi-cyan {
+/* =========================================================
+   BLUE
+   ========================================================= */
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #0a536e,
-                    #08728e
-                );
-        }
+.kpi-blue {
 
+    --kpi-color:
+        #60a5fa;
 
-        .kpi-pink {
+    --kpi-bg:
+        linear-gradient(
+            135deg,
+            #163d7a,
+            #17458f
+        );
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #6f2454,
-                    #902e6d
-                );
-        }
+    --kpi-border:
+        rgba(96,165,250,.45);
 
+    --kpi-shadow:
+        rgba(23,69,143,.32);
+}
 
-        .kpi-red {
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #681d2d,
-                    #8f263d
-                );
-        }
+/* =========================================================
+   PURPLE
+   ========================================================= */
 
+.kpi-purple {
 
-        .kpi-indigo {
+    --kpi-color:
+        #a78bfa;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #2d3278,
-                    #4046a1
-                );
-        }
+    --kpi-bg:
+        linear-gradient(
+            135deg,
+            #38256f,
+            #4b3192
+        );
 
+    --kpi-border:
+        rgba(167,139,250,.45);
 
-        .kpi-top {
+    --kpi-shadow:
+        rgba(75,49,146,.32);
+}
 
-            position: relative;
 
-            z-index: 2;
+/* =========================================================
+   GREEN
+   ========================================================= */
 
-            display: flex;
+.kpi-green {
 
-            align-items: center;
+    --kpi-color:
+        #4ade80;
 
-            justify-content: space-between;
-        }
+    --kpi-bg:
+        linear-gradient(
+            135deg,
+            #075c50,
+            #087765
+        );
 
+    --kpi-border:
+        rgba(74,222,128,.45);
 
-        .kpi-label {
+    --kpi-shadow:
+        rgba(8,119,101,.32);
+}
 
-            color: rgba(255,255,255,.78);
 
-            font-size: 10px;
+/* =========================================================
+   ORANGE
+   ========================================================= */
 
-            font-weight: 800;
+.kpi-orange {
 
-            text-transform: uppercase;
+    --kpi-color:
+        #fbbf24;
 
-            letter-spacing: .65px;
-        }
+    --kpi-bg:
+        linear-gradient(
+            135deg,
+            #713c19,
+            #9a5420
+        );
 
+    --kpi-border:
+        rgba(251,191,36,.45);
 
-        .kpi-icon {
+    --kpi-shadow:
+        rgba(154,84,32,.32);
+}
 
-            width: 36px;
-            height: 36px;
 
-            display: flex;
+/* =========================================================
+   CYAN
+   ========================================================= */
 
-            align-items: center;
-            justify-content: center;
+.kpi-cyan {
 
-            border-radius: 10px;
+    --kpi-color:
+        #22d3ee;
 
-            background:
-                rgba(255,255,255,.10);
+    --kpi-bg:
+        linear-gradient(
+            135deg,
+            #0891b2,
+            #0e7490
+        );
 
-            border:
-                1px solid
-                rgba(255,255,255,.08);
+    --kpi-border:
+        rgba(34,211,238,.45);
 
-            color: #ffffff;
+    --kpi-shadow:
+        rgba(8,145,178,.30);
+}
 
-            font-size: 14px;
-        }
 
+/* =========================================================
+   PINK
+   ========================================================= */
 
-        .kpi-value {
+.kpi-pink {
 
-            position: relative;
+    --kpi-color:
+        #f472b6;
 
-            z-index: 2;
+    --kpi-bg:
+        linear-gradient(
+            135deg,
+            #db2777,
+            #be185d
+        );
 
-            margin-top: 18px;
+    --kpi-border:
+        rgba(244,114,182,.45);
 
-            color: #ffffff;
+    --kpi-shadow:
+        rgba(219,39,119,.30);
+}
 
-            font-size: 25px;
 
-            line-height: 1;
+/* =========================================================
+   RED
+   ========================================================= */
 
-            font-weight: 800;
+.kpi-red {
 
-            letter-spacing: -.5px;
-        }
+    --kpi-color:
+        #fb7185;
 
+    --kpi-bg:
+        linear-gradient(
+            135deg,
+            #681d2d,
+            #8f263d
+        );
 
-        .kpi-subtitle {
+    --kpi-border:
+        rgba(251,113,133,.45);
 
-            position: relative;
+    --kpi-shadow:
+        rgba(143,38,61,.32);
+}
 
-            z-index: 2;
 
-            margin-top: 10px;
+/* =========================================================
+   INDIGO
+   ========================================================= */
 
-            color: rgba(255,255,255,.60);
+.kpi-indigo {
 
-            font-size: 10px;
+    --kpi-color:
+        #a5b4fc;
 
-            line-height: 1.4;
-        }
+    --kpi-bg:
+        linear-gradient(
+            135deg,
+            #2d3278,
+            #4046a1
+        );
 
+    --kpi-border:
+        rgba(165,180,252,.45);
+
+    --kpi-shadow:
+        rgba(64,70,161,.32);
+}
+
+
+/* =========================================================
+   TOP ROW
+   ========================================================= */
+
+.kpi-top {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+
+/* =========================================================
+   LABEL
+   ========================================================= */
+
+.kpi-label {
+
+    position: relative;
+
+    z-index: 2;
+
+    color:
+        rgba(255,255,255,.82);
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: .65px;
+}
+
+
+/* =========================================================
+   ICON
+   ========================================================= */
+
+.kpi-icon {
+
+    position: relative;
+
+    z-index: 2;
+
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background:
+        rgba(255,255,255,.10);
+
+    border:
+        1px solid
+        rgba(255,255,255,.10);
+
+    color:
+        var(--kpi-color);
+
+    font-size: 14px;
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.08);
+}
+
+
+/* =========================================================
+   VALUE
+   ========================================================= */
+
+.kpi-value {
+
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 18px;
+
+    color:
+        #ffffff;
+
+    font-size: 25px;
+
+    line-height: 1;
+
+    font-weight: 800;
+
+    letter-spacing: -.5px;
+}
+
+
+/* =========================================================
+   SUBTITLE
+   ========================================================= */
+
+.kpi-subtitle {
+
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 10px;
+
+    color:
+        rgba(255,255,255,.64);
+
+    font-size: 10px;
+
+    line-height: 1.4;
+}
 
         /* =====================================================
            CHART GRID

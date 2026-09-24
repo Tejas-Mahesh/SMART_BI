@@ -1,1187 +1,1949 @@
-{% extends "base.html" %}
 {% load static %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/data_management_workspace.css' %}">
-{% endblock %}
-
-{% block content %}
-
-<div class="data-workspace">
-
-    <!-- =========================================================
-         HEADER
-    ========================================================== -->
-
-    <section class="workspace-header">
-
-        <div>
-            <div class="workspace-eyebrow">
-                SMART BI · DATA MANAGEMENT
-            </div>
-
-            <h1>Your Business Data</h1>
-
-            <p>
-                Upload your business data and Smart BI automatically
-                validates, profiles, checks quality, cleans and prepares
-                it for analytics.
-            </p>
-        </div>
-
-        <a
-            href="{% url 'data_management:upload_data' %}"
-            class="upload-btn"
-        >
-            <span class="upload-icon">＋</span>
-            Upload Dataset
-        </a>
-
-    </section>
-
-
-    <!-- =========================================================
-         AUTOMATIC PROCESS FLOW
-    ========================================================== -->
-
-    <section class="smart-flow-card">
-
-        <div class="flow-heading">
-
-            <div>
-                <span class="flow-label">
-                    AUTOMATIC PROCESSING
-                </span>
-
-                <h2>
-                    From raw data to analytics-ready data
-                </h2>
-            </div>
-
-            <div class="flow-status">
-                <span class="status-dot"></span>
-                Smart BI Processing
-            </div>
-
-        </div>
-
-
-        <div class="flow-steps">
-
-            <div class="flow-step">
-                <div class="flow-number">01</div>
-                <div>
-                    <strong>Upload</strong>
-                    <small>Your business file</small>
-                </div>
-            </div>
-
-            <div class="flow-line"></div>
-
-            <div class="flow-step">
-                <div class="flow-number">02</div>
-                <div>
-                    <strong>Validate</strong>
-                    <small>Structure & records</small>
-                </div>
-            </div>
-
-            <div class="flow-line"></div>
-
-            <div class="flow-step">
-                <div class="flow-number">03</div>
-                <div>
-                    <strong>Profile</strong>
-                    <small>Understand the data</small>
-                </div>
-            </div>
-
-            <div class="flow-line"></div>
-
-            <div class="flow-step">
-                <div class="flow-number">04</div>
-                <div>
-                    <strong>Quality</strong>
-                    <small>Find data issues</small>
-                </div>
-            </div>
-
-            <div class="flow-line"></div>
-
-            <div class="flow-step">
-                <div class="flow-number">05</div>
-                <div>
-                    <strong>Clean</strong>
-                    <small>Prepare the dataset</small>
-                </div>
-            </div>
-
-            <div class="flow-line"></div>
-
-            <div class="flow-step final-flow">
-                <div class="flow-number">✓</div>
-                <div>
-                    <strong>Analytics Ready</strong>
-                    <small>Ready for intelligence</small>
-                </div>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================================================
-         DATASET SUMMARY
-    ========================================================== -->
-
-    <section class="workspace-summary">
-
-        <div class="summary-card">
-
-            <div class="summary-icon purple">
-                ◈
-            </div>
-
-            <div>
-                <span>Total Datasets</span>
-                <strong>{{ datasets|length }}</strong>
-            </div>
-
-        </div>
-
-        <div class="summary-card">
-
-            <div class="summary-icon blue">
-                ↗
-            </div>
-
-            <div>
-                <span>Analytics Pipeline</span>
-                <strong>Automatic</strong>
-            </div>
-
-        </div>
-
-        <div class="summary-card">
-
-            <div class="summary-icon green">
-                ✓
-            </div>
-
-            <div>
-                <span>Processing</span>
-                <strong>Smart BI</strong>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================================================
-         DATASETS
-    ========================================================== -->
-
-    <section class="datasets-section">
-
-        <div class="section-heading">
-
-            <div>
-                <span class="section-label">
-                    DATASETS
-                </span>
-
-                <h2>
-                    Uploaded Business Data
-                </h2>
-            </div>
-
-            <div class="dataset-count">
-                {{ datasets|length }}
-                dataset{{ datasets|length|pluralize }}
-            </div>
-
-        </div>
-
-
-        {% if datasets %}
-
-        <div class="dataset-list">
-
-            {% for dataset in datasets %}
-
-            <article
-                class="dataset-card"
-                data-dataset-card
-            >
-
-                <!-- =================================================
-                     DATASET HEADER
-                ================================================== -->
-
-                <div class="dataset-main">
-
-                    <div class="dataset-file-icon">
-
-                        {% if dataset.dataset_type == "Sales" %}
-                            $
-                        {% elif dataset.dataset_type == "Customers" %}
-                            C
-                        {% elif dataset.dataset_type == "Products" %}
-                            P
-                        {% elif dataset.dataset_type == "Marketing" %}
-                            M
-                        {% elif dataset.dataset_type == "Financial" %}
-                            F
-                        {% elif dataset.dataset_type == "Returns" %}
-                            R
-                        {% else %}
-                            D
-                        {% endif %}
-
-                    </div>
-
-
-                    <div class="dataset-info">
-
-                        <div class="dataset-title-row">
-
-                            <h3>
-                                {{ dataset.name }}
-                            </h3>
-
-                            <span class="dataset-type">
-                                {{ dataset.dataset_type }}
-                            </span>
-
-                        </div>
-
-                        <p class="dataset-file">
-                            {{ dataset.original_filename }}
-                        </p>
-
-                        <div class="dataset-meta">
-
-                            <span>
-                                Uploaded:
-                                <b>
-                                    {{ dataset.uploaded_at|date:"d M Y, h:i A" }}
-                                </b>
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- CURRENT QUALITY -->
-
-                    <div class="quality-block">
-
-                        <div
-                            class="quality-ring"
-                            style="--quality: {{ dataset.quality_score }}%;"
-                        >
-
-                            <div class="quality-inner">
-
-                                <strong>
-                                    {{ dataset.quality_score|floatformat:0 }}
-                                </strong>
-
-                                <small>
-                                    QUALITY
-                                </small>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- STATUS -->
-
-                    <div class="dataset-status">
-
-                        {% if dataset.cleaned_version %}
-
-                            <span class="ready-badge">
-                                <span></span>
-                                Analytics Ready
-                            </span>
-
-                            <small>
-                                Cleaned version available
-                            </small>
-
-                        {% else %}
-
-                            <span class="ready-badge processing-badge">
-                                <span></span>
-                                Processing
-                            </span>
-
-                            <small>
-                                Preparing dataset
-                            </small>
-
-                        {% endif %}
-
-                    </div>
-
-
-                    <!-- ACTION -->
-
-                    <div class="dataset-actions">
-
-                        {% if dataset.cleaned_version %}
-
-                            <a
-                                href="{% url 'data_management:dataset_preview' dataset.id %}?version={{ dataset.cleaned_version.id }}"
-                                class="view-btn"
-                            >
-                                View Cleaned Data
-                            </a>
-
-                        {% else %}
-
-                            <a
-                                href="{% url 'data_management:dataset_preview' dataset.id %}"
-                                class="view-btn"
-                            >
-                                View Data
-                            </a>
-
-                        {% endif %}
-
-                        <button
-                            type="button"
-                            class="expand-btn"
-                            data-expand-button
-                            aria-expanded="false"
-                        >
-                            <span>Compare Data</span>
-                            <b>⌄</b>
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     ORIGINAL VS CLEANED
-                ================================================== -->
-
-                <div
-                    class="processing-panel"
-                    data-processing-panel
-                >
-
-                    <div class="processing-header">
-
-                        <div>
-
-                            <span class="section-label">
-                                DATA TRANSFORMATION
-                            </span>
-
-                            <h4>
-                                Original Data vs Current Cleaned Data
-                            </h4>
-
-                            <p class="comparison-description">
-                                Smart BI keeps the original upload unchanged
-                                and creates a separate cleaned version for
-                                analytics.
-                            </p>
-
-                        </div>
-
-
-                        {% if dataset.cleaned_version %}
-
-                        <span class="pipeline-complete">
-                            ✓ Analytics Ready
-                        </span>
-
-                        {% else %}
-
-                        <span class="pipeline-complete">
-                            Processing
-                        </span>
-
-                        {% endif %}
-
-                    </div>
-
-
-                    <!-- =================================================
-                         COMPARISON CARDS
-                    ================================================== -->
-
-                    <div class="data-comparison-grid">
-
-
-                        <!-- ORIGINAL -->
-
-                        <div class="data-state-card original-data">
-
-                            <div class="data-state-header">
-
-                                <div>
-
-                                    <span class="data-state-label">
-                                        ORIGINAL UPLOADED DATA
-                                    </span>
-
-                                    <h5>
-                                        Raw Dataset
-                                    </h5>
-
-                                </div>
-
-                                <div class="data-state-icon">
-                                    ↑
-                                </div>
-
-                            </div>
-
-
-                            {% if dataset.original_version %}
-
-                            <div class="data-metrics-grid">
-
-                                <div class="data-metric">
-
-                                    <span>Rows</span>
-
-                                    <strong>
-                                        {{ dataset.original_version.total_rows }}
-                                    </strong>
-
-                                </div>
-
-                                <div class="data-metric">
-
-                                    <span>Columns</span>
-
-                                    <strong>
-                                        {{ dataset.original_version.total_columns }}
-                                    </strong>
-
-                                </div>
-
-                                <div class="data-metric">
-
-                                    <span>Missing</span>
-
-                                    <strong>
-                                        {{ dataset.original_version.missing_values }}
-                                    </strong>
-
-                                </div>
-
-                                <div class="data-metric">
-
-                                    <span>Duplicates</span>
-
-                                    <strong>
-                                        {{ dataset.original_version.duplicate_rows }}
-                                    </strong>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="data-quality-line">
-
-                                <span>
-                                    Original Quality
-                                </span>
-
-                                <strong>
-                                    {{ dataset.original_version.quality_score|floatformat:2 }}%
-                                </strong>
-
-                            </div>
-
-
-                            <div class="data-state-actions">
-
-                                <a
-                                    href="{% url 'data_management:dataset_preview' dataset.id %}?version={{ dataset.original_version.id }}"
-                                    class="secondary-action"
-                                >
-                                    View Original
-                                </a>
-
-                                <a
-                                    href="{% url 'data_management:download_version' dataset.original_version.id %}"
-                                    class="secondary-action"
-                                >
-                                    Download Original
-                                </a>
-
-                            </div>
-
-                            {% else %}
-
-                            <div class="version-unavailable">
-                                Original version information is unavailable.
-                            </div>
-
-                            {% endif %}
-
-                        </div>
-
-
-                        <!-- TRANSFORMATION ARROW -->
-
-                        <div class="data-transform-arrow">
-
-                            <div class="transform-line"></div>
-
-                            <div class="transform-icon">
-                                →
-                            </div>
-
-                            <span>
-                                SMART BI<br>
-                                CLEANING
-                            </span>
-
-                        </div>
-
-
-                        <!-- CLEANED -->
-
-                        <div class="data-state-card cleaned-data">
-
-                            <div class="data-state-header">
-
-                                <div>
-
-                                    <span class="data-state-label">
-                                        CURRENT CLEANED DATA
-                                    </span>
-
-                                    <h5>
-                                        Analytics Ready Dataset
-                                    </h5>
-
-                                </div>
-
-                                <div class="data-state-icon">
-                                    ✓
-                                </div>
-
-                            </div>
-
-
-                            {% if dataset.cleaned_version %}
-
-                            <div class="data-metrics-grid">
-
-                                <div class="data-metric">
-
-                                    <span>Rows</span>
-
-                                    <strong>
-                                        {{ dataset.cleaned_version.total_rows }}
-                                    </strong>
-
-                                </div>
-
-                                <div class="data-metric">
-
-                                    <span>Columns</span>
-
-                                    <strong>
-                                        {{ dataset.cleaned_version.total_columns }}
-                                    </strong>
-
-                                </div>
-
-                                <div class="data-metric">
-
-                                    <span>Missing</span>
-
-                                    <strong>
-                                        {{ dataset.cleaned_version.missing_values }}
-                                    </strong>
-
-                                </div>
-
-                                <div class="data-metric">
-
-                                    <span>Duplicates</span>
-
-                                    <strong>
-                                        {{ dataset.cleaned_version.duplicate_rows }}
-                                    </strong>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="data-quality-line">
-
-                                <span>
-                                    Current Quality
-                                </span>
-
-                                <strong>
-                                    {{ dataset.cleaned_version.quality_score|floatformat:2 }}%
-                                </strong>
-
-                            </div>
-
-
-                            <div class="data-state-actions">
-
-                                <a
-                                    href="{% url 'data_management:dataset_preview' dataset.id %}?version={{ dataset.cleaned_version.id }}"
-                                    class="primary-action"
-                                >
-                                    View Cleaned Data
-                                </a>
-
-                                <a
-                                    href="{% url 'data_management:download_version' dataset.cleaned_version.id %}"
-                                    class="secondary-action"
-                                >
-                                    Download Cleaned
-                                </a>
-
-                            </div>
-
-
-                            <div class="analytics-ready-note">
-                                <span>✓</span>
-                                This version is used for Business Analytics.
-                            </div>
-
-                            {% else %}
-
-                            <div class="cleaning-pending">
-
-                                <div class="pending-icon">
-                                    ◌
-                                </div>
-
-                                <strong>
-                                    Cleaning in progress
-                                </strong>
-
-                                <p>
-                                    Smart BI has not created the cleaned
-                                    analytics-ready version yet.
-                                </p>
-
-                            </div>
-
-                            {% endif %}
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- =================================================
-                         PROCESSING HISTORY
-                    ================================================== -->
-
-                    <div class="history-section">
-
-                        <div class="history-heading">
-
-                            <div>
-
-                                <span class="section-label">
-                                    PROCESSING HISTORY
-                                </span>
-
-                                <h4>
-                                    What Smart BI did with this dataset
-                                </h4>
-
-                            </div>
-
-                            {% if dataset.cleaned_version %}
-
-                            <span class="pipeline-complete">
-                                ✓ Complete
-                            </span>
-
-                            {% endif %}
-
-                        </div>
-
-
-                        <div class="activity-timeline">
-
-                            {% for activity in dataset.activities.all %}
-
-                            <div
-                                class="
-                                    activity-item
-                                    {% if activity.status == 'Warning' %}
-                                        warning
-                                    {% elif activity.status == 'Failed' %}
-                                        failed
-                                    {% else %}
-                                        success
-                                    {% endif %}
-                                "
-                            >
-
-                                <div class="activity-marker">
-
-                                    {% if activity.status == "Success" %}
-                                        ✓
-                                    {% elif activity.status == "Warning" %}
-                                        !
-                                    {% else %}
-                                        ×
-                                    {% endif %}
-
-                                </div>
-
-
-                                <div class="activity-content">
-
-                                    <div class="activity-title-row">
-
-                                        <strong>
-                                            {{ activity.title }}
-                                        </strong>
-
-                                        <span>
-                                            {{ activity.created_at|date:"d M Y · h:i A" }}
-                                        </span>
-
-                                    </div>
-
-
-                                    <p>
-                                        {{ activity.description }}
-                                    </p>
-
-
-                                    <!-- VALIDATION DETAILS -->
-
-                                    {% if activity.activity_type == "Validated" %}
-
-                                        {% if activity.details.issues %}
-
-                                        <div class="activity-details warning-details">
-
-                                            <strong>
-                                                Issues detected
-                                            </strong>
-
-                                            <ul>
-
-                                                {% for issue in activity.details.issues %}
-
-                                                <li>
-                                                    {{ issue }}
-                                                </li>
-
-                                                {% endfor %}
-
-                                            </ul>
-
-                                        </div>
-
-                                        {% else %}
-
-                                        <div class="activity-details">
-
-                                            <span>
-                                                ✓ File structure valid
-                                            </span>
-
-                                            <span>
-                                                ✓ {{ activity.details.rows }}
-                                                rows checked
-                                            </span>
-
-                                            <span>
-                                                ✓ {{ activity.details.columns }}
-                                                columns detected
-                                            </span>
-
-                                        </div>
-
-                                        {% endif %}
-
-                                    {% endif %}
-
-
-                                    <!-- PROFILE DETAILS -->
-
-                                    {% if activity.activity_type == "Profiled" %}
-
-                                    <div class="activity-details">
-
-                                        <span>
-                                            Numeric:
-                                            <b>
-                                                {{ activity.details.numeric_columns|length }}
-                                            </b>
-                                        </span>
-
-                                        <span>
-                                            Categorical:
-                                            <b>
-                                                {{ activity.details.categorical_columns|length }}
-                                            </b>
-                                        </span>
-
-                                        <span>
-                                            Datetime:
-                                            <b>
-                                                {{ activity.details.datetime_columns|length }}
-                                            </b>
-                                        </span>
-
-                                    </div>
-
-                                    {% endif %}
-
-
-                                    <!-- QUALITY DETAILS -->
-
-                                    {% if activity.activity_type == "Quality Checked" %}
-
-                                    <div class="activity-details">
-
-                                        <span>
-                                            Quality Score:
-                                            <b>
-                                                {{ activity.details.quality_score }}%
-                                            </b>
-                                        </span>
-
-                                        <span>
-                                            Missing:
-                                            <b>
-                                                {{ activity.details.missing_values }}
-                                            </b>
-                                        </span>
-
-                                        <span>
-                                            Duplicates:
-                                            <b>
-                                                {{ activity.details.duplicate_rows }}
-                                            </b>
-                                        </span>
-
-                                    </div>
-
-                                    {% endif %}
-
-
-                                    <!-- CLEANING DETAILS -->
-
-                                    {% if activity.activity_type == "Cleaned" %}
-
-                                    <div class="activity-details cleaning-details">
-
-                                        <span>
-                                            Missing values:
-                                            <b>
-                                                {{ activity.details.missing_before }}
-                                            </b>
-                                            →
-                                            <b>
-                                                {{ activity.details.missing_after }}
-                                            </b>
-                                        </span>
-
-                                        <span>
-                                            Duplicate rows:
-                                            <b>
-                                                {{ activity.details.duplicates_before }}
-                                            </b>
-                                            →
-                                            <b>
-                                                {{ activity.details.duplicates_after }}
-                                            </b>
-                                        </span>
-
-                                    </div>
-
-                                    {% endif %}
-
-
-                                    <!-- ANALYTICS READY -->
-
-                                    {% if activity.activity_type == "Analytics Ready" %}
-
-                                    <div class="activity-details">
-
-                                        <span>
-                                            ✓ Final cleaned dataset created
-                                        </span>
-
-                                        {% if dataset.cleaned_version %}
-
-                                        <span>
-                                            ✓
-                                            {{ dataset.cleaned_version.total_rows }}
-                                            rows ready
-                                        </span>
-
-                                        <span>
-                                            ✓
-                                            {{ dataset.cleaned_version.total_columns }}
-                                            columns ready
-                                        </span>
-
-                                        {% endif %}
-
-                                    </div>
-
-                                    {% endif %}
-
-                                </div>
-
-                            </div>
-
-                            {% empty %}
-
-                            <div class="no-activity">
-                                Processing history is not available for this dataset.
-                            </div>
-
-                            {% endfor %}
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- =================================================
-                         READY BANNER
-                    ================================================== -->
-
-                    {% if dataset.cleaned_version %}
-
-                    <div class="dataset-ready-banner">
-
-                        <div class="ready-symbol">
-                            ✦
-                        </div>
-
-                        <div>
-
-                            <strong>
-                                Current cleaned data is ready for Business Analytics
-                            </strong>
-
-                            <p>
-                                Smart BI keeps the original upload unchanged.
-                                The cleaned version above is the active dataset
-                                that will be used by the Business Analytics
-                                modules.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                    {% endif %}
-
-                </div>
-
-            </article>
-
-            {% endfor %}
-
-        </div>
-
-
-        {% else %}
-
-        <!-- =========================================================
-             EMPTY STATE
-        ========================================================== -->
-
-        <div class="empty-datasets">
-
-            <div class="empty-animation">
-
-                <div class="empty-orbit orbit-one"></div>
-                <div class="empty-orbit orbit-two"></div>
-
-                <div class="empty-center">
-                    ◈
-                </div>
-
-            </div>
-
-            <span class="section-label">
-                NO DATASETS YET
-            </span>
-
-            <h2>
-                Start with your business data
-            </h2>
-
-            <p>
-                Upload a CSV, XLS or XLSX file and Smart BI will
-                automatically validate, profile, check quality,
-                clean and prepare it for analytics.
-            </p>
-
-            <a
-                href="{% url 'data_management:upload_data' %}"
-                class="upload-btn"
-            >
-                <span class="upload-icon">＋</span>
-                Upload Your First Dataset
-            </a>
-
-        </div>
-
-        {% endif %}
-
-    </section>
-
-</div>
-
-{% endblock %}
-
-
-{% block extra_js %}
-
-<script>
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const buttons = document.querySelectorAll(
-        "[data-expand-button]"
-    );
-
-
-    buttons.forEach(function (button) {
-
-        button.addEventListener("click", function () {
-
-            const card = button.closest(
-                "[data-dataset-card]"
-            );
-
-            const panel = card.querySelector(
-                "[data-processing-panel]"
-            );
-
-            const isOpen =
-                card.classList.contains("expanded");
-
-
-            /*
-             * Close other dataset panels
-             */
-
-            document
-                .querySelectorAll(
-                    "[data-dataset-card].expanded"
-                )
-                .forEach(function (otherCard) {
-
-                    if (otherCard !== card) {
-
-                        otherCard.classList.remove(
-                            "expanded"
-                        );
-
-                        const otherButton =
-                            otherCard.querySelector(
-                                "[data-expand-button]"
-                            );
-
-                        if (otherButton) {
-
-                            otherButton.setAttribute(
-                                "aria-expanded",
-                                "false"
-                            );
-
-                            const otherText =
-                                otherButton.querySelector(
-                                    "span"
-                                );
-
-                            if (otherText) {
-                                otherText.textContent =
-                                    "Compare Data";
-                            }
-
-                        }
-
-                    }
-
-                });
-
-
-            /*
-             * Toggle current panel
-             */
-
-            if (isOpen) {
-
-                card.classList.remove(
-                    "expanded"
-                );
-
-                button.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-                const text =
-                    button.querySelector("span");
-
-                if (text) {
-                    text.textContent =
-                        "Compare Data";
-                }
-
-            } else {
-
-                card.classList.add(
-                    "expanded"
-                );
-
-                button.setAttribute(
-                    "aria-expanded",
-                    "true"
-                );
-
-                const text =
-                    button.querySelector("span");
-
-                if (text) {
-                    text.textContent =
-                        "Hide Comparison";
-                }
-
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Data Workspace | Smart Business Decision Intelligence</title>
+
+    <style>
+        /* ============================================================
+           SMART BI DESIGN SYSTEM & PALETTE
+        ============================================================ */
+        :root {
+            --bg: #030712;
+            --bg-deep: #020617;
+            --bg-soft: #071525;
+
+            --card: #0B1B2D;
+            --card-light: #10243A;
+            --card-glass: rgba(11, 27, 45, 0.72);
+            --card-glass-subtle: rgba(16, 36, 58, 0.45);
+
+            --purple: #7C5CFF;
+            --purple-light: #A99CFF;
+            --purple-glow: rgba(124, 92, 255, 0.35);
+
+            --blue: #35B8FF;
+            --blue-glow: rgba(53, 184, 255, 0.30);
+
+            --cyan: #22D3EE;
+            --cyan-glow: rgba(34, 211, 238, 0.28);
+
+            --green: #39E58C;
+            --green-glow: rgba(57, 229, 140, 0.25);
+
+            --orange: #FFB454;
+            --orange-glow: rgba(255, 180, 84, 0.25);
+
+            --red: #FF5C70;
+            --red-glow: rgba(255, 92, 112, 0.25);
+
+            --text: #F7FAFF;
+            --muted: #8294A8;
+            --subtle: #4D6277;
+
+            --border: rgba(255, 255, 255, 0.08);
+            --border-bright: rgba(255, 255, 255, 0.16);
+            --border-cyan: rgba(34, 211, 238, 0.35);
+            --border-purple: rgba(124, 92, 255, 0.35);
+
+            --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+            --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* ============================================================
+           RESET & VIEWPORT ROOT
+        ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button, select {
+            font: inherit;
+            outline: none;
+        }
+
+        /* ============================================================
+           DUAL INDEPENDENT SCROLL LAYOUT
+        ============================================================ */
+        .smart-app-layout {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(circle at 10% 12%, rgba(124, 92, 255, 0.10) 0%, transparent 40%),
+                radial-gradient(circle at 90% 88%, rgba(34, 211, 238, 0.08) 0%, transparent 45%),
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+        }
+
+        /* Sidebar: Fixed left dock, scrolls independently */
+        .smart-sidebar-container {
+            width: 270px;
+            height: 100vh;
+            flex-shrink: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 50;
+            background: var(--bg-deep);
+            border-right: 1px solid var(--border);
+            scrollbar-width: thin;
+            scrollbar-color: var(--subtle) transparent;
+        }
+
+        .smart-sidebar-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .smart-sidebar-container::-webkit-scrollbar-thumb {
+            background: var(--subtle);
+            border-radius: 4px;
+        }
+
+        /* Main Viewport: Independent scroll */
+        .smart-main-content {
+            flex: 1;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 10;
+            padding: 34px 44px 80px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--card-light) transparent;
+        }
+
+        .smart-main-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .smart-main-content::-webkit-scrollbar-thumb {
+            background: var(--card-light);
+            border-radius: 4px;
+        }
+
+        .data-workspace {
+            max-width: 1540px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Ambient floating light orbs */
+        .ambient-orb-top {
+            position: fixed;
+            width: 420px;
+            height: 420px;
+            top: -180px;
+            right: -100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--purple-glow), transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            animation: orbFloat 9s ease-in-out infinite alternate;
+        }
+
+        .ambient-orb-bottom {
+            position: fixed;
+            width: 380px;
+            height: 380px;
+            bottom: -160px;
+            left: 220px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--cyan-glow), transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            animation: orbFloat 11s ease-in-out infinite alternate-reverse;
+        }
+
+        /* ============================================================
+           HEADER
+        ============================================================ */
+        .workspace-header {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+            padding: 30px 34px;
+            border: 1px solid var(--border-bright);
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(11, 27, 45, 0.92) 0%, rgba(7, 21, 37, 0.80) 100%);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(16px);
+            overflow: hidden;
+            animation: fadeUp 0.65s var(--transition-smooth) both;
+        }
+
+        .workspace-header::before {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            top: -140px;
+            right: 80px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(124, 92, 255, 0.22), transparent 70%);
+            pointer-events: none;
+        }
+
+        .workspace-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--cyan);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+        }
+
+        .workspace-eyebrow::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 0 0 10px var(--cyan);
+            animation: pulseDot 2s infinite;
+        }
+
+        .workspace-header h1 {
+            margin-top: 10px;
+            font-size: clamp(28px, 3.2vw, 42px);
+            line-height: 1.1;
+            letter-spacing: -1.2px;
+            font-weight: 850;
+        }
+
+        .workspace-header p {
+            max-width: 680px;
+            margin-top: 10px;
+            color: var(--muted);
+            font-size: 13.5px;
+            line-height: 1.6;
+        }
+
+        .upload-btn {
+            position: relative;
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 44px;
+            padding: 0 22px;
+            border-radius: 12px;
+            border: 1px solid rgba(124, 92, 255, 0.4);
+            background: linear-gradient(135deg, var(--purple), #6245e8);
+            color: #FFFFFF;
+            font-size: 12px;
+            font-weight: 750;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            box-shadow: 0 10px 24px var(--purple-glow);
+            transition: transform 0.3s var(--transition-bounce), box-shadow 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px var(--purple-glow);
+        }
+
+        .upload-icon {
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        /* ============================================================
+           AUTOMATIC PROCESS FLOW CARD
+        ============================================================ */
+        .smart-flow-card {
+            padding: 24px 28px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+            animation: fadeUp 0.72s var(--transition-smooth) both;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .flow-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .flow-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--cyan);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+        }
+
+        .flow-heading h2 {
+            font-size: 18px;
+            font-weight: 850;
+            color: #FFFFFF;
+            margin-top: 4px;
+        }
+
+        .flow-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: rgba(57, 229, 140, 0.10);
+            border: 1px solid rgba(57, 229, 140, 0.25);
+            color: var(--green);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 10px var(--green);
+            animation: pulseDot 2s infinite;
+        }
+
+        .flow-steps {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .flow-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(16, 36, 58, 0.6);
+            border: 1px solid var(--border-bright);
+            color: var(--cyan);
+            font-size: 12px;
+            font-weight: 850;
+            letter-spacing: 0.5px;
+        }
+
+        .flow-step strong {
+            display: block;
+            font-size: 13px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+
+        .flow-step small {
+            display: block;
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .final-flow .flow-number {
+            background: rgba(57, 229, 140, 0.15);
+            border-color: var(--green);
+            color: var(--green);
+            box-shadow: 0 0 15px var(--green-glow);
+        }
+
+        .flow-line {
+            flex: 1;
+            height: 2px;
+            min-width: 20px;
+            background: linear-gradient(90deg, rgba(34, 211, 238, 0.3), rgba(124, 92, 255, 0.3));
+        }
+
+        /* ============================================================
+           WORKSPACE SUMMARY CARDS
+        ============================================================ */
+        .workspace-summary {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            animation: fadeUp 0.8s var(--transition-smooth) both;
+        }
+
+        .summary-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 22px;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: linear-gradient(145deg, rgba(11, 27, 45, 0.86), rgba(7, 21, 37, 0.72));
+            backdrop-filter: blur(14px);
+            transition: transform 0.3s var(--transition-bounce), border-color 0.3s ease;
+            animation: cardReveal 0.75s var(--transition-smooth) both;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--border-cyan);
+        }
+
+        .summary-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            font-size: 18px;
+            font-weight: 850;
+            flex-shrink: 0;
+        }
+
+        .summary-icon.purple {
+            color: var(--purple-light);
+            background: rgba(124, 92, 255, 0.12);
+            border: 1px solid rgba(124, 92, 255, 0.25);
+            box-shadow: 0 0 15px var(--purple-glow);
+        }
+
+        .summary-icon.blue {
+            color: var(--blue);
+            background: rgba(53, 184, 255, 0.12);
+            border: 1px solid rgba(53, 184, 255, 0.25);
+            box-shadow: 0 0 15px var(--blue-glow);
+        }
+
+        .summary-icon.green {
+            color: var(--green);
+            background: rgba(57, 229, 140, 0.12);
+            border: 1px solid rgba(57, 229, 140, 0.25);
+            box-shadow: 0 0 15px var(--green-glow);
+        }
+
+        .summary-card span {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--subtle);
+            text-transform: uppercase;
+        }
+
+        .summary-card strong {
+            display: block;
+            margin-top: 4px;
+            font-size: 24px;
+            font-weight: 850;
+            color: #FFFFFF;
+            letter-spacing: -0.5px;
+        }
+
+        /* ============================================================
+           DATASETS SECTION
+        ============================================================ */
+        .datasets-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            animation: fadeUp 0.86s var(--transition-smooth) both;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--cyan);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+        }
+
+        .section-heading h2 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-top: 4px;
+        }
+
+        .dataset-count {
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: rgba(34, 211, 238, 0.10);
+            border: 1px solid rgba(34, 211, 238, 0.25);
+            color: var(--cyan);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+        }
+
+        .dataset-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .dataset-card {
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .dataset-card:hover {
+            border-color: var(--border-bright);
+        }
+
+        .dataset-card.expanded {
+            border-color: var(--border-cyan);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25), 0 0 25px rgba(34, 211, 238, 0.12);
+        }
+
+        .dataset-main {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 24px 28px;
+            flex-wrap: wrap;
+        }
+
+        .dataset-file-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: rgba(124, 92, 255, 0.12);
+            border: 1px solid rgba(124, 92, 255, 0.3);
+            color: var(--purple-light);
+            font-size: 18px;
+            font-weight: 850;
+            box-shadow: 0 0 15px var(--purple-glow);
+            flex-shrink: 0;
+        }
+
+        .dataset-info {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .dataset-title-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .dataset-title-row h3 {
+            font-size: 17px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+
+        .dataset-type {
+            display: inline-flex;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: rgba(53, 184, 255, 0.10);
+            border: 1px solid rgba(53, 184, 255, 0.25);
+            color: var(--blue);
+            font-size: 10px;
+            font-weight: 750;
+            letter-spacing: 0.4px;
+        }
+
+        .dataset-file {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .dataset-meta {
+            margin-top: 6px;
+            font-size: 11px;
+            color: var(--subtle);
+        }
+
+        .dataset-meta b {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* Quality block inside dataset item */
+        .quality-block {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10px;
+        }
+
+        .quality-ring {
+            position: relative;
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: conic-gradient(var(--cyan) var(--quality, 0%), rgba(255, 255, 255, 0.06) var(--quality, 0%));
+            box-shadow: 0 0 18px var(--cyan-glow);
+        }
+
+        .quality-inner {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: var(--bg-soft);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .quality-inner strong {
+            font-size: 14px;
+            font-weight: 850;
+            color: #FFFFFF;
+            line-height: 1;
+        }
+
+        .quality-inner small {
+            font-size: 7.5px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .dataset-status {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 140px;
+        }
+
+        .ready-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(57, 229, 140, 0.12);
+            border: 1px solid rgba(57, 229, 140, 0.3);
+            color: var(--green);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .ready-badge span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 8px var(--green);
+        }
+
+        .processing-badge {
+            background: rgba(255, 180, 84, 0.12);
+            border-color: rgba(255, 180, 84, 0.3);
+            color: var(--orange);
+        }
+
+        .processing-badge span {
+            background: var(--orange);
+            box-shadow: 0 0 8px var(--orange);
+        }
+
+        .dataset-status small {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .dataset-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .view-btn,
+        .expand-btn,
+        .delete-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            height: 38px;
+            padding: 0 14px;
+            border-radius: 10px;
+            font-size: 11.5px;
+            font-weight: 750;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .view-btn {
+            background: rgba(53, 184, 255, 0.10);
+            border: 1px solid rgba(53, 184, 255, 0.3);
+            color: var(--blue);
+        }
+
+        .view-btn:hover {
+            background: rgba(53, 184, 255, 0.18);
+            border-color: var(--blue);
+            transform: translateY(-1px);
+        }
+
+        .expand-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-bright);
+            color: var(--text);
+        }
+
+        .expand-btn:hover {
+            background: rgba(34, 211, 238, 0.08);
+            border-color: var(--border-cyan);
+            color: var(--cyan);
+            transform: translateY(-1px);
+        }
+
+        .delete-btn {
+            background: rgba(255, 92, 112, 0.08);
+            border: 1px solid rgba(255, 92, 112, 0.25);
+            color: var(--red);
+        }
+
+        .delete-btn:hover {
+            background: rgba(255, 92, 112, 0.16);
+            border-color: var(--red);
+            transform: translateY(-1px);
+        }
+
+        .delete-icon {
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        /* ============================================================
+           PROCESSING PANEL (ORIGINAL VS CLEANED COMPARISON)
+        ============================================================ */
+        .processing-panel {
+            display: none;
+            padding: 24px 28px;
+            border-top: 1px solid var(--border);
+            background: rgba(7, 21, 37, 0.4);
+            animation: fadeIn 0.35s ease both;
+        }
+
+        .dataset-card.expanded .processing-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .processing-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .processing-header h4 {
+            font-size: 16px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-top: 4px;
+        }
+
+        .comparison-description {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        .pipeline-complete {
+            display: inline-flex;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(57, 229, 140, 0.12);
+            border: 1px solid rgba(57, 229, 140, 0.3);
+            color: var(--green);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .data-comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .data-state-card {
+            padding: 20px;
+            border-radius: 16px;
+            background: var(--card-glass);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .data-state-card.original-data {
+            border-top: 3px solid var(--orange);
+        }
+
+        .data-state-card.cleaned-data {
+            border-top: 3px solid var(--green);
+        }
+
+        .data-state-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .data-state-label {
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--subtle);
+            text-transform: uppercase;
+        }
+
+        .data-state-header h5 {
+            font-size: 15px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-top: 2px;
+        }
+
+        .data-state-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 850;
+        }
+
+        .original-data .data-state-icon {
+            color: var(--orange);
+            background: rgba(255, 180, 84, 0.12);
+            border: 1px solid rgba(255, 180, 84, 0.25);
+        }
+
+        .cleaned-data .data-state-icon {
+            color: var(--green);
+            background: rgba(57, 229, 140, 0.12);
+            border: 1px solid rgba(57, 229, 140, 0.25);
+        }
+
+        .data-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .data-metric {
+            padding: 8px 10px;
+            border-radius: 8px;
+            background: rgba(16, 36, 58, 0.4);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .data-metric span {
+            display: block;
+            font-size: 8.5px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: var(--subtle);
+            text-transform: uppercase;
+        }
+
+        .data-metric strong {
+            display: block;
+            font-size: 14px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-top: 2px;
+        }
+
+        .data-quality-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: rgba(16, 36, 58, 0.3);
+            border: 1px solid var(--border);
+            font-size: 11px;
+        }
+
+        .data-quality-line span {
+            color: var(--muted);
+        }
+
+        .data-quality-line strong {
+            color: var(--cyan);
+            font-weight: 800;
+        }
+
+        .data-state-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .secondary-action,
+        .primary-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 750;
+            transition: all 0.2s ease;
+        }
+
+        .secondary-action {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-bright);
+            color: var(--text);
+        }
+
+        .secondary-action:hover {
+            border-color: var(--border-cyan);
+            color: var(--cyan);
+        }
+
+        .primary-action {
+            background: linear-gradient(135deg, var(--purple), #6245e8);
+            border: 1px solid rgba(124, 92, 255, 0.4);
+            color: #FFFFFF;
+        }
+
+        .primary-action:hover {
+            box-shadow: 0 6px 16px var(--purple-glow);
+        }
+
+        .analytics-ready-note {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        .data-transform-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            text-align: center;
+        }
+
+        .transform-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(34, 211, 238, 0.12);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            color: var(--cyan);
+            font-size: 16px;
+            font-weight: 850;
+            box-shadow: 0 0 15px var(--cyan-glow);
+        }
+
+        .data-transform-arrow span {
+            font-size: 8.5px;
+            font-weight: 800;
+            color: var(--cyan);
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+
+        .cleaning-pending {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            text-align: center;
+            gap: 6px;
+        }
+
+        .pending-icon {
+            font-size: 20px;
+            color: var(--orange);
+            animation: pulseDot 2s infinite;
+        }
+
+        .cleaning-pending strong {
+            font-size: 13px;
+            color: var(--orange);
+        }
+
+        .cleaning-pending p {
+            font-size: 11.5px;
+            color: var(--muted);
+        }
+
+        .version-unavailable {
+            font-size: 12px;
+            color: var(--muted);
+            text-align: center;
+            padding: 16px;
+        }
+
+        /* ============================================================
+           PROCESSING HISTORY TIMELINE
+        ============================================================ */
+        .history-section {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border);
+        }
+
+        .history-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .history-heading h4 {
+            font-size: 15px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-top: 2px;
+        }
+
+        .activity-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            background: rgba(16, 36, 58, 0.35);
+            border: 1px solid var(--border);
+        }
+
+        .activity-marker {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 850;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .activity-item.success .activity-marker {
+            background: rgba(57, 229, 140, 0.15);
+            border: 1px solid var(--green);
+            color: var(--green);
+        }
+
+        .activity-item.warning .activity-marker {
+            background: rgba(255, 180, 84, 0.15);
+            border: 1px solid var(--orange);
+            color: var(--orange);
+        }
+
+        .activity-item.failed .activity-marker {
+            background: rgba(255, 92, 112, 0.15);
+            border: 1px solid var(--red);
+            color: var(--red);
+        }
+
+        .activity-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .activity-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .activity-title-row strong {
+            font-size: 13px;
+            color: #FFFFFF;
+        }
+
+        .activity-title-row span {
+            font-size: 10.5px;
+            color: var(--subtle);
+        }
+
+        .activity-content p {
+            color: var(--muted);
+            font-size: 11.5px;
+            margin-top: 3px;
+        }
+
+        .activity-details {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+            font-size: 11px;
+            color: var(--cyan);
+        }
+
+        .activity-details b {
+            color: #FFFFFF;
+        }
+
+        .warning-details {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+            color: var(--orange);
+        }
+
+        .warning-details ul {
+            padding-left: 18px;
+            margin: 0;
+        }
+
+        .no-activity {
+            font-size: 12px;
+            color: var(--muted);
+            padding: 10px 0;
+        }
+
+        /* ============================================================
+           DATASET READY BANNER
+        ============================================================ */
+        .dataset-ready-banner {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px 20px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(57, 229, 140, 0.08) 0%, rgba(11, 27, 45, 0.8) 100%);
+            border: 1px solid rgba(57, 229, 140, 0.25);
+        }
+
+        .ready-symbol {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(57, 229, 140, 0.15);
+            border: 1px solid var(--green);
+            color: var(--green);
+            font-size: 14px;
+            font-weight: 850;
+            box-shadow: 0 0 12px var(--green-glow);
+            flex-shrink: 0;
+        }
+
+        .dataset-ready-banner strong {
+            display: block;
+            font-size: 13px;
+            color: var(--green);
+            margin-bottom: 2px;
+        }
+
+        .dataset-ready-banner p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* ============================================================
+           EMPTY STATE
+        ============================================================ */
+        .empty-datasets {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 420px;
+            padding: 50px;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            background: linear-gradient(145deg, rgba(11, 27, 45, 0.88), rgba(7, 21, 37, 0.65));
+            text-align: center;
+            animation: fadeUp 0.8s var(--transition-smooth) both;
+        }
+
+        .empty-animation {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .empty-orbit {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 1px solid rgba(124, 92, 255, 0.25);
+        }
+
+        .orbit-one {
+            animation: rotateOrbit 6s linear infinite;
+        }
+
+        .orbit-two {
+            inset: 8px;
+            border-color: rgba(34, 211, 238, 0.25);
+            animation: rotateOrbit 4s linear infinite reverse;
+        }
+
+        .empty-center {
+            font-size: 24px;
+            color: var(--purple-light);
+            box-shadow: 0 0 25px var(--purple-glow);
+        }
+
+        .empty-datasets h2 {
+            font-size: 22px;
+            font-weight: 850;
+            color: #FFFFFF;
+            margin-top: 6px;
+        }
+
+        .empty-datasets p {
+            max-width: 480px;
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .empty-datasets .upload-btn {
+            margin-top: 24px;
+        }
+
+        /* ============================================================
+           KEYFRAME ANIMATIONS
+        ============================================================ */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes cardReveal {
+            from {
+                opacity: 0;
+                transform: translateY(16px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4); }
+            50% { box-shadow: 0 0 0 6px rgba(34, 211, 238, 0); }
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-25px, 25px); }
+        }
+
+        @keyframes rotateOrbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* ============================================================
+           RESPONSIVE DESIGN
+        ============================================================ */
+        @media (max-width: 1200px) {
+            .workspace-summary {
+                grid-template-columns: 1fr;
+            }
+            .data-comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            .data-transform-arrow {
+                transform: rotate(90deg);
+                padding: 10px 0;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .smart-app-layout {
+                flex-direction: column;
+                height: auto;
+                overflow-y: visible;
+            }
+            .smart-sidebar-container {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            .smart-main-content {
+                height: auto;
+                overflow-y: visible;
+                padding: 24px 20px 80px;
+            }
+            .workspace-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .flow-heading {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .dataset-main {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .dataset-actions {
+                width: 100%;
+            }
+            .data-metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="smart-app-layout">
+        <!-- Ambient floating neon light orbs -->
+        <div class="ambient-orb-top"></div>
+        <div class="ambient-orb-bottom"></div>
+
+        <!-- =====================================================
+             LEFT SIDEBAR (INDEPENDENT SCROLL)
+        ====================================================== -->
+        <aside class="smart-sidebar-container" aria-label="Main Navigation">
+            {% include "includes/smart_sidebar.html" %}
+        </aside>
+
+        <!-- =====================================================
+             RIGHT MAIN CONTENT (INDEPENDENT SCROLL)
+        ====================================================== -->
+        <main class="smart-main-content" role="main">
+            <div class="data-workspace">
+
+                <!-- HEADER -->
+                <section class="workspace-header">
+                    <div>
+                        <div class="workspace-eyebrow">SMART BI &bull; DATA MANAGEMENT</div>
+                        <h1>Your Business Data</h1>
+                        <p>Upload your business data and Smart BI automatically validates, profiles, checks quality, cleans and prepares it for analytics.</p>
+                    </div>
+
+                    <a href="{% url 'data_management:upload_data' %}" class="upload-btn">
+                        <span class="upload-icon">＋</span>
+                        Upload Dataset
+                    </a>
+                </section>
+
+                <!-- AUTOMATIC PROCESS FLOW -->
+                <section class="smart-flow-card">
+                    <div class="flow-heading">
+                        <div>
+                            <span class="flow-label">AUTOMATIC PROCESSING</span>
+                            <h2>From raw data to analytics-ready data</h2>
+                        </div>
+                        <div class="flow-status">
+                            <span class="status-dot"></span>
+                            Smart BI Processing
+                        </div>
+                    </div>
+
+                    <div class="flow-steps">
+                        <div class="flow-step">
+                            <div class="flow-number">01</div>
+                            <div>
+                                <strong>Upload</strong>
+                                <small>Your business file</small>
+                            </div>
+                        </div>
+
+                        <div class="flow-line"></div>
+
+                        <div class="flow-step">
+                            <div class="flow-number">02</div>
+                            <div>
+                                <strong>Validate</strong>
+                                <small>Structure &amp; records</small>
+                            </div>
+                        </div>
+
+                        <div class="flow-line"></div>
+
+                        <div class="flow-step">
+                            <div class="flow-number">03</div>
+                            <div>
+                                <strong>Profile</strong>
+                                <small>Understand the data</small>
+                            </div>
+                        </div>
+
+                        <div class="flow-line"></div>
+
+                        <div class="flow-step">
+                            <div class="flow-number">04</div>
+                            <div>
+                                <strong>Quality</strong>
+                                <small>Find data issues</small>
+                            </div>
+                        </div>
+
+                        <div class="flow-line"></div>
+
+                        <div class="flow-step">
+                            <div class="flow-number">05</div>
+                            <div>
+                                <strong>Clean</strong>
+                                <small>Prepare the dataset</small>
+                            </div>
+                        </div>
+
+                        <div class="flow-line"></div>
+
+                        <div class="flow-step final-flow">
+                            <div class="flow-number">✓</div>
+                            <div>
+                                <strong>Analytics Ready</strong>
+                                <small>Ready for intelligence</small>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- DATASET SUMMARY -->
+                <section class="workspace-summary">
+                    <div class="summary-card">
+                        <div class="summary-icon purple">◈</div>
+                        <div>
+                            <span>Total Datasets</span>
+                            <strong>{{ datasets|length }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="summary-icon blue">↗</div>
+                        <div>
+                            <span>Analytics Pipeline</span>
+                            <strong>Automatic</strong>
+                        </div>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="summary-icon green">✓</div>
+                        <div>
+                            <span>Processing</span>
+                            <strong>Smart BI</strong>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- DATASETS LIST -->
+                <section class="datasets-section">
+                    <div class="section-heading">
+                        <div>
+                            <span class="section-label">DATASETS</span>
+                            <h2>Uploaded Business Data</h2>
+                        </div>
+                        <div class="dataset-count">
+                            {{ datasets|length }} dataset{{ datasets|length|pluralize }}
+                        </div>
+                    </div>
+
+                    {% if datasets %}
+                        <div class="dataset-list">
+                            {% for dataset in datasets %}
+                                <article class="dataset-card" data-dataset-card>
+                                    <!-- DATASET MAIN ROW -->
+                                    <div class="dataset-main">
+                                        <div class="dataset-file-icon">
+                                            {% if dataset.dataset_type == "Sales" %}
+                                                $
+                                            {% elif dataset.dataset_type == "Customers" %}
+                                                C
+                                            {% elif dataset.dataset_type == "Products" %}
+                                                P
+                                            {% elif dataset.dataset_type == "Marketing" %}
+                                                M
+                                            {% elif dataset.dataset_type == "Financial" %}
+                                                F
+                                            {% elif dataset.dataset_type == "Returns" %}
+                                                R
+                                            {% else %}
+                                                D
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="dataset-info">
+                                            <div class="dataset-title-row">
+                                                <h3>{{ dataset.name }}</h3>
+                                                <span class="dataset-type">{{ dataset.dataset_type }}</span>
+                                            </div>
+                                            <p class="dataset-file">{{ dataset.original_filename }}</p>
+                                            <div class="dataset-meta">
+                                                <span>Uploaded: <b>{{ dataset.uploaded_at|date:"d M Y, h:i A" }}</b></span>
+                                            </div>
+                                        </div>
+
+                                        <!-- CURRENT QUALITY -->
+                                        <div class="quality-block">
+                                            <div class="quality-ring" style="--quality: {{ dataset.quality_score }}%;">
+                                                <div class="quality-inner">
+                                                    <strong>{{ dataset.quality_score|floatformat:0 }}</strong>
+                                                    <small>QUALITY</small>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- STATUS -->
+                                        <div class="dataset-status">
+                                            {% if dataset.cleaned_version %}
+                                                <span class="ready-badge">
+                                                    <span></span>
+                                                    Analytics Ready
+                                                </span>
+                                                <small>Cleaned version available</small>
+                                            {% else %}
+                                                <span class="ready-badge processing-badge">
+                                                    <span></span>
+                                                    Processing
+                                                </span>
+                                                <small>Preparing dataset</small>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- DATASET ACTIONS -->
+                                        <div class="dataset-actions">
+                                            {% if dataset.cleaned_version %}
+                                                <a href="{% url 'data_management:dataset_preview' dataset.id %}?version={{ dataset.cleaned_version.id }}" class="view-btn">
+                                                    View Cleaned Data
+                                                </a>
+                                            {% else %}
+                                                <a href="{% url 'data_management:dataset_preview' dataset.id %}" class="view-btn">
+                                                    View Data
+                                                </a>
+                                            {% endif %}
+
+                                            <button type="button" class="expand-btn" data-expand-button aria-expanded="false">
+                                                <span>Compare Data</span>
+                                                <b>⌄</b>
+                                            </button>
+
+                                            <a href="{% url 'data_management:delete_dataset' dataset.id %}" class="delete-btn" title="Delete dataset">
+                                                <span class="delete-icon">×</span>
+                                                Delete
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <!-- ORIGINAL VS CLEANED ACCORDION PANEL -->
+                                    <div class="processing-panel" data-processing-panel>
+                                        <div class="processing-header">
+                                            <div>
+                                                <span class="section-label">DATA TRANSFORMATION</span>
+                                                <h4>Original Data vs Current Cleaned Data</h4>
+                                                <p class="comparison-description">
+                                                    Smart BI keeps the original upload unchanged and creates a separate cleaned version for analytics.
+                                                </p>
+                                            </div>
+
+                                            {% if dataset.cleaned_version %}
+                                                <span class="pipeline-complete">✓ Analytics Ready</span>
+                                            {% else %}
+                                                <span class="pipeline-complete">Processing</span>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- COMPARISON CARDS -->
+                                        <div class="data-comparison-grid">
+                                            <!-- ORIGINAL -->
+                                            <div class="data-state-card original-data">
+                                                <div class="data-state-header">
+                                                    <div>
+                                                        <span class="data-state-label">ORIGINAL UPLOADED DATA</span>
+                                                        <h5>Raw Dataset</h5>
+                                                    </div>
+                                                    <div class="data-state-icon">↑</div>
+                                                </div>
+
+                                                {% if dataset.original_version %}
+                                                    <div class="data-metrics-grid">
+                                                        <div class="data-metric">
+                                                            <span>Rows</span>
+                                                            <strong>{{ dataset.original_version.total_rows }}</strong>
+                                                        </div>
+                                                        <div class="data-metric">
+                                                            <span>Columns</span>
+                                                            <strong>{{ dataset.original_version.total_columns }}</strong>
+                                                        </div>
+                                                        <div class="data-metric">
+                                                            <span>Missing</span>
+                                                            <strong>{{ dataset.original_version.missing_values }}</strong>
+                                                        </div>
+                                                        <div class="data-metric">
+                                                            <span>Duplicates</span>
+                                                            <strong>{{ dataset.original_version.duplicate_rows }}</strong>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="data-quality-line">
+                                                        <span>Original Quality</span>
+                                                        <strong>{{ dataset.original_version.quality_score|floatformat:2 }}%</strong>
+                                                    </div>
+
+                                                    <div class="data-state-actions">
+                                                        <a href="{% url 'data_management:dataset_preview' dataset.id %}?version={{ dataset.original_version.id }}" class="secondary-action">
+                                                            View Original
+                                                        </a>
+                                                        <a href="{% url 'data_management:download_version' dataset.original_version.id %}" class="secondary-action">
+                                                            Download Original
+                                                        </a>
+                                                    </div>
+                                                {% else %}
+                                                    <div class="version-unavailable">Original version information is unavailable.</div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- TRANSFORMATION ARROW -->
+                                            <div class="data-transform-arrow">
+                                                <div class="transform-icon">→</div>
+                                                <span>SMART BI<br>CLEANING</span>
+                                            </div>
+
+                                            <!-- CLEANED -->
+                                            <div class="data-state-card cleaned-data">
+                                                <div class="data-state-header">
+                                                    <div>
+                                                        <span class="data-state-label">CURRENT CLEANED DATA</span>
+                                                        <h5>Analytics Ready Dataset</h5>
+                                                    </div>
+                                                    <div class="data-state-icon">✓</div>
+                                                </div>
+
+                                                {% if dataset.cleaned_version %}
+                                                    <div class="data-metrics-grid">
+                                                        <div class="data-metric">
+                                                            <span>Rows</span>
+                                                            <strong>{{ dataset.cleaned_version.total_rows }}</strong>
+                                                        </div>
+                                                        <div class="data-metric">
+                                                            <span>Columns</span>
+                                                            <strong>{{ dataset.cleaned_version.total_columns }}</strong>
+                                                        </div>
+                                                        <div class="data-metric">
+                                                            <span>Missing</span>
+                                                            <strong>{{ dataset.cleaned_version.missing_values }}</strong>
+                                                        </div>
+                                                        <div class="data-metric">
+                                                            <span>Duplicates</span>
+                                                            <strong>{{ dataset.cleaned_version.duplicate_rows }}</strong>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="data-quality-line">
+                                                        <span>Current Quality</span>
+                                                        <strong>{{ dataset.cleaned_version.quality_score|floatformat:2 }}%</strong>
+                                                    </div>
+
+                                                    <div class="data-state-actions">
+                                                        <a href="{% url 'data_management:dataset_preview' dataset.id %}?version={{ dataset.cleaned_version.id }}" class="primary-action">
+                                                            View Cleaned Data
+                                                        </a>
+                                                        <a href="{% url 'data_management:download_version' dataset.cleaned_version.id %}" class="secondary-action">
+                                                            Download Cleaned
+                                                        </a>
+                                                    </div>
+
+                                                    <div class="analytics-ready-note">
+                                                        <span>✓</span>
+                                                        This version is used for Business Analytics.
+                                                    </div>
+                                                {% else %}
+                                                    <div class="cleaning-pending">
+                                                        <div class="pending-icon">◌</div>
+                                                        <strong>Cleaning in progress</strong>
+                                                        <p>Smart BI has not created the cleaned analytics-ready version yet.</p>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        <!-- PROCESSING HISTORY -->
+                                        <div class="history-section">
+                                            <div class="history-heading">
+                                                <div>
+                                                    <span class="section-label">PROCESSING HISTORY</span>
+                                                    <h4>What Smart BI did with this dataset</h4>
+                                                </div>
+                                                {% if dataset.cleaned_version %}
+                                                    <span class="pipeline-complete">✓ Complete</span>
+                                                {% endif %}
+                                            </div>
+
+                                            <div class="activity-timeline">
+                                                {% for activity in dataset.activities.all %}
+                                                    <div class="activity-item {% if activity.status == 'Warning' %}warning{% elif activity.status == 'Failed' %}failed{% else %}success{% endif %}">
+                                                        <div class="activity-marker">
+                                                            {% if activity.status == "Success" %}✓{% elif activity.status == "Warning" %}!{% else %}×{% endif %}
+                                                        </div>
+
+                                                        <div class="activity-content">
+                                                            <div class="activity-title-row">
+                                                                <strong>{{ activity.title }}</strong>
+                                                                <span>{{ activity.created_at|date:"d M Y &bull; h:i A" }}</span>
+                                                            </div>
+                                                            <p>{{ activity.description }}</p>
+
+                                                            {% if activity.activity_type == "Validated" %}
+                                                                {% if activity.details.issues %}
+                                                                    <div class="activity-details warning-details">
+                                                                        <strong>Issues detected</strong>
+                                                                        <ul>
+                                                                            {% for issue in activity.details.issues %}
+                                                                                <li>{{ issue }}</li>
+                                                                            {% endfor %}
+                                                                        </ul>
+                                                                    </div>
+                                                                {% else %}
+                                                                    <div class="activity-details">
+                                                                        <span>✓ File structure valid</span>
+                                                                        <span>✓ {{ activity.details.rows }} rows checked</span>
+                                                                        <span>✓ {{ activity.details.columns }} columns detected</span>
+                                                                    </div>
+                                                                {% endif %}
+                                                            {% endif %}
+
+                                                            {% if activity.activity_type == "Profiled" %}
+                                                                <div class="activity-details">
+                                                                    <span>Numeric: <b>{{ activity.details.numeric_columns|length }}</b></span>
+                                                                    <span>Categorical: <b>{{ activity.details.categorical_columns|length }}</b></span>
+                                                                    <span>Datetime: <b>{{ activity.details.datetime_columns|length }}</b></span>
+                                                                </div>
+                                                            {% endif %}
+
+                                                            {% if activity.activity_type == "Quality Checked" %}
+                                                                <div class="activity-details">
+                                                                    <span>Quality Score: <b>{{ activity.details.quality_score }}%</b></span>
+                                                                    <span>Missing: <b>{{ activity.details.missing_values }}</b></span>
+                                                                    <span>Duplicates: <b>{{ activity.details.duplicate_rows }}</b></span>
+                                                                </div>
+                                                            {% endif %}
+
+                                                            {% if activity.activity_type == "Cleaned" %}
+                                                                <div class="activity-details">
+                                                                    <span>Missing values: <b>{{ activity.details.missing_before }}</b> → <b>{{ activity.details.missing_after }}</b></span>
+                                                                    <span>Duplicate rows: <b>{{ activity.details.duplicates_before }}</b> → <b>{{ activity.details.duplicates_after }}</b></span>
+                                                                </div>
+                                                            {% endif %}
+
+                                                            {% if activity.activity_type == "Analytics Ready" %}
+                                                                <div class="activity-details">
+                                                                    <span>✓ Final cleaned dataset created</span>
+                                                                    {% if dataset.cleaned_version %}
+                                                                        <span>✓ {{ dataset.cleaned_version.total_rows }} rows ready</span>
+                                                                        <span>✓ {{ dataset.cleaned_version.total_columns }} columns ready</span>
+                                                                    {% endif %}
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                {% empty %}
+                                                    <div class="no-activity">Processing history is not available for this dataset.</div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+
+                                        <!-- READY BANNER -->
+                                        {% if dataset.cleaned_version %}
+                                            <div class="dataset-ready-banner">
+                                                <div class="ready-symbol">✦</div>
+                                                <div>
+                                                    <strong>Current cleaned data is ready for Business Analytics</strong>
+                                                    <p>
+                                                        Smart BI keeps the original upload unchanged. The cleaned version above is the active dataset that will be used by the Business Analytics modules.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </article>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <!-- EMPTY STATE -->
+                        <div class="empty-datasets">
+                            <div class="empty-animation">
+                                <div class="empty-orbit orbit-one"></div>
+                                <div class="empty-orbit orbit-two"></div>
+                                <div class="empty-center">◈</div>
+                            </div>
+                            <span class="section-label">NO DATASETS YET</span>
+                            <h2>Start with your business data</h2>
+                            <p>Upload a CSV, XLS or XLSX file and Smart BI will automatically validate, profile, check quality, clean and prepare it for analytics.</p>
+                            <a href="{% url 'data_management:upload_data' %}" class="upload-btn">
+                                <span class="upload-icon">＋</span>
+                                Upload Your First Dataset
+                            </a>
+                        </div>
+                    {% endif %}
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- =========================================================
+         ACCORDION EXPAND TOGGLE SCRIPT
+    ========================================================== -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const buttons = document.querySelectorAll("[data-expand-button]");
+
+            buttons.forEach(function (button) {
+                button.addEventListener("click", function () {
+                    const card = button.closest("[data-dataset-card]");
+                    const isOpen = card.classList.contains("expanded");
+
+                    /* Close any other open comparison panel */
+                    document.querySelectorAll("[data-dataset-card].expanded").forEach(function (otherCard) {
+                        if (otherCard !== card) {
+                            otherCard.classList.remove("expanded");
+                            const otherButton = otherCard.querySelector("[data-expand-button]");
+                            if (otherButton) {
+                                otherButton.setAttribute("aria-expanded", "false");
+                                const otherText = otherButton.querySelector("span");
+                                if (otherText) otherText.textContent = "Compare Data";
+                            }
+                        }
+                    });
+
+                    /* Toggle active card */
+                    if (isOpen) {
+                        card.classList.remove("expanded");
+                        button.setAttribute("aria-expanded", "false");
+                        const text = button.querySelector("span");
+                        if (text) text.textContent = "Compare Data";
+                    } else {
+                        card.classList.add("expanded");
+                        button.setAttribute("aria-expanded", "true");
+                        const text = button.querySelector("span");
+                        if (text) text.textContent = "Hide Comparison";
+                    }
+                });
+            });
         });
+    </script>
 
-    });
-
-});
-
-</script>
-
-{% endblock %}
+</body>
+</html>

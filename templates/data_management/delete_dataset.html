@@ -1,0 +1,564 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Delete Dataset | Smart BI
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+    /* =========================================================
+       DELETE DATASET PAGE
+    ========================================================= */
+
+    .delete-page {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 50px 30px 80px;
+        box-sizing: border-box;
+    }
+
+
+    /* =========================================================
+       HEADER
+    ========================================================= */
+
+    .delete-header {
+        margin-bottom: 30px;
+    }
+
+    .delete-header .section-label {
+        display: inline-block;
+        margin-bottom: 10px;
+
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+    }
+
+    .delete-header h1 {
+        margin: 0;
+
+        font-size: 38px;
+        line-height: 1.15;
+    }
+
+    .delete-header h1 span {
+        color: #ef4444;
+    }
+
+    .delete-header p {
+        max-width: 700px;
+        margin-top: 12px;
+
+        color: #94a3b8;
+        line-height: 1.7;
+    }
+
+
+    /* =========================================================
+       CONFIRMATION CARD
+    ========================================================= */
+
+    .delete-card {
+        overflow: hidden;
+
+        background: rgba(15, 23, 42, 0.92);
+
+        border: 1px solid rgba(239, 68, 68, 0.25);
+        border-radius: 20px;
+
+        box-shadow:
+            0 20px 60px rgba(0, 0, 0, 0.25);
+    }
+
+
+    /* =========================================================
+       WARNING HEADER
+    ========================================================= */
+
+    .delete-warning {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+
+        padding: 25px 28px;
+
+        background: rgba(239, 68, 68, 0.08);
+        border-bottom: 1px solid rgba(239, 68, 68, 0.18);
+    }
+
+    .delete-warning-icon {
+        width: 52px;
+        height: 52px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 14px;
+
+        background: rgba(239, 68, 68, 0.14);
+
+        color: #ef4444;
+
+        font-size: 25px;
+        font-weight: 800;
+    }
+
+    .delete-warning h2 {
+        margin: 0 0 5px;
+
+        font-size: 20px;
+    }
+
+    .delete-warning p {
+        margin: 0;
+
+        color: #94a3b8;
+
+        line-height: 1.6;
+    }
+
+
+    /* =========================================================
+       DATASET INFORMATION
+    ========================================================= */
+
+    .delete-dataset-info {
+        display: grid;
+
+        grid-template-columns:
+            minmax(0, 1.5fr)
+            repeat(3, minmax(130px, 1fr));
+
+        gap: 1px;
+
+        margin: 25px 28px 0;
+
+        overflow: hidden;
+
+        border: 1px solid rgba(148, 163, 184, 0.12);
+        border-radius: 14px;
+
+        background: rgba(148, 163, 184, 0.08);
+    }
+
+    .delete-info-item {
+        padding: 20px;
+
+        background: rgba(15, 23, 42, 0.9);
+    }
+
+    .delete-info-item span {
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: #64748b;
+
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+    }
+
+    .delete-info-item strong {
+        display: block;
+
+        color: #e2e8f0;
+
+        font-size: 15px;
+
+        word-break: break-word;
+    }
+
+
+    /* =========================================================
+       WHAT HAPPENS
+    ========================================================= */
+
+    .delete-details {
+        margin: 25px 28px 0;
+
+        padding: 22px;
+
+        border: 1px solid rgba(148, 163, 184, 0.12);
+        border-radius: 14px;
+
+        background: rgba(2, 6, 23, 0.35);
+    }
+
+    .delete-details-label {
+        display: block;
+
+        margin-bottom: 14px;
+
+        color: #94a3b8;
+
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1.3px;
+    }
+
+    .delete-details ul {
+        margin: 0;
+        padding: 0;
+
+        list-style: none;
+    }
+
+    .delete-details li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+
+        margin-bottom: 10px;
+
+        color: #cbd5e1;
+
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .delete-details li:last-child {
+        margin-bottom: 0;
+    }
+
+    .delete-details li::before {
+        content: "✓";
+
+        flex-shrink: 0;
+
+        color: #22c55e;
+
+        font-weight: 800;
+    }
+
+
+    /* =========================================================
+       ACTIONS
+    ========================================================= */
+
+    .delete-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 12px;
+
+        margin-top: 30px;
+        padding: 22px 28px;
+
+        border-top: 1px solid rgba(148, 163, 184, 0.1);
+    }
+
+    .delete-cancel-btn,
+    .delete-confirm-btn {
+        min-height: 44px;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 0 20px;
+
+        border-radius: 10px;
+
+        font-size: 13px;
+        font-weight: 700;
+
+        text-decoration: none;
+
+        cursor: pointer;
+
+        transition:
+            transform 0.2s ease,
+            background 0.2s ease,
+            border-color 0.2s ease;
+    }
+
+
+    /* Cancel */
+
+    .delete-cancel-btn {
+        border: 1px solid rgba(148, 163, 184, 0.2);
+
+        background: rgba(148, 163, 184, 0.06);
+
+        color: #cbd5e1;
+    }
+
+    .delete-cancel-btn:hover {
+        background: rgba(148, 163, 184, 0.12);
+
+        transform: translateY(-1px);
+    }
+
+
+    /* Confirm */
+
+    .delete-confirm-btn {
+        border: 1px solid rgba(239, 68, 68, 0.35);
+
+        background: #ef4444;
+
+        color: white;
+    }
+
+    .delete-confirm-btn:hover {
+        background: #dc2626;
+
+        transform: translateY(-1px);
+    }
+
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+
+    @media (max-width: 800px) {
+
+        .delete-page {
+            padding: 30px 18px 60px;
+        }
+
+        .delete-dataset-info {
+            grid-template-columns: 1fr 1fr;
+        }
+
+    }
+
+
+    @media (max-width: 550px) {
+
+        .delete-header h1 {
+            font-size: 30px;
+        }
+
+        .delete-warning {
+            align-items: flex-start;
+        }
+
+        .delete-dataset-info {
+            grid-template-columns: 1fr;
+        }
+
+        .delete-actions {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+
+        .delete-cancel-btn,
+        .delete-confirm-btn {
+            width: 100%;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="delete-page">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="delete-header">
+
+        <span class="section-label">
+            DATA MANAGEMENT
+        </span>
+
+        <h1>
+            Delete <span>Dataset</span>
+        </h1>
+
+        <p>
+            Review the dataset before removing it from your
+            active Smart BI workspace.
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         DELETE CARD
+    ====================================================== -->
+
+    <div class="delete-card">
+
+
+        <!-- WARNING -->
+
+        <div class="delete-warning">
+
+            <div class="delete-warning-icon">
+                !
+            </div>
+
+            <div>
+
+                <h2>
+                    Are you sure you want to delete this dataset?
+                </h2>
+
+                <p>
+                    This dataset will be removed from your active
+                    Data Management workspace.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             DATASET INFORMATION
+        ================================================== -->
+
+        <div class="delete-dataset-info">
+
+
+            <!-- NAME -->
+
+            <div class="delete-info-item">
+
+                <span>
+                    Dataset
+                </span>
+
+                <strong>
+                    {{ dataset.name }}
+                </strong>
+
+            </div>
+
+
+            <!-- TYPE -->
+
+            <div class="delete-info-item">
+
+                <span>
+                    Type
+                </span>
+
+                <strong>
+                    {{ dataset.dataset_type }}
+                </strong>
+
+            </div>
+
+
+            <!-- ROWS -->
+
+            <div class="delete-info-item">
+
+                <span>
+                    Rows
+                </span>
+
+                <strong>
+                    {{ dataset.total_rows }}
+                </strong>
+
+            </div>
+
+
+            <!-- QUALITY -->
+
+            <div class="delete-info-item">
+
+                <span>
+                    Quality
+                </span>
+
+                <strong>
+                    {{ dataset.quality_score }}%
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             WHAT HAPPENS
+        ================================================== -->
+
+        <div class="delete-details">
+
+            <span class="delete-details-label">
+                WHAT WILL HAPPEN
+            </span>
+
+            <ul>
+
+                <li>
+                    The dataset will no longer appear in your
+                    active dataset list.
+                </li>
+
+                <li>
+                    The dataset will no longer be available for
+                    active analytics selection.
+                </li>
+
+                <li>
+                    Existing version history and processing
+                    records are preserved.
+                </li>
+
+                <li>
+                    Your original uploaded data remains preserved
+                    in the dataset history.
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <!-- =================================================
+             ACTIONS
+        ================================================== -->
+
+        <form
+            method="POST"
+            class="delete-actions"
+        >
+
+            {% csrf_token %}
+
+
+            <a
+                href="{% url 'data_management:dataset_management' %}"
+                class="delete-cancel-btn"
+            >
+                Cancel
+            </a>
+
+
+            <button
+                type="submit"
+                class="delete-confirm-btn"
+            >
+                Delete Dataset
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

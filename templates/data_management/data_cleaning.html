@@ -1,512 +1,1290 @@
-{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}
-Data Cleaning | Smart BI
-{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Cleaning | Smart Business Decision Intelligence</title>
 
-{% block content %}
+    <style>
+        /* ============================================================
+           SMART BI DESIGN SYSTEM & PALETTE
+        ============================================================ */
+        :root {
+            --bg: #030712;
+            --bg-deep: #020617;
+            --bg-soft: #071525;
 
-<div class="cleaning-page">
+            --card: #0B1B2D;
+            --card-light: #10243A;
+            --card-glass: rgba(11, 27, 45, 0.72);
+            --card-glass-subtle: rgba(16, 36, 58, 0.45);
 
-    <!-- HEADER -->
+            --purple: #7C5CFF;
+            --purple-light: #A99CFF;
+            --purple-glow: rgba(124, 92, 255, 0.35);
 
-    <div class="cleaning-header">
+            --blue: #35B8FF;
+            --blue-glow: rgba(53, 184, 255, 0.30);
 
-        <div>
+            --cyan: #22D3EE;
+            --cyan-glow: rgba(34, 211, 238, 0.28);
 
-            <span class="section-label">
-                DATA MANAGEMENT
-            </span>
+            --green: #39E58C;
+            --green-glow: rgba(57, 229, 140, 0.25);
 
-            <h1>
-                Data <span>Cleaning</span>
-            </h1>
+            --orange: #FFB454;
+            --orange-glow: rgba(255, 180, 84, 0.25);
 
-            <p>
-                Detect and remove common data quality issues
-                while preserving your original dataset.
-            </p>
+            --red: #FF5C70;
+            --red-glow: rgba(255, 92, 112, 0.25);
 
-        </div>
+            --text: #F7FAFF;
+            --muted: #8294A8;
+            --subtle: #4D6277;
 
-        <div class="header-actions">
+            --border: rgba(255, 255, 255, 0.08);
+            --border-bright: rgba(255, 255, 255, 0.16);
+            --border-cyan: rgba(34, 211, 238, 0.35);
+            --border-purple: rgba(124, 92, 255, 0.35);
 
-            <a
-                href="{% url 'data_management:data_quality' %}"
-                class="secondary-btn"
-            >
-                Data Quality
-            </a>
+            --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
-            <a
-                href="{% url 'data_management:dataset_management' %}"
-                class="secondary-btn"
-            >
-                Dataset Management
-            </a>
+            --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
 
-        </div>
+        /* ============================================================
+           RESET & VIEWPORT ROOT
+        ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    </div>
+        html, body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+        }
 
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
-    <!-- DATASET SELECTOR -->
+        button, select {
+            font: inherit;
+            outline: none;
+        }
 
-    <div class="cleaning-selector">
+        /* ============================================================
+           DUAL INDEPENDENT SCROLL LAYOUT
+        ============================================================ */
+        .smart-app-layout {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(circle at 10% 10%, rgba(124, 92, 255, 0.10) 0%, transparent 40%),
+                radial-gradient(circle at 90% 85%, rgba(34, 211, 238, 0.08) 0%, transparent 45%),
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+        }
 
-        <div>
+        /* Sidebar: Fixed left dock, scrolls independently */
+        .smart-sidebar-container {
+            width: 270px;
+            height: 100vh;
+            flex-shrink: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 50;
+            background: var(--bg-deep);
+            border-right: 1px solid var(--border);
+            scrollbar-width: thin;
+            scrollbar-color: var(--subtle) transparent;
+        }
 
-            <label>
-                Select Dataset
-            </label>
+        .smart-sidebar-container::-webkit-scrollbar {
+            width: 4px;
+        }
 
-            <p>
-                Choose the dataset you want to clean.
-            </p>
+        .smart-sidebar-container::-webkit-scrollbar-thumb {
+            background: var(--subtle);
+            border-radius: 4px;
+        }
 
-        </div>
+        /* Main Viewport: Independent scroll */
+        .smart-main-content {
+            flex: 1;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 10;
+            padding: 34px 44px 80px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--card-light) transparent;
+        }
 
-        <form method="GET">
+        .smart-main-content::-webkit-scrollbar {
+            width: 6px;
+        }
 
-            <select
-                name="dataset"
-                onchange="this.form.submit()"
-            >
+        .smart-main-content::-webkit-scrollbar-thumb {
+            background: var(--card-light);
+            border-radius: 4px;
+        }
 
-                {% for dataset in datasets %}
+        .cleaning-page {
+            max-width: 1540px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
 
-                    <option
-                        value="{{ dataset.id }}"
-                        {% if selected_dataset.id == dataset.id %}
-                            selected
+        /* Floating background ambient orbs */
+        .ambient-orb-top {
+            position: fixed;
+            width: 420px;
+            height: 420px;
+            top: -180px;
+            right: -100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--purple-glow), transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            animation: orbFloat 9s ease-in-out infinite alternate;
+        }
+
+        .ambient-orb-bottom {
+            position: fixed;
+            width: 380px;
+            height: 380px;
+            bottom: -160px;
+            left: 220px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--cyan-glow), transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            animation: orbFloat 11s ease-in-out infinite alternate-reverse;
+        }
+
+        /* ============================================================
+           HEADER
+        ============================================================ */
+        .cleaning-header {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+            padding: 30px 34px;
+            border: 1px solid var(--border-bright);
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(11, 27, 45, 0.92) 0%, rgba(7, 21, 37, 0.80) 100%);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(16px);
+            overflow: hidden;
+            animation: fadeUp 0.65s var(--transition-smooth) both;
+        }
+
+        .cleaning-header::before {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            top: -140px;
+            right: 80px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(124, 92, 255, 0.22), transparent 70%);
+            pointer-events: none;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--cyan);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+        }
+
+        .section-label::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 0 0 10px var(--cyan);
+            animation: pulseDot 2s infinite;
+        }
+
+        .cleaning-header h1 {
+            margin-top: 10px;
+            font-size: clamp(28px, 3.2vw, 42px);
+            line-height: 1.1;
+            letter-spacing: -1.2px;
+            font-weight: 850;
+        }
+
+        .cleaning-header h1 span {
+            background: linear-gradient(90deg, var(--purple-light), var(--cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .cleaning-header p {
+            max-width: 680px;
+            margin-top: 10px;
+            color: var(--muted);
+            font-size: 13.5px;
+            line-height: 1.6;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 2;
+            flex-wrap: wrap;
+        }
+
+        /* ============================================================
+           BUTTONS
+        ============================================================ */
+        .secondary-btn,
+        .primary-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            padding: 0 18px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 750;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            transition: transform 0.3s var(--transition-bounce), border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        .secondary-btn {
+            border: 1px solid var(--border-bright);
+            background: var(--card-glass);
+            color: var(--text);
+        }
+
+        .secondary-btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-cyan);
+            background: rgba(34, 211, 238, 0.08);
+            box-shadow: 0 8px 22px rgba(34, 211, 238, 0.12);
+        }
+
+        .primary-btn {
+            border: 1px solid rgba(124, 92, 255, 0.4);
+            background: linear-gradient(135deg, var(--purple), #6245e8);
+            color: #FFFFFF;
+            box-shadow: 0 10px 24px var(--purple-glow);
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px var(--purple-glow);
+        }
+
+        /* ============================================================
+           DATASET SELECTOR
+        ============================================================ */
+        .cleaning-selector {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            padding: 24px 28px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+            animation: fadeUp 0.75s var(--transition-smooth) both;
+        }
+
+        .cleaning-selector label {
+            display: block;
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .cleaning-selector p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .cleaning-selector form {
+            min-width: 340px;
+        }
+
+        .cleaning-selector select {
+            width: 100%;
+            height: 44px;
+            padding: 0 16px;
+            border: 1px solid var(--border-bright);
+            border-radius: 12px;
+            background: #081525;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 12.5px;
+            font-weight: 500;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .cleaning-selector select:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.10);
+        }
+
+        .cleaning-selector select option {
+            background: #081525;
+            color: var(--text);
+            padding: 8px;
+        }
+
+        /* ============================================================
+           VERSION BAR
+        ============================================================ */
+        .version-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 14px 20px;
+            border-radius: 14px;
+            background: var(--card-glass-subtle);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(12px);
+            animation: fadeUp 0.8s var(--transition-smooth) both;
+        }
+
+        .version-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .version-title {
+            font-size: 13.5px;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .version-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+
+        .version-badge.original {
+            color: var(--blue);
+            background: rgba(53, 184, 255, 0.10);
+            border: 1px solid rgba(53, 184, 255, 0.25);
+        }
+
+        .version-badge.cleaned {
+            color: var(--green);
+            background: rgba(57, 229, 140, 0.10);
+            border: 1px solid rgba(57, 229, 140, 0.25);
+        }
+
+        .version-badge.transformed {
+            color: var(--purple-light);
+            background: rgba(124, 92, 255, 0.10);
+            border: 1px solid rgba(124, 92, 255, 0.25);
+        }
+
+        .version-badge.dataset,
+        .version-badge.version {
+            color: var(--muted);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+        }
+
+        .version-select {
+            min-width: 240px;
+            height: 38px;
+            border-radius: 10px;
+            border: 1px solid var(--border-bright);
+            background: #081525;
+            padding: 0 12px;
+            font-size: 12px;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .version-select:focus {
+            border-color: var(--cyan);
+        }
+
+        .version-select option {
+            background: #081525;
+            color: var(--text);
+        }
+
+        /* ============================================================
+           SAFETY NOTICE
+        ============================================================ */
+        .cleaning-notice {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 18px 22px;
+            background: linear-gradient(135deg, rgba(57, 229, 140, 0.07) 0%, rgba(11, 27, 45, 0.85) 100%);
+            border: 1px solid rgba(57, 229, 140, 0.25);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            animation: fadeUp 0.85s var(--transition-smooth) both;
+        }
+
+        .notice-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 36px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(57, 229, 140, 0.15);
+            border: 1px solid var(--green);
+            color: var(--green);
+            font-weight: 850;
+            box-shadow: 0 0 15px var(--green-glow);
+        }
+
+        .cleaning-notice strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--green);
+            font-size: 13.5px;
+            letter-spacing: 0.2px;
+        }
+
+        .cleaning-notice p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 12.5px;
+            line-height: 1.6;
+        }
+
+        /* ============================================================
+           BEFORE / AFTER COMPARISON
+        ============================================================ */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+            animation: fadeUp 0.9s var(--transition-smooth) both;
+        }
+
+        .comparison-card {
+            padding: 24px;
+            border-radius: 20px;
+            background: var(--card-glass);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s var(--transition-smooth), border-color 0.3s ease;
+        }
+
+        .comparison-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .comparison-card.before {
+            border-top: 3px solid var(--orange);
+        }
+
+        .comparison-card.before:hover {
+            border-color: var(--orange);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25), 0 0 25px rgba(255, 180, 84, 0.12);
+        }
+
+        .comparison-card.after {
+            border-top: 3px solid var(--green);
+        }
+
+        .comparison-card.after:hover {
+            border-color: var(--green);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25), 0 0 25px rgba(57, 229, 140, 0.12);
+        }
+
+        .comparison-title {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .comparison-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 850;
+        }
+
+        .before .comparison-icon {
+            color: var(--orange);
+            background: rgba(255, 180, 84, 0.12);
+            border: 1px solid rgba(255, 180, 84, 0.25);
+            box-shadow: 0 0 15px var(--orange-glow);
+        }
+
+        .after .comparison-icon {
+            color: var(--green);
+            background: rgba(57, 229, 140, 0.12);
+            border: 1px solid rgba(57, 229, 140, 0.25);
+            box-shadow: 0 0 15px var(--green-glow);
+        }
+
+        .comparison-title h3 {
+            margin: 0;
+            font-size: 17px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+
+        .comparison-stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .comparison-stats > div {
+            padding: 14px 16px;
+            background: rgba(16, 36, 58, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: background 0.25s ease;
+        }
+
+        .comparison-stats > div:hover {
+            background: rgba(16, 36, 58, 0.8);
+        }
+
+        .comparison-stats span {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--subtle);
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .comparison-stats strong {
+            color: #FFFFFF;
+            font-size: 20px;
+            font-weight: 850;
+            letter-spacing: -0.5px;
+        }
+
+        /* ============================================================
+           PANELS COMMON
+        ============================================================ */
+        .cleaning-panel,
+        .impact-panel,
+        .download-panel {
+            background: var(--card-glass);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+            animation: fadeUp 0.95s var(--transition-smooth) both;
+        }
+
+        .cleaning-panel {
+            padding: 24px 26px;
+        }
+
+        .panel-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .panel-heading h3 {
+            margin-top: 6px;
+            font-size: 17px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+
+        .action-count {
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: rgba(124, 92, 255, 0.12);
+            border: 1px solid var(--border-purple);
+            color: var(--purple-light);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+        }
+
+        /* ============================================================
+           ACTION GRID
+        ============================================================ */
+        .cleaning-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .cleaning-action {
+            display: grid;
+            grid-template-columns: 44px 1fr auto;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 18px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.02);
+            transition: transform 0.3s var(--transition-bounce), background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .cleaning-action:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.045);
+            border-color: var(--border-bright);
+        }
+
+        .action-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 850;
+        }
+
+        .action-icon.orange {
+            color: var(--orange);
+            background: rgba(255, 180, 84, 0.12);
+            border: 1px solid rgba(255, 180, 84, 0.22);
+        }
+
+        .action-icon.red {
+            color: var(--red);
+            background: rgba(255, 92, 112, 0.12);
+            border: 1px solid rgba(255, 92, 112, 0.22);
+        }
+
+        .action-icon.blue {
+            color: var(--blue);
+            background: rgba(53, 184, 255, 0.12);
+            border: 1px solid rgba(53, 184, 255, 0.22);
+        }
+
+        .action-icon.green {
+            color: var(--green);
+            background: rgba(57, 229, 140, 0.12);
+            border: 1px solid rgba(57, 229, 140, 0.22);
+        }
+
+        .cleaning-action strong {
+            display: block;
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 750;
+            margin-bottom: 3px;
+        }
+
+        .cleaning-action span {
+            display: block;
+            color: var(--muted);
+            font-size: 11.5px;
+        }
+
+        .cleaning-action b {
+            min-width: 45px;
+            text-align: right;
+            color: #FFFFFF;
+            font-size: 20px;
+            font-weight: 850;
+        }
+
+        /* ============================================================
+           IMPACT
+        ============================================================ */
+        .impact-panel {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            padding: 26px 30px;
+        }
+
+        .impact-panel h3 {
+            margin: 6px 0 6px;
+            font-size: 18px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+
+        .impact-panel p {
+            margin: 0;
+            max-width: 720px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+        .impact-number {
+            min-width: 155px;
+            padding: 18px 24px;
+            text-align: center;
+            background: rgba(57, 229, 140, 0.08);
+            border: 1px solid rgba(57, 229, 140, 0.25);
+            border-radius: 14px;
+            box-shadow: 0 0 20px rgba(57, 229, 140, 0.10);
+        }
+
+        .impact-number strong {
+            display: block;
+            color: var(--green);
+            font-size: 30px;
+            font-weight: 850;
+            letter-spacing: -0.5px;
+        }
+
+        .impact-number span {
+            display: block;
+            margin-top: 4px;
+            color: var(--green-glow);
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        /* ============================================================
+           DOWNLOAD PANEL
+        ============================================================ */
+        .download-panel {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            padding: 26px 30px;
+            background: linear-gradient(145deg, rgba(11, 27, 45, 0.88), rgba(7, 21, 37, 0.70));
+        }
+
+        .download-panel h3 {
+            margin: 6px 0 6px;
+            font-size: 18px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+
+        .download-panel p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* ============================================================
+           EMPTY STATE
+        ============================================================ */
+        .empty-cleaning {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            padding: 50px;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            background: linear-gradient(145deg, rgba(11, 27, 45, 0.88), rgba(7, 21, 37, 0.65));
+            text-align: center;
+            animation: fadeUp 0.8s var(--transition-smooth) both;
+        }
+
+        .empty-icon {
+            width: 75px;
+            height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-purple);
+            border-radius: 20px;
+            background: rgba(124, 92, 255, 0.08);
+            color: var(--purple-light);
+            font-size: 30px;
+            box-shadow: 0 0 35px rgba(124, 92, 255, 0.12);
+            animation: emptyFloat 3s ease-in-out infinite;
+        }
+
+        .empty-cleaning h2 {
+            font-size: 24px;
+            font-weight: 850;
+            color: #FFFFFF;
+            margin-top: 10px;
+        }
+
+        .empty-cleaning p {
+            max-width: 480px;
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* ============================================================
+           FOOTER
+        ============================================================ */
+        .cleaning-footer {
+            padding: 24px 0 0;
+            color: var(--subtle);
+            text-align: center;
+            font-size: 11px;
+            letter-spacing: 0.4px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ============================================================
+           KEYFRAME ANIMATIONS
+        ============================================================ */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4); }
+            50% { box-shadow: 0 0 0 6px rgba(34, 211, 238, 0); }
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-25px, 25px); }
+        }
+
+        @keyframes emptyFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        /* ============================================================
+           RESPONSIVE DESIGN
+        ============================================================ */
+        @media (max-width: 1100px) {
+            .comparison-stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 900px) {
+            .smart-app-layout {
+                flex-direction: column;
+                height: auto;
+                overflow-y: visible;
+            }
+            .smart-sidebar-container {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            .smart-main-content {
+                height: auto;
+                overflow-y: visible;
+                padding: 24px 20px 80px;
+            }
+            .cleaning-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .cleaning-selector {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .cleaning-selector form {
+                min-width: 0;
+                width: 100%;
+            }
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            .cleaning-actions-grid {
+                grid-template-columns: 1fr;
+            }
+            .impact-panel,
+            .download-panel {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .cleaning-header h1 {
+                font-size: 28px;
+            }
+            .comparison-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="smart-app-layout">
+        <!-- Floating background ambient orbs -->
+        <div class="ambient-orb-top"></div>
+        <div class="ambient-orb-bottom"></div>
+
+        <!-- =====================================================
+             LEFT SIDEBAR (INDEPENDENT SCROLL)
+        ====================================================== -->
+        <aside class="smart-sidebar-container" aria-label="Main Navigation">
+            {% include "includes/smart_sidebar.html" %}
+        </aside>
+
+        <!-- =====================================================
+             RIGHT MAIN CONTENT (INDEPENDENT SCROLL)
+        ====================================================== -->
+        <main class="smart-main-content" role="main">
+            <div class="cleaning-page">
+
+                <!-- HEADER -->
+                <div class="cleaning-header">
+                    <div>
+                        <span class="section-label">DATA MANAGEMENT</span>
+                        <h1>Data <span>Cleaning</span></h1>
+                        <p>Detect and resolve structural quality anomalies while safeguarding your original dataset in immutable storage.</p>
+                    </div>
+
+                    <div class="header-actions">
+                        <a href="{% url 'data_management:quality' %}" class="secondary-btn">
+                            Data Quality
+                        </a>
+                        <a href="{% url 'data_management:dataset_management' %}" class="secondary-btn">
+                            Dataset Management
+                        </a>
+                    </div>
+                </div>
+
+                <!-- DATASET SELECTOR -->
+                <div class="cleaning-selector">
+                    <div>
+                        <label for="dataset-select">Select Dataset</label>
+                        <p>Choose the target business dataset for sanitization and normalization.</p>
+                    </div>
+
+                    <form method="GET" id="dataset-form">
+                        <select id="dataset-select" name="dataset" onchange="this.form.submit()">
+                            {% for dataset in datasets %}
+                                <option value="{{ dataset.id }}" {% if selected_dataset and selected_dataset.id == dataset.id %}selected{% endif %}>
+                                    {{ dataset.name }} — {{ dataset.dataset_type }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </div>
+
+                {% if selected_dataset and cleaning %}
+
+                    <!-- VERSION INFORMATION -->
+                    <div class="version-bar">
+                        <div class="version-info">
+                            <span class="version-title">{{ cleaning.version_label }}</span>
+                            <span class="version-badge {{ cleaning.version_badge }}">
+                                {{ cleaning.version_type|default:"Dataset" }}
+                            </span>
+                        </div>
+
+                        {% if selected_dataset.versions.all %}
+                            <form method="GET">
+                                <input type="hidden" name="dataset" value="{{ selected_dataset.id }}">
+                                <select name="version" class="version-select" onchange="this.form.submit()">
+                                    {% for version in selected_dataset.versions.all %}
+                                        <option value="{{ version.id }}" {% if selected_version and selected_version.id == version.id %}selected{% endif %}>
+                                            Version {{ version.version_number }} — {{ version.version_type }}{% if version.is_current %} — Current{% endif %}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </form>
                         {% endif %}
-                    >
+                    </div>
 
-                        {{ dataset.name }}
-                        — {{ dataset.dataset_type }}
+                    <!-- SAFETY NOTICE -->
+                    <div class="cleaning-notice">
+                        <div class="notice-icon">✓</div>
+                        <div>
+                            <strong>Original Dataset Protected</strong>
+                            <p>
+                                Smart BI executes non-destructive in-memory transformations. The selected source file is strictly preserved, and the sanitization outputs are routed to a distinct versioned artifact.
+                            </p>
+                        </div>
+                    </div>
 
-                    </option>
+                    <!-- BEFORE / AFTER COMPARISON -->
+                    <div class="comparison-grid">
+                        <!-- BEFORE -->
+                        <div class="comparison-card before">
+                            <div class="comparison-title">
+                                <span class="comparison-icon">B</span>
+                                <div>
+                                    <span class="section-label" style="color: var(--orange);">BEFORE</span>
+                                    <h3>Source Dataset</h3>
+                                </div>
+                            </div>
 
-                {% endfor %}
+                            <div class="comparison-stats">
+                                <div>
+                                    <span>Rows</span>
+                                    <strong>{{ cleaning.before_rows }}</strong>
+                                </div>
+                                <div>
+                                    <span>Columns</span>
+                                    <strong>{{ cleaning.before_columns }}</strong>
+                                </div>
+                                <div>
+                                    <span>Missing Values</span>
+                                    <strong>{{ cleaning.before_missing }}</strong>
+                                </div>
+                                <div>
+                                    <span>Duplicates</span>
+                                    <strong>{{ cleaning.before_duplicates }}</strong>
+                                </div>
+                            </div>
+                        </div>
 
-            </select>
+                        <!-- AFTER -->
+                        <div class="comparison-card after">
+                            <div class="comparison-title">
+                                <span class="comparison-icon">A</span>
+                                <div>
+                                    <span class="section-label" style="color: var(--green);">AFTER</span>
+                                    <h3>Cleaned Dataset</h3>
+                                </div>
+                            </div>
 
-        </form>
+                            <div class="comparison-stats">
+                                <div>
+                                    <span>Rows</span>
+                                    <strong>{{ cleaning.after_rows }}</strong>
+                                </div>
+                                <div>
+                                    <span>Columns</span>
+                                    <strong>{{ cleaning.after_columns }}</strong>
+                                </div>
+                                <div>
+                                    <span>Missing Values</span>
+                                    <strong>{{ cleaning.after_missing }}</strong>
+                                </div>
+                                <div>
+                                    <span>Duplicates</span>
+                                    <strong>{{ cleaning.after_duplicates }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+                    <!-- CLEANING ENGINE ACTIONS -->
+                    <div class="cleaning-panel">
+                        <div class="panel-heading">
+                            <div>
+                                <span class="section-label">CLEANING ENGINE</span>
+                                <h3>Cleaning Actions Performed</h3>
+                            </div>
+                            <div class="action-count">
+                                {{ cleaning.total_actions }} action{{ cleaning.total_actions|pluralize }}
+                            </div>
+                        </div>
+
+                        <div class="cleaning-actions-grid">
+                            <!-- EMPTY ROWS -->
+                            <div class="cleaning-action">
+                                <div class="action-icon orange">↓</div>
+                                <div>
+                                    <strong>Empty Rows Removed</strong>
+                                    <span>Completely blank data records</span>
+                                </div>
+                                <b>{{ cleaning.empty_rows }}</b>
+                            </div>
+
+                            <!-- DUPLICATES -->
+                            <div class="cleaning-action">
+                                <div class="action-icon red">⧉</div>
+                                <div>
+                                    <strong>Duplicates Removed</strong>
+                                    <span>Redundant identical tuples</span>
+                                </div>
+                                <b>{{ cleaning.duplicates_removed }}</b>
+                            </div>
+
+                            <!-- TEXT -->
+                            <div class="cleaning-action">
+                                <div class="action-icon blue">T</div>
+                                <div>
+                                    <strong>Text Columns Cleaned</strong>
+                                    <span>Whitespace and casing normalization</span>
+                                </div>
+                                <b>{{ cleaning.text_columns_cleaned }}</b>
+                            </div>
+
+                            <!-- NUMERIC -->
+                            <div class="cleaning-action">
+                                <div class="action-icon green">#</div>
+                                <div>
+                                    <strong>Numeric Values Filled</strong>
+                                    <span>Missing numeric fields imputed with median</span>
+                                </div>
+                                <b>{{ cleaning.numeric_values_filled }}</b>
+                            </div>
+
+                            <!-- CATEGORICAL -->
+                            <div class="cleaning-action">
+                                <div class="action-icon blue">C</div>
+                                <div>
+                                    <strong>Categorical Values Filled</strong>
+                                    <span>Missing labels tagged as Unknown</span>
+                                </div>
+                                <b>{{ cleaning.categorical_values_filled }}</b>
+                            </div>
+
+                            <!-- MISSING REDUCTION -->
+                            <div class="cleaning-action">
+                                <div class="action-icon green">↓</div>
+                                <div>
+                                    <strong>Missing Values Reduced</strong>
+                                    <span>Net completeness improvement</span>
+                                </div>
+                                <b>{{ cleaning.missing_reduction }}</b>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- IMPACT PANEL -->
+                    <div class="impact-panel">
+                        <div>
+                            <span class="section-label">CLEANING IMPACT</span>
+                            <h3>Dataset Improvement</h3>
+                            <p>
+                                {{ cleaning.rows_removed }} row{{ cleaning.rows_removed|pluralize }} removed during pipeline sanitization.
+                                {% if cleaning.missing_reduction > 0 %}
+                                    {{ cleaning.missing_reduction }} missing value{{ cleaning.missing_reduction|pluralize }} resolved.
+                                {% endif %}
+                                {% if cleaning.text_values_cleaned > 0 %}
+                                    {{ cleaning.text_values_cleaned }} text field{{ cleaning.text_values_cleaned|pluralize }} normalized.
+                                {% endif %}
+                            </p>
+                        </div>
+
+                        <div class="impact-number">
+                            <strong>{{ cleaning.rows_retained_percentage }}%</strong>
+                            <span>Rows Retained</span>
+                        </div>
+                    </div>
+
+                    <!-- DOWNLOAD PANEL -->
+                    <div class="download-panel">
+                        <div>
+                            <span class="section-label">READY FOR ANALYSIS</span>
+                            <h3>Download Cleaned Dataset</h3>
+                            <p>Export the cleaned CSV artifact while maintaining the immutable state of your source dataset.</p>
+                        </div>
+
+                        <a href="{% url 'data_management:download_cleaned_dataset' selected_dataset.id %}" class="primary-btn">
+                            Download Cleaned CSV ↓
+                        </a>
+                    </div>
+
+                {% elif not datasets %}
+
+                    <!-- NO DATASET -->
+                    <div class="empty-cleaning">
+                        <div class="empty-icon">◫</div>
+                        <span class="section-label">DATA CLEANING</span>
+                        <h2>No Dataset Available</h2>
+                        <p>Upload a business dataset first to initiate automated pipeline sanitization and profiling.</p>
+                        <a href="{% url 'data_management:upload_data' %}" class="primary-btn">
+                            Upload Dataset →
+                        </a>
+                    </div>
+
+                {% else %}
+
+                    <!-- SELECTION STATE -->
+                    <div class="empty-cleaning">
+                        <div class="empty-icon">!</div>
+                        <span class="section-label">DATA CLEANING</span>
+                        <h2>Select a Dataset</h2>
+                        <p>Choose an available dataset above to begin pipeline cleaning analysis.</p>
+                    </div>
+
+                {% endif %}
+
+                <!-- FOOTER -->
+                <footer class="cleaning-footer">
+                    Smart Business Decision Intelligence &bull; Core Data Engine v4.8
+                </footer>
+
+            </div>
+        </main>
     </div>
 
-
-    {% if selected_dataset and cleaning %}
-
-
-    <!-- SAFETY NOTICE -->
-
-    <div class="cleaning-notice">
-
-        <div class="notice-icon">
-            ✓
-        </div>
-
-        <div>
-
-            <strong>
-                Original Dataset Protected
-            </strong>
-
-            <p>
-                Smart BI does not modify your uploaded
-                original file. Cleaning is performed
-                in memory and the cleaned version can
-                be downloaded separately.
-            </p>
-
-        </div>
-
-    </div>
-
-
-    <!-- BEFORE / AFTER -->
-
-    <div class="comparison-grid">
-
-        <div class="comparison-card before">
-
-            <div class="comparison-title">
-
-                <span class="comparison-icon">
-                    B
-                </span>
-
-                <div>
-
-                    <span class="section-label">
-                        BEFORE
-                    </span>
-
-                    <h3>
-                        Original Dataset
-                    </h3>
-
-                </div>
-
-            </div>
-
-
-            <div class="comparison-stats">
-
-                <div>
-
-                    <span>Rows</span>
-
-                    <strong>
-                        {{ cleaning.before_rows }}
-                    </strong>
-
-                </div>
-
-                <div>
-
-                    <span>Columns</span>
-
-                    <strong>
-                        {{ cleaning.before_columns }}
-                    </strong>
-
-                </div>
-
-                <div>
-
-                    <span>Missing Values</span>
-
-                    <strong>
-                        {{ cleaning.before_missing }}
-                    </strong>
-
-                </div>
-
-                <div>
-
-                    <span>Duplicates</span>
-
-                    <strong>
-                        {{ cleaning.before_duplicates }}
-                    </strong>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="comparison-card after">
-
-            <div class="comparison-title">
-
-                <span class="comparison-icon">
-                    A
-                </span>
-
-                <div>
-
-                    <span class="section-label">
-                        AFTER
-                    </span>
-
-                    <h3>
-                        Cleaned Dataset
-                    </h3>
-
-                </div>
-
-            </div>
-
-
-            <div class="comparison-stats">
-
-                <div>
-
-                    <span>Rows</span>
-
-                    <strong>
-                        {{ cleaning.after_rows }}
-                    </strong>
-
-                </div>
-
-                <div>
-
-                    <span>Columns</span>
-
-                    <strong>
-                        {{ cleaning.after_columns }}
-                    </strong>
-
-                </div>
-
-                <div>
-
-                    <span>Missing Values</span>
-
-                    <strong>
-                        {{ cleaning.after_missing }}
-                    </strong>
-
-                </div>
-
-                <div>
-
-                    <span>Duplicates</span>
-
-                    <strong>
-                        {{ cleaning.after_duplicates }}
-                    </strong>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- CLEANING ACTIONS -->
-
-    <div class="cleaning-panel">
-
-        <div class="panel-heading">
-
-            <div>
-
-                <span class="section-label">
-                    CLEANING ENGINE
-                </span>
-
-                <h3>
-                    Cleaning Actions Performed
-                </h3>
-
-            </div>
-
-            <div class="action-count">
-                {{ cleaning.total_actions }}
-                actions
-            </div>
-
-        </div>
-
-
-        <div class="cleaning-actions-grid">
-
-            <div class="cleaning-action">
-
-                <div class="action-icon orange">
-                    ⬇
-                </div>
-
-                <div>
-
-                    <strong>
-                        Empty Rows Removed
-                    </strong>
-
-                    <span>
-                        Completely empty rows
-                    </span>
-
-                </div>
-
-                <b>
-                    {{ cleaning.empty_rows }}
-                </b>
-
-            </div>
-
-
-            <div class="cleaning-action">
-
-                <div class="action-icon red">
-                    ⧉
-                </div>
-
-                <div>
-
-                    <strong>
-                        Duplicates Removed
-                    </strong>
-
-                    <span>
-                        Duplicate records
-                    </span>
-
-                </div>
-
-                <b>
-                    {{ cleaning.duplicates_removed }}
-                </b>
-
-            </div>
-
-
-            <div class="cleaning-action">
-
-                <div class="action-icon blue">
-                    T
-                </div>
-
-                <div>
-
-                    <strong>
-                        Text Columns Cleaned
-                    </strong>
-
-                    <span>
-                        Whitespace normalization
-                    </span>
-
-                </div>
-
-                <b>
-                    {{ cleaning.text_columns_cleaned }}
-                </b>
-
-            </div>
-
-
-            <div class="cleaning-action">
-
-                <div class="action-icon green">
-                    ↓
-                </div>
-
-                <div>
-
-                    <strong>
-                        Missing Values Reduced
-                    </strong>
-
-                    <span>
-                        Difference after cleaning
-                    </span>
-
-                </div>
-
-                <b>
-                    {{ cleaning.missing_reduction }}
-                </b>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- IMPACT -->
-
-    <div class="impact-panel">
-
-        <div>
-
-            <span class="section-label">
-                CLEANING IMPACT
-            </span>
-
-            <h3>
-                Dataset Improvement
-            </h3>
-
-            <p>
-                {{ cleaning.rows_removed }}
-                problematic rows were removed or
-                normalized during the cleaning process.
-            </p>
-
-        </div>
-
-        <div class="impact-number">
-
-            <strong>
-                {{ cleaning.rows_removed }}
-            </strong>
-
-            <span>
-                Rows Removed
-            </span>
-
-        </div>
-
-    </div>
-
-
-    <!-- DOWNLOAD -->
-
-    <div class="download-panel">
-
-        <div>
-
-            <span class="section-label">
-                READY FOR ANALYSIS
-            </span>
-
-            <h3>
-                Download Cleaned Dataset
-            </h3>
-
-            <p>
-                Download a cleaned CSV while keeping
-                the original uploaded dataset unchanged.
-            </p>
-
-        </div>
-
-        <a
-            href="{% url 'data_management:download_cleaned_dataset' selected_dataset.id %}"
-            class="primary-btn"
-        >
-            Download Cleaned CSV ↓
-        </a>
-
-    </div>
-
-
-    {% elif not datasets %}
-
-
-    <!-- EMPTY STATE -->
-
-    <div class="empty-cleaning">
-
-        <div class="empty-icon">
-            ◫
-        </div>
-
-        <span class="section-label">
-            DATA CLEANING
-        </span>
-
-        <h2>
-            No Dataset Available
-        </h2>
-
-        <p>
-            Upload a dataset before starting
-            the cleaning process.
-        </p>
-
-        <a
-            href="{% url 'data_management:upload' %}"
-            class="primary-btn"
-        >
-            Upload Dataset →
-        </a>
-
-    </div>
-
-
-    {% endif %}
-
-</div>
-
-{% endblock %}
+</body>
+</html>

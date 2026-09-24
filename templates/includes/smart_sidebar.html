@@ -900,7 +900,7 @@ body.sidebar-open {
 
                     <div class="sidebar-group-content" id="section-content-analytics">
                         <a
-                            href="{% url 'business_intelligence' %}"
+                            href="{% url 'analytics:business_intelligence' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'business_intelligence' %}active{% endif %}"
                         >
                             <span class="sidebar-link-icon" aria-hidden="true">♙</span>
@@ -909,7 +909,7 @@ body.sidebar-open {
                         </a>
 
                         <a
-                            href="{% url 'sales_intelligence' %}"
+                            href="{% url 'analytics:sales_intelligence' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'sales_intelligence' %}active{% endif %}"
                         >
                             <span class="sidebar-link-icon" aria-hidden="true">☵</span>
@@ -918,7 +918,7 @@ body.sidebar-open {
                         </a>
 
                         <a
-                            href="{% url 'customer_intelligence' %}"
+                            href="{% url 'analytics:customer_intelligence' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'customer_intelligence' %}active{% endif %}"
                         >
                             <span class="sidebar-link-icon" aria-hidden="true">☺</span>
@@ -927,7 +927,7 @@ body.sidebar-open {
                         </a>
 
                         <a
-                            href="{% url 'product_intelligence' %}"
+                            href="{% url 'analytics:product_intelligence' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'product_intelligence' %}active{% endif %}"
                         >
                             <span class="sidebar-link-icon" aria-hidden="true">▥</span>
@@ -936,7 +936,7 @@ body.sidebar-open {
                         </a>
 
                         <a
-                            href="{% url 'regional_intelligence' %}"
+                            href="{% url 'analytics:regional_intelligence' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'regional_intelligence' %}active{% endif %}"
                         >
                             <span class="sidebar-link-icon" aria-hidden="true">◎</span>
@@ -945,7 +945,7 @@ body.sidebar-open {
                         </a>
 
                         <a
-                            href="{% url 'marketing_intelligence' %}"
+                            href="{% url 'analytics:marketing_intelligence' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'marketing_intelligence' %}active{% endif %}"
                         >
                             <span class="sidebar-link-icon" aria-hidden="true">❖</span>
@@ -954,7 +954,7 @@ body.sidebar-open {
                         </a>
 
                         <a
-                            href="{% url 'financial_intelligence' %}"
+                            href="{% url 'analytics:financial_intelligence' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'financial_intelligence' %}active{% endif %}"
                         >
                             <span class="sidebar-link-icon" aria-hidden="true">⚑</span>
@@ -963,7 +963,7 @@ body.sidebar-open {
                         </a>
 
                         <a
-                            href="{% url 'returns_intelligence' %}"
+                            href="{% url 'analytics:returns_intelligence' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'returns_intelligence' %}active{% endif %}"
                         >
                             <span class="sidebar-link-icon" aria-hidden="true">↺</span>

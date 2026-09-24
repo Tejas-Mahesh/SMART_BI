@@ -911,176 +911,311 @@
            KPI
            ===================================================== */
 
-        .kpi-grid {
+/* =========================================================
+   KPI GRID
+========================================================= */
 
-            display: grid;
+.kpi-grid {
 
-            grid-template-columns:
-                repeat(6, minmax(0, 1fr));
+    display: grid;
 
-            gap: 16px;
+    grid-template-columns:
+        repeat(6, minmax(0, 1fr));
 
-            margin-bottom: 24px;
-        }
+    gap: 16px;
 
+    margin-bottom: 24px;
+}
 
-        .kpi-card {
 
-            position: relative;
+/* =========================================================
+   KPI CARD
+========================================================= */
 
-            overflow: hidden;
+.kpi-card {
 
-            min-height: 145px;
+    position: relative;
+    overflow: hidden;
 
-            padding: 20px;
+    min-height: 145px;
 
-            border-radius:
-                var(--radius);
+    padding: 20px;
 
-            background:
-                var(--surface);
+    border-radius:
+        var(--radius);
 
-            border:
-                1px solid var(--border);
+    /*
+     * Full card color
+     */
+    background:
+        var(--kpi-bg);
 
-            box-shadow:
-                var(--shadow);
+    border:
+        1px solid var(--kpi-border);
 
-            backdrop-filter:
-                blur(18px);
+    box-shadow:
+        var(--shadow);
 
-            transition:
-                transform .2s ease,
-                border-color .2s ease;
-        }
+    backdrop-filter:
+        blur(18px);
 
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease;
+}
 
-        .kpi-card:hover {
 
-            transform:
-                translateY(-3px);
+/* =========================================================
+   KPI HOVER
+========================================================= */
 
-            border-color:
-                var(--border-light);
-        }
+.kpi-card:hover {
 
+    transform:
+        translateY(-3px);
 
-        .kpi-card::after {
+    border-color:
+        var(--kpi-color);
 
-            content: "";
+    box-shadow:
+        0 12px 30px var(--kpi-shadow);
+}
 
-            position: absolute;
 
-            width: 100px;
+/* =========================================================
+   DECORATIVE CIRCLE
+========================================================= */
 
-            height: 100px;
+.kpi-card::after {
 
-            right: -45px;
+    content: "";
 
-            top: -45px;
+    position: absolute;
 
-            border-radius: 50%;
+    width: 130px;
+    height: 130px;
 
-            opacity: .12;
+    right: -55px;
+    top: -55px;
 
-            background:
-                var(--kpi-color);
-        }
+    border-radius: 50%;
 
+    background:
+        var(--kpi-color);
 
-        .kpi-icon {
+    opacity: .18;
+}
 
-            width: 40px;
 
-            height: 40px;
+/* =========================================================
+   KPI ICON
+========================================================= */
 
-            display: flex;
+.kpi-icon {
 
-            align-items: center;
+    position: relative;
+    z-index: 2;
 
-            justify-content: center;
+    width: 40px;
+    height: 40px;
 
-            border-radius:
-                12px;
+    display: flex;
 
-            margin-bottom:
-                15px;
+    align-items: center;
+    justify-content: center;
 
-            color:
-                var(--kpi-color);
+    border-radius:
+        12px;
 
-            background:
-                rgba(255,255,255,.04);
+    margin-bottom:
+        15px;
 
-            border:
-                1px solid rgba(255,255,255,.08);
-        }
+    color:
+        var(--kpi-color);
 
+    background:
+        rgba(255, 255, 255, .10);
 
-        .kpi-label {
+    border:
+        1px solid
+        rgba(255, 255, 255, .15);
 
-            display: block;
+    font-size: 18px;
+    font-weight: 700;
+}
 
-            margin-bottom:
-                7px;
 
-            color:
-                var(--muted);
+/* =========================================================
+   KPI LABEL
+========================================================= */
 
-            font-size:
-                12px;
+.kpi-label {
 
-            font-weight:
-                600;
+    position: relative;
+    z-index: 2;
 
-            text-transform:
-                uppercase;
+    display: block;
 
-            letter-spacing:
-                .45px;
-        }
+    margin-bottom:
+        7px;
 
+    color:
+        rgba(255, 255, 255, .78);
 
-        .kpi-value {
+    font-size:
+        12px;
 
-            color:
-                var(--text);
+    font-weight:
+        600;
 
-            font-size:
-                25px;
+    text-transform:
+        uppercase;
 
-            line-height:
-                1.15;
+    letter-spacing:
+        .45px;
+}
 
-            font-weight:
-                750;
-        }
 
+/* =========================================================
+   KPI VALUE
+========================================================= */
 
-        .kpi-blue {
-            --kpi-color: var(--blue);
-        }
+.kpi-value {
 
-        .kpi-green {
-            --kpi-color: var(--green);
-        }
+    position: relative;
+    z-index: 2;
 
-        .kpi-purple {
-            --kpi-color: var(--purple);
-        }
+    color:
+        #ffffff;
 
-        .kpi-orange {
-            --kpi-color: var(--orange);
-        }
+    font-size:
+        25px;
 
-        .kpi-cyan {
-            --kpi-color: var(--cyan);
-        }
+    line-height:
+        1.15;
 
-        .kpi-pink {
-            --kpi-color: var(--pink);
-        }
+    font-weight:
+        750;
+}
 
+
+/* =========================================================
+   KPI COLORS
+========================================================= */
+
+.kpi-blue {
+
+    --kpi-color: #3b82f6;
+
+    --kpi-bg:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+
+    --kpi-border:
+        rgba(96, 165, 250, .45);
+
+    --kpi-shadow:
+        rgba(37, 99, 235, .30);
+}
+
+
+.kpi-green {
+
+    --kpi-color: #22c55e;
+
+    --kpi-bg:
+        linear-gradient(
+            135deg,
+            #16a34a,
+            #15803d
+        );
+
+    --kpi-border:
+        rgba(74, 222, 128, .45);
+
+    --kpi-shadow:
+        rgba(22, 163, 74, .30);
+}
+
+
+.kpi-purple {
+
+    --kpi-color: #a855f7;
+
+    --kpi-bg:
+        linear-gradient(
+            135deg,
+            #9333ea,
+            #7e22ce
+        );
+
+    --kpi-border:
+        rgba(192, 132, 252, .45);
+
+    --kpi-shadow:
+        rgba(147, 51, 234, .30);
+}
+
+
+.kpi-orange {
+
+    --kpi-color: #f97316;
+
+    --kpi-bg:
+        linear-gradient(
+            135deg,
+            #ea580c,
+            #c2410c
+        );
+
+    --kpi-border:
+        rgba(251, 146, 60, .45);
+
+    --kpi-shadow:
+        rgba(234, 88, 12, .30);
+}
+
+
+.kpi-cyan {
+
+    --kpi-color: #06b6d4;
+
+    --kpi-bg:
+        linear-gradient(
+            135deg,
+            #0891b2,
+            #0e7490
+        );
+
+    --kpi-border:
+        rgba(34, 211, 238, .45);
+
+    --kpi-shadow:
+        rgba(8, 145, 178, .30);
+}
+
+
+.kpi-pink {
+
+    --kpi-color: #ec4899;
+
+    --kpi-bg:
+        linear-gradient(
+            135deg,
+            #db2777,
+            #be185d
+        );
+
+    --kpi-border:
+        rgba(244, 114, 182, .45);
+
+    --kpi-shadow:
+        rgba(219, 39, 119, .30);
+}
 
         /* =====================================================
            CHARTS
@@ -2046,7 +2181,7 @@
 
 
                                 <a
-                                    href="{% url 'sales_intelligence' %}"
+                                    href="{% url 'analytics:sales_intelligence' %}"
                                     class="sales-btn sales-btn-secondary"
                                 >
                                     Reset

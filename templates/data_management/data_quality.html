@@ -1,648 +1,1455 @@
-{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}
-Data Quality | Smart BI
-{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Quality | Smart Business Decision Intelligence</title>
 
-{% block content %}
+    <style>
+        /* ============================================================
+           SMART BI DESIGN SYSTEM & PALETTE
+        ============================================================ */
+        :root {
+            --bg: #030712;
+            --bg-deep: #020617;
+            --bg-soft: #071525;
 
-<div class="quality-page">
+            --card: #0B1B2D;
+            --card-light: #10243A;
+            --card-glass: rgba(11, 27, 45, 0.72);
+            --card-glass-subtle: rgba(16, 36, 58, 0.45);
 
-    <!-- PAGE HEADER -->
+            --purple: #7C5CFF;
+            --purple-light: #A99CFF;
+            --purple-glow: rgba(124, 92, 255, 0.35);
 
-    <div class="quality-header">
+            --blue: #35B8FF;
+            --blue-glow: rgba(53, 184, 255, 0.30);
 
-        <div>
+            --cyan: #22D3EE;
+            --cyan-glow: rgba(34, 211, 238, 0.28);
 
-            <span class="section-label">
-                DATA MANAGEMENT
-            </span>
+            --green: #39E58C;
+            --green-glow: rgba(57, 229, 140, 0.25);
 
-            <h1>
-                Data <span>Quality</span>
-            </h1>
+            --orange: #FFB454;
+            --orange-glow: rgba(255, 180, 84, 0.25);
 
-            <p>
-                Analyze the accuracy, completeness and
-                consistency of your business dataset.
-            </p>
+            --red: #FF5C70;
+            --red-glow: rgba(255, 92, 112, 0.25);
 
-        </div>
+            --text: #F7FAFF;
+            --muted: #8294A8;
+            --subtle: #4D6277;
 
-        <a
-            href="{% url 'data_management:dataset_management' %}"
-            class="secondary-btn"
-        >
-            ← Dataset Management
-        </a>
+            --border: rgba(255, 255, 255, 0.08);
+            --border-bright: rgba(255, 255, 255, 0.16);
+            --border-cyan: rgba(34, 211, 238, 0.35);
+            --border-purple: rgba(124, 92, 255, 0.35);
 
-    </div>
+            --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
+            --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
 
-    <!-- DATASET SELECTOR -->
+        /* ============================================================
+           RESET & VIEWPORT ROOT
+        ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <div class="dataset-selector-card">
+        html, body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+        }
 
-        <div>
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
-            <label for="dataset-select">
-                Select Dataset
-            </label>
+        button, select {
+            font: inherit;
+            outline: none;
+        }
 
-            <p>
-                Choose a dataset to perform quality analysis.
-            </p>
+        /* ============================================================
+           DUAL INDEPENDENT SCROLL LAYOUT
+        ============================================================ */
+        .sbi-app-layout {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(circle at 12% 12%, rgba(124, 92, 255, 0.10) 0%, transparent 40%),
+                radial-gradient(circle at 88% 85%, rgba(34, 211, 238, 0.08) 0%, transparent 45%),
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+        }
 
-        </div>
+        /* Sidebar Wrapper: Stays fixed, scrolls independently */
+        .sbi-sidebar-container {
+            width: 270px;
+            height: 100vh;
+            flex-shrink: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 50;
+            background: var(--bg-deep);
+            border-right: 1px solid var(--border);
+            scrollbar-width: thin;
+            scrollbar-color: var(--subtle) transparent;
+        }
 
-        <form method="GET">
+        .sbi-sidebar-container::-webkit-scrollbar {
+            width: 4px;
+        }
 
-            <select
-                id="dataset-select"
-                name="dataset"
-                onchange="this.form.submit()"
-            >
+        .sbi-sidebar-container::-webkit-scrollbar-thumb {
+            background: var(--subtle);
+            border-radius: 4px;
+        }
 
-                {% for dataset in datasets %}
+        /* Main Viewport: Independent scroll viewport */
+        .sbi-main-viewport {
+            flex: 1;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 10;
+            padding: 34px 44px 80px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--card-light) transparent;
+        }
 
-                    <option
-                        value="{{ dataset.id }}"
-                        {% if selected_dataset.id == dataset.id %}
-                            selected
+        .sbi-main-viewport::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sbi-main-viewport::-webkit-scrollbar-thumb {
+            background: var(--card-light);
+            border-radius: 4px;
+        }
+
+        .quality-content-wrapper {
+            max-width: 1540px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Ambient floating light orbs */
+        .ambient-orb-top {
+            position: fixed;
+            width: 420px;
+            height: 420px;
+            top: -180px;
+            right: -100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--purple-glow), transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            animation: orbFloat 9s ease-in-out infinite alternate;
+        }
+
+        .ambient-orb-bottom {
+            position: fixed;
+            width: 380px;
+            height: 380px;
+            bottom: -160px;
+            left: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--cyan-glow), transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            animation: orbFloat 11s ease-in-out infinite alternate-reverse;
+        }
+
+        /* ============================================================
+           HEADER
+        ============================================================ */
+        .quality-header {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+            padding: 30px 34px;
+            border: 1px solid var(--border-bright);
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(11, 27, 45, 0.92) 0%, rgba(7, 21, 37, 0.80) 100%);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(16px);
+            overflow: hidden;
+            animation: fadeUp 0.65s var(--transition-smooth) both;
+        }
+
+        .quality-header::before {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            top: -140px;
+            right: 80px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(124, 92, 255, 0.22), transparent 70%);
+            pointer-events: none;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--cyan);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+        }
+
+        .section-label::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 0 0 10px var(--cyan);
+            animation: pulseDot 2s infinite;
+        }
+
+        .quality-header h1 {
+            margin-top: 10px;
+            font-size: clamp(28px, 3.2vw, 42px);
+            line-height: 1.1;
+            letter-spacing: -1.2px;
+            font-weight: 850;
+        }
+
+        .quality-header h1 span {
+            background: linear-gradient(90deg, var(--purple-light), var(--cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .quality-header p {
+            max-width: 680px;
+            margin-top: 10px;
+            color: var(--muted);
+            font-size: 13.5px;
+            line-height: 1.6;
+        }
+
+        .back-btn {
+            position: relative;
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            border: 1px solid var(--border-bright);
+            border-radius: 12px;
+            background: var(--card-glass);
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            transition: transform 0.3s var(--transition-bounce), border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px);
+            border-color: var(--border-cyan);
+            background: rgba(34, 211, 238, 0.08);
+            box-shadow: 0 10px 25px rgba(34, 211, 238, 0.12);
+        }
+
+        /* ============================================================
+           DATASET SELECTOR
+        ============================================================ */
+        .dataset-selector-card {
+            display: grid;
+            grid-template-columns: 1fr minmax(320px, 480px);
+            align-items: center;
+            gap: 25px;
+            padding: 24px 28px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+            animation: fadeUp 0.75s var(--transition-smooth) both;
+        }
+
+        .selector-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text);
+            margin-top: 6px;
+        }
+
+        .selector-description {
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .dataset-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .dataset-select {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1px solid var(--border-bright);
+            border-radius: 12px;
+            background: #081525;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 12.5px;
+            font-weight: 500;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .dataset-select:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.10);
+        }
+
+        .dataset-select option {
+            background: #081525;
+            color: var(--text);
+            padding: 8px;
+        }
+
+        /* ============================================================
+           DATASET INFO CARDS
+        ============================================================ */
+        .dataset-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            animation: fadeUp 0.82s var(--transition-smooth) both;
+        }
+
+        .dataset-info-card {
+            padding: 18px 22px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: var(--card-glass-subtle);
+            backdrop-filter: blur(12px);
+            transition: transform 0.3s var(--transition-smooth), border-color 0.3s ease;
+        }
+
+        .dataset-info-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-bright);
+        }
+
+        .dataset-info-card span.meta-tag {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--subtle);
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        .dataset-info-card strong {
+            display: block;
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 700;
+            word-break: break-word;
+        }
+
+        .version-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+
+        .version-badge.original {
+            color: var(--blue);
+            background: rgba(53, 184, 255, 0.10);
+            border: 1px solid rgba(53, 184, 255, 0.25);
+        }
+
+        .version-badge.cleaned {
+            color: var(--green);
+            background: rgba(57, 229, 140, 0.10);
+            border: 1px solid rgba(57, 229, 140, 0.25);
+        }
+
+        .version-badge.transformed {
+            color: var(--purple-light);
+            background: rgba(124, 92, 255, 0.10);
+            border: 1px solid rgba(124, 92, 255, 0.25);
+        }
+
+        .version-badge.dataset,
+        .version-badge.version {
+            color: var(--muted);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+        }
+
+        /* ============================================================
+           QUALITY HERO SCORE CARD
+        ============================================================ */
+        .quality-score-section {
+            animation: fadeUp 0.9s var(--transition-smooth) both;
+        }
+
+        .quality-score-card {
+            position: relative;
+            display: grid;
+            grid-template-columns: 210px 1fr;
+            align-items: center;
+            gap: 36px;
+            padding: 32px 36px;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            background: linear-gradient(145deg, rgba(11, 27, 45, 0.94), rgba(16, 36, 58, 0.72));
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(18px);
+            overflow: hidden;
+        }
+
+        .quality-score-card::after {
+            content: "";
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            right: -100px;
+            bottom: -150px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(57, 229, 140, 0.12), transparent 70%);
+            pointer-events: none;
+        }
+
+        .score-ring {
+            --score: {{ quality.quality_score|default:0 }}%;
+            position: relative;
+            width: 165px;
+            height: 165px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--ring-color, var(--cyan)) var(--score),
+                rgba(255, 255, 255, 0.06) var(--score)
+            );
+            box-shadow: 0 0 35px var(--ring-glow, var(--cyan-glow));
+            animation: scoreReveal 1.3s var(--transition-smooth) both;
+        }
+
+        .score-ring.excellent {
+            --ring-color: var(--green);
+            --ring-glow: var(--green-glow);
+        }
+
+        .score-ring.good {
+            --ring-color: var(--cyan);
+            --ring-glow: var(--cyan-glow);
+        }
+
+        .score-ring.attention {
+            --ring-color: var(--orange);
+            --ring-glow: var(--orange-glow);
+        }
+
+        .score-ring.critical {
+            --ring-color: var(--red);
+            --ring-glow: var(--red-glow);
+        }
+
+        .score-ring::before {
+            content: "";
+            position: absolute;
+            inset: 11px;
+            border-radius: 50%;
+            background: #071525;
+            border: 1px solid var(--border);
+        }
+
+        .score-value {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .score-value strong {
+            display: block;
+            font-size: 38px;
+            font-weight: 850;
+            line-height: 1;
+            letter-spacing: -1px;
+            color: #FFFFFF;
+        }
+
+        .score-value span {
+            display: block;
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: 9.5px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+        }
+
+        .score-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .score-content h2 {
+            margin-top: 8px;
+            font-size: 26px;
+            font-weight: 850;
+            letter-spacing: -0.5px;
+        }
+
+        .score-content p {
+            max-width: 740px;
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 13.5px;
+            line-height: 1.65;
+        }
+
+        .score-content p strong {
+            color: var(--text);
+        }
+
+        .quality-progress {
+            height: 8px;
+            margin-top: 20px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.06);
+            overflow: hidden;
+        }
+
+        .quality-progress-bar {
+            height: 100%;
+            width: 0;
+            border-radius: inherit;
+            animation: progressReveal 1.3s 0.25s var(--transition-smooth) forwards;
+        }
+
+        .quality-progress-bar.excellent {
+            background: linear-gradient(90deg, #20c878, var(--green));
+            box-shadow: 0 0 15px var(--green-glow);
+        }
+
+        .quality-progress-bar.good {
+            background: linear-gradient(90deg, #189bdc, var(--cyan));
+            box-shadow: 0 0 15px var(--cyan-glow);
+        }
+
+        .quality-progress-bar.attention {
+            background: linear-gradient(90deg, #f29b32, var(--orange));
+            box-shadow: 0 0 15px var(--orange-glow);
+        }
+
+        .quality-progress-bar.critical {
+            background: linear-gradient(90deg, #ed4056, var(--red));
+            box-shadow: 0 0 15px var(--red-glow);
+        }
+
+        /* ============================================================
+           KPI CARDS GRID
+        ============================================================ */
+        .quality-kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .quality-kpi {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            min-height: 115px;
+            padding: 20px 22px;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: linear-gradient(145deg, rgba(11, 27, 45, 0.86), rgba(7, 21, 37, 0.72));
+            backdrop-filter: blur(12px);
+            overflow: hidden;
+            transition: transform 0.35s var(--transition-bounce), border-color 0.35s ease, box-shadow 0.35s ease;
+            animation: cardReveal 0.75s var(--transition-smooth) both;
+        }
+
+        .quality-kpi:nth-child(1) { animation-delay: 0.05s; }
+        .quality-kpi:nth-child(2) { animation-delay: 0.12s; }
+        .quality-kpi:nth-child(3) { animation-delay: 0.19s; }
+        .quality-kpi:nth-child(4) { animation-delay: 0.26s; }
+
+        .quality-kpi:hover {
+            transform: translateY(-5px);
+            border-color: var(--border-cyan);
+            box-shadow: 0 16px 35px rgba(0, 0, 0, 0.3), 0 0 20px rgba(34, 211, 238, 0.10);
+        }
+
+        .kpi-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 14px;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .kpi-icon.blue {
+            color: var(--blue);
+            background: rgba(53, 184, 255, 0.10);
+            border: 1px solid rgba(53, 184, 255, 0.20);
+        }
+
+        .kpi-icon.purple {
+            color: var(--purple-light);
+            background: rgba(124, 92, 255, 0.11);
+            border: 1px solid rgba(124, 92, 255, 0.20);
+        }
+
+        .kpi-icon.orange {
+            color: var(--orange);
+            background: rgba(255, 180, 84, 0.10);
+            border: 1px solid rgba(255, 180, 84, 0.20);
+        }
+
+        .kpi-icon.red {
+            color: var(--red);
+            background: rgba(255, 92, 112, 0.10);
+            border: 1px solid rgba(255, 92, 112, 0.20);
+        }
+
+        .quality-kpi span {
+            display: block;
+            color: var(--subtle);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .quality-kpi strong {
+            display: block;
+            margin-top: 4px;
+            font-size: 24px;
+            font-weight: 850;
+            color: #FFFFFF;
+            letter-spacing: -0.5px;
+        }
+
+        .quality-kpi small {
+            display: block;
+            margin-top: 2px;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* ============================================================
+           TWO COLUMN: COMPLETENESS & HEALTH
+        ============================================================ */
+        .quality-two-column {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 20px;
+        }
+
+        .quality-panel {
+            padding: 24px 26px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+            animation: fadeUp 0.95s var(--transition-smooth) both;
+        }
+
+        .panel-heading {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .panel-heading h3 {
+            margin-top: 6px;
+            font-size: 17px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+
+        .panel-heading p {
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .completion-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .completion-item {
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            transition: transform 0.3s var(--transition-bounce), background 0.3s ease;
+        }
+
+        .completion-item:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .completion-item strong {
+            display: block;
+            font-size: 28px;
+            font-weight: 850;
+            color: #FFFFFF;
+        }
+
+        .completion-item span {
+            display: block;
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .mini-bar {
+            height: 6px;
+            margin-top: 16px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.06);
+            overflow: hidden;
+        }
+
+        .mini-bar div {
+            width: 0;
+            height: 100%;
+            border-radius: inherit;
+            animation: progressReveal 1.2s 0.3s var(--transition-smooth) forwards;
+        }
+
+        .completion-item.complete .mini-bar div {
+            background: linear-gradient(90deg, #21c97d, var(--green));
+            box-shadow: 0 0 12px var(--green-glow);
+        }
+
+        .completion-item.incomplete .mini-bar div {
+            background: linear-gradient(90deg, #ed9140, var(--orange));
+            box-shadow: 0 0 12px var(--orange-glow);
+        }
+
+        .health-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .health-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            transition: background 0.25s ease;
+        }
+
+        .health-row:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .health-row span {
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .health-row strong {
+            color: var(--text);
+            font-size: 13.5px;
+            font-weight: 750;
+        }
+
+        /* ============================================================
+           COLUMN-LEVEL QUALITY TABLE
+        ============================================================ */
+        .column-panel {
+            overflow: hidden;
+        }
+
+        .quality-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .quality-table {
+            width: 100%;
+            min-width: 900px;
+            border-collapse: collapse;
+        }
+
+        .quality-table th {
+            padding: 15px 16px;
+            background: rgba(255, 255, 255, 0.035);
+            border-bottom: 1px solid var(--border);
+            color: var(--subtle);
+            text-align: left;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .quality-table td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .quality-table tbody tr {
+            transition: background 0.25s ease;
+        }
+
+        .quality-table tbody tr:hover {
+            background: rgba(124, 92, 255, 0.04);
+        }
+
+        .quality-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .quality-table td strong {
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .datatype {
+            display: inline-flex;
+            padding: 4px 8px;
+            border-radius: 6px;
+            color: var(--blue);
+            background: rgba(53, 184, 255, 0.08);
+            border: 1px solid rgba(53, 184, 255, 0.18);
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .percentage-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 120px;
+        }
+
+        .tiny-progress {
+            width: 65px;
+            height: 5px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.06);
+            overflow: hidden;
+        }
+
+        .tiny-progress div {
+            width: 0;
+            height: 100%;
+            border-radius: inherit;
+            animation: progressReveal 1s 0.3s var(--transition-smooth) forwards;
+        }
+
+        .tiny-progress .excellent { background: var(--green); }
+        .tiny-progress .good { background: var(--cyan); }
+        .tiny-progress .attention { background: var(--orange); }
+        .tiny-progress .critical { background: var(--red); }
+
+        .quality-status {
+            display: inline-flex;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .quality-status.excellent {
+            color: var(--green);
+            background: rgba(57, 229, 140, 0.10);
+            border: 1px solid rgba(57, 229, 140, 0.25);
+        }
+
+        .quality-status.good {
+            color: var(--cyan);
+            background: rgba(34, 211, 238, 0.10);
+            border: 1px solid rgba(34, 211, 238, 0.25);
+        }
+
+        .quality-status.attention {
+            color: var(--orange);
+            background: rgba(255, 180, 84, 0.10);
+            border: 1px solid rgba(255, 180, 84, 0.25);
+        }
+
+        .quality-status.critical {
+            color: var(--red);
+            background: rgba(255, 92, 112, 0.10);
+            border: 1px solid rgba(255, 92, 112, 0.25);
+        }
+
+        /* ============================================================
+           EMPTY STATES
+        ============================================================ */
+        .empty-quality {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            padding: 50px;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            background: linear-gradient(145deg, rgba(11, 27, 45, 0.88), rgba(7, 21, 37, 0.65));
+            text-align: center;
+            animation: fadeUp 0.8s var(--transition-smooth) both;
+        }
+
+        .empty-icon {
+            width: 75px;
+            height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-purple);
+            border-radius: 20px;
+            background: rgba(124, 92, 255, 0.08);
+            color: var(--purple-light);
+            font-size: 30px;
+            box-shadow: 0 0 35px rgba(124, 92, 255, 0.12);
+            animation: emptyFloat 3s ease-in-out infinite;
+        }
+
+        .empty-quality h2 {
+            font-size: 24px;
+            font-weight: 850;
+            color: #FFFFFF;
+            margin-top: 10px;
+        }
+
+        .empty-quality p {
+            max-width: 480px;
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .primary-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 24px;
+            padding: 12px 22px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--purple), #6245e8);
+            color: #FFFFFF;
+            font-size: 12px;
+            font-weight: 800;
+            box-shadow: 0 12px 28px var(--purple-glow);
+            transition: transform 0.3s var(--transition-bounce), box-shadow 0.3s ease;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 36px var(--purple-glow);
+        }
+
+        /* ============================================================
+           FOOTER
+        ============================================================ */
+        .quality-footer {
+            padding: 24px 0 0;
+            color: var(--subtle);
+            text-align: center;
+            font-size: 11px;
+            letter-spacing: 0.4px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ============================================================
+           KEYFRAME ANIMATIONS
+        ============================================================ */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes cardReveal {
+            from {
+                opacity: 0;
+                transform: translateY(16px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes scoreReveal {
+            from {
+                opacity: 0;
+                transform: scale(0.7) rotate(-35deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        @keyframes progressReveal {
+            from { width: 0; }
+            to { width: var(--target-width, 100%); }
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4); }
+            50% { box-shadow: 0 0 0 6px rgba(34, 211, 238, 0); }
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-25px, 25px); }
+        }
+
+        @keyframes emptyFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        /* ============================================================
+           RESPONSIVE DESIGN
+        ============================================================ */
+        @media (max-width: 1200px) {
+            .quality-kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .quality-two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .sbi-app-layout {
+                flex-direction: column;
+                height: auto;
+                overflow-y: visible;
+            }
+            .sbi-sidebar-container {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            .sbi-main-viewport {
+                height: auto;
+                overflow-y: visible;
+                padding: 24px 20px 80px;
+            }
+            .quality-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .dataset-selector-card {
+                grid-template-columns: 1fr;
+            }
+            .dataset-info {
+                grid-template-columns: 1fr;
+            }
+            .quality-score-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .score-content p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .quality-kpi-grid {
+                grid-template-columns: 1fr;
+            }
+            .completion-grid {
+                grid-template-columns: 1fr;
+            }
+            .quality-header h1 {
+                font-size: 28px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sbi-app-layout">
+        <!-- Floating background ambient orbs -->
+        <div class="ambient-orb-top"></div>
+        <div class="ambient-orb-bottom"></div>
+
+        <!-- ============================================================
+             SMART BI SIDEBAR (INDEPENDENT SCROLL)
+        ============================================================ -->
+        <aside class="sbi-sidebar-container" aria-label="Main Navigation">
+            {% include "includes/smart_sidebar.html" %}
+        </aside>
+
+        <!-- ============================================================
+             MAIN DATA QUALITY VIEWPORT (INDEPENDENT SCROLL)
+        ============================================================ -->
+        <main class="sbi-main-viewport" role="main">
+            <div class="quality-content-wrapper">
+
+                <!-- HEADER -->
+                <section class="quality-header">
+                    <div class="quality-header-content">
+                        <span class="section-label">DATA MANAGEMENT</span>
+                        <h1>Data <span>Quality</span></h1>
+                        <p>Analyze the accuracy, completeness, consistency, and structural integrity of your business datasets.</p>
+                    </div>
+
+                    <a href="{% url 'data_management:dataset_management' %}" class="back-btn">
+                        ← Dataset Management
+                    </a>
+                </section>
+
+                <!-- DATASET CONTROL SELECTOR -->
+                <section class="dataset-selector-card">
+                    <div>
+                        <span class="section-label">DATASET CONTROL</span>
+                        <div class="selector-title">Select Dataset</div>
+                        <p class="selector-description">Choose the active business dataset and version you want to evaluate.</p>
+                    </div>
+
+                    <form method="GET" class="dataset-form">
+                        <select id="dataset-select" name="dataset" class="dataset-select" onchange="this.form.submit()">
+                            {% for dataset in datasets %}
+                                <option value="{{ dataset.id }}" {% if selected_dataset and selected_dataset.id == dataset.id %}selected{% endif %}>
+                                    {{ dataset.name }} — {{ dataset.dataset_type }}
+                                </option>
+                            {% endfor %}
+                        </select>
+
+                        {% if selected_dataset %}
+                            <select name="version" class="dataset-select" onchange="this.form.submit()">
+                                {% for version in selected_dataset.versions.all %}
+                                    <option value="{{ version.id }}" {% if selected_version and selected_version.id == version.id %}selected{% endif %}>
+                                        Version {{ version.version_number }} — {{ version.version_type }}{% if version.is_current %} — Current{% endif %}
+                                    </option>
+                                {% endfor %}
+                            </select>
                         {% endif %}
-                    >
-                        {{ dataset.name }}
-                        — {{ dataset.dataset_type }}
-                    </option>
-
-                {% endfor %}
-
-            </select>
-
-        </form>
-
-    </div>
-
-
-    {% if selected_dataset and quality %}
-
-
-    <!-- DATASET INFORMATION -->
-
-    <div class="dataset-info">
-
-        <div>
-            <span>Dataset</span>
-            <strong>
-                {{ selected_dataset.name }}
-            </strong>
-        </div>
-
-        <div>
-            <span>Type</span>
-            <strong>
-                {{ selected_dataset.dataset_type }}
-            </strong>
-        </div>
-
-        <div>
-            <span>File</span>
-            <strong>
-                {{ selected_dataset.original_filename }}
-            </strong>
-        </div>
-
-    </div>
-
-
-    <!-- MAIN QUALITY SCORE -->
-
-    <div class="quality-score-section">
-
-        <div class="quality-score-card">
-
-            <div class="score-circle {{ quality.quality_class }}">
-
-                <div>
-
-                    <strong>
-                        {{ quality.quality_score }}
-                    </strong>
-
-                    <span>
-                        /100
-                    </span>
-
-                </div>
-
-            </div>
-
-            <div class="score-content">
-
-                <span class="section-label">
-                    OVERALL DATA QUALITY
-                </span>
-
-                <h2>
-                    {{ quality.quality_status }}
-                </h2>
-
-                <p>
-                    Your dataset currently has a
-                    <strong>
-                        {{ quality.quality_score }}/100
-                    </strong>
-                    quality score based on completeness
-                    and duplicate analysis.
-                </p>
-
-                <div class="quality-progress">
-
-                    <div
-                        class="quality-progress-bar {{ quality.quality_class }}"
-                        style="width: {{ quality.quality_score }}%;"
-                    ></div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- KPI CARDS -->
-
-    <div class="quality-kpi-grid">
-
-        <div class="quality-kpi">
-
-            <div class="kpi-icon blue">
-                #
-            </div>
-
-            <div>
-
-                <span>
-                    TOTAL ROWS
-                </span>
-
-                <strong>
-                    {{ quality.total_rows }}
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <div class="quality-kpi">
-
-            <div class="kpi-icon purple">
-                ▦
-            </div>
-
-            <div>
-
-                <span>
-                    TOTAL COLUMNS
-                </span>
-
-                <strong>
-                    {{ quality.total_columns }}
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <div class="quality-kpi">
-
-            <div class="kpi-icon orange">
-                !
-            </div>
-
-            <div>
-
-                <span>
-                    MISSING VALUES
-                </span>
-
-                <strong>
-                    {{ quality.missing_values }}
-                </strong>
-
-                <small>
-                    {{ quality.missing_percentage }}%
-                </small>
-
-            </div>
-
-        </div>
-
-
-        <div class="quality-kpi">
-
-            <div class="kpi-icon red">
-                ⧉
-            </div>
-
-            <div>
-
-                <span>
-                    DUPLICATE ROWS
-                </span>
-
-                <strong>
-                    {{ quality.duplicate_rows }}
-                </strong>
-
-                <small>
-                    {{ quality.duplicate_percentage }}%
-                </small>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- COMPLETENESS -->
-
-    <div class="quality-two-column">
-
-        <div class="quality-panel">
-
-            <div class="panel-heading">
-
-                <div>
-
-                    <span class="section-label">
-                        COMPLETENESS
-                    </span>
-
-                    <h3>
-                        Row Completeness
-                    </h3>
-
-                </div>
-
-            </div>
-
-
-            <div class="completion-grid">
-
-                <div class="completion-item complete">
-
-                    <strong>
-                        {{ quality.complete_rows }}
-                    </strong>
-
-                    <span>
-                        Complete Rows
-                    </span>
-
-                    <div class="mini-bar">
-                        <div
-                            style="
-                                width:
-                                {% if quality.total_rows %}
-                                    {% widthratio quality.complete_rows quality.total_rows 100 %}
-                                {% else %}
-                                    0
-                                {% endif %}%;
-                            "
-                        ></div>
-                    </div>
-
-                </div>
-
-
-                <div class="completion-item incomplete">
-
-                    <strong>
-                        {{ quality.incomplete_rows }}
-                    </strong>
-
-                    <span>
-                        Incomplete Rows
-                    </span>
-
-                    <div class="mini-bar">
-                        <div
-                            style="
-                                width:
-                                {% if quality.total_rows %}
-                                    {% widthratio quality.incomplete_rows quality.total_rows 100 %}
-                                {% else %}
-                                    0
-                                {% endif %}%;
-                            "
-                        ></div>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- QUALITY RULES -->
-
-        <div class="quality-panel">
-
-            <div class="panel-heading">
-
-                <div>
-
-                    <span class="section-label">
-                        QUALITY CHECKS
-                    </span>
-
-                    <h3>
-                        Dataset Health
-                    </h3>
-
-                </div>
-
-            </div>
-
-
-            <div class="health-list">
-
-                <div class="health-row">
-
-                    <span>
-                        Missing Values
-                    </span>
-
-                    <strong>
-                        {{ quality.missing_percentage }}%
-                    </strong>
-
-                </div>
-
-
-                <div class="health-row">
-
-                    <span>
-                        Duplicate Rows
-                    </span>
-
-                    <strong>
-                        {{ quality.duplicate_percentage }}%
-                    </strong>
-
-                </div>
-
-
-                <div class="health-row">
-
-                    <span>
-                        Complete Rows
-                    </span>
-
-                    <strong>
-                        {{ quality.complete_rows }}
-                    </strong>
-
-                </div>
-
-
-                <div class="health-row">
-
-                    <span>
-                        Incomplete Rows
-                    </span>
-
-                    <strong>
-                        {{ quality.incomplete_rows }}
-                    </strong>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- COLUMN QUALITY -->
-
-    <div class="quality-panel column-panel">
-
-        <div class="panel-heading">
-
-            <div>
-
-                <span class="section-label">
-                    COLUMN ANALYSIS
-                </span>
-
-                <h3>
-                    Column-Level Data Quality
-                </h3>
-
-                <p>
-                    Detailed quality information for
-                    every dataset column.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="quality-table-wrapper">
-
-            <table class="quality-table">
-
-                <thead>
-
-                    <tr>
-
-                        <th>
-                            Column
-                        </th>
-
-                        <th>
-                            Data Type
-                        </th>
-
-                        <th>
-                            Non-Null
-                        </th>
-
-                        <th>
-                            Missing
-                        </th>
-
-                        <th>
-                            Missing %
-                        </th>
-
-                        <th>
-                            Duplicates
-                        </th>
-
-                        <th>
-                            Status
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    {% for column in quality.column_quality %}
-
-                    <tr>
-
-                        <td>
-                            <strong>
-                                {{ column.name }}
-                            </strong>
-                        </td>
-
-                        <td>
-                            <span class="datatype">
-                                {{ column.data_type }}
-                            </span>
-                        </td>
-
-                        <td>
-                            {{ column.non_null }}
-                        </td>
-
-                        <td>
-                            {{ column.missing }}
-                        </td>
-
-                        <td>
-
-                            <div class="percentage-cell">
-
-                                <div class="tiny-progress">
-
-                                    <div
-                                        class="{{ column.status_class }}"
-                                        style="
-                                            width:
-                                            {{ column.missing_percentage }}%;
-                                        "
-                                    ></div>
-
-                                </div>
-
-                                <span>
-                                    {{ column.missing_percentage }}%
+                    </form>
+                </section>
+
+                {% if selected_dataset and quality %}
+
+                    <!-- DATASET INFORMATION -->
+                    <section class="dataset-info">
+                        <div class="dataset-info-card">
+                            <span class="meta-tag">Dataset</span>
+                            <strong>{{ selected_dataset.name }}</strong>
+                            {% if quality.version_type %}
+                                <span class="version-badge {{ quality.version_badge }}">
+                                    {{ quality.version_label }}
                                 </span>
+                            {% endif %}
+                        </div>
 
+                        <div class="dataset-info-card">
+                            <span class="meta-tag">Dataset Type</span>
+                            <strong>{{ selected_dataset.dataset_type }}</strong>
+                        </div>
+
+                        <div class="dataset-info-card">
+                            <span class="meta-tag">Source File</span>
+                            <strong>{{ selected_dataset.original_filename }}</strong>
+                        </div>
+                    </section>
+
+                    <!-- QUALITY SCORE HERO -->
+                    <section class="quality-score-section">
+                        <div class="quality-score-card">
+                            <div class="score-ring {{ quality.quality_class }}">
+                                <div class="score-value">
+                                    <strong>{{ quality.quality_score }}</strong>
+                                    <span>QUALITY SCORE / 100</span>
+                                </div>
                             </div>
 
-                        </td>
+                            <div class="score-content">
+                                <span class="section-label">OVERALL DATA QUALITY</span>
+                                <h2>{{ quality.quality_status }}</h2>
+                                <p>
+                                    This dataset currently has a <strong>{{ quality.quality_score }}/100</strong> quality index based on missing field analysis, duplicate row detection, and type integrity.
+                                </p>
 
-                        <td>
-                            {{ column.duplicates }}
-                        </td>
+                                <div class="quality-progress">
+                                    <div class="quality-progress-bar {{ quality.quality_class }}" style="--target-width: {{ quality.quality_score }}%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
 
-                        <td>
+                    <!-- KPI CARDS -->
+                    <section class="quality-kpi-grid">
+                        <div class="quality-kpi">
+                            <div class="kpi-icon blue">#</div>
+                            <div>
+                                <span>TOTAL ROWS</span>
+                                <strong>{{ quality.total_rows }}</strong>
+                            </div>
+                        </div>
 
-                            <span
-                                class="
-                                    quality-status
-                                    {{ column.status_class }}
-                                "
-                            >
-                                {{ column.status }}
-                            </span>
+                        <div class="quality-kpi">
+                            <div class="kpi-icon purple">▦</div>
+                            <div>
+                                <span>TOTAL COLUMNS</span>
+                                <strong>{{ quality.total_columns }}</strong>
+                            </div>
+                        </div>
 
-                        </td>
+                        <div class="quality-kpi">
+                            <div class="kpi-icon orange">!</div>
+                            <div>
+                                <span>MISSING VALUES</span>
+                                <strong>{{ quality.missing_values }}</strong>
+                                <small>{{ quality.missing_percentage }}%</small>
+                            </div>
+                        </div>
 
-                    </tr>
+                        <div class="quality-kpi">
+                            <div class="kpi-icon red">⧉</div>
+                            <div>
+                                <span>DUPLICATE ROWS</span>
+                                <strong>{{ quality.duplicate_rows }}</strong>
+                                <small>{{ quality.duplicate_percentage }}%</small>
+                            </div>
+                        </div>
+                    </section>
 
-                    {% empty %}
+                    <!-- COMPLETENESS + HEALTH -->
+                    <section class="quality-two-column">
+                        <!-- COMPLETENESS -->
+                        <div class="quality-panel">
+                            <div class="panel-heading">
+                                <div>
+                                    <span class="section-label">COMPLETENESS</span>
+                                    <h3>Row Completeness</h3>
+                                </div>
+                            </div>
 
-                    <tr>
+                            <div class="completion-grid">
+                                <div class="completion-item complete">
+                                    <strong>{{ quality.complete_rows }}</strong>
+                                    <span>Complete Rows</span>
+                                    <div class="mini-bar">
+                                        <div style="--target-width: {% if quality.total_rows %}{% widthratio quality.complete_rows quality.total_rows 100 %}{% else %}0{% endif %}%;"></div>
+                                    </div>
+                                </div>
 
-                        <td colspan="7">
-                            No columns found.
-                        </td>
+                                <div class="completion-item incomplete">
+                                    <strong>{{ quality.incomplete_rows }}</strong>
+                                    <span>Incomplete Rows</span>
+                                    <div class="mini-bar">
+                                        <div style="--target-width: {% if quality.total_rows %}{% widthratio quality.incomplete_rows quality.total_rows 100 %}{% else %}0{% endif %}%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                    </tr>
+                        <!-- DATASET HEALTH -->
+                        <div class="quality-panel">
+                            <div class="panel-heading">
+                                <div>
+                                    <span class="section-label">QUALITY CHECKS</span>
+                                    <h3>Dataset Health</h3>
+                                </div>
+                            </div>
 
-                    {% endfor %}
+                            <div class="health-list">
+                                <div class="health-row">
+                                    <span>Missing Values</span>
+                                    <strong>{{ quality.missing_percentage }}%</strong>
+                                </div>
+                                <div class="health-row">
+                                    <span>Duplicate Rows</span>
+                                    <strong>{{ quality.duplicate_percentage }}%</strong>
+                                </div>
+                                <div class="health-row">
+                                    <span>Complete Rows</span>
+                                    <strong>{{ quality.complete_rows }}</strong>
+                                </div>
+                                <div class="health-row">
+                                    <span>Incomplete Rows</span>
+                                    <strong>{{ quality.incomplete_rows }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
 
-                </tbody>
+                    <!-- COLUMN QUALITY TABLE -->
+                    <section class="quality-panel column-panel">
+                        <div class="panel-heading">
+                            <div>
+                                <span class="section-label">COLUMN ANALYSIS</span>
+                                <h3>Column-Level Data Quality</h3>
+                                <p>Detailed type and completeness distribution for each attribute in this version.</p>
+                            </div>
+                        </div>
 
-            </table>
+                        <div class="quality-table-wrapper">
+                            <table class="quality-table">
+                                <thead>
+                                    <tr>
+                                        <th>Column</th>
+                                        <th>Data Type</th>
+                                        <th>Non-Null</th>
+                                        <th>Missing</th>
+                                        <th>Missing %</th>
+                                        <th>Duplicates</th>
+                                        <th>Unique</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for column in quality.column_quality %}
+                                        <tr>
+                                            <td><strong>{{ column.name }}</strong></td>
+                                            <td><span class="datatype">{{ column.data_type }}</span></td>
+                                            <td>{{ column.non_null }}</td>
+                                            <td>{{ column.missing }}</td>
+                                            <td>
+                                                <div class="percentage-cell">
+                                                    <div class="tiny-progress">
+                                                        <div class="{{ column.status_class }}" style="--target-width: {{ column.missing_percentage }}%;"></div>
+                                                    </div>
+                                                    <span>{{ column.missing_percentage }}%</span>
+                                                </div>
+                                            </td>
+                                            <td>{{ column.duplicates }}</td>
+                                            <td>{{ column.unique_values }}</td>
+                                            <td>
+                                                <span class="quality-status {{ column.status_class }}">
+                                                    {{ column.status }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="8" style="text-align: center; padding: 24px;">No columns found.</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
 
-        </div>
+                {% elif not datasets %}
 
+                    <!-- NO DATASET -->
+                    <section class="empty-quality">
+                        <div class="empty-icon">◫</div>
+                        <span class="section-label">DATA QUALITY</span>
+                        <h2>No Dataset Available</h2>
+                        <p>Upload a business dataset first to activate automated quality profiling and telemetry.</p>
+                        <a href="{% url 'data_management:upload_data' %}" class="primary-btn">
+                            Upload Dataset →
+                        </a>
+                    </section>
+
+                {% else %}
+
+                    <!-- SELECT DATASET -->
+                    <section class="empty-quality">
+                        <div class="empty-icon">!</div>
+                        <h2>Select a Dataset</h2>
+                        <p>Choose a dataset above to start quality inspection and column diagnostics.</p>
+                    </section>
+
+                {% endif %}
+
+                <!-- FOOTER -->
+                <footer class="quality-footer">
+                    Smart Business Decision Intelligence &bull; Core Data Engine v4.8
+                </footer>
+
+            </div>
+        </main>
     </div>
 
-
-    {% elif not datasets %}
-
-
-    <!-- NO DATASET -->
-
-    <div class="empty-quality">
-
-        <div class="empty-icon">
-            ◫
-        </div>
-
-        <span class="section-label">
-            DATA QUALITY
-        </span>
-
-        <h2>
-            No Dataset Available
-        </h2>
-
-        <p>
-            Upload a business dataset first to activate
-            Data Quality analysis.
-        </p>
-
-        <a
-            href="{% url 'data_management:upload' %}"
-            class="primary-btn"
-        >
-            Upload Dataset →
-        </a>
-
-    </div>
-
-
-    {% else %}
-
-
-    <div class="empty-quality">
-
-        <div class="empty-icon">
-            !
-        </div>
-
-        <h2>
-            Select a Dataset
-        </h2>
-
-        <p>
-            Choose a dataset above to begin quality analysis.
-        </p>
-
-    </div>
-
-    {% endif %}
-
-</div>
-
-{% endblock %}
+</body>
+</html>

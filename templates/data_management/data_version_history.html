@@ -1,463 +1,1354 @@
-{% extends "base.html" %}
-
 {% load static %}
-
-
-{% block title %}
-Data Version History | Smart BI
-{% endblock %}
-
-
-{% block content %}
-
-<div class="version-page">
-
-
-    <!-- HEADER -->
-
-    <div class="version-header">
-
-        <div>
-
-            <span class="section-label">
-                DATA MANAGEMENT
-            </span>
-
-            <h1>
-                Data Version <span>History</span>
-            </h1>
-
-            <p>
-                Track dataset versions and maintain
-                a reliable history of your business data.
-            </p>
-
-        </div>
-
-
-        <a
-            href="{% url 'data_management:upload_data' %}"
-            class="primary-version-btn"
-        >
-            + Upload Dataset
-        </a>
-
-    </div>
-
-
-    {% if datasets %}
-
-
-    <!-- DATASET SELECTOR -->
-
-    <div class="version-selector">
-
-        <div class="version-selector-info">
-
-            <div class="version-icon">
-                ↻
-            </div>
-
-            <div>
-
-                <span>
-                    SELECT DATASET
-                </span>
-
-                <h3>
-                    {{ selected_dataset.name }}
-                </h3>
-
-            </div>
-
-        </div>
-
-
-        <form method="GET">
-
-            <select
-                name="dataset"
-                onchange="this.form.submit()"
-            >
-
-                {% for dataset in datasets %}
-
-                <option
-                    value="{{ dataset.id }}"
-                    {% if selected_dataset.id == dataset.id %}
-                        selected
-                    {% endif %}
-                >
-                    {{ dataset.name }}
-                    — {{ dataset.dataset_type }}
-                </option>
-
-                {% endfor %}
-
-            </select>
-
-        </form>
-
-    </div>
-
-
-    <!-- CURRENT DATASET -->
-
-    {% if selected_dataset %}
-
-    <div class="current-dataset">
-
-        <div class="current-main">
-
-            <div class="dataset-symbol">
-                DB
-            </div>
-
-            <div>
-
-                <span>
-                    CURRENT DATASET
-                </span>
-
-                <h2>
-                    {{ selected_dataset.name }}
-                </h2>
-
-                <p>
-                    {{ selected_dataset.original_filename }}
-                    ·
-                    {{ selected_dataset.dataset_type }}
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="current-stats">
-
-            <div>
-                <span>ROWS</span>
-                <strong>
-                    {{ selected_dataset.total_rows }}
-                </strong>
-            </div>
-
-            <div>
-                <span>COLUMNS</span>
-                <strong>
-                    {{ selected_dataset.total_columns }}
-                </strong>
-            </div>
-
-            <div>
-                <span>QUALITY</span>
-                <strong>
-                    {{ selected_dataset.quality_score }}%
-                </strong>
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- VERSION TIMELINE -->
-
-    <div class="version-section">
-
-        <div class="version-section-heading">
-
-            <div>
-
-                <span class="section-label">
-                    VERSION CONTROL
-                </span>
-
-                <h2>
-                    Dataset History
-                </h2>
-
-            </div>
-
-            <span class="version-count">
-                {{ versions|length }} versions
-            </span>
-
-        </div>
-
-
-        {% if versions %}
-
-
-        <div class="version-timeline">
-
-            {% for version in versions %}
-
-            <div class="version-card">
-
-                <div class="timeline-line"></div>
-
-                <div class="version-number">
-
-                    <span>
-                        V{{ version.version_number }}
-                    </span>
-
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Version History | Smart Business Decision Intelligence</title>
+
+    <style>
+        /* ============================================================
+           SMART BI DESIGN SYSTEM & PALETTE
+        ============================================================ */
+        :root {
+            --bg: #030712;
+            --bg-deep: #020617;
+            --bg-soft: #071525;
+
+            --card: #0B1B2D;
+            --card-light: #10243A;
+            --card-glass: rgba(11, 27, 45, 0.72);
+            --card-glass-subtle: rgba(16, 36, 58, 0.45);
+
+            --purple: #7C5CFF;
+            --purple-light: #A99CFF;
+            --purple-glow: rgba(124, 92, 255, 0.35);
+
+            --blue: #35B8FF;
+            --blue-glow: rgba(53, 184, 255, 0.30);
+
+            --cyan: #22D3EE;
+            --cyan-glow: rgba(34, 211, 238, 0.28);
+
+            --green: #39E58C;
+            --green-glow: rgba(57, 229, 140, 0.25);
+
+            --orange: #FFB454;
+            --orange-glow: rgba(255, 180, 84, 0.25);
+
+            --red: #FF5C70;
+            --red-glow: rgba(255, 92, 112, 0.25);
+
+            --text: #F7FAFF;
+            --muted: #8294A8;
+            --subtle: #4D6277;
+
+            --border: rgba(255, 255, 255, 0.08);
+            --border-bright: rgba(255, 255, 255, 0.16);
+            --border-cyan: rgba(34, 211, 238, 0.35);
+            --border-purple: rgba(124, 92, 255, 0.35);
+
+            --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+            --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* ============================================================
+           RESET & VIEWPORT ROOT
+        ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button, select {
+            font: inherit;
+            outline: none;
+        }
+
+        /* ============================================================
+           DUAL INDEPENDENT SCROLL LAYOUT
+        ============================================================ */
+        .smart-app-layout {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(circle at 10% 12%, rgba(124, 92, 255, 0.10) 0%, transparent 40%),
+                radial-gradient(circle at 90% 88%, rgba(34, 211, 238, 0.08) 0%, transparent 45%),
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+        }
+
+        /* Sidebar: Fixed left dock, scrolls independently */
+        .smart-sidebar-container {
+            width: 270px;
+            height: 100vh;
+            flex-shrink: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 50;
+            background: var(--bg-deep);
+            border-right: 1px solid var(--border);
+            scrollbar-width: thin;
+            scrollbar-color: var(--subtle) transparent;
+        }
+
+        .smart-sidebar-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .smart-sidebar-container::-webkit-scrollbar-thumb {
+            background: var(--subtle);
+            border-radius: 4px;
+        }
+
+        /* Main Viewport: Independent scroll */
+        .smart-main-content {
+            flex: 1;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 10;
+            padding: 34px 44px 80px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--card-light) transparent;
+        }
+
+        .smart-main-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .smart-main-content::-webkit-scrollbar-thumb {
+            background: var(--card-light);
+            border-radius: 4px;
+        }
+
+        .version-page {
+            max-width: 1540px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Ambient floating light orbs */
+        .ambient-orb-top {
+            position: fixed;
+            width: 420px;
+            height: 420px;
+            top: -180px;
+            right: -100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--purple-glow), transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            animation: orbFloat 9s ease-in-out infinite alternate;
+        }
+
+        .ambient-orb-bottom {
+            position: fixed;
+            width: 380px;
+            height: 380px;
+            bottom: -160px;
+            left: 220px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--cyan-glow), transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            animation: orbFloat 11s ease-in-out infinite alternate-reverse;
+        }
+
+        /* ============================================================
+           HEADER
+        ============================================================ */
+        .version-header {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+            padding: 30px 34px;
+            border: 1px solid var(--border-bright);
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(11, 27, 45, 0.92) 0%, rgba(7, 21, 37, 0.80) 100%);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(16px);
+            overflow: hidden;
+            animation: fadeUp 0.65s var(--transition-smooth) both;
+        }
+
+        .version-header::before {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            top: -140px;
+            right: 80px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(124, 92, 255, 0.22), transparent 70%);
+            pointer-events: none;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--cyan);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+        }
+
+        .section-label::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 0 0 10px var(--cyan);
+            animation: pulseDot 2s infinite;
+        }
+
+        .version-header h1 {
+            margin-top: 10px;
+            font-size: clamp(28px, 3.2vw, 42px);
+            line-height: 1.1;
+            letter-spacing: -1.2px;
+            font-weight: 850;
+        }
+
+        .version-header h1 span {
+            background: linear-gradient(90deg, var(--purple-light), var(--cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .version-header p {
+            max-width: 680px;
+            margin-top: 10px;
+            color: var(--muted);
+            font-size: 13.5px;
+            line-height: 1.6;
+        }
+
+        .primary-version-btn {
+            position: relative;
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            padding: 0 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(124, 92, 255, 0.4);
+            background: linear-gradient(135deg, var(--purple), #6245e8);
+            color: #FFFFFF;
+            font-size: 12px;
+            font-weight: 750;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            box-shadow: 0 10px 24px var(--purple-glow);
+            transition: transform 0.3s var(--transition-bounce), box-shadow 0.3s ease;
+        }
+
+        .primary-version-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px var(--purple-glow);
+        }
+
+        /* ============================================================
+           DATASET SELECTOR
+        ============================================================ */
+        .version-selector {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            padding: 24px 28px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+            animation: fadeUp 0.75s var(--transition-smooth) both;
+        }
+
+        .version-selector-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .version-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 13px;
+            background: rgba(34, 211, 238, 0.1);
+            border: 1px solid rgba(34, 211, 238, 0.25);
+            color: var(--cyan);
+            font-size: 20px;
+            font-weight: 850;
+            box-shadow: 0 0 18px var(--cyan-glow);
+        }
+
+        .version-selector-info span {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: var(--subtle);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .version-selector-info h3 {
+            font-size: 16px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+
+        .version-selector form {
+            min-width: 360px;
+        }
+
+        .version-selector select {
+            width: 100%;
+            height: 44px;
+            padding: 0 16px;
+            border: 1px solid var(--border-bright);
+            border-radius: 12px;
+            background: #081525;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 12.5px;
+            font-weight: 500;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .version-selector select:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.10);
+        }
+
+        .version-selector select option {
+            background: #081525;
+            color: var(--text);
+            padding: 8px;
+        }
+
+        /* ============================================================
+           CURRENT DATASET BANNER
+        ============================================================ */
+        .current-dataset {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            padding: 24px 28px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: linear-gradient(145deg, rgba(16, 36, 58, 0.5) 0%, rgba(11, 27, 45, 0.8) 100%);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+            animation: fadeUp 0.8s var(--transition-smooth) both;
+        }
+
+        .current-main {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .dataset-symbol {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: rgba(124, 92, 255, 0.12);
+            border: 1px solid rgba(124, 92, 255, 0.3);
+            color: var(--purple-light);
+            font-size: 16px;
+            font-weight: 850;
+            box-shadow: 0 0 20px var(--purple-glow);
+            flex-shrink: 0;
+        }
+
+        .current-main span {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: var(--cyan);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .current-main h2 {
+            font-size: 20px;
+            font-weight: 850;
+            color: #FFFFFF;
+        }
+
+        .current-main p {
+            color: var(--muted);
+            font-size: 12.5px;
+            margin-top: 4px;
+        }
+
+        .current-stats {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .current-stats > div {
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: rgba(16, 36, 58, 0.45);
+            text-align: center;
+            min-width: 90px;
+        }
+
+        .current-stats span {
+            display: block;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            color: var(--subtle);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .current-stats strong {
+            display: block;
+            font-size: 16px;
+            font-weight: 850;
+            color: #FFFFFF;
+        }
+
+        /* ============================================================
+           VERSION SUMMARY CARDS
+        ============================================================ */
+        .version-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            animation: fadeUp 0.85s var(--transition-smooth) both;
+        }
+
+        .version-summary-card {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 22px;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: linear-gradient(145deg, rgba(11, 27, 45, 0.86), rgba(7, 21, 37, 0.72));
+            backdrop-filter: blur(14px);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s var(--transition-bounce), border-color 0.3s ease;
+            animation: cardReveal 0.75s var(--transition-smooth) both;
+        }
+
+        .version-summary-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-cyan);
+        }
+
+        .version-summary-card span {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--subtle);
+            text-transform: uppercase;
+        }
+
+        .version-summary-card strong {
+            font-size: 26px;
+            font-weight: 850;
+            color: #FFFFFF;
+            letter-spacing: -0.5px;
+        }
+
+        .version-summary-card small {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        /* ============================================================
+           VERSION TIMELINE
+        ============================================================ */
+        .version-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            animation: fadeUp 0.9s var(--transition-smooth) both;
+        }
+
+        .version-section-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .version-section-heading h2 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-top: 4px;
+        }
+
+        .version-count {
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: rgba(34, 211, 238, 0.10);
+            border: 1px solid rgba(34, 211, 238, 0.25);
+            color: var(--cyan);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+        }
+
+        .version-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            position: relative;
+        }
+
+        .version-card {
+            display: flex;
+            gap: 20px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+            transition: transform 0.3s var(--transition-smooth), border-color 0.3s ease;
+        }
+
+        .version-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-bright);
+        }
+
+        .version-card.current-version-card {
+            border-color: var(--border-cyan);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25), 0 0 25px rgba(34, 211, 238, 0.12);
+        }
+
+        .timeline-line {
+            display: none;
+        }
+
+        .version-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            background: rgba(34, 211, 238, 0.10);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            color: var(--cyan);
+            font-size: 16px;
+            font-weight: 850;
+            flex-shrink: 0;
+            box-shadow: 0 0 15px var(--cyan-glow);
+        }
+
+        .current-version-card .version-number {
+            background: linear-gradient(135deg, var(--cyan), var(--blue));
+            color: #030712;
+            border: none;
+            box-shadow: 0 0 20px var(--cyan-glow);
+        }
+
+        .version-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            min-width: 0;
+        }
+
+        .version-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .version-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .version-title h3 {
+            font-size: 17px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+
+        .version-top p {
+            color: var(--muted);
+            font-size: 12.5px;
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        .version-type {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+
+        .version-type.original {
+            color: var(--blue);
+            background: rgba(53, 184, 255, 0.10);
+            border: 1px solid rgba(53, 184, 255, 0.25);
+        }
+
+        .version-type.cleaned {
+            color: var(--green);
+            background: rgba(57, 229, 140, 0.10);
+            border: 1px solid rgba(57, 229, 140, 0.25);
+        }
+
+        .version-type.transformed {
+            color: var(--purple-light);
+            background: rgba(124, 92, 255, 0.10);
+            border: 1px solid rgba(124, 92, 255, 0.25);
+        }
+
+        .current-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--cyan);
+            background: rgba(34, 211, 238, 0.12);
+            border: 1px solid rgba(34, 211, 238, 0.35);
+        }
+
+        .version-date {
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .version-date span {
+            display: block;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            color: var(--subtle);
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .version-date strong {
+            display: block;
+            font-size: 13px;
+            font-weight: 750;
+            color: var(--text);
+        }
+
+        .version-date small {
+            display: block;
+            font-size: 10.5px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        /* Metrics inside timeline cards */
+        .version-metrics {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .version-metrics > div {
+            padding: 10px 14px;
+            background: rgba(16, 36, 58, 0.45);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+
+        .version-metrics span {
+            display: block;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            color: var(--subtle);
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .version-metrics strong {
+            display: block;
+            font-size: 15px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+
+        /* Version Card Footer (File details + download) */
+        .version-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border);
+        }
+
+        .file-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            margin-right: 10px;
+        }
+
+        .file-size {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .download-version {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border-bright);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text);
+            font-size: 11.5px;
+            font-weight: 750;
+            transition: all 0.25s ease;
+        }
+
+        .download-version:hover {
+            border-color: var(--border-cyan);
+            background: rgba(34, 211, 238, 0.08);
+            color: var(--cyan);
+            transform: translateY(-2px);
+        }
+
+        /* ============================================================
+           WORKFLOW INFORMATION PANEL
+        ============================================================ */
+        .version-information {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 26px 30px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+            animation: fadeUp 0.92s var(--transition-smooth) both;
+        }
+
+        .information-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: rgba(124, 92, 255, 0.12);
+            border: 1px solid rgba(124, 92, 255, 0.25);
+            color: var(--purple-light);
+            font-size: 18px;
+            font-weight: 850;
+            box-shadow: 0 0 18px var(--purple-glow);
+            flex-shrink: 0;
+        }
+
+        .version-information h3 {
+            font-size: 17px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin: 6px 0 4px;
+        }
+
+        .version-information p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+            max-width: 800px;
+        }
+
+        .version-flow {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 14px;
+            padding: 8px 16px;
+            border-radius: 12px;
+            background: rgba(16, 36, 58, 0.5);
+            border: 1px solid var(--border);
+            font-size: 12px;
+            font-weight: 750;
+            color: var(--cyan);
+        }
+
+        .version-flow span:nth-child(2),
+        .version-flow span:nth-child(4) {
+            color: var(--subtle);
+        }
+
+        /* ============================================================
+           EMPTY STATES
+        ============================================================ */
+        .no-version,
+        .version-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            padding: 50px;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            background: linear-gradient(145deg, rgba(11, 27, 45, 0.88), rgba(7, 21, 37, 0.65));
+            text-align: center;
+            animation: fadeUp 0.8s var(--transition-smooth) both;
+        }
+
+        .no-version-icon,
+        .empty-icon {
+            width: 75px;
+            height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-purple);
+            border-radius: 20px;
+            background: rgba(124, 92, 255, 0.08);
+            color: var(--purple-light);
+            font-size: 30px;
+            box-shadow: 0 0 35px rgba(124, 92, 255, 0.12);
+            animation: emptyFloat 3s ease-in-out infinite;
+        }
+
+        .no-version h3,
+        .version-empty h2 {
+            font-size: 22px;
+            font-weight: 850;
+            color: #FFFFFF;
+            margin-top: 6px;
+        }
+
+        .no-version p,
+        .version-empty p {
+            max-width: 480px;
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .version-empty .primary-version-btn {
+            margin-top: 24px;
+        }
+
+        /* ============================================================
+           KEYFRAME ANIMATIONS
+        ============================================================ */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes cardReveal {
+            from {
+                opacity: 0;
+                transform: translateY(16px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4); }
+            50% { box-shadow: 0 0 0 6px rgba(34, 211, 238, 0); }
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-25px, 25px); }
+        }
+
+        @keyframes emptyFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        /* ============================================================
+           RESPONSIVE DESIGN
+        ============================================================ */
+        @media (max-width: 1200px) {
+            .current-dataset {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .version-summary-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .version-metrics {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 900px) {
+            .smart-app-layout {
+                flex-direction: column;
+                height: auto;
+                overflow-y: visible;
+            }
+            .smart-sidebar-container {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            .smart-main-content {
+                height: auto;
+                overflow-y: visible;
+                padding: 24px 20px 80px;
+            }
+            .version-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .version-selector {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .version-selector form {
+                min-width: 0;
+                width: 100%;
+            }
+            .version-card {
+                flex-direction: column;
+            }
+            .version-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .version-date {
+                text-align: left;
+            }
+            .version-metrics {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .version-information {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .version-summary-grid {
+                grid-template-columns: 1fr;
+            }
+            .version-metrics {
+                grid-template-columns: 1fr;
+            }
+            .version-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="smart-app-layout">
+        <!-- Ambient floating neon light orbs -->
+        <div class="ambient-orb-top"></div>
+        <div class="ambient-orb-bottom"></div>
+
+        <!-- =====================================================
+             LEFT SIDEBAR (INDEPENDENT SCROLL)
+        ====================================================== -->
+        <aside class="smart-sidebar-container" aria-label="Main Navigation">
+            {% include "includes/smart_sidebar.html" %}
+        </aside>
+
+        <!-- =====================================================
+             RIGHT MAIN CONTENT (INDEPENDENT SCROLL)
+        ====================================================== -->
+        <main class="smart-main-content" role="main">
+            <div class="version-page">
+
+                <!-- HEADER -->
+                <div class="version-header">
+                    <div>
+                        <span class="section-label">DATA MANAGEMENT</span>
+                        <h1>Data Version <span>History</span></h1>
+                        <p>Track every version of your dataset across ingestion, in-memory cleaning pipelines, and transformation schemas.</p>
+                    </div>
+
+                    <a href="{% url 'data_management:upload_data' %}" class="primary-version-btn">
+                        + Upload Dataset
+                    </a>
                 </div>
 
+                {% if datasets %}
 
-                <div class="version-content">
+                    <!-- DATASET SELECTOR -->
+                    <div class="version-selector">
+                        <div class="version-selector-info">
+                            <div class="version-icon">↻</div>
+                            <div>
+                                <span>SELECT DATASET</span>
+                                <h3>Choose dataset</h3>
+                            </div>
+                        </div>
 
-                    <div class="version-top">
+                        <form method="GET" action="{% url 'data_management:data_version_history' %}">
+                            <select name="dataset" onchange="this.form.submit()">
+                                {% for dataset in datasets %}
+                                    <option value="{{ dataset.id }}" {% if selected_dataset and selected_dataset.id == dataset.id %}selected{% endif %}>
+                                        {{ dataset.name }} — {{ dataset.dataset_type }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </div>
 
-                        <div>
+                    {% if selected_dataset %}
 
-                            <div class="version-title">
-
-                                <h3>
-                                    Version
-                                    {{ version.version_number }}
-                                </h3>
-
-                                <span
-                                    class="version-type {{ version.version_type|lower }}"
-                                >
-                                    {{ version.version_type }}
-                                </span>
-
-                                {% if version.is_current %}
-
-                                <span class="current-badge">
-                                    CURRENT
-                                </span>
-
-                                {% endif %}
-
+                        <!-- CURRENT DATASET SUMMARY -->
+                        <div class="current-dataset">
+                            <div class="current-main">
+                                <div class="dataset-symbol">DB</div>
+                                <div>
+                                    <span>SELECTED DATASET</span>
+                                    <h2>{{ selected_dataset.name }}</h2>
+                                    <p>{{ selected_dataset.original_filename }} &bull; {{ selected_dataset.dataset_type }}</p>
+                                </div>
                             </div>
 
-
-                            <p>
-                                {{ version.notes }}
-                            </p>
-
+                            <div class="current-stats">
+                                <div>
+                                    <span>VERSIONS</span>
+                                    <strong>{{ version_summary.total_versions }}</strong>
+                                </div>
+                                <div>
+                                    <span>CURRENT</span>
+                                    <strong>
+                                        {% if current_version %}
+                                            V{{ current_version.version_number }}
+                                        {% else %}
+                                            —
+                                        {% endif %}
+                                    </strong>
+                                </div>
+                                <div>
+                                    <span>ROWS</span>
+                                    <strong>{{ selected_dataset.total_rows }}</strong>
+                                </div>
+                                <div>
+                                    <span>COLUMNS</span>
+                                    <strong>{{ selected_dataset.total_columns }}</strong>
+                                </div>
+                                <div>
+                                    <span>QUALITY</span>
+                                    <strong>{{ selected_dataset.quality_score }}%</strong>
+                                </div>
+                            </div>
                         </div>
 
+                        <!-- VERSION SUMMARY CARDS -->
+                        <div class="version-summary-grid">
+                            <!-- ORIGINAL -->
+                            <div class="version-summary-card">
+                                <span>ORIGINAL</span>
+                                <strong>
+                                    {% if original_version %}
+                                        V{{ original_version.version_number }}
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </strong>
+                                <small>Source dataset</small>
+                            </div>
 
-                        <div class="version-date">
+                            <!-- CLEANED -->
+                            <div class="version-summary-card">
+                                <span>CLEANED</span>
+                                <strong>{{ version_summary.cleaned_count }}</strong>
+                                <small>Cleaned versions</small>
+                            </div>
 
-                            <span>
-                                CREATED
-                            </span>
+                            <!-- TRANSFORMED -->
+                            <div class="version-summary-card">
+                                <span>TRANSFORMED</span>
+                                <strong>{{ version_summary.transformed_count }}</strong>
+                                <small>Transformed versions</small>
+                            </div>
 
-                            <strong>
-                                {{ version.created_at|date:"d M Y" }}
-                            </strong>
-
-                            <small>
-                                {{ version.created_at|date:"h:i A" }}
-                            </small>
-
+                            <!-- CURRENT -->
+                            <div class="version-summary-card">
+                                <span>CURRENT VERSION</span>
+                                <strong>
+                                    {% if current_version %}
+                                        V{{ current_version.version_number }}
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </strong>
+                                <small>
+                                    {% if current_version %}
+                                        {{ current_version.version_type }}
+                                    {% else %}
+                                        No current version
+                                    {% endif %}
+                                </small>
+                            </div>
                         </div>
 
-                    </div>
+                        <!-- VERSION HISTORY TIMELINE -->
+                        <div class="version-section">
+                            <div class="version-section-heading">
+                                <div>
+                                    <span class="section-label">VERSION CONTROL</span>
+                                    <h2>Dataset History</h2>
+                                </div>
+                                <span class="version-count">
+                                    {{ versions|length }} version{{ versions|length|pluralize }}
+                                </span>
+                            </div>
 
+                            {% if versions %}
+                                <div class="version-timeline">
+                                    {% for version in versions %}
+                                        <div class="version-card {% if version.is_current %}current-version-card{% endif %}">
+                                            <div class="timeline-line"></div>
 
-                    <div class="version-metrics">
+                                            <div class="version-number">
+                                                <span>V{{ version.version_number }}</span>
+                                            </div>
 
-                        <div>
+                                            <div class="version-content">
+                                                <div class="version-top">
+                                                    <div>
+                                                        <div class="version-title">
+                                                            <h3>Version {{ version.version_number }}</h3>
+                                                            <span class="version-type {{ version.version_badge }}">
+                                                                {{ version.version_label }}
+                                                            </span>
+                                                            {% if version.is_current %}
+                                                                <span class="current-badge">CURRENT</span>
+                                                            {% endif %}
+                                                        </div>
 
-                            <span>
-                                ROWS
-                            </span>
+                                                        {% if version.display_notes %}
+                                                            <p>{{ version.display_notes }}</p>
+                                                        {% else %}
+                                                            <p>
+                                                                {% if version.version_type == "Original" %}
+                                                                    Original uploaded dataset artifact.
+                                                                {% elif version.version_type == "Cleaned" %}
+                                                                    Cleaned dataset generated through the automated pipeline sanitization.
+                                                                {% elif version.version_type == "Transformed" %}
+                                                                    Transformed dataset generated from an antecedent schema version.
+                                                                {% else %}
+                                                                    Dataset version cataloged during the data processing lifecycle.
+                                                                {% endif %}
+                                                            </p>
+                                                        {% endif %}
+                                                    </div>
 
-                            <strong>
-                                {{ version.total_rows }}
-                            </strong>
+                                                    <div class="version-date">
+                                                        <span>CREATED</span>
+                                                        <strong>
+                                                            {% if version.created_at %}
+                                                                {{ version.created_at|date:"d M Y" }}
+                                                            {% else %}
+                                                                —
+                                                            {% endif %}
+                                                        </strong>
+                                                        <small>
+                                                            {% if version.created_at %}
+                                                                {{ version.created_at|date:"h:i A" }}
+                                                            {% endif %}
+                                                        </small>
+                                                    </div>
+                                                </div>
 
+                                                <!-- METRICS -->
+                                                <div class="version-metrics">
+                                                    <div>
+                                                        <span>ROWS</span>
+                                                        <strong>{{ version.total_rows|default:"0" }}</strong>
+                                                    </div>
+                                                    <div>
+                                                        <span>COLUMNS</span>
+                                                        <strong>{{ version.total_columns|default:"0" }}</strong>
+                                                    </div>
+                                                    <div>
+                                                        <span>MISSING</span>
+                                                        <strong>{{ version.missing_values|default:"0" }}</strong>
+                                                    </div>
+                                                    <div>
+                                                        <span>DUPLICATES</span>
+                                                        <strong>{{ version.duplicate_rows|default:"0" }}</strong>
+                                                    </div>
+                                                    <div>
+                                                        <span>QUALITY</span>
+                                                        <strong>
+                                                            {% if version.quality_score != None %}
+                                                                {{ version.quality_score }}%
+                                                            {% else %}
+                                                                —
+                                                            {% endif %}
+                                                        </strong>
+                                                    </div>
+                                                </div>
+
+                                                <!-- FILE FOOTER -->
+                                                <div class="version-footer">
+                                                    <div>
+                                                        <span class="file-name">
+                                                            {% if version.display_file_name %}
+                                                                {{ version.display_file_name }}
+                                                            {% else %}
+                                                                No file available
+                                                            {% endif %}
+                                                        </span>
+                                                        {% if version.file_size %}
+                                                            <span class="file-size">
+                                                                {{ version.file_size|filesizeformat }}
+                                                            </span>
+                                                        {% endif %}
+                                                    </div>
+
+                                                    {% if version.file %}
+                                                        <a href="{% url 'data_management:download_version' version.id %}" class="download-version">
+                                                            ↓ Download
+                                                        </a>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="no-version">
+                                    <div class="no-version-icon">↻</div>
+                                    <h3>No version history yet</h3>
+                                    <p>This dataset does not have any stored versions registered yet.</p>
+                                </div>
+                            {% endif %}
                         </div>
 
-
-                        <div>
-
-                            <span>
-                                COLUMNS
-                            </span>
-
-                            <strong>
-                                {{ version.total_columns }}
-                            </strong>
-
+                        <!-- WORKFLOW INFORMATION PANEL -->
+                        <div class="version-information">
+                            <div class="information-icon">i</div>
+                            <div>
+                                <span class="section-label">VERSION CONTROL</span>
+                                <h3>Original data remains preserved</h3>
+                                <p>Smart BI immutably stores the original uploaded dataset as its baseline version. Data cleaning and schema transformations create discrete versioned nodes without altering the initial source file.</p>
+                                <div class="version-flow">
+                                    <span>Original</span>
+                                    <span>→</span>
+                                    <span>Cleaned</span>
+                                    <span>→</span>
+                                    <span>Transformed</span>
+                                </div>
+                            </div>
                         </div>
 
+                    {% endif %}
 
-                        <div>
+                {% else %}
 
-                            <span>
-                                MISSING
-                            </span>
-
-                            <strong>
-                                {{ version.missing_values }}
-                            </strong>
-
-                        </div>
-
-
-                        <div>
-
-                            <span>
-                                DUPLICATES
-                            </span>
-
-                            <strong>
-                                {{ version.duplicate_rows }}
-                            </strong>
-
-                        </div>
-
-
-                        <div>
-
-                            <span>
-                                QUALITY
-                            </span>
-
-                            <strong>
-                                {{ version.quality_score }}%
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="version-footer">
-
-                        <div>
-
-                            <span class="file-name">
-                                {{ version.file_name }}
-                            </span>
-
-                            <span class="file-size">
-                                {{ version.file_size|filesizeformat }}
-                            </span>
-
-                        </div>
-
-
-                        <a
-                            href="{% url 'data_management:download_dataset_version' version.id %}"
-                            class="download-version"
-                        >
-                            ↓ Download
+                    <!-- EMPTY DATASET STATE -->
+                    <div class="version-empty">
+                        <div class="empty-icon">↻</div>
+                        <span class="section-label">NO DATASETS</span>
+                        <h2>No dataset versions available</h2>
+                        <p>Upload your first business dataset to activate versioning, audit histories, and line-level snapshots.</p>
+                        <a href="{% url 'data_management:upload_data' %}" class="primary-version-btn">
+                            Upload Dataset →
                         </a>
-
                     </div>
 
-                </div>
+                {% endif %}
 
             </div>
-
-            {% endfor %}
-
-        </div>
-
-
-        {% else %}
-
-
-        <div class="no-version">
-
-            <div class="no-version-icon">
-                ↻
-            </div>
-
-            <h3>
-                No version history yet
-            </h3>
-
-            <p>
-                Upload a dataset to create its
-                first version.
-            </p>
-
-        </div>
-
-
-        {% endif %}
-
+        </main>
     </div>
 
-
-    <!-- INFORMATION -->
-
-    <div class="version-information">
-
-        <div class="information-icon">
-            i
-        </div>
-
-        <div>
-
-            <span class="section-label">
-                VERSION CONTROL
-            </span>
-
-            <h3>
-                Your original dataset is preserved
-            </h3>
-
-            <p>
-                Smart BI keeps the original uploaded
-                dataset separate from future processing
-                stages so your source data remains protected.
-            </p>
-
-        </div>
-
-    </div>
-
-
-    {% endif %}
-
-
-    {% else %}
-
-
-    <!-- EMPTY -->
-
-    <div class="version-empty">
-
-        <div class="empty-icon">
-            ↻
-        </div>
-
-        <span class="section-label">
-            NO DATASETS
-        </span>
-
-        <h2>
-            No dataset versions available
-        </h2>
-
-        <p>
-            Upload your first business dataset to
-            begin tracking its versions.
-        </p>
-
-        <a
-            href="{% url 'data_management:upload' %}"
-            class="primary-version-btn"
-        >
-            Upload Dataset →
-        </a>
-
-    </div>
-
-    {% endif %}
-
-</div>
-
-{% endblock %}
+</body>
+</html>

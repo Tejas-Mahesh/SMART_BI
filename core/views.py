@@ -112,6 +112,10 @@ def contact(request):
 # EXECUTIVE DASHBOARD
 # ============================================================
 
+# ============================================================
+# EXECUTIVE DASHBOARD
+# ============================================================
+
 @login_required
 def dashboard(request):
 
@@ -158,20 +162,6 @@ def dashboard(request):
     # ========================================================
     # DATA MANAGEMENT
     # ========================================================
-    #
-    # IMPORTANT:
-    # These URL names MUST match data_management/urls.py
-    #
-    # upload_data
-    # dataset_management
-    # quality
-    # cleaning
-    # validation
-    # profiling
-    # transformation
-    # version_history
-    #
-    # ========================================================
 
     data_management_links = [
 
@@ -211,63 +201,63 @@ def dashboard(request):
 
     analytics_links = [
 
-    {
-        "title": "Business Intelligence",
-        "description": "Understand overall business performance.",
-        "icon": "business",
-        "url": "analytics:business_intelligence",
-    },
+        {
+            "title": "Business Intelligence",
+            "description": "Understand overall business performance.",
+            "icon": "business",
+            "url": "analytics:business_intelligence",
+        },
 
-    {
-        "title": "Sales Intelligence",
-        "description": "Explore sales performance and trends.",
-        "icon": "sales",
-        "url": "analytics:sales_intelligence",
-    },
+        {
+            "title": "Sales Intelligence",
+            "description": "Explore sales performance and trends.",
+            "icon": "sales",
+            "url": "analytics:sales_intelligence",
+        },
 
-    {
-        "title": "Customer Intelligence",
-        "description": "Understand customers and their behavior.",
-        "icon": "customer",
-        "url": "analytics:customer_intelligence",
-    },
+        {
+            "title": "Customer Intelligence",
+            "description": "Understand customers and their behavior.",
+            "icon": "customer",
+            "url": "analytics:customer_intelligence",
+        },
 
-    {
-        "title": "Product Intelligence",
-        "description": "Analyze products and product performance.",
-        "icon": "product",
-        "url": "analytics:product_intelligence",
-    },
+        {
+            "title": "Product Intelligence",
+            "description": "Analyze products and product performance.",
+            "icon": "product",
+            "url": "analytics:product_intelligence",
+        },
 
-    {
-        "title": "Regional Intelligence",
-        "description": "Explore performance across regions.",
-        "icon": "regional",
-        "url": "analytics:regional_intelligence",
-    },
+        {
+            "title": "Regional Intelligence",
+            "description": "Explore performance across regions.",
+            "icon": "regional",
+            "url": "analytics:regional_intelligence",
+        },
 
-    {
-        "title": "Marketing Intelligence",
-        "description": "Analyze marketing activities and channels.",
-        "icon": "marketing",
-        "url": "analytics:marketing_intelligence",
-    },
+        {
+            "title": "Marketing Intelligence",
+            "description": "Analyze marketing activities and channels.",
+            "icon": "marketing",
+            "url": "analytics:marketing_intelligence",
+        },
 
-    {
-        "title": "Financial Intelligence",
-        "description": "Explore financial performance and trends.",
-        "icon": "financial",
-        "url": "analytics:financial_intelligence",
-    },
+        {
+            "title": "Financial Intelligence",
+            "description": "Explore financial performance and trends.",
+            "icon": "financial",
+            "url": "analytics:financial_intelligence",
+        },
 
-    {
-        "title": "Returns Intelligence",
-        "description": "Understand returns and return patterns.",
-        "icon": "returns",
-        "url": "analytics:returns_intelligence",
-    },
+        {
+            "title": "Returns Intelligence",
+            "description": "Understand returns and return patterns.",
+            "icon": "returns",
+            "url": "analytics:returns_intelligence",
+        },
 
-]
+    ]
 
     # ========================================================
     # ADVANCED INSIGHTS
@@ -277,65 +267,51 @@ def dashboard(request):
 
         {
             "title": "Future Trends",
-            "description":
-                "Discover emerging patterns and trends.",
+            "description": "Discover emerging patterns and trends.",
             "icon": "trends",
-            "url":
-                "advanced_insights:future_trends",
+            "url": "advanced_insights:future_trends",
         },
 
         {
             "title": "Forecasting",
-            "description":
-                "Generate forecasts from business data.",
+            "description": "Generate forecasts from business data.",
             "icon": "forecast",
-            "url":
-                "advanced_insights:forecasting",
+            "url": "advanced_insights:forecasting",
         },
 
         {
             "title": "Anomaly Detection",
-            "description":
-                "Identify unusual business behavior.",
+            "description": "Identify unusual business behavior.",
             "icon": "anomaly",
-            "url":
-                "advanced_insights:anomaly_detection",
+            "url": "advanced_insights:anomaly_detection",
         },
 
         {
             "title": "Root Cause Analysis",
-            "description":
-                "Investigate the causes behind business changes.",
+            "description": "Investigate causes behind business changes.",
             "icon": "root-cause",
-            "url":
-                "advanced_insights:root_cause_analysis",
+            "url": "advanced_insights:root_cause_analysis",
         },
 
         {
             "title": "Customer Segmentation",
-            "description":
-                "Discover meaningful customer groups.",
+            "description": "Discover meaningful customer groups.",
             "icon": "segmentation",
-            "url":
-                "advanced_insights:customer_segmentation",
+            "url": "advanced_insights:customer_segmentation",
         },
 
         {
             "title": "Churn / Risk Analysis",
-            "description":
-                "Identify customer and business risks.",
+            "description": "Identify customer and business risks.",
             "icon": "risk",
-            "url":
-                "advanced_insights:churn_risk",
+            "url": "advanced_insights:churn_risk_analysis",
         },
 
         {
             "title": "Opportunity Detection",
-            "description":
-                "Discover potential business opportunities.",
+            "description": "Discover potential business opportunities.",
             "icon": "opportunity",
-            "url":
-                "advanced_insights:opportunity_detection",
+            "url": "advanced_insights:opportunity_detection",
         },
 
     ]
@@ -348,109 +324,87 @@ def dashboard(request):
 
         {
             "title": "Recommendations",
-            "description":
-                "Turn insights into recommended actions.",
+            "description": "Turn insights into recommended actions.",
             "icon": "recommendation",
-            "url":
-                "decision_intelligence:recommendations",
+            "url": "decision_intelligence:recommendations",
         },
 
         {
             "title": "What-If Simulator",
-            "description":
-                "Explore possible business outcomes.",
+            "description": "Explore possible business outcomes.",
             "icon": "what-if",
-            "url":
-                "decision_intelligence:what_if",
+            "url": "decision_intelligence:what_if_simulator",
         },
 
         {
             "title": "Scenario Planning",
-            "description":
-                "Compare different business scenarios.",
+            "description": "Compare different business scenarios.",
             "icon": "scenario",
-            "url":
-                "decision_intelligence:scenario_planning",
+            "url": "decision_intelligence:scenario_planning",
         },
 
         {
             "title": "Business Alerts",
-            "description":
-                "Monitor important business events.",
+            "description": "Monitor important business events.",
             "icon": "alerts",
-            "url":
-                "decision_intelligence:business_alerts",
+            "url": "decision_intelligence:business_alerts",
         },
 
         {
             "title": "Action Center",
-            "description":
-                "Track and manage recommended actions.",
+            "description": "Track and manage recommended actions.",
             "icon": "action",
-            "url":
-                "decision_intelligence:action_center",
+            "url": "decision_intelligence:action_center",
         },
 
         {
             "title": "Decision Impact",
-            "description":
-                "Understand the impact of decisions.",
+            "description": "Understand the impact of decisions.",
             "icon": "impact",
-            "url":
-                "decision_intelligence:decision_impact",
+            "url": "decision_intelligence:decision_impact_analysis",
         },
 
     ]
 
     # ========================================================
-    # REPORTING
+    # SYSTEM STATUS
     # ========================================================
 
-    reporting_links = [
+    system_status = [
 
         {
-            "title": "Automated Reports",
-            "description":
-                "Generate automated business reports.",
-            "icon": "automated-report",
-            "url":
-                "reporting:automated_reports",
+            "name": "Database",
+            "status": "Connected",
+            "state": "online",
+            "icon": "database",
         },
 
         {
-            "title": "Custom Reports",
-            "description":
-                "Create reports based on your requirements.",
-            "icon": "custom-report",
-            "url":
-                "reporting:custom_reports",
+            "name": "Analytics Engine",
+            "status": "Ready",
+            "state": "online",
+            "icon": "analytics",
         },
 
         {
-            "title": "Export PDF",
-            "description":
-                "Export business reports as PDF.",
-            "icon": "pdf",
-            "url":
-                "reporting:export_pdf",
+            "name": "Forecasting Engine",
+            "status": "Ready",
+            "state": "online",
+            "icon": "forecast",
         },
 
         {
-            "title": "Export Excel",
-            "description":
-                "Export business data and reports to Excel.",
-            "icon": "excel",
-            "url":
-                "reporting:export_excel",
+            "name": "AI Insight Engine",
+            "status": "Ready",
+            "state": "online",
+            "icon": "ai",
         },
 
         {
-            "title": "Report History",
-            "description":
-                "View previously generated reports.",
-            "icon": "history",
-            "url":
-                "reporting:report_history",
+            "name": "Decision Engine",
+            "status": "Ready",
+            "state": "online",
+            "icon": "decision",
         },
 
     ]
@@ -461,28 +415,16 @@ def dashboard(request):
 
     context = {
 
-        # ----------------------------------------------------
-        # HEADER
-        # ----------------------------------------------------
-
-        "dashboard_title":
-            "Executive Dashboard",
+        "dashboard_title": "Executive Dashboard",
 
         "dashboard_subtitle":
             "Your intelligent business management workspace",
 
-        "greeting":
-            greeting,
+        "greeting": greeting,
 
-        "greeting_icon":
-            greeting_icon,
+        "greeting_icon": greeting_icon,
 
-        "display_name":
-            display_name,
-
-        # ----------------------------------------------------
-        # NAVIGATION SECTIONS
-        # ----------------------------------------------------
+        "display_name": display_name,
 
         "data_management_links":
             data_management_links,
@@ -496,9 +438,8 @@ def dashboard(request):
         "decision_links":
             decision_links,
 
-        "reporting_links":
-            reporting_links,
-
+        "system_status":
+            system_status,
     }
 
     # ========================================================
