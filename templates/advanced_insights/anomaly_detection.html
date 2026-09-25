@@ -1,3061 +1,1063 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anomaly Detection | Smart Business Intelligence</title>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>
-        Anomaly Detection | Smart BI
-    </title>
-
-    <!-- ============================================================
-         CHART.JS
-    ============================================================ -->
-
+    <!-- Google Fonts & Chart.js -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
     <style>
-
-        /* ============================================================
-           SMART BI — ANOMALY DETECTION
-        ============================================================ */
-
         :root {
+            --bg-base: #040911;
+            --bg-surface: #07111f;
+            --bg-card: rgba(11, 23, 42, 0.72);
+            --bg-card-hover: rgba(16, 32, 59, 0.85);
 
-            --ft-bg: #07111f;
-            --ft-bg-deep: #040b15;
+            /* Deep dark KPI background */
+            --bg-kpi-dark: #030811;
+            --bg-kpi-card: #050d18;
+            --border-kpi: rgba(255, 255, 255, 0.06);
 
-            --ft-panel: rgba(13, 27, 46, 0.94);
-            --ft-panel-strong: rgba(16, 32, 55, 0.97);
-            --ft-panel-soft: rgba(255, 255, 255, 0.025);
+            --border-subtle: rgba(79, 163, 255, 0.14);
+            --border-focus: rgba(79, 163, 255, 0.45);
+            
+            --accent-blue: #4fa3ff;
+            --accent-cyan: #22d3ee;
+            --accent-purple: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #4fa3ff 0%, #22d3ee 100%);
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: rgba(190, 211, 235, 0.65);
+            
+            --status-green: #10b981;
+            --status-yellow: #f59e0b;
+            --status-red: #ff5263;
 
-            --ft-border: rgba(255, 255, 255, 0.075);
-            --ft-border-soft: rgba(255, 255, 255, 0.045);
-
-            --ft-text: #f2f7ff;
-            --ft-text-soft: rgba(218, 231, 245, 0.68);
-            --ft-text-muted: rgba(190, 208, 229, 0.46);
-
-            --ft-blue: #4fa3ff;
-            --ft-blue-bright: #74b9ff;
-            --ft-cyan: #22d3ee;
-            --ft-purple: #8b5cf6;
-
-            --ft-green: #48d597;
-            --ft-yellow: #f3c86b;
-            --ft-red: #ff6577;
-
-            --ft-radius: 18px;
-
-            --ft-shadow:
-                0 18px 55px rgba(0, 0, 0, 0.22);
-
-            --ft-glow:
-                0 0 35px rgba(79, 163, 255, 0.12);
-
-            --ft-sidebar-width: 260px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
         }
-
-
-        /* ============================================================
-           RESET
-        ============================================================ */
 
         * {
             box-sizing: border-box;
-        }
-
-
-        html,
-        body {
-
-            width: 100%;
-            height: 100%;
-
             margin: 0;
             padding: 0;
         }
 
-
         body {
-
-            background:
-                radial-gradient(
-                    circle at 82% -10%,
-                    rgba(79, 163, 255, 0.10),
-                    transparent 32%
-                ),
-                radial-gradient(
-                    circle at 15% 105%,
-                    rgba(139, 92, 246, 0.07),
-                    transparent 30%
-                ),
-                var(--ft-bg);
-
-            color: var(--ft-text);
-
-            font-family:
-                Inter,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                sans-serif;
-
-            overflow: hidden !important;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(79, 163, 255, 0.12), transparent),
+                radial-gradient(circle 600px at 0% 100%, rgba(34, 211, 238, 0.04), transparent);
+            background-attachment: fixed;
+            display: flex;
+            overflow-x: hidden;
         }
 
-
-        button,
-        input,
-        select {
-
-            font: inherit;
+        /* Ambient Glow & Entrance Animations */
+        @keyframes subtlePulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.08); }
         }
 
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        /* ============================================================
-           INDEPENDENT SIDEBAR SCROLL
-        ============================================================ */
+        .fade-up {
+            animation: cardEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Shell & Independent Layout */
+        .smart-workspace-shell {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+        }
 
         #smart-bi-sidebar {
-
-            position: fixed !important;
-
-            top: 0 !important;
-            left: 0 !important;
-            bottom: 0 !important;
-
-            width: var(--ft-sidebar-width) !important;
-
-            height: 100vh !important;
-            max-height: 100vh !important;
-
-            overflow-y: auto !important;
-            overflow-x: hidden !important;
-
-            background:
-                linear-gradient(
-                    180deg,
-                    #061321 0%,
-                    #050f1c 55%,
-                    #040b15 100%
-                );
-
-            border-right:
-                1px solid
-                rgba(255, 255, 255, 0.07);
-
-            z-index: 1000;
-
-            scrollbar-width: thin;
-
-            scrollbar-color:
-                #29445b
-                #081827;
-        }
-
-
-        #smart-bi-sidebar::-webkit-scrollbar {
-
-            width: 6px;
-        }
-
-
-        #smart-bi-sidebar::-webkit-scrollbar-track {
-
-            background: #081827;
-        }
-
-
-        #smart-bi-sidebar::-webkit-scrollbar-thumb {
-
-            background: #29445b;
-
-            border-radius: 20px;
-        }
-
-
-        /* ============================================================
-           MAIN — INDEPENDENT SCROLL
-        ============================================================ */
-
-        .anomaly-main {
-
-            position: relative;
-
-            margin-left: var(--ft-sidebar-width);
-
-            width:
-                calc(100% - var(--ft-sidebar-width));
-
-            height: 100vh;
-
-            min-width: 0;
-
-            overflow-y: auto;
-            overflow-x: hidden;
-
-            background:
-                radial-gradient(
-                    circle at 80% 0%,
-                    rgba(34, 211, 238, 0.035),
-                    transparent 28%
-                ),
-                var(--ft-bg);
-
-            scrollbar-width: thin;
-
-            scrollbar-color:
-                #29445b
-                #07111f;
-        }
-
-
-        .anomaly-main::-webkit-scrollbar {
-
-            width: 7px;
-        }
-
-
-        .anomaly-main::-webkit-scrollbar-track {
-
-            background: #07111f;
-        }
-
-
-        .anomaly-main::-webkit-scrollbar-thumb {
-
-            background: #29445b;
-
-            border-radius: 20px;
-        }
-
-
-        /* ============================================================
-           PAGE
-        ============================================================ */
-
-        .anomaly-page {
-
-            width: 100%;
-
-            max-width: 1700px;
-
-            min-height: 100%;
-
-            margin: 0 auto;
-
-            padding:
-                28px
-                30px
-                70px;
-        }
-
-
-        /* ============================================================
-           HEADER
-        ============================================================ */
-
-        .anomaly-header {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: flex-start;
-
-            gap: 25px;
-
-            margin-bottom: 22px;
-        }
-
-
-        .header-left {
-
-            min-width: 0;
-        }
-
-
-        .eyebrow {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 7px;
-
-            padding:
-                6px
-                10px;
-
-            margin-bottom: 10px;
-
-            border:
-                1px solid
-                rgba(79, 163, 255, 0.15);
-
-            border-radius: 999px;
-
-            background:
-                rgba(79, 163, 255, 0.055);
-
-            color:
-                var(--ft-blue-bright);
-
-            font-size: 9px;
-
-            font-weight: 850;
-
-            letter-spacing: .08em;
-
-            text-transform: uppercase;
-        }
-
-
-        .eyebrow-dot {
-
-            width: 6px;
-            height: 6px;
-
-            border-radius: 50%;
-
-            background:
-                var(--ft-cyan);
-
-            box-shadow:
-                0 0 12px
-                rgba(34, 211, 238, .7);
-        }
-
-
-        .header-left h1 {
-
-            margin: 0;
-
-            color: var(--ft-text);
-
-            font-size: 31px;
-
-            line-height: 1.08;
-
-            font-weight: 850;
-
-            letter-spacing: -.045em;
-        }
-
-
-        .header-left p {
-
-            max-width: 850px;
-
-            margin:
-                9px
-                0
-                0;
-
-            color:
-                var(--ft-text-soft);
-
-            font-size: 12px;
-
-            line-height: 1.7;
-        }
-
-
-        .header-status {
-
-            flex: 0 0 auto;
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 9px;
-
-            padding:
-                9px
-                13px;
-
-            border:
-                1px solid
-                rgba(72, 213, 151, .15);
-
-            border-radius: 999px;
-
-            background:
-                rgba(72, 213, 151, .055);
-
-            color:
-                rgba(194, 255, 224, .78);
-
-            font-size: 10px;
-
-            font-weight: 800;
-        }
-
-
-        .status-dot {
-
-            width: 7px;
-            height: 7px;
-
-            border-radius: 50%;
-
-            background:
-                var(--ft-green);
-
-            box-shadow:
-                0 0 14px
-                rgba(72, 213, 151, .65);
-        }
-
-
-        /* ============================================================
-           ERROR
-        ============================================================ */
-
-        .error-message {
-
-            margin-bottom: 18px;
-
-            padding:
-                14px
-                16px;
-
-            border:
-                1px solid
-                rgba(255, 101, 119, .22);
-
-            border-radius: 14px;
-
-            background:
-                rgba(255, 101, 119, .07);
-
-            color:
-                #ff9aa7;
-
-            font-size: 12px;
-
-            line-height: 1.55;
-        }
-
-
-        /* ============================================================
-           CONTROL PANEL
-        ============================================================ */
-
-        .control-panel {
-
-            position: relative;
-
-            margin-bottom: 20px;
-
-            padding: 20px;
-
-            border:
-                1px solid
-                var(--ft-border);
-
-            border-radius:
-                var(--ft-radius);
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(16, 32, 55, .98),
-                    rgba(10, 23, 39, .96)
-                );
-
-            box-shadow:
-                var(--ft-shadow);
-
-            overflow: hidden;
-        }
-
-
-        .control-panel::before {
-
-            content: "";
-
-            position: absolute;
-
+            width: 270px;
+            background: var(--bg-surface);
+            border-right: 1px solid var(--border-subtle);
+            flex-shrink: 0;
+            position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-
-            height: 1px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    rgba(79, 163, 255, .5),
-                    rgba(34, 211, 238, .35),
-                    transparent
-                );
+            bottom: 0;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            z-index: 1000;
+            padding: 1.75rem 1.25rem;
         }
 
+        .anomaly-main {
+            margin-left: 270px;
+            flex: 1;
+            width: calc(100% - 270px);
+            min-height: 100vh;
+            padding: 2.5rem 3.5rem;
+            overflow-y: auto;
+        }
 
-        .panel-heading {
+        .anomaly-page {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
+        /* Header */
+        .anomaly-header {
             display: flex;
-
             justify-content: space-between;
-
-            align-items: center;
-
-            gap: 15px;
-
-            margin-bottom: 17px;
-        }
-
-
-        .panel-heading h2 {
-
-            margin: 0;
-
-            font-size: 14px;
-
-            font-weight: 850;
-
-            color: var(--ft-text);
-        }
-
-
-        .panel-heading span {
-
-            color:
-                var(--ft-text-muted);
-
-            font-size: 10px;
-
-            font-weight: 700;
-        }
-
-
-        .control-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                minmax(200px, 1.4fr)
-                minmax(180px, 1fr)
-                minmax(180px, 1fr)
-                minmax(150px, .65fr);
-
-            gap: 13px;
-
-            align-items: end;
-        }
-
-
-        .field {
-
-            min-width: 0;
-        }
-
-
-        .field label {
-
-            display: block;
-
-            margin-bottom: 7px;
-
-            color:
-                var(--ft-text-soft);
-
-            font-size: 10px;
-
-            font-weight: 800;
-
-            letter-spacing: .025em;
-        }
-
-
-        .field select,
-        .field input {
-
-            width: 100%;
-
-            height: 42px;
-
-            padding:
-                0
-                12px;
-
-            border:
-                1px solid
-                rgba(255,255,255,.085);
-
-            border-radius: 11px;
-
-            outline: none;
-
-            background:
-                rgba(4, 12, 22, .72);
-
-            color:
-                var(--ft-text);
-
-            font-size: 11px;
-
-            transition:
-                border-color .2s ease,
-                box-shadow .2s ease,
-                background .2s ease;
-        }
-
-
-        .field select {
-
-            cursor: pointer;
-        }
-
-
-        .field select option {
-
-            background: #0b1b2e;
-
-            color: #f2f7ff;
-        }
-
-
-        .field select:focus,
-        .field input:focus {
-
-            border-color:
-                rgba(79, 163, 255, .55);
-
-            background:
-                rgba(6, 18, 32, .9);
-
-            box-shadow:
-                0 0 0 3px
-                rgba(79, 163, 255, .08);
-        }
-
-
-        .threshold-wrap {
-
-            position: relative;
-        }
-
-
-        .threshold-unit {
-
-            position: absolute;
-
-            right: 12px;
-
-            bottom: 13px;
-
-            color:
-                var(--ft-text-muted);
-
-            font-size: 9px;
-
-            font-weight: 800;
-
-            pointer-events: none;
-        }
-
-
-        .run-button {
-
-            height: 42px;
-
-            padding:
-                0
-                20px;
-
-            border: 0;
-
-            border-radius: 11px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    var(--ft-blue),
-                    var(--ft-purple)
-                );
-
-            color: white;
-
-            font-size: 11px;
-
-            font-weight: 850;
-
-            letter-spacing: .02em;
-
-            cursor: pointer;
-
-            box-shadow:
-                0 9px 25px
-                rgba(79, 163, 255, .16);
-
-            transition:
-                transform .2s ease,
-                box-shadow .2s ease,
-                filter .2s ease;
-        }
-
-
-        .run-button:hover {
-
-            transform:
-                translateY(-1px);
-
-            filter:
-                brightness(1.08);
-
-            box-shadow:
-                0 12px 32px
-                rgba(79, 163, 255, .24);
-        }
-
-
-        .run-button:active {
-
-            transform:
-                translateY(0);
-        }
-
-
-        /* ============================================================
-           VERSION INFO
-        ============================================================ */
-
-        .source-strip {
-
-            display: flex;
-
-            align-items: center;
-
-            flex-wrap: wrap;
-
-            gap: 8px;
-
-            margin-top: 15px;
-
-            padding-top: 14px;
-
-            border-top:
-                1px solid
-                var(--ft-border-soft);
-        }
-
-
-        .source-label {
-
-            color:
-                var(--ft-text-muted);
-
-            font-size: 9px;
-
-            font-weight: 800;
-
-            text-transform: uppercase;
-
-            letter-spacing: .07em;
-        }
-
-
-        .source-badge {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 6px;
-
-            padding:
-                5px
-                9px;
-
-            border:
-                1px solid
-                rgba(79,163,255,.12);
-
-            border-radius: 999px;
-
-            background:
-                rgba(79,163,255,.045);
-
-            color:
-                rgba(207,229,255,.78);
-
-            font-size: 9px;
-
-            font-weight: 750;
-        }
-
-
-        .source-badge.green {
-
-            border-color:
-                rgba(72,213,151,.13);
-
-            background:
-                rgba(72,213,151,.045);
-
-            color:
-                rgba(188,250,220,.75);
-        }
-
-
-        /* ============================================================
-           KPI GRID
-        ============================================================ */
-
-        .kpi-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(5, minmax(0, 1fr));
-
-            gap: 13px;
-
-            margin-bottom: 20px;
-        }
-
-
-        .kpi-card {
-
-            position: relative;
-
-            min-height: 125px;
-
-            padding: 17px;
-
-            border:
-                1px solid
-                var(--ft-border);
-
-            border-radius:
-                var(--ft-radius);
-
-            background:
-                var(--ft-panel);
-
-            box-shadow:
-                var(--ft-shadow);
-
-            overflow: hidden;
-
-            transition:
-                transform .2s ease,
-                border-color .2s ease;
-        }
-
-
-        .kpi-card:hover {
-
-            transform:
-                translateY(-2px);
-
-            border-color:
-                rgba(79,163,255,.17);
-        }
-
-
-        .kpi-card::after {
-
-            content: "";
-
-            position: absolute;
-
-            width: 85px;
-            height: 85px;
-
-            top: -35px;
-            right: -30px;
-
-            border-radius: 50%;
-
-            background:
-                rgba(79,163,255,.045);
-
-            filter:
-                blur(2px);
-        }
-
-
-        .kpi-label {
-
-            color:
-                var(--ft-text-muted);
-
-            font-size: 9px;
-
-            font-weight: 800;
-
-            letter-spacing: .06em;
-
-            text-transform: uppercase;
-        }
-
-
-        .kpi-value {
-
-            margin-top: 12px;
-
-            color:
-                var(--ft-text);
-
-            font-size: 25px;
-
-            line-height: 1;
-
-            font-weight: 850;
-
-            letter-spacing: -.035em;
-        }
-
-
-        .kpi-sub {
-
-            margin-top: 9px;
-
-            color:
-                var(--ft-text-soft);
-
-            font-size: 9px;
-
-            line-height: 1.45;
-        }
-
-
-        .kpi-card.anomaly {
-
-            border-color:
-                rgba(255,101,119,.15);
-        }
-
-
-        .kpi-card.anomaly .kpi-value {
-
-            color:
-                var(--ft-red);
-        }
-
-
-        .kpi-card.normal .kpi-value {
-
-            color:
-                var(--ft-green);
-        }
-
-
-        .kpi-card.rate .kpi-value {
-
-            color:
-                var(--ft-yellow);
-        }
-
-
-        /* ============================================================
-           SECTION HEADER
-        ============================================================ */
-
-        .section-heading {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            gap: 15px;
-
-            margin:
-                25px
-                0
-                12px;
-        }
-
-
-        .section-heading h2 {
-
-            margin: 0;
-
-            color:
-                var(--ft-text);
-
-            font-size: 16px;
-
-            font-weight: 850;
-
-            letter-spacing: -.02em;
-        }
-
-
-        .section-heading span {
-
-            color:
-                var(--ft-text-muted);
-
-            font-size: 10px;
-
-            font-weight: 700;
-        }
-
-
-        /* ============================================================
-           CHART
-        ============================================================ */
-
-        .chart-card {
-
-            min-height: 400px;
-
-            padding: 19px;
-
-            border:
-                1px solid
-                var(--ft-border);
-
-            border-radius:
-                var(--ft-radius);
-
-            background:
-                var(--ft-panel);
-
-            box-shadow:
-                var(--ft-shadow);
-        }
-
-
-        .chart-header {
-
-            display: flex;
-
-            justify-content: space-between;
-
             align-items: flex-start;
-
-            gap: 15px;
-
-            margin-bottom: 15px;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-subtle);
+            margin-bottom: 2rem;
+            gap: 20px;
         }
 
-
-        .chart-title {
-
-            color:
-                var(--ft-text);
-
-            font-size: 13px;
-
-            font-weight: 850;
-        }
-
-
-        .chart-description {
-
-            margin-top: 4px;
-
-            color:
-                var(--ft-text-muted);
-
-            font-size: 9px;
-        }
-
-
-        .legend {
-
-            display: flex;
-
-            align-items: center;
-
-            flex-wrap: wrap;
-
-            gap: 10px;
-
-            color:
-                var(--ft-text-muted);
-
-            font-size: 9px;
-
-            font-weight: 700;
-        }
-
-
-        .legend-item {
-
+        .eyebrow {
             display: inline-flex;
-
             align-items: center;
-
-            gap: 5px;
+            gap: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            color: var(--accent-cyan);
+            margin-bottom: 0.65rem;
+            text-transform: uppercase;
         }
 
-
-        .legend-dot {
-
-            width: 7px;
-            height: 7px;
-
+        .eyebrow-dot {
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
+            background: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-cyan);
+            animation: subtlePulse 2.5s infinite;
         }
 
-
-        .legend-normal {
-
-            background:
-                var(--ft-blue);
+        .anomaly-header h1 {
+            font-size: 2.15rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            margin-bottom: 0.4rem;
         }
 
-
-        .legend-anomaly {
-
-            background:
-                var(--ft-red);
-
-            box-shadow:
-                0 0 10px
-                rgba(255,101,119,.45);
-        }
-
-
-        .chart-container {
-
-            position: relative;
-
-            height: 335px;
-
-            width: 100%;
-        }
-
-
-        .chart-container canvas {
-
-            width: 100% !important;
-
-            height: 100% !important;
-        }
-
-
-        .empty-chart {
-
-            min-height: 330px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            flex-direction: column;
-
-            text-align: center;
-
-            border:
-                1px dashed
-                rgba(255,255,255,.09);
-
-            border-radius: 13px;
-
-            background:
-                rgba(255,255,255,.015);
-        }
-
-
-        .empty-icon {
-
-            width: 48px;
-            height: 48px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            border-radius: 14px;
-
-            background:
-                rgba(79,163,255,.07);
-
-            border:
-                1px solid
-                rgba(79,163,255,.12);
-
-            color:
-                var(--ft-blue);
-
-            font-size: 21px;
-        }
-
-
-        .empty-chart strong {
-
-            margin-top: 12px;
-
-            color:
-                var(--ft-text-soft);
-
-            font-size: 12px;
-        }
-
-
-        .empty-chart span {
-
-            max-width: 420px;
-
-            margin-top: 5px;
-
-            color:
-                var(--ft-text-muted);
-
-            font-size: 10px;
-
+        .anomaly-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            max-width: 650px;
             line-height: 1.5;
         }
 
-
-        /* ============================================================
-           SUMMARY
-        ============================================================ */
-
-        .summary-card {
-
-            margin-top: 18px;
-
-            padding: 18px;
-
-            border:
-                1px solid
-                rgba(79,163,255,.10);
-
-            border-radius:
-                var(--ft-radius);
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(79,163,255,.045),
-                    rgba(139,92,246,.035)
-                );
+        .header-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            color: #6ee7b7;
+            font-size: 0.8rem;
+            font-weight: 700;
+            white-space: nowrap;
         }
 
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--status-green);
+            box-shadow: 0 0 10px var(--status-green);
+        }
 
-        .summary-label {
+        /* Alerts */
+        .error-message {
+            margin-bottom: 1.5rem;
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            color: #fca5a5;
+        }
 
-            color:
-                var(--ft-blue-bright);
+        /* Control Panel */
+        .control-panel {
+            background: var(--bg-card);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            margin-bottom: 2rem;
+            position: relative;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+        }
 
-            font-size: 9px;
+        .panel-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
 
-            font-weight: 850;
+        .panel-heading h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
 
-            letter-spacing: .07em;
+        .panel-heading span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-cyan);
+            background: rgba(34, 211, 238, 0.08);
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            border: 1px solid rgba(34, 211, 238, 0.2);
+        }
 
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            align-items: flex-end;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .field select,
+        .field input {
+            width: 100%;
+            height: 44px;
+            padding: 0 1rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+            background-color: var(--bg-surface);
+            color: var(--text-main);
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .field select {
+            appearance: none;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234fa3ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+        }
+
+        .field select:focus,
+        .field input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(79, 163, 255, 0.15);
+        }
+
+        .threshold-wrap {
+            position: relative;
+        }
+
+        .threshold-unit {
+            position: absolute;
+            right: 14px;
+            bottom: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            pointer-events: none;
+        }
+
+        .run-button {
+            height: 44px;
+            width: 100%;
+            border: none;
+            border-radius: var(--radius-md);
+            background: var(--accent-gradient);
+            color: #040911;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 18px rgba(34, 211, 238, 0.25);
+        }
+
+        .run-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(79, 163, 255, 0.35);
+        }
+
+        .source-strip {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 1.5rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .source-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: var(--text-dim);
             text-transform: uppercase;
         }
 
+        .source-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0.3rem 0.75rem;
+            border-radius: 999px;
+            background: rgba(79, 163, 255, 0.08);
+            border: 1px solid rgba(79, 163, 255, 0.2);
+            color: var(--accent-blue);
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .source-badge.green {
+            background: rgba(16, 185, 129, 0.08);
+            border-color: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+        }
+
+        /* DARK THEME KPI CARDS */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi-card {
+            background-color: var(--bg-kpi-card);
+            border: 1px solid var(--border-kpi);
+            border-radius: var(--radius-md);
+            padding: 1.4rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(79, 163, 255, 0.3);
+            box-shadow: 0 8px 26px rgba(0, 0, 0, 0.55);
+        }
+
+        .kpi-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+
+        .kpi-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-top: 0.6rem;
+            letter-spacing: -0.02em;
+        }
+
+        .kpi-sub {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 0.45rem;
+            line-height: 1.4;
+        }
+
+        .kpi-card.anomaly .kpi-value { color: var(--status-red); }
+        .kpi-card.normal .kpi-value { color: var(--status-green); }
+        .kpi-card.rate .kpi-value { color: var(--status-yellow); }
+
+        /* Section Headings */
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 2rem 0 1rem;
+        }
+
+        .section-heading h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .section-heading span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+
+        /* Summary Card */
+        .summary-card {
+            background: linear-gradient(135deg, rgba(11, 23, 42, 0.9) 0%, rgba(7, 17, 31, 0.9) 100%);
+            border: 1px solid rgba(79, 163, 255, 0.25);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem 1.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
 
         .summary-text {
-
-            margin-top: 8px;
-
-            color:
-                var(--ft-text-soft);
-
-            font-size: 11px;
-
-            line-height: 1.7;
+            color: #dbeafe;
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
+        /* Chart Canvas Card */
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            backdrop-filter: blur(14px);
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+        }
 
-        /* ============================================================
-           ANOMALY TABLE
-        ============================================================ */
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
 
+        .chart-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .chart-description {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .legend {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .legend-normal { background: var(--accent-blue); }
+        .legend-anomaly {
+            background: var(--status-red);
+            box-shadow: 0 0 8px var(--status-red);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 380px;
+            width: 100%;
+        }
+
+        /* Anomaly Table */
         .table-card {
-
-            border:
-                1px solid
-                var(--ft-border);
-
-            border-radius:
-                var(--ft-radius);
-
-            background:
-                var(--ft-panel);
-
-            box-shadow:
-                var(--ft-shadow);
-
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
             overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
         }
-
 
         .table-scroll {
-
             width: 100%;
-
             overflow-x: auto;
         }
 
-
         .anomaly-table {
-
             width: 100%;
-
-            min-width: 700px;
-
             border-collapse: collapse;
+            font-size: 0.85rem;
+            text-align: left;
         }
-
-
-        .anomaly-table thead {
-
-            background:
-                rgba(255,255,255,.025);
-        }
-
 
         .anomaly-table th {
-
-            padding:
-                13px
-                15px;
-
-            border-bottom:
-                1px solid
-                var(--ft-border);
-
-            color:
-                var(--ft-text-muted);
-
-            font-size: 9px;
-
-            font-weight: 850;
-
-            letter-spacing: .055em;
-
-            text-align: left;
-
+            padding: 1rem 1.25rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--border-subtle);
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.06em;
         }
-
 
         .anomaly-table td {
-
-            padding:
-                13px
-                15px;
-
-            border-bottom:
-                1px solid
-                var(--ft-border-soft);
-
-            color:
-                var(--ft-text-soft);
-
-            font-size: 10px;
-
-            vertical-align: middle;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            color: var(--text-muted);
         }
-
-
-        .anomaly-table tbody tr {
-
-            transition:
-                background .18s ease;
-        }
-
 
         .anomaly-table tbody tr:hover {
-
-            background:
-                rgba(79,163,255,.025);
+            background: rgba(79, 163, 255, 0.03);
         }
-
-
-        .anomaly-table tbody tr:last-child td {
-
-            border-bottom: 0;
-        }
-
 
         .value-cell {
-
-            color:
-                var(--ft-text) !important;
-
-            font-weight: 800;
+            color: #ffffff !important;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
         }
-
 
         .z-score {
-
-            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
         }
 
+        .z-high { color: var(--status-red); }
+        .z-low { color: var(--accent-cyan); }
 
-        .z-high {
-
-            color:
-                var(--ft-red);
-        }
-
-
-        .z-low {
-
-            color:
-                var(--ft-cyan);
-        }
-
+        .direction-high { color: var(--status-red); font-weight: 700; }
+        .direction-low { color: var(--accent-cyan); font-weight: 700; }
 
         .severity {
-
             display: inline-flex;
-
-            align-items: center;
-
-            padding:
-                5px
-                8px;
-
+            padding: 0.25rem 0.6rem;
             border-radius: 999px;
-
-            font-size: 8px;
-
-            font-weight: 850;
-
+            font-size: 0.7rem;
+            font-weight: 700;
             text-transform: uppercase;
-
-            letter-spacing: .05em;
+            font-family: 'JetBrains Mono', monospace;
         }
-
 
         .severity-high {
-
-            color:
-                #ffb1bb;
-
-            background:
-                rgba(255,101,119,.09);
-
-            border:
-                1px solid
-                rgba(255,101,119,.15);
+            background: rgba(255, 82, 99, 0.12);
+            color: #ff9aa7;
+            border: 1px solid rgba(255, 82, 99, 0.25);
         }
-
 
         .severity-critical {
-
-            color:
-                #ffd3d8;
-
-            background:
-                rgba(255,72,94,.15);
-
-            border:
-                1px solid
-                rgba(255,72,94,.25);
-
-            box-shadow:
-                0 0 15px
-                rgba(255,72,94,.08);
+            background: rgba(255, 82, 99, 0.2);
+            color: #ffd4d9;
+            border: 1px solid rgba(255, 82, 99, 0.4);
+            box-shadow: 0 0 10px rgba(255, 82, 99, 0.15);
         }
 
-
-        .direction-high {
-
-            color:
-                var(--ft-red);
-
-            font-weight: 800;
-        }
-
-
-        .direction-low {
-
-            color:
-                var(--ft-cyan);
-
-            font-weight: 800;
-        }
-
-
-        /* ============================================================
-           NO ANOMALIES
-        ============================================================ */
-
-        .no-anomalies {
-
-            padding:
-                34px
-                20px;
-
+        /* Empty States */
+        .empty-chart, .no-anomalies {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
+            padding: 3rem 1.5rem;
         }
 
+        .empty-icon, .no-anomalies-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            background: rgba(79, 163, 255, 0.08);
+            border: 1px solid var(--border-subtle);
+            color: var(--accent-cyan);
+        }
 
         .no-anomalies-icon {
-
-            width: 48px;
-            height: 48px;
-
-            margin: 0 auto;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            border-radius: 50%;
-
-            background:
-                rgba(72,213,151,.07);
-
-            border:
-                1px solid
-                rgba(72,213,151,.14);
-
-            color:
-                var(--ft-green);
-
-            font-size: 20px;
+            background: rgba(16, 185, 129, 0.08);
+            border-color: rgba(16, 185, 129, 0.2);
+            color: var(--status-green);
         }
-
-
-        .no-anomalies strong {
-
-            display: block;
-
-            margin-top: 12px;
-
-            color:
-                var(--ft-text-soft);
-
-            font-size: 12px;
-        }
-
-
-        .no-anomalies span {
-
-            display: block;
-
-            max-width: 500px;
-
-            margin:
-                6px
-                auto
-                0;
-
-            color:
-                var(--ft-text-muted);
-
-            font-size: 10px;
-
-            line-height: 1.55;
-        }
-
-
-        /* ============================================================
-           FOOTER
-        ============================================================ */
 
         .page-footer {
-
-            margin-top: 30px;
-
-            padding-top: 15px;
-
-            border-top:
-                1px solid
-                var(--ft-border-soft);
-
-            color:
-                var(--ft-text-muted);
-
-            font-size: 9px;
-
-            line-height: 1.6;
-
+            margin-top: 3.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-dim);
+            font-size: 0.8rem;
             text-align: center;
         }
 
-
-        /* ============================================================
-           ANIMATIONS
-        ============================================================ */
-
-        .fade-up {
-
-            animation:
-                fadeUp .45s ease both;
+        @media (max-width: 992px) {
+            #smart-bi-sidebar { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border-subtle); }
+            .anomaly-main { margin-left: 0; width: 100%; padding: 1.5rem; }
+            .anomaly-header { flex-direction: column; }
         }
-
-
-        @keyframes fadeUp {
-
-            from {
-
-                opacity: 0;
-
-                transform:
-                    translateY(7px);
-            }
-
-            to {
-
-                opacity: 1;
-
-                transform:
-                    translateY(0);
-            }
-        }
-
-
-        /* ============================================================
-           RESPONSIVE
-        ============================================================ */
-
-        @media (max-width: 1200px) {
-
-            .control-grid {
-
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
-
-
-            .kpi-grid {
-
-                grid-template-columns:
-                    repeat(3, minmax(0, 1fr));
-            }
-        }
-
-
-        @media (max-width: 900px) {
-
-            :root {
-
-                --ft-sidebar-width: 215px;
-            }
-
-
-            .anomaly-page {
-
-                padding:
-                    22px
-                    20px
-                    60px;
-            }
-
-
-            .kpi-grid {
-
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
-
-
-            .anomaly-header {
-
-                flex-direction: column;
-            }
-
-
-            .header-status {
-
-                align-self: flex-start;
-            }
-        }
-
-
-        @media (max-width: 700px) {
-
-            body {
-
-                overflow: auto !important;
-            }
-
-
-            #smart-bi-sidebar {
-
-                position: relative !important;
-
-                width: 100% !important;
-
-                height: auto !important;
-
-                max-height: none !important;
-
-                overflow: visible !important;
-            }
-
-
-            .anomaly-main {
-
-                margin-left: 0;
-
-                width: 100%;
-
-                height: auto;
-
-                overflow: visible;
-            }
-
-
-            .anomaly-page {
-
-                padding:
-                    16px
-                    14px
-                    45px;
-            }
-
-
-            .control-grid {
-
-                grid-template-columns: 1fr;
-            }
-
-
-            .kpi-grid {
-
-                grid-template-columns:
-                    1fr 1fr;
-            }
-
-
-            .header-left h1 {
-
-                font-size: 25px;
-            }
-        }
-
-
-        @media (max-width: 480px) {
-
-            .kpi-grid {
-
-                grid-template-columns: 1fr;
-            }
-
-
-            .chart-card {
-
-                padding: 14px;
-            }
-
-
-            .chart-container {
-
-                height: 285px;
-            }
-
-
-            .panel-heading {
-
-                align-items: flex-start;
-
-                flex-direction: column;
-            }
-        }
-
     </style>
-
 </head>
-
 
 <body>
 
-
-<!-- ============================================================
-     SMART BI SIDEBAR
-============================================================ -->
-
-<div id="smart-bi-sidebar">
-
+<!-- SIDEBAR -->
+<aside id="smart-bi-sidebar">
     {% include "includes/smart_sidebar.html" %}
+</aside>
 
-</div>
-
-
-<!-- ============================================================
-     MAIN CONTENT
-============================================================ -->
-
+<!-- MAIN CONTENT -->
 <main class="anomaly-main">
+    <div class="anomaly-page">
 
-
-<div class="anomaly-page">
-
-
-    <!-- ========================================================
-         HEADER
-    ========================================================= -->
-
-    <header class="anomaly-header fade-up">
-
-        <div class="header-left">
-
-            <div class="eyebrow">
-
-                <span class="eyebrow-dot"></span>
-
-                Advanced Insights
-
+        <!-- HEADER -->
+        <header class="anomaly-header fade-up">
+            <div class="header-left">
+                <div class="eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    Advanced Insights
+                </div>
+                <h1>Anomaly Detection</h1>
+                <p>Identify unusual values, abnormal business signals, and potential data points that significantly deviate from the normal behavior of your selected metric.</p>
             </div>
 
-
-            <h1>
-                Anomaly Detection
-            </h1>
-
-
-            <p>
-                Identify unusual values, abnormal business signals
-                and potential data points that significantly differ
-                from the normal behavior of the selected metric.
-            </p>
-
-        </div>
-
-
-        <div class="header-status">
-
-            <span class="status-dot"></span>
-
-            {% if anomaly_result %}
-                Analysis Completed
-            {% else %}
-                Ready for Analysis
-            {% endif %}
-
-        </div>
-
-    </header>
-
-
-    <!-- ========================================================
-         ERROR
-    ========================================================= -->
-
-    {% if analysis_error %}
-
-        <div class="error-message">
-
-            {{ analysis_error }}
-
-        </div>
-
-    {% endif %}
-
-
-    <!-- ========================================================
-         CONTROL PANEL
-    ========================================================= -->
-
-    <section class="control-panel fade-up">
-
-        <div class="panel-heading">
-
-            <h2>
-                Detection Configuration
-            </h2>
-
-            <span>
-                Z-Score anomaly detection
-            </span>
-
-        </div>
-
-
-        <form
-            method="post"
-            action=""
-        >
-
-            {% csrf_token %}
-
-
-            <div class="control-grid">
-
-
-                <!-- DATASET -->
-
-                <div class="field">
-
-                    <label>
-                        Dataset
-                    </label>
-
-                    <select
-                        name="dataset_selector"
-                        onchange="changeDataset(this.value)"
-                    >
-
-                        {% for dataset in datasets %}
-
-                            <option
-                                value="{{ dataset.id }}"
-                                {% if selected_dataset and selected_dataset.id == dataset.id %}
-                                    selected
-                                {% endif %}
-                            >
-                                {{ dataset.name }}
-                                — {{ dataset.dataset_type }}
-                            </option>
-
-                        {% empty %}
-
-                            <option value="">
-                                No datasets available
-                            </option>
-
-                        {% endfor %}
-
-                    </select>
-
-                </div>
-
-
-                <!-- VERSION -->
-
-                <div class="field">
-
-                    <label>
-                        Dataset Version
-                    </label>
-
-                    <select
-                        name="version_selector"
-                        onchange="changeVersion(this.value)"
-                    >
-
-                        {% for version in versions %}
-
-                            <option
-                                value="{{ version.id }}"
-                                {% if selected_version and selected_version.id == version.id %}
-                                    selected
-                                {% endif %}
-                            >
-
-                                Version {{ version.version_number }}
-
-                                {% if version.version_type %}
-                                    — {{ version.version_type }}
-                                {% endif %}
-
-                                {% if version.is_current %}
-                                    — Current
-                                {% endif %}
-
-                            </option>
-
-                        {% empty %}
-
-                            <option value="">
-                                No versions available
-                            </option>
-
-                        {% endfor %}
-
-                    </select>
-
-                </div>
-
-
-                <!-- METRIC -->
-
-                <div class="field">
-
-                    <label>
-                        Numeric Metric
-                    </label>
-
-                    <select
-                        name="metric_column"
-                        required
-                    >
-
-                        <option value="">
-                            Select metric
-                        </option>
-
-                        {% for column in numeric_columns %}
-
-                            <option
-                                value="{{ column }}"
-                                {% if selected_metric_column == column %}
-                                    selected
-                                {% endif %}
-                            >
-                                {{ column }}
-                            </option>
-
-                        {% endfor %}
-
-                    </select>
-
-                </div>
-
-
-                <!-- THRESHOLD -->
-
-                <div class="field threshold-wrap">
-
-                    <label>
-                        Z-Score Threshold
-                    </label>
-
-                    <input
-                        type="number"
-                        name="threshold"
-                        value="{{ selected_threshold|default:'2.5' }}"
-                        min="0.1"
-                        max="10"
-                        step="0.1"
-                        required
-                    >
-
-                    <span class="threshold-unit">
-                        σ
-                    </span>
-
-                </div>
-
-
-                <!-- DATE -->
-
-                <div class="field">
-
-                    <label>
-                        Date / Time Column
-                        <span style="color:var(--ft-text-muted);">
-                            (Optional)
-                        </span>
-                    </label>
-
-                    <select
-                        name="date_column"
-                    >
-
-                        <option value="">
-                            No date column
-                        </option>
-
-                        {% for column in date_columns %}
-
-                            <option
-                                value="{{ column }}"
-                                {% if selected_date_column == column %}
-                                    selected
-                                {% endif %}
-                            >
-                                {{ column }}
-                            </option>
-
-                        {% endfor %}
-
-                    </select>
-
-                </div>
-
-
-                <!-- BUTTON -->
-
-                <div class="field">
-
-                    <label>
-                        &nbsp;
-                    </label>
-
-                    <button
-                        type="submit"
-                        class="run-button"
-                    >
-                        Detect Anomalies
-                    </button>
-
-                </div>
-
-
+            <div class="header-status">
+                <span class="status-dot"></span>
+                {% if anomaly_result %} Analysis Completed {% else %} Ready for Analysis {% endif %}
+            </div>
+        </header>
+
+        <!-- ERROR MESSAGE -->
+        {% if analysis_error %}
+            <div class="error-message">
+                {{ analysis_error }}
+            </div>
+        {% endif %}
+
+        <!-- CONTROL PANEL -->
+        <section class="control-panel fade-up">
+            <div class="panel-heading">
+                <h2>Detection Configuration</h2>
+                <span>Z-Score Engine</span>
             </div>
 
-
-            <!-- SOURCE VERSION -->
-
-            <div class="source-strip">
-
-                <span class="source-label">
-                    Analysis Source
-                </span>
-
-
-                {% if selected_dataset %}
-
-                    <span class="source-badge">
-
-                        {{ selected_dataset.name }}
-
-                    </span>
-
-                    <span class="source-badge">
-
-                        {{ selected_dataset.dataset_type }}
-
-                    </span>
-
-                {% endif %}
-
-
-                {% if selected_version %}
-
-                    <span class="source-badge green">
-
-                        Version
-                        {{ selected_version.version_number }}
-
-                        {% if selected_version.version_type %}
-                            • {{ selected_version.version_type }}
-                        {% endif %}
-
-                    </span>
-
-                {% endif %}
-
-
-                <span class="source-badge">
-
-                    Z-Score
-
-                </span>
-
-            </div>
-
-        </form>
-
-    </section>
-
-
-    <!-- ========================================================
-         KPI SECTION
-    ========================================================= -->
-
-    {% if anomaly_result %}
-
-        <section class="kpi-grid fade-up">
-
-
-            <!-- TOTAL -->
-
-            <div class="kpi-card">
-
-                <div class="kpi-label">
-                    Records Analyzed
-                </div>
-
-                <div class="kpi-value">
-
-                    {{ anomaly_result.total_records|default:0 }}
-
-                </div>
-
-                <div class="kpi-sub">
-                    Valid numeric records used in detection
-                </div>
-
-            </div>
-
-
-            <!-- NORMAL -->
-
-            <div class="kpi-card normal">
-
-                <div class="kpi-label">
-                    Normal Records
-                </div>
-
-                <div class="kpi-value">
-
-                    {{ anomaly_result.normal_records|default:0 }}
-
-                </div>
-
-                <div class="kpi-sub">
-                    Values inside the configured threshold
-                </div>
-
-            </div>
-
-
-            <!-- ANOMALIES -->
-
-            <div class="kpi-card anomaly">
-
-                <div class="kpi-label">
-                    Anomalies Detected
-                </div>
-
-                <div class="kpi-value">
-
-                    {{ anomaly_result.anomaly_count|default:0 }}
-
-                </div>
-
-                <div class="kpi-sub">
-                    Unusually high or low observations
-                </div>
-
-            </div>
-
-
-            <!-- RATE -->
-
-            <div class="kpi-card rate">
-
-                <div class="kpi-label">
-                    Anomaly Rate
-                </div>
-
-                <div class="kpi-value">
-
-                    {{ anomaly_result.anomaly_percentage|default:0|floatformat:2 }}%
-
-                </div>
-
-                <div class="kpi-sub">
-                    Percentage of analyzed records
-                </div>
-
-            </div>
-
-
-            <!-- STANDARD DEVIATION -->
-
-            <div class="kpi-card">
-
-                <div class="kpi-label">
-                    Standard Deviation
-                </div>
-
-                <div class="kpi-value">
-
-                    {{ anomaly_result.standard_deviation|default:0|floatformat:2 }}
-
-                </div>
-
-                <div class="kpi-sub">
-                    Statistical spread of the selected metric
-                </div>
-
-            </div>
-
-
-        </section>
-
-
-        <!-- ====================================================
-             STATISTICAL SUMMARY
-        ===================================================== -->
-
-        <section class="summary-card fade-up">
-
-            <div class="summary-label">
-                Detection Summary
-            </div>
-
-            <div class="summary-text">
-
-                {{ anomaly_result.summary }}
-
-            </div>
-
-        </section>
-
-
-        <!-- ====================================================
-             CHART
-        ===================================================== -->
-
-        <div class="section-heading">
-
-            <h2>
-                Anomaly Distribution
-            </h2>
-
-            <span>
-                {{ anomaly_result.metric_column }}
-            </span>
-
-        </div>
-
-
-        <section class="chart-card fade-up">
-
-            <div class="chart-header">
-
-                <div>
-
-                    <div class="chart-title">
-                        Metric Behaviour & Anomalies
-                    </div>
-
-                    <div class="chart-description">
-                        Red points represent observations identified
-                        as anomalous by the configured Z-Score threshold.
-                    </div>
-
-                </div>
-
-
-                <div class="legend">
-
-                    <span class="legend-item">
-
-                        <span class="legend-dot legend-normal"></span>
-
-                        Normal
-
-                    </span>
-
-
-                    <span class="legend-item">
-
-                        <span class="legend-dot legend-anomaly"></span>
-
-                        Anomaly
-
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <div class="chart-container">
-
-                <canvas
-                    id="anomalyChart"
-                ></canvas>
-
-            </div>
-
-        </section>
-
-
-        <!-- ====================================================
-             STATISTICAL DETAILS
-        ===================================================== -->
-
-        <div class="section-heading">
-
-            <h2>
-                Statistical Profile
-            </h2>
-
-            <span>
-                Selected metric
-            </span>
-
-        </div>
-
-
-        <section class="kpi-grid">
-
-
-            <div class="kpi-card">
-
-                <div class="kpi-label">
-                    Average
-                </div>
-
-                <div class="kpi-value">
-
-                    {{ anomaly_result.average_value|default:0|floatformat:2 }}
-
-                </div>
-
-                <div class="kpi-sub">
-                    Mean metric value
-                </div>
-
-            </div>
-
-
-            <div class="kpi-card">
-
-                <div class="kpi-label">
-                    Minimum
-                </div>
-
-                <div class="kpi-value">
-
-                    {{ anomaly_result.minimum_value|default:0|floatformat:2 }}
-
-                </div>
-
-                <div class="kpi-sub">
-                    Lowest observed value
-                </div>
-
-            </div>
-
-
-            <div class="kpi-card">
-
-                <div class="kpi-label">
-                    Maximum
-                </div>
-
-                <div class="kpi-value">
-
-                    {{ anomaly_result.maximum_value|default:0|floatformat:2 }}
-
-                </div>
-
-                <div class="kpi-sub">
-                    Highest observed value
-                </div>
-
-            </div>
-
-
-            <div class="kpi-card anomaly">
-
-                <div class="kpi-label">
-                    Highest Anomaly
-                </div>
-
-                <div class="kpi-value">
-
-                    {% if anomaly_result.highest_anomaly_value != None %}
-                        {{ anomaly_result.highest_anomaly_value|floatformat:2 }}
-                    {% else %}
-                        —
-                    {% endif %}
-
-                </div>
-
-                <div class="kpi-sub">
-                    Highest value classified as anomalous
-                </div>
-
-            </div>
-
-
-            <div class="kpi-card">
-
-                <div class="kpi-label">
-                    Lowest Anomaly
-                </div>
-
-                <div class="kpi-value">
-
-                    {% if anomaly_result.lowest_anomaly_value != None %}
-                        {{ anomaly_result.lowest_anomaly_value|floatformat:2 }}
-                    {% else %}
-                        —
-                    {% endif %}
-
-                </div>
-
-                <div class="kpi-sub">
-                    Lowest value classified as anomalous
-                </div>
-
-            </div>
-
-
-        </section>
-
-
-        <!-- ====================================================
-             ANOMALY TABLE
-        ===================================================== -->
-
-        <div class="section-heading">
-
-            <h2>
-                Detected Anomalies
-            </h2>
-
-            <span>
-                {{ anomaly_result.anomaly_count|default:0 }} records
-            </span>
-
-        </div>
-
-
-        <section class="table-card fade-up">
-
-
-            {% if anomaly_result.anomaly_data %}
-
-
-                <div class="table-scroll">
-
-                    <table class="anomaly-table">
-
-                        <thead>
-
-                            <tr>
-
-                                <th>
-                                    Record
-                                </th>
-
-                                <th>
-                                    Date / Index
-                                </th>
-
-                                <th>
-                                    Value
-                                </th>
-
-                                <th>
-                                    Z-Score
-                                </th>
-
-                                <th>
-                                    Direction
-                                </th>
-
-                                <th>
-                                    Severity
-                                </th>
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody>
-
-                            {% for anomaly in anomaly_result.anomaly_data %}
-
-                                <tr>
-
-                                    <td>
-                                        #{{ anomaly.index }}
-                                    </td>
-
-                                    <td>
-                                        {{ anomaly.date }}
-                                    </td>
-
-                                    <td class="value-cell">
-
-                                        {{ anomaly.value|floatformat:2 }}
-
-                                    </td>
-
-                                    <td
-                                        class="
-                                            z-score
-                                            {% if anomaly.direction == 'High' %}
-                                                z-high
-                                            {% else %}
-                                                z-low
-                                            {% endif %}
-                                        "
-                                    >
-
-                                        {{ anomaly.z_score|floatformat:2 }}
-
-                                    </td>
-
-                                    <td>
-
-                                        {% if anomaly.direction == "High" %}
-
-                                            <span class="direction-high">
-                                                ↑ High
-                                            </span>
-
-                                        {% else %}
-
-                                            <span class="direction-low">
-                                                ↓ Low
-                                            </span>
-
-                                        {% endif %}
-
-                                    </td>
-
-                                    <td>
-
-                                        {% if anomaly.severity == "Critical" %}
-
-                                            <span class="severity severity-critical">
-                                                Critical
-                                            </span>
-
-                                        {% else %}
-
-                                            <span class="severity severity-high">
-                                                High
-                                            </span>
-
-                                        {% endif %}
-
-                                    </td>
-
-                                </tr>
-
+            <form method="post" action="">
+                {% csrf_token %}
+
+                <div class="control-grid">
+                    <!-- DATASET -->
+                    <div class="field">
+                        <label>Dataset</label>
+                        <select name="dataset_selector" onchange="changeDataset(this.value)">
+                            {% for dataset in datasets %}
+                                <option value="{{ dataset.id }}" {% if selected_dataset and selected_dataset.id == dataset.id %}selected{% endif %}>
+                                    {{ dataset.name }} — {{ dataset.dataset_type }}
+                                </option>
+                            {% empty %}
+                                <option value="">No datasets available</option>
                             {% endfor %}
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-
-            {% else %}
-
-
-                <div class="no-anomalies">
-
-                    <div class="no-anomalies-icon">
-                        ✓
+                        </select>
                     </div>
 
-                    <strong>
-                        No anomalies detected
-                    </strong>
+                    <!-- VERSION -->
+                    <div class="field">
+                        <label>Dataset Version</label>
+                        <select name="version_selector" onchange="changeVersion(this.value)">
+                            {% for version in versions %}
+                                <option value="{{ version.id }}" {% if selected_version and selected_version.id == version.id %}selected{% endif %}>
+                                    Version {{ version.version_number }}
+                                    {% if version.version_type %} — {{ version.version_type }}{% endif %}
+                                    {% if version.is_current %} — Current{% endif %}
+                                </option>
+                            {% empty %}
+                                <option value="">No versions available</option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-                    <span>
-                        The selected metric contains no observations
-                        outside the configured Z-Score threshold.
-                    </span>
+                    <!-- METRIC -->
+                    <div class="field">
+                        <label>Numeric Metric</label>
+                        <select name="metric_column" required>
+                            <option value="">Select metric</option>
+                            {% for column in numeric_columns %}
+                                <option value="{{ column }}" {% if selected_metric_column == column %}selected{% endif %}>
+                                    {{ column }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
+                    <!-- THRESHOLD -->
+                    <div class="field threshold-wrap">
+                        <label>Z-Score Threshold</label>
+                        <input type="number" name="threshold" value="{{ selected_threshold|default:'2.5' }}" min="0.1" max="10" step="0.1" required>
+                        <span class="threshold-unit">σ</span>
+                    </div>
+
+                    <!-- DATE -->
+                    <div class="field">
+                        <label>Date Column <span style="color:var(--text-dim);">(Optional)</span></label>
+                        <select name="date_column">
+                            <option value="">No date column</option>
+                            {% for column in date_columns %}
+                                <option value="{{ column }}" {% if selected_date_column == column %}selected{% endif %}>
+                                    {{ column }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- ACTION BUTTON -->
+                    <div class="field">
+                        <button type="submit" class="run-button">Detect Anomalies</button>
+                    </div>
                 </div>
 
-
-            {% endif %}
-
-
+                <!-- SOURCE STRIP -->
+                <div class="source-strip">
+                    <span class="source-label">Analysis Source</span>
+                    {% if selected_dataset %}
+                        <span class="source-badge">{{ selected_dataset.name }}</span>
+                        <span class="source-badge">{{ selected_dataset.dataset_type }}</span>
+                    {% endif %}
+                    {% if selected_version %}
+                        <span class="source-badge green">Version {{ selected_version.version_number }}</span>
+                    {% endif %}
+                    <span class="source-badge">Z-Score Engine</span>
+                </div>
+            </form>
         </section>
 
-
-    {% else %}
-
-
-        <!-- ====================================================
-             INITIAL EMPTY STATE
-        ===================================================== -->
-
-        <section class="chart-card fade-up">
-
-            <div class="empty-chart">
-
-                <div class="empty-icon">
-                    ◈
+        <!-- KPI SUMMARY (DEEP DARK CARDS) -->
+        {% if anomaly_result %}
+            <section class="kpi-grid fade-up">
+                <div class="kpi-card">
+                    <div class="kpi-label">Records Analyzed</div>
+                    <div class="kpi-value">{{ anomaly_result.total_records|default:0 }}</div>
+                    <div class="kpi-sub">Valid numeric observations processed</div>
                 </div>
 
-                <strong>
-                    Anomaly analysis is ready
-                </strong>
+                <div class="kpi-card normal">
+                    <div class="kpi-label">Normal Records</div>
+                    <div class="kpi-value">{{ anomaly_result.normal_records|default:0 }}</div>
+                    <div class="kpi-sub">Points within the threshold boundary</div>
+                </div>
 
-                <span>
-                    Select a cleaned dataset version, choose a numeric
-                    metric, configure the Z-Score threshold, and run
-                    detection to identify unusual observations.
-                </span>
+                <div class="kpi-card anomaly">
+                    <div class="kpi-label">Anomalies Detected</div>
+                    <div class="kpi-value">{{ anomaly_result.anomaly_count|default:0 }}</div>
+                    <div class="kpi-sub">Outliers beyond the defined deviation</div>
+                </div>
 
+                <div class="kpi-card rate">
+                    <div class="kpi-label">Anomaly Rate</div>
+                    <div class="kpi-value">{{ anomaly_result.anomaly_percentage|default:0|floatformat:2 }}%</div>
+                    <div class="kpi-sub">Proportion of atypical entries</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-label">Standard Deviation</div>
+                    <div class="kpi-value">{{ anomaly_result.standard_deviation|default:0|floatformat:2 }}</div>
+                    <div class="kpi-sub">Dispersion parameter (σ) of dataset</div>
+                </div>
+            </section>
+
+            <!-- DETECTION SUMMARY -->
+            <section class="summary-card fade-up">
+                <div class="summary-label">Detection Summary</div>
+                <div class="summary-text">{{ anomaly_result.summary }}</div>
+            </section>
+
+            <!-- CHART DISTRIBUTION -->
+            <div class="section-heading">
+                <h2>Anomaly Distribution</h2>
+                <span>{{ anomaly_result.metric_column }}</span>
             </div>
 
-        </section>
+            <section class="chart-card fade-up">
+                <div class="chart-header">
+                    <div>
+                        <div class="chart-title">Metric Behaviour & Anomalies</div>
+                        <div class="chart-description">Observations outside the configured Z-Score threshold are highlighted in red.</div>
+                    </div>
+                    <div class="legend">
+                        <span class="legend-item"><span class="legend-dot legend-normal"></span> Normal</span>
+                        <span class="legend-item"><span class="legend-dot legend-anomaly"></span> Anomaly</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="anomalyChart"></canvas>
+                </div>
+            </section>
 
+            <!-- STATISTICAL PROFILE (DEEP DARK CARDS) -->
+            <div class="section-heading">
+                <h2>Statistical Profile</h2>
+                <span>Metric Thresholds</span>
+            </div>
 
-    {% endif %}
+            <section class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Average</div>
+                    <div class="kpi-value">{{ anomaly_result.average_value|default:0|floatformat:2 }}</div>
+                    <div class="kpi-sub">Dataset mean (μ)</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Minimum</div>
+                    <div class="kpi-value">{{ anomaly_result.minimum_value|default:0|floatformat:2 }}</div>
+                    <div class="kpi-sub">Lowest value observed</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Maximum</div>
+                    <div class="kpi-value">{{ anomaly_result.maximum_value|default:0|floatformat:2 }}</div>
+                    <div class="kpi-sub">Highest value observed</div>
+                </div>
+                <div class="kpi-card anomaly">
+                    <div class="kpi-label">Highest Anomaly</div>
+                    <div class="kpi-value">
+                        {% if anomaly_result.highest_anomaly_value != None %}
+                            {{ anomaly_result.highest_anomaly_value|floatformat:2 }}
+                        {% else %} — {% endif %}
+                    </div>
+                    <div class="kpi-sub">Maximum upper outlier</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Lowest Anomaly</div>
+                    <div class="kpi-value">
+                        {% if anomaly_result.lowest_anomaly_value != None %}
+                            {{ anomaly_result.lowest_anomaly_value|floatformat:2 }}
+                        {% else %} — {% endif %}
+                    </div>
+                    <div class="kpi-sub">Minimum lower outlier</div>
+                </div>
+            </section>
 
+            <!-- ANOMALY TABLE -->
+            <div class="section-heading">
+                <h2>Detected Anomalies</h2>
+                <span>{{ anomaly_result.anomaly_count|default:0 }} observations</span>
+            </div>
 
-    <!-- ========================================================
-         FOOTER
-    ========================================================= -->
+            <section class="table-card fade-up">
+                {% if anomaly_result.anomaly_data %}
+                    <div class="table-scroll">
+                        <table class="anomaly-table">
+                            <thead>
+                                <tr>
+                                    <th>Record</th>
+                                    <th>Date / Index</th>
+                                    <th>Value</th>
+                                    <th>Z-Score</th>
+                                    <th>Direction</th>
+                                    <th>Severity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for anomaly in anomaly_result.anomaly_data %}
+                                    <tr>
+                                        <td>#{{ anomaly.index }}</td>
+                                        <td>{{ anomaly.date }}</td>
+                                        <td class="value-cell">{{ anomaly.value|floatformat:2 }}</td>
+                                        <td class="z-score {% if anomaly.direction == 'High' %}z-high{% else %}z-low{% endif %}">
+                                            {{ anomaly.z_score|floatformat:2 }}
+                                        </td>
+                                        <td>
+                                            {% if anomaly.direction == "High" %}
+                                                <span class="direction-high">↑ High</span>
+                                            {% else %}
+                                                <span class="direction-low">↓ Low</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <span class="severity {% if anomaly.severity == 'Critical' %}severity-critical{% else %}severity-high{% endif %}">
+                                                {{ anomaly.severity }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="no-anomalies">
+                        <div class="no-anomalies-icon">✓</div>
+                        <strong>No anomalies detected</strong>
+                        <span>All recorded observations fall inside the threshold limits.</span>
+                    </div>
+                {% endif %}
+            </section>
 
-    <div class="page-footer">
+        {% else %}
+            <!-- INITIAL EMPTY STATE -->
+            <section class="chart-card fade-up">
+                <div class="empty-chart">
+                    <div class="empty-icon">◈</div>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.35rem;">Anomaly analysis is ready</h3>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; max-width: 480px; line-height: 1.5;">
+                        Select a dataset version, specify your numeric metric, calibrate the Z-Score threshold, and run detection to highlight statistical outliers.
+                    </p>
+                </div>
+            </section>
+        {% endif %}
 
-        Smart BI Advanced Insights
-        &nbsp;•&nbsp;
-        Anomaly Detection
-        &nbsp;•&nbsp;
-        Z-Score Statistical Analysis
+        <!-- FOOTER -->
+        <div class="page-footer">
+            Smart BI Advanced Insights &bull; Anomaly Detection &bull; Z-Score Statistical Engine
+        </div>
 
     </div>
-
-
-</div>
-
 </main>
 
-
-<!-- ============================================================
-     CHART DATA
-============================================================ -->
-
 {% if anomaly_result %}
-
     {{ anomaly_result.chart_data|json_script:"anomaly-chart-data" }}
-
 {% endif %}
 
-
 <script>
-
-
-    /* ============================================================
-       DATASET CHANGE
-    ============================================================ */
-
     function changeDataset(datasetId) {
-
-        if (!datasetId) {
-            return;
-        }
-
-        const url = new URL(
-            window.location.href
-        );
-
-        url.searchParams.set(
-            "dataset",
-            datasetId
-        );
-
-        url.searchParams.delete(
-            "version"
-        );
-
-        url.searchParams.delete(
-            "metric_column"
-        );
-
-        url.searchParams.delete(
-            "date_column"
-        );
-
-        window.location.href =
-            url.toString();
+        if (!datasetId) return;
+        const url = new URL(window.location.href);
+        url.searchParams.set("dataset", datasetId);
+        url.searchParams.delete("version");
+        url.searchParams.delete("metric_column");
+        url.searchParams.delete("date_column");
+        window.location.href = url.toString();
     }
-
-
-    /* ============================================================
-       VERSION CHANGE
-    ============================================================ */
 
     function changeVersion(versionId) {
+        if (!versionId) return;
+        const url = new URL(window.location.href);
+        url.searchParams.set("version", versionId);
+        url.searchParams.delete("metric_column");
+        url.searchParams.delete("date_column");
+        window.location.href = url.toString();
+    }
 
-        if (!versionId) {
+    document.addEventListener("DOMContentLoaded", function () {
+        const canvas = document.getElementById("anomalyChart");
+        const dataElement = document.getElementById("anomaly-chart-data");
+
+        if (!canvas || !dataElement || typeof Chart === "undefined") return;
+
+        let chartData = [];
+        try {
+            chartData = JSON.parse(dataElement.textContent);
+        } catch (error) {
+            console.error("Unable to parse anomaly chart data:", error);
             return;
         }
 
-        const url = new URL(
-            window.location.href
-        );
+        if (!Array.isArray(chartData) || chartData.length === 0) return;
 
-        url.searchParams.set(
-            "version",
-            versionId
-        );
+        const labels = chartData.map(item => item.label);
+        const normalValues = chartData.map(item => item.is_anomaly ? null : item.value);
+        const anomalyValues = chartData.map(item => item.is_anomaly ? item.value : null);
 
-        url.searchParams.delete(
-            "metric_column"
-        );
+        const ctx = canvas.getContext("2d");
 
-        url.searchParams.delete(
-            "date_column"
-        );
-
-        window.location.href =
-            url.toString();
-    }
-
-
-    /* ============================================================
-       CHART
-    ============================================================ */
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        function () {
-
-            const canvas =
-                document.getElementById(
-                    "anomalyChart"
-                );
-
-            const dataElement =
-                document.getElementById(
-                    "anomaly-chart-data"
-                );
-
-
-            if (
-                !canvas ||
-                !dataElement
-            ) {
-
-                return;
-            }
-
-
-            let chartData = [];
-
-
-            try {
-
-                chartData =
-                    JSON.parse(
-                        dataElement.textContent
-                    );
-
-            } catch (error) {
-
-                console.error(
-                    "Unable to parse anomaly chart data:",
-                    error
-                );
-
-                return;
-            }
-
-
-            if (
-                !Array.isArray(chartData) ||
-                chartData.length === 0
-            ) {
-
-                return;
-            }
-
-
-            const labels =
-                chartData.map(
-                    item => item.label
-                );
-
-
-            const normalValues =
-                chartData.map(
-                    item =>
-                        item.is_anomaly
-                            ? null
-                            : item.value
-                );
-
-
-            const anomalyValues =
-                chartData.map(
-                    item =>
-                        item.is_anomaly
-                            ? item.value
-                            : null
-                );
-
-
-            const ctx =
-                canvas.getContext(
-                    "2d"
-                );
-
-
-            new Chart(
-                ctx,
-                {
-
-                    type: "line",
-
-                    data: {
-
-                        labels: labels,
-
-                        datasets: [
-
-                            {
-                                label: "Normal",
-
-                                data: normalValues,
-
-                                borderColor:
-                                    "#4fa3ff",
-
-                                backgroundColor:
-                                    "rgba(79,163,255,0.08)",
-
-                                borderWidth: 2,
-
-                                pointRadius: 2.5,
-
-                                pointHoverRadius: 5,
-
-                                pointBackgroundColor:
-                                    "#4fa3ff",
-
-                                pointBorderColor:
-                                    "#4fa3ff",
-
-                                tension: 0.28,
-
-                                spanGaps: true,
-                            },
-
-
-                            {
-                                label: "Anomaly",
-
-                                data: anomalyValues,
-
-                                borderColor:
-                                    "#ff6577",
-
-                                backgroundColor:
-                                    "#ff6577",
-
-                                borderWidth: 0,
-
-                                pointRadius: 5,
-
-                                pointHoverRadius: 7,
-
-                                pointBackgroundColor:
-                                    "#ff6577",
-
-                                pointBorderColor:
-                                    "#ffd4d9",
-
-                                pointBorderWidth: 1,
-
-                                showLine: false,
-                            }
-
-                        ]
-
+        new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: "Normal",
+                        data: normalValues,
+                        borderColor: "#4fa3ff",
+                        backgroundColor: "rgba(79, 163, 255, 0.08)",
+                        borderWidth: 2,
+                        pointRadius: 2.5,
+                        pointHoverRadius: 5,
+                        pointBackgroundColor: "#4fa3ff",
+                        pointBorderColor: "#4fa3ff",
+                        tension: 0.28,
+                        spanGaps: true
                     },
-
-
-                    options: {
-
-                        responsive: true,
-
-                        maintainAspectRatio: false,
-
-
-                        interaction: {
-
-                            mode: "index",
-
-                            intersect: false,
-                        },
-
-
-                        plugins: {
-
-                            legend: {
-
-                                display: false,
-                            },
-
-
-                            tooltip: {
-
-                                backgroundColor:
-                                    "rgba(4,11,21,.96)",
-
-                                borderColor:
-                                    "rgba(255,255,255,.10)",
-
-                                borderWidth: 1,
-
-                                titleColor:
-                                    "#f2f7ff",
-
-                                bodyColor:
-                                    "rgba(218,231,245,.78)",
-
-                                padding: 11,
-
-                                displayColors: true,
-                            }
-
-                        },
-
-
-                        scales: {
-
-                            x: {
-
-                                grid: {
-
-                                    color:
-                                        "rgba(255,255,255,.035)",
-
-                                    drawBorder: false,
-                                },
-
-                                ticks: {
-
-                                    color:
-                                        "rgba(190,208,229,.45)",
-
-                                    maxTicksLimit: 12,
-
-                                    font: {
-
-                                        size: 9,
-                                    }
-                                }
-                            },
-
-
-                            y: {
-
-                                grid: {
-
-                                    color:
-                                        "rgba(255,255,255,.045)",
-
-                                    drawBorder: false,
-                                },
-
-                                ticks: {
-
-                                    color:
-                                        "rgba(190,208,229,.45)",
-
-                                    font: {
-
-                                        size: 9,
-                                    }
-                                }
-                            }
-
-                        }
-
+                    {
+                        label: "Anomaly",
+                        data: anomalyValues,
+                        borderColor: "#ff5263",
+                        backgroundColor: "#ff5263",
+                        borderWidth: 0,
+                        pointRadius: 5,
+                        pointHoverRadius: 7.5,
+                        pointBackgroundColor: "#ff5263",
+                        pointBorderColor: "#ffd4d9",
+                        pointBorderWidth: 1.5,
+                        showLine: false
                     }
-
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: "index",
+                    intersect: false
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: "rgba(4, 11, 21, 0.96)",
+                        borderColor: "rgba(255, 255, 255, 0.12)",
+                        borderWidth: 1,
+                        titleColor: "#f8fafc",
+                        bodyColor: "#cfe4ff",
+                        padding: 12,
+                        displayColors: true
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { color: "rgba(255, 255, 255, 0.035)", drawBorder: false },
+                        ticks: {
+                            color: "rgba(190, 208, 229, 0.5)",
+                            maxTicksLimit: 12,
+                            font: { size: 10 }
+                        }
+                    },
+                    y: {
+                        grid: { color: "rgba(255, 255, 255, 0.045)", drawBorder: false },
+                        ticks: {
+                            color: "rgba(190, 208, 229, 0.5)",
+                            font: { size: 10 }
+                        }
+                    }
                 }
-            );
-
-        }
-    );
-
+            }
+        });
+    });
 </script>
 
-
 </body>
-
 </html>

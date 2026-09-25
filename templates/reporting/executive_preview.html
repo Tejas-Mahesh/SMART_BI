@@ -1,0 +1,305 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="executive-report-page">
+
+    <div class="report-header">
+
+        <div>
+
+            <span class="report-eyebrow">
+                SMART BUSINESS DECISION INTELLIGENCE
+            </span>
+
+            <h1>
+                Executive Business Report
+            </h1>
+
+            <p>
+                Consolidated business performance,
+                insights, forecasts, risks and
+                recommendations.
+            </p>
+
+        </div>
+
+        <div class="report-header-actions">
+
+            <button class="report-btn secondary">
+                <i class="fas fa-print"></i>
+                Print
+            </button>
+
+            <button class="report-btn primary">
+                <i class="fas fa-file-pdf"></i>
+                Generate PDF
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- REPORT INFORMATION -->
+
+    <section class="report-panel">
+
+        <div class="panel-heading">
+            Report Information
+        </div>
+
+        <div class="report-meta-grid">
+
+            <div>
+                <span>Dataset</span>
+                <strong>
+                    {{ dataset.dataset_name|default:"—" }}
+                </strong>
+            </div>
+
+            <div>
+                <span>Dataset Type</span>
+                <strong>
+                    {{ dataset.dataset_type|default:"—" }}
+                </strong>
+            </div>
+
+            <div>
+                <span>Dataset Version</span>
+                <strong>
+                    {% if dataset.version %}
+                        Version {{ dataset.version }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </strong>
+            </div>
+
+            <div>
+                <span>Generated</span>
+                <strong>
+                    {{ report.generated_at|date:"d M Y, H:i" }}
+                </strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- EXECUTIVE SUMMARY -->
+
+    <section class="report-panel">
+
+        <div class="panel-heading">
+            Executive Summary
+        </div>
+
+        <div class="executive-summary">
+
+            {{ executive_summary }}
+
+        </div>
+
+    </section>
+
+
+    <!-- KPI SUMMARY -->
+
+    <section class="report-panel">
+
+        <div class="panel-heading">
+            KPI Summary
+        </div>
+
+        <div class="report-kpi-grid">
+
+            {% for key, value in metrics.items %}
+
+                <div class="report-kpi">
+
+                    <span>
+                        {{ key|title }}
+                    </span>
+
+                    <strong>
+                        {{ value }}
+                    </strong>
+
+                </div>
+
+            {% empty %}
+
+                <div class="report-empty">
+                    No KPI results available yet.
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <!-- PERFORMANCE -->
+
+    <section class="report-panel">
+
+        <div class="panel-heading">
+            Business Performance
+        </div>
+
+        {% if performance %}
+
+            {% for item in performance %}
+
+                <div class="report-list-item">
+
+                    {{ item }}
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="report-empty">
+                Business performance results will appear
+                here after the analytics integration.
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- INSIGHTS -->
+
+    <section class="report-panel">
+
+        <div class="panel-heading">
+            Key Insights
+        </div>
+
+        {% if insights %}
+
+            {% for item in insights %}
+
+                <div class="report-list-item">
+                    {{ item }}
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="report-empty">
+                No Advanced Insights results are available
+                for this report yet.
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- FORECAST -->
+
+    <section class="report-panel">
+
+        <div class="panel-heading">
+            Forecast & Future Trends
+        </div>
+
+        {% if forecasts %}
+
+            {% for item in forecasts %}
+
+                <div class="report-list-item">
+                    {{ item }}
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="report-empty">
+                Forecast results will appear here when
+                available from Advanced Insights.
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- RISK -->
+
+    <section class="report-panel">
+
+        <div class="panel-heading">
+            Risks & Anomalies
+        </div>
+
+        {% if risks or anomalies %}
+
+            {% for item in risks %}
+
+                <div class="report-list-item">
+                    {{ item }}
+                </div>
+
+            {% endfor %}
+
+            {% for item in anomalies %}
+
+                <div class="report-list-item">
+                    {{ item }}
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="report-empty">
+                No risk or anomaly results are available.
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- RECOMMENDATIONS -->
+
+    <section class="report-panel">
+
+        <div class="panel-heading">
+            Decision Intelligence
+        </div>
+
+        {% if recommendations %}
+
+            {% for item in recommendations %}
+
+                <div class="report-list-item">
+                    {{ item }}
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="report-empty">
+                Recommendations will appear here after
+                Decision Intelligence integration.
+            </div>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+{% endblock %}

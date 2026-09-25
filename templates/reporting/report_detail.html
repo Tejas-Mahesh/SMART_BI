@@ -1,0 +1,405 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{{ report.name }}
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'reporting/css/reporting.css' %}">
+
+<div class="reporting-page">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="reporting-header">
+
+        <div>
+            <h1>{{ report.name }}</h1>
+
+            <p>
+                Generated business report and source information.
+            </p>
+        </div>
+
+        <div class="reporting-header-actions">
+
+            <a
+                href="{% url 'reporting:dashboard' %}"
+                class="reporting-btn reporting-btn-secondary"
+            >
+                ← Dashboard
+            </a>
+
+            <a
+                href="{% url 'reporting:report_history' %}"
+                class="reporting-btn reporting-btn-secondary"
+            >
+                Report History
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         REPORT INFORMATION
+    ====================================================== -->
+
+    <section class="reporting-card">
+
+        <div class="reporting-card-header">
+
+            <div>
+                <h2>Report Information</h2>
+
+                <p>
+                    Details about this generated report.
+                </p>
+            </div>
+
+            <span
+                class="reporting-status reporting-status-{{ report.status|lower }}"
+            >
+                {{ report.status }}
+            </span>
+
+        </div>
+
+
+        <div class="reporting-info-grid">
+
+            <div class="reporting-info-item">
+
+                <span class="reporting-info-label">
+                    Report Name
+                </span>
+
+                <strong>
+                    {{ report.name }}
+                </strong>
+
+            </div>
+
+
+            <div class="reporting-info-item">
+
+                <span class="reporting-info-label">
+                    Report Type
+                </span>
+
+                <strong>
+                    {{ report.report_type }}
+                </strong>
+
+            </div>
+
+
+            <div class="reporting-info-item">
+
+                <span class="reporting-info-label">
+                    Created
+                </span>
+
+                <strong>
+                    {{ report.created_at|date:"d M Y, H:i" }}
+                </strong>
+
+            </div>
+
+
+            <div class="reporting-info-item">
+
+                <span class="reporting-info-label">
+                    Updated
+                </span>
+
+                <strong>
+                    {{ report.updated_at|date:"d M Y, H:i" }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         DATA SOURCE
+    ====================================================== -->
+
+    <section class="reporting-card">
+
+        <div class="reporting-card-header">
+
+            <div>
+                <h2>Data Source</h2>
+
+                <p>
+                    Dataset and version used to generate this report.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="reporting-info-grid">
+
+            <div class="reporting-info-item">
+
+                <span class="reporting-info-label">
+                    Dataset
+                </span>
+
+                <strong>
+                    {{ report.dataset.name }}
+                </strong>
+
+            </div>
+
+
+            <div class="reporting-info-item">
+
+                <span class="reporting-info-label">
+                    Dataset Type
+                </span>
+
+                <strong>
+                    {{ report.dataset.dataset_type }}
+                </strong>
+
+            </div>
+
+
+            <div class="reporting-info-item">
+
+                <span class="reporting-info-label">
+                    Version
+                </span>
+
+                <strong>
+                    v{{ report.dataset_version.version_number }}
+                </strong>
+
+            </div>
+
+
+            <div class="reporting-info-item">
+
+                <span class="reporting-info-label">
+                    Version Type
+                </span>
+
+                <strong>
+                    {{ report.dataset_version.version_type }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         DESCRIPTION
+    ====================================================== -->
+
+    {% if report.description %}
+
+    <section class="reporting-card">
+
+        <div class="reporting-card-header">
+
+            <div>
+                <h2>Description</h2>
+            </div>
+
+        </div>
+
+        <p class="reporting-detail-text">
+            {{ report.description }}
+        </p>
+
+    </section>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         GENERATED REPORT
+    ====================================================== -->
+
+    <section class="reporting-card">
+
+        <div class="reporting-card-header">
+
+            <div>
+                <h2>Generated Report</h2>
+
+                <p>
+                    Results generated from the selected dataset version.
+                </p>
+            </div>
+
+        </div>
+
+
+        {% if report.generated_data %}
+
+            <div class="reporting-results">
+
+                {% for key, value in report.generated_data.items %}
+
+                    <div class="reporting-result-section">
+
+                        <div class="reporting-result-title">
+                            {{ key|title }}
+                        </div>
+
+                        {% if value.items %}
+
+                            <div class="reporting-result-grid">
+
+                                {% for result_key, result_value in value.items %}
+
+                                    <div class="reporting-result-item">
+
+                                        <span>
+                                            {{ result_key|title }}
+                                        </span>
+
+                                        <strong>
+                                            {{ result_value }}
+                                        </strong>
+
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="reporting-result-value">
+                                {{ value }}
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="reporting-table-empty">
+
+                <p>
+                    No generated report data is available.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- =====================================================
+         CONFIGURATION
+    ====================================================== -->
+
+    {% if report.configuration %}
+
+    <section class="reporting-card">
+
+        <div class="reporting-card-header">
+
+            <div>
+                <h2>Report Configuration</h2>
+
+                <p>
+                    Configuration used when this report was generated.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="reporting-configuration">
+
+            {% for key, value in report.configuration.items %}
+
+                <div class="reporting-configuration-item">
+
+                    <span>
+                        {{ key|title }}
+                    </span>
+
+                    <strong>
+                        {{ value }}
+                    </strong>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         ACTIONS
+    ====================================================== -->
+
+    <div class="reporting-form-actions">
+
+        <a
+            href="{% url 'reporting:dashboard' %}"
+            class="reporting-btn reporting-btn-secondary"
+        >
+            Back to Reporting
+        </a>
+
+        <a
+            href="{% url 'reporting:report_history' %}"
+            class="reporting-btn reporting-btn-primary"
+        >
+            View Report History
+        </a>
+
+    </div>
+
+</div>
+{% if report.status == "Completed" %}
+
+<a
+    href="{% url 'reporting:export_report_pdf' report.id %}"
+    class="reporting-btn reporting-btn-primary"
+>
+    Export PDF
+</a>
+
+{% else %}
+
+<button
+    type="button"
+    class="reporting-btn reporting-btn-secondary"
+    disabled
+>
+    PDF Unavailable
+</button>
+
+{% endif %}
+{% endblock %}

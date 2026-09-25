@@ -46,9 +46,5 @@ urlpatterns = [
             "decision_intelligence.urls"
         ),
     ),
-path(
-    "reports/",
-    include("reporting.urls"),
-),
-
+path("reporting/", include("reporting.urls")),
 ]

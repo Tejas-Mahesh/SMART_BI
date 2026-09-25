@@ -1,0 +1,374 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Report History
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'reporting/css/reporting.css' %}">
+
+<div class="reporting-page">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="reporting-header">
+
+        <div>
+            <h1>Report History</h1>
+
+            <p>
+                View and manage previously generated reports.
+            </p>
+        </div>
+
+        <div class="reporting-header-actions">
+
+            <a
+                href="{% url 'reporting:dashboard' %}"
+                class="reporting-btn reporting-btn-secondary"
+            >
+                ← Dashboard
+            </a>
+
+            <a
+                href="{% url 'reporting:automated_reports' %}"
+                class="reporting-btn reporting-btn-primary"
+            >
+                Generate Report
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SUMMARY
+    ====================================================== -->
+
+    <section class="reporting-card">
+
+        <div class="reporting-history-summary">
+
+            <div class="reporting-history-summary-item">
+
+                <span>
+                    Total Reports
+                </span>
+
+                <strong>
+                    {{ reports|length }}
+                </strong>
+
+            </div>
+
+            <div class="reporting-history-summary-item">
+
+                <span>
+                    Completed
+                </span>
+
+                <strong>
+                    {{ completed_count }}
+                </strong>
+
+            </div>
+
+            <div class="reporting-history-summary-item">
+
+                <span>
+                    Failed
+                </span>
+
+                <strong>
+                    {{ failed_count }}
+                </strong>
+
+            </div>
+
+            <div class="reporting-history-summary-item">
+
+                <span>
+                    Draft
+                </span>
+
+                <strong>
+                    {{ draft_count }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         REPORT HISTORY TABLE
+    ====================================================== -->
+
+   <section class="reporting-card">
+
+    <div class="reporting-card-header">
+
+        <div>
+            <h2>Generated Reports</h2>
+
+            <p>
+                Search and filter your generated reports.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FILTERS
+    ====================================================== -->
+
+    <form method="get" class="reporting-history-filters">
+
+        <div class="reporting-form-group">
+
+            <label for="search">
+                Search
+            </label>
+
+            <input
+                type="text"
+                id="search"
+                name="search"
+                value="{{ search_query }}"
+                placeholder="Search report or dataset..."
+            >
+
+        </div>
+
+
+        <div class="reporting-form-group">
+
+            <label for="status">
+                Status
+            </label>
+
+            <select
+                id="status"
+                name="status"
+                class="reporting-select"
+            >
+
+                <option value="">
+                    All Statuses
+                </option>
+
+                <option
+                    value="Completed"
+                    {% if selected_status == "Completed" %}selected{% endif %}
+                >
+                    Completed
+                </option>
+
+                <option
+                    value="Draft"
+                    {% if selected_status == "Draft" %}selected{% endif %}
+                >
+                    Draft
+                </option>
+
+                <option
+                    value="Generating"
+                    {% if selected_status == "Generating" %}selected{% endif %}
+                >
+                    Generating
+                </option>
+
+                <option
+                    value="Failed"
+                    {% if selected_status == "Failed" %}selected{% endif %}
+                >
+                    Failed
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="reporting-form-group">
+
+            <label for="report_type">
+                Report Type
+            </label>
+
+            <select
+                id="report_type"
+                name="report_type"
+                class="reporting-select"
+            >
+
+                <option value="">
+                    All Types
+                </option>
+
+                {% for report_type in report_types %}
+
+                <option
+                    value="{{ report_type }}"
+                    {% if selected_report_type == report_type %}
+                        selected
+                    {% endif %}
+                >
+                    {{ report_type }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <div class="reporting-filter-actions">
+
+            <button
+                type="submit"
+                class="reporting-btn reporting-btn-primary"
+            >
+                Apply Filters
+            </button>
+
+            <a
+                href="{% url 'reporting:report_history' %}"
+                class="reporting-btn reporting-btn-secondary"
+            >
+                Clear
+            </a>
+
+        </div>
+
+    </form>
+
+
+    <!-- =====================================================
+         RESULTS
+    ====================================================== -->
+
+    {% if reports %}
+
+    <div class="reporting-table-wrapper">
+
+        <table class="reporting-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Report</th>
+                    <th>Dataset</th>
+                    <th>Version</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for report in reports %}
+
+                <tr>
+
+                    <td>
+                        <a
+                            href="{% url 'reporting:report_detail' report.id %}"
+                            class="reporting-table-link"
+                        >
+                            {{ report.name }}
+                        </a>
+                    </td>
+
+                    <td>
+                        {{ report.dataset.name }}
+                    </td>
+
+                    <td>
+                        v{{ report.dataset_version.version_number }}
+                    </td>
+
+                    <td>
+                        {{ report.report_type }}
+                    </td>
+
+                    <td>
+
+                        <span
+                            class="reporting-status reporting-status-{{ report.status|lower }}"
+                        >
+                            {{ report.status }}
+                        </span>
+
+                    </td>
+
+                    <td>
+                        {{ report.created_at|date:"d M Y, H:i" }}
+                    </td>
+
+                    <td>
+
+                        <a
+                            href="{% url 'reporting:report_detail' report.id %}"
+                            class="reporting-action-link"
+                        >
+                            View
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <div class="reporting-history-empty">
+
+        <div class="reporting-empty-icon">
+            🔎
+        </div>
+
+        <h3>
+            No Matching Reports
+        </h3>
+
+        <p>
+            No reports match the selected search and filters.
+        </p>
+
+        <a
+            href="{% url 'reporting:report_history' %}"
+            class="reporting-btn reporting-btn-secondary"
+        >
+            Clear Filters
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</section>
+</div>
+
+{% endblock %}

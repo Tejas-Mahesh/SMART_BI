@@ -1,460 +1,938 @@
-{% extends "workspace_base.html" %}
-
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart BI | Upload Data</title>
 
-{% block title %}
-Smart BI | Upload Data
-{% endblock %}
+    <style>
+        /* ============================================================
+           SMART BI DESIGN SYSTEM & PALETTE
+        ============================================================ */
+        :root {
+            --bg: #030712;
+            --bg-deep: #020617;
+            --bg-soft: #071525;
 
+            --card: #0B1B2D;
+            --card-light: #10243A;
+            --card-glass: rgba(11, 27, 45, 0.72);
+            --card-glass-subtle: rgba(16, 36, 58, 0.45);
 
-{% block breadcrumb %}
-Data Management / Upload
-{% endblock %}
+            --purple: #7C5CFF;
+            --purple-light: #A99CFF;
+            --purple-glow: rgba(124, 92, 255, 0.35);
 
+            --blue: #35B8FF;
+            --blue-glow: rgba(53, 184, 255, 0.30);
 
-{% block page_heading %}
-Upload New Data
-{% endblock %}
+            --cyan: #22D3EE;
+            --cyan-glow: rgba(34, 211, 238, 0.28);
 
+            --green: #39E58C;
+            --green-glow: rgba(57, 229, 140, 0.25);
 
-{% block page_description %}
-Upload your business data and Smart BI will automatically prepare it for analysis.
-{% endblock %}
+            --orange: #FFB454;
+            --orange-glow: rgba(255, 180, 84, 0.25);
 
+            --red: #FF5C70;
+            --red-glow: rgba(255, 92, 112, 0.25);
 
-{% block extra_css %}
+            --text: #F7FAFF;
+            --muted: #8294A8;
+            --subtle: #4D6277;
 
-<link rel="stylesheet"
-      href="{% static 'css/data_upload.css' %}">
+            --border: rgba(255, 255, 255, 0.08);
+            --border-bright: rgba(255, 255, 255, 0.16);
+            --border-cyan: rgba(34, 211, 238, 0.35);
+            --border-purple: rgba(124, 92, 255, 0.35);
 
-{% endblock %}
+            --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
+            --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
 
-{% block workspace_content %}
+        /* ============================================================
+           RESET & VIEWPORT ROOT
+        ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        html, body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+        }
 
-<div class="upload-page">
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
+        button, select, input {
+            font: inherit;
+            outline: none;
+        }
 
-    <!-- =====================================================
-         UPLOAD INTRO
-    ====================================================== -->
+        /* ============================================================
+           DUAL INDEPENDENT SCROLL LAYOUT
+        ============================================================ */
+        .smart-app-layout {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(circle at 10% 12%, rgba(124, 92, 255, 0.10) 0%, transparent 40%),
+                radial-gradient(circle at 90% 88%, rgba(34, 211, 238, 0.08) 0%, transparent 45%),
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+        }
 
-    <section class="upload-intro">
+        /* Sidebar: Fixed left dock, scrolls independently */
+        .smart-sidebar-container {
+            width: 270px;
+            height: 100vh;
+            flex-shrink: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 50;
+            background: var(--bg-deep);
+            border-right: 1px solid var(--border);
+            scrollbar-width: thin;
+            scrollbar-color: var(--subtle) transparent;
+        }
 
+        .smart-sidebar-container::-webkit-scrollbar {
+            width: 4px;
+        }
 
-        <div>
+        .smart-sidebar-container::-webkit-scrollbar-thumb {
+            background: var(--subtle);
+            border-radius: 4px;
+        }
 
-            <span class="upload-section-label">
-                SMART DATA INGESTION
-            </span>
+        /* Main Viewport: Independent scroll */
+        .smart-main-content {
+            flex: 1;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 10;
+            padding: 34px 44px 80px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--card-light) transparent;
+        }
 
-            <h2>
-                Give Smart BI your data.
-            </h2>
+        .smart-main-content::-webkit-scrollbar {
+            width: 6px;
+        }
 
-            <p>
-                Upload your business dataset once.
-                Smart BI will automatically validate, profile,
-                clean, transform and prepare it for analytics.
-            </p>
+        .smart-main-content::-webkit-scrollbar-thumb {
+            background: var(--card-light);
+            border-radius: 4px;
+        }
 
-        </div>
+        .upload-page {
+            max-width: 1540px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
 
+        /* Ambient floating light orbs */
+        .ambient-orb-top {
+            position: fixed;
+            width: 420px;
+            height: 420px;
+            top: -180px;
+            right: -100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--purple-glow), transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            animation: orbFloat 9s ease-in-out infinite alternate;
+        }
 
-        <div class="upload-flow-badge">
+        .ambient-orb-bottom {
+            position: fixed;
+            width: 380px;
+            height: 380px;
+            bottom: -160px;
+            left: 220px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--cyan-glow), transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            animation: orbFloat 11s ease-in-out infinite alternate-reverse;
+        }
 
-            <span class="upload-flow-dot"></span>
+        /* ============================================================
+           HEADER / INTRO SECTION
+        ============================================================ */
+        .upload-intro {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+            padding: 30px 34px;
+            border: 1px solid var(--border-bright);
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(11, 27, 45, 0.92) 0%, rgba(7, 21, 37, 0.80) 100%);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(16px);
+            overflow: hidden;
+            animation: fadeUp 0.65s var(--transition-smooth) both;
+        }
 
-            Automatic Processing
+        .upload-intro::before {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            top: -140px;
+            right: 80px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(124, 92, 255, 0.22), transparent 70%);
+            pointer-events: none;
+        }
 
-        </div>
+        .upload-section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--cyan);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+        }
 
+        .upload-section-label::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 0 0 10px var(--cyan);
+            animation: pulseDot 2s infinite;
+        }
 
-    </section>
+        .upload-intro h2 {
+            margin-top: 10px;
+            font-size: clamp(28px, 3.2vw, 42px);
+            line-height: 1.1;
+            letter-spacing: -1.2px;
+            font-weight: 850;
+            color: #FFFFFF;
+        }
 
+        .upload-intro p {
+            max-width: 680px;
+            margin-top: 10px;
+            color: var(--muted);
+            font-size: 13.5px;
+            line-height: 1.6;
+        }
 
-    <!-- =====================================================
-         MAIN UPLOAD
-    ====================================================== -->
+        .upload-flow-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: rgba(34, 211, 238, 0.10);
+            border: 1px solid rgba(34, 211, 238, 0.25);
+            color: var(--cyan);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
 
-    <section class="upload-main-grid">
+        .upload-flow-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 0 0 8px var(--cyan);
+            animation: pulseDot 2s infinite;
+        }
 
+        /* ============================================================
+           MAIN UPLOAD GRID (FORM + AUTOMATIC PIPELINE PREVIEW)
+        ============================================================ */
+        .upload-main-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 20px;
+            animation: fadeUp 0.75s var(--transition-smooth) both;
+        }
 
-        <!-- UPLOAD FORM -->
+        .upload-panel,
+        .automatic-processing-panel {
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+            padding: 28px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
 
-        <div class="upload-panel">
+        .upload-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
 
+        .upload-panel-header span {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            color: var(--cyan);
+            text-transform: uppercase;
+        }
 
-            <div class="upload-panel-header">
+        .upload-panel-header h3 {
+            font-size: 18px;
+            font-weight: 850;
+            color: #FFFFFF;
+            margin-top: 2px;
+        }
 
-                <div>
+        .upload-format-badge {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--purple-light);
+            background: rgba(124, 92, 255, 0.12);
+            border: 1px solid rgba(124, 92, 255, 0.3);
+            padding: 5px 12px;
+            border-radius: 8px;
+            letter-spacing: 0.5px;
+        }
 
-                    <span>
-                        STEP 01
-                    </span>
+        /* Form Inputs & Fields */
+        .smart-upload-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
 
-                    <h3>
-                        Upload Dataset
-                    </h3>
+        .upload-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
 
-                </div>
+        .upload-field label {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
 
-                <div class="upload-format-badge">
-                    CSV / XLS / XLSX
-                </div>
+        .upload-field input[type="text"],
+        .upload-field select {
+            width: 100%;
+            height: 44px;
+            padding: 0 16px;
+            border: 1px solid var(--border-bright);
+            border-radius: 12px;
+            background: #081525;
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 500;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
 
-            </div>
+        .upload-field input[type="text"]:focus,
+        .upload-field select:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.10);
+        }
 
+        .upload-field select option {
+            background: #081525;
+            color: var(--text);
+            padding: 8px;
+        }
 
-            <form method="POST"
-                  enctype="multipart/form-data"
-                  class="smart-upload-form">
+        .upload-field small {
+            font-size: 11.5px;
+            color: var(--muted);
+            line-height: 1.4;
+        }
 
-                {% csrf_token %}
+        /* Drag & Drop File Zone */
+        .smart-file-dropzone {
+            position: relative;
+            border: 2px dashed rgba(53, 184, 255, 0.35);
+            border-radius: 16px;
+            background: rgba(16, 36, 58, 0.3);
+            padding: 34px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
 
+        .smart-file-dropzone:hover,
+        .smart-file-dropzone.dragover {
+            border-color: var(--cyan);
+            background: rgba(34, 211, 238, 0.06);
+            box-shadow: 0 0 25px rgba(34, 211, 238, 0.12);
+        }
 
-                <!-- DATASET NAME -->
+        .smart-file-dropzone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 5;
+        }
 
-                <div class="upload-field">
+        .smart-file-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            pointer-events: none;
+        }
 
-                    <label for="{{ form.name.id_for_label }}">
-                        Dataset Name
-                    </label>
+        .smart-file-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: rgba(53, 184, 255, 0.12);
+            border: 1px solid rgba(53, 184, 255, 0.3);
+            color: var(--blue);
+            font-size: 20px;
+            font-weight: 850;
+            margin-bottom: 6px;
+            box-shadow: 0 0 15px var(--blue-glow);
+        }
 
-                    {{ form.name }}
+        .smart-file-content strong {
+            font-size: 14px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
 
-                    {% if form.name.errors %}
+        .smart-file-content span {
+            font-size: 12px;
+            color: var(--cyan);
+            font-weight: 600;
+        }
 
-                    <div class="upload-error">
-                        {{ form.name.errors }}
+        .smart-file-content small {
+            font-size: 11px;
+            color: var(--subtle);
+            margin-top: 4px;
+        }
+
+        .selected-file-name {
+            display: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            background: rgba(57, 229, 140, 0.1);
+            border: 1px solid rgba(57, 229, 140, 0.25);
+            color: var(--green);
+            font-size: 12px;
+            font-weight: 700;
+            word-break: break-all;
+        }
+
+        .selected-file-name.active {
+            display: block;
+        }
+
+        /* Error States */
+        .upload-error,
+        .upload-form-error {
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: rgba(255, 92, 112, 0.12);
+            border: 1px solid rgba(255, 92, 112, 0.3);
+            color: var(--red);
+            font-size: 11.5px;
+            font-weight: 600;
+        }
+
+        /* Submit Button */
+        .smart-upload-submit {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            height: 48px;
+            padding: 0 28px;
+            border-radius: 12px;
+            border: 1px solid rgba(124, 92, 255, 0.4);
+            background: linear-gradient(135deg, var(--purple), #6245e8);
+            color: #FFFFFF;
+            font-size: 13px;
+            font-weight: 850;
+            letter-spacing: 0.4px;
+            cursor: pointer;
+            box-shadow: 0 10px 24px var(--purple-glow);
+            transition: transform 0.3s var(--transition-bounce), box-shadow 0.3s ease;
+            margin-top: 6px;
+        }
+
+        .smart-upload-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 32px var(--purple-glow);
+        }
+
+        /* Automatic Processing Panel (Right Column) */
+        .automatic-panel-header {
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .automatic-panel-header span {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            color: var(--cyan);
+            text-transform: uppercase;
+        }
+
+        .automatic-panel-header h3 {
+            font-size: 18px;
+            font-weight: 850;
+            color: #FFFFFF;
+            margin-top: 2px;
+        }
+
+        .automatic-panel-header p {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 4px;
+            line-height: 1.5;
+        }
+
+        .automatic-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .automatic-step {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            background: rgba(16, 36, 58, 0.35);
+            border: 1px solid var(--border);
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .automatic-step:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-bright);
+        }
+
+        .automatic-step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(34, 211, 238, 0.1);
+            border: 1px solid rgba(34, 211, 238, 0.25);
+            color: var(--cyan);
+            font-size: 11px;
+            font-weight: 850;
+            flex-shrink: 0;
+        }
+
+        .automatic-step.final .automatic-step-number {
+            background: rgba(57, 229, 140, 0.12);
+            border-color: var(--green);
+            color: var(--green);
+            box-shadow: 0 0 10px var(--green-glow);
+        }
+
+        .automatic-step strong {
+            display: block;
+            font-size: 13px;
+            font-weight: 750;
+            color: #FFFFFF;
+        }
+
+        .automatic-step span {
+            display: block;
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        /* ============================================================
+           BOTTOM INFO / EXPLANATION
+        ============================================================ */
+        .upload-bottom-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 24px 30px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(124, 92, 255, 0.08) 0%, rgba(11, 27, 45, 0.85) 100%);
+            border: 1px solid rgba(124, 92, 255, 0.25);
+            animation: fadeUp 0.85s var(--transition-smooth) both;
+        }
+
+        .upload-bottom-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: rgba(124, 92, 255, 0.15);
+            border: 1px solid var(--purple-light);
+            color: var(--purple-light);
+            font-size: 18px;
+            font-weight: 850;
+            box-shadow: 0 0 18px var(--purple-glow);
+            flex-shrink: 0;
+        }
+
+        .upload-bottom-info strong {
+            display: block;
+            font-size: 14px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-bottom: 2px;
+        }
+
+        .upload-bottom-info p {
+            color: var(--muted);
+            font-size: 12.5px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* ============================================================
+           KEYFRAME ANIMATIONS
+        ============================================================ */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4); }
+            50% { box-shadow: 0 0 0 6px rgba(34, 211, 238, 0); }
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-25px, 25px); }
+        }
+
+        /* ============================================================
+           RESPONSIVE DESIGN
+        ============================================================ */
+        @media (max-width: 1000px) {
+            .upload-main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .smart-app-layout {
+                flex-direction: column;
+                height: auto;
+                overflow-y: visible;
+            }
+            .smart-sidebar-container {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            .smart-main-content {
+                height: auto;
+                overflow-y: visible;
+                padding: 24px 20px 80px;
+            }
+            .upload-intro {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="smart-app-layout">
+        <!-- Ambient floating neon light orbs -->
+        <div class="ambient-orb-top"></div>
+        <div class="ambient-orb-bottom"></div>
+
+        <!-- =====================================================
+             LEFT SIDEBAR (INDEPENDENT SCROLL)
+        ====================================================== -->
+        <aside class="smart-sidebar-container" aria-label="Main Navigation">
+            {% include "includes/smart_sidebar.html" %}
+        </aside>
+
+        <!-- =====================================================
+             RIGHT MAIN CONTENT (INDEPENDENT SCROLL)
+        ====================================================== -->
+        <main class="smart-main-content" role="main">
+            <div class="upload-page">
+
+                <!-- INTRO -->
+                <section class="upload-intro">
+                    <div>
+                        <span class="upload-section-label">SMART DATA INGESTION</span>
+                        <h2>Give Smart BI your data.</h2>
+                        <p>Upload your business dataset once. Smart BI will automatically validate, profile, clean, transform and prepare it for analytics.</p>
                     </div>
 
-                    {% endif %}
-
-                </div>
-
-
-                <!-- DATASET TYPE -->
-
-                <div class="upload-field">
-
-                    <label for="{{ form.dataset_type.id_for_label }}">
-                        Data Category
-                    </label>
-
-                    {{ form.dataset_type }}
-
-                    <small>
-                        Choose the category that best describes
-                        this dataset.
-                    </small>
-
-                    {% if form.dataset_type.errors %}
-
-                    <div class="upload-error">
-                        {{ form.dataset_type.errors }}
+                    <div class="upload-flow-badge">
+                        <span class="upload-flow-dot"></span>
+                        Automatic Processing
                     </div>
+                </section>
 
-                    {% endif %}
+                <!-- MAIN UPLOAD GRID -->
+                <section class="upload-main-grid">
 
-                </div>
-
-
-                <!-- FILE -->
-
-                <div class="upload-field">
-
-                    <label>
-                        Business Data File
-                    </label>
-
-
-                    <div class="smart-file-dropzone">
-
-
-                        {{ form.file }}
-
-
-                        <div class="smart-file-content">
-
-
-                            <div class="smart-file-icon">
-                                ↑
+                    <!-- UPLOAD FORM -->
+                    <div class="upload-panel">
+                        <div class="upload-panel-header">
+                            <div>
+                                <span>STEP 01</span>
+                                <h3>Upload Dataset</h3>
                             </div>
-
-
-                            <strong>
-                                Drop your dataset here
-                            </strong>
-
-
-                            <span>
-                                or click to browse files
-                            </span>
-
-
-                            <small>
-                                CSV, XLS or XLSX · Maximum 20 MB
-                            </small>
-
-
+                            <div class="upload-format-badge">CSV / XLS / XLSX</div>
                         </div>
 
+                        <form method="POST" enctype="multipart/form-data" class="smart-upload-form" id="uploadForm">
+                            {% csrf_token %}
 
+                            <!-- DATASET NAME -->
+                            <div class="upload-field">
+                                <label for="{{ form.name.id_for_label }}">Dataset Name</label>
+                                {{ form.name }}
+                                {% if form.name.errors %}
+                                    <div class="upload-error">{{ form.name.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- DATASET TYPE -->
+                            <div class="upload-field">
+                                <label for="{{ form.dataset_type.id_for_label }}">Data Category</label>
+                                {{ form.dataset_type }}
+                                <small>Choose the category that best describes this dataset.</small>
+                                {% if form.dataset_type.errors %}
+                                    <div class="upload-error">{{ form.dataset_type.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- FILE FIELD -->
+                            <div class="upload-field">
+                                <label>Business Data File</label>
+                                <div class="smart-file-dropzone" id="fileDropzone">
+                                    {{ form.file }}
+                                    <div class="smart-file-content">
+                                        <div class="smart-file-icon">↑</div>
+                                        <strong>Drop your dataset here</strong>
+                                        <span>or click to browse files</span>
+                                        <small>CSV, XLS or XLSX &bull; Maximum 20 MB</small>
+                                    </div>
+                                </div>
+
+                                <div class="selected-file-name" id="selectedFileName"></div>
+
+                                {% if form.file.errors %}
+                                    <div class="upload-error">{{ form.file.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            {% if form.non_field_errors %}
+                                <div class="upload-form-error">{{ form.non_field_errors }}</div>
+                            {% endif %}
+
+                            <!-- SUBMIT BUTTON -->
+                            <button type="submit" class="smart-upload-submit" id="uploadSubmitButton">
+                                <span>Upload &amp; Process</span>
+                                <span>→</span>
+                            </button>
+                        </form>
                     </div>
 
+                    <!-- AUTOMATIC PROCESSING PREVIEW -->
+                    <div class="automatic-processing-panel">
+                        <div class="automatic-panel-header">
+                            <span>WHAT HAPPENS NEXT</span>
+                            <h3>Smart Data Processing</h3>
+                            <p>You don't need to run these steps manually. Smart BI handles them automatically upon file submission.</p>
+                        </div>
 
-                    <div class="selected-file-name"
-                         id="selectedFileName">
+                        <div class="automatic-steps">
+                            <div class="automatic-step">
+                                <div class="automatic-step-number">01</div>
+                                <div>
+                                    <strong>File Validation</strong>
+                                    <span>Check format and structure</span>
+                                </div>
+                            </div>
+
+                            <div class="automatic-step">
+                                <div class="automatic-step-number">02</div>
+                                <div>
+                                    <strong>Data Profiling</strong>
+                                    <span>Understand columns and patterns</span>
+                                </div>
+                            </div>
+
+                            <div class="automatic-step">
+                                <div class="automatic-step-number">03</div>
+                                <div>
+                                    <strong>Quality Analysis</strong>
+                                    <span>Detect missing and duplicate data</span>
+                                </div>
+                            </div>
+
+                            <div class="automatic-step">
+                                <div class="automatic-step-number">04</div>
+                                <div>
+                                    <strong>Smart Cleaning</strong>
+                                    <span>Fix supported data issues</span>
+                                </div>
+                            </div>
+
+                            <div class="automatic-step">
+                                <div class="automatic-step-number">05</div>
+                                <div>
+                                    <strong>Validation &amp; Transformation</strong>
+                                    <span>Prepare data for analytics</span>
+                                </div>
+                            </div>
+
+                            <div class="automatic-step final">
+                                <div class="automatic-step-number">✓</div>
+                                <div>
+                                    <strong>Analytics Ready</strong>
+                                    <span>Dataset appears in Data Management</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
+                </section>
 
-                    {% if form.file.errors %}
-
-                    <div class="upload-error">
-                        {{ form.file.errors }}
+                <!-- EXPLANATION FOOTER -->
+                <section class="upload-bottom-info">
+                    <div class="upload-bottom-icon">✦</div>
+                    <div>
+                        <strong>You upload once. Smart BI does the preparation.</strong>
+                        <p>After processing, Data Management will show the dataset's quality score, records, processing summary, and exactly what Smart BI changed.</p>
                     </div>
-
-                    {% endif %}
-
-                </div>
-
-
-                {% if form.non_field_errors %}
-
-                <div class="upload-form-error">
-
-                    {{ form.non_field_errors }}
-
-                </div>
-
-                {% endif %}
-
-
-                <!-- SUBMIT -->
-
-                <button type="submit"
-                        class="smart-upload-submit"
-                        id="uploadSubmitButton">
-
-                    <span>
-                        Upload & Process
-                    </span>
-
-                    <span>
-                        →
-                    </span>
-
-                </button>
-
-
-            </form>
-
-
-        </div>
-
-
-        <!-- AUTOMATIC PROCESSING -->
-
-        <div class="automatic-processing-panel">
-
-
-            <div class="automatic-panel-header">
-
-                <span>
-                    WHAT HAPPENS NEXT
-                </span>
-
-                <h3>
-                    Smart Data Processing
-                </h3>
-
-                <p>
-                    You don't need to run these steps manually.
-                    Smart BI handles them automatically.
-                </p>
+                </section>
 
             </div>
-
-
-            <div class="automatic-steps">
-
-
-                <div class="automatic-step">
-
-                    <div class="automatic-step-number">
-                        01
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            File Validation
-                        </strong>
-
-                        <span>
-                            Check format and structure
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="automatic-step">
-
-                    <div class="automatic-step-number">
-                        02
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            Data Profiling
-                        </strong>
-
-                        <span>
-                            Understand columns and patterns
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="automatic-step">
-
-                    <div class="automatic-step-number">
-                        03
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            Quality Analysis
-                        </strong>
-
-                        <span>
-                            Detect missing and duplicate data
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="automatic-step">
-
-                    <div class="automatic-step-number">
-                        04
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            Smart Cleaning
-                        </strong>
-
-                        <span>
-                            Fix supported data issues
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="automatic-step">
-
-                    <div class="automatic-step-number">
-                        05
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            Validation & Transformation
-                        </strong>
-
-                        <span>
-                            Prepare data for analytics
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="automatic-step final">
-
-                    <div class="automatic-step-number">
-                        ✓
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            Analytics Ready
-                        </strong>
-
-                        <span>
-                            Dataset appears in Data Management
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-
-        </div>
-
-
-    </section>
-
-
-    <!-- =====================================================
-         SIMPLE EXPLANATION
-    ====================================================== -->
-
-    <section class="upload-bottom-info">
-
-
-        <div class="upload-bottom-icon">
-            ✦
-        </div>
-
-
-        <div>
-
-            <strong>
-                You upload once. Smart BI does the preparation.
-            </strong>
-
-            <p>
-                After processing, Data Management will show the
-                dataset's quality score, records, processing summary
-                and exactly what Smart BI changed.
-            </p>
-
-        </div>
-
-
-    </section>
-
-
-</div>
-
-
-{% endblock %}
-
-
-{% block extra_js %}
-
-<script src="{% static 'js/data_upload.js' %}"></script>
-
-{% endblock %}
+        </main>
+    </div>
+
+    <!-- =========================================================
+         FILE INTERACTION SCRIPT
+    ========================================================== -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const dropzone = document.getElementById("fileDropzone");
+            const fileInput = dropzone ? dropzone.querySelector('input[type="file"]') : null;
+            const fileNameDisplay = document.getElementById("selectedFileName");
+            const submitBtn = document.getElementById("uploadSubmitButton");
+            const form = document.getElementById("uploadForm");
+
+            if (fileInput && dropzone && fileNameDisplay) {
+                // Drag-over styling
+                ["dragenter", "dragover"].forEach((eventName) => {
+                    dropzone.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropzone.classList.add("dragover");
+                    });
+                });
+
+                ["dragleave", "drop"].forEach((eventName) => {
+                    dropzone.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropzone.classList.remove("dragover");
+                    });
+                });
+
+                // Display selected filename
+                fileInput.addEventListener("change", function () {
+                    if (this.files && this.files.length > 0) {
+                        fileNameDisplay.textContent = "Selected: " + this.files[0].name;
+                        fileNameDisplay.classList.add("active");
+                    } else {
+                        fileNameDisplay.classList.remove("active");
+                    }
+                });
+            }
+
+            // Button loading feedback on submission
+            if (form && submitBtn) {
+                form.addEventListener("submit", function () {
+                    submitBtn.style.opacity = "0.75";
+                    submitBtn.style.pointerEvents = "none";
+                    submitBtn.innerHTML = "<span>Processing Ingestion Pipeline...</span>";
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,938 +1,740 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendations | Smart Business Intelligence</title>
 
-    <title>Recommendations | Smart BI</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --ft-bg: #07111f;
-            --ft-bg-deep: #040b15;
+            --bg-base: #040911;
+            --bg-surface: #07111f;
+            --bg-card: rgba(11, 23, 42, 0.72);
+            --bg-card-hover: rgba(16, 32, 59, 0.85);
 
-            --ft-panel: rgba(13, 27, 46, 0.94);
-            --ft-panel-strong: rgba(16, 32, 55, 0.97);
-            --ft-panel-soft: rgba(255, 255, 255, 0.025);
+            /* Deep Dark KPI Surfaces */
+            --bg-kpi-card: #050d18;
+            --border-kpi: rgba(255, 255, 255, 0.06);
 
-            --ft-border: rgba(255, 255, 255, 0.075);
-            --ft-border-soft: rgba(255, 255, 255, 0.045);
+            --border-subtle: rgba(79, 163, 255, 0.14);
+            --border-focus: rgba(79, 163, 255, 0.45);
+            
+            --accent-blue: #4fa3ff;
+            --accent-cyan: #22d3ee;
+            --accent-purple: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #4fa3ff 0%, #22d3ee 100%);
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: rgba(190, 211, 235, 0.65);
+            
+            --status-green: #10b981;
+            --status-yellow: #f59e0b;
+            --status-red: #ff5263;
 
-            --ft-text: #f2f7ff;
-            --ft-text-soft: rgba(218, 231, 245, 0.68);
-            --ft-text-muted: rgba(190, 208, 229, 0.46);
-
-            --ft-blue: #4fa3ff;
-            --ft-blue-bright: #74b9ff;
-            --ft-cyan: #22d3ee;
-            --ft-purple: #8b5cf6;
-            --ft-green: #48d597;
-            --ft-yellow: #f3c86b;
-            --ft-red: #ff6577;
-
-            --ft-radius: 18px;
-
-            --ft-shadow:
-                0 18px 55px rgba(0, 0, 0, 0.22);
-
-            --ft-glow:
-                0 0 35px rgba(79, 163, 255, 0.12);
-
-            --ft-sidebar-width: 260px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
         }
 
         * {
             box-sizing: border-box;
-        }
-
-        html,
-        body {
             margin: 0;
             padding: 0;
-            width: 100%;
-            min-height: 100%;
         }
 
         body {
-            background:
-                radial-gradient(
-                    circle at 15% 10%,
-                    rgba(79, 163, 255, 0.075),
-                    transparent 28%
-                ),
-                radial-gradient(
-                    circle at 90% 20%,
-                    rgba(139, 92, 246, 0.06),
-                    transparent 25%
-                ),
-                linear-gradient(
-                    135deg,
-                    var(--ft-bg-deep),
-                    var(--ft-bg)
-                );
-
-            color: var(--ft-text);
-            font-family:
-                Inter,
-                ui-sans-serif,
-                system-ui,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                sans-serif;
-
-            overflow: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(79, 163, 255, 0.12), transparent),
+                radial-gradient(circle 600px at 0% 100%, rgba(34, 211, 238, 0.04), transparent);
+            background-attachment: fixed;
+            display: flex;
+            overflow-x: hidden;
         }
 
-        /* =========================================================
-           PAGE SHELL
-        ========================================================= */
+        /* Ambient Glow & Entrance Animations */
+        @keyframes subtlePulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.08); }
+        }
 
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-up {
+            animation: cardEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Layout Structure */
         .page-shell {
             display: flex;
             width: 100%;
-            height: 100vh;
             min-height: 100vh;
         }
 
         .sidebar-shell {
-            width: var(--ft-sidebar-width);
-            min-width: var(--ft-sidebar-width);
+            width: 270px;
+            background: var(--bg-surface);
+            border-right: 1px solid var(--border-subtle);
+            flex-shrink: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
             height: 100vh;
             overflow-y: auto;
             overflow-x: hidden;
-            border-right: 1px solid var(--ft-border);
-            background: rgba(4, 11, 21, 0.94);
+            z-index: 1000;
+            padding: 1.75rem 1.25rem;
         }
 
         .main-shell {
+            margin-left: 270px;
             flex: 1;
-            min-width: 0;
-            height: 100vh;
+            width: calc(100% - 270px);
+            min-height: 100vh;
+            padding: 2.5rem 3.5rem;
             overflow-y: auto;
-            overflow-x: hidden;
         }
-
-        /* =========================================================
-           MAIN CONTENT
-        ========================================================= */
 
         .recommendations-page {
-            width: 100%;
-            max-width: 1550px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 30px 32px 60px;
         }
 
-        /* =========================================================
-           HEADER
-        ========================================================= */
-
+        /* Header */
         .page-header {
             display: flex;
-            align-items: flex-start;
             justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-subtle);
+            margin-bottom: 2rem;
             gap: 24px;
-            margin-bottom: 26px;
         }
 
         .header-left {
-            min-width: 0;
+            max-width: 750px;
         }
 
         .eyebrow {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 10px;
-            color: var(--ft-blue-bright);
-            font-size: 12px;
+            font-size: 0.75rem;
             font-weight: 700;
             letter-spacing: 0.12em;
+            color: var(--accent-cyan);
+            margin-bottom: 0.65rem;
             text-transform: uppercase;
         }
 
         .eyebrow-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--ft-cyan);
-            box-shadow: 0 0 14px rgba(34, 211, 238, 0.65);
-        }
-
-        .page-title {
-            margin: 0;
-            font-size: clamp(28px, 3vw, 40px);
-            line-height: 1.08;
-            letter-spacing: -0.035em;
-            font-weight: 800;
-        }
-
-        .page-subtitle {
-            max-width: 760px;
-            margin: 11px 0 0;
-            color: var(--ft-text-soft);
-            font-size: 14px;
-            line-height: 1.7;
-        }
-
-        .header-status {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-shrink: 0;
-            padding: 11px 15px;
-            border: 1px solid var(--ft-border);
-            border-radius: 999px;
-            background: var(--ft-panel-soft);
-            color: var(--ft-text-soft);
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .status-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: var(--ft-green);
-            box-shadow: 0 0 14px rgba(72, 213, 151, 0.55);
+            background: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-cyan);
+            animation: subtlePulse 2.5s infinite;
         }
 
-        /* =========================================================
-           MESSAGE
-        ========================================================= */
+        .page-title {
+            font-size: 2.15rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            margin-bottom: 0.4rem;
+        }
 
+        .page-subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .header-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            color: #6ee7b7;
+            font-size: 0.8rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--status-green);
+            box-shadow: 0 0 10px var(--status-green);
+        }
+
+        /* Messages */
         .messages {
-            display: grid;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
             gap: 10px;
-            margin-bottom: 20px;
         }
 
         .message {
-            padding: 13px 16px;
-            border: 1px solid var(--ft-border);
-            border-radius: 13px;
-            background: var(--ft-panel);
-            color: var(--ft-text-soft);
-            font-size: 13px;
-        }
-
-        .message.success {
-            border-color: rgba(72, 213, 151, 0.24);
-            background: rgba(72, 213, 151, 0.07);
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            background: rgba(79, 163, 255, 0.08);
+            border: 1px solid var(--border-subtle);
+            color: #dbeafe;
         }
 
         .message.error {
-            border-color: rgba(255, 101, 119, 0.28);
-            background: rgba(255, 101, 119, 0.07);
+            background: rgba(255, 82, 99, 0.08);
+            border-color: rgba(255, 82, 99, 0.25);
+            color: #fca5a5;
         }
 
-        /* =========================================================
-           CONTROL PANEL
-        ========================================================= */
+        .message.success {
+            background: rgba(16, 185, 129, 0.08);
+            border-color: rgba(16, 185, 129, 0.25);
+            color: #6ee7b7;
+        }
 
+        /* Control Panel */
         .control-panel {
+            background: var(--bg-card);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
             position: relative;
-            overflow: hidden;
-            margin-bottom: 24px;
-            padding: 22px;
-            border: 1px solid var(--ft-border);
-            border-radius: var(--ft-radius);
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(79, 163, 255, 0.055),
-                    transparent 45%
-                ),
-                var(--ft-panel);
-            box-shadow: var(--ft-shadow);
-        }
-
-        .control-panel::before {
-            content: "";
-            position: absolute;
-            width: 240px;
-            height: 240px;
-            right: -100px;
-            top: -140px;
-            border-radius: 50%;
-            background: rgba(79, 163, 255, 0.08);
-            filter: blur(30px);
-            pointer-events: none;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            padding: 1.75rem;
+            margin-bottom: 2rem;
         }
 
         .control-heading {
-            position: relative;
-            z-index: 1;
-            margin-bottom: 18px;
+            margin-bottom: 1.5rem;
         }
 
         .control-heading h2 {
-            margin: 0 0 5px;
-            font-size: 17px;
-            font-weight: 750;
+            font-size: 1.25rem;
+            font-weight: 700;
         }
 
         .control-heading p {
-            margin: 0;
-            color: var(--ft-text-muted);
-            font-size: 12px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
         }
 
         .control-form {
-            position: relative;
-            z-index: 1;
             display: grid;
-            grid-template-columns:
-                minmax(220px, 1.25fr)
-                minmax(220px, 1fr)
-                auto;
-            align-items: end;
-            gap: 14px;
+            grid-template-columns: minmax(220px, 1.2fr) minmax(220px, 1fr) auto;
+            gap: 1.25rem;
+            align-items: flex-end;
         }
 
-        .field {
-            min-width: 0;
-        }
-
-        .field-label {
+        .field label {
             display: block;
-            margin-bottom: 8px;
-            color: var(--ft-text-soft);
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
         }
 
         .field select {
             width: 100%;
-            min-height: 46px;
-            padding: 0 14px;
-            border: 1px solid var(--ft-border);
-            border-radius: 12px;
+            height: 44px;
+            padding: 0 1rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+            background-color: var(--bg-surface);
+            color: var(--text-main);
+            font-size: 0.9rem;
+            font-family: inherit;
             outline: none;
-            background: rgba(4, 11, 21, 0.78);
-            color: var(--ft-text);
-            font-size: 13px;
-            transition: 0.2s ease;
-        }
-
-        .field select:hover {
-            border-color: rgba(79, 163, 255, 0.28);
+            appearance: none;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234fa3ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            transition: all 0.2s ease;
         }
 
         .field select:focus {
-            border-color: rgba(79, 163, 255, 0.58);
-            box-shadow: 0 0 0 3px rgba(79, 163, 255, 0.09);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(79, 163, 255, 0.15);
         }
 
         .field select option {
-            background: #0b1728;
-            color: var(--ft-text);
+            background: #07111f;
+            color: #f8fafc;
         }
 
         .run-button {
-            min-height: 46px;
-            padding: 0 22px;
-            border: 1px solid rgba(79, 163, 255, 0.35);
-            border-radius: 12px;
+            height: 44px;
+            padding: 0 24px;
+            border: none;
+            border-radius: var(--radius-md);
+            background: var(--accent-gradient);
+            color: #040911;
+            font-weight: 700;
+            font-size: 0.9rem;
             cursor: pointer;
-            background:
-                linear-gradient(
-                    135deg,
-                    var(--ft-blue),
-                    #3b82f6
-                );
-            color: #ffffff;
-            font-size: 13px;
-            font-weight: 750;
-            box-shadow:
-                0 10px 25px rgba(59, 130, 246, 0.18);
-            transition:
-                transform 0.2s ease,
-                box-shadow 0.2s ease,
-                filter 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            box-shadow: 0 4px 18px rgba(34, 211, 238, 0.25);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
         }
 
-        .run-button:hover {
-            transform: translateY(-1px);
-            filter: brightness(1.06);
-            box-shadow:
-                0 14px 32px rgba(59, 130, 246, 0.27);
+        .run-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(79, 163, 255, 0.35);
         }
 
-        .run-button:active {
-            transform: translateY(0);
+        .run-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        /* =========================================================
-           DATASET INFORMATION
-        ========================================================= */
-
+        /* Dataset Info */
         .dataset-info {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 18px;
-            margin-top: 16px;
-            padding: 13px 15px;
-            border: 1px solid var(--ft-border-soft);
-            border-radius: 13px;
-            background: rgba(255, 255, 255, 0.018);
-        }
-
-        .dataset-info-left {
-            min-width: 0;
+            margin-top: 1.5rem;
+            padding: 1rem 1.25rem;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.015);
         }
 
         .dataset-name {
-            margin: 0 0 4px;
-            color: var(--ft-text);
-            font-size: 13px;
+            font-size: 0.95rem;
             font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 2px;
         }
 
         .dataset-meta {
-            color: var(--ft-text-muted);
-            font-size: 11px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
         }
 
         .version-badge {
-            flex-shrink: 0;
-            padding: 7px 10px;
-            border: 1px solid rgba(34, 211, 238, 0.18);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.3rem 0.75rem;
             border-radius: 999px;
-            background: rgba(34, 211, 238, 0.06);
-            color: var(--ft-cyan);
-            font-size: 10px;
+            background: rgba(34, 211, 238, 0.08);
+            border: 1px solid rgba(34, 211, 238, 0.25);
+            color: var(--accent-cyan);
             font-weight: 700;
         }
 
-        /* =========================================================
-           KPI GRID
-        ========================================================= */
-
+        /* DARK THEME KPI CARDS */
         .kpi-grid {
             display: grid;
-            grid-template-columns:
-                repeat(4, minmax(0, 1fr));
-            gap: 15px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
         }
 
         .kpi-card {
+            background-color: var(--bg-kpi-card);
+            border: 1px solid var(--border-kpi);
+            border-radius: var(--radius-md);
+            padding: 1.4rem;
             position: relative;
             overflow: hidden;
-            min-height: 142px;
-            padding: 20px;
-            border: 1px solid var(--ft-border);
-            border-radius: var(--ft-radius);
-            background: var(--ft-panel);
-            box-shadow: var(--ft-shadow);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
-        .kpi-card::after {
-            content: "";
-            position: absolute;
-            width: 110px;
-            height: 110px;
-            right: -60px;
-            bottom: -65px;
-            border-radius: 50%;
-            background: rgba(79, 163, 255, 0.08);
-            filter: blur(10px);
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(79, 163, 255, 0.3);
         }
 
         .kpi-top {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
         }
 
         .kpi-label {
-            color: var(--ft-text-muted);
-            font-size: 11px;
+            font-size: 0.75rem;
             font-weight: 700;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.08em;
+            color: var(--text-dim);
             text-transform: uppercase;
         }
 
         .kpi-icon {
-            display: grid;
-            place-items: center;
-            width: 31px;
-            height: 31px;
-            border-radius: 10px;
-            background: rgba(79, 163, 255, 0.09);
-            color: var(--ft-blue-bright);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: rgba(79, 163, 255, 0.08);
+            color: var(--accent-blue);
             font-size: 14px;
         }
 
         .kpi-value {
-            margin-top: 18px;
-            font-size: 30px;
-            line-height: 1;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.85rem;
             font-weight: 800;
-            letter-spacing: -0.03em;
-        }
-
-        .kpi-note {
-            margin-top: 9px;
-            color: var(--ft-text-muted);
-            font-size: 11px;
-        }
-
-        /* =========================================================
-           SECTION HEADER
-        ========================================================= */
-
-        .section-header {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            gap: 15px;
-            margin: 28px 0 13px;
-        }
-
-        .section-header h2 {
-            margin: 0;
-            font-size: 19px;
+            color: #ffffff;
+            margin-top: 0.8rem;
             letter-spacing: -0.02em;
         }
 
-        .section-header p {
-            margin: 5px 0 0;
-            color: var(--ft-text-muted);
-            font-size: 12px;
+        .kpi-note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.45rem;
         }
 
-        /* =========================================================
-           INSIGHT GRID
-        ========================================================= */
+        /* Section Headings */
+        .section-header {
+            margin: 2rem 0 1rem;
+        }
 
+        .section-header h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Recommendation Cards Grid */
         .recommendation-grid {
             display: grid;
-            grid-template-columns:
-                repeat(2, minmax(0, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
         }
 
         .recommendation-card {
+            background-color: var(--bg-kpi-card);
+            border: 1px solid var(--border-kpi);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
             position: relative;
-            overflow: hidden;
-            padding: 20px;
-            border: 1px solid var(--ft-border);
-            border-radius: var(--ft-radius);
-            background: var(--ft-panel);
-            box-shadow: var(--ft-shadow);
-            transition:
-                transform 0.2s ease,
-                border-color 0.2s ease,
-                box-shadow 0.2s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .recommendation-card:hover {
             transform: translateY(-2px);
-            border-color: rgba(79, 163, 255, 0.18);
-            box-shadow:
-                var(--ft-shadow),
-                var(--ft-glow);
+            border-color: rgba(79, 163, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
         }
 
         .recommendation-top {
             display: flex;
-            align-items: flex-start;
             justify-content: space-between;
+            align-items: flex-start;
             gap: 15px;
-        }
-
-        .recommendation-title-wrap {
-            min-width: 0;
+            margin-bottom: 1rem;
         }
 
         .recommendation-category {
-            display: inline-flex;
-            margin-bottom: 9px;
-            padding: 5px 9px;
-            border-radius: 999px;
-            background: rgba(79, 163, 255, 0.08);
-            color: var(--ft-blue-bright);
-            font-size: 10px;
-            font-weight: 750;
-            letter-spacing: 0.04em;
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: var(--accent-cyan);
             text-transform: uppercase;
+            margin-bottom: 0.4rem;
         }
 
         .recommendation-title {
-            margin: 0;
-            color: var(--ft-text);
-            font-size: 17px;
-            line-height: 1.35;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.4;
         }
 
         .priority-badge {
-            flex-shrink: 0;
-            padding: 6px 9px;
+            padding: 0.25rem 0.65rem;
             border-radius: 999px;
-            font-size: 10px;
-            font-weight: 800;
+            font-size: 0.7rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            flex-shrink: 0;
         }
 
         .priority-low {
-            background: rgba(79, 163, 255, 0.08);
-            color: var(--ft-blue-bright);
+            background: rgba(79, 163, 255, 0.1);
+            color: var(--accent-blue);
+            border: 1px solid rgba(79, 163, 255, 0.25);
         }
 
         .priority-medium {
-            background: rgba(243, 200, 107, 0.09);
-            color: var(--ft-yellow);
+            background: rgba(245, 158, 11, 0.12);
+            color: var(--status-yellow);
+            border: 1px solid rgba(245, 158, 11, 0.25);
         }
 
         .priority-high {
-            background: rgba(255, 101, 119, 0.09);
+            background: rgba(255, 82, 99, 0.12);
             color: #ff8b99;
+            border: 1px solid rgba(255, 82, 99, 0.25);
         }
 
         .priority-critical {
-            background: rgba(255, 101, 119, 0.15);
-            color: var(--ft-red);
-            box-shadow: 0 0 18px rgba(255, 101, 119, 0.08);
+            background: rgba(255, 82, 99, 0.2);
+            color: var(--status-red);
+            border: 1px solid rgba(255, 82, 99, 0.4);
+            box-shadow: 0 0 10px rgba(255, 82, 99, 0.2);
         }
 
         .recommendation-description {
-            margin: 16px 0 0;
-            color: var(--ft-text-soft);
-            font-size: 13px;
-            line-height: 1.7;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1.25rem;
         }
 
         .recommendation-block {
-            margin-top: 17px;
-            padding: 13px 14px;
-            border: 1px solid var(--ft-border-soft);
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.018);
+            margin-top: 0.85rem;
+            padding: 0.9rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: var(--radius-md);
+            background: rgba(7, 17, 31, 0.6);
         }
 
         .recommendation-block-label {
-            margin-bottom: 6px;
-            color: var(--ft-text-muted);
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 0.07em;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: var(--text-dim);
             text-transform: uppercase;
+            margin-bottom: 0.25rem;
         }
 
         .recommendation-block-text {
-            margin: 0;
-            color: var(--ft-text-soft);
-            font-size: 12px;
-            line-height: 1.65;
+            color: #dbeafe;
+            font-size: 0.85rem;
+            line-height: 1.5;
         }
 
         .recommendation-footer {
             display: grid;
-            grid-template-columns:
-                repeat(3, minmax(0, 1fr));
-            gap: 9px;
-            margin-top: 16px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
         }
 
         .meta-item {
-            padding: 10px;
-            border: 1px solid var(--ft-border-soft);
-            border-radius: 11px;
-            background: rgba(255, 255, 255, 0.014);
+            padding: 8px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            background: rgba(7, 17, 31, 0.4);
         }
 
         .meta-label {
             display: block;
-            margin-bottom: 5px;
-            color: var(--ft-text-muted);
-            font-size: 9px;
-            font-weight: 800;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--text-dim);
             text-transform: uppercase;
-            letter-spacing: 0.06em;
+            margin-bottom: 2px;
         }
 
         .meta-value {
-            color: var(--ft-text-soft);
-            font-size: 11px;
-            font-weight: 700;
+            color: #ffffff;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
 
-        /* =========================================================
-           CONFIDENCE
-        ========================================================= */
-
+        /* Confidence Progress */
         .confidence-row {
-            margin-top: 16px;
+            margin-top: 1.25rem;
         }
 
         .confidence-header {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 7px;
+            align-items: center;
+            margin-bottom: 6px;
         }
 
         .confidence-label {
-            color: var(--ft-text-muted);
-            font-size: 10px;
+            font-size: 0.7rem;
             font-weight: 700;
+            color: var(--text-dim);
             text-transform: uppercase;
         }
 
         .confidence-value {
-            color: var(--ft-blue-bright);
-            font-size: 11px;
-            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
         }
 
         .confidence-track {
-            width: 100%;
-            height: 5px;
-            overflow: hidden;
-            border-radius: 999px;
+            height: 6px;
             background: rgba(255, 255, 255, 0.06);
+            border-radius: 999px;
+            overflow: hidden;
         }
 
         .confidence-fill {
             height: 100%;
             border-radius: inherit;
-            background:
-                linear-gradient(
-                    90deg,
-                    var(--ft-blue),
-                    var(--ft-cyan)
-                );
+            background: var(--accent-gradient);
         }
 
-        /* =========================================================
-           EMPTY STATE
-        ========================================================= */
-
-        .empty-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 330px;
-            padding: 40px;
-            border: 1px dashed rgba(79, 163, 255, 0.20);
-            border-radius: var(--ft-radius);
-            background:
-                radial-gradient(
-                    circle at center,
-                    rgba(79, 163, 255, 0.055),
-                    transparent 55%
-                ),
-                var(--ft-panel);
-            text-align: center;
-        }
-
-        .empty-icon {
-            display: grid;
-            place-items: center;
-            width: 58px;
-            height: 58px;
-            margin-bottom: 18px;
-            border: 1px solid rgba(79, 163, 255, 0.16);
-            border-radius: 17px;
-            background: rgba(79, 163, 255, 0.07);
-            color: var(--ft-blue-bright);
-            font-size: 24px;
-        }
-
-        .empty-state h3 {
-            margin: 0;
-            font-size: 18px;
-        }
-
-        .empty-state p {
-            max-width: 520px;
-            margin: 9px 0 0;
-            color: var(--ft-text-muted);
-            font-size: 12px;
-            line-height: 1.7;
-        }
-
-        /* =========================================================
-           METHODOLOGY
-        ========================================================= */
-
+        /* Methodology */
         .methodology {
-            margin-top: 24px;
-            padding: 20px;
-            border: 1px solid var(--ft-border);
-            border-radius: var(--ft-radius);
-            background: var(--ft-panel);
+            margin-top: 2rem;
+            padding: 1.75rem;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            background: var(--bg-card);
+            backdrop-filter: blur(14px);
         }
 
         .methodology-title {
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 14px;
+            margin-bottom: 0.75rem;
         }
 
         .methodology-icon {
-            display: grid;
-            place-items: center;
             width: 34px;
             height: 34px;
-            border-radius: 10px;
-            background: rgba(139, 92, 246, 0.09);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: rgba(139, 92, 246, 0.1);
             color: #a78bfa;
-        }
-
-        .methodology-title h3 {
-            margin: 0;
             font-size: 15px;
         }
 
+        .methodology-title h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
         .methodology p {
-            margin: 0;
-            color: var(--ft-text-soft);
-            font-size: 12px;
-            line-height: 1.75;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.6;
         }
 
         .methodology-flow {
             display: grid;
-            grid-template-columns:
-                repeat(4, minmax(0, 1fr));
-            gap: 10px;
-            margin-top: 17px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 1.25rem;
         }
 
         .flow-item {
-            padding: 12px;
-            border: 1px solid var(--ft-border-soft);
-            border-radius: 11px;
-            background: rgba(255, 255, 255, 0.015);
+            padding: 12px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: var(--radius-md);
+            background: rgba(7, 17, 31, 0.6);
         }
 
         .flow-number {
-            color: var(--ft-blue);
-            font-size: 10px;
+            color: var(--accent-cyan);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
             font-weight: 800;
         }
 
         .flow-text {
-            margin-top: 5px;
-            color: var(--ft-text-soft);
-            font-size: 11px;
+            margin-top: 4px;
+            color: #ffffff;
+            font-size: 0.82rem;
             line-height: 1.45;
         }
 
-        /* =========================================================
-           RESPONSIVE
-        ========================================================= */
+        /* Empty States */
+        .empty-state {
+            padding: 4rem 2rem;
+            text-align: center;
+            border: 1px dashed var(--border-subtle);
+            border-radius: var(--radius-lg);
+            background: rgba(7, 17, 31, 0.45);
+            margin-bottom: 2rem;
+        }
+
+        .empty-icon {
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(79, 163, 255, 0.08);
+            border: 1px solid var(--border-subtle);
+            color: var(--accent-cyan);
+            font-size: 1.5rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .empty-state p {
+            max-width: 540px;
+            margin: 0 auto;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
 
         @media (max-width: 1180px) {
-
-            .kpi-grid {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
-
-            .control-form {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
-
-            .run-button {
-                width: 100%;
-            }
-
-            .recommendation-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .methodology-flow {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
+            .control-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .run-button { width: 100%; grid-column: span 2; }
         }
 
-        @media (max-width: 820px) {
-
-            body {
-                overflow: auto;
-            }
-
-            .page-shell {
-                display: block;
-                height: auto;
-                min-height: 100vh;
-            }
-
-            .sidebar-shell {
-                width: 100%;
-                min-width: 0;
-                height: auto;
-                max-height: none;
-                overflow: visible;
-                border-right: 0;
-                border-bottom: 1px solid var(--ft-border);
-            }
-
-            .main-shell {
-                height: auto;
-                min-height: calc(100vh - 1px);
-                overflow: visible;
-            }
-
-            .recommendations-page {
-                padding: 24px 18px 45px;
-            }
-
-            .page-header {
-                flex-direction: column;
-            }
-
-            .header-status {
-                align-self: flex-start;
-            }
-
-            .control-form {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 600px) {
-
-            .kpi-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .recommendation-footer {
-                grid-template-columns: 1fr;
-            }
-
-            .methodology-flow {
-                grid-template-columns: 1fr;
-            }
-
-            .dataset-info {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
-            .page-title {
-                font-size: 29px;
-            }
-
-            .recommendations-page {
-                padding-left: 14px;
-                padding-right: 14px;
-            }
+        @media (max-width: 992px) {
+            .sidebar-shell { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border-subtle); }
+            .main-shell { margin-left: 0; width: 100%; padding: 1.5rem; }
+            .page-header { flex-direction: column; }
+            .control-form { grid-template-columns: 1fr; }
+            .run-button { grid-column: span 1; }
         }
     </style>
 </head>
@@ -941,751 +743,283 @@
 
 <div class="page-shell">
 
-    <!-- =====================================================
-         SMART BI SIDEBAR
-    ====================================================== -->
-
+    <!-- SMART BI SIDEBAR -->
     <aside class="sidebar-shell">
         {% include "includes/smart_sidebar.html" %}
     </aside>
 
-
-    <!-- =====================================================
-         MAIN CONTENT
-    ====================================================== -->
-
+    <!-- MAIN CONTENT -->
     <main class="main-shell">
-
         <div class="recommendations-page">
 
-            <!-- =================================================
-                 HEADER
-            ================================================== -->
-
-            <header class="page-header">
-
+            <!-- HEADER -->
+            <header class="page-header fade-up">
                 <div class="header-left">
-
                     <div class="eyebrow">
                         <span class="eyebrow-dot"></span>
                         Decision Intelligence
                     </div>
-
-                    <h1 class="page-title">
-                        Recommendations
-                    </h1>
-
-                    <p class="page-subtitle">
-                        Transform analytical findings into actionable
-                        business recommendations using the selected
-                        dataset and its processed data version.
-                    </p>
-
+                    <h1 class="page-title">Recommendations</h1>
+                    <p class="page-subtitle">Transform analytical findings into actionable business interventions using the selected dataset and its processed version.</p>
                 </div>
-
                 <div class="header-status">
                     <span class="status-dot"></span>
                     Decision Engine Ready
                 </div>
-
             </header>
 
-
-            <!-- =================================================
-                 DJANGO MESSAGES
-            ================================================== -->
-
+            <!-- DJANGO MESSAGES -->
             {% if messages %}
-
                 <div class="messages">
-
                     {% for message in messages %}
-
-                        <div class="message
-                            {% if message.tags %}
-                                {{ message.tags }}
-                            {% endif %}
-                        ">
+                        <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
                             {{ message }}
                         </div>
-
                     {% endfor %}
-
                 </div>
-
             {% endif %}
 
-
-            <!-- =================================================
-                 DATASET CONTROL PANEL
-            ================================================== -->
-
-            <section class="control-panel">
-
+            <!-- DATASET CONTROL PANEL -->
+            <section class="control-panel fade-up">
                 <div class="control-heading">
-
-                    <h2>
-                        Recommendation Analysis
-                    </h2>
-
-                    <p>
-                        Select the dataset and data version that should
-                        be used to generate recommendations.
-                    </p>
-
+                    <h2>Recommendation Analysis</h2>
+                    <p>Select the dataset and processed data version that should be evaluated to generate recommendations.</p>
                 </div>
 
-
-                <form
-                    method="post"
-                    class="control-form"
-                >
-
+                <form method="post" class="control-form">
                     {% csrf_token %}
-
-                    <input
-                        type="hidden"
-                        name="action"
-                        value="generate"
-                    >
-
+                    <input type="hidden" name="action" value="generate">
 
                     <!-- DATASET -->
-
                     <div class="field">
-
-                        <label
-                            class="field-label"
-                            for="dataset"
-                        >
-                            Dataset
-                        </label>
-
-                        <select
-                            id="dataset"
-                            name="dataset"
-                            onchange="changeDataset(this)"
-                            required
-                        >
-
-                            <option value="">
-                                Select dataset
-                            </option>
-
+                        <label class="field-label" for="dataset">Dataset</label>
+                        <select id="dataset" name="dataset" onchange="changeDataset(this)" required>
+                            <option value="">Select dataset</option>
                             {% for dataset in datasets %}
-
-                                <option
-                                    value="{{ dataset.id }}"
-                                    {% if selected_dataset and selected_dataset.id == dataset.id %}
-                                        selected
-                                    {% endif %}
-                                >
-                                    {{ dataset.name }}
-                                    — {{ dataset.dataset_type }}
+                                <option value="{{ dataset.id }}" {% if selected_dataset and selected_dataset.id == dataset.id %}selected{% endif %}>
+                                    {{ dataset.name }} — {{ dataset.dataset_type }}
                                 </option>
-
                             {% endfor %}
-
                         </select>
-
                     </div>
-
 
                     <!-- VERSION -->
-
                     <div class="field">
-
-                        <label
-                            class="field-label"
-                            for="version"
-                        >
-                            Data Version
-                        </label>
-
-                        <select
-                            id="version"
-                            name="version"
-                        >
-
+                        <label class="field-label" for="version">Data Version</label>
+                        <select id="version" name="version">
                             {% for version in versions %}
-
-                                <option
-                                    value="{{ version.id }}"
-                                    {% if selected_version and selected_version.id == version.id %}
-                                        selected
-                                    {% endif %}
-                                >
-                                    Version {{ version.version_number }}
-                                    — {{ version.version_type }}
-                                    {% if version.is_current %}
-                                        — Current
-                                    {% endif %}
+                                <option value="{{ version.id }}" {% if selected_version and selected_version.id == version.id %}selected{% endif %}>
+                                    Version {{ version.version_number }} — {{ version.version_type }}
+                                    {% if version.is_current %}— Current{% endif %}
                                 </option>
-
                             {% empty %}
-
-                                <option value="">
-                                    No versions available
-                                </option>
-
+                                <option value="">No versions available</option>
                             {% endfor %}
-
                         </select>
-
                     </div>
 
-
-                    <!-- RUN -->
-
-                    <button
-                        type="submit"
-                        class="run-button"
-                    >
-                        Generate Recommendations
-                    </button>
-
+                    <!-- RUN BUTTON -->
+                    <button type="submit" class="run-button">Generate Recommendations</button>
                 </form>
 
-
                 {% if selected_dataset %}
-
                     <div class="dataset-info">
-
                         <div class="dataset-info-left">
-
-                            <p class="dataset-name">
-                                {{ selected_dataset.name }}
-                            </p>
-
+                            <p class="dataset-name">{{ selected_dataset.name }}</p>
                             <div class="dataset-meta">
-
                                 {{ selected_dataset.dataset_type }}
-
-                                {% if selected_dataset.total_rows %}
-                                    · {{ selected_dataset.total_rows }} records
-                                {% endif %}
-
-                                {% if selected_dataset.quality_score %}
-                                    · Quality {{ selected_dataset.quality_score|floatformat:1 }}%
-                                {% endif %}
-
+                                {% if selected_dataset.total_rows %} · {{ selected_dataset.total_rows }} records{% endif %}
+                                {% if selected_dataset.quality_score %} · Quality {{ selected_dataset.quality_score|floatformat:1 }}%{% endif %}
                             </div>
-
                         </div>
-
-
                         {% if selected_version %}
-
                             <div class="version-badge">
-
-                                VERSION
-                                {{ selected_version.version_number }}
-
-                                ·
-                                {{ selected_version.version_type }}
-
-                                {% if selected_version.is_current %}
-                                    · CURRENT
-                                {% endif %}
-
+                                VERSION {{ selected_version.version_number }} · {{ selected_version.version_type }}
+                                {% if selected_version.is_current %} · CURRENT{% endif %}
                             </div>
-
                         {% endif %}
-
                     </div>
-
                 {% endif %}
-
             </section>
-
 
             {% if has_recommendations %}
 
-                <!-- =================================================
-                     KPI CARDS
-                ================================================== -->
-
-                <section class="kpi-grid">
-
+                <!-- DARK THEME KPI CARDS -->
+                <section class="kpi-grid fade-up">
                     <div class="kpi-card">
-
                         <div class="kpi-top">
-
-                            <span class="kpi-label">
-                                Recommendations
-                            </span>
-
-                            <span class="kpi-icon">
-                                ✦
-                            </span>
-
+                            <span class="kpi-label">Recommendations</span>
+                            <span class="kpi-icon">✦</span>
                         </div>
-
-                        <div class="kpi-value">
-                            {{ total_recommendations }}
-                        </div>
-
-                        <div class="kpi-note">
-                            Generated from selected data version
-                        </div>
-
+                        <div class="kpi-value">{{ total_recommendations }}</div>
+                        <div class="kpi-note">Generated from selected data version</div>
                     </div>
 
-
                     <div class="kpi-card">
-
                         <div class="kpi-top">
-
-                            <span class="kpi-label">
-                                High Priority
-                            </span>
-
-                            <span class="kpi-icon">
-                                !
-                            </span>
-
+                            <span class="kpi-label">High Priority</span>
+                            <span class="kpi-icon" style="color:var(--status-red);">!</span>
                         </div>
-
-                        <div class="kpi-value">
-                            {{ high_priority_count }}
-                        </div>
-
-                        <div class="kpi-note">
-                            High and critical recommendations
-                        </div>
-
+                        <div class="kpi-value" style="color:var(--status-red);">{{ high_priority_count }}</div>
+                        <div class="kpi-note">High and critical action items</div>
                     </div>
 
-
                     <div class="kpi-card">
-
                         <div class="kpi-top">
-
-                            <span class="kpi-label">
-                                High Impact
-                            </span>
-
-                            <span class="kpi-icon">
-                                ↗
-                            </span>
-
+                            <span class="kpi-label">High Impact</span>
+                            <span class="kpi-icon">↗</span>
                         </div>
-
-                        <div class="kpi-value">
-                            {{ high_impact_count }}
-                        </div>
-
-                        <div class="kpi-note">
-                            Recommendations marked high impact
-                        </div>
-
+                        <div class="kpi-value">{{ high_impact_count }}</div>
+                        <div class="kpi-note">Items categorized as high business impact</div>
                     </div>
 
-
                     <div class="kpi-card">
-
                         <div class="kpi-top">
-
-                            <span class="kpi-label">
-                                Avg. Confidence
-                            </span>
-
-                            <span class="kpi-icon">
-                                ✓
-                            </span>
-
+                            <span class="kpi-label">Avg. Confidence</span>
+                            <span class="kpi-icon" style="color:var(--status-green);">✓</span>
                         </div>
-
-                        <div class="kpi-value">
-                            {{ average_confidence|floatformat:0 }}%
-                        </div>
-
-                        <div class="kpi-note">
-                            Engine confidence across recommendations
-                        </div>
-
+                        <div class="kpi-value">{{ average_confidence|floatformat:0 }}%</div>
+                        <div class="kpi-note">Engine model confidence average</div>
                     </div>
-
                 </section>
 
-
-                <!-- =================================================
-                     RECOMMENDATIONS
-                ================================================== -->
-
-                <div class="section-header">
-
+                <!-- RECOMMENDATIONS LIST -->
+                <div class="section-header fade-up">
                     <div>
-
-                        <h2>
-                            Actionable Recommendations
-                        </h2>
-
-                        <p>
-                            Business actions identified from the selected
-                            dataset and version.
-                        </p>
-
+                        <h2>Actionable Recommendations</h2>
+                        <p>Business strategies identified from the current dataset version.</p>
                     </div>
-
                 </div>
 
-
-                <section class="recommendation-grid">
-
+                <section class="recommendation-grid fade-up">
                     {% for recommendation in recommendations %}
-
                         <article class="recommendation-card">
-
-                            <div class="recommendation-top">
-
-                                <div class="recommendation-title-wrap">
-
-                                    <span class="recommendation-category">
-                                        {{ recommendation.category }}
+                            <div>
+                                <div class="recommendation-top">
+                                    <div class="recommendation-title-wrap">
+                                        <span class="recommendation-category">{{ recommendation.category }}</span>
+                                        <h3 class="recommendation-title">{{ recommendation.title }}</h3>
+                                    </div>
+                                    <span class="priority-badge priority-{{ recommendation.priority|lower }}">
+                                        {{ recommendation.priority }}
                                     </span>
-
-                                    <h3 class="recommendation-title">
-                                        {{ recommendation.title }}
-                                    </h3>
-
                                 </div>
 
+                                <p class="recommendation-description">{{ recommendation.description }}</p>
 
-                                <span
-                                    class="priority-badge
-                                    priority-{{ recommendation.priority|lower }}"
-                                >
-                                    {{ recommendation.priority }}
-                                </span>
-
-                            </div>
-
-
-                            <!-- DESCRIPTION -->
-
-                            <p class="recommendation-description">
-                                {{ recommendation.description }}
-                            </p>
-
-
-                            <!-- SUPPORTING INSIGHT -->
-
-                            {% if recommendation.supporting_insight %}
+                                {% if recommendation.supporting_insight %}
+                                    <div class="recommendation-block">
+                                        <div class="recommendation-block-label">Supporting Insight</div>
+                                        <p class="recommendation-block-text">{{ recommendation.supporting_insight }}</p>
+                                    </div>
+                                {% endif %}
 
                                 <div class="recommendation-block">
+                                    <div class="recommendation-block-label">Recommended Action</div>
+                                    <p class="recommendation-block-text">{{ recommendation.recommended_action }}</p>
+                                </div>
 
-                                    <div class="recommendation-block-label">
-                                        Supporting Insight
+                                {% if recommendation.expected_outcome %}
+                                    <div class="recommendation-block">
+                                        <div class="recommendation-block-label">Expected Outcome</div>
+                                        <p class="recommendation-block-text">{{ recommendation.expected_outcome }}</p>
                                     </div>
-
-                                    <p class="recommendation-block-text">
-                                        {{ recommendation.supporting_insight }}
-                                    </p>
-
-                                </div>
-
-                            {% endif %}
-
-
-                            <!-- ACTION -->
-
-                            <div class="recommendation-block">
-
-                                <div class="recommendation-block-label">
-                                    Recommended Action
-                                </div>
-
-                                <p class="recommendation-block-text">
-                                    {{ recommendation.recommended_action }}
-                                </p>
-
+                                {% endif %}
                             </div>
 
-
-                            <!-- EXPECTED OUTCOME -->
-
-                            {% if recommendation.expected_outcome %}
-
-                                <div class="recommendation-block">
-
-                                    <div class="recommendation-block-label">
-                                        Expected Outcome
+                            <div>
+                                <div class="recommendation-footer">
+                                    <div class="meta-item">
+                                        <span class="meta-label">Impact</span>
+                                        <span class="meta-value">{{ recommendation.impact_level }}</span>
                                     </div>
-
-                                    <p class="recommendation-block-text">
-                                        {{ recommendation.expected_outcome }}
-                                    </p>
-
+                                    <div class="meta-item">
+                                        <span class="meta-label">Status</span>
+                                        <span class="meta-value">{{ recommendation.status }}</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="meta-label">Category</span>
+                                        <span class="meta-value">{{ recommendation.category }}</span>
+                                    </div>
                                 </div>
 
-                            {% endif %}
-
-
-                            <!-- METADATA -->
-
-                            <div class="recommendation-footer">
-
-                                <div class="meta-item">
-
-                                    <span class="meta-label">
-                                        Impact
-                                    </span>
-
-                                    <span class="meta-value">
-                                        {{ recommendation.impact_level }}
-                                    </span>
-
+                                <div class="confidence-row">
+                                    <div class="confidence-header">
+                                        <span class="confidence-label">Confidence</span>
+                                        <span class="confidence-value">{{ recommendation.confidence|floatformat:0 }}%</span>
+                                    </div>
+                                    <div class="confidence-track">
+                                        <div class="confidence-fill" style="width: {{ recommendation.confidence }}%;"></div>
+                                    </div>
                                 </div>
-
-
-                                <div class="meta-item">
-
-                                    <span class="meta-label">
-                                        Status
-                                    </span>
-
-                                    <span class="meta-value">
-                                        {{ recommendation.status }}
-                                    </span>
-
-                                </div>
-
-
-                                <div class="meta-item">
-
-                                    <span class="meta-label">
-                                        Category
-                                    </span>
-
-                                    <span class="meta-value">
-                                        {{ recommendation.category }}
-                                    </span>
-
-                                </div>
-
                             </div>
-
-
-                            <!-- CONFIDENCE -->
-
-                            <div class="confidence-row">
-
-                                <div class="confidence-header">
-
-                                    <span class="confidence-label">
-                                        Confidence
-                                    </span>
-
-                                    <span class="confidence-value">
-                                        {{ recommendation.confidence|floatformat:0 }}%
-                                    </span>
-
-                                </div>
-
-                                <div class="confidence-track">
-
-                                    <div
-                                        class="confidence-fill"
-                                        style="width: {{ recommendation.confidence }}%;"
-                                    ></div>
-
-                                </div>
-
-                            </div>
-
                         </article>
-
                     {% endfor %}
-
                 </section>
 
-
-                <!-- =================================================
-                     METHODOLOGY
-                ================================================== -->
-
-                <section class="methodology">
-
+                <!-- METHODOLOGY -->
+                <section class="methodology fade-up">
                     <div class="methodology-title">
-
-                        <div class="methodology-icon">
-                            ✦
-                        </div>
-
-                        <h3>
-                            Recommendation Intelligence
-                        </h3>
-
+                        <div class="methodology-icon">✦</div>
+                        <h3>Recommendation Intelligence</h3>
                     </div>
-
-                    <p>
-                        Recommendations are generated from the selected
-                        processed dataset version. The engine evaluates
-                        available sales, profit, customer, product,
-                        regional, marketing, and returns information and
-                        converts detected business patterns into potential
-                        actions.
-                    </p>
-
+                    <p>Recommendations are generated from the selected processed dataset version. The engine evaluates sales, profit, customer, product, and operational signals and maps detected patterns into prioritized executive actions.</p>
 
                     <div class="methodology-flow">
-
                         <div class="flow-item">
-
-                            <div class="flow-number">
-                                01
-                            </div>
-
-                            <div class="flow-text">
-                                Select the business dataset.
-                            </div>
-
+                            <div class="flow-number">01</div>
+                            <div class="flow-text">Select business dataset.</div>
                         </div>
-
-
                         <div class="flow-item">
-
-                            <div class="flow-number">
-                                02
-                            </div>
-
-                            <div class="flow-text">
-                                Use the selected processed data version.
-                            </div>
-
+                            <div class="flow-number">02</div>
+                            <div class="flow-text">Read processed data version.</div>
                         </div>
-
-
                         <div class="flow-item">
-
-                            <div class="flow-number">
-                                03
-                            </div>
-
-                            <div class="flow-text">
-                                Detect relevant business patterns.
-                            </div>
-
+                            <div class="flow-number">03</div>
+                            <div class="flow-text">Detect operational patterns.</div>
                         </div>
-
-
                         <div class="flow-item">
-
-                            <div class="flow-number">
-                                04
-                            </div>
-
-                            <div class="flow-text">
-                                Convert findings into actionable recommendations.
-                            </div>
-
+                            <div class="flow-number">04</div>
+                            <div class="flow-text">Synthesize strategic actions.</div>
                         </div>
-
                     </div>
-
                 </section>
-
 
             {% else %}
-
-                <!-- =================================================
-                     EMPTY STATE
-                ================================================== -->
-
-                <section class="empty-state">
-
-                    <div class="empty-icon">
-                        ✦
-                    </div>
-
-                    <h3>
-                        No Recommendations Yet
-                    </h3>
-
-                    <p>
-                        Select a dataset and its data version above,
-                        then run Recommendation Analysis. The Decision
-                        Intelligence engine will analyze the available
-                        business data and generate actionable recommendations.
-                    </p>
-
+                <section class="empty-state fade-up">
+                    <div class="empty-icon">✦</div>
+                    <h3>No Recommendations Yet</h3>
+                    <p>Select a dataset and its data version above, then trigger Recommendation Analysis to generate automated decision intelligence.</p>
                 </section>
-
             {% endif %}
 
         </div>
-
     </main>
 
 </div>
 
-
 <script>
-
     function changeDataset(selectElement) {
-
         const datasetId = selectElement.value;
+        if (!datasetId) return;
 
-        if (!datasetId) {
-            return;
-        }
-
-        const currentUrl = new URL(
-            window.location.href
-        );
-
-        currentUrl.searchParams.set(
-            "dataset",
-            datasetId
-        );
-
-        currentUrl.searchParams.delete(
-            "version"
-        );
-
-        window.location.href =
-            currentUrl.toString();
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set("dataset", datasetId);
+        currentUrl.searchParams.delete("version");
+        window.location.href = currentUrl.toString();
     }
 
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector(".control-form");
+        const button = document.querySelector(".run-button");
 
-    /*
-     * Prevent accidental repeated submissions.
-     */
+        if (!form || !button) return;
 
-    document.addEventListener(
-        "DOMContentLoaded",
-        function () {
-
-            const form =
-                document.querySelector(
-                    ".control-form"
-                );
-
-            const button =
-                document.querySelector(
-                    ".run-button"
-                );
-
-            if (!form || !button) {
-                return;
-            }
-
-            form.addEventListener(
-                "submit",
-                function () {
-
-                    button.disabled = true;
-
-                    button.innerHTML =
-                        "Generating Recommendations...";
-
-                }
-            );
-
-        }
-    );
-
+        form.addEventListener("submit", function () {
+            button.disabled = true;
+            button.innerHTML = "Generating Recommendations...";
+        });
+    });
 </script>
 
 </body>
