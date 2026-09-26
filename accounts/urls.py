@@ -31,4 +31,22 @@ urlpatterns = [
         views.logout_view,
         name="logout",
     ),
+        path(
+        "settings/",
+        views.settings_view,
+        name="settings",
+    ),
+
+    path(
+        "settings/profile/",
+        views.profile_settings,
+        name="profile_settings",
+    ),
+
+path(
+    "settings/security/",
+    views.security_settings,
+    name="security_settings",
+),
 ]
+

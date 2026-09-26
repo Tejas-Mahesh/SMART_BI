@@ -1113,9 +1113,19 @@
                 </div>
 
                 <a href="{% url 'admin_dashboard:user_detail' dataset.owner.id %}" class="owner-card-hero" title="Inspect user profile">
-                    <div class="owner-avatar-stamp">
-                        {{ dataset.owner.username|first|upper }}
-                    </div>
+                   <div class="owner-avatar-stamp">
+    {% if dataset.owner.business_logo %}
+        <img
+            src="{{ dataset.owner.business_logo.url }}"
+            alt="{{ dataset.owner.company_name|default:dataset.owner.username }} logo"
+            style="width:100%; height:100%; object-fit:cover; border-radius:50%;"
+        >
+    {% elif dataset.owner.first_name %}
+        {{ dataset.owner.first_name|first|upper }}
+    {% else %}
+        {{ dataset.owner.username|first|upper }}
+    {% endif %}
+</div>
                     <div>
                         <div class="owner-label">Dataset Owner</div>
                         <div class="owner-name">{{ dataset.owner.username }}</div>

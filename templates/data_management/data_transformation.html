@@ -6,17 +6,17 @@
 Data Transformation | Smart BI
 {% endblock %}
 
-
 {% block content %}
 
 <div class="transformation-page">
 
-    <!-- HEADER -->
+    <!-- ========================================================
+         HEADER
+    ========================================================= -->
 
     <div class="transformation-header">
 
         <div>
-
             <span class="section-label">
                 DATA MANAGEMENT
             </span>
@@ -29,11 +29,10 @@ Data Transformation | Smart BI
                 Prepare your dataset for advanced analytics
                 without changing the original uploaded file.
             </p>
-
         </div>
 
         <a
-            href="{% url 'data_management:data_profiling' %}"
+            href="{% url 'data_management:profiling' %}"
             class="outline-btn"
         >
             ← Data Profiling
@@ -42,11 +41,15 @@ Data Transformation | Smart BI
     </div>
 
 
-    <!-- DATASET SELECTOR -->
+    <!-- ========================================================
+         DATASET + VERSION SELECTOR
+    ========================================================= -->
 
     {% if datasets %}
 
     <div class="transformation-selector">
+
+        <!-- DATASET -->
 
         <div class="selector-title">
 
@@ -71,6 +74,8 @@ Data Transformation | Smart BI
 
         <form method="GET">
 
+            <!-- DATASET SELECTOR -->
+
             <select
                 name="dataset"
                 onchange="this.form.submit()"
@@ -92,6 +97,48 @@ Data Transformation | Smart BI
 
             </select>
 
+
+            <!-- VERSION SELECTOR -->
+
+            {% if selected_dataset %}
+
+            <div class="version-selector">
+
+                <span class="version-selector-label">
+                    DATA VERSION
+                </span>
+
+                <select
+                    name="version"
+                    onchange="this.form.submit()"
+                >
+
+                    {% for version in versions %}
+
+                    <option
+                        value="{{ version.id }}"
+                        {% if selected_version and selected_version.id == version.id %}
+                            selected
+                        {% endif %}
+                    >
+
+                        Version {{ version.version_number }}
+                        — {{ version.version_type }}
+
+                        {% if version.is_current %}
+                            — Current
+                        {% endif %}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            {% endif %}
+
         </form>
 
     </div>
@@ -100,7 +147,48 @@ Data Transformation | Smart BI
     {% if transformation %}
 
 
-    <!-- DATASET SUMMARY -->
+    <!-- ========================================================
+         VERSION INFORMATION
+    ========================================================= -->
+
+    <div class="transformation-version-bar">
+
+        <div>
+
+            <span class="section-label">
+                SELECTED VERSION
+            </span>
+
+            <strong>
+                Version {{ transformation.version_number }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span class="version-badge {{ transformation.version_badge }}">
+                {{ transformation.version_label }}
+            </span>
+
+        </div>
+
+
+        {% if transformation.is_current %}
+
+        <div class="current-version-label">
+            CURRENT VERSION
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ========================================================
+         DATASET SUMMARY
+    ========================================================= -->
 
     <div class="transformation-summary">
 
@@ -171,12 +259,16 @@ Data Transformation | Smart BI
     </div>
 
 
-    <!-- MAIN WORKSPACE -->
+    <!-- ========================================================
+         MAIN WORKSPACE
+    ========================================================= -->
 
     <div class="transformation-workspace">
 
 
-        <!-- TRANSFORMATION CONTROLS -->
+        <!-- ====================================================
+             TRANSFORMATION CONTROLS
+        ===================================================== -->
 
         <div class="transform-panel">
 
@@ -199,13 +291,15 @@ Data Transformation | Smart BI
 
             <form
                 method="POST"
-                action="{% url 'data_management:transform_dataset' selected_dataset.id %}"
+                action="{% url 'data_management:transform_dataset' selected_dataset.id %}?version={{ selected_version.id }}"
             >
 
                 {% csrf_token %}
 
 
-                <!-- TEXT -->
+                <!-- =================================================
+                     TEXT
+                ================================================== -->
 
                 <div class="transform-group">
 
@@ -306,7 +400,9 @@ Data Transformation | Smart BI
                 </div>
 
 
-                <!-- MISSING VALUES -->
+                <!-- =================================================
+                     MISSING VALUES
+                ================================================== -->
 
                 <div class="transform-group">
 
@@ -383,7 +479,9 @@ Data Transformation | Smart BI
                 </div>
 
 
-                <!-- NUMERIC -->
+                <!-- =================================================
+                     NUMERIC
+                ================================================== -->
 
                 <div class="transform-group">
 
@@ -461,7 +559,9 @@ Data Transformation | Smart BI
                 </div>
 
 
-                <!-- DATE -->
+                <!-- =================================================
+                     DATE
+                ================================================== -->
 
                 <div class="transform-group">
 
@@ -513,6 +613,10 @@ Data Transformation | Smart BI
                 </div>
 
 
+                <!-- =================================================
+                     SUBMIT
+                ================================================== -->
+
                 <div class="transform-submit">
 
                     <div>
@@ -523,10 +627,11 @@ Data Transformation | Smart BI
 
                         <p>
                             Transformations are applied to a
-                            generated copy only.
+                            generated version only.
                         </p>
 
                     </div>
+
 
                     <button
                         type="submit"
@@ -542,7 +647,9 @@ Data Transformation | Smart BI
         </div>
 
 
-        <!-- COLUMN INFORMATION -->
+        <!-- ====================================================
+             COLUMN INFORMATION
+        ===================================================== -->
 
         <div class="columns-panel">
 
@@ -623,7 +730,9 @@ Data Transformation | Smart BI
     </div>
 
 
-    <!-- PREVIEW -->
+    <!-- ========================================================
+         PREVIEW
+    ========================================================= -->
 
     <div class="preview-panel">
 
@@ -702,7 +811,9 @@ Data Transformation | Smart BI
     {% else %}
 
 
-    <!-- EMPTY STATE -->
+    <!-- ========================================================
+         EMPTY STATE
+    ========================================================= -->
 
     <div class="transformation-empty">
 
@@ -724,7 +835,7 @@ Data Transformation | Smart BI
         </p>
 
         <a
-            href="{% url 'data_management:upload' %}"
+            href="{% url 'data_management:upload_data' %}"
             class="apply-button"
         >
             Upload Dataset →

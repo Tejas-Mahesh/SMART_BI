@@ -194,6 +194,7 @@ COLUMN_ALIASES = {
         "CampaignCost",
         "Advertising_Cost",
         "AdvertisingCost",
+        "Marketing_Spend",
     ],
 
     "Profit": [

@@ -4,20 +4,38 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
 from .forms import SignupForm, LoginForm
-
-
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
+from django.shortcuts import redirect, render
+from .forms import SignupForm, LoginForm, ChangePasswordForm
+from .forms import (
+    SignupForm,
+    LoginForm,
+    ProfileSettingsForm,
+    SecuritySettingsForm,
+)
+from django.contrib.auth import update_session_auth_hash
 def signup_view(request):
 
     if request.user.is_authenticated:
 
         if request.user.is_superuser or request.user.is_staff:
-            return redirect("admin_dashboard:dashboard")
+            return redirect(
+                "admin_dashboard:dashboard"
+            )
 
-        return redirect("core:dashboard")
+        return redirect(
+            "core:dashboard"
+        )
 
     if request.method == "POST":
 
-        form = SignupForm(request.POST)
+        form = SignupForm(
+            request.POST,
+            request.FILES
+        )
 
         if form.is_valid():
 
@@ -33,6 +51,7 @@ def signup_view(request):
             )
 
     else:
+
         form = SignupForm()
 
     return render(
@@ -42,7 +61,6 @@ def signup_view(request):
             "form": form
         }
     )
-
 
 def signup_success(request):
 
@@ -260,4 +278,101 @@ def logout_view(request):
 
     return redirect(
         "core:home"
+    )
+# ============================================================
+# USER SETTINGS
+# ============================================================
+
+@login_required
+def settings_view(request):
+
+    return render(
+        request,
+        "accounts/settings.html"
+    )
+@login_required
+def profile_settings(request):
+
+    if request.method == "POST":
+
+        form = ProfileSettingsForm(
+            request.POST,
+            request.FILES,
+            instance=request.user
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            messages.success(
+                request,
+                "Your profile has been updated successfully."
+            )
+
+            return redirect(
+                "accounts:profile_settings"
+            )
+
+    else:
+
+        form = ProfileSettingsForm(
+            instance=request.user
+        )
+
+    return render(
+        request,
+        "accounts/profile_settings.html",
+        {
+            "form": form,
+        }
+    )
+@login_required
+def security_settings(request):
+
+    if request.method == "POST":
+
+        form = ChangePasswordForm(request.POST)
+
+        if form.is_valid():
+
+            current_password = form.cleaned_data["current_password"]
+            new_password = form.cleaned_data["new_password"]
+
+            if not request.user.check_password(current_password):
+
+                form.add_error(
+                    "current_password",
+                    "Your current password is incorrect."
+                )
+
+            else:
+
+                request.user.set_password(new_password)
+                request.user.save()
+
+                update_session_auth_hash(
+                    request,
+                    request.user
+                )
+
+                messages.success(
+                    request,
+                    "Your password has been changed successfully."
+                )
+
+                return redirect(
+                    "accounts:security_settings"
+                )
+
+    else:
+
+        form = ChangePasswordForm()
+
+    return render(
+        request,
+        "accounts/security_settings.html",
+        {
+            "form": form
+        }
     )

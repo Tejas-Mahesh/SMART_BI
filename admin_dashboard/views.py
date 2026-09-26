@@ -207,8 +207,21 @@ def dashboard(request):
     # --------------------------------------------------------
 
     recent_contact_messages = (
-        ContactMessage.objects
-        .order_by("-created_at")[:8]
+    ContactMessage.objects
+    .order_by("-created_at")[:8]
+)
+
+# --------------------------------------------------------
+# MATCH CONTACT MESSAGES WITH REGISTERED USERS
+# --------------------------------------------------------
+
+    for contact in recent_contact_messages:
+        contact.registered_user = (
+        User.objects
+        .filter(
+            email__iexact=contact.email
+        )
+        .first()
     )
 
     # --------------------------------------------------------
@@ -241,6 +254,8 @@ def dashboard(request):
         "read_contact_messages": read_contact_messages,
         "replied_contact_messages": replied_contact_messages,
         "archived_contact_messages": archived_contact_messages,
+        "recent_contact_messages": recent_contact_messages,
+
         "recent_contact_messages": recent_contact_messages,
     }
 

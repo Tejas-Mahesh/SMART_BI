@@ -1,0 +1,626 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings | Smart BI</title>
+
+    <link rel="stylesheet" href="{% static 'css/smart-sidebar.css' %}">
+
+    <style>
+        /* ============================================================
+           SMART BI — SETTINGS PAGE
+           ============================================================ */
+
+        :root {
+            --bg: #06111f;
+            --bg-soft: #081827;
+            --card: #0d2033;
+            --card-light: #102840;
+            --purple: #7567f8;
+            --purple-light: #9b91ff;
+            --green: #39d98a;
+            --blue: #3fa9f5;
+            --orange: #ff9f43;
+            --red: #ff5c70;
+            --text: #f4f7fb;
+            --muted: #8ea1b5;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(117, 103, 248, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(63, 169, 245, 0.1) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(57, 217, 138, 0.04) 0%, transparent 50%);
+            background-size: 140% 140%;
+            animation: ambientDrift 20s ease-in-out infinite alternate;
+            color: var(--text);
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Ambient background movement */
+        @keyframes ambientDrift {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 50% 50%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        /* Entry Keyframes */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes borderSlide {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        /* ============================================================
+           PAGE LAYOUT
+           ============================================================ */
+
+        .settings-page {
+            min-height: 100vh;
+            margin-left: 280px;
+            padding: 42px 42px 70px;
+        }
+
+        .settings-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ============================================================
+           HEADER
+           ============================================================ */
+
+        .settings-header {
+            margin-bottom: 36px;
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .settings-eyebrow {
+            margin-bottom: 8px;
+            color: var(--blue);
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .settings-title {
+            margin: 0;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            color: var(--text);
+            text-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+        }
+
+        .settings-description {
+            max-width: 720px;
+            margin: 10px 0 0;
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* ============================================================
+           SETTINGS GRID
+           ============================================================ */
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 24px;
+        }
+
+        /* ============================================================
+           SETTINGS CARD
+           ============================================================ */
+
+        .settings-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 280px;
+            padding: 30px;
+            background: linear-gradient(155deg, var(--card-light) 0%, var(--card) 100%);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: 0 16px 36px rgba(6, 17, 31, 0.45);
+            overflow: hidden;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                        border-color 0.35s ease,
+                        box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .settings-card:nth-child(1) { animation-delay: 0.15s; }
+        .settings-card:nth-child(2) { animation-delay: 0.28s; }
+
+        /* Animated top gradient bar */
+        .settings-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--purple), var(--blue), var(--purple-light));
+            background-size: 200% 200%;
+            animation: borderSlide 4s ease infinite;
+            opacity: 0.8;
+            transition: height 0.3s ease, opacity 0.3s ease;
+        }
+
+        .settings-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(117, 103, 248, 0.35);
+            box-shadow: 0 24px 50px rgba(6, 17, 31, 0.65), 
+                        0 0 24px rgba(117, 103, 248, 0.12);
+        }
+
+        .settings-card:hover::before {
+            height: 4px;
+            opacity: 1;
+        }
+
+        /* ============================================================
+           CARD ICON
+           ============================================================ */
+
+        .settings-card-icon {
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 22px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(117, 103, 248, 0.25), rgba(63, 169, 245, 0.15));
+            border: 1px solid rgba(155, 145, 255, 0.28);
+            color: var(--text);
+            font-size: 1.35rem;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        box-shadow 0.4s ease;
+        }
+
+        .settings-card:hover .settings-card-icon {
+            transform: scale(1.08) rotate(-2deg);
+            box-shadow: 0 8px 24px rgba(117, 103, 248, 0.32);
+        }
+
+        .settings-card-title {
+            margin: 0 0 9px;
+            font-size: 1.3rem;
+            font-weight: 750;
+            color: var(--text);
+        }
+
+        .settings-card-description {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.88rem;
+            line-height: 1.65;
+        }
+
+        /* ============================================================
+           CARD CONTENT
+           ============================================================ */
+
+        .settings-card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 22px 0 28px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .settings-card-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text);
+            font-size: 0.84rem;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .settings-card-list li:hover {
+            transform: translateX(4px);
+            color: #ffffff;
+        }
+
+        .settings-card-list li::before {
+            content: "✓";
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            background: rgba(57, 217, 138, 0.14);
+            color: var(--green);
+            font-size: 0.65rem;
+            font-weight: 800;
+        }
+
+        /* ============================================================
+           BUTTON
+           ============================================================ */
+
+        .settings-card-action {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            align-self: flex-start;
+            margin-top: auto;
+            padding: 11px 18px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--purple), var(--purple-light));
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.84rem;
+            font-weight: 700;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(117, 103, 248, 0.25);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                        box-shadow 0.25s ease;
+        }
+
+        /* Action button shine sweep effect */
+        .settings-card-action::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 80%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.65s ease;
+        }
+
+        .settings-card-action:hover::after {
+            left: 140%;
+        }
+
+        .settings-card-action:hover {
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(117, 103, 248, 0.45);
+        }
+
+        .settings-card-action span {
+            margin-left: 8px;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .settings-card-action:hover span {
+            transform: translateX(4px);
+        }
+
+        /* ============================================================
+           ACCOUNT SUMMARY
+           ============================================================ */
+
+        .account-summary {
+            margin-top: 26px;
+            padding: 24px 26px;
+            background: linear-gradient(160deg, var(--card) 0%, var(--bg-soft) 100%);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: 0 14px 34px rgba(6, 17, 31, 0.35);
+            animation: fadeInUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation-delay: 0.38s;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .account-summary:hover {
+            border-color: rgba(63, 169, 245, 0.24);
+            box-shadow: 0 18px 40px rgba(6, 17, 31, 0.45);
+        }
+
+        .account-summary-title {
+            margin: 0 0 16px;
+            color: var(--text);
+            font-size: 0.86rem;
+            font-weight: 750;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .account-summary-title::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--blue);
+            box-shadow: 0 0 10px var(--blue);
+        }
+
+        .account-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .account-summary-item {
+            min-width: 0;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .account-summary-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.07);
+        }
+
+        .account-summary-label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--muted);
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .account-summary-value {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text);
+            font-size: 0.86rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Status Pills */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-badge::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        .status-badge.active::before {
+            background: var(--green);
+            box-shadow: 0 0 8px var(--green);
+        }
+
+        .status-badge.inactive::before {
+            background: var(--red);
+            box-shadow: 0 0 8px var(--red);
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+
+        @media (max-width: 1100px) {
+            .settings-page {
+                padding: 34px 28px 60px;
+            }
+
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .settings-page {
+                margin-left: 0;
+                padding: 86px 24px 50px;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .settings-page {
+                padding: 78px 16px 40px;
+            }
+
+            .settings-title {
+                font-size: 2rem;
+            }
+
+            .settings-card {
+                padding: 22px;
+            }
+
+            .account-summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include "includes/smart_sidebar.html" %}
+
+    <!-- ============================================================
+         SETTINGS PAGE
+         ============================================================ -->
+
+    <main class="settings-page">
+
+        <div class="settings-container">
+
+            <!-- ====================================================
+                 HEADER
+                 ==================================================== -->
+
+            <header class="settings-header">
+                <div class="settings-eyebrow">
+                    Account Configuration
+                </div>
+
+                <h1 class="settings-title">
+                    Settings
+                </h1>
+
+                <p class="settings-description">
+                    Manage your Smart BI profile information and account security from one place.
+                </p>
+            </header>
+
+            <!-- ====================================================
+                 SETTINGS OPTIONS
+                 ==================================================== -->
+
+            <section class="settings-grid">
+
+                <!-- Profile Card -->
+                <article class="settings-card">
+                    <div class="settings-card-icon" aria-hidden="true">
+                        👤
+                    </div>
+
+                    <h2 class="settings-card-title">
+                        Profile Settings
+                    </h2>
+
+                    <p class="settings-card-description">
+                        Manage the personal and business information associated with your Smart BI account.
+                    </p>
+
+                    <ul class="settings-card-list">
+                        <li>First and last name</li>
+                        <li>Business email</li>
+                        <li>Company information</li>
+                        <li>Phone number</li>
+                    </ul>
+
+                    <a href="{% url 'accounts:profile_settings' %}" class="settings-card-action">
+                        Edit Profile
+                        <span aria-hidden="true">→</span>
+                    </a>
+                </article>
+
+                <!-- Security Card -->
+                <article class="settings-card">
+                    <div class="settings-card-icon" aria-hidden="true">
+                        🔐
+                    </div>
+
+                    <h2 class="settings-card-title">
+                        Security Settings
+                    </h2>
+
+                    <p class="settings-card-description">
+                        Keep your Smart BI account secure by managing your account password.
+                    </p>
+
+                    <ul class="settings-card-list">
+                        <li>Verify current password</li>
+                        <li>Create a new password</li>
+                        <li>Confirm password changes</li>
+                        <li>Stay securely signed in</li>
+                    </ul>
+
+                    <a href="{% url 'accounts:security_settings' %}" class="settings-card-action">
+                        Security
+                        <span aria-hidden="true">→</span>
+                    </a>
+                </article>
+
+            </section>
+
+            <!-- ====================================================
+                 ACCOUNT SUMMARY
+                 ==================================================== -->
+
+            <section class="account-summary">
+
+                <h2 class="account-summary-title">
+                    Current Account
+                </h2>
+
+                <div class="account-summary-grid">
+
+                    <div class="account-summary-item">
+                        <span class="account-summary-label">Username</span>
+                        <span class="account-summary-value">{{ user.username }}</span>
+                    </div>
+
+                    <div class="account-summary-item">
+                        <span class="account-summary-label">Account Type</span>
+                        <span class="account-summary-value">
+                            {% if user.is_superuser %}
+                                Administrator
+                            {% elif user.is_staff %}
+                                Staff
+                            {% else %}
+                                {{ user.user_type|default:"Business User" }}
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="account-summary-item">
+                        <span class="account-summary-label">Account Status</span>
+                        <span class="account-summary-value">
+                            {% if user.is_active %}
+                                <span class="status-badge active">Active</span>
+                            {% else %}
+                                <span class="status-badge inactive">Inactive</span>
+                            {% endif %}
+                        </span>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- ============================================================
+         SIDEBAR SCRIPT
+         ============================================================ -->
+
+    <script src="{% static 'js/smart_sidebar.js' %}"></script>
+
+</body>
+</html>

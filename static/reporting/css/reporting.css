@@ -1077,3 +1077,114 @@
         width: 100%;
     }
 }
+
+/* ============================================================
+   EXPORT HISTORY
+============================================================ */
+
+.reporting-export-format {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 9px;
+    border-radius: 6px;
+    background: #f3f4f6;
+    color: #374151;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.reporting-muted {
+    color: #9ca3af;
+    font-size: 12px;
+}
+
+.reporting-history-empty {
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.reporting-history-empty h3 {
+    margin: 12px 0 8px;
+    color: #111827;
+}
+
+.reporting-history-empty p {
+    margin: 0 0 20px;
+    color: #6b7280;
+}
+
+/* ============================================================
+   EXPORT CENTER
+============================================================ */
+
+.reporting-export-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 28px;
+}
+
+.reporting-export-option {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.reporting-export-option:hover {
+    transform: translateY(-2px);
+    border-color: #cbd5e1;
+}
+
+.reporting-export-option-icon {
+    width: 54px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #f3f4f6;
+    color: #111827;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.reporting-export-option strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #111827;
+}
+
+.reporting-export-option span {
+    display: block;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.reporting-export-disabled {
+    padding: 20px;
+    border-radius: 10px;
+    background: #f9fafb;
+}
+
+.reporting-export-disabled strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.reporting-export-disabled span {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+@media (max-width: 800px) {
+
+    .reporting-export-actions {
+        grid-template-columns: 1fr;
+    }
+
+}

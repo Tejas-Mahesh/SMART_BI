@@ -1391,7 +1391,7 @@ body {
             {% endif %}
 
             <!-- DJANGO SIGNUP FORM -->
-            <form method="POST" class="signup-form" id="signupForm" novalidate>
+            <form method="POST" class="signup-form" enctype="multipart/form-data" id="signupForm" novalidate>
                 {% csrf_token %}
 
                 <!-- ROW: FIRST NAME / LAST NAME -->
@@ -1448,7 +1448,27 @@ body {
                         </div>
                     {% endif %}
                 </div>
+<div class="form-group">
 
+    <label for="{{ form.business_logo.id_for_label }}">
+        Business Logo
+    </label>
+
+    {{ form.business_logo }}
+
+    {% if form.business_logo.errors %}
+        <div class="form-error">
+            {% for error in form.business_logo.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <small>
+        Upload your company logo. PNG, JPG or JPEG.
+    </small>
+
+</div>
                 <!-- BUSINESS EMAIL -->
                 <div class="auth-field-group">
                     <label for="{{ form.email.id_for_label }}" class="auth-field-label">Business Email</label>

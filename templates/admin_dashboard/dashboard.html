@@ -1138,6 +1138,41 @@
                 transition: none !important;
             }
         }
+        .user-avatar-image {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.user-avatar-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.avatar-initial {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-initial img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
     </style>
 </head>
 <body>
@@ -1165,12 +1200,21 @@
                 <span>SYSTEM ACTIVE</span>
             </div>
 
-            <a href="{% url 'accounts:logout' %}" class="sidebar-logout" title="Log out of Smart BI">
-                <span>Logout</span>
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg>
-            </a>
+          <a href="{% url 'admin:index' %}" class="sidebar-logout" title="Open Django Admin">
+    <span>Django Admin</span>
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m0 0v10m6-6v-2m0 2a2 2 0 100 4m0-4a2 2 0 110 4m0 0v6M6 10V8m0 2a2 2 0 100 4m0-4a2 2 0 110 4m0 0v6"/>
+    </svg>
+</a>
+
+<a href="{% url 'accounts:logout' %}" class="sidebar-logout" title="Log out of Smart BI">
+    <span>Logout</span>
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+    </svg>
+</a>
         </div>
     </nav>
 
@@ -1346,9 +1390,16 @@
                                     <tr>
                                         <td>
                                             <div class="user-identity">
-                                                <div class="avatar-initial">
-                                                    {{ user.username|first|upper }}
-                                                </div>
+                                              <div class="avatar-initial">
+    {% if user.business_logo %}
+        <img
+            src="{{ user.business_logo.url }}"
+            alt="{{ user.username }} logo"
+        >
+    {% else %}
+        {{ user.username|first|upper }}
+    {% endif %}
+</div>
                                                 <div>
                                                     <div class="user-meta-name">{{ user.username }}</div>
                                                     <div class="user-meta-sub">{{ user.email }}</div>
@@ -1473,15 +1524,32 @@
                                 {% for contact in recent_contact_messages %}
                                     <tr>
                                         <td>
-                                            <div class="user-identity">
-                                                <div class="avatar-initial" style="background: linear-gradient(135deg, rgba(236,72,153,0.2), rgba(168,85,247,0.2)); color: #f472b6; border-color: rgba(236,72,153,0.3);">
-                                                    {{ contact.name|first|upper }}
-                                                </div>
-                                                <div>
-                                                    <div class="user-meta-name">{{ contact.name }}</div>
-                                                    <div class="user-meta-sub">{{ contact.email }}</div>
-                                                </div>
-                                            </div>
+                                      <div class="user-identity">
+
+    {% if user.business_logo %}
+        <div class="user-avatar-image">
+            <img
+                src="{{ user.business_logo.url }}"
+                alt="{{ user.company_name|default:user.username }} logo"
+            >
+        </div>
+    {% else %}
+        <div class="avatar-initial">
+            {{ user.username|first|upper }}
+        </div>
+    {% endif %}
+
+    <div>
+        <div class="user-meta-name">
+            {{ user.username }}
+        </div>
+
+        <div class="user-meta-sub">
+            {{ user.email }}
+        </div>
+    </div>
+
+</div>
                                         </td>
                                         <td>
                                             <div class="subject-cell" title="{{ contact.subject }}">
@@ -1593,9 +1661,18 @@
                                         <tr>
                                             <td>
                                                 <div class="user-identity">
-                                                    <div class="avatar-initial">
-                                                        {{ user.username|first|upper }}
-                                                    </div>
+                                                    {% if user.business_logo %}
+    <div class="user-avatar-image">
+        <img
+            src="{{ user.business_logo.url }}"
+            alt="{{ user.company_name|default:user.username }} logo"
+        >
+    </div>
+{% else %}
+    <div class="avatar-initial">
+        {{ user.username|first|upper }}
+    </div>
+{% endif %}
                                                     <div>
                                                         <div class="user-meta-name">{{ user.username }}</div>
                                                         <div class="user-meta-sub">{{ user.email }}</div>
@@ -1772,9 +1849,19 @@
                         {% for user in users_with_datasets %}
                             <div class="data-user-row">
                                 <div class="user-identity">
-                                    <div class="avatar-initial" style="width:34px; height:34px; font-size:12px;">
-                                        {{ user.username|first|upper }}
-                                    </div>
+                                  {% if user.business_logo %}
+    <div class="user-avatar-image" style="width:34px; height:34px;">
+        <img
+            src="{{ user.business_logo.url }}"
+            alt="{{ user.company_name|default:user.username }} logo"
+            style="width:100%; height:100%; object-fit:cover; border-radius:50%;"
+        >
+    </div>
+{% else %}
+    <div class="avatar-initial" style="width:34px; height:34px; font-size:12px;">
+        {{ user.username|first|upper }}
+    </div>
+{% endif %}
                                     <div>
                                         <div class="user-meta-name" style="font-size:12px;">{{ user.username }}</div>
                                         <div class="user-meta-sub" style="font-size:10px;">{{ user.email }}</div>

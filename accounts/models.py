@@ -32,6 +32,12 @@ class CustomUser(AbstractUser):
         blank=True
     )
 
+    business_logo = models.ImageField(
+        upload_to="business_logos/",
+        blank=True,
+        null=True
+    )
+
     phone_number = models.CharField(
         max_length=20,
         blank=True

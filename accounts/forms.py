@@ -31,31 +31,50 @@ class SignupForm(forms.ModelForm):
             "email",
             "company_name",
             "phone_number",
+            "business_logo",
         ]
 
         widgets = {
             "first_name": forms.TextInput(
-                attrs={"placeholder": "First name"}
+                attrs={
+                    "placeholder": "First name"
+                }
             ),
 
             "last_name": forms.TextInput(
-                attrs={"placeholder": "Last name"}
+                attrs={
+                    "placeholder": "Last name"
+                }
             ),
 
             "username": forms.TextInput(
-                attrs={"placeholder": "Choose a username"}
+                attrs={
+                    "placeholder": "Choose a username"
+                }
             ),
 
             "email": forms.EmailInput(
-                attrs={"placeholder": "Business email"}
+                attrs={
+                    "placeholder": "Business email"
+                }
             ),
 
             "company_name": forms.TextInput(
-                attrs={"placeholder": "Company name"}
+                attrs={
+                    "placeholder": "Company name"
+                }
             ),
 
             "phone_number": forms.TextInput(
-                attrs={"placeholder": "Phone number"}
+                attrs={
+                    "placeholder": "Phone number"
+                }
+            ),
+
+            "business_logo": forms.ClearableFileInput(
+                attrs={
+                    "accept": "image/png,image/jpeg,image/jpg"
+                }
             ),
         }
 
@@ -84,16 +103,12 @@ class SignupForm(forms.ModelForm):
         return email
 
     def clean(self):
-
         cleaned_data = super().clean()
 
         password = cleaned_data.get("password")
-        confirm_password = cleaned_data.get(
-            "confirm_password"
-        )
+        confirm_password = cleaned_data.get("confirm_password")
 
         if password and confirm_password:
-
             if password != confirm_password:
                 raise forms.ValidationError(
                     "Passwords do not match."
@@ -117,7 +132,6 @@ class SignupForm(forms.ModelForm):
             user.save()
 
         return user
-
 
 from django import forms
 
@@ -148,3 +162,206 @@ class LoginForm(forms.Form):
             }
         )
     )
+
+# ============================================================
+# PROFILE SETTINGS FORM
+# ============================================================
+
+class ProfileSettingsForm(forms.ModelForm):
+
+    class Meta:
+        model = CustomUser
+
+        fields = [
+            "first_name",
+            "last_name",
+            "email",
+            "company_name",
+            "phone_number",
+            "business_logo",
+        ]
+
+        widgets = {
+            "first_name": forms.TextInput(
+                attrs={
+                    "placeholder": "First name",
+                    "autocomplete": "given-name",
+                }
+            ),
+
+            "last_name": forms.TextInput(
+                attrs={
+                    "placeholder": "Last name",
+                    "autocomplete": "family-name",
+                }
+            ),
+
+            "email": forms.EmailInput(
+                attrs={
+                    "placeholder": "Business email",
+                    "autocomplete": "email",
+                }
+            ),
+
+            "company_name": forms.TextInput(
+                attrs={
+                    "placeholder": "Company name",
+                    "autocomplete": "organization",
+                }
+            ),
+
+            "phone_number": forms.TextInput(
+                attrs={
+                    "placeholder": "Phone number",
+                    "autocomplete": "tel",
+                }
+            ),
+        }
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+
+        if CustomUser.objects.filter(
+            email=email
+        ).exclude(
+            pk=self.instance.pk
+        ).exists():
+            raise forms.ValidationError(
+                "This email is already registered."
+            )
+
+        return email
+# ============================================================
+# SECURITY SETTINGS FORM
+# ============================================================
+
+class SecuritySettingsForm(forms.Form):
+
+    current_password = forms.CharField(
+        label="Current Password",
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "Enter your current password",
+                "autocomplete": "current-password",
+            }
+        )
+    )
+
+    new_password = forms.CharField(
+        label="New Password",
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "Enter your new password",
+                "autocomplete": "new-password",
+            }
+        )
+    )
+
+    confirm_password = forms.CharField(
+        label="Confirm New Password",
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "Confirm your new password",
+                "autocomplete": "new-password",
+            }
+        )
+    )
+
+    def __init__(self, *args, user=None, **kwargs):
+
+        super().__init__(*args, **kwargs)
+
+        self.user = user
+
+    def clean_current_password(self):
+
+        current_password = self.cleaned_data.get(
+            "current_password"
+        )
+
+        if self.user and not self.user.check_password(
+            current_password
+        ):
+            raise forms.ValidationError(
+                "Your current password is incorrect."
+            )
+
+        return current_password
+
+    def clean(self):
+
+        cleaned_data = super().clean()
+
+        new_password = cleaned_data.get(
+            "new_password"
+        )
+
+        confirm_password = cleaned_data.get(
+            "confirm_password"
+        )
+
+        if (
+            new_password
+            and confirm_password
+            and new_password != confirm_password
+        ):
+            raise forms.ValidationError(
+                "New passwords do not match."
+            )
+
+        return cleaned_data
+
+from django import forms
+from django.contrib.auth.password_validation import validate_password
+
+
+from django import forms
+from django.contrib.auth.password_validation import validate_password
+
+
+class ChangePasswordForm(forms.Form):
+
+    current_password = forms.CharField(
+        label="Current Password",
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "Enter current password",
+                "autocomplete": "current-password",
+            }
+        ),
+    )
+
+    new_password = forms.CharField(
+        label="New Password",
+        validators=[validate_password],
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "Enter new password",
+                "autocomplete": "new-password",
+            }
+        ),
+    )
+
+    confirm_password = forms.CharField(
+        label="Confirm New Password",
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "Confirm new password",
+                "autocomplete": "new-password",
+            }
+        ),
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        new_password = cleaned_data.get("new_password")
+        confirm_password = cleaned_data.get("confirm_password")
+
+        if new_password and confirm_password:
+            if new_password != confirm_password:
+                raise forms.ValidationError(
+                    "New passwords do not match."
+                )
+
+        return cleaned_data

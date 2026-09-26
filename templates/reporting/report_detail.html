@@ -40,6 +40,19 @@
             >
                 Report History
             </a>
+            <a
+    href="{% url 'reporting:export_pdf' report.id %}"
+    class="reporting-btn reporting-btn-primary"
+>
+    Export PDF
+</a>
+
+<a
+    href="{% url 'reporting:export_excel' report.id %}"
+    class="reporting-btn reporting-btn-secondary"
+>
+    Export Excel
+</a>
 
         </div>
 
@@ -400,6 +413,26 @@
 >
     PDF Unavailable
 </button>
+{% if report.status == "Completed" %}
+
+<a
+    href="{% url 'reporting:export_report_excel' report.id %}"
+    class="reporting-btn reporting-btn-primary"
+>
+    Export Excel
+</a>
+
+{% else %}
+
+<button
+    type="button"
+    class="reporting-btn reporting-btn-secondary"
+    disabled
+>
+    Excel Unavailable
+</button>
+
+{% endif %}
 
 {% endif %}
 {% endblock %}

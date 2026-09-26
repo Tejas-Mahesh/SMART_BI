@@ -762,6 +762,46 @@ body.sidebar-open {
     transform: none !important;
   }
 }
+.sidebar-user-avatar {
+    position: relative;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(117, 103, 248, 0.18),
+            rgba(63, 169, 245, 0.12)
+        );
+
+    border: 1px solid rgba(117, 103, 248, 0.35);
+}
+
+.sidebar-user-logo {
+    position: relative;
+    z-index: 2;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+    padding: 5px;
+
+    border-radius: 50%;
+    display: block;
+}
+
+.avatar-initial {
+    position: relative;
+    z-index: 2;
+}
 </style>
 
 <!-- MOBILE FLOATING TOGGLE BUTTON -->
@@ -813,9 +853,19 @@ body.sidebar-open {
     </div>
 
     <!-- 2. USER PROFILE STATUS CARD -->
-    <div class="sidebar-user">
-        <div class="sidebar-user-avatar" aria-hidden="true">
-            <div class="avatar-glow-ring"></div>
+<div class="sidebar-user">
+
+    <div class="sidebar-user-avatar" aria-hidden="true">
+
+        <div class="avatar-glow-ring"></div>
+
+        {% if not user.is_superuser and not user.is_staff and user.business_logo %}
+            <img
+                src="{{ user.business_logo.url }}"
+                alt="Business Logo"
+                class="sidebar-user-logo"
+            >
+        {% else %}
             <span class="avatar-initial">
                 {% if user.first_name %}
                     {{ user.first_name|first|upper }}
@@ -825,29 +875,41 @@ body.sidebar-open {
                     U
                 {% endif %}
             </span>
-            <span class="sidebar-user-online" title="System Online" aria-hidden="true"></span>
-        </div>
-        <div class="sidebar-user-info">
-            <span class="sidebar-user-name">
-                {% if user.first_name %}
-                    {{ user.first_name }}
-                {% elif user.username %}
-                    {{ user.username }}
-                {% else %}
-                    User
-                {% endif %}
-            </span>
-            <span class="sidebar-user-role">
-                {% if user.is_superuser %}
-                    Administrator
-                {% elif user.is_staff %}
-                    Staff
-                {% else %}
-                    {{ user.user_type|default:"Business User" }}
-                {% endif %}
-            </span>
-        </div>
+        {% endif %}
+
+        <span
+            class="sidebar-user-online"
+            title="System Online"
+            aria-hidden="true"
+        ></span>
+
     </div>
+
+    <div class="sidebar-user-info">
+
+        <span class="sidebar-user-name">
+            {% if user.first_name %}
+                {{ user.first_name }}
+            {% elif user.username %}
+                {{ user.username }}
+            {% else %}
+                User
+            {% endif %}
+        </span>
+
+        <span class="sidebar-user-role">
+            {% if user.is_superuser %}
+                Administrator
+            {% elif user.is_staff %}
+                Staff
+            {% else %}
+                {{ user.user_type|default:"Business User" }}
+            {% endif %}
+        </span>
+
+    </div>
+
+</div>
 
     <!-- 3. SCROLLABLE MIDDLE NAVIGATION -->
     <div class="sidebar-scroll-area">
@@ -867,17 +929,248 @@ body.sidebar-open {
             </div>
 
             <!-- SECTION: DATA -->
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">DATA</div>
-                <a
-                    href="{% url 'data_management:dataset_management' %}"
-                    class="sidebar-link {% if request.resolver_match.app_name == 'data_management' %}active{% endif %}"
+<!-- ============================================================
+     SECTION: DATA MANAGEMENT
+     ============================================================ -->
+
+<div class="sidebar-section">
+
+    <div
+        class="sidebar-collapsible {% if request.resolver_match.app_name == 'data_management' %}section-open{% endif %}"
+        data-section="data-management"
+    >
+
+        <button
+            type="button"
+            class="sidebar-group-button"
+            data-toggle-section="data-management"
+            aria-expanded="{% if request.resolver_match.app_name == 'data_management' %}true{% else %}false{% endif %}"
+            aria-controls="section-content-data-management"
+        >
+
+            <span class="group-title-wrap">
+
+                <span class="sidebar-section-title">
+                    DATA MANAGEMENT
+                </span>
+
+            </span>
+
+            <span
+                class="sidebar-group-chevron"
+                aria-hidden="true"
+            >
+                ›
+            </span>
+
+        </button>
+
+
+        <div
+            class="sidebar-group-content"
+            id="section-content-data-management"
+        >
+
+            <!-- 1. UPLOAD DATA -->
+
+            <a
+                href="{% url 'data_management:upload_data' %}"
+                class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'upload_data' %}active{% endif %}"
+            >
+
+                <span
+                    class="sidebar-link-icon"
+                    aria-hidden="true"
                 >
-                    <span class="sidebar-link-icon" aria-hidden="true">▣</span>
-                    <span class="sidebar-link-text">Data Management</span>
-                    <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                </a>
-            </div>
+                    ⬆️
+                </span>
+
+                <span class="sidebar-link-text">
+                    Upload Data
+                </span>
+
+                <span
+                    class="sidebar-link-arrow"
+                    aria-hidden="true"
+                >
+                    &rarr;
+                </span>
+
+            </a>
+
+
+            <!-- 2. DATASETS -->
+
+            <a
+                href="{% url 'data_management:dataset_management' %}"
+                class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'dataset_management' %}active{% endif %}"
+            >
+
+                <span
+                    class="sidebar-link-icon"
+                    aria-hidden="true"
+                >
+                    🗄️
+                </span>
+
+                <span class="sidebar-link-text">
+                    Datasets
+                </span>
+
+                <span
+                    class="sidebar-link-arrow"
+                    aria-hidden="true"
+                >
+                    &rarr;
+                </span>
+
+            </a>
+
+
+            <!-- 3. DATA QUALITY -->
+
+            <a
+                href="{% url 'data_management:quality' %}"
+                class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'quality' %}active{% endif %}"
+            >
+
+                <span
+                    class="sidebar-link-icon"
+                    aria-hidden="true"
+                >
+                    🛡️
+                </span>
+
+                <span class="sidebar-link-text">
+                    Data Quality
+                </span>
+
+                <span
+                    class="sidebar-link-arrow"
+                    aria-hidden="true"
+                >
+                    &rarr;
+                </span>
+
+            </a>
+
+
+            <!-- 4. DATA CLEANING -->
+
+            <a
+                href="{% url 'data_management:cleaning' %}"
+                class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'cleaning' %}active{% endif %}"
+            >
+
+                <span
+                    class="sidebar-link-icon"
+                    aria-hidden="true"
+                >
+                    🧹
+                </span>
+
+                <span class="sidebar-link-text">
+                    Data Cleaning
+                </span>
+
+                <span
+                    class="sidebar-link-arrow"
+                    aria-hidden="true"
+                >
+                    &rarr;
+                </span>
+
+            </a>
+
+
+            <!-- 5. DATA VALIDATION -->
+
+            <a
+                href="{% url 'data_management:validation' %}"
+                class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'validation' %}active{% endif %}"
+            >
+
+                <span
+                    class="sidebar-link-icon"
+                    aria-hidden="true"
+                >
+                    ✅
+                </span>
+
+                <span class="sidebar-link-text">
+                    Data Validation
+                </span>
+
+                <span
+                    class="sidebar-link-arrow"
+                    aria-hidden="true"
+                >
+                    &rarr;
+                </span>
+
+            </a>
+
+
+            <!-- 6. DATA PROFILING -->
+
+            <a
+                href="{% url 'data_management:profiling' %}"
+                class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'profiling' %}active{% endif %}"
+            >
+
+                <span
+                    class="sidebar-link-icon"
+                    aria-hidden="true"
+                >
+                    📊
+                </span>
+
+                <span class="sidebar-link-text">
+                    Data Profiling
+                </span>
+
+                <span
+                    class="sidebar-link-arrow"
+                    aria-hidden="true"
+                >
+                    &rarr;
+                </span>
+
+            </a>
+
+
+            <!-- 7. VERSION HISTORY -->
+
+            <a
+                href="{% url 'data_management:data_version_history' %}"
+                class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'data_version_history' %}active{% endif %}"
+            >
+
+                <span
+                    class="sidebar-link-icon"
+                    aria-hidden="true"
+                >
+                    📜
+                </span>
+
+                <span class="sidebar-link-text">
+                    Version History
+                </span>
+
+                <span
+                    class="sidebar-link-arrow"
+                    aria-hidden="true"
+                >
+                    &rarr;
+                </span>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
 
             <!-- SECTION: INTELLIGENCE (COLLAPSIBLE) -->
             <div class="sidebar-section">
@@ -903,7 +1196,7 @@ body.sidebar-open {
                             href="{% url 'analytics:business_intelligence' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'business_intelligence' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">♙</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">📈</span>
                             <span class="sidebar-link-text">Business Analytics</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -912,7 +1205,7 @@ body.sidebar-open {
                             href="{% url 'analytics:sales_intelligence' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'sales_intelligence' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">☵</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">💰</span>
                             <span class="sidebar-link-text">Sales Analytics</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -921,7 +1214,7 @@ body.sidebar-open {
                             href="{% url 'analytics:customer_intelligence' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'customer_intelligence' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">☺</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">👥</span>
                             <span class="sidebar-link-text">Customer Analytics</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -930,7 +1223,7 @@ body.sidebar-open {
                             href="{% url 'analytics:product_intelligence' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'product_intelligence' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">▥</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">📦</span>
                             <span class="sidebar-link-text">Product Analytics</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -939,7 +1232,7 @@ body.sidebar-open {
                             href="{% url 'analytics:regional_intelligence' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'regional_intelligence' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">◎</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">🌍</span>
                             <span class="sidebar-link-text">Regional Analytics</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -948,7 +1241,7 @@ body.sidebar-open {
                             href="{% url 'analytics:marketing_intelligence' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'marketing_intelligence' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">❖</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">📣</span>
                             <span class="sidebar-link-text">Marketing Analytics</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -957,7 +1250,7 @@ body.sidebar-open {
                             href="{% url 'analytics:financial_intelligence' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'financial_intelligence' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">⚑</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">💵</span>
                             <span class="sidebar-link-text">Financial Analytics</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -966,7 +1259,7 @@ body.sidebar-open {
                             href="{% url 'analytics:returns_intelligence' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'returns_intelligence' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">↺</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">🔄</span>
                             <span class="sidebar-link-text">Returns Analytics</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -998,7 +1291,7 @@ body.sidebar-open {
                             href="{% url 'advanced_insights:future_trends' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'future_trends' and request.resolver_match.app_name == 'advanced_insights' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">↗</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">🔮</span>
                             <span class="sidebar-link-text">Future Trends</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -1007,7 +1300,7 @@ body.sidebar-open {
                             href="{% url 'advanced_insights:forecasting' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'forecasting' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">!</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">📈</span>
                             <span class="sidebar-link-text">Forecasting</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -1016,7 +1309,7 @@ body.sidebar-open {
                             href="{% url 'advanced_insights:anomaly_detection' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'anomaly_detection' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">☍</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">🚨</span>
                             <span class="sidebar-link-text">Anomaly Detection</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -1025,7 +1318,7 @@ body.sidebar-open {
                             href="{% url 'advanced_insights:root_cause_analysis' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'root_cause_analysis' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">⚠</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">🔍</span>
                             <span class="sidebar-link-text">Root Cause Analysis</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -1034,7 +1327,7 @@ body.sidebar-open {
                             href="{% url 'advanced_insights:customer_segmentation' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'customer_segmentation' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">⚯</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">👥</span>
                             <span class="sidebar-link-text">Customer Segmentation</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -1042,7 +1335,7 @@ body.sidebar-open {
                             href="{% url 'advanced_insights:churn_risk_analysis' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'churn_risk_analysis' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">⚯</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">⚠️</span>
                             <span class="sidebar-link-text">Churn/Risk analysis</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -1050,7 +1343,7 @@ body.sidebar-open {
                             href="{% url 'advanced_insights:opportunity_detection' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'opportunity_detection' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">⚯</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">💡</span>
                             <span class="sidebar-link-text">Opportunity Detection</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -1082,7 +1375,7 @@ body.sidebar-open {
                             href="{% url 'decision_intelligence:recommendations' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'recommendations' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">🖒</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">💡</span>
                             <span class="sidebar-link-text">Recommendations</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -1091,7 +1384,7 @@ body.sidebar-open {
                             href="{% url 'decision_intelligence:what_if_simulator' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'what_if_simulator' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">∿</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">🎲</span>
                             <span class="sidebar-link-text">What-If Simulator</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -1100,7 +1393,7 @@ body.sidebar-open {
                             href="{% url 'decision_intelligence:scenario_planning' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'scenario_planning' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">▨</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">🧩</span>
                             <span class="sidebar-link-text">Scenario Planning</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -1109,7 +1402,7 @@ body.sidebar-open {
                             href="{% url 'decision_intelligence:business_alerts' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'business_alerts' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">⍾</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">🚨</span>
                             <span class="sidebar-link-text">Business Alerts</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -1118,7 +1411,7 @@ body.sidebar-open {
                             href="{% url 'decision_intelligence:action_center' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'action_center' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">✓</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">✅</span>
                             <span class="sidebar-link-text">Action Center</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -1127,7 +1420,7 @@ body.sidebar-open {
                             href="{% url 'decision_intelligence:decision_impact_analysis' %}"
                             class="sidebar-link {% if request.resolver_match.url_name == 'decision_impact_analysis' %}active{% endif %}"
                         >
-                            <span class="sidebar-link-icon" aria-hidden="true">✓</span>
+                            <span class="sidebar-link-icon" aria-hidden="true">📊</span>
                             <span class="sidebar-link-text">Decision Impact Analysis</span>
                             <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                         </a>
@@ -1137,7 +1430,7 @@ body.sidebar-open {
             </div>
 
             <!-- SECTION: REPORTING -->
-            <div class="sidebar-section">
+            <!-- <div class="sidebar-section">
                 <div class="sidebar-section-title">REPORTING</div>
                 <a
                     href="#"
@@ -1155,7 +1448,7 @@ body.sidebar-open {
                     <span class="sidebar-link-text">Custom Reports</span>
                     <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
                 </a>
-            </div>
+            </div> -->
 
             <!-- SECTION: ADMINISTRATION (RESTRICTED TO STAFF & SUPERUSERS) -->
             {% if user.is_staff or user.is_superuser %}
@@ -1196,13 +1489,13 @@ body.sidebar-open {
             <div class="sidebar-section">
                 <div class="sidebar-section-title">SYSTEM</div>
                 <a
-                    href="#"
-                    class="sidebar-link sidebar-settings-link"
+                    href="{% url 'accounts:settings'%}"
+                    class="sidebar-link {% if request.resolver_match.app_name == 'settings' and request.resolver_match.url_name == 'users' %}active{% endif %}"
                     title="Platform Settings coming soon"
                 >
                     <span class="sidebar-link-icon" aria-hidden="true">⚙</span>
                     <span class="sidebar-link-text">Settings</span>
-                    <span class="sidebar-badge-coming-soon" aria-hidden="true">Soon</span>
+                    <span class="sidebar-badge-coming-soon" aria-hidden="true"></span>
                 </a>
             </div>
 

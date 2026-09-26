@@ -20,6 +20,14 @@ from .models import (
     ReportExport,
 )
 from django.http import HttpResponse
+from django.core.files.base import ContentFile
+from django.utils import timezone
+
+from .models import (
+    Report,
+    CustomReport,
+    ReportExport,
+)
 # ============================================================
 # APPROVAL CHECK
 # ============================================================
@@ -743,3 +751,353 @@ def export_report_pdf(request, report_id):
         "reporting:report_detail",
         report_id=report.id,
     )
+# ============================================================
+# EXCEL EXPORT
+# ============================================================
+
+@login_required
+def export_report_excel(request, report_id):
+    """
+    Generate and download an Excel export
+    for a completed report.
+    """
+
+    if not user_is_approved(request):
+        return render(
+            request,
+            "accounts/access_denied.html",
+            {
+                "message": (
+                    "Your account has not been approved "
+                    "by the administrator yet."
+                )
+            },
+        )
+
+    report = get_object_or_404(
+        Report.objects.select_related(
+            "dataset",
+            "dataset_version",
+        ),
+        id=report_id,
+        owner=request.user,
+    )
+
+    if report.status != "Completed":
+
+        return redirect(
+            "reporting:report_detail",
+            report_id=report.id,
+        )
+
+    try:
+
+        from .services.excel_export import (
+            generate_excel_export,
+        )
+
+        export = generate_excel_export(
+            report
+        )
+
+        if export.file:
+
+            response = HttpResponse(
+                export.file.open("rb").read(),
+                content_type=(
+                    "application/vnd.openxmlformats-"
+                    "officedocument.spreadsheetml.sheet"
+                ),
+            )
+
+            response[
+                "Content-Disposition"
+            ] = (
+                "attachment; "
+                f'filename="{export.file.name.split("/")[-1]}"'
+            )
+
+            return response
+
+    except Exception as exc:
+
+        ReportExport.objects.filter(
+            report=report,
+            export_type="Excel",
+            status="Generating",
+        ).update(
+            status="Failed",
+            error_message=str(exc),
+        )
+
+    return redirect(
+        "reporting:report_detail",
+        report_id=report.id,
+    )
+# ============================================================
+# EXPORT HISTORY
+# ============================================================
+
+@login_required
+def export_history(request):
+    """
+    Display all PDF and Excel exports belonging
+    to the current user's reports.
+    """
+
+    if not user_is_approved(request):
+        return render(
+            request,
+            "accounts/access_denied.html",
+            {
+                "message": (
+                    "Your account has not been approved "
+                    "by the administrator yet."
+                )
+            },
+        )
+
+    exports = (
+        ReportExport.objects
+        .filter(
+            report__owner=request.user,
+        )
+        .select_related(
+            "report",
+            "report__dataset",
+            "report__dataset_version",
+        )
+        .order_by(
+            "-created_at",
+        )
+    )
+
+    # --------------------------------------------------------
+    # SEARCH
+    # --------------------------------------------------------
+
+    search_query = request.GET.get(
+        "search",
+        "",
+    ).strip()
+
+    if search_query:
+
+        exports = exports.filter(
+            Q(
+                report__name__icontains=search_query
+            )
+            |
+            Q(
+                report__dataset__name__icontains=search_query
+            )
+        )
+
+    # --------------------------------------------------------
+    # EXPORT TYPE
+    # --------------------------------------------------------
+
+    selected_type = request.GET.get(
+        "export_type",
+        "",
+    ).strip()
+
+    if selected_type in {
+        "PDF",
+        "Excel",
+    }:
+
+        exports = exports.filter(
+            export_type=selected_type,
+        )
+
+    # --------------------------------------------------------
+    # STATUS
+    # --------------------------------------------------------
+
+    selected_status = request.GET.get(
+        "status",
+        "",
+    ).strip()
+
+    if selected_status in {
+        "Generating",
+        "Completed",
+        "Failed",
+    }:
+
+        exports = exports.filter(
+            status=selected_status,
+        )
+
+    # --------------------------------------------------------
+    # CONTEXT
+    # --------------------------------------------------------
+
+    context = reporting_context(request)
+
+    context.update(
+        {
+            "exports": exports,
+            "search_query": search_query,
+            "selected_type": selected_type,
+            "selected_status": selected_status,
+        }
+    )
+
+    return render(
+        request,
+        "reporting/export_history.html",
+        context,
+    )
+
+# ============================================================
+# PDF EXPORT
+# ============================================================
+
+@login_required
+def export_pdf(request, report_id):
+
+    if not user_is_approved(request):
+        return render(
+            request,
+            "accounts/access_denied.html",
+            {
+                "message": (
+                    "Your account has not been approved "
+                    "by the administrator yet."
+                )
+            },
+        )
+
+    report = get_object_or_404(
+        Report.objects.select_related(
+            "dataset",
+            "dataset_version",
+        ),
+        id=report_id,
+        owner=request.user,
+    )
+
+    export = ReportExport.objects.create(
+        report=report,
+        export_type="PDF",
+        status="Generating",
+    )
+
+    try:
+
+        from .services.export_engine import (
+            generate_pdf_export,
+        )
+
+        pdf_bytes = generate_pdf_export(report)
+
+        filename = (
+            f"report_{report.id}_"
+            f"{timezone.now().strftime('%Y%m%d_%H%M%S')}.pdf"
+        )
+
+        export.file.save(
+            filename,
+            ContentFile(pdf_bytes),
+            save=False,
+        )
+
+        export.status = "Completed"
+        export.completed_at = timezone.now()
+        export.error_message = ""
+
+        export.save()
+
+        return redirect(
+            "reporting:report_detail",
+            report_id=report.id,
+        )
+
+    except Exception as exc:
+
+        export.status = "Failed"
+        export.error_message = str(exc)
+        export.save()
+
+        return redirect(
+            "reporting:report_detail",
+            report_id=report.id,
+        )
+
+
+# ============================================================
+# EXCEL EXPORT
+# ============================================================
+
+@login_required
+def export_excel(request, report_id):
+
+    if not user_is_approved(request):
+        return render(
+            request,
+            "accounts/access_denied.html",
+            {
+                "message": (
+                    "Your account has not been approved "
+                    "by the administrator yet."
+                )
+            },
+        )
+
+    report = get_object_or_404(
+        Report.objects.select_related(
+            "dataset",
+            "dataset_version",
+        ),
+        id=report_id,
+        owner=request.user,
+    )
+
+    export = ReportExport.objects.create(
+        report=report,
+        export_type="Excel",
+        status="Generating",
+    )
+
+    try:
+
+        from .services.export_engine import (
+            generate_excel_export,
+        )
+
+        excel_bytes = generate_excel_export(report)
+
+        filename = (
+            f"report_{report.id}_"
+            f"{timezone.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+        )
+
+        export.file.save(
+            filename,
+            ContentFile(excel_bytes),
+            save=False,
+        )
+
+        export.status = "Completed"
+        export.completed_at = timezone.now()
+        export.error_message = ""
+
+        export.save()
+
+        return redirect(
+            "reporting:report_detail",
+            report_id=report.id,
+        )
+
+    except Exception as exc:
+
+        export.status = "Failed"
+        export.error_message = str(exc)
+        export.save()
+
+        return redirect(
+            "reporting:report_detail",
+            report_id=report.id,
+        )

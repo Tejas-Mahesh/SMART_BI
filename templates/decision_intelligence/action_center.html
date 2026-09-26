@@ -1,1092 +1,703 @@
-
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Action Center | Smart Business Intelligence</title>
 
-    <title>Action Center | Smart BI</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --ft-bg: #07111f;
-            --ft-bg-deep: #040b15;
+            --bg-base: #040911;
+            --bg-surface: #07111f;
+            --bg-card: rgba(11, 23, 42, 0.72);
+            --bg-card-hover: rgba(16, 32, 59, 0.85);
 
-            --ft-panel: rgba(13, 27, 46, 0.94);
-            --ft-panel-strong: rgba(16, 32, 55, 0.97);
-            --ft-panel-soft: rgba(255, 255, 255, 0.025);
+            /* Deep Dark KPI Surfaces */
+            --bg-kpi-card: #050d18;
+            --border-kpi: rgba(255, 255, 255, 0.06);
 
-            --ft-border: rgba(255, 255, 255, 0.075);
-            --ft-border-soft: rgba(255, 255, 255, 0.045);
+            --border-subtle: rgba(79, 163, 255, 0.14);
+            --border-focus: rgba(79, 163, 255, 0.45);
+            
+            --accent-blue: #4fa3ff;
+            --accent-cyan: #22d3ee;
+            --accent-purple: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #4fa3ff 0%, #22d3ee 100%);
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: rgba(190, 211, 235, 0.65);
+            
+            --status-green: #10b981;
+            --status-yellow: #f59e0b;
+            --status-red: #ff5263;
 
-            --ft-text: #f2f7ff;
-            --ft-text-soft: rgba(218, 231, 245, 0.68);
-            --ft-text-muted: rgba(190, 208, 229, 0.46);
-
-            --ft-blue: #4fa3ff;
-            --ft-blue-bright: #74b9ff;
-            --ft-cyan: #22d3ee;
-            --ft-purple: #8b5cf6;
-            --ft-green: #48d597;
-            --ft-yellow: #f3c86b;
-            --ft-red: #ff6577;
-
-            --ft-radius: 18px;
-
-            --ft-shadow:
-                0 18px 55px rgba(0, 0, 0, 0.22);
-
-            --ft-glow:
-                0 0 35px rgba(79, 163, 255, 0.12);
-
-            --ft-sidebar-width: 260px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
         }
 
         * {
             box-sizing: border-box;
-        }
-
-        html {
-            min-height: 100%;
-            background: var(--ft-bg-deep);
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
             min-height: 100vh;
-
-            background:
-                radial-gradient(
-                    circle at 15% 0%,
-                    rgba(79, 163, 255, 0.08),
-                    transparent 32%
-                ),
-                radial-gradient(
-                    circle at 90% 15%,
-                    rgba(34, 211, 238, 0.045),
-                    transparent 28%
-                ),
-                linear-gradient(
-                    135deg,
-                    var(--ft-bg-deep),
-                    var(--ft-bg)
-                );
-
-            color: var(--ft-text);
-
-            font-family:
-                Inter,
-                ui-sans-serif,
-                system-ui,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                sans-serif;
+            background-image: 
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(79, 163, 255, 0.12), transparent),
+                radial-gradient(circle 600px at 0% 100%, rgba(34, 211, 238, 0.04), transparent);
+            background-attachment: fixed;
+            display: flex;
+            overflow-x: hidden;
         }
 
-        button,
-        input,
-        select,
-        textarea {
-            font: inherit;
+        /* Ambient Glow & Entrance Animations */
+        @keyframes subtlePulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.08); }
         }
 
-        /* ============================================================
-           PAGE LAYOUT
-        ============================================================ */
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
+        .fade-up {
+            animation: cardEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Layout Structure */
         .action-center-layout {
-            min-height: 100vh;
             display: flex;
             width: 100%;
+            min-height: 100vh;
         }
 
         .smart-sidebar-wrapper {
-            width: var(--ft-sidebar-width);
-            min-width: var(--ft-sidebar-width);
-            position: relative;
-            z-index: 20;
+            width: 270px;
+            background: var(--bg-surface);
+            border-right: 1px solid var(--border-subtle);
+            flex-shrink: 0;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            z-index: 1000;
+            padding: 1.75rem 1.25rem;
         }
 
         .action-center-main {
+            margin-left: 270px;
             flex: 1;
-            min-width: 0;
-            padding: 28px 30px 60px;
+            width: calc(100% - 270px);
+            min-height: 100vh;
+            padding: 2.5rem 3.5rem;
+            overflow-y: auto;
         }
 
         .action-center-content {
-            width: 100%;
-            max-width: 1500px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        /* ============================================================
-           HEADER
-        ============================================================ */
-
+        /* Page Header */
         .page-header {
             display: flex;
-            align-items: flex-start;
             justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-subtle);
+            margin-bottom: 2rem;
             gap: 24px;
-            margin-bottom: 26px;
         }
 
         .page-header-copy {
-            min-width: 0;
+            max-width: 750px;
         }
 
         .eyebrow {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-
-            margin-bottom: 10px;
-
-            color: var(--ft-blue-bright);
-
-            font-size: 12px;
+            font-size: 0.75rem;
             font-weight: 700;
-            letter-spacing: 0.13em;
+            letter-spacing: 0.12em;
+            color: var(--accent-cyan);
+            margin-bottom: 0.65rem;
             text-transform: uppercase;
         }
 
         .eyebrow-dot {
-            width: 7px;
-            height: 7px;
-
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-
-            background: var(--ft-blue);
-
-            box-shadow:
-                0 0 12px rgba(79, 163, 255, 0.75);
+            background: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-cyan);
+            animation: subtlePulse 2.5s infinite;
         }
 
         .page-title {
-            margin: 0;
-
-            color: var(--ft-text);
-
-            font-size: clamp(28px, 3vw, 40px);
-            line-height: 1.08;
-            font-weight: 750;
-            letter-spacing: -0.035em;
+            font-size: 2.15rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            margin-bottom: 0.4rem;
         }
 
         .page-description {
-            max-width: 760px;
-
-            margin: 11px 0 0;
-
-            color: var(--ft-text-soft);
-
-            font-size: 14px;
-            line-height: 1.7;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
 
-        /* ============================================================
-           DATASET SELECTOR
-        ============================================================ */
+        /* Messages */
+        .messages {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
+        .message {
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            background: rgba(79, 163, 255, 0.08);
+            border: 1px solid var(--border-subtle);
+            color: #dbeafe;
+        }
+
+        /* Dataset Selector Card */
         .dataset-selector-card {
-            padding: 20px;
+            background: var(--bg-card);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            position: relative;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            padding: 1.75rem;
+            margin-bottom: 2rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
 
-            margin-bottom: 22px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(16, 32, 55, 0.98),
-                    rgba(10, 23, 40, 0.96)
-                );
-
-            border: 1px solid var(--ft-border);
-
-            border-radius: var(--ft-radius);
-
-            box-shadow: var(--ft-shadow);
+        .dataset-selector-card:hover {
+            border-color: var(--border-focus);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
         }
 
         .selector-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            gap: 18px;
-
-            margin-bottom: 17px;
+            margin-bottom: 1.5rem;
         }
 
         .section-title {
-            margin: 0;
-
-            color: var(--ft-text);
-
-            font-size: 16px;
+            font-size: 1.25rem;
             font-weight: 700;
+            color: #ffffff;
+            margin: 0;
         }
 
         .section-subtitle {
-            margin: 5px 0 0;
-
-            color: var(--ft-text-muted);
-
-            font-size: 12px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
             line-height: 1.5;
         }
 
         .selector-grid {
             display: grid;
-            grid-template-columns:
-                minmax(0, 1.3fr)
-                minmax(0, 1fr);
-
-            gap: 15px;
+            grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+            gap: 1.25rem;
         }
 
         .field {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 0.5rem;
+            min-width: 0;
         }
 
         .field label {
-            color: var(--ft-text-soft);
-
-            font-size: 12px;
-            font-weight: 650;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
         }
 
         .field select,
         .field input,
         .field textarea {
             width: 100%;
-
-            padding: 12px 13px;
-
-            color: var(--ft-text);
-
-            background: rgba(4, 11, 21, 0.72);
-
-            border: 1px solid var(--ft-border);
-
-            border-radius: 11px;
-
+            height: 44px;
+            padding: 0 1rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+            background-color: var(--bg-surface);
+            color: var(--text-main);
+            font-size: 0.9rem;
+            font-family: inherit;
             outline: none;
-
-            transition:
-                border-color 0.18s ease,
-                box-shadow 0.18s ease,
-                background 0.18s ease;
+            transition: all 0.2s ease;
         }
 
         .field select {
+            appearance: none;
             cursor: pointer;
-        }
-
-        .field select option {
-            color: #0b1727;
-            background: #ffffff;
-        }
-
-        .field input::placeholder,
-        .field textarea::placeholder {
-            color: var(--ft-text-muted);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234fa3ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
         }
 
         .field select:focus,
         .field input:focus,
         .field textarea:focus {
-            border-color: rgba(79, 163, 255, 0.62);
-
-            background: rgba(5, 15, 28, 0.92);
-
-            box-shadow:
-                0 0 0 3px rgba(79, 163, 255, 0.08);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(79, 163, 255, 0.15);
         }
 
-        /* ============================================================
-           DATASET INFO
-        ============================================================ */
+        .field select option {
+            background: #07111f;
+            color: #f8fafc;
+        }
 
+        .field textarea {
+            height: auto;
+            min-height: 90px;
+            padding: 0.75rem 1rem;
+            resize: vertical;
+        }
+
+        .field input::placeholder,
+        .field textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Dataset Info Pills */
         .dataset-info {
             display: flex;
             flex-wrap: wrap;
-
-            gap: 9px;
-
-            margin-top: 15px;
+            gap: 10px;
+            margin-top: 1.5rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .info-pill {
             display: inline-flex;
             align-items: center;
-            gap: 7px;
-
-            padding: 7px 11px;
-
-            color: var(--ft-text-soft);
-
-            background: rgba(255, 255, 255, 0.025);
-
-            border: 1px solid var(--ft-border-soft);
-
+            gap: 6px;
+            padding: 6px 14px;
+            border: 1px solid var(--border-subtle);
             border-radius: 999px;
-
-            font-size: 11px;
+            background: rgba(7, 17, 31, 0.6);
+            color: var(--text-muted);
+            font-size: 0.8rem;
         }
 
         .info-pill strong {
-            color: var(--ft-text);
+            color: #ffffff;
         }
 
-        /* ============================================================
-           SUMMARY
-        ============================================================ */
-
+        /* DARK THEME KPI SUMMARY CARDS */
         .summary-grid {
             display: grid;
-
-            grid-template-columns:
-                repeat(6, minmax(0, 1fr));
-
-            gap: 13px;
-
-            margin-bottom: 22px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
         }
 
         .summary-card {
-            min-height: 112px;
+            background-color: var(--bg-kpi-card);
+            border: 1px solid var(--border-kpi);
+            border-radius: var(--radius-md);
+            padding: 1.4rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
 
-            padding: 17px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(13, 27, 46, 0.95),
-                    rgba(8, 20, 35, 0.95)
-                );
-
-            border: 1px solid var(--ft-border);
-
-            border-radius: 15px;
-
-            box-shadow:
-                0 12px 32px rgba(0, 0, 0, 0.16);
+        .summary-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(79, 163, 255, 0.3);
         }
 
         .summary-label {
-            color: var(--ft-text-muted);
-
-            font-size: 11px;
-            font-weight: 650;
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
-            letter-spacing: 0.07em;
         }
 
         .summary-value {
-            margin-top: 10px;
-
-            color: var(--ft-text);
-
-            font-size: 28px;
-            line-height: 1;
-
-            font-weight: 750;
-            letter-spacing: -0.025em;
+            margin-top: 0.6rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.02em;
         }
 
-        .summary-card.blue {
-            border-color: rgba(79, 163, 255, 0.16);
-        }
+        .summary-card.blue .summary-value { color: var(--accent-cyan); }
+        .summary-card.yellow .summary-value { color: var(--status-yellow); }
+        .summary-card.green .summary-value { color: var(--status-green); }
+        .summary-card.red .summary-value { color: var(--status-red); }
 
-        .summary-card.blue .summary-value {
-            color: var(--ft-blue-bright);
-        }
-
-        .summary-card.green {
-            border-color: rgba(72, 213, 151, 0.16);
-        }
-
-        .summary-card.green .summary-value {
-            color: var(--ft-green);
-        }
-
-        .summary-card.yellow {
-            border-color: rgba(243, 200, 107, 0.16);
-        }
-
-        .summary-card.yellow .summary-value {
-            color: var(--ft-yellow);
-        }
-
-        .summary-card.red {
-            border-color: rgba(255, 101, 119, 0.16);
-        }
-
-        .summary-card.red .summary-value {
-            color: var(--ft-red);
-        }
-
-        /* ============================================================
-           MAIN GRID
-        ============================================================ */
-
+        /* Main Grid (Panels) */
         .main-grid {
             display: grid;
-
-            grid-template-columns:
-                minmax(330px, 390px)
-                minmax(0, 1fr);
-
-            gap: 20px;
-
+            grid-template-columns: minmax(330px, 400px) minmax(0, 1fr);
+            gap: 1.5rem;
             align-items: start;
+            margin-bottom: 2rem;
         }
 
         .panel {
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(13, 27, 46, 0.96),
-                    rgba(8, 20, 35, 0.96)
-                );
-
-            border: 1px solid var(--ft-border);
-
-            border-radius: var(--ft-radius);
-
-            box-shadow: var(--ft-shadow);
-
+            background: var(--bg-card);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            position: relative;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
             overflow: hidden;
         }
 
         .panel-header {
-            padding: 19px 20px;
-
-            border-bottom: 1px solid var(--ft-border-soft);
+            padding: 1.5rem 1.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .panel-body {
-            padding: 20px;
+            padding: 1.75rem;
         }
-
-        /* ============================================================
-           CREATE ACTION
-        ============================================================ */
 
         .form-stack {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-        }
-
-        textarea {
-            min-height: 92px;
-            resize: vertical;
+            gap: 1.1rem;
         }
 
         .form-row {
             display: grid;
-
-            grid-template-columns:
-                repeat(2, minmax(0, 1fr));
-
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 12px;
         }
 
         .primary-button {
-            width: 100%;
-
+            height: 44px;
+            padding: 0 24px;
+            border: none;
+            border-radius: var(--radius-md);
+            background: var(--accent-gradient);
+            color: #040911;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-
             gap: 8px;
-
-            margin-top: 4px;
-
-            padding: 12px 16px;
-
-            color: #ffffff;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #348be8,
-                    #4fa3ff
-                );
-
-            border: 1px solid rgba(116, 185, 255, 0.3);
-
-            border-radius: 11px;
-
-            cursor: pointer;
-
-            font-size: 13px;
-            font-weight: 700;
-
-            box-shadow:
-                0 10px 26px rgba(31, 110, 190, 0.22);
-
-            transition:
-                transform 0.18s ease,
-                box-shadow 0.18s ease;
+            box-shadow: 0 4px 18px rgba(34, 211, 238, 0.25);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
         }
 
         .primary-button:hover {
-            transform: translateY(-1px);
-
-            box-shadow:
-                0 14px 32px rgba(31, 110, 190, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(79, 163, 255, 0.35);
         }
 
-        .primary-button:active {
-            transform: translateY(0);
-        }
-
-        /* ============================================================
-           ACTION LIST
-        ============================================================ */
-
-        .actions-panel {
-            min-width: 0;
-        }
-
+        /* Action List */
         .actions-header-row {
             display: flex;
-
             align-items: center;
             justify-content: space-between;
-
             gap: 15px;
         }
 
         .action-count {
-            display: inline-flex;
-            align-items: center;
-
-            padding: 6px 10px;
-
-            color: var(--ft-blue-bright);
-
-            background: rgba(79, 163, 255, 0.08);
-
-            border: 1px solid rgba(79, 163, 255, 0.14);
-
+            padding: 4px 12px;
+            border: 1px solid var(--border-subtle);
             border-radius: 999px;
-
-            font-size: 11px;
+            background: rgba(7, 17, 31, 0.6);
+            color: var(--accent-cyan);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
             font-weight: 700;
         }
 
         .actions-list {
             display: flex;
             flex-direction: column;
-
-            gap: 12px;
+            gap: 14px;
         }
 
         .action-card {
-            padding: 17px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(16, 32, 55, 0.82),
-                    rgba(8, 20, 35, 0.76)
-                );
-
-            border: 1px solid var(--ft-border-soft);
-
-            border-radius: 15px;
-
-            transition:
-                border-color 0.18s ease,
-                transform 0.18s ease,
-                background 0.18s ease;
+            background-color: var(--bg-kpi-card);
+            border: 1px solid var(--border-kpi);
+            border-radius: var(--radius-md);
+            padding: 1.4rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
         .action-card:hover {
-            transform: translateY(-1px);
-
-            border-color: rgba(79, 163, 255, 0.16);
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(18, 36, 61, 0.9),
-                    rgba(9, 22, 39, 0.84)
-                );
+            transform: translateY(-2px);
+            border-color: rgba(79, 163, 255, 0.3);
         }
 
         .action-top {
             display: flex;
-
             justify-content: space-between;
             align-items: flex-start;
-
             gap: 15px;
         }
 
         .action-title {
             margin: 0;
-
-            color: var(--ft-text);
-
-            font-size: 15px;
-            line-height: 1.4;
+            color: #ffffff;
+            font-size: 1.1rem;
             font-weight: 700;
+            line-height: 1.4;
         }
 
         .action-description {
-            margin: 7px 0 0;
-
-            color: var(--ft-text-soft);
-
-            font-size: 12px;
-            line-height: 1.65;
+            margin-top: 6px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.6;
         }
 
         .badge-group {
             display: flex;
             flex-wrap: wrap;
-
             justify-content: flex-end;
-
             gap: 6px;
-
             flex-shrink: 0;
         }
 
         .badge {
             display: inline-flex;
             align-items: center;
-
-            padding: 5px 8px;
-
-            border-radius: 7px;
-
-            font-size: 10px;
-            font-weight: 750;
-
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
             white-space: nowrap;
         }
 
-        .badge-critical {
-            color: var(--ft-red);
+        .badge-critical { background: rgba(255, 82, 99, 0.15); color: var(--status-red); border: 1px solid rgba(255, 82, 99, 0.35); }
+        .badge-high { background: rgba(255, 139, 152, 0.12); color: #ff9ca8; border: 1px solid rgba(255, 139, 152, 0.3); }
+        .badge-medium { background: rgba(245, 158, 11, 0.12); color: var(--status-yellow); border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-low { background: rgba(79, 163, 255, 0.1); color: var(--accent-blue); border: 1px solid rgba(79, 163, 255, 0.25); }
 
-            background: rgba(255, 101, 119, 0.09);
-
-            border: 1px solid rgba(255, 101, 119, 0.17);
-        }
-
-        .badge-high {
-            color: #ff9d8c;
-
-            background: rgba(255, 101, 119, 0.065);
-
-            border: 1px solid rgba(255, 101, 119, 0.12);
-        }
-
-        .badge-medium {
-            color: var(--ft-yellow);
-
-            background: rgba(243, 200, 107, 0.075);
-
-            border: 1px solid rgba(243, 200, 107, 0.14);
-        }
-
-        .badge-low {
-            color: var(--ft-blue-bright);
-
-            background: rgba(79, 163, 255, 0.075);
-
-            border: 1px solid rgba(79, 163, 255, 0.14);
-        }
-
-        .badge-new {
-            color: var(--ft-blue-bright);
-
-            background: rgba(79, 163, 255, 0.075);
-
-            border: 1px solid rgba(79, 163, 255, 0.14);
-        }
-
-        .badge-planned {
-            color: var(--ft-purple);
-
-            background: rgba(139, 92, 246, 0.08);
-
-            border: 1px solid rgba(139, 92, 246, 0.15);
-        }
-
-        .badge-progress {
-            color: var(--ft-cyan);
-
-            background: rgba(34, 211, 238, 0.07);
-
-            border: 1px solid rgba(34, 211, 238, 0.13);
-        }
-
-        .badge-completed {
-            color: var(--ft-green);
-
-            background: rgba(72, 213, 151, 0.07);
-
-            border: 1px solid rgba(72, 213, 151, 0.13);
-        }
-
-        .badge-cancelled {
-            color: var(--ft-text-muted);
-
-            background: rgba(255, 255, 255, 0.035);
-
-            border: 1px solid var(--ft-border-soft);
-        }
+        .badge-new { background: rgba(79, 163, 255, 0.1); color: var(--accent-cyan); border: 1px solid rgba(79, 163, 255, 0.25); }
+        .badge-planned { background: rgba(139, 92, 246, 0.12); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.3); }
+        .badge-progress { background: rgba(34, 211, 238, 0.12); color: var(--accent-cyan); border: 1px solid rgba(34, 211, 238, 0.3); }
+        .badge-completed { background: rgba(16, 185, 129, 0.12); color: var(--status-green); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .badge-cancelled { background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid rgba(255, 255, 255, 0.1); }
 
         .action-meta {
             display: grid;
-
-            grid-template-columns:
-                repeat(3, minmax(0, 1fr));
-
-            gap: 9px;
-
-            margin-top: 15px;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+            margin-top: 1rem;
         }
 
         .meta-box {
-            padding: 10px;
-
-            background: rgba(255, 255, 255, 0.022);
-
-            border: 1px solid var(--ft-border-soft);
-
-            border-radius: 10px;
+            padding: 8px 10px;
+            background: rgba(7, 17, 31, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 8px;
         }
 
         .meta-label {
-            color: var(--ft-text-muted);
-
-            font-size: 9px;
+            color: var(--text-dim);
+            font-size: 0.65rem;
             font-weight: 700;
-
             text-transform: uppercase;
             letter-spacing: 0.06em;
         }
 
         .meta-value {
-            margin-top: 5px;
-
-            color: var(--ft-text-soft);
-
-            font-size: 11px;
-            line-height: 1.35;
+            margin-top: 4px;
+            color: #ffffff;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
 
         .action-text-box {
-            margin-top: 13px;
-            padding: 12px 13px;
-
-            background: rgba(79, 163, 255, 0.035);
-
-            border-left: 2px solid rgba(79, 163, 255, 0.5);
-
-            border-radius: 0 9px 9px 0;
+            margin-top: 0.85rem;
+            padding: 10px 14px;
+            background: rgba(79, 163, 255, 0.04);
+            border-left: 2px solid var(--accent-blue);
+            border-radius: 0 8px 8px 0;
         }
 
         .action-text-label {
-            margin-bottom: 5px;
-
-            color: var(--ft-blue-bright);
-
-            font-size: 10px;
-            font-weight: 750;
-
+            margin-bottom: 4px;
+            color: var(--accent-cyan);
+            font-size: 0.7rem;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.06em;
         }
 
         .action-text-content {
-            color: var(--ft-text-soft);
-
-            font-size: 12px;
-            line-height: 1.6;
+            color: #dbeafe;
+            font-size: 0.85rem;
+            line-height: 1.55;
         }
 
         .action-footer {
             display: flex;
-
             justify-content: space-between;
             align-items: center;
-
             gap: 12px;
-
-            margin-top: 14px;
-            padding-top: 13px;
-
-            border-top: 1px solid var(--ft-border-soft);
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
         }
 
         .created-time {
-            color: var(--ft-text-muted);
-
-            font-size: 10px;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
         }
 
         .status-form {
             display: flex;
             align-items: center;
-            gap: 7px;
+            gap: 8px;
         }
 
         .status-form select {
-            padding: 7px 9px;
-
-            color: var(--ft-text-soft);
-
-            background: rgba(4, 11, 21, 0.72);
-
-            border: 1px solid var(--ft-border);
-
-            border-radius: 8px;
-
+            height: 34px;
+            padding: 0 10px;
+            color: var(--text-main);
+            background: rgba(4, 11, 21, 0.85);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
             outline: none;
-
-            font-size: 10px;
-        }
-
-        .status-form select option {
-            color: #0b1727;
-            background: #ffffff;
+            font-size: 0.75rem;
         }
 
         .status-update-button {
-            padding: 7px 10px;
-
-            color: var(--ft-blue-bright);
-
-            background: rgba(79, 163, 255, 0.07);
-
-            border: 1px solid rgba(79, 163, 255, 0.14);
-
-            border-radius: 8px;
-
+            height: 34px;
+            padding: 0 12px;
+            color: #040911;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 6px;
             cursor: pointer;
-
-            font-size: 10px;
+            font-size: 0.75rem;
             font-weight: 700;
+            transition: opacity 0.2s ease;
         }
 
         .status-update-button:hover {
-            background: rgba(79, 163, 255, 0.12);
+            opacity: 0.9;
         }
 
-        /* ============================================================
-           EMPTY STATE
-        ============================================================ */
-
+        /* Empty State */
         .empty-state {
-            padding: 55px 25px;
-
+            padding: 4rem 2rem;
             text-align: center;
+            border: 1px dashed var(--border-subtle);
+            border-radius: var(--radius-lg);
+            background: rgba(7, 17, 31, 0.45);
         }
 
         .empty-icon {
             width: 52px;
             height: 52px;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
-            margin: 0 auto 15px;
-
-            color: var(--ft-blue-bright);
-
-            background: rgba(79, 163, 255, 0.07);
-
-            border: 1px solid rgba(79, 163, 255, 0.12);
-
-            border-radius: 15px;
-
-            font-size: 22px;
+            margin: 0 auto 1.25rem;
+            border-radius: 50%;
+            background: rgba(79, 163, 255, 0.08);
+            border: 1px solid var(--border-subtle);
+            color: var(--accent-cyan);
+            font-size: 1.5rem;
         }
 
         .empty-title {
-            margin: 0;
-
-            color: var(--ft-text);
-
-            font-size: 15px;
+            font-size: 1.2rem;
             font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.4rem;
         }
 
         .empty-description {
-            max-width: 460px;
-
-            margin: 8px auto 0;
-
-            color: var(--ft-text-muted);
-
-            font-size: 12px;
-            line-height: 1.65;
+            max-width: 480px;
+            margin: 0 auto;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.6;
         }
-
-        /* ============================================================
-           MESSAGES
-        ============================================================ */
-
-        .messages {
-            display: flex;
-            flex-direction: column;
-            gap: 9px;
-
-            margin-bottom: 18px;
-        }
-
-        .message {
-            padding: 12px 14px;
-
-            color: var(--ft-text-soft);
-
-            background: rgba(79, 163, 255, 0.055);
-
-            border: 1px solid rgba(79, 163, 255, 0.12);
-
-            border-radius: 10px;
-
-            font-size: 12px;
-        }
-
-        /* ============================================================
-           NO DATASET STATE
-        ============================================================ */
 
         .no-dataset {
-            padding: 60px 25px;
-
+            padding: 4rem 2rem;
             text-align: center;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(13, 27, 46, 0.95),
-                    rgba(8, 20, 35, 0.95)
-                );
-
-            border: 1px solid var(--ft-border);
-
-            border-radius: var(--ft-radius);
-
-            box-shadow: var(--ft-shadow);
+            border: 1px dashed var(--border-subtle);
+            border-radius: var(--radius-lg);
+            background: var(--bg-card);
         }
 
         .no-dataset h2 {
-            margin: 0;
-
-            color: var(--ft-text);
-
-            font-size: 20px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
         }
 
         .no-dataset p {
             max-width: 500px;
-
-            margin: 9px auto 0;
-
-            color: var(--ft-text-muted);
-
-            font-size: 13px;
-            line-height: 1.65;
+            margin: 0 auto;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
         }
 
-        /* ============================================================
-           RESPONSIVE
-        ============================================================ */
-
         @media (max-width: 1250px) {
-            .summary-grid {
-                grid-template-columns:
-                    repeat(3, minmax(0, 1fr));
-            }
+            .summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         }
 
         @media (max-width: 1050px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .create-panel {
-                order: 1;
-            }
-
-            .actions-panel {
-                order: 2;
-            }
+            .main-grid { grid-template-columns: 1fr; }
         }
 
-        @media (max-width: 800px) {
-            .smart-sidebar-wrapper {
-                width: 0;
-                min-width: 0;
-            }
-
-            .action-center-main {
-                padding: 20px 16px 45px;
-            }
-
-            .page-header {
-                flex-direction: column;
-            }
-
-            .selector-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .summary-grid {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
-
-            .action-meta {
-                grid-template-columns: 1fr;
-            }
-
-            .action-top {
-                flex-direction: column;
-            }
-
-            .badge-group {
-                justify-content: flex-start;
-            }
+        @media (max-width: 992px) {
+            .smart-sidebar-wrapper { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border-subtle); }
+            .action-center-main { margin-left: 0; width: 100%; padding: 1.5rem; }
+            .page-header { flex-direction: column; }
+            .selector-grid { grid-template-columns: 1fr; }
+            .action-meta { grid-template-columns: 1fr; }
+            .action-top { flex-direction: column; }
+            .badge-group { justify-content: flex-start; margin-top: 0.5rem; }
         }
 
         @media (max-width: 520px) {
-            .summary-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .action-footer {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .status-form {
-                width: 100%;
-            }
-
-            .status-form select {
-                flex: 1;
-            }
+            .summary-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .action-footer { flex-direction: column; align-items: flex-start; gap: 8px; }
+            .status-form { width: 100%; }
+            .status-form select { flex: 1; }
         }
     </style>
 </head>
@@ -1095,894 +706,356 @@
 
 <div class="action-center-layout">
 
-    <!-- ============================================================
-         LEFT SMART SIDEBAR
-    ============================================================ -->
-
+    <!-- LEFT SMART SIDEBAR -->
     <aside class="smart-sidebar-wrapper">
         {% include "includes/smart_sidebar.html" %}
     </aside>
 
-
-    <!-- ============================================================
-         MAIN CONTENT
-    ============================================================ -->
-
+    <!-- MAIN CONTENT -->
     <main class="action-center-main">
-
         <div class="action-center-content">
 
-            <!-- ====================================================
-                 HEADER
-            ==================================================== -->
-
-            <header class="page-header">
-
+            <!-- HEADER -->
+            <header class="page-header fade-up">
                 <div class="page-header-copy">
-
                     <div class="eyebrow">
                         <span class="eyebrow-dot"></span>
                         Decision Intelligence
                     </div>
-
-                    <h1 class="page-title">
-                        Action Center
-                    </h1>
-
-                    <p class="page-description">
-                        Turn business recommendations and alerts into
-                        trackable actions. Create, prioritize, assign,
-                        and monitor actions through completion.
-                    </p>
-
+                    <h1 class="page-title">Action Center</h1>
+                    <p class="page-description">Turn business recommendations and alerts into trackable actions. Create, prioritize, assign, and monitor tasks through completion.</p>
                 </div>
-
             </header>
 
-
-            <!-- ====================================================
-                 MESSAGES
-            ==================================================== -->
-
+            <!-- MESSAGES -->
             {% if messages %}
                 <div class="messages">
-
                     {% for message in messages %}
-
-                        <div class="message">
-                            {{ message }}
-                        </div>
-
+                        <div class="message">{{ message }}</div>
                     {% endfor %}
-
                 </div>
             {% endif %}
 
-
             {% if datasets %}
-
-                <!-- ================================================
-                     DATASET SELECTOR
-                ================================================= -->
-
-                <section class="dataset-selector-card">
-
+                <!-- DATASET SELECTOR -->
+                <section class="dataset-selector-card fade-up">
                     <div class="selector-header">
-
                         <div>
-                            <h2 class="section-title">
-                                Action Workspace
-                            </h2>
-
-                            <p class="section-subtitle">
-                                Select the dataset and version that
-                                the actions belong to.
-                            </p>
+                            <h2 class="section-title">Action Workspace</h2>
+                            <p class="section-subtitle">Select the dataset and version associated with your operational tasks.</p>
                         </div>
-
                     </div>
-
 
                     <div class="selector-grid">
-
                         <div class="field">
-
-                            <label for="datasetSelector">
-                                Dataset
-                            </label>
-
-                            <select
-                                id="datasetSelector"
-                                onchange="changeDataset(this.value)"
-                            >
-
+                            <label for="datasetSelector">Dataset</label>
+                            <select id="datasetSelector" onchange="changeDataset(this.value)">
                                 {% for dataset in datasets %}
-
-                                    <option
-                                        value="{{ dataset.id }}"
-                                        {% if selected_dataset and dataset.id == selected_dataset.id %}
-                                            selected
-                                        {% endif %}
-                                    >
-                                        {{ dataset.name }}
-                                        — {{ dataset.dataset_type }}
+                                    <option value="{{ dataset.id }}" {% if selected_dataset and dataset.id == selected_dataset.id %}selected{% endif %}>
+                                        {{ dataset.name }} — {{ dataset.dataset_type }}
                                     </option>
-
                                 {% endfor %}
-
                             </select>
-
                         </div>
-
 
                         <div class="field">
-
-                            <label for="versionSelector">
-                                Dataset Version
-                            </label>
-
-                            <select
-                                id="versionSelector"
-                                onchange="changeVersion(this.value)"
-                            >
-
+                            <label for="versionSelector">Dataset Version</label>
+                            <select id="versionSelector" onchange="changeVersion(this.value)">
                                 {% for version in versions %}
-
-                                    <option
-                                        value="{{ version.id }}"
-                                        {% if selected_version and version.id == selected_version.id %}
-                                            selected
-                                        {% endif %}
-                                    >
-                                        Version {{ version.version_number }}
-                                        — {{ version.version_type }}
-                                        {% if version.is_current %}
-                                            — Current
-                                        {% endif %}
+                                    <option value="{{ version.id }}" {% if selected_version and version.id == selected_version.id %}selected{% endif %}>
+                                        Version {{ version.version_number }} — {{ version.version_type }}
+                                        {% if version.is_current %}— Current{% endif %}
                                     </option>
-
                                 {% endfor %}
-
                             </select>
-
                         </div>
-
                     </div>
 
-
                     {% if selected_dataset and selected_version %}
-
                         <div class="dataset-info">
-
                             <div class="info-pill">
-                                Dataset:
-                                <strong>
-                                    {{ selected_dataset.name }}
-                                </strong>
+                                Dataset: <strong>{{ selected_dataset.name }}</strong>
                             </div>
-
                             <div class="info-pill">
-                                Type:
-                                <strong>
-                                    {{ selected_dataset.dataset_type }}
-                                </strong>
+                                Type: <strong>{{ selected_dataset.dataset_type }}</strong>
                             </div>
-
                             <div class="info-pill">
-                                Version:
-                                <strong>
-                                    {{ selected_version.version_number }}
-                                </strong>
+                                Version: <strong>{{ selected_version.version_number }}</strong>
                             </div>
-
                             <div class="info-pill">
-                                Rows:
-                                <strong>
-                                    {{ selected_version.total_rows|default:selected_dataset.total_rows }}
-                                </strong>
+                                Rows: <strong>{{ selected_version.total_rows|default:selected_dataset.total_rows }}</strong>
                             </div>
-
                         </div>
-
                     {% endif %}
-
                 </section>
-
 
                 {% if selected_dataset and selected_version %}
-
-                    <!-- ============================================
-                         SUMMARY
-                    ============================================= -->
-
-                    <section class="summary-grid">
-
+                    <!-- DARK THEME KPI SUMMARY CARDS -->
+                    <section class="summary-grid fade-up">
                         <div class="summary-card blue">
-                            <div class="summary-label">
-                                Total Actions
-                            </div>
-
-                            <div class="summary-value">
-                                {{ total_actions }}
-                            </div>
+                            <div class="summary-label">Total Actions</div>
+                            <div class="summary-value">{{ total_actions }}</div>
                         </div>
 
-
                         <div class="summary-card blue">
-                            <div class="summary-label">
-                                New
-                            </div>
-
-                            <div class="summary-value">
-                                {{ status_summary.new }}
-                            </div>
+                            <div class="summary-label">New</div>
+                            <div class="summary-value">{{ status_summary.new }}</div>
                         </div>
-
 
                         <div class="summary-card yellow">
-                            <div class="summary-label">
-                                Planned
-                            </div>
-
-                            <div class="summary-value">
-                                {{ status_summary.planned }}
-                            </div>
+                            <div class="summary-label">Planned</div>
+                            <div class="summary-value">{{ status_summary.planned }}</div>
                         </div>
-
 
                         <div class="summary-card">
-                            <div class="summary-label">
-                                In Progress
-                            </div>
-
-                            <div class="summary-value">
-                                {{ status_summary.in_progress }}
-                            </div>
+                            <div class="summary-label">In Progress</div>
+                            <div class="summary-value" style="color: var(--accent-cyan);">{{ status_summary.in_progress }}</div>
                         </div>
-
 
                         <div class="summary-card green">
-                            <div class="summary-label">
-                                Completed
-                            </div>
-
-                            <div class="summary-value">
-                                {{ status_summary.completed }}
-                            </div>
+                            <div class="summary-label">Completed</div>
+                            <div class="summary-value">{{ status_summary.completed }}</div>
                         </div>
-
 
                         <div class="summary-card red">
-                            <div class="summary-label">
-                                Critical
-                            </div>
-
-                            <div class="summary-value">
-                                {{ priority_summary.critical }}
-                            </div>
+                            <div class="summary-label">Critical</div>
+                            <div class="summary-value">{{ priority_summary.critical }}</div>
                         </div>
-
                     </section>
 
+                    <!-- MAIN GRID -->
+                    <section class="main-grid fade-up">
 
-                    <!-- ============================================
-                         MAIN GRID
-                    ============================================= -->
-
-                    <section class="main-grid">
-
-
-                        <!-- ========================================
-                             CREATE ACTION
-                        ========================================= -->
-
+                        <!-- CREATE ACTION -->
                         <div class="panel create-panel">
-
                             <div class="panel-header">
-
-                                <h2 class="section-title">
-                                    Create Action
-                                </h2>
-
-                                <p class="section-subtitle">
-                                    Add a business action for the
-                                    selected dataset version.
-                                </p>
-
+                                <h2 class="section-title">Create Action</h2>
+                                <p class="section-subtitle">Add a business task for the selected dataset version.</p>
                             </div>
 
-
                             <div class="panel-body">
-
-                                <form
-                                    method="post"
-                                    class="form-stack"
-                                >
-
+                                <form method="post" class="form-stack">
                                     {% csrf_token %}
-
-                                    <input
-                                        type="hidden"
-                                        name="action"
-                                        value="create"
-                                    >
-
-                                    <input
-                                        type="hidden"
-                                        name="dataset"
-                                        value="{{ selected_dataset.id }}"
-                                    >
-
-                                    <input
-                                        type="hidden"
-                                        name="version"
-                                        value="{{ selected_version.id }}"
-                                    >
-
+                                    <input type="hidden" name="action" value="create">
+                                    <input type="hidden" name="dataset" value="{{ selected_dataset.id }}">
+                                    <input type="hidden" name="version" value="{{ selected_version.id }}">
 
                                     <div class="field">
-
-                                        <label for="title">
-                                            Action Title
-                                        </label>
-
-                                        <input
-                                            type="text"
-                                            id="title"
-                                            name="title"
-                                            placeholder="Enter action title"
-                                            maxlength="255"
-                                            required
-                                        >
-
+                                        <label for="title">Action Title</label>
+                                        <input type="text" id="title" name="title" placeholder="Enter action title" maxlength="255" required>
                                     </div>
-
 
                                     <div class="field">
-
-                                        <label for="description">
-                                            Description
-                                        </label>
-
-                                        <textarea
-                                            id="description"
-                                            name="description"
-                                            placeholder="Describe the business situation..."
-                                        ></textarea>
-
+                                        <label for="description">Description</label>
+                                        <textarea id="description" name="description" placeholder="Describe the business situation..."></textarea>
                                     </div>
-
 
                                     <div class="field">
-
-                                        <label for="action_text">
-                                            Action
-                                        </label>
-
-                                        <textarea
-                                            id="action_text"
-                                            name="action_text"
-                                            placeholder="What needs to be done?"
-                                            required
-                                        ></textarea>
-
+                                        <label for="action_text">Action</label>
+                                        <textarea id="action_text" name="action_text" placeholder="What needs to be done?" required></textarea>
                                     </div>
-
 
                                     <div class="field">
-
-                                        <label for="expected_outcome">
-                                            Expected Outcome
-                                        </label>
-
-                                        <textarea
-                                            id="expected_outcome"
-                                            name="expected_outcome"
-                                            placeholder="What outcome is expected?"
-                                        ></textarea>
-
+                                        <label for="expected_outcome">Expected Outcome</label>
+                                        <textarea id="expected_outcome" name="expected_outcome" placeholder="What outcome is expected?"></textarea>
                                     </div>
-
 
                                     <div class="form-row">
-
                                         <div class="field">
-
-                                            <label for="category">
-                                                Category
-                                            </label>
-
-                                            <select
-                                                id="category"
-                                                name="category"
-                                            >
-
+                                            <label for="category">Category</label>
+                                            <select id="category" name="category">
                                                 {% for value, label in category_choices %}
-
-                                                    <option value="{{ value }}">
-                                                        {{ label }}
-                                                    </option>
-
+                                                    <option value="{{ value }}">{{ label }}</option>
                                                 {% endfor %}
-
                                             </select>
-
                                         </div>
-
 
                                         <div class="field">
-
-                                            <label for="priority">
-                                                Priority
-                                            </label>
-
-                                            <select
-                                                id="priority"
-                                                name="priority"
-                                            >
-
+                                            <label for="priority">Priority</label>
+                                            <select id="priority" name="priority">
                                                 {% for value, label in priority_choices %}
-
-                                                    <option
-                                                        value="{{ value }}"
-                                                        {% if value == "Medium" %}
-                                                            selected
-                                                        {% endif %}
-                                                    >
-                                                        {{ label }}
-                                                    </option>
-
+                                                    <option value="{{ value }}" {% if value == "Medium" %}selected{% endif %}>{{ label }}</option>
                                                 {% endfor %}
-
                                             </select>
-
                                         </div>
-
                                     </div>
-
 
                                     <div class="field">
-
-                                        <label for="due_date">
-                                            Due Date
-                                        </label>
-
-                                        <input
-                                            type="date"
-                                            id="due_date"
-                                            name="due_date"
-                                        >
-
+                                        <label for="due_date">Due Date</label>
+                                        <input type="date" id="due_date" name="due_date">
                                     </div>
 
-
-                                    <button
-                                        type="submit"
-                                        class="primary-button"
-                                    >
+                                    <button type="submit" class="primary-button">
                                         + Create Action
                                     </button>
-
                                 </form>
-
                             </div>
-
                         </div>
 
-
-                        <!-- ========================================
-                             ACTION LIST
-                        ========================================= -->
-
+                        <!-- ACTION LIST -->
                         <div class="panel actions-panel">
-
                             <div class="panel-header">
-
                                 <div class="actions-header-row">
-
                                     <div>
-
-                                        <h2 class="section-title">
-                                            Action Items
-                                        </h2>
-
-                                        <p class="section-subtitle">
-                                            Track and manage actions
-                                            associated with this
-                                            dataset version.
-                                        </p>
-
+                                        <h2 class="section-title">Action Items</h2>
+                                        <p class="section-subtitle">Manage actions assigned to this version.</p>
                                     </div>
-
-                                    <span class="action-count">
-                                        {{ total_actions }} Actions
-                                    </span>
-
+                                    <span class="action-count">{{ total_actions }} Actions</span>
                                 </div>
-
                             </div>
-
 
                             <div class="panel-body">
-
                                 {% if action_items %}
-
                                     <div class="actions-list">
-
                                         {% for item in action_items %}
-
                                             <article class="action-card">
-
                                                 <div class="action-top">
-
                                                     <div>
-
-                                                        <h3 class="action-title">
-                                                            {{ item.title }}
-                                                        </h3>
-
+                                                        <h3 class="action-title">{{ item.title }}</h3>
                                                         {% if item.description %}
-
-                                                            <p class="action-description">
-                                                                {{ item.description }}
-                                                            </p>
-
+                                                            <p class="action-description">{{ item.description }}</p>
                                                         {% endif %}
-
                                                     </div>
-
 
                                                     <div class="badge-group">
-
                                                         {% if item.priority == "Critical" %}
-
-                                                            <span class="badge badge-critical">
-                                                                Critical
-                                                            </span>
-
+                                                            <span class="badge badge-critical">Critical</span>
                                                         {% elif item.priority == "High" %}
-
-                                                            <span class="badge badge-high">
-                                                                High
-                                                            </span>
-
+                                                            <span class="badge badge-high">High</span>
                                                         {% elif item.priority == "Medium" %}
-
-                                                            <span class="badge badge-medium">
-                                                                Medium
-                                                            </span>
-
+                                                            <span class="badge badge-medium">Medium</span>
                                                         {% else %}
-
-                                                            <span class="badge badge-low">
-                                                                Low
-                                                            </span>
-
+                                                            <span class="badge badge-low">Low</span>
                                                         {% endif %}
-
 
                                                         {% if item.status == "New" %}
-
-                                                            <span class="badge badge-new">
-                                                                New
-                                                            </span>
-
+                                                            <span class="badge badge-new">New</span>
                                                         {% elif item.status == "Planned" %}
-
-                                                            <span class="badge badge-planned">
-                                                                Planned
-                                                            </span>
-
+                                                            <span class="badge badge-planned">Planned</span>
                                                         {% elif item.status == "In Progress" %}
-
-                                                            <span class="badge badge-progress">
-                                                                In Progress
-                                                            </span>
-
+                                                            <span class="badge badge-progress">In Progress</span>
                                                         {% elif item.status == "Completed" %}
-
-                                                            <span class="badge badge-completed">
-                                                                Completed
-                                                            </span>
-
+                                                            <span class="badge badge-completed">Completed</span>
                                                         {% else %}
-
-                                                            <span class="badge badge-cancelled">
-                                                                Cancelled
-                                                            </span>
-
+                                                            <span class="badge badge-cancelled">Cancelled</span>
                                                         {% endif %}
-
                                                     </div>
-
                                                 </div>
-
 
                                                 <div class="action-meta">
-
                                                     <div class="meta-box">
-
-                                                        <div class="meta-label">
-                                                            Category
-                                                        </div>
-
-                                                        <div class="meta-value">
-                                                            {{ item.category }}
-                                                        </div>
-
+                                                        <div class="meta-label">Category</div>
+                                                        <div class="meta-value">{{ item.category }}</div>
                                                     </div>
-
-
                                                     <div class="meta-box">
-
-                                                        <div class="meta-label">
-                                                            Source
-                                                        </div>
-
-                                                        <div class="meta-value">
-                                                            {{ item.source_type }}
-                                                        </div>
-
+                                                        <div class="meta-label">Source</div>
+                                                        <div class="meta-value">{{ item.source_type }}</div>
                                                     </div>
-
-
                                                     <div class="meta-box">
-
-                                                        <div class="meta-label">
-                                                            Due Date
-                                                        </div>
-
+                                                        <div class="meta-label">Due Date</div>
                                                         <div class="meta-value">
-
-                                                            {% if item.due_date %}
-                                                                {{ item.due_date|date:"d M Y" }}
-                                                            {% else %}
-                                                                No due date
-                                                            {% endif %}
-
+                                                            {% if item.due_date %}{{ item.due_date|date:"d M Y" }}{% else %}No due date{% endif %}
                                                         </div>
-
                                                     </div>
-
                                                 </div>
-
 
                                                 <div class="action-text-box">
-
-                                                    <div class="action-text-label">
-                                                        Recommended Action
-                                                    </div>
-
-                                                    <div class="action-text-content">
-                                                        {{ item.action }}
-                                                    </div>
-
+                                                    <div class="action-text-label">Recommended Action</div>
+                                                    <div class="action-text-content">{{ item.action }}</div>
                                                 </div>
-
 
                                                 {% if item.expected_outcome %}
-
                                                     <div class="action-text-box">
-
-                                                        <div class="action-text-label">
-                                                            Expected Outcome
-                                                        </div>
-
-                                                        <div class="action-text-content">
-                                                            {{ item.expected_outcome }}
-                                                        </div>
-
+                                                        <div class="action-text-label">Expected Outcome</div>
+                                                        <div class="action-text-content">{{ item.expected_outcome }}</div>
                                                     </div>
-
                                                 {% endif %}
-
 
                                                 {% if item.recommendation %}
-
                                                     <div class="action-text-box">
-
-                                                        <div class="action-text-label">
-                                                            Source Recommendation
-                                                        </div>
-
-                                                        <div class="action-text-content">
-                                                            {{ item.recommendation.title }}
-                                                        </div>
-
+                                                        <div class="action-text-label">Source Recommendation</div>
+                                                        <div class="action-text-content">{{ item.recommendation.title }}</div>
                                                     </div>
-
                                                 {% endif %}
-
 
                                                 {% if item.alert %}
-
                                                     <div class="action-text-box">
-
-                                                        <div class="action-text-label">
-                                                            Source Alert
-                                                        </div>
-
-                                                        <div class="action-text-content">
-                                                            {{ item.alert.title }}
-                                                        </div>
-
+                                                        <div class="action-text-label">Source Alert</div>
+                                                        <div class="action-text-content">{{ item.alert.title }}</div>
                                                     </div>
-
                                                 {% endif %}
 
-
                                                 <div class="action-footer">
-
                                                     <div class="created-time">
-
-                                                        Created
-                                                        {{ item.created_at|date:"d M Y, H:i" }}
-
+                                                        Created {{ item.created_at|date:"d M Y, H:i" }}
                                                     </div>
 
-
-                                                    <form
-                                                        method="post"
-                                                        class="status-form"
-                                                    >
-
+                                                    <form method="post" class="status-form">
                                                         {% csrf_token %}
-
-                                                        <input
-                                                            type="hidden"
-                                                            name="action"
-                                                            value="update_status"
-                                                        >
-
-                                                        <input
-                                                            type="hidden"
-                                                            name="action_item_id"
-                                                            value="{{ item.id }}"
-                                                        >
-
+                                                        <input type="hidden" name="action" value="update_status">
+                                                        <input type="hidden" name="action_item_id" value="{{ item.id }}">
 
                                                         <select name="status">
-
                                                             {% for value, label in status_choices %}
-
-                                                                <option
-                                                                    value="{{ value }}"
-                                                                    {% if item.status == value %}
-                                                                        selected
-                                                                    {% endif %}
-                                                                >
+                                                                <option value="{{ value }}" {% if item.status == value %}selected{% endif %}>
                                                                     {{ label }}
                                                                 </option>
-
                                                             {% endfor %}
-
                                                         </select>
 
-
-                                                        <button
-                                                            type="submit"
-                                                            class="status-update-button"
-                                                        >
+                                                        <button type="submit" class="status-update-button">
                                                             Update
                                                         </button>
-
                                                     </form>
-
                                                 </div>
-
                                             </article>
-
                                         {% endfor %}
-
                                     </div>
-
                                 {% else %}
-
                                     <div class="empty-state">
-
-                                        <div class="empty-icon">
-                                            ✓
-                                        </div>
-
-                                        <h3 class="empty-title">
-                                            No action items yet
-                                        </h3>
-
-                                        <p class="empty-description">
-                                            Create an action using the
-                                            form on the left. Actions
-                                            can later be connected to
-                                            recommendations and business
-                                            alerts.
-                                        </p>
-
+                                        <div class="empty-icon">✓</div>
+                                        <h3 class="empty-title">No action items yet</h3>
+                                        <p class="empty-description">Create an action using the form on the left. Actions can later be connected to recommendations and business alerts.</p>
                                     </div>
-
                                 {% endif %}
-
                             </div>
-
                         </div>
 
                     </section>
-
                 {% else %}
-
-                    <section class="no-dataset">
-
-                        <h2>
-                            Select a dataset version
-                        </h2>
-
-                        <p>
-                            Choose an available dataset and version
-                            above to open its Action Center workspace.
-                        </p>
-
+                    <section class="no-dataset fade-up">
+                        <h2>Select a dataset version</h2>
+                        <p>Choose an available dataset and version above to open its Action Center workspace.</p>
                     </section>
-
                 {% endif %}
-
             {% else %}
-
-                <section class="no-dataset">
-
-                    <h2>
-                        No datasets available
-                    </h2>
-
-                    <p>
-                        Upload and process a dataset in Data Management
-                        before creating Action Center items.
-                    </p>
-
+                <section class="no-dataset fade-up">
+                    <h2>No datasets available</h2>
+                    <p>Upload and process a dataset in Data Management before creating Action Center items.</p>
                 </section>
-
             {% endif %}
 
         </div>
-
     </main>
 
 </div>
 
-
 <script>
     function changeDataset(datasetId) {
-        if (!datasetId) {
-            return;
-        }
-
-        window.location.href =
-            "{% url 'decision_intelligence:action_center' %}" +
-            "?dataset=" +
-            encodeURIComponent(datasetId);
+        if (!datasetId) return;
+        window.location.href = "{% url 'decision_intelligence:action_center' %}"
+            + "?dataset=" + encodeURIComponent(datasetId);
     }
 
-
     function changeVersion(versionId) {
-        if (!versionId) {
-            return;
-        }
+        if (!versionId) return;
+        const datasetSelector = document.getElementById("datasetSelector");
+        const datasetId = datasetSelector ? datasetSelector.value : "";
+        if (!datasetId) return;
 
-        const datasetSelector =
-            document.getElementById("datasetSelector");
-
-        const datasetId =
-            datasetSelector
-                ? datasetSelector.value
-                : "";
-
-        if (!datasetId) {
-            return;
-        }
-
-        window.location.href =
-            "{% url 'decision_intelligence:action_center' %}" +
-            "?dataset=" +
-            encodeURIComponent(datasetId) +
-            "&version=" +
-            encodeURIComponent(versionId);
+        window.location.href = "{% url 'decision_intelligence:action_center' %}"
+            + "?dataset=" + encodeURIComponent(datasetId)
+            + "&version=" + encodeURIComponent(versionId);
     }
 </script>
 
