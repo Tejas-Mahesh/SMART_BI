@@ -13,11 +13,13 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+
 import dj_database_url
+from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+load_dotenv(BASE_DIR / ".env")
 # ============================================================
 # SECURITY
 # ============================================================
@@ -116,7 +118,6 @@ DATABASES = {
     "default": dj_database_url.config(
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
         conn_max_age=600,
-        ssl_require=False,
     )
 }
 
@@ -173,5 +174,13 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # MEDIA FILES
 # ============================================================
 
+# ============================================================
+# MEDIA FILES
+# ============================================================
+
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+
+if os.environ.get("RENDER"):
+    MEDIA_ROOT = "/var/data/media"
+else:
+    MEDIA_ROOT = BASE_DIR / "media"
