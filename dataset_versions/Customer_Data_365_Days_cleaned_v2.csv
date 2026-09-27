@@ -1,0 +1,366 @@
+Customer_ID,Registration_Date,Last_Order_Date,Order_Count,Total_Spend,Order_Value,Region,City,State,Country,Gender,Age,Customer_Segment,Customer_Status
+CUST001,05-01-2026,25-08-2026,12,85450,7120,South,Bengaluru,Karnataka,India,Male,32,Premium,Active
+CUST002,08-01-2026,20-08-2026,8,42300,5287,South,Chennai,Tamil Nadu,India,Female,28,Regular,Active
+CUST003,12-01-2026,15-07-2026,3,12600,4200,West,Mumbai,Maharashtra,India,Male,41,Regular,Inactive
+CUST004,18-01-2026,28-08-2026,18,125800,6990,North,Delhi,Delhi,India,Female,35,Premium,Active
+CUST005,25-01-2026,05-06-2026,2,5800,2900,East,Kolkata,West Bengal,India,Male,24,New,Inactive
+CUST006,04-01-2026,22-08-2026,18,166734,9263,East,Kolkata,West Bengal,India,Female,43,Premium,Active
+CUST007,11-05-2026,15-08-2026,18,149076,8282,North,Chandigarh,Punjab,India,Male,53,Premium,Active
+CUST008,17-01-2026,19-06-2026,20,87880,4394,West,Mumbai,Maharashtra,India,Male,37,Premium,Inactive
+CUST009,05-12-2025,07-12-2025,21,32319,1539,South,Hyderabad,Telangana,India,Male,28,Regular,Inactive
+CUST010,05-01-2026,04-07-2026,7,38059,5437,West,Pune,Maharashtra,India,Male,51,Regular,Inactive
+CUST011,15-07-2026,24-08-2026,4,22808,5702,West,Pune,Maharashtra,India,Male,32,Regular,Active
+CUST012,03-07-2026,18-09-2026,19,154432,8128,East,Bhubaneswar,Odisha,India,Female,51,Premium,Active
+CUST013,27-03-2026,05-06-2026,14,26194,1871,East,Kolkata,West Bengal,India,Male,27,Regular,Inactive
+CUST014,25-06-2026,08-09-2026,23,174501,7587,South,Chennai,Tamil Nadu,India,Female,58,Premium,Active
+CUST015,30-03-2026,24-04-2026,19,66576,3504,North,Jaipur,Rajasthan,India,Female,33,Regular,Inactive
+CUST016,16-10-2025,17-10-2025,20,130720,6536,West,Pune,Maharashtra,India,Female,48,Premium,Inactive
+CUST017,01-10-2025,07-12-2025,12,50508,4209,North,Chandigarh,Punjab,India,Female,55,Regular,Inactive
+CUST018,01-10-2025,17-06-2026,20,91280,4564,West,Ahmedabad,Gujarat,India,Female,44,Premium,Inactive
+CUST019,12-10-2025,28-04-2026,13,25194,1938,East,Bhubaneswar,Odisha,India,Male,38,Regular,Inactive
+CUST020,22-01-2026,01-05-2026,2,8726,4363,South,Bengaluru,Karnataka,India,Female,43,New,Inactive
+CUST021,13-11-2025,11-08-2026,9,44829,4981,South,Chennai,Tamil Nadu,India,Male,56,Regular,Active
+CUST022,27-11-2025,08-08-2026,13,23699,1823,South,Kochi,Kerala,India,Female,59,Regular,Active
+CUST023,25-12-2025,15-05-2026,13,36959,2843,West,Mumbai,Maharashtra,India,Male,53,Regular,Inactive
+CUST024,05-06-2026,07-08-2026,14,79422,5673,North,Jaipur,Rajasthan,India,Male,27,Regular,Active
+CUST025,02-12-2025,12-07-2026,7,43036,6148,North,Delhi,Delhi,India,Male,33,Regular,Inactive
+CUST026,28-02-2026,01-07-2026,18,103158,5731,East,Bhubaneswar,Odisha,India,Female,35,Premium,Inactive
+CUST027,30-11-2025,03-12-2025,18,120744,6708,North,Delhi,Delhi,India,Female,54,Premium,Inactive
+CUST028,17-11-2025,27-03-2026,19,141246,7434,North,Chandigarh,Punjab,India,Female,39,Premium,Inactive
+CUST029,21-03-2026,19-09-2026,24,136056,5669,South,Chennai,Tamil Nadu,India,Male,24,Premium,Active
+CUST030,14-02-2026,18-07-2026,12,65736,5478,South,Kochi,Kerala,India,Female,44,Regular,Inactive
+CUST031,06-07-2026,02-08-2026,15,76185,5079,South,Kochi,Kerala,India,Female,35,Regular,Active
+CUST032,06-01-2026,28-04-2026,10,68140,6814,West,Pune,Maharashtra,India,Female,26,Regular,Inactive
+CUST033,30-01-2026,16-06-2026,16,77168,4823,South,Hyderabad,Telangana,India,Male,57,Regular,Inactive
+CUST034,14-06-2026,01-08-2026,4,33740,8435,East,Bhubaneswar,Odisha,India,Female,55,Regular,Active
+CUST035,18-07-2026,05-09-2026,24,179352,7473,North,Chandigarh,Punjab,India,Female,23,Premium,Active
+CUST036,08-10-2025,21-02-2026,22,144936,6588,North,Chandigarh,Punjab,India,Female,24,Premium,Inactive
+CUST037,21-01-2026,27-03-2026,8,15632,1954,South,Kochi,Kerala,India,Female,39,Regular,Inactive
+CUST038,06-05-2026,16-09-2026,10,37160,3716,North,Chandigarh,Punjab,India,Male,44,Regular,Active
+CUST039,18-05-2026,15-08-2026,19,143488,7552,South,Kochi,Kerala,India,Female,38,Premium,Active
+CUST040,14-01-2026,16-03-2026,9,59481,6609,North,Delhi,Delhi,India,Female,35,Regular,Inactive
+CUST041,21-10-2025,04-09-2026,22,91080,4140,South,Bengaluru,Karnataka,India,Male,45,Premium,Active
+CUST042,01-02-2026,24-06-2026,18,72216,4012,West,Mumbai,Maharashtra,India,Female,47,Regular,Inactive
+CUST043,02-10-2025,28-02-2026,1,7043,7043,South,Chennai,Tamil Nadu,India,Male,39,New,Inactive
+CUST044,09-01-2026,08-03-2026,7,58891,8413,North,Jaipur,Rajasthan,India,Male,38,Regular,Inactive
+CUST045,20-03-2026,11-04-2026,22,77198,3509,East,Kolkata,West Bengal,India,Female,21,Regular,Inactive
+CUST046,16-07-2026,25-09-2026,8,59800,7475,West,Pune,Maharashtra,India,Female,35,Regular,Active
+CUST047,27-10-2025,15-11-2025,6,33582,5597,West,Pune,Maharashtra,India,Female,38,Regular,Inactive
+CUST048,10-03-2026,26-05-2026,2,12450,6225,West,Ahmedabad,Gujarat,India,Male,50,New,Inactive
+CUST049,18-12-2025,11-05-2026,24,47136,1964,East,Kolkata,West Bengal,India,Female,37,Regular,Inactive
+CUST050,29-12-2025,05-02-2026,3,9129,3043,East,Kolkata,West Bengal,India,Female,35,Regular,Inactive
+CUST051,19-01-2026,27-05-2026,1,7262,7262,West,Ahmedabad,Gujarat,India,Female,35,New,Inactive
+CUST052,28-11-2025,17-02-2026,6,22620,3770,South,Kochi,Kerala,India,Male,27,Regular,Inactive
+CUST053,08-12-2025,06-08-2026,15,113790,7586,South,Bengaluru,Karnataka,India,Female,54,Premium,Active
+CUST054,14-06-2026,14-06-2026,9,28458,3162,West,Pune,Maharashtra,India,Female,40,Regular,Inactive
+CUST055,13-06-2026,19-09-2026,14,38472,2748,South,Hyderabad,Telangana,India,Female,47,Regular,Active
+CUST056,24-05-2026,25-06-2026,19,85481,4499,North,Chandigarh,Punjab,India,Male,51,Premium,Inactive
+CUST057,14-06-2026,17-09-2026,10,68390,6839,North,Delhi,Delhi,India,Female,48,Regular,Active
+CUST058,17-01-2026,07-02-2026,21,177303,8443,West,Ahmedabad,Gujarat,India,Male,28,Premium,Inactive
+CUST059,14-12-2025,21-06-2026,2,3032,1516,East,Kolkata,West Bengal,India,Female,28,New,Inactive
+CUST060,18-07-2026,06-08-2026,17,28747,1691,West,Mumbai,Maharashtra,India,Male,41,Regular,Active
+CUST061,26-12-2025,25-07-2026,6,9678,1613,North,Jaipur,Rajasthan,India,Male,46,Regular,Inactive
+CUST062,09-07-2026,12-09-2026,22,121616,5528,East,Bhubaneswar,Odisha,India,Male,29,Premium,Active
+CUST063,21-07-2026,10-08-2026,23,169740,7380,East,Bhubaneswar,Odisha,India,Female,46,Premium,Active
+CUST064,22-03-2026,25-07-2026,13,44486,3422,South,Bengaluru,Karnataka,India,Male,33,Regular,Inactive
+CUST065,23-07-2026,26-07-2026,6,25506,4251,West,Pune,Maharashtra,India,Male,23,Regular,Inactive
+CUST066,04-05-2026,26-09-2026,20,125300,6265,North,Chandigarh,Punjab,India,Female,43,Premium,Active
+CUST067,29-05-2026,17-07-2026,9,64044,7116,South,Hyderabad,Telangana,India,Female,47,Regular,Inactive
+CUST068,19-05-2026,18-08-2026,11,79706,7246,North,Delhi,Delhi,India,Female,28,Regular,Active
+CUST069,18-12-2025,15-05-2026,14,116144,8296,East,Kolkata,West Bengal,India,Male,36,Premium,Inactive
+CUST070,20-07-2026,28-07-2026,17,47294,2782,North,Delhi,Delhi,India,Male,24,Regular,Inactive
+CUST071,20-07-2026,09-09-2026,24,105120,4380,North,Delhi,Delhi,India,Male,50,Premium,Active
+CUST072,22-10-2025,29-11-2025,16,62048,3878,North,Jaipur,Rajasthan,India,Male,41,Regular,Inactive
+CUST073,26-03-2026,21-09-2026,10,85950,8595,South,Chennai,Tamil Nadu,India,Male,21,Premium,Active
+CUST074,11-05-2026,10-06-2026,21,96495,4595,South,Hyderabad,Telangana,India,Male,41,Premium,Inactive
+CUST075,17-10-2025,10-02-2026,7,63826,9118,North,Delhi,Delhi,India,Female,28,Regular,Inactive
+CUST076,30-12-2025,09-01-2026,8,63136,7892,West,Mumbai,Maharashtra,India,Male,28,Regular,Inactive
+CUST077,21-03-2026,08-09-2026,11,30338,2758,West,Ahmedabad,Gujarat,India,Female,41,Regular,Active
+CUST078,16-11-2025,19-12-2025,8,55280,6910,East,Kolkata,West Bengal,India,Male,28,Regular,Inactive
+CUST079,22-07-2026,19-08-2026,16,44128,2758,West,Mumbai,Maharashtra,India,Female,25,Regular,Active
+CUST080,17-07-2026,14-09-2026,10,88100,8810,West,Mumbai,Maharashtra,India,Female,42,Premium,Active
+CUST081,29-04-2026,07-05-2026,13,109213,8401,South,Chennai,Tamil Nadu,India,Male,43,Premium,Inactive
+CUST082,13-07-2026,28-08-2026,21,197274,9394,East,Kolkata,West Bengal,India,Male,58,Premium,Active
+CUST083,26-03-2026,14-08-2026,5,19890,3978,West,Ahmedabad,Gujarat,India,Female,48,Regular,Active
+CUST084,28-05-2026,20-08-2026,20,62040,3102,East,Kolkata,West Bengal,India,Male,53,Regular,Active
+CUST085,30-12-2025,15-02-2026,7,30492,4356,East,Kolkata,West Bengal,India,Male,58,Regular,Inactive
+CUST086,30-04-2026,22-05-2026,1,3184,3184,North,Chandigarh,Punjab,India,Male,29,New,Inactive
+CUST087,17-12-2025,24-02-2026,14,78428,5602,West,Ahmedabad,Gujarat,India,Male,57,Regular,Inactive
+CUST088,07-03-2026,28-06-2026,10,42680,4268,North,Delhi,Delhi,India,Female,42,Regular,Inactive
+CUST089,18-10-2025,28-06-2026,15,117405,7827,South,Hyderabad,Telangana,India,Female,51,Premium,Inactive
+CUST090,01-07-2026,04-08-2026,14,78652,5618,North,Chandigarh,Punjab,India,Female,44,Regular,Active
+CUST091,30-01-2026,18-07-2026,7,13223,1889,North,Delhi,Delhi,India,Female,46,Regular,Inactive
+CUST092,07-11-2025,07-05-2026,13,85098,6546,North,Delhi,Delhi,India,Male,51,Premium,Inactive
+CUST093,01-02-2026,02-09-2026,8,64872,8109,South,Chennai,Tamil Nadu,India,Male,59,Regular,Active
+CUST094,24-05-2026,01-09-2026,15,95460,6364,East,Kolkata,West Bengal,India,Female,40,Premium,Active
+CUST095,16-01-2026,17-06-2026,6,40410,6735,South,Kochi,Kerala,India,Male,38,Regular,Inactive
+CUST096,17-05-2026,19-05-2026,4,13444,3361,East,Bhubaneswar,Odisha,India,Female,21,Regular,Inactive
+CUST097,19-12-2025,03-02-2026,10,28670,2867,North,Chandigarh,Punjab,India,Female,25,Regular,Inactive
+CUST098,31-10-2025,30-03-2026,9,53424,5936,South,Hyderabad,Telangana,India,Female,59,Regular,Inactive
+CUST099,16-05-2026,06-06-2026,13,101998,7846,West,Ahmedabad,Gujarat,India,Male,36,Premium,Inactive
+CUST100,29-05-2026,18-07-2026,3,7119,2373,East,Kolkata,West Bengal,India,Female,58,Regular,Inactive
+CUST101,13-04-2026,29-06-2026,17,156009,9177,East,Bhubaneswar,Odisha,India,Female,24,Premium,Inactive
+CUST102,04-02-2026,24-05-2026,15,68370,4558,West,Pune,Maharashtra,India,Male,28,Regular,Inactive
+CUST103,06-11-2025,15-02-2026,12,66864,5572,South,Chennai,Tamil Nadu,India,Male,26,Regular,Inactive
+CUST104,26-05-2026,20-08-2026,21,44625,2125,West,Mumbai,Maharashtra,India,Male,49,Regular,Active
+CUST105,29-09-2025,16-09-2026,12,109764,9147,South,Chennai,Tamil Nadu,India,Female,50,Premium,Active
+CUST106,13-01-2026,04-02-2026,16,96544,6034,South,Kochi,Kerala,India,Female,43,Premium,Inactive
+CUST107,06-11-2025,08-01-2026,8,39752,4969,East,Bhubaneswar,Odisha,India,Male,34,Regular,Inactive
+CUST108,29-09-2025,02-10-2025,24,189264,7886,South,Kochi,Kerala,India,Male,36,Premium,Inactive
+CUST109,06-03-2026,01-04-2026,15,114420,7628,South,Kochi,Kerala,India,Female,45,Premium,Inactive
+CUST110,12-10-2025,20-06-2026,12,18840,1570,South,Kochi,Kerala,India,Female,26,Regular,Inactive
+CUST111,17-01-2026,04-07-2026,13,63154,4858,West,Mumbai,Maharashtra,India,Female,31,Regular,Inactive
+CUST112,24-06-2026,13-09-2026,14,98378,7027,South,Hyderabad,Telangana,India,Female,45,Premium,Active
+CUST113,13-01-2026,17-06-2026,24,36408,1517,North,Jaipur,Rajasthan,India,Female,23,Regular,Inactive
+CUST114,14-02-2026,27-07-2026,5,18150,3630,East,Bhubaneswar,Odisha,India,Male,37,Regular,Inactive
+CUST115,17-03-2026,16-06-2026,8,38792,4849,North,Chandigarh,Punjab,India,Male,26,Regular,Inactive
+CUST116,14-10-2025,10-09-2026,6,11940,1990,West,Pune,Maharashtra,India,Female,36,Regular,Active
+CUST117,11-04-2026,10-09-2026,1,2260,2260,South,Bengaluru,Karnataka,India,Male,37,New,Active
+CUST118,21-02-2026,15-04-2026,18,106812,5934,South,Kochi,Kerala,India,Male,43,Premium,Inactive
+CUST119,18-02-2026,19-07-2026,20,131400,6570,North,Chandigarh,Punjab,India,Female,57,Premium,Inactive
+CUST120,15-03-2026,22-08-2026,24,154992,6458,South,Bengaluru,Karnataka,India,Male,32,Premium,Active
+CUST121,09-03-2026,14-04-2026,16,130960,8185,North,Chandigarh,Punjab,India,Male,52,Premium,Inactive
+CUST122,12-06-2026,21-06-2026,14,128814,9201,North,Jaipur,Rajasthan,India,Female,50,Premium,Inactive
+CUST123,27-03-2026,23-06-2026,21,135345,6445,South,Kochi,Kerala,India,Male,36,Premium,Inactive
+CUST124,13-03-2026,16-04-2026,14,28938,2067,South,Kochi,Kerala,India,Male,23,Regular,Inactive
+CUST125,12-07-2026,07-09-2026,14,95718,6837,West,Mumbai,Maharashtra,India,Female,28,Premium,Active
+CUST126,14-01-2026,10-09-2026,1,7359,7359,East,Bhubaneswar,Odisha,India,Male,40,New,Active
+CUST127,28-06-2026,17-08-2026,18,81486,4527,East,Kolkata,West Bengal,India,Male,41,Premium,Active
+CUST128,21-10-2025,25-10-2025,11,81840,7440,North,Delhi,Delhi,India,Male,34,Premium,Inactive
+CUST129,13-05-2026,25-05-2026,8,34688,4336,North,Chandigarh,Punjab,India,Female,34,Regular,Inactive
+CUST130,23-07-2026,19-09-2026,17,63274,3722,South,Chennai,Tamil Nadu,India,Male,32,Regular,Active
+CUST131,16-07-2026,17-08-2026,12,34872,2906,West,Ahmedabad,Gujarat,India,Female,33,Regular,Active
+CUST132,05-05-2026,23-05-2026,5,25570,5114,South,Chennai,Tamil Nadu,India,Female,59,Regular,Inactive
+CUST133,14-10-2025,21-05-2026,4,33668,8417,East,Bhubaneswar,Odisha,India,Male,43,Regular,Inactive
+CUST134,06-11-2025,02-09-2026,10,33610,3361,North,Delhi,Delhi,India,Female,41,Regular,Active
+CUST135,26-02-2026,28-07-2026,17,62390,3670,South,Hyderabad,Telangana,India,Male,55,Regular,Inactive
+CUST136,24-04-2026,18-06-2026,2,12282,6141,South,Bengaluru,Karnataka,India,Male,23,New,Inactive
+CUST137,19-10-2025,26-01-2026,7,65079,9297,East,Bhubaneswar,Odisha,India,Male,27,Regular,Inactive
+CUST138,27-12-2025,12-01-2026,23,79258,3446,West,Mumbai,Maharashtra,India,Female,49,Regular,Inactive
+CUST139,24-10-2025,12-01-2026,6,17154,2859,North,Jaipur,Rajasthan,India,Female,21,Regular,Inactive
+CUST140,06-10-2025,07-08-2026,7,65905,9415,West,Mumbai,Maharashtra,India,Female,26,Regular,Active
+CUST141,11-03-2026,14-07-2026,7,58009,8287,South,Bengaluru,Karnataka,India,Male,30,Regular,Inactive
+CUST142,18-01-2026,26-04-2026,8,16272,2034,South,Bengaluru,Karnataka,India,Female,27,Regular,Inactive
+CUST143,06-04-2026,10-06-2026,6,37530,6255,North,Jaipur,Rajasthan,India,Female,37,Regular,Inactive
+CUST144,24-12-2025,12-04-2026,12,47592,3966,West,Mumbai,Maharashtra,India,Male,37,Regular,Inactive
+CUST145,09-07-2026,03-09-2026,4,28408,7102,South,Kochi,Kerala,India,Male,39,Regular,Active
+CUST146,25-10-2025,06-02-2026,22,44352,2016,South,Bengaluru,Karnataka,India,Male,52,Regular,Inactive
+CUST147,06-06-2026,06-06-2026,20,181580,9079,North,Jaipur,Rajasthan,India,Female,57,Premium,Inactive
+CUST148,14-02-2026,03-03-2026,21,37800,1800,South,Hyderabad,Telangana,India,Female,25,Regular,Inactive
+CUST149,09-04-2026,23-05-2026,9,30789,3421,South,Chennai,Tamil Nadu,India,Female,55,Regular,Inactive
+CUST150,27-02-2026,14-03-2026,9,71487,7943,South,Kochi,Kerala,India,Male,24,Regular,Inactive
+CUST151,12-07-2026,13-09-2026,7,41958,5994,South,Chennai,Tamil Nadu,India,Male,23,Regular,Active
+CUST152,15-04-2026,13-05-2026,8,45792,5724,East,Kolkata,West Bengal,India,Female,41,Regular,Inactive
+CUST153,16-05-2026,29-06-2026,2,17914,8957,West,Mumbai,Maharashtra,India,Female,53,New,Inactive
+CUST154,08-01-2026,16-02-2026,7,21350,3050,North,Jaipur,Rajasthan,India,Female,37,Regular,Inactive
+CUST155,27-06-2026,15-09-2026,22,116292,5286,North,Chandigarh,Punjab,India,Male,30,Premium,Active
+CUST156,22-10-2025,06-11-2025,23,212474,9238,West,Pune,Maharashtra,India,Female,52,Premium,Inactive
+CUST157,06-04-2026,27-05-2026,13,64142,4934,South,Chennai,Tamil Nadu,India,Male,40,Regular,Inactive
+CUST158,25-10-2025,30-04-2026,8,24224,3028,West,Pune,Maharashtra,India,Female,49,Regular,Inactive
+CUST159,11-01-2026,21-04-2026,10,73830,7383,South,Kochi,Kerala,India,Male,47,Regular,Inactive
+CUST160,06-01-2026,05-02-2026,1,7371,7371,South,Bengaluru,Karnataka,India,Male,43,New,Inactive
+CUST161,07-11-2025,23-06-2026,17,53499,3147,South,Chennai,Tamil Nadu,India,Female,36,Regular,Inactive
+CUST162,30-01-2026,22-02-2026,7,22610,3230,West,Ahmedabad,Gujarat,India,Male,39,Regular,Inactive
+CUST163,23-04-2026,20-05-2026,5,9455,1891,West,Pune,Maharashtra,India,Male,38,Regular,Inactive
+CUST164,17-10-2025,01-06-2026,13,113438,8726,East,Bhubaneswar,Odisha,India,Female,22,Premium,Inactive
+CUST165,30-09-2025,28-12-2025,17,68901,4053,West,Pune,Maharashtra,India,Female,50,Regular,Inactive
+CUST166,12-06-2026,29-07-2026,8,26640,3330,West,Pune,Maharashtra,India,Female,52,Regular,Active
+CUST167,07-07-2026,18-07-2026,14,113596,8114,East,Bhubaneswar,Odisha,India,Male,23,Premium,Inactive
+CUST168,05-12-2025,06-03-2026,8,74536,9317,West,Pune,Maharashtra,India,Male,59,Regular,Inactive
+CUST169,15-05-2026,22-08-2026,12,40284,3357,West,Pune,Maharashtra,India,Male,45,Regular,Active
+CUST170,12-03-2026,16-08-2026,6,50172,8362,West,Mumbai,Maharashtra,India,Female,40,Regular,Active
+CUST171,11-12-2025,16-02-2026,21,104769,4989,East,Kolkata,West Bengal,India,Female,58,Premium,Inactive
+CUST172,27-01-2026,15-06-2026,14,50442,3603,North,Jaipur,Rajasthan,India,Male,38,Regular,Inactive
+CUST173,01-06-2026,21-09-2026,12,41028,3419,South,Hyderabad,Telangana,India,Male,29,Regular,Active
+CUST174,29-12-2025,25-01-2026,21,111237,5297,South,Bengaluru,Karnataka,India,Female,24,Premium,Inactive
+CUST175,03-02-2026,30-08-2026,3,26538,8846,South,Hyderabad,Telangana,India,Female,29,Regular,Active
+CUST176,20-02-2026,27-05-2026,11,75911,6901,North,Delhi,Delhi,India,Female,21,Regular,Inactive
+CUST177,25-04-2026,30-08-2026,13,26338,2026,South,Kochi,Kerala,India,Female,48,Regular,Active
+CUST178,31-03-2026,11-09-2026,19,156332,8228,North,Chandigarh,Punjab,India,Female,27,Premium,Active
+CUST179,25-03-2026,21-05-2026,9,32220,3580,West,Pune,Maharashtra,India,Male,28,Regular,Inactive
+CUST180,16-11-2025,29-06-2026,16,57760,3610,West,Ahmedabad,Gujarat,India,Male,45,Regular,Inactive
+CUST181,26-05-2026,14-08-2026,11,17402,1582,West,Pune,Maharashtra,India,Male,30,Regular,Active
+CUST182,02-05-2026,21-05-2026,12,57624,4802,South,Chennai,Tamil Nadu,India,Male,26,Regular,Inactive
+CUST183,15-12-2025,26-07-2026,16,149728,9358,South,Hyderabad,Telangana,India,Male,35,Premium,Inactive
+CUST184,22-03-2026,25-06-2026,8,74504,9313,West,Mumbai,Maharashtra,India,Male,36,Regular,Inactive
+CUST185,23-05-2026,14-07-2026,17,108834,6402,West,Mumbai,Maharashtra,India,Female,47,Premium,Inactive
+CUST186,05-07-2026,25-07-2026,14,22890,1635,South,Chennai,Tamil Nadu,India,Male,55,Regular,Inactive
+CUST187,06-07-2026,09-08-2026,23,209392,9104,South,Hyderabad,Telangana,India,Male,29,Premium,Active
+CUST188,10-03-2026,05-09-2026,11,60049,5459,North,Chandigarh,Punjab,India,Female,30,Regular,Active
+CUST189,04-03-2026,06-07-2026,4,13908,3477,South,Bengaluru,Karnataka,India,Male,31,Regular,Inactive
+CUST190,02-06-2026,20-09-2026,12,44400,3700,North,Chandigarh,Punjab,India,Male,33,Regular,Active
+CUST191,04-03-2026,06-03-2026,22,44924,2042,West,Mumbai,Maharashtra,India,Female,55,Regular,Inactive
+CUST192,29-12-2025,18-05-2026,6,15972,2662,East,Kolkata,West Bengal,India,Female,42,Regular,Inactive
+CUST193,05-12-2025,17-09-2026,23,164082,7134,South,Hyderabad,Telangana,India,Male,41,Premium,Active
+CUST194,07-10-2025,14-06-2026,12,50568,4214,West,Mumbai,Maharashtra,India,Female,43,Regular,Inactive
+CUST195,22-12-2025,18-03-2026,15,93915,6261,West,Pune,Maharashtra,India,Female,33,Premium,Inactive
+CUST196,04-01-2026,16-02-2026,6,25914,4319,West,Mumbai,Maharashtra,India,Female,54,Regular,Inactive
+CUST197,05-10-2025,09-05-2026,11,104434,9494,East,Kolkata,West Bengal,India,Male,50,Premium,Inactive
+CUST198,23-11-2025,09-04-2026,2,7338,3669,West,Ahmedabad,Gujarat,India,Female,45,New,Inactive
+CUST199,16-02-2026,18-07-2026,13,48464,3728,South,Bengaluru,Karnataka,India,Male,22,Regular,Inactive
+CUST200,21-12-2025,24-04-2026,20,129180,6459,North,Delhi,Delhi,India,Female,47,Premium,Inactive
+CUST201,07-07-2026,01-09-2026,10,44660,4466,East,Bhubaneswar,Odisha,India,Female,44,Regular,Active
+CUST202,06-01-2026,03-03-2026,20,53960,2698,West,Mumbai,Maharashtra,India,Female,41,Regular,Inactive
+CUST203,02-01-2026,23-04-2026,17,44965,2645,South,Bengaluru,Karnataka,India,Male,22,Regular,Inactive
+CUST204,22-01-2026,10-09-2026,1,9053,9053,South,Hyderabad,Telangana,India,Female,44,New,Active
+CUST205,09-10-2025,05-04-2026,9,50391,5599,West,Mumbai,Maharashtra,India,Male,25,Regular,Inactive
+CUST206,12-12-2025,02-06-2026,11,59741,5431,East,Kolkata,West Bengal,India,Female,42,Regular,Inactive
+CUST207,13-06-2026,03-07-2026,11,61853,5623,South,Bengaluru,Karnataka,India,Female,35,Regular,Inactive
+CUST208,18-01-2026,25-05-2026,12,96672,8056,South,Kochi,Kerala,India,Male,44,Premium,Inactive
+CUST209,14-01-2026,14-06-2026,14,87178,6227,North,Chandigarh,Punjab,India,Male,23,Premium,Inactive
+CUST210,13-02-2026,06-08-2026,14,77238,5517,West,Pune,Maharashtra,India,Female,53,Regular,Active
+CUST211,26-05-2026,11-06-2026,8,50024,6253,East,Bhubaneswar,Odisha,India,Male,24,Regular,Inactive
+CUST212,25-05-2026,04-09-2026,17,113492,6676,South,Bengaluru,Karnataka,India,Male,46,Premium,Active
+CUST213,07-04-2026,04-05-2026,20,74420,3721,East,Bhubaneswar,Odisha,India,Male,54,Regular,Inactive
+CUST214,07-10-2025,25-05-2026,17,100810,5930,East,Bhubaneswar,Odisha,India,Female,50,Premium,Inactive
+CUST215,08-07-2026,15-08-2026,12,80976,6748,West,Pune,Maharashtra,India,Male,45,Premium,Active
+CUST216,02-12-2025,20-04-2026,18,110988,6166,West,Ahmedabad,Gujarat,India,Female,47,Premium,Inactive
+CUST217,09-04-2026,16-07-2026,14,41524,2966,West,Ahmedabad,Gujarat,India,Male,24,Regular,Inactive
+CUST218,25-02-2026,19-06-2026,18,112608,6256,West,Ahmedabad,Gujarat,India,Male,34,Premium,Inactive
+CUST219,20-04-2026,27-04-2026,4,14468,3617,North,Delhi,Delhi,India,Female,44,Regular,Inactive
+CUST220,30-06-2026,12-07-2026,22,52030,2365,North,Delhi,Delhi,India,Female,54,Regular,Inactive
+CUST221,02-10-2025,05-03-2026,10,34790,3479,North,Chandigarh,Punjab,India,Male,34,Regular,Inactive
+CUST222,31-12-2025,28-04-2026,14,38346,2739,South,Hyderabad,Telangana,India,Female,35,Regular,Inactive
+CUST223,06-06-2026,25-06-2026,18,44154,2453,East,Bhubaneswar,Odisha,India,Female,47,Regular,Inactive
+CUST224,28-09-2025,25-11-2025,7,49658,7094,South,Kochi,Kerala,India,Female,51,Regular,Inactive
+CUST225,26-05-2026,28-05-2026,16,127136,7946,South,Chennai,Tamil Nadu,India,Male,41,Premium,Inactive
+CUST226,14-02-2026,16-05-2026,16,81520,5095,West,Mumbai,Maharashtra,India,Male,42,Premium,Inactive
+CUST227,09-10-2025,30-04-2026,16,86224,5389,West,Ahmedabad,Gujarat,India,Female,55,Premium,Inactive
+CUST228,11-02-2026,11-09-2026,17,129965,7645,West,Mumbai,Maharashtra,India,Male,31,Premium,Active
+CUST229,12-04-2026,20-09-2026,18,160506,8917,West,Mumbai,Maharashtra,India,Male,52,Premium,Active
+CUST230,13-12-2025,17-09-2026,8,54000,6750,West,Mumbai,Maharashtra,India,Female,23,Regular,Active
+CUST231,15-12-2025,15-02-2026,10,53860,5386,North,Jaipur,Rajasthan,India,Male,36,Regular,Inactive
+CUST232,27-04-2026,09-05-2026,1,6815,6815,East,Bhubaneswar,Odisha,India,Male,56,New,Inactive
+CUST233,28-04-2026,27-05-2026,7,57967,8281,East,Kolkata,West Bengal,India,Male,46,Regular,Inactive
+CUST234,11-10-2025,19-11-2025,10,59090,5909,West,Ahmedabad,Gujarat,India,Male,53,Regular,Inactive
+CUST235,09-12-2025,11-04-2026,4,10596,2649,West,Ahmedabad,Gujarat,India,Male,42,Regular,Inactive
+CUST236,23-04-2026,28-04-2026,13,118287,9099,West,Ahmedabad,Gujarat,India,Male,57,Premium,Inactive
+CUST237,21-07-2026,21-09-2026,2,12966,6483,East,Kolkata,West Bengal,India,Male,39,New,Active
+CUST238,12-01-2026,02-07-2026,17,57052,3356,South,Kochi,Kerala,India,Male,57,Regular,Inactive
+CUST239,10-07-2026,24-08-2026,14,34720,2480,South,Hyderabad,Telangana,India,Female,45,Regular,Active
+CUST240,04-06-2026,27-08-2026,13,57551,4427,West,Ahmedabad,Gujarat,India,Female,51,Regular,Active
+CUST241,01-03-2026,25-09-2026,24,70608,2942,East,Kolkata,West Bengal,India,Male,39,Regular,Active
+CUST242,11-05-2026,18-09-2026,23,81995,3565,North,Chandigarh,Punjab,India,Male,37,Premium,Active
+CUST243,15-02-2026,10-07-2026,12,108108,9009,West,Mumbai,Maharashtra,India,Male,31,Premium,Inactive
+CUST244,15-02-2026,10-04-2026,4,36048,9012,North,Delhi,Delhi,India,Male,21,Regular,Inactive
+CUST245,04-02-2026,16-06-2026,17,134402,7906,East,Kolkata,West Bengal,India,Male,36,Premium,Inactive
+CUST246,10-06-2026,05-08-2026,24,63192,2633,South,Bengaluru,Karnataka,India,Female,26,Regular,Active
+CUST247,30-09-2025,10-10-2025,21,36330,1730,East,Bhubaneswar,Odisha,India,Female,44,Regular,Inactive
+CUST248,21-03-2026,25-05-2026,23,88297,3839,East,Bhubaneswar,Odisha,India,Male,47,Premium,Inactive
+CUST249,04-10-2025,04-10-2025,8,50576,6322,West,Ahmedabad,Gujarat,India,Male,48,Regular,Inactive
+CUST250,30-06-2026,30-07-2026,6,40884,6814,North,Jaipur,Rajasthan,India,Male,40,Regular,Active
+CUST251,28-10-2025,05-11-2025,23,197133,8571,North,Delhi,Delhi,India,Male,50,Premium,Inactive
+CUST252,18-10-2025,10-02-2026,23,205873,8951,West,Pune,Maharashtra,India,Male,40,Premium,Inactive
+CUST253,12-10-2025,30-11-2025,20,96360,4818,East,Kolkata,West Bengal,India,Male,41,Premium,Inactive
+CUST254,29-04-2026,02-07-2026,9,61164,6796,East,Bhubaneswar,Odisha,India,Male,52,Regular,Inactive
+CUST255,19-01-2026,30-04-2026,12,61644,5137,West,Pune,Maharashtra,India,Female,41,Regular,Inactive
+CUST256,26-12-2025,28-12-2025,14,125678,8977,South,Chennai,Tamil Nadu,India,Male,29,Premium,Inactive
+CUST257,04-11-2025,09-03-2026,21,98238,4678,North,Jaipur,Rajasthan,India,Female,55,Premium,Inactive
+CUST258,11-05-2026,10-09-2026,24,186576,7774,South,Kochi,Kerala,India,Male,42,Premium,Active
+CUST259,09-11-2025,14-04-2026,12,99816,8318,West,Ahmedabad,Gujarat,India,Female,51,Premium,Inactive
+CUST260,25-01-2026,25-07-2026,7,50533,7219,North,Delhi,Delhi,India,Male,54,Regular,Inactive
+CUST261,08-01-2026,28-03-2026,1,4081,4081,South,Hyderabad,Telangana,India,Female,23,New,Inactive
+CUST262,05-06-2026,19-07-2026,23,124522,5414,West,Mumbai,Maharashtra,India,Male,49,Premium,Inactive
+CUST263,08-10-2025,25-08-2026,12,21744,1812,North,Delhi,Delhi,India,Male,44,Regular,Active
+CUST264,20-02-2026,03-06-2026,21,46725,2225,South,Hyderabad,Telangana,India,Female,37,Regular,Inactive
+CUST265,20-01-2026,15-03-2026,4,26772,6693,East,Kolkata,West Bengal,India,Female,34,Regular,Inactive
+CUST266,21-06-2026,17-09-2026,11,102069,9279,North,Chandigarh,Punjab,India,Male,51,Premium,Active
+CUST267,23-12-2025,10-06-2026,14,57526,4109,South,Bengaluru,Karnataka,India,Female,25,Regular,Inactive
+CUST268,07-01-2026,17-07-2026,3,25278,8426,North,Delhi,Delhi,India,Male,56,Regular,Inactive
+CUST269,20-04-2026,28-06-2026,11,21043,1913,West,Ahmedabad,Gujarat,India,Male,29,Regular,Inactive
+CUST270,04-10-2025,12-02-2026,12,106608,8884,East,Kolkata,West Bengal,India,Female,28,Premium,Inactive
+CUST271,07-07-2026,23-09-2026,6,40776,6796,East,Kolkata,West Bengal,India,Male,53,Regular,Active
+CUST272,28-04-2026,22-08-2026,24,122544,5106,North,Delhi,Delhi,India,Female,59,Premium,Active
+CUST273,21-10-2025,21-12-2025,9,71370,7930,East,Bhubaneswar,Odisha,India,Male,23,Regular,Inactive
+CUST274,30-06-2026,27-07-2026,5,11360,2272,East,Kolkata,West Bengal,India,Male,52,Regular,Inactive
+CUST275,30-12-2025,04-01-2026,7,44198,6314,West,Pune,Maharashtra,India,Female,35,Regular,Inactive
+CUST276,04-10-2025,06-01-2026,1,1569,1569,South,Hyderabad,Telangana,India,Female,25,New,Inactive
+CUST277,22-01-2026,05-03-2026,24,91824,3826,North,Delhi,Delhi,India,Male,24,Premium,Inactive
+CUST278,19-04-2026,06-07-2026,1,7349,7349,West,Ahmedabad,Gujarat,India,Female,40,New,Inactive
+CUST279,10-01-2026,18-09-2026,20,91300,4565,South,Bengaluru,Karnataka,India,Male,56,Premium,Active
+CUST280,15-07-2026,31-08-2026,9,25848,2872,South,Bengaluru,Karnataka,India,Female,27,Regular,Active
+CUST281,14-11-2025,11-06-2026,8,18408,2301,East,Kolkata,West Bengal,India,Female,36,Regular,Inactive
+CUST282,21-02-2026,01-03-2026,9,15750,1750,South,Chennai,Tamil Nadu,India,Female,27,Regular,Inactive
+CUST283,23-11-2025,28-12-2025,21,69594,3314,South,Kochi,Kerala,India,Male,48,Regular,Inactive
+CUST284,10-03-2026,18-03-2026,3,13893,4631,West,Ahmedabad,Gujarat,India,Female,56,Regular,Inactive
+CUST285,03-02-2026,08-04-2026,9,82854,9206,South,Hyderabad,Telangana,India,Male,39,Premium,Inactive
+CUST286,13-07-2026,18-07-2026,14,101430,7245,East,Kolkata,West Bengal,India,Female,44,Premium,Inactive
+CUST287,22-02-2026,20-08-2026,20,135780,6789,West,Pune,Maharashtra,India,Male,38,Premium,Active
+CUST288,03-03-2026,31-03-2026,9,15129,1681,South,Kochi,Kerala,India,Female,50,Regular,Inactive
+CUST289,08-10-2025,08-10-2025,21,47544,2264,East,Bhubaneswar,Odisha,India,Female,30,Regular,Inactive
+CUST290,03-10-2025,15-09-2026,21,133077,6337,East,Bhubaneswar,Odisha,India,Male,46,Premium,Active
+CUST291,05-11-2025,26-12-2025,15,83040,5536,South,Hyderabad,Telangana,India,Female,33,Premium,Inactive
+CUST292,27-11-2025,24-06-2026,18,41328,2296,North,Delhi,Delhi,India,Female,37,Regular,Inactive
+CUST293,19-10-2025,06-04-2026,11,35585,3235,East,Kolkata,West Bengal,India,Male,45,Regular,Inactive
+CUST294,04-05-2026,21-05-2026,3,22455,7485,South,Hyderabad,Telangana,India,Male,49,Regular,Inactive
+CUST295,10-07-2026,22-07-2026,12,91860,7655,West,Pune,Maharashtra,India,Female,27,Premium,Inactive
+CUST296,10-07-2026,10-08-2026,6,17448,2908,South,Kochi,Kerala,India,Male,59,Regular,Active
+CUST297,15-11-2025,09-08-2026,7,60263,8609,West,Ahmedabad,Gujarat,India,Female,24,Regular,Active
+CUST298,14-03-2026,23-07-2026,17,146625,8625,East,Kolkata,West Bengal,India,Male,45,Premium,Inactive
+CUST299,05-06-2026,16-07-2026,6,27654,4609,North,Chandigarh,Punjab,India,Female,38,Regular,Inactive
+CUST300,17-02-2026,23-09-2026,3,20205,6735,East,Kolkata,West Bengal,India,Female,28,Regular,Active
+CUST301,23-11-2025,10-07-2026,18,127224,7068,East,Bhubaneswar,Odisha,India,Male,33,Premium,Inactive
+CUST302,13-01-2026,22-06-2026,2,4068,2034,South,Hyderabad,Telangana,India,Male,50,New,Inactive
+CUST303,08-05-2026,20-07-2026,9,33345,3705,South,Kochi,Kerala,India,Female,26,Regular,Inactive
+CUST304,21-12-2025,23-05-2026,20,61400,3070,East,Bhubaneswar,Odisha,India,Female,51,Regular,Inactive
+CUST305,14-01-2026,13-08-2026,19,58995,3105,South,Hyderabad,Telangana,India,Female,51,Regular,Active
+CUST306,24-03-2026,21-07-2026,9,85185,9465,South,Kochi,Kerala,India,Male,38,Premium,Inactive
+CUST307,03-04-2026,24-06-2026,14,104342,7453,East,Kolkata,West Bengal,India,Male,57,Premium,Inactive
+CUST308,23-05-2026,09-07-2026,10,72590,7259,East,Bhubaneswar,Odisha,India,Male,45,Regular,Inactive
+CUST309,20-04-2026,12-07-2026,7,21686,3098,South,Chennai,Tamil Nadu,India,Male,28,Regular,Inactive
+CUST310,26-04-2026,24-06-2026,5,38730,7746,West,Ahmedabad,Gujarat,India,Female,51,Regular,Inactive
+CUST311,02-07-2026,01-09-2026,4,35900,8975,South,Kochi,Kerala,India,Female,58,Regular,Active
+CUST312,11-06-2026,06-08-2026,1,5343,5343,West,Ahmedabad,Gujarat,India,Female,50,New,Active
+CUST313,14-10-2025,25-02-2026,12,36336,3028,East,Kolkata,West Bengal,India,Male,43,Regular,Inactive
+CUST314,22-03-2026,26-08-2026,1,6005,6005,East,Bhubaneswar,Odisha,India,Male,38,New,Active
+CUST315,04-04-2026,25-06-2026,9,49284,5476,South,Kochi,Kerala,India,Female,48,Regular,Inactive
+CUST316,30-03-2026,24-06-2026,18,99720,5540,South,Hyderabad,Telangana,India,Female,53,Premium,Inactive
+CUST317,27-11-2025,29-01-2026,11,90288,8208,North,Jaipur,Rajasthan,India,Male,26,Premium,Inactive
+CUST318,05-07-2026,19-09-2026,7,24409,3487,West,Mumbai,Maharashtra,India,Male,32,Regular,Active
+CUST319,14-10-2025,01-12-2025,6,47712,7952,East,Kolkata,West Bengal,India,Female,44,Regular,Inactive
+CUST320,14-05-2026,28-07-2026,19,74993,3947,South,Hyderabad,Telangana,India,Female,43,Regular,Inactive
+CUST321,11-05-2026,06-09-2026,2,18636,9318,North,Jaipur,Rajasthan,India,Female,24,New,Active
+CUST322,17-07-2026,27-08-2026,18,137772,7654,West,Ahmedabad,Gujarat,India,Female,37,Premium,Active
+CUST323,24-06-2026,12-09-2026,6,28602,4767,East,Bhubaneswar,Odisha,India,Male,21,Regular,Active
+CUST324,29-05-2026,13-07-2026,4,6936,1734,East,Bhubaneswar,Odisha,India,Male,57,Regular,Inactive
+CUST325,07-04-2026,20-05-2026,9,28845,3205,North,Chandigarh,Punjab,India,Female,51,Regular,Inactive
+CUST326,02-02-2026,22-09-2026,21,32592,1552,West,Pune,Maharashtra,India,Male,30,Regular,Active
+CUST327,15-11-2025,23-02-2026,10,91280,9128,North,Jaipur,Rajasthan,India,Female,53,Premium,Inactive
+CUST328,14-05-2026,26-06-2026,3,8316,2772,South,Bengaluru,Karnataka,India,Female,40,Regular,Inactive
+CUST329,29-09-2025,27-02-2026,18,87066,4837,East,Bhubaneswar,Odisha,India,Male,22,Premium,Inactive
+CUST330,15-06-2026,18-09-2026,14,43540,3110,East,Bhubaneswar,Odisha,India,Female,52,Regular,Active
+CUST331,29-12-2025,20-06-2026,19,179740,9460,North,Delhi,Delhi,India,Male,34,Premium,Inactive
+CUST332,17-07-2026,16-08-2026,6,55056,9176,East,Bhubaneswar,Odisha,India,Female,47,Regular,Active
+CUST333,12-10-2025,22-09-2026,7,43911,6273,North,Delhi,Delhi,India,Male,43,Regular,Active
+CUST334,05-02-2026,23-03-2026,18,47934,2663,South,Bengaluru,Karnataka,India,Female,38,Regular,Inactive
+CUST335,01-07-2026,25-09-2026,15,77550,5170,North,Jaipur,Rajasthan,India,Female,23,Regular,Active
+CUST336,03-06-2026,09-07-2026,6,36108,6018,West,Mumbai,Maharashtra,India,Male,28,Regular,Inactive
+CUST337,19-02-2026,18-03-2026,11,76318,6938,West,Ahmedabad,Gujarat,India,Male,25,Regular,Inactive
+CUST338,17-04-2026,09-09-2026,20,182760,9138,East,Bhubaneswar,Odisha,India,Male,41,Premium,Active
+CUST339,13-01-2026,04-08-2026,2,6688,3344,West,Ahmedabad,Gujarat,India,Male,44,New,Active
+CUST340,11-02-2026,11-08-2026,9,62091,6899,West,Ahmedabad,Gujarat,India,Female,50,Regular,Active
+CUST341,06-10-2025,04-02-2026,11,46574,4234,East,Kolkata,West Bengal,India,Female,49,Regular,Inactive
+CUST342,07-10-2025,24-05-2026,4,21184,5296,East,Kolkata,West Bengal,India,Female,41,Regular,Inactive
+CUST343,08-10-2025,21-03-2026,23,169119,7353,South,Hyderabad,Telangana,India,Male,35,Premium,Inactive
+CUST344,19-03-2026,09-08-2026,22,54450,2475,South,Hyderabad,Telangana,India,Female,48,Regular,Active
+CUST345,18-05-2026,28-07-2026,11,19558,1778,North,Delhi,Delhi,India,Male,39,Regular,Inactive
+CUST346,04-12-2025,24-01-2026,15,27690,1846,South,Chennai,Tamil Nadu,India,Male,38,Regular,Inactive
+CUST347,23-02-2026,28-04-2026,21,32046,1526,North,Jaipur,Rajasthan,India,Male,40,Regular,Inactive
+CUST348,08-04-2026,27-04-2026,4,7604,1901,West,Ahmedabad,Gujarat,India,Female,38,Regular,Inactive
+CUST349,30-10-2025,06-06-2026,24,205800,8575,South,Chennai,Tamil Nadu,India,Male,43,Premium,Inactive
+CUST350,11-05-2026,26-09-2026,5,16030,3206,West,Pune,Maharashtra,India,Female,54,Regular,Active
+CUST351,07-03-2026,22-06-2026,2,10120,5060,East,Kolkata,West Bengal,India,Female,30,New,Inactive
+CUST352,08-02-2026,07-09-2026,13,68640,5280,East,Kolkata,West Bengal,India,Female,47,Regular,Active
+CUST353,16-05-2026,05-07-2026,14,52374,3741,South,Bengaluru,Karnataka,India,Male,31,Regular,Inactive
+CUST354,28-03-2026,04-07-2026,24,175320,7305,West,Ahmedabad,Gujarat,India,Male,56,Premium,Inactive
+CUST355,01-06-2026,08-06-2026,12,113544,9462,West,Ahmedabad,Gujarat,India,Male,23,Premium,Inactive
+CUST356,16-06-2026,13-08-2026,18,85752,4764,South,Hyderabad,Telangana,India,Male,41,Premium,Active
+CUST357,06-11-2025,24-03-2026,14,58310,4165,South,Bengaluru,Karnataka,India,Male,41,Regular,Inactive
+CUST358,16-10-2025,23-08-2026,12,23868,1989,North,Delhi,Delhi,India,Male,31,Regular,Active
+CUST359,28-09-2025,11-06-2026,19,112347,5913,East,Bhubaneswar,Odisha,India,Male,46,Premium,Inactive
+CUST360,15-02-2026,10-05-2026,16,140736,8796,East,Bhubaneswar,Odisha,India,Female,52,Premium,Inactive
+CUST361,12-01-2026,08-09-2026,11,64042,5822,South,Hyderabad,Telangana,India,Male,46,Regular,Active
+CUST362,14-03-2026,26-03-2026,20,69320,3466,North,Jaipur,Rajasthan,India,Female,49,Regular,Inactive
+CUST363,29-11-2025,30-12-2025,1,3937,3937,South,Kochi,Kerala,India,Male,24,New,Inactive
+CUST364,17-11-2025,08-04-2026,1,8970,8970,South,Kochi,Kerala,India,Male,38,New,Inactive
+CUST365,19-07-2026,21-07-2026,2,7144,3572,East,Bhubaneswar,Odisha,India,Male,41,New,Inactive

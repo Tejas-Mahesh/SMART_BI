@@ -1,2814 +1,800 @@
-{% extends "base.html" %}
-{% load static %}
-
-{% block title %}Forecasting | Advanced Insights{% endblock %}
-
-{% block extra_css %}
-<style>
-/* ============================================================
-   FORECASTING — ADVANCED INSIGHTS THEME
-============================================================ */
-
-:root {
-    --ft-bg: #07111f;
-    --ft-bg-deep: #040b15;
-
-    --ft-panel: rgba(13, 27, 46, 0.94);
-    --ft-panel-strong: rgba(16, 32, 55, 0.97);
-    --ft-panel-soft: rgba(255, 255, 255, 0.025);
-
-    --ft-border: rgba(255, 255, 255, 0.075);
-    --ft-border-soft: rgba(255, 255, 255, 0.045);
-
-    --ft-text: #f2f7ff;
-    --ft-text-soft: rgba(218, 231, 245, 0.68);
-    --ft-text-muted: rgba(190, 208, 229, 0.46);
-
-    --ft-blue: #4fa3ff;
-    --ft-blue-bright: #74b9ff;
-    --ft-cyan: #22d3ee;
-    --ft-purple: #8b5cf6;
-
-    --ft-green: #48d597;
-    --ft-yellow: #f3c86b;
-    --ft-red: #ff6577;
-
-    --ft-radius: 18px;
-
-    --ft-shadow:
-        0 18px 55px rgba(0, 0, 0, 0.22);
-
-    --ft-glow:
-        0 0 35px rgba(79, 163, 255, 0.12);
-
-    --ft-sidebar-width: 260px;
-}
-
-
-/* ============================================================
-   PAGE ROOT
-============================================================ */
-
-.forecast-app {
-    position: relative;
-
-    width: 100%;
-    height: calc(100vh - 70px);
-
-    min-height: 600px;
-
-    display: grid;
-    grid-template-columns: var(--ft-sidebar-width) minmax(0, 1fr);
-
-    overflow: hidden;
-
-    color: var(--ft-text);
-
-    background:
-        radial-gradient(
-            circle at 15% 15%,
-            rgba(79, 163, 255, 0.10),
-            transparent 28%
-        ),
-        radial-gradient(
-            circle at 85% 20%,
-            rgba(139, 92, 246, 0.08),
-            transparent 26%
-        ),
-        radial-gradient(
-            circle at 70% 85%,
-            rgba(34, 211, 238, 0.055),
-            transparent 25%
-        ),
-        linear-gradient(
-            135deg,
-            var(--ft-bg),
-            var(--ft-bg-deep)
-        );
-
-    isolation: isolate;
-}
-
-
-/* ============================================================
-   ANIMATED BACKGROUND
-============================================================ */
-
-.forecast-app::before {
-    content: "";
-
-    position: absolute;
-    inset: -20%;
-
-    z-index: -2;
-
-    pointer-events: none;
-
-    background:
-        radial-gradient(
-            circle at 25% 35%,
-            rgba(79, 163, 255, 0.08),
-            transparent 24%
-        ),
-        radial-gradient(
-            circle at 75% 65%,
-            rgba(139, 92, 246, 0.07),
-            transparent 24%
-        );
-
-    filter: blur(30px);
-
-    animation: forecastBackgroundFloat 14s ease-in-out infinite alternate;
-}
-
-
-.forecast-app::after {
-    content: "";
-
-    position: absolute;
-    inset: 0;
-
-    z-index: -1;
-
-    pointer-events: none;
-
-    background:
-        linear-gradient(
-            120deg,
-            transparent 0%,
-            rgba(255, 255, 255, 0.018) 45%,
-            transparent 70%
-        );
-
-    background-size: 220% 220%;
-
-    animation: forecastLightSweep 18s ease-in-out infinite;
-}
-
-
-@keyframes forecastBackgroundFloat {
-    0% {
-        transform: translate3d(-2%, -1%, 0) scale(1);
-    }
-
-    50% {
-        transform: translate3d(2%, 1%, 0) scale(1.04);
-    }
-
-    100% {
-        transform: translate3d(-1%, 2%, 0) scale(1.02);
-    }
-}
-
-
-@keyframes forecastLightSweep {
-    0% {
-        background-position: 0% 50%;
-    }
-
-    50% {
-        background-position: 100% 50%;
-    }
-
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-
-/* ============================================================
-   SIDEBAR
-============================================================ */
-
-.forecast-sidebar {
-    min-width: 0;
-    min-height: 0;
-
-    height: 100%;
-
-    overflow-y: auto;
-    overflow-x: hidden;
-
-    border-right: 1px solid var(--ft-border);
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(5, 15, 28, 0.98),
-            rgba(4, 11, 21, 0.96)
-        );
-
-    box-shadow:
-        12px 0 40px rgba(0, 0, 0, 0.18);
-
-    scrollbar-width: thin;
-    scrollbar-color:
-        rgba(79, 163, 255, 0.35)
-        transparent;
-}
-
-
-.forecast-sidebar::-webkit-scrollbar {
-    width: 6px;
-}
-
-
-.forecast-sidebar::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-
-.forecast-sidebar::-webkit-scrollbar-thumb {
-    border-radius: 999px;
-
-    background:
-        rgba(79, 163, 255, 0.30);
-}
-
-
-.forecast-sidebar::-webkit-scrollbar-thumb:hover {
-    background:
-        rgba(79, 163, 255, 0.55);
-}
-
-
-/*
-   The included smart sidebar can provide its own styling.
-   These rules prevent the surrounding slot from breaking
-   the independent scrolling layout.
-*/
-
-.forecast-sidebar > * {
-    max-width: 100%;
-}
-
-
-/* ============================================================
-   MAIN CONTENT SCROLL AREA
-============================================================ */
-
-.forecast-main {
-    position: relative;
-
-    min-width: 0;
-    min-height: 0;
-
-    height: 100%;
-
-    overflow-y: auto;
-    overflow-x: hidden;
-
-    scrollbar-width: thin;
-    scrollbar-color:
-        rgba(79, 163, 255, 0.35)
-        transparent;
-}
-
-
-.forecast-main::-webkit-scrollbar {
-    width: 8px;
-}
-
-
-.forecast-main::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-
-.forecast-main::-webkit-scrollbar-thumb {
-    border-radius: 999px;
-
-    background:
-        rgba(79, 163, 255, 0.28);
-}
-
-
-.forecast-main::-webkit-scrollbar-thumb:hover {
-    background:
-        rgba(79, 163, 255, 0.50);
-}
-
-
-/* ============================================================
-   MAIN PAGE CONTAINER
-============================================================ */
-
-.forecast-page {
-    width: 100%;
-    max-width: 1540px;
-
-    margin: 0 auto;
-
-    padding: 30px 32px 70px;
-
-    box-sizing: border-box;
-}
-
-
-/* ============================================================
-   PAGE HEADER
-============================================================ */
-
-.forecast-header {
-    display: flex;
-
-    align-items: flex-start;
-    justify-content: space-between;
-
-    gap: 24px;
-
-    margin-bottom: 28px;
-
-    animation: forecastFadeUp 0.55s ease both;
-}
-
-
-.forecast-title-wrap {
-    min-width: 0;
-}
-
-
-.forecast-title-wrap h1 {
-    position: relative;
-
-    margin: 0 0 9px;
-
-    font-size: 34px;
-    line-height: 1.12;
-    font-weight: 850;
-
-    letter-spacing: -0.025em;
-
-    color: var(--ft-text);
-
-    text-shadow:
-        0 0 28px rgba(79, 163, 255, 0.13);
-}
-
-
-.forecast-title-wrap h1::after {
-    content: "";
-
-    display: block;
-
-    width: 74px;
-    height: 3px;
-
-    margin-top: 11px;
-
-    border-radius: 999px;
-
-    background:
-        linear-gradient(
-            90deg,
-            var(--ft-blue),
-            var(--ft-cyan),
-            var(--ft-purple)
-        );
-
-    box-shadow:
-        0 0 14px rgba(79, 163, 255, 0.38);
-}
-
-
-.forecast-title-wrap p {
-    margin: 0;
-
-    max-width: 850px;
-
-    color: var(--ft-text-soft);
-
-    font-size: 14px;
-    line-height: 1.7;
-}
-
-
-.forecast-badge {
-    flex: 0 0 auto;
-
-    padding: 9px 15px;
-
-    border: 1px solid rgba(79, 163, 255, 0.20);
-
-    border-radius: 999px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(79, 163, 255, 0.12),
-            rgba(139, 92, 246, 0.08)
-        );
-
-    color: var(--ft-blue-bright);
-
-    font-size: 12px;
-    font-weight: 800;
-
-    letter-spacing: .03em;
-
-    box-shadow:
-        0 0 24px rgba(79, 163, 255, 0.08);
-
-    backdrop-filter: blur(14px);
-}
-
-
-/* ============================================================
-   GRID
-============================================================ */
-
-.forecast-grid {
-    display: grid;
-
-    grid-template-columns:
-        minmax(300px, 370px)
-        minmax(0, 1fr);
-
-    gap: 22px;
-
-    align-items: start;
-}
-
-
-/* ============================================================
-   CARDS
-============================================================ */
-
-.forecast-card {
-    position: relative;
-
-    min-width: 0;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(16, 32, 55, 0.96),
-            rgba(10, 23, 40, 0.94)
-        );
-
-    border: 1px solid var(--ft-border);
-
-    border-radius: var(--ft-radius);
-
-    box-shadow:
-        var(--ft-shadow);
-
-    overflow: hidden;
-
-    backdrop-filter: blur(18px);
-
-    animation: forecastFadeUp 0.55s ease both;
-}
-
-
-.forecast-card::before {
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    left: 12%;
-    right: 12%;
-
-    height: 1px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(79, 163, 255, 0.48),
-            rgba(34, 211, 238, 0.35),
-            transparent
-        );
-
-    opacity: .8;
-}
-
-
-.forecast-card:hover {
-    border-color:
-        rgba(79, 163, 255, 0.16);
-
-    box-shadow:
-        var(--ft-shadow),
-        0 0 35px rgba(79, 163, 255, 0.055);
-
-    transition:
-        border-color .25s ease,
-        box-shadow .25s ease;
-}
-
-
-/* ============================================================
-   CARD HEADER
-============================================================ */
-
-.forecast-card-header {
-    padding: 21px 22px 16px;
-
-    border-bottom:
-        1px solid var(--ft-border-soft);
-
-    background:
-        rgba(255, 255, 255, 0.012);
-}
-
-
-.forecast-card-header h2 {
-    margin: 0;
-
-    font-size: 16px;
-    font-weight: 800;
-
-    color: var(--ft-text);
-}
-
-
-.forecast-card-header p {
-    margin: 6px 0 0;
-
-    color: var(--ft-text-muted);
-
-    font-size: 12px;
-    line-height: 1.6;
-}
-
-
-/* ============================================================
-   CARD BODY
-============================================================ */
-
-.forecast-card-body {
-    padding: 21px 22px;
-}
-
-
-/* ============================================================
-   FIELD GROUP
-============================================================ */
-
-.field-group {
-    margin-bottom: 17px;
-}
-
-
-.field-group:last-child {
-    margin-bottom: 0;
-}
-
-
-.field-group label {
-    display: block;
-
-    margin-bottom: 7px;
-
-    color: var(--ft-text-soft);
-
-    font-size: 12px;
-    font-weight: 750;
-
-    letter-spacing: .01em;
-}
-
-
-/* ============================================================
-   FORM CONTROLS
-============================================================ */
-
-.field-group select,
-.field-group input {
-    width: 100%;
-
-    min-height: 44px;
-
-    box-sizing: border-box;
-
-    padding: 10px 12px;
-
-    border:
-        1px solid rgba(255, 255, 255, 0.10);
-
-    border-radius: 10px;
-
-    background:
-        rgba(5, 15, 28, 0.84);
-
-    color: var(--ft-text);
-
-    font-size: 13px;
-
-    outline: none;
-
-    transition:
-        border-color .20s ease,
-        box-shadow .20s ease,
-        background .20s ease,
-        transform .20s ease;
-}
-
-
-.field-group select:hover,
-.field-group input:hover {
-    border-color:
-        rgba(79, 163, 255, 0.25);
-
-    background:
-        rgba(7, 19, 35, 0.92);
-}
-
-
-.field-group select:focus,
-.field-group input:focus {
-    border-color:
-        rgba(79, 163, 255, 0.65);
-
-    background:
-        rgba(7, 20, 36, 0.98);
-
-    box-shadow:
-        0 0 0 3px rgba(79, 163, 255, 0.10),
-        0 0 22px rgba(79, 163, 255, 0.07);
-
-    transform: translateY(-1px);
-}
-
-
-.field-group select option {
-    background: #0b1b2e;
-    color: var(--ft-text);
-}
-
-
-.field-help {
-    margin-top: 6px;
-
-    color: var(--ft-text-muted);
-
-    font-size: 10.5px;
-    line-height: 1.5;
-}
-
-
-.selection-note {
-    margin-top: 7px;
-
-    color: var(--ft-text-muted);
-
-    font-size: 10.5px;
-    line-height: 1.5;
-}
-
-
-/* ============================================================
-   BUTTON
-============================================================ */
-
-.run-button {
-    position: relative;
-
-    width: 100%;
-
-    min-height: 46px;
-
-    margin-top: 5px;
-
-    border: 1px solid rgba(79, 163, 255, 0.24);
-
-    border-radius: 11px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #2469b4,
-            #3153a5
-        );
-
-    color: #ffffff;
-
-    font-size: 13px;
-    font-weight: 800;
-
-    cursor: pointer;
-
-    overflow: hidden;
-
-    box-shadow:
-        0 10px 28px rgba(37, 105, 180, 0.22);
-
-    transition:
-        transform .18s ease,
-        box-shadow .18s ease,
-        filter .18s ease;
-}
-
-
-.run-button::before {
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    bottom: 0;
-    left: -70%;
-
-    width: 45%;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.20),
-            transparent
-        );
-
-    transform: skewX(-20deg);
-
-    transition:
-        left .65s ease;
-}
-
-
-.run-button:hover {
-    transform: translateY(-2px);
-
-    filter: brightness(1.08);
-
-    box-shadow:
-        0 14px 34px rgba(37, 105, 180, 0.30),
-        0 0 24px rgba(79, 163, 255, 0.10);
-}
-
-
-.run-button:hover::before {
-    left: 130%;
-}
-
-
-.run-button:active {
-    transform: translateY(0);
-}
-
-
-/* ============================================================
-   DIVIDER
-============================================================ */
-
-.selection-divider {
-    height: 1px;
-
-    margin: 4px 0 19px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            var(--ft-border),
-            transparent
-        );
-}
-
-
-/* ============================================================
-   EMPTY / INFO STATES
-============================================================ */
-
-.empty-state {
-    padding: 46px 25px;
-
-    text-align: center;
-
-    color: var(--ft-text-soft);
-}
-
-
-.empty-state h3 {
-    margin: 0 0 9px;
-
-    color: var(--ft-text);
-
-    font-size: 18px;
-}
-
-
-.empty-state p {
-    margin: 0 auto;
-
-    max-width: 620px;
-
-    color: var(--ft-text-muted);
-
-    font-size: 13px;
-    line-height: 1.7;
-}
-
-
-.empty-state strong {
-    color: var(--ft-blue-bright);
-}
-
-
-.no-selection-message {
-    margin-bottom: 17px;
-
-    padding: 12px 13px;
-
-    border:
-        1px solid rgba(79, 163, 255, 0.10);
-
-    border-radius: 10px;
-
-    background:
-        rgba(79, 163, 255, 0.045);
-
-    color: var(--ft-text-soft);
-
-    font-size: 11px;
-
-    line-height: 1.5;
-}
-
-
-.status-message {
-    margin-bottom: 20px;
-
-    padding: 13px 15px;
-
-    border:
-        1px solid rgba(255, 101, 119, 0.20);
-
-    border-radius: 11px;
-
-    background:
-        rgba(255, 101, 119, 0.075);
-
-    color: #ff9aa8;
-
-    font-size: 12px;
-    font-weight: 650;
-
-    box-shadow:
-        0 0 24px rgba(255, 101, 119, 0.045);
-}
-
-
-.info-message {
-    margin-bottom: 20px;
-
-    padding: 13px 15px;
-
-    border:
-        1px solid rgba(79, 163, 255, 0.12);
-
-    border-radius: 11px;
-
-    background:
-        rgba(79, 163, 255, 0.045);
-
-    color: var(--ft-text-soft);
-
-    font-size: 12px;
-}
-
-
-/* ============================================================
-   RESULTS
-============================================================ */
-
-.result-area {
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 19px;
-
-    min-width: 0;
-}
-
-
-/* ============================================================
-   KPI GRID
-============================================================ */
-
-.kpi-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, minmax(0, 1fr));
-
-    gap: 13px;
-}
-
-
-.kpi-card {
-    position: relative;
-
-    min-width: 0;
-
-    padding: 18px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(16, 32, 55, 0.95),
-            rgba(8, 20, 35, 0.94)
-        );
-
-    border:
-        1px solid var(--ft-border);
-
-    border-radius: 15px;
-
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.15);
-
-    overflow: hidden;
-
-    animation:
-        forecastKpiIn .50s ease both;
-}
-
-
-.kpi-card:nth-child(2) {
-    animation-delay: .06s;
-}
-
-
-.kpi-card:nth-child(3) {
-    animation-delay: .12s;
-}
-
-
-.kpi-card:nth-child(4) {
-    animation-delay: .18s;
-}
-
-
-.kpi-card::before {
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 2px;
-
-    background:
-        linear-gradient(
-            90deg,
-            var(--ft-blue),
-            var(--ft-cyan)
-        );
-
-    opacity: .65;
-}
-
-
-.kpi-card:nth-child(2)::before {
-    background:
-        linear-gradient(
-            90deg,
-            var(--ft-cyan),
-            var(--ft-green)
-        );
-}
-
-
-.kpi-card:nth-child(3)::before {
-    background:
-        linear-gradient(
-            90deg,
-            var(--ft-purple),
-            var(--ft-blue)
-        );
-}
-
-
-.kpi-card:nth-child(4)::before {
-    background:
-        linear-gradient(
-            90deg,
-            var(--ft-yellow),
-            var(--ft-purple)
-        );
-}
-
-
-.kpi-card:hover {
-    transform: translateY(-3px);
-
-    border-color:
-        rgba(79, 163, 255, 0.18);
-
-    box-shadow:
-        0 15px 35px rgba(0, 0, 0, 0.20),
-        0 0 25px rgba(79, 163, 255, 0.055);
-
-    transition:
-        transform .20s ease,
-        border-color .20s ease,
-        box-shadow .20s ease;
-}
-
-
-.kpi-label {
-    margin-bottom: 8px;
-
-    color: var(--ft-text-muted);
-
-    font-size: 10.5px;
-    font-weight: 750;
-
-    text-transform: uppercase;
-
-    letter-spacing: .055em;
-}
-
-
-.kpi-value {
-    color: var(--ft-text);
-
-    font-size: 22px;
-    font-weight: 850;
-
-    line-height: 1.2;
-
-    word-break: break-word;
-}
-
-
-.kpi-sub {
-    margin-top: 6px;
-
-    color: var(--ft-text-muted);
-
-    font-size: 10px;
-}
-
-
-/* ============================================================
-   CHART
-============================================================ */
-
-.chart-card {
-    min-width: 0;
-}
-
-
-.chart-header {
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: flex-start;
-
-    gap: 15px;
-}
-
-
-.section-title {
-    margin: 0;
-
-    color: var(--ft-text);
-
-    font-size: 16px;
-    font-weight: 800;
-}
-
-
-.section-description {
-    margin: 5px 0 0;
-
-    color: var(--ft-text-muted);
-
-    font-size: 11px;
-}
-
-
-.legend-note {
-    color: var(--ft-text-muted);
-
-    font-size: 10px;
-
-    white-space: nowrap;
-}
-
-
-.chart-wrap {
-    position: relative;
-
-    width: 100%;
-
-    height: 390px;
-
-    padding: 3px 0;
-}
-
-
-#forecastChart {
-    display: block;
-
-    width: 100% !important;
-    height: 100% !important;
-}
-
-
-/* ============================================================
-   SUMMARY
-============================================================ */
-
-.summary-box {
-    padding: 17px 18px;
-
-    border:
-        1px solid rgba(79, 163, 255, 0.10);
-
-    border-radius: 13px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(79, 163, 255, 0.045),
-            rgba(139, 92, 246, 0.025)
-        );
-
-    color: var(--ft-text-soft);
-
-    font-size: 13px;
-
-    line-height: 1.75;
-}
-
-
-.summary-box strong {
-    color: var(--ft-text);
-}
-
-
-/* ============================================================
-   DETAIL GRID
-============================================================ */
-
-.detail-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
-    gap: 11px;
-}
-
-
-.detail-item {
-    min-width: 0;
-
-    padding: 14px;
-
-    border:
-        1px solid var(--ft-border-soft);
-
-    border-radius: 12px;
-
-    background:
-        rgba(255, 255, 255, 0.018);
-
-    transition:
-        border-color .18s ease,
-        background .18s ease,
-        transform .18s ease;
-}
-
-
-.detail-item:hover {
-    transform: translateY(-2px);
-
-    border-color:
-        rgba(79, 163, 255, 0.13);
-
-    background:
-        rgba(79, 163, 255, 0.035);
-}
-
-
-.detail-label {
-    margin-bottom: 5px;
-
-    color: var(--ft-text-muted);
-
-    font-size: 9.5px;
-    font-weight: 750;
-
-    text-transform: uppercase;
-
-    letter-spacing: .055em;
-}
-
-
-.detail-value {
-    color: var(--ft-text-soft);
-
-    font-size: 12px;
-    font-weight: 700;
-
-    word-break: break-word;
-}
-
-
-/* ============================================================
-   ANIMATIONS
-============================================================ */
-
-@keyframes forecastFadeUp {
-    from {
-        opacity: 0;
-
-        transform:
-            translateY(14px);
-    }
-
-    to {
-        opacity: 1;
-
-        transform:
-            translateY(0);
-    }
-}
-
-
-@keyframes forecastKpiIn {
-    from {
-        opacity: 0;
-
-        transform:
-            translateY(12px)
-            scale(.985);
-    }
-
-    to {
-        opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
-    }
-}
-
-
-/* ============================================================
-   SELECTION FORM
-============================================================ */
-
-.selection-form,
-.forecast-form {
-    margin: 0;
-}
-
-
-/* ============================================================
-   RESPONSIVE — 1200
-============================================================ */
-
-@media (max-width: 1200px) {
-
-    :root {
-        --ft-sidebar-width: 235px;
-    }
-
-    .forecast-page {
-        padding:
-            26px 24px 60px;
-    }
-
-    .forecast-grid {
-        grid-template-columns:
-            minmax(280px, 330px)
-            minmax(0, 1fr);
-
-        gap: 18px;
-    }
-
-    .kpi-grid {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
-}
-
-
-/* ============================================================
-   RESPONSIVE — 1000
-============================================================ */
-
-@media (max-width: 1000px) {
-
-    .forecast-app {
-        grid-template-columns:
-            215px
-            minmax(0, 1fr);
-    }
-
-    .forecast-grid {
-        grid-template-columns:
-            1fr;
-    }
-
-    .forecast-page {
-        max-width: 100%;
-    }
-}
-
-
-/* ============================================================
-   RESPONSIVE — 760
-============================================================ */
-
-@media (max-width: 760px) {
-
-    .forecast-app {
-        grid-template-columns:
-            1fr;
-
-        height: auto;
-
-        min-height: calc(100vh - 70px);
-
-        overflow: visible;
-    }
-
-    .forecast-sidebar {
-        height: auto;
-
-        max-height: none;
-
-        overflow: visible;
-
-        border-right: 0;
-
-        border-bottom:
-            1px solid var(--ft-border);
-    }
-
-    .forecast-main {
-        height: auto;
-
-        overflow: visible;
-    }
-
-    .forecast-page {
-        padding:
-            22px 16px 45px;
-    }
-
-    .forecast-header {
-        flex-direction: column;
-
-        gap: 16px;
-    }
-
-    .forecast-title-wrap h1 {
-        font-size: 29px;
-    }
-
-    .forecast-badge {
-        align-self: flex-start;
-    }
-
-    .kpi-grid {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
-
-    .detail-grid {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
-
-    .chart-wrap {
-        height: 320px;
-    }
-}
-
-
-/* ============================================================
-   RESPONSIVE — 520
-============================================================ */
-
-@media (max-width: 520px) {
-
-    .forecast-page {
-        padding:
-            19px 12px 38px;
-    }
-
-    .forecast-title-wrap h1 {
-        font-size: 26px;
-    }
-
-    .forecast-title-wrap p {
-        font-size: 12px;
-    }
-
-    .forecast-card-header,
-    .forecast-card-body {
-        padding-left: 16px;
-        padding-right: 16px;
-    }
-
-    .kpi-grid,
-    .detail-grid {
-        grid-template-columns:
-            1fr;
-    }
-
-    .chart-header {
-        flex-direction: column;
-    }
-
-    .legend-note {
-        white-space: normal;
-    }
-
-    .chart-wrap {
-        height: 280px;
-    }
-}
-
-
-/* ============================================================
-   REDUCED MOTION
-============================================================ */
-
-@media (prefers-reduced-motion: reduce) {
-
-    .forecast-app::before,
-    .forecast-app::after,
-    .forecast-card,
-    .kpi-card {
-        animation: none !important;
-    }
-
-    .run-button,
-    .kpi-card,
-    .detail-item,
-    .field-group select,
-    .field-group input {
-        transition: none !important;
-    }
-}
-</style>
-{% endblock %}
-
-
-{% block content %}
-
-<div class="forecast-app">
-
-    <!-- ========================================================
-         SMART SIDEBAR
-    ========================================================= -->
-    <aside class="forecast-sidebar">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forecasting | Advanced Insights</title>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* ============================================================
+           DESIGN TOKENS & SYSTEM ARCHITECTURE
+        ============================================================ */
+        :root {
+            --bg-base: #040911;
+            --bg-surface: #07111f;
+            --bg-card: rgba(11, 23, 42, 0.72);
+            --bg-card-hover: rgba(16, 32, 59, 0.85);
+            --border-subtle: rgba(79, 163, 255, 0.14);
+            --border-focus: rgba(79, 163, 255, 0.45);
+            
+            --accent-blue: #4fa3ff;
+            --accent-cyan: #22d3ee;
+            --accent-gradient: linear-gradient(135deg, #4fa3ff 0%, #22d3ee 100%);
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: rgba(190, 211, 235, 0.65);
+            
+            --status-up: #10b981;
+            --status-down: #ef4444;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(79, 163, 255, 0.12), transparent),
+                radial-gradient(circle 600px at 0% 100%, rgba(34, 211, 238, 0.04), transparent);
+            background-attachment: fixed;
+            display: flex;
+        }
+
+        /* Animations */
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Workspace Shell */
+        .smart-workspace-shell {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        .smart-workspace-sidebar {
+            width: 270px;
+            background: var(--bg-surface);
+            border-right: 1px solid var(--border-subtle);
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 1.75rem 1.25rem;
+        }
+
+        .smart-workspace-main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2.5rem 3.5rem;
+        }
+
+        .forecast-page {
+            max-width: 1400px;
+            margin: 0 auto;
+            animation: cardEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Header Section */
+        .forecast-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-subtle);
+            margin-bottom: 2rem;
+        }
+
+        .forecast-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            color: var(--accent-cyan);
+            margin-bottom: 0.65rem;
+            text-transform: uppercase;
+        }
+
+        .forecast-header h1 {
+            font-size: 2.15rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
+            margin-bottom: 0.4rem;
+        }
+
+        .forecast-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            max-width: 650px;
+            line-height: 1.55;
+        }
+
+        .forecast-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.4rem 0.85rem;
+            border-radius: 20px;
+            background: rgba(79, 163, 255, 0.12);
+            color: var(--accent-blue);
+            border: 1px solid rgba(79, 163, 255, 0.25);
+            font-weight: 600;
+        }
+
+        /* Layout Grid */
+        .forecast-grid {
+            display: grid;
+            grid-template-columns: 340px minmax(0, 1fr);
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* Cards Component Structure */
+        .forecast-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            position: relative;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .forecast-card:hover {
+            border-color: var(--border-focus);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .forecast-card-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .forecast-card-header h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .forecast-card-header p {
+            color: var(--text-muted);
+            font-size: 0.825rem;
+            margin-top: 0.25rem;
+            line-height: 1.4;
+        }
+
+        /* Form & Fields */
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .field-group label {
+            font-size: 0.825rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .field-group select,
+        .field-group input {
+            appearance: none;
+            width: 100%;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .field-group select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234fa3ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            cursor: pointer;
+        }
+
+        .field-group select:hover,
+        .field-group select:focus,
+        .field-group input:hover,
+        .field-group input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(79, 163, 255, 0.15);
+        }
+
+        .field-help,
+        .selection-note {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .selection-divider {
+            height: 1px;
+            background: var(--border-subtle);
+            margin: 1.5rem 0;
+        }
+
+        /* Action Buttons */
+        .run-button {
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--accent-gradient);
+            color: #040911;
+            font-size: 0.9rem;
+            font-weight: 700;
+            padding: 0.85rem 1.5rem;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 18px rgba(34, 211, 238, 0.25);
+        }
+
+        .run-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(79, 163, 255, 0.35);
+        }
+
+        /* ============================================================
+           ENHANCED DISTINCT KPI CARDS ARCHITECTURE
+        ============================================================ */
+        .result-area {
+            display: flex;
+            flex-direction: column;
+            gap: 1.75rem;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 1.4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--border-focus);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+        }
+
+        /* Distinct Background Colors & Accents per KPI Card */
+        .kpi-card-actual {
+            background: linear-gradient(145deg, rgba(16, 32, 59, 0.85) 0%, rgba(7, 17, 31, 0.95) 100%);
+            border-top: 3px solid var(--accent-blue);
+        }
+
+        .kpi-card-first {
+            background: linear-gradient(145deg, rgba(14, 43, 61, 0.85) 0%, rgba(7, 17, 31, 0.95) 100%);
+            border-top: 3px solid var(--accent-cyan);
+        }
+
+        .kpi-card-latest {
+            background: linear-gradient(145deg, rgba(30, 27, 68, 0.85) 0%, rgba(7, 17, 31, 0.95) 100%);
+            border-top: 3px solid #8b5cf6;
+        }
+
+        .kpi-card-change {
+            background: linear-gradient(145deg, rgba(12, 45, 45, 0.85) 0%, rgba(7, 17, 31, 0.95) 100%);
+            border-top: 3px solid var(--status-up);
+        }
+
+        .kpi-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+
+        .kpi-value {
+            font-size: 1.85rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
+        }
+
+        .kpi-sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Chart Canvas Area */
+        .chart-wrap {
+            position: relative;
+            height: 380px;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        /* Summary & Detail Grid */
+        .summary-box {
+            background: rgba(7, 17, 31, 0.6);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            color: #dbeafe;
+            font-size: 0.925rem;
+            line-height: 1.6;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .detail-item {
+            background: rgba(7, 17, 31, 0.5);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .detail-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+
+        .detail-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        /* Message Notifications */
+        .status-message, .info-message {
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-message {
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            background: rgba(239, 68, 68, 0.08);
+            color: #fca5a5;
+        }
+
+        .info-message {
+            border: 1px solid var(--border-subtle);
+            background: rgba(79, 163, 255, 0.08);
+            color: var(--accent-blue);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state h3 {
+            color: var(--text-main);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .forecast-grid { grid-template-columns: 1fr; }
+            .smart-workspace-shell { flex-direction: column; }
+            .smart-workspace-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border-subtle); }
+            .smart-workspace-main { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="smart-workspace-shell">
+
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="smart-workspace-sidebar">
         {% include "includes/smart_sidebar.html" %}
     </aside>
 
-
-    <!-- ========================================================
-         MAIN SCROLLING AREA
-    ========================================================= -->
-    <main class="forecast-main">
-
+    <!-- MAIN SCROLLABLE CONTENT -->
+    <main class="smart-workspace-main">
         <div class="forecast-page">
 
-            <!-- ==================================================
-                 PAGE HEADER
-            =================================================== -->
-            <div class="forecast-header">
-
-                <div class="forecast-title-wrap">
-
-                    <h1>
-                        Forecasting
-                    </h1>
-
-                    <p>
-                        Estimate future business metric values from
-                        historical time-series data using the selected
-                        forecasting method and time frequency.
-                    </p>
-
+            <!-- PAGE HEADER -->
+            <header class="forecast-header">
+                <div>
+                    <div class="forecast-eyebrow">Advanced Insights</div>
+                    <h1>Forecasting</h1>
+                    <p>Estimate future business metric values from historical time-series data using the selected forecasting method and time frequency.</p>
                 </div>
+                <div class="forecast-badge">Predictive Analytics</div>
+            </header>
 
-                <div class="forecast-badge">
-                    Advanced Insights
-                </div>
-
-            </div>
-
-
-            <!-- ==================================================
-                 MESSAGES
-            =================================================== -->
+            <!-- MESSAGES SECTION -->
             {% if messages %}
-
                 {% for message in messages %}
-
-                    <div
-                        class="{% if message.tags == 'error' %}status-message{% else %}info-message{% endif %}"
-                    >
+                    <div class="{% if message.tags == 'error' %}status-message{% else %}info-message{% endif %}">
                         {{ message }}
                     </div>
-
                 {% endfor %}
-
             {% endif %}
 
-
-            <!-- ==================================================
-                 MAIN GRID
-            =================================================== -->
+            <!-- MAIN GRID AREA -->
             <div class="forecast-grid">
 
-
-                <!-- =================================================
-                     FORECAST SETTINGS
-                ================================================== -->
+                <!-- CONFIGURATION PANEL -->
                 <div class="forecast-card">
-
                     <div class="forecast-card-header">
-
-                        <h2>
-                            Forecast Settings
-                        </h2>
-
-                        <p>
-                            Select the dataset version, metric,
-                            frequency, method and number of future
-                            periods to forecast.
-                        </p>
-
+                        <h2>Forecast Settings</h2>
+                        <p>Select dataset version, metric, frequency, method and number of future periods.</p>
                     </div>
 
+                    <!-- DATASET SELECTOR FORM -->
+                    <form method="get" action="{% url 'advanced_insights:forecasting' %}" class="selection-form">
+                        <div class="field-group">
+                            <label for="dataset">Dataset</label>
+                            <select id="dataset" name="dataset" onchange="this.form.submit()">
+                                {% for dataset in datasets %}
+                                    <option value="{{ dataset.id }}" {% if selected_dataset and selected_dataset.id == dataset.id %}selected{% endif %}>
+                                        {{ dataset.name }} — {{ dataset.dataset_type }}
+                                    </option>
+                                {% empty %}
+                                    <option value="">No datasets available</option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
-                    <div class="forecast-card-body">
-
-                        <!-- =========================================
-                             DATASET / VERSION SELECTION
-                        ========================================== -->
-
-                        <form
-                            method="get"
-                            action="{% url 'advanced_insights:forecasting' %}"
-                            class="selection-form"
-                        >
-
-                            <!-- DATASET -->
-
-                            <div class="field-group">
-
-                                <label for="dataset">
-                                    Dataset
-                                </label>
-
-                                <select
-                                    id="dataset"
-                                    name="dataset"
-                                    onchange="this.form.submit()"
-                                >
-
-                                    {% for dataset in datasets %}
-
-                                        <option
-                                            value="{{ dataset.id }}"
-                                            {% if selected_dataset and selected_dataset.id == dataset.id %}
-                                                selected
-                                            {% endif %}
-                                        >
-                                            {{ dataset.name }}
-                                            —
-                                            {{ dataset.dataset_type }}
+                        <div class="field-group">
+                            <label for="version">Dataset Version</label>
+                            <select id="version" name="version" onchange="this.form.submit()">
+                                {% if selected_dataset %}
+                                    {% for version in selected_dataset.versions.all %}
+                                        <option value="{{ version.id }}" {% if selected_version and selected_version.id == version.id %}selected{% endif %}>
+                                            Version {{ version.version_number }} — {{ version.version_type }}
+                                            {% if version.is_current %} — Current{% endif %}
                                         </option>
-
                                     {% empty %}
-
-                                        <option value="">
-                                            No datasets available
-                                        </option>
-
+                                        <option value="">No versions available</option>
                                     {% endfor %}
+                                {% else %}
+                                    <option value="">Select a dataset first</option>
+                                {% endif %}
+                            </select>
+                            <span class="selection-note">Changing selection updates date and numeric column options.</span>
+                        </div>
+                    </form>
 
-                                </select>
+                    <div class="selection-divider"></div>
 
-                            </div>
-
-
-                            <!-- DATASET VERSION -->
+                    <!-- FORECAST RUN FORM -->
+                    {% if selected_dataset and selected_version %}
+                        <form method="post" action="{% url 'advanced_insights:forecasting' %}?dataset={{ selected_dataset.id }}&version={{ selected_version.id }}" class="forecast-form">
+                            {% csrf_token %}
 
                             <div class="field-group">
-
-                                <label for="version">
-                                    Dataset Version
-                                </label>
-
-                                <select
-                                    id="version"
-                                    name="version"
-                                    onchange="this.form.submit()"
-                                >
-
-                                    {% if selected_dataset %}
-
-                                        {% for version in selected_dataset.versions.all %}
-
-                                            <option
-                                                value="{{ version.id }}"
-                                                {% if selected_version and selected_version.id == version.id %}
-                                                    selected
-                                                {% endif %}
-                                            >
-                                                Version
-                                                {{ version.version_number }}
-                                                —
-                                                {{ version.version_type }}
-
-                                                {% if version.is_current %}
-                                                    — Current
-                                                {% endif %}
-                                            </option>
-
-                                        {% empty %}
-
-                                            <option value="">
-                                                No versions available
-                                            </option>
-
-                                        {% endfor %}
-
-                                    {% else %}
-
-                                        <option value="">
-                                            Select a dataset first
-                                        </option>
-
-                                    {% endif %}
-
+                                <label for="date_column">Date Column</label>
+                                <select id="date_column" name="date_column">
+                                    {% for column in date_columns %}
+                                        <option value="{{ column }}" {% if selected_date_column == column %}selected{% endif %}>{{ column }}</option>
+                                    {% empty %}
+                                        <option value="">No date columns detected</option>
+                                    {% endfor %}
                                 </select>
-
-                                <div class="selection-note">
-                                    Changing the dataset or version reloads
-                                    the available date and numeric columns.
-                                </div>
-
                             </div>
 
+                            <div class="field-group">
+                                <label for="metric_column">Metric Column</label>
+                                <select id="metric_column" name="metric_column">
+                                    {% for column in numeric_columns %}
+                                        <option value="{{ column }}" {% if selected_metric_column == column %}selected{% endif %}>{{ column }}</option>
+                                    {% empty %}
+                                        <option value="">No numeric columns detected</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="field-group">
+                                <label for="frequency">Frequency</label>
+                                <select id="frequency" name="frequency">
+                                    <option value="D" {% if selected_frequency == "D" %}selected{% endif %}>Daily</option>
+                                    <option value="W" {% if selected_frequency == "W" %}selected{% endif %}>Weekly</option>
+                                    <option value="M" {% if selected_frequency == "M" %}selected{% endif %}>Monthly</option>
+                                    <option value="Q" {% if selected_frequency == "Q" %}selected{% endif %}>Quarterly</option>
+                                    <option value="Y" {% if selected_frequency == "Y" %}selected{% endif %}>Yearly</option>
+                                </select>
+                            </div>
+
+                            <div class="field-group">
+                                <label for="method">Forecasting Method</label>
+                                <select id="method" name="method">
+                                    <option value="Linear Trend" {% if selected_method == "Linear Trend" %}selected{% endif %}>Linear Trend</option>
+                                    <option value="Moving Average" {% if selected_method == "Moving Average" %}selected{% endif %}>Moving Average</option>
+                                </select>
+                                <span class="field-help">Linear Trend extends direction; Moving Average uses recent values.</span>
+                            </div>
+
+                            <div class="field-group">
+                                <label for="horizon">Forecast Horizon</label>
+                                <input id="horizon" name="horizon" type="number" min="1" max="60" value="{{ selected_horizon|default:3 }}">
+                                <span class="field-help">Enter 1–60 future periods.</span>
+                            </div>
+
+                            <button class="run-button" type="submit">
+                                <span>↗</span> Generate Forecast
+                            </button>
                         </form>
-
-
-                        <div class="selection-divider"></div>
-
-
-                        <!-- =========================================
-                             FORECAST GENERATION FORM
-                        ========================================== -->
-
-                        {% if selected_dataset and selected_version %}
-
-                            <form
-                                method="post"
-                                action="{% url 'advanced_insights:forecasting' %}?dataset={{ selected_dataset.id }}&version={{ selected_version.id }}"
-                                class="forecast-form"
-                            >
-
-                                {% csrf_token %}
-
-
-                                <!-- DATE COLUMN -->
-
-                                <div class="field-group">
-
-                                    <label for="date_column">
-                                        Date Column
-                                    </label>
-
-                                    <select
-                                        id="date_column"
-                                        name="date_column"
-                                    >
-
-                                        {% for column in date_columns %}
-
-                                            <option
-                                                value="{{ column }}"
-                                                {% if selected_date_column == column %}
-                                                    selected
-                                                {% endif %}
-                                            >
-                                                {{ column }}
-                                            </option>
-
-                                        {% empty %}
-
-                                            <option value="">
-                                                No date columns detected
-                                            </option>
-
-                                        {% endfor %}
-
-                                    </select>
-
-                                </div>
-
-
-                                <!-- METRIC COLUMN -->
-
-                                <div class="field-group">
-
-                                    <label for="metric_column">
-                                        Metric Column
-                                    </label>
-
-                                    <select
-                                        id="metric_column"
-                                        name="metric_column"
-                                    >
-
-                                        {% for column in numeric_columns %}
-
-                                            <option
-                                                value="{{ column }}"
-                                                {% if selected_metric_column == column %}
-                                                    selected
-                                                {% endif %}
-                                            >
-                                                {{ column }}
-                                            </option>
-
-                                        {% empty %}
-
-                                            <option value="">
-                                                No numeric columns detected
-                                            </option>
-
-                                        {% endfor %}
-
-                                    </select>
-
-                                </div>
-
-
-                                <!-- FREQUENCY -->
-
-                                <div class="field-group">
-
-                                    <label for="frequency">
-                                        Frequency
-                                    </label>
-
-                                    <select
-                                        id="frequency"
-                                        name="frequency"
-                                    >
-
-                                        <option
-                                            value="D"
-                                            {% if selected_frequency == "D" %}
-                                                selected
-                                            {% endif %}
-                                        >
-                                            Daily
-                                        </option>
-
-                                        <option
-                                            value="W"
-                                            {% if selected_frequency == "W" %}
-                                                selected
-                                            {% endif %}
-                                        >
-                                            Weekly
-                                        </option>
-
-                                        <option
-                                            value="M"
-                                            {% if selected_frequency == "M" %}
-                                                selected
-                                            {% endif %}
-                                        >
-                                            Monthly
-                                        </option>
-
-                                        <option
-                                            value="Q"
-                                            {% if selected_frequency == "Q" %}
-                                                selected
-                                            {% endif %}
-                                        >
-                                            Quarterly
-                                        </option>
-
-                                        <option
-                                            value="Y"
-                                            {% if selected_frequency == "Y" %}
-                                                selected
-                                            {% endif %}
-                                        >
-                                            Yearly
-                                        </option>
-
-                                    </select>
-
-                                </div>
-
-
-                                <!-- METHOD -->
-
-                                <div class="field-group">
-
-                                    <label for="method">
-                                        Forecasting Method
-                                    </label>
-
-                                    <select
-                                        id="method"
-                                        name="method"
-                                    >
-
-                                        <option
-                                            value="Linear Trend"
-                                            {% if selected_method == "Linear Trend" %}
-                                                selected
-                                            {% endif %}
-                                        >
-                                            Linear Trend
-                                        </option>
-
-                                        <option
-                                            value="Moving Average"
-                                            {% if selected_method == "Moving Average" %}
-                                                selected
-                                            {% endif %}
-                                        >
-                                            Moving Average
-                                        </option>
-
-                                    </select>
-
-                                    <div class="field-help">
-                                        Linear Trend extends the historical
-                                        direction. Moving Average uses recent
-                                        historical values.
-                                    </div>
-
-                                </div>
-
-
-                                <!-- HORIZON -->
-
-                                <div class="field-group">
-
-                                    <label for="horizon">
-                                        Forecast Horizon
-                                    </label>
-
-                                    <input
-                                        id="horizon"
-                                        name="horizon"
-                                        type="number"
-                                        min="1"
-                                        max="60"
-                                        value="{{ selected_horizon|default:3 }}"
-                                    >
-
-                                    <div class="field-help">
-                                        Enter 1–60 future periods.
-                                    </div>
-
-                                </div>
-
-
-                                <!-- GENERATE -->
-
-                                <button
-                                    class="run-button"
-                                    type="submit"
-                                >
-                                    Generate Forecast
-                                </button>
-
-                            </form>
-
-                        {% else %}
-
-                            <div class="no-selection-message">
-                                Select a dataset and dataset version before
-                                generating a forecast.
-                            </div>
-
-                        {% endif %}
-
-                    </div>
-
+                    {% else %}
+                        <div class="info-message">
+                            Select a dataset and version above to configure forecasting parameters.
+                        </div>
+                    {% endif %}
                 </div>
 
-
-                <!-- =================================================
-                     RESULTS
-                ================================================== -->
-
+                <!-- RESULTS PANEL AREA -->
                 <div class="result-area">
-
                     {% if forecast_result %}
 
-
-                        <!-- =========================================
-                             KPI GRID
-                        ========================================== -->
-
+                        <!-- KPI METRIC CARDS WITH COLORED ACCENT BACKGROUNDS -->
                         <div class="kpi-grid">
-
-
-                            <!-- LAST ACTUAL -->
-
-                            <div class="kpi-card">
-
-                                <div class="kpi-label">
-                                    Last Actual
-                                </div>
-
-                                <div class="kpi-value">
-                                    {{ forecast_result.last_actual_value|default:"—"|floatformat:2 }}
-                                </div>
-
-                                <div class="kpi-sub">
-                                    Latest historical value
-                                </div>
-
+                            <div class="kpi-card kpi-card-actual">
+                                <span class="kpi-label">Last Actual</span>
+                                <div class="kpi-value">{{ forecast_result.last_actual_value|default:"—"|floatformat:2 }}</div>
+                                <span class="kpi-sub">Latest historical value</span>
                             </div>
 
-
-                            <!-- FIRST FORECAST -->
-
-                            <div class="kpi-card">
-
-                                <div class="kpi-label">
-                                    First Forecast
-                                </div>
-
-                                <div class="kpi-value">
-                                    {{ forecast_result.first_forecast_value|default:"—"|floatformat:2 }}
-                                </div>
-
-                                <div class="kpi-sub">
-                                    First projected period
-                                </div>
-
+                            <div class="kpi-card kpi-card-first">
+                                <span class="kpi-label">First Forecast</span>
+                                <div class="kpi-value">{{ forecast_result.first_forecast_value|default:"—"|floatformat:2 }}</div>
+                                <span class="kpi-sub">First projected period</span>
                             </div>
 
-
-                            <!-- LATEST FORECAST -->
-
-                            <div class="kpi-card">
-
-                                <div class="kpi-label">
-                                    Latest Forecast
-                                </div>
-
-                                <div class="kpi-value">
-                                    {{ forecast_result.latest_forecast_value|default:"—"|floatformat:2 }}
-                                </div>
-
-                                <div class="kpi-sub">
-                                    Final projected period
-                                </div>
-
+                            <div class="kpi-card kpi-card-latest">
+                                <span class="kpi-label">Latest Forecast</span>
+                                <div class="kpi-value">{{ forecast_result.latest_forecast_value|default:"—"|floatformat:2 }}</div>
+                                <span class="kpi-sub">Final projected period</span>
                             </div>
 
-
-                            <!-- CHANGE -->
-
-                            <div class="kpi-card">
-
-                                <div class="kpi-label">
-                                    Forecast Change
-                                </div>
-
+                            <div class="kpi-card kpi-card-change">
+                                <span class="kpi-label">Forecast Change</span>
                                 <div class="kpi-value">
-
                                     {% if forecast_result.forecast_change_percentage != None %}
-
                                         {{ forecast_result.forecast_change_percentage|floatformat:2 }}%
-
                                     {% else %}
-
                                         —
-
                                     {% endif %}
-
                                 </div>
-
-                                <div class="kpi-sub">
-                                    First to latest forecast
-                                </div>
-
+                                <span class="kpi-sub">First to latest change</span>
                             </div>
-
                         </div>
 
-
-                        <!-- =========================================
-                             FORECAST CHART
-                        ========================================== -->
-
-                        <div class="forecast-card chart-card">
-
-                            <div class="forecast-card-header">
-
-                                <div class="chart-header">
-
-                                    <div>
-
-                                        <h2 class="section-title">
-                                            {{ forecast_result.metric_column }}
-                                            Forecast
-                                        </h2>
-
-                                        <p class="section-description">
-                                            {{ forecast_result.frequency }}
-                                            frequency ·
-                                            {{ forecast_result.method }}
-                                            ·
-                                            {{ forecast_result.horizon }}
-                                            future periods
-                                        </p>
-
-                                    </div>
-
-                                    <div class="legend-note">
-                                        Historical + forecast
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="forecast-card-body">
-
-                                <div class="chart-wrap">
-
-                                    <canvas
-                                        id="forecastChart"
-                                    ></canvas>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- =========================================
-                             FORECAST SUMMARY
-                        ========================================== -->
-
+                        <!-- CHART CONTAINER -->
                         <div class="forecast-card">
-
                             <div class="forecast-card-header">
-
-                                <h2>
-                                    Forecast Summary
-                                </h2>
-
-                                <p>
-                                    Business-oriented interpretation of
-                                    the generated forecast.
-                                </p>
-
+                                <h2>{{ forecast_result.metric_column }} Forecast</h2>
+                                <p>{{ forecast_result.frequency }} frequency · {{ forecast_result.method }} · {{ forecast_result.horizon }} periods</p>
                             </div>
-
-
-                            <div class="forecast-card-body">
-
-                                <div class="summary-box">
-                                    {{ forecast_result.summary|default:"No summary is available for this forecast." }}
-                                </div>
-
-
-                                <div style="height:14px;"></div>
-
-
-                                <div class="detail-grid">
-
-
-                                    <!-- DATASET -->
-
-                                    <div class="detail-item">
-
-                                        <div class="detail-label">
-                                            Dataset
-                                        </div>
-
-                                        <div class="detail-value">
-                                            {{ selected_dataset.name }}
-                                        </div>
-
-                                    </div>
-
-
-                                    <!-- VERSION -->
-
-                                    <div class="detail-item">
-
-                                        <div class="detail-label">
-                                            Version
-                                        </div>
-
-                                        <div class="detail-value">
-                                            Version
-                                            {{ selected_version.version_number }}
-                                            —
-                                            {{ selected_version.version_type }}
-                                        </div>
-
-                                    </div>
-
-
-                                    <!-- DATE COLUMN -->
-
-                                    <div class="detail-item">
-
-                                        <div class="detail-label">
-                                            Date Column
-                                        </div>
-
-                                        <div class="detail-value">
-                                            {{ forecast_result.date_column }}
-                                        </div>
-
-                                    </div>
-
-
-                                    <!-- METRIC -->
-
-                                    <div class="detail-item">
-
-                                        <div class="detail-label">
-                                            Metric
-                                        </div>
-
-                                        <div class="detail-value">
-                                            {{ forecast_result.metric_column }}
-                                        </div>
-
-                                    </div>
-
-
-                                    <!-- HISTORICAL -->
-
-                                    <div class="detail-item">
-
-                                        <div class="detail-label">
-                                            Historical Periods
-                                        </div>
-
-                                        <div class="detail-value">
-                                            {{ forecast_result.historical_periods }}
-                                        </div>
-
-                                    </div>
-
-
-                                    <!-- FORECAST PERIODS -->
-
-                                    <div class="detail-item">
-
-                                        <div class="detail-label">
-                                            Forecast Periods
-                                        </div>
-
-                                        <div class="detail-value">
-                                            {{ forecast_result.forecast_periods }}
-                                        </div>
-
-                                    </div>
-
-
-                                    <!-- AVERAGE -->
-
-                                    <div class="detail-item">
-
-                                        <div class="detail-label">
-                                            Average Forecast
-                                        </div>
-
-                                        <div class="detail-value">
-
-                                            {% if forecast_result.average_forecast_value != None %}
-
-                                                {{ forecast_result.average_forecast_value|floatformat:2 }}
-
-                                            {% else %}
-
-                                                —
-
-                                            {% endif %}
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <!-- MINIMUM -->
-
-                                    <div class="detail-item">
-
-                                        <div class="detail-label">
-                                            Minimum Forecast
-                                        </div>
-
-                                        <div class="detail-value">
-
-                                            {% if forecast_result.minimum_forecast_value != None %}
-
-                                                {{ forecast_result.minimum_forecast_value|floatformat:2 }}
-
-                                            {% else %}
-
-                                                —
-
-                                            {% endif %}
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <!-- MAXIMUM -->
-
-                                    <div class="detail-item">
-
-                                        <div class="detail-label">
-                                            Maximum Forecast
-                                        </div>
-
-                                        <div class="detail-value">
-
-                                            {% if forecast_result.maximum_forecast_value != None %}
-
-                                                {{ forecast_result.maximum_forecast_value|floatformat:2 }}
-
-                                            {% else %}
-
-                                                —
-
-                                            {% endif %}
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <!-- TREND CONFIDENCE -->
-
-                                    <div class="detail-item">
-
-                                        <div class="detail-label">
-                                            Trend Confidence
-                                        </div>
-
-                                        <div class="detail-value">
-
-                                            {% if forecast_result.confidence_level != None %}
-
-                                                {{ forecast_result.confidence_level|floatformat:1 }}%
-
-                                            {% else %}
-
-                                                —
-
-                                            {% endif %}
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <!-- METHOD -->
-
-                                    <div class="detail-item">
-
-                                        <div class="detail-label">
-                                            Method
-                                        </div>
-
-                                        <div class="detail-value">
-                                            {{ forecast_result.method }}
-                                        </div>
-
-                                    </div>
-
-
-                                    <!-- FREQUENCY -->
-
-                                    <div class="detail-item">
-
-                                        <div class="detail-label">
-                                            Frequency
-                                        </div>
-
-                                        <div class="detail-value">
-                                            {{ forecast_result.frequency }}
-                                        </div>
-
-                                    </div>
-
-
-                                </div>
-
+                            <div class="chart-wrap">
+                                <canvas id="forecastChart"></canvas>
                             </div>
-
                         </div>
 
+                        <!-- INSIGHTS & DETAILS SUMMARY -->
+                        <div class="forecast-card">
+                            <div class="forecast-card-header">
+                                <h2>Forecast Summary</h2>
+                                <p>Business-oriented interpretation of the generated predictions.</p>
+                            </div>
+                            
+                            <div class="summary-box">
+                                {{ forecast_result.summary|default:"No summary is available for this forecast." }}
+                            </div>
+
+                            <div style="height: 1.5rem;"></div>
+
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <span class="detail-label">Dataset</span>
+                                    <span class="detail-value">{{ selected_dataset.name }}</span>
+                                </div>
+
+                                <div class="detail-item">
+                                    <span class="detail-label">Version</span>
+                                    <span class="detail-value">v{{ selected_version.version_number }} ({{ selected_version.version_type }})</span>
+                                </div>
+
+                                <div class="detail-item">
+                                    <span class="detail-label">Date Column</span>
+                                    <span class="detail-value">{{ forecast_result.date_column }}</span>
+                                </div>
+
+                                <div class="detail-item">
+                                    <span class="detail-label">Historical Periods</span>
+                                    <span class="detail-value">{{ forecast_result.historical_periods }}</span>
+                                </div>
+
+                                <div class="detail-item">
+                                    <span class="detail-label">Forecast Periods</span>
+                                    <span class="detail-value">{{ forecast_result.forecast_periods }}</span>
+                                </div>
+
+                                <div class="detail-item">
+                                    <span class="detail-label">Average Forecast</span>
+                                    <span class="detail-value">
+                                        {% if forecast_result.average_forecast_value != None %}
+                                            {{ forecast_result.average_forecast_value|floatformat:2 }}
+                                        {% else %}—{% endif %}
+                                    </span>
+                                </div>
+
+                                <div class="detail-item">
+                                    <span class="detail-label">Minimum Forecast</span>
+                                    <span class="detail-value">
+                                        {% if forecast_result.minimum_forecast_value != None %}
+                                            {{ forecast_result.minimum_forecast_value|floatformat:2 }}
+                                        {% else %}—{% endif %}
+                                    </span>
+                                </div>
+
+                                <div class="detail-item">
+                                    <span class="detail-label">Maximum Forecast</span>
+                                    <span class="detail-value">
+                                        {% if forecast_result.maximum_forecast_value != None %}
+                                            {{ forecast_result.maximum_forecast_value|floatformat:2 }}
+                                        {% else %}—{% endif %}
+                                    </span>
+                                </div>
+
+                                <div class="detail-item">
+                                    <span class="detail-label">Confidence</span>
+                                    <span class="detail-value">
+                                        {% if forecast_result.confidence_level != None %}
+                                            {{ forecast_result.confidence_level|floatformat:1 }}%
+                                        {% else %}—{% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
 
                     {% else %}
-
-
-                        <!-- =========================================
-                             EMPTY STATE
-                        ========================================== -->
-
+                        <!-- READY STATE -->
                         <div class="forecast-card">
-
                             <div class="empty-state">
-
-                                <h3>
-                                    Ready to Generate a Forecast
-                                </h3>
-
-                                <p>
-                                    Select a dataset version, date column,
-                                    numeric business metric, frequency,
-                                    forecasting method and forecast horizon.
-                                    Then click
-                                    <strong>Generate Forecast</strong>
-                                    to analyze the historical time series
-                                    and produce future estimates.
-                                </p>
-
+                                <h3>Ready to Generate Forecast</h3>
+                                <p>Select dataset options and click <strong>Generate Forecast</strong> to perform time-series projection.</p>
                             </div>
-
                         </div>
-
-
                     {% endif %}
-
                 </div>
 
             </div>
-
         </div>
-
     </main>
-
 </div>
 
-
-<!-- ============================================================
-     FORECAST CHART DATA
-============================================================= -->
-
+<!-- CHART DATA SCRIPTS -->
 {% if forecast_result %}
-
     {{ forecast_result.chart_data|json_script:"forecast-chart-data" }}
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <script>
-        (function () {
+        document.addEventListener("DOMContentLoaded", function () {
+            const chartDataElement = document.getElementById("forecast-chart-data");
+            const canvas = document.getElementById("forecastChart");
 
-            function initializeForecastChart() {
+            if (!chartDataElement || !canvas || typeof Chart === "undefined") return;
 
-                const chartElement =
-                    document.getElementById(
-                        "forecast-chart-data"
-                    );
+            let chartData = [];
+            try {
+                chartData = JSON.parse(chartDataElement.textContent);
+            } catch (e) {
+                console.error("Failed to parse forecast chart data", e);
+                return;
+            }
 
-                if (!chartElement) {
-                    console.error(
-                        "Forecast chart data element was not found."
-                    );
-                    return;
-                }
+            const labels = chartData.map(item => item.period);
+            const actualValues = chartData.map(item => item.actual !== null && item.actual !== undefined ? Number(item.actual) : null);
+            const forecastValues = chartData.map(item => item.forecast !== null && item.forecast !== undefined ? Number(item.forecast) : null);
 
-
-                let chartData;
-
-
-                try {
-
-                    chartData =
-                        JSON.parse(
-                            chartElement.textContent
-                        );
-
-                } catch (error) {
-
-                    console.error(
-                        "Unable to parse forecast chart data:",
-                        error
-                    );
-
-                    return;
-                }
-
-
-                if (
-                    !Array.isArray(chartData) ||
-                    chartData.length === 0
-                ) {
-
-                    console.warn(
-                        "Forecast chart data is empty."
-                    );
-
-                    return;
-                }
-
-
-                const canvas =
-                    document.getElementById(
-                        "forecastChart"
-                    );
-
-
-                if (!canvas) {
-
-                    console.error(
-                        "Forecast chart canvas was not found."
-                    );
-
-                    return;
-                }
-
-
-                const labels =
-                    chartData.map(function (item) {
-
-                        return item.period;
-
-                    });
-
-
-                const actualValues =
-                    chartData.map(function (item) {
-
-                        if (
-                            item.actual === null ||
-                            item.actual === undefined ||
-                            item.actual === ""
-                        ) {
-
-                            return null;
-
+            new Chart(canvas, {
+                type: "line",
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: "Historical",
+                            data: actualValues,
+                            borderColor: "#4fa3ff",
+                            backgroundColor: "rgba(79, 163, 255, 0.1)",
+                            borderWidth: 2,
+                            pointRadius: 3,
+                            tension: 0.25,
+                            fill: false
+                        },
+                        {
+                            label: "Forecast",
+                            data: forecastValues,
+                            borderColor: "#22d3ee",
+                            backgroundColor: "rgba(34, 211, 238, 0.1)",
+                            borderWidth: 2,
+                            borderDash: [6, 4],
+                            pointRadius: 3,
+                            tension: 0.25,
+                            fill: false
                         }
-
-
-                        const value =
-                            Number(item.actual);
-
-
-                        return Number.isFinite(value)
-                            ? value
-                            : null;
-
-                    });
-
-
-                const forecastValues =
-                    chartData.map(function (item) {
-
-                        if (
-                            item.forecast === null ||
-                            item.forecast === undefined ||
-                            item.forecast === ""
-                        ) {
-
-                            return null;
-
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: "index", intersect: false },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: { color: "#94a3b8", usePointStyle: true, font: { family: "Plus Jakarta Sans" } }
+                        },
+                        tooltip: {
+                            backgroundColor: "rgba(7, 17, 31, 0.95)",
+                            borderColor: "rgba(79, 163, 255, 0.3)",
+                            borderWidth: 1,
+                            titleColor: "#ffffff",
+                            bodyColor: "#cfe4ff",
+                            padding: 10
                         }
-
-
-                        const value =
-                            Number(item.forecast);
-
-
-                        return Number.isFinite(value)
-                            ? value
-                            : null;
-
-                    });
-
-
-                new Chart(canvas, {
-
-                    type: "line",
-
-                    data: {
-
-                        labels: labels,
-
-                        datasets: [
-
-                            {
-                                label: "Historical",
-
-                                data: actualValues,
-
-                                borderColor:
-                                    "#4fa3ff",
-
-                                backgroundColor:
-                                    "rgba(79, 163, 255, 0.08)",
-
-                                borderWidth: 2,
-
-                                pointRadius: 2,
-
-                                pointHoverRadius: 5,
-
-                                pointBackgroundColor:
-                                    "#74b9ff",
-
-                                pointBorderColor:
-                                    "#74b9ff",
-
-                                tension: 0.25,
-
-                                spanGaps: false,
-
-                                fill: false
-                            },
-
-
-                            {
-                                label: "Forecast",
-
-                                data: forecastValues,
-
-                                borderColor:
-                                    "#22d3ee",
-
-                                backgroundColor:
-                                    "rgba(34, 211, 238, 0.06)",
-
-                                borderWidth: 2,
-
-                                borderDash: [
-                                    7,
-                                    5
-                                ],
-
-                                pointRadius: 2,
-
-                                pointHoverRadius: 5,
-
-                                pointBackgroundColor:
-                                    "#22d3ee",
-
-                                pointBorderColor:
-                                    "#22d3ee",
-
-                                tension: 0.25,
-
-                                spanGaps: false,
-
-                                fill: false
-                            }
-
-                        ]
-
                     },
-
-
-                    options: {
-
-                        responsive: true,
-
-                        maintainAspectRatio: false,
-
-
-                        interaction: {
-
-                            mode: "index",
-
-                            intersect: false
-
+                    scales: {
+                        x: {
+                            grid: { color: "rgba(255, 255, 255, 0.03)" },
+                            ticks: { color: "#94a3b8" }
                         },
-
-
-                        plugins: {
-
-                            legend: {
-
-                                display: true,
-
-                                position: "top",
-
-                                labels: {
-
-                                    color:
-                                        "rgba(218, 231, 245, 0.72)",
-
-                                    usePointStyle: true,
-
-                                    pointStyle: "line",
-
-                                    padding: 18,
-
-                                    font: {
-                                        size: 11,
-                                        weight: "600"
-                                    }
-
-                                }
-
-                            },
-
-
-                            tooltip: {
-
-                                backgroundColor:
-                                    "rgba(4, 11, 21, 0.96)",
-
-                                borderColor:
-                                    "rgba(79, 163, 255, 0.20)",
-
-                                borderWidth: 1,
-
-                                titleColor:
-                                    "#f2f7ff",
-
-                                bodyColor:
-                                    "rgba(218, 231, 245, 0.72)",
-
-                                padding: 12,
-
-                                displayColors: true,
-
-                                callbacks: {
-
-                                    label:
-                                        function (context) {
-
-                                            const value =
-                                                context.raw;
-
-
-                                            if (
-                                                value === null ||
-                                                value === undefined
-                                            ) {
-
-                                                return (
-                                                    context.dataset.label +
-                                                    ": —"
-                                                );
-
-                                            }
-
-
-                                            return (
-                                                context.dataset.label +
-                                                ": " +
-                                                Number(value)
-                                                    .toLocaleString(
-                                                        undefined,
-                                                        {
-                                                            maximumFractionDigits:
-                                                                2
-                                                        }
-                                                    )
-                                            );
-
-                                        }
-
-                                }
-
-                            }
-
-                        },
-
-
-                        scales: {
-
-                            x: {
-
-                                grid: {
-
-                                    color:
-                                        "rgba(255, 255, 255, 0.035)",
-
-                                    display: true
-
-                                },
-
-
-                                border: {
-
-                                    color:
-                                        "rgba(255, 255, 255, 0.06)"
-
-                                },
-
-
-                                ticks: {
-
-                                    color:
-                                        "rgba(190, 208, 229, 0.52)",
-
-                                    maxTicksLimit: 12,
-
-                                    font: {
-                                        size: 10
-                                    }
-
-                                }
-
-                            },
-
-
-                            y: {
-
-                                beginAtZero: false,
-
-
-                                grid: {
-
-                                    color:
-                                        "rgba(255, 255, 255, 0.035)"
-
-                                },
-
-
-                                border: {
-
-                                    color:
-                                        "rgba(255, 255, 255, 0.06)"
-
-                                },
-
-
-                                ticks: {
-
-                                    color:
-                                        "rgba(190, 208, 229, 0.52)",
-
-                                    callback:
-                                        function (value) {
-
-                                            return Number(value)
-                                                .toLocaleString(
-                                                    undefined,
-                                                    {
-                                                        maximumFractionDigits:
-                                                            2
-                                                    }
-                                                );
-
-                                        },
-
-                                    font: {
-                                        size: 10
-                                    }
-
-                                }
-
-                            }
-
+                        y: {
+                            grid: { color: "rgba(255, 255, 255, 0.03)" },
+                            ticks: { color: "#94a3b8" }
                         }
-
                     }
-
-                });
-
-            }
-
-
-            if (
-                document.readyState === "loading"
-            ) {
-
-                document.addEventListener(
-                    "DOMContentLoaded",
-                    initializeForecastChart
-                );
-
-            } else {
-
-                initializeForecastChart();
-
-            }
-
-        })();
+                }
+            });
+        });
     </script>
-
 {% endif %}
 
-{% endblock %}
+</body>
+</html>

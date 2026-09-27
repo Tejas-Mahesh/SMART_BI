@@ -1,50 +1,56 @@
 {% load static %}
 <style>
-    /* ==========================================================================
-   SMART BI — ENTERPRISE COMMAND SIDEBAR DESIGN SYSTEM
-   File: static/css/smart-sidebar.css
-   Pure CSS3 styling with GPU-accelerated transforms, dark glassmorphism,
-   ambient technical grid, custom scrollbars, and accessible focus states.
+/* ==========================================================================
+   SMART BI — ANIMATED COMMAND SIDEBAR DESIGN SYSTEM
+   Theme: Custom Deep Cyberpunk & Glass Intelligence
    ========================================================================== */
 
 :root {
-  --sb-bg-main: #07111f;
-  --sb-bg-elevated: #0b1726;
-  --sb-bg-surface: #0f1d2e;
-  --sb-bg-glass: rgba(11, 23, 38, 0.88);
-  --sb-bg-hover: rgba(255, 255, 255, 0.04);
-  --sb-bg-active: rgba(124, 58, 237, 0.14);
+  --bg: #030712;
+  --bg-deep: #020617;
+  --bg-soft: #071525;
 
-  --sb-purple: #7c3aed;
-  --sb-purple-light: #8b5cf6;
-  --sb-purple-glow: rgba(124, 58, 237, 0.35);
+  --card: #0B1B2D;
+  --card-light: #10243A;
+  --card-glass: rgba(11, 27, 45, 0.72);
+  --card-glass-subtle: rgba(16, 36, 58, 0.45);
 
-  --sb-cyan: #06b6d4;
-  --sb-cyan-light: #22d3ee;
-  --sb-cyan-glow: rgba(34, 211, 238, 0.3);
+  --purple: #7C5CFF;
+  --purple-light: #A99CFF;
+  --purple-glow: rgba(124, 92, 255, 0.35);
 
-  --sb-green: #22c55e;
-  --sb-green-glow: rgba(34, 197, 94, 0.3);
+  --blue: #35B8FF;
+  --blue-glow: rgba(53, 184, 255, 0.30);
 
-  --sb-amber: #f59e0b;
-  --sb-red: #ef4444;
+  --cyan: #22D3EE;
+  --cyan-glow: rgba(34, 211, 238, 0.28);
 
-  --sb-text-main: #f8fafc;
-  --sb-text-body: #cbd5e1;
-  --sb-text-muted: #94a3b8;
-  --sb-text-subtle: #64748b;
+  --green: #39E58C;
+  --green-glow: rgba(57, 229, 140, 0.25);
 
-  --sb-border: rgba(255, 255, 255, 0.07);
-  --sb-border-bright: rgba(255, 255, 255, 0.14);
-  --sb-border-active: rgba(139, 92, 246, 0.4);
+  --orange: #FFB454;
+  --orange-glow: rgba(255, 180, 84, 0.25);
 
+  --red: #FF5C70;
+  --red-glow: rgba(255, 92, 112, 0.25);
+
+  --text: #F7FAFF;
+  --muted: #8294A8;
+  --subtle: #4D6277;
+
+  --border: rgba(255, 255, 255, 0.08);
+  --border-bright: rgba(255, 255, 255, 0.16);
+  --border-cyan: rgba(34, 211, 238, 0.35);
+  --border-purple: rgba(124, 92, 255, 0.35);
+
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
   --sb-width: 280px;
-  --sb-ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --sb-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* --------------------------------------------------------------------------
-   1. ASIDE STRUCTURAL CONTAINER (FIXED FULL VIEWPORT)
+   1. ASIDE STRUCTURAL CONTAINER & AMBIENT ANIMATIONS
    -------------------------------------------------------------------------- */
 .sidebar#smartBISidebar {
   position: fixed;
@@ -53,55 +59,75 @@
   bottom: 0;
   width: var(--sb-width);
   height: 100vh;
-  background: linear-gradient(180deg, rgba(15, 29, 46, 0.97) 0%, rgba(7, 17, 31, 0.99) 100%);
-  border-right: 1px solid var(--sb-border);
-  box-shadow: 10px 0 35px -10px rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  font-family: var(--font-sans);
+  background: linear-gradient(180deg, var(--card) 0%, var(--bg-deep) 100%);
+  border-right: 1px solid var(--border);
+  box-shadow: 12px 0 40px -10px rgba(2, 6, 23, 0.85);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
   display: flex;
   flex-direction: column;
   z-index: 1050;
   overflow: hidden;
-  transition: transform 0.35s var(--sb-ease);
+  transition: transform 0.4s var(--transition-smooth);
 }
 
-/* Ambient Background Layer */
+/* Drifting technical background grid */
 .sidebar-ambient-grid {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-  background-size: 32px 32px;
-  mask-image: radial-gradient(ellipse 90% 60% at 50% 30%, #000 60%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 90% 60% at 50% 30%, #000 60%, transparent 100%);
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, #000 50%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, #000 50%, transparent 100%);
+  animation: gridDrift 28s linear infinite;
   z-index: 0;
 }
 
+@keyframes gridDrift {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(28px); }
+}
+
+/* Ambient Floating Neon Glow Orbs */
 .sidebar-glow-orb {
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
-  filter: blur(70px);
-  opacity: 0.35;
+  filter: blur(65px);
+  opacity: 0.45;
   z-index: 0;
 }
 
 .orb-top {
-  width: 220px;
-  height: 220px;
-  top: -60px;
-  left: -40px;
-  background: radial-gradient(circle, var(--sb-purple-glow) 0%, transparent 70%);
+  width: 240px;
+  height: 240px;
+  top: -70px;
+  left: -50px;
+  background: radial-gradient(circle, var(--purple-glow) 0%, transparent 70%);
+  animation: floatOrbTop 10s ease-in-out infinite alternate;
 }
 
 .orb-bottom {
   width: 260px;
   height: 260px;
-  bottom: -60px;
-  right: -60px;
-  background: radial-gradient(circle, var(--sb-cyan-glow) 0%, transparent 70%);
+  bottom: -70px;
+  right: -50px;
+  background: radial-gradient(circle, var(--blue-glow) 0%, transparent 70%);
+  animation: floatOrbBottom 12s ease-in-out infinite alternate;
+}
+
+@keyframes floatOrbTop {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.35; }
+  100% { transform: translate(25px, 35px) scale(1.15); opacity: 0.55; }
+}
+
+@keyframes floatOrbBottom {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+  100% { transform: translate(-30px, -25px) scale(1.18); opacity: 0.5; }
 }
 
 /* --------------------------------------------------------------------------
@@ -111,8 +137,8 @@
   position: relative;
   z-index: 2;
   padding: 1.35rem 1.4rem 1.15rem;
-  border-bottom: 1px solid var(--sb-border);
-  background: rgba(7, 17, 31, 0.45);
+  border-bottom: 1px solid var(--border);
+  background: var(--card-glass-subtle);
 }
 
 .sidebar-brand-link {
@@ -120,47 +146,47 @@
   align-items: center;
   gap: 0.85rem;
   text-decoration: none;
-  transition: transform 0.2s var(--sb-ease);
+  transition: transform 0.25s var(--transition-smooth);
 }
 
 .sidebar-brand-link:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .sidebar-logo {
   position: relative;
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.25) 0%, rgba(6, 182, 212, 0.2) 100%);
-  border: 1.5px solid var(--sb-border-bright);
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, rgba(124, 92, 255, 0.25) 0%, rgba(34, 211, 238, 0.2) 100%);
+  border: 1.5px solid var(--border-purple);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 20px rgba(124, 58, 237, 0.25);
+  box-shadow: 0 0 20px var(--purple-glow);
   flex-shrink: 0;
-  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  transition: all 0.35s var(--transition-bounce);
 }
 
 .sidebar-brand-link:hover .sidebar-logo {
-  border-color: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 0 25px rgba(124, 58, 237, 0.5), 0 0 15px rgba(34, 211, 238, 0.3);
-  transform: scale(1.03);
+  border-color: var(--cyan);
+  box-shadow: 0 0 25px var(--purple-glow), 0 0 16px var(--cyan-glow);
+  transform: rotate(5deg) scale(1.05);
 }
 
 .logo-inner-ring {
   position: absolute;
   inset: -1px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, transparent 40%, rgba(34, 211, 238, 0.4) 100%);
+  border-radius: 13px;
+  background: linear-gradient(135deg, transparent 40%, rgba(34, 211, 238, 0.45) 100%);
   pointer-events: none;
 }
 
 .logo-mark-text {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 900;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #ffffff 30%, var(--sb-cyan-light) 100%);
+  background: linear-gradient(135deg, #ffffff 20%, var(--cyan) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   line-height: 1;
@@ -175,15 +201,15 @@
   font-size: 1.12rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: #ffffff;
+  color: var(--text);
   line-height: 1.2;
 }
 
 .brand-subtitle {
   font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--sb-cyan);
+  letter-spacing: 0.1em;
+  color: var(--cyan);
   text-transform: uppercase;
 }
 
@@ -193,61 +219,74 @@
 .sidebar-user {
   position: relative;
   z-index: 2;
-  margin: 0.9rem 1.1rem;
-  padding: 0.75rem 0.95rem;
+  margin: 1rem 1.1rem 0.6rem;
+  padding: 0.8rem 1rem;
   border-radius: 14px;
-  background: rgba(15, 29, 46, 0.65);
-  border: 1px solid var(--sb-border);
+  background: var(--card-glass);
+  border: 1px solid var(--border);
   display: flex;
   align-items: center;
   gap: 0.85rem;
-  backdrop-filter: blur(12px);
-  transition: all 0.25s ease;
+  backdrop-filter: blur(14px);
+  transition: all 0.3s var(--transition-smooth);
 }
 
 .sidebar-user:hover {
-  background: rgba(21, 38, 61, 0.85);
-  border-color: var(--sb-border-bright);
-  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
-  transform: translateY(-1px);
+  background: var(--card-light);
+  border-color: var(--border-cyan);
+  box-shadow: 0 10px 25px -5px rgba(2, 6, 23, 0.7), 0 0 15px rgba(34, 211, 238, 0.15);
+  transform: translateY(-2px);
 }
 
 .sidebar-user-avatar {
   position: relative;
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--sb-purple) 0%, #4f46e5 100%);
+  background: linear-gradient(135deg, var(--purple) 0%, var(--blue) 100%);
   border: 1.5px solid rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 0 14px var(--sb-purple-glow);
+  box-shadow: 0 0 16px var(--purple-glow);
+  overflow: hidden;
+}
+
+.sidebar-user-logo {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .avatar-initial {
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   font-weight: 800;
   color: #ffffff;
+  position: relative;
+  z-index: 2;
 }
 
 .sidebar-user-online {
   position: absolute;
-  bottom: -1px;
-  right: -1px;
-  width: 10px;
-  height: 10px;
+  bottom: 0px;
+  right: 0px;
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
-  background-color: var(--sb-green);
-  border: 2px solid var(--sb-bg-main);
-  box-shadow: 0 0 8px var(--sb-green);
-  animation: userOnlineBreathe 2.4s infinite ease-in-out;
+  background-color: var(--green);
+  border: 2px solid var(--card);
+  box-shadow: 0 0 10px var(--green);
+  animation: userOnlineBreathe 2s infinite ease-in-out;
+  z-index: 3;
 }
 
 @keyframes userOnlineBreathe {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.45; transform: scale(1.25); }
+  0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 10px var(--green); }
+  50% { opacity: 0.45; transform: scale(1.25); box-shadow: 0 0 16px var(--green-glow); }
 }
 
 .sidebar-user-info {
@@ -259,7 +298,7 @@
 .sidebar-user-name {
   font-size: 0.88rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -269,7 +308,7 @@
 .sidebar-user-role {
   font-size: 0.7rem;
   font-weight: 600;
-  color: var(--sb-text-muted);
+  color: var(--muted);
   letter-spacing: 0.02em;
 }
 
@@ -284,7 +323,7 @@
   overflow-x: hidden;
   padding: 0.5rem 1.1rem 1.2rem;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
 }
 
 .sidebar-scroll-area::-webkit-scrollbar {
@@ -301,7 +340,7 @@
 }
 
 .sidebar-scroll-area::-webkit-scrollbar-thumb:hover {
-  background: rgba(139, 92, 246, 0.45);
+  background: var(--purple-light);
 }
 
 .sidebar-navigation {
@@ -320,63 +359,64 @@
   font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.12em;
-  color: var(--sb-text-subtle);
+  color: var(--subtle);
   text-transform: uppercase;
   padding: 0.35rem 0.6rem 0.2rem;
   user-select: none;
 }
 
 /* --------------------------------------------------------------------------
-   5. NAVIGATION LINKS & HOVER/ACTIVE STATES
+   5. NAVIGATION LINKS & HOVER / ACTIVE ANIMATIONS
    -------------------------------------------------------------------------- */
 .sidebar-link {
   position: relative;
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.55rem 0.75rem;
-  border-radius: 10px;
-  color: var(--sb-text-body);
+  padding: 0.58rem 0.8rem;
+  border-radius: 11px;
+  color: var(--muted);
   text-decoration: none;
   font-size: 0.86rem;
   font-weight: 600;
   border: 1px solid transparent;
   background: transparent;
-  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease, transform 0.25s var(--transition-bounce);
 }
 
 .sidebar-link:hover {
-  background: var(--sb-bg-hover);
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.05);
-  transform: translateX(2px);
+  background: var(--card-light);
+  color: var(--text);
+  border-color: var(--border-bright);
+  transform: translateX(4px);
 }
 
 .sidebar-link:focus-visible {
-  outline: 2px solid var(--sb-cyan);
+  outline: 2px solid var(--cyan);
   outline-offset: 1px;
 }
 
 .sidebar-link-icon {
-  width: 26px;
-  height: 26px;
-  border-radius: 7px;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.85rem;
-  color: var(--sb-text-muted);
+  font-size: 0.88rem;
+  color: var(--muted);
   flex-shrink: 0;
-  transition: all 0.25s ease;
+  transition: all 0.3s var(--transition-bounce);
 }
 
 .sidebar-link:hover .sidebar-link-icon {
   color: #ffffff;
-  background: rgba(124, 58, 237, 0.16);
-  border-color: rgba(124, 58, 237, 0.3);
-  box-shadow: 0 0 10px var(--sb-purple-glow);
+  background: rgba(124, 92, 255, 0.22);
+  border-color: var(--purple-light);
+  box-shadow: 0 0 12px var(--purple-glow);
+  transform: scale(1.12);
 }
 
 .sidebar-link-text {
@@ -387,75 +427,63 @@
 }
 
 .sidebar-link-arrow {
-  font-size: 0.82rem;
-  color: var(--sb-text-subtle);
+  font-size: 0.85rem;
+  color: var(--subtle);
   opacity: 0;
-  transform: translateX(-4px);
-  transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+  transform: translateX(-6px);
+  transition: opacity 0.25s ease, transform 0.25s ease, color 0.25s ease;
 }
 
 .sidebar-link:hover .sidebar-link-arrow {
   opacity: 1;
   transform: translateX(0);
-  color: var(--sb-cyan-light);
+  color: var(--cyan);
 }
 
 .external-arrow {
   opacity: 0.65;
   transform: none;
   font-size: 0.95rem;
-  color: var(--sb-text-muted);
+  color: var(--muted);
 }
 
 .sidebar-link:hover .external-arrow {
   opacity: 1;
-  color: var(--sb-amber);
+  color: var(--orange);
 }
 
-/* ACTIVE STATE TREATMENT */
+/* ACTIVE STATE GLOW BAR & ACCENT */
 .sidebar-link.active {
-  background: linear-gradient(90deg, rgba(124, 58, 237, 0.18) 0%, rgba(6, 182, 212, 0.08) 100%);
-  border-color: var(--sb-border-active);
+  background: linear-gradient(90deg, rgba(124, 92, 255, 0.2) 0%, rgba(53, 184, 255, 0.08) 100%);
+  border-color: var(--border-purple);
   color: #ffffff;
-  box-shadow: 0 0 20px -5px rgba(124, 58, 237, 0.3);
+  box-shadow: 0 4px 20px -4px var(--purple-glow);
 }
 
 .sidebar-link.active::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 20%;
-  width: 3px;
-  height: 60%;
-  border-radius: 0 3px 3px 0;
-  background: linear-gradient(180deg, var(--sb-purple-light) 0%, var(--sb-cyan) 100%);
-  box-shadow: 0 0 10px var(--sb-purple);
+  top: 15%;
+  width: 3.5px;
+  height: 70%;
+  border-radius: 0 4px 4px 0;
+  background: linear-gradient(180deg, var(--purple-light) 0%, var(--cyan) 100%);
+  box-shadow: 0 0 10px var(--purple);
 }
 
 .sidebar-link.active .sidebar-link-icon {
-  background: var(--sb-purple);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: var(--purple);
+  border-color: rgba(255, 255, 255, 0.35);
   color: #ffffff;
-  box-shadow: 0 0 14px var(--sb-purple-glow);
+  box-shadow: 0 0 16px var(--purple-glow);
+  transform: scale(1.05);
 }
 
 .sidebar-link.active .sidebar-link-arrow {
   opacity: 1;
   transform: translateX(0);
-  color: var(--sb-cyan-light);
-}
-
-/* COMING SOON PILL */
-.sidebar-badge-coming-soon {
-  font-size: 0.58rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 0.12rem 0.45rem;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--sb-border);
-  color: var(--sb-text-subtle);
+  color: var(--cyan);
 }
 
 /* --------------------------------------------------------------------------
@@ -481,11 +509,11 @@
 }
 
 .sidebar-group-button:hover {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .sidebar-group-button:focus-visible {
-  outline: 2px solid var(--sb-purple);
+  outline: 2px solid var(--purple);
   outline-offset: 1px;
 }
 
@@ -502,12 +530,12 @@
   font-size: 1.15rem;
   line-height: 1;
   font-weight: 700;
-  color: var(--sb-text-subtle);
-  transition: transform 0.3s var(--sb-ease), color 0.3s ease;
+  color: var(--subtle);
+  transition: transform 0.35s var(--transition-bounce), color 0.3s ease;
 }
 
 .sidebar-group-button:hover .sidebar-group-chevron {
-  color: var(--sb-text-main);
+  color: var(--text);
 }
 
 /* Collapsible Content Drawer */
@@ -515,42 +543,45 @@
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  padding-left: 0.45rem;
-  margin-top: 0.2rem;
-  border-left: 1.5px solid rgba(255, 255, 255, 0.06);
+  padding-left: 0.5rem;
+  margin-top: 0.25rem;
+  border-left: 1.5px solid var(--border);
   overflow: hidden;
   max-height: 0;
   opacity: 0;
-  transform: translateY(-6px);
-  transition: max-height 0.35s var(--sb-ease), opacity 0.3s ease, transform 0.3s var(--sb-ease);
+  transform: translateY(-8px);
+  transition: max-height 0.4s var(--transition-smooth), opacity 0.3s ease, transform 0.3s var(--transition-smooth);
 }
 
 /* Open State */
 .sidebar-collapsible.section-open .sidebar-group-content {
-  max-height: 700px;
+  max-height: 800px;
   opacity: 1;
   transform: translateY(0);
 }
 
 .sidebar-collapsible.section-open .sidebar-group-chevron {
   transform: rotate(90deg);
-  color: var(--sb-cyan);
+  color: var(--cyan);
 }
 
-/* Category Accent Hints */
+/* Category Glow Hints */
 [data-section="analytics"] .sidebar-link:hover .sidebar-link-icon {
-  background: rgba(6, 182, 212, 0.16);
-  box-shadow: 0 0 10px var(--sb-cyan-glow);
+  background: rgba(34, 211, 238, 0.18);
+  box-shadow: 0 0 12px var(--cyan-glow);
+  border-color: var(--cyan);
 }
 
 [data-section="insights"] .sidebar-link:hover .sidebar-link-icon {
-  background: rgba(139, 92, 246, 0.16);
-  box-shadow: 0 0 10px var(--sb-purple-glow);
+  background: rgba(124, 92, 255, 0.18);
+  box-shadow: 0 0 12px var(--purple-glow);
+  border-color: var(--purple-light);
 }
 
 [data-section="decision"] .sidebar-link:hover .sidebar-link-icon {
-  background: rgba(245, 158, 11, 0.16);
-  box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+  background: rgba(255, 180, 84, 0.18);
+  box-shadow: 0 0 12px var(--orange-glow);
+  border-color: var(--orange);
 }
 
 /* --------------------------------------------------------------------------
@@ -560,36 +591,41 @@
   position: relative;
   z-index: 2;
   padding: 1rem 1.1rem;
-  border-top: 1px solid var(--sb-border);
-  background: rgba(7, 17, 31, 0.7);
+  border-top: 1px solid var(--border);
+  background: var(--card-glass-subtle);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
 .sidebar-system-status {
-  background: rgba(15, 29, 46, 0.6);
-  border: 1px solid var(--sb-border);
+  background: var(--card-glass);
+  border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 0.55rem 0.85rem;
+  padding: 0.6rem 0.85rem;
   display: flex;
   align-items: center;
   gap: 0.65rem;
+  transition: border-color 0.25s ease;
+}
+
+.sidebar-system-status:hover {
+  border-color: var(--border-bright);
 }
 
 .system-status-indicator {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
-  background-color: var(--sb-green);
-  box-shadow: 0 0 8px var(--sb-green);
+  background-color: var(--green);
+  box-shadow: 0 0 10px var(--green);
   animation: sysPulse 2s infinite ease-in-out;
   flex-shrink: 0;
 }
 
 @keyframes sysPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(1.3); }
+  0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 10px var(--green); }
+  50% { opacity: 0.4; transform: scale(1.35); box-shadow: 0 0 18px var(--green-glow); }
 }
 
 .status-text-stack {
@@ -600,45 +636,45 @@
 .status-primary {
   font-size: 0.75rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text);
   line-height: 1.2;
 }
 
 .status-secondary {
   font-size: 0.64rem;
-  color: var(--sb-text-muted);
+  color: var(--muted);
 }
 
 .sidebar-logout {
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  padding: 0.6rem 0.85rem;
+  padding: 0.65rem 0.85rem;
   border-radius: 10px;
-  background: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  color: #fca5a5;
+  background: rgba(255, 92, 112, 0.08);
+  border: 1px solid rgba(255, 92, 112, 0.2);
+  color: #ff9aa6;
   text-decoration: none;
   font-size: 0.84rem;
   font-weight: 700;
-  transition: all 0.25s ease;
+  transition: all 0.25s var(--transition-smooth);
 }
 
 .sidebar-logout:hover {
-  background: rgba(239, 68, 68, 0.18);
-  border-color: rgba(239, 68, 68, 0.45);
+  background: rgba(255, 92, 112, 0.18);
+  border-color: var(--red);
   color: #ffffff;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px var(--red-glow);
 }
 
 .sidebar-logout-icon {
   font-size: 1rem;
-  transition: transform 0.25s ease;
+  transition: transform 0.25s var(--transition-bounce);
 }
 
 .sidebar-logout:hover .sidebar-logout-icon {
-  transform: translateX(-2px);
+  transform: translateX(-3px);
 }
 
 /* --------------------------------------------------------------------------
@@ -652,24 +688,24 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: rgba(15, 29, 46, 0.85);
-  border: 1.5px solid var(--sb-border-bright);
+  background: var(--card-glass);
+  border: 1.5px solid var(--border-bright);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  color: var(--sb-text-main);
+  color: var(--text);
   z-index: 1060;
   cursor: pointer;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 4px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  gap: 4.5px;
+  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.8);
   transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
 .mobile-sidebar-toggle:hover {
-  background: rgba(21, 38, 61, 0.95);
-  border-color: var(--sb-purple-light);
+  background: var(--card-light);
+  border-color: var(--purple-light);
   transform: translateY(-1px);
 }
 
@@ -677,14 +713,14 @@
   display: block;
   width: 20px;
   height: 2px;
-  background-color: #ffffff;
+  background-color: var(--text);
   border-radius: 2px;
-  transition: all 0.3s var(--sb-ease);
+  transition: all 0.3s var(--transition-bounce);
   transform-origin: center;
 }
 
 .mobile-sidebar-toggle.open span:nth-child(1) {
-  transform: translateY(6px) rotate(45deg);
+  transform: translateY(6.5px) rotate(45deg);
 }
 
 .mobile-sidebar-toggle.open span:nth-child(2) {
@@ -693,20 +729,19 @@
 }
 
 .mobile-sidebar-toggle.open span:nth-child(3) {
-  transform: translateY(-6px) rotate(-45deg);
+  transform: translateY(-6.5px) rotate(-45deg);
 }
 
-/* Mobile Overlay */
 .sidebar-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(3, 7, 18, 0.65);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(2, 6, 23, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 1040;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s var(--sb-ease), visibility 0.3s;
+  transition: opacity 0.35s var(--transition-smooth), visibility 0.35s;
   pointer-events: none;
 }
 
@@ -716,7 +751,6 @@
   pointer-events: auto;
 }
 
-/* Tablet & Mobile Breakpoint (<= 1024px) */
 @media (max-width: 1024px) {
   .mobile-sidebar-toggle {
     display: flex;
@@ -729,17 +763,16 @@
 
   .sidebar#smartBISidebar.sidebar-open {
     transform: translateX(0);
-    box-shadow: 20px 0 50px rgba(0, 0, 0, 0.85);
+    box-shadow: 20px 0 50px rgba(2, 6, 23, 0.95);
   }
 }
 
-/* Body lock on mobile drawer activation */
 body.sidebar-open {
   overflow: hidden !important;
 }
 
 /* --------------------------------------------------------------------------
-   9. ACCESSIBILITY & PREFERS-REDUCED-MOTION
+   9. ACCESSIBILITY
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   .sidebar *,
@@ -753,774 +786,543 @@ body.sidebar-open {
     scroll-behavior: auto !important;
   }
 
+  .sidebar-ambient-grid,
   .sidebar-glow-orb {
+    animation: none !important;
     display: none !important;
   }
-
-  .sidebar-collapsible.section-open .sidebar-group-content {
-    max-height: none !important;
-    transform: none !important;
-  }
-}
-.sidebar-user-avatar {
-    position: relative;
-    width: 46px;
-    height: 46px;
-    flex-shrink: 0;
-    border-radius: 50%;
-    overflow: hidden;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(117, 103, 248, 0.18),
-            rgba(63, 169, 245, 0.12)
-        );
-
-    border: 1px solid rgba(117, 103, 248, 0.35);
-}
-
-.sidebar-user-logo {
-    position: relative;
-    z-index: 2;
-
-    width: 100%;
-    height: 100%;
-
-    object-fit: contain;
-    padding: 5px;
-
-    border-radius: 50%;
-    display: block;
-}
-
-.avatar-initial {
-    position: relative;
-    z-index: 2;
 }
 </style>
 
 <!-- MOBILE FLOATING TOGGLE BUTTON -->
 <button
-    type="button"
-    class="mobile-sidebar-toggle"
-    id="mobileSidebarToggle"
-    aria-label="Open navigation"
-    aria-controls="smartBISidebar"
-    aria-expanded="false"
+  type="button"
+  class="mobile-sidebar-toggle"
+  id="mobileSidebarToggle"
+  aria-label="Open navigation"
+  aria-controls="smartBISidebar"
+  aria-expanded="false"
 >
-    <span></span>
-    <span></span>
-    <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
 </button>
 
 <!-- BACKDROP OVERLAY FOR MOBILE VIEW -->
 <div
-    class="sidebar-overlay"
-    id="sidebarOverlay"
-    tabindex="-1"
-    aria-hidden="true"
+  class="sidebar-overlay"
+  id="sidebarOverlay"
+  tabindex="-1"
+  aria-hidden="true"
 ></div>
 
 <!-- MAIN SMART BI NAVIGATION SIDEBAR -->
 <aside
-    class="sidebar"
-    id="smartBISidebar"
-    role="navigation"
-    aria-label="Application Command Center Sidebar"
+  class="sidebar"
+  id="smartBISidebar"
+  role="navigation"
+  aria-label="Application Command Center Sidebar"
 >
-    <!-- AMBIENT GLOW BACKDROPS & TECHNICAL GRID (CSS POWERED) -->
-    <div class="sidebar-ambient-grid" aria-hidden="true"></div>
-    <div class="sidebar-glow-orb orb-top" aria-hidden="true"></div>
-    <div class="sidebar-glow-orb orb-bottom" aria-hidden="true"></div>
+  <!-- AMBIENT GLOW BACKDROPS & TECHNICAL GRID (CSS ANIMATED) -->
+  <div class="sidebar-ambient-grid" aria-hidden="true"></div>
+  <div class="sidebar-glow-orb orb-top" aria-hidden="true"></div>
+  <div class="sidebar-glow-orb orb-bottom" aria-hidden="true"></div>
 
-    <!-- 1. BRAND IDENTIFIER AREA -->
-    <div class="sidebar-brand">
-        <a href="{% url 'core:dashboard' %}" class="sidebar-brand-link" aria-label="Smart BI Command Dashboard">
-            <div class="sidebar-logo" aria-hidden="true">
-                <div class="logo-inner-ring"></div>
-                <span class="logo-mark-text">BI</span>
-            </div>
-            <div class="sidebar-brand-text">
-                <span class="brand-title">Smart BI</span>
-                <span class="brand-subtitle">Decision Intelligence</span>
-            </div>
-        </a>
-    </div>
+  <!-- 1. BRAND IDENTIFIER AREA -->
+  <div class="sidebar-brand">
+    <a href="{% url 'core:dashboard' %}" class="sidebar-brand-link" aria-label="Smart BI Command Dashboard">
+      <div class="sidebar-logo" aria-hidden="true">
+        <div class="logo-inner-ring"></div>
+        <span class="logo-mark-text">BI</span>
+      </div>
+      <div class="sidebar-brand-text">
+        <span class="brand-title">Smart BI</span>
+        <span class="brand-subtitle">Decision Intelligence</span>
+      </div>
+    </a>
+  </div>
 
-    <!-- 2. USER PROFILE STATUS CARD -->
-<div class="sidebar-user">
-
+  <!-- 2. USER PROFILE STATUS CARD -->
+  <div class="sidebar-user">
     <div class="sidebar-user-avatar" aria-hidden="true">
-
-        <div class="avatar-glow-ring"></div>
-
-        {% if not user.is_superuser and not user.is_staff and user.business_logo %}
-            <img
-                src="{{ user.business_logo.url }}"
-                alt="Business Logo"
-                class="sidebar-user-logo"
-            >
-        {% else %}
-            <span class="avatar-initial">
-                {% if user.first_name %}
-                    {{ user.first_name|first|upper }}
-                {% elif user.username %}
-                    {{ user.username|first|upper }}
-                {% else %}
-                    U
-                {% endif %}
-            </span>
-        {% endif %}
-
-        <span
-            class="sidebar-user-online"
-            title="System Online"
-            aria-hidden="true"
-        ></span>
-
+      {% if not user.is_superuser and not user.is_staff and user.business_logo %}
+        <img
+          src="{{ user.business_logo.url }}"
+          alt="Business Logo"
+          class="sidebar-user-logo"
+        >
+      {% else %}
+        <span class="avatar-initial">
+          {% if user.first_name %}
+            {{ user.first_name|first|upper }}
+          {% elif user.username %}
+            {{ user.username|first|upper }}
+          {% else %}
+            U
+          {% endif %}
+        </span>
+      {% endif %}
+      <span
+        class="sidebar-user-online"
+        title="System Online"
+        aria-hidden="true"
+      ></span>
     </div>
 
     <div class="sidebar-user-info">
-
-        <span class="sidebar-user-name">
-            {% if user.first_name %}
-                {{ user.first_name }}
-            {% elif user.username %}
-                {{ user.username }}
-            {% else %}
-                User
-            {% endif %}
-        </span>
-
-        <span class="sidebar-user-role">
-            {% if user.is_superuser %}
-                Administrator
-            {% elif user.is_staff %}
-                Staff
-            {% else %}
-                {{ user.user_type|default:"Business User" }}
-            {% endif %}
-        </span>
-
+      <span class="sidebar-user-name">
+        {% if user.first_name %}
+          {{ user.first_name }}
+        {% elif user.username %}
+          {{ user.username }}
+        {% else %}
+          User
+        {% endif %}
+      </span>
+      <span class="sidebar-user-role">
+        {% if user.is_superuser %}
+          Administrator
+        {% elif user.is_staff %}
+          Staff
+        {% else %}
+          {{ user.user_type|default:"Business User" }}
+        {% endif %}
+      </span>
     </div>
+  </div>
 
-</div>
+  <!-- 3. SCROLLABLE MIDDLE NAVIGATION -->
+  <div class="sidebar-scroll-area">
+    <nav class="sidebar-navigation" aria-label="Modules & Dashboards">
 
-    <!-- 3. SCROLLABLE MIDDLE NAVIGATION -->
-    <div class="sidebar-scroll-area">
-        <nav class="sidebar-navigation" aria-label="Modules & Dashboards">
+      <!-- SECTION: OVERVIEW -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">OVERVIEW</div>
+        <a
+          href="{% url 'core:dashboard' %}"
+          class="sidebar-link {% if request.resolver_match.app_name == 'core' and request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+        >
+          <span class="sidebar-link-icon" aria-hidden="true">⌂</span>
+          <span class="sidebar-link-text">Dashboard</span>
+          <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
 
-            <!-- SECTION: OVERVIEW -->
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">OVERVIEW</div>
-                <a
-                    href="{% url 'core:dashboard' %}"
-                    class="sidebar-link {% if request.resolver_match.app_name == 'core' and request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
-                >
-                    <span class="sidebar-link-icon" aria-hidden="true">⌂</span>
-                    <span class="sidebar-link-text">Dashboard</span>
-                    <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                </a>
-            </div>
-
-            <!-- SECTION: DATA -->
-<!-- ============================================================
-     SECTION: DATA MANAGEMENT
-     ============================================================ -->
-
-<div class="sidebar-section">
-
-    <div
-        class="sidebar-collapsible {% if request.resolver_match.app_name == 'data_management' %}section-open{% endif %}"
-        data-section="data-management"
-    >
-
-        <button
+      <!-- SECTION: DATA MANAGEMENT -->
+      <div class="sidebar-section">
+        <div
+          class="sidebar-collapsible {% if request.resolver_match.app_name == 'data_management' %}section-open{% endif %}"
+          data-section="data-management"
+        >
+          <button
             type="button"
             class="sidebar-group-button"
             data-toggle-section="data-management"
             aria-expanded="{% if request.resolver_match.app_name == 'data_management' %}true{% else %}false{% endif %}"
             aria-controls="section-content-data-management"
-        >
-
+          >
             <span class="group-title-wrap">
-
-                <span class="sidebar-section-title">
-                    DATA MANAGEMENT
-                </span>
-
+              <span class="sidebar-section-title">DATA MANAGEMENT</span>
             </span>
+            <span class="sidebar-group-chevron" aria-hidden="true">›</span>
+          </button>
 
-            <span
-                class="sidebar-group-chevron"
-                aria-hidden="true"
+          <div class="sidebar-group-content" id="section-content-data-management">
+            <a
+              href="{% url 'data_management:upload_data' %}"
+              class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'upload_data' %}active{% endif %}"
             >
-                ›
-            </span>
+              <span class="sidebar-link-icon" aria-hidden="true">⬆️</span>
+              <span class="sidebar-link-text">Upload Data</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
 
-        </button>
+            <a
+              href="{% url 'data_management:dataset_management' %}"
+              class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'dataset_management' %}active{% endif %}"
+            >
+              <span class="sidebar-link-icon" aria-hidden="true">🗄️</span>
+              <span class="sidebar-link-text">Datasets</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
 
+            <a
+              href="{% url 'data_management:quality' %}"
+              class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'quality' %}active{% endif %}"
+            >
+              <span class="sidebar-link-icon" aria-hidden="true">🛡️</span>
+              <span class="sidebar-link-text">Data Quality</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
 
+            <a
+              href="{% url 'data_management:cleaning' %}"
+              class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'cleaning' %}active{% endif %}"
+            >
+              <span class="sidebar-link-icon" aria-hidden="true">🧹</span>
+              <span class="sidebar-link-text">Data Cleaning</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+
+            <a
+              href="{% url 'data_management:validation' %}"
+              class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'validation' %}active{% endif %}"
+            >
+              <span class="sidebar-link-icon" aria-hidden="true">✅</span>
+              <span class="sidebar-link-text">Data Validation</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+
+            <a
+              href="{% url 'data_management:profiling' %}"
+              class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'profiling' %}active{% endif %}"
+            >
+              <span class="sidebar-link-icon" aria-hidden="true">📊</span>
+              <span class="sidebar-link-text">Data Profiling</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+
+            <a
+              href="{% url 'data_management:data_version_history' %}"
+              class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'data_version_history' %}active{% endif %}"
+            >
+              <span class="sidebar-link-icon" aria-hidden="true">📜</span>
+              <span class="sidebar-link-text">Version History</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION: ANALYTICS -->
+      <div class="sidebar-section">
         <div
-            class="sidebar-group-content"
-            id="section-content-data-management"
+          class="sidebar-collapsible {% if request.resolver_match.app_name == 'analytics' %}section-open{% endif %}"
+          data-section="analytics"
         >
+          <button
+            type="button"
+            class="sidebar-group-button"
+            data-toggle-section="analytics"
+            aria-expanded="{% if request.resolver_match.app_name == 'analytics' %}true{% else %}false{% endif %}"
+            aria-controls="section-content-analytics"
+          >
+            <span class="group-title-wrap">
+              <span class="sidebar-section-title">ANALYTICS</span>
+            </span>
+            <span class="sidebar-group-chevron" aria-hidden="true">›</span>
+          </button>
 
-            <!-- 1. UPLOAD DATA -->
-
+          <div class="sidebar-group-content" id="section-content-analytics">
             <a
-                href="{% url 'data_management:upload_data' %}"
-                class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'upload_data' %}active{% endif %}"
+              href="{% url 'analytics:business_intelligence' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'business_intelligence' %}active{% endif %}"
             >
-
-                <span
-                    class="sidebar-link-icon"
-                    aria-hidden="true"
-                >
-                    ⬆️
-                </span>
-
-                <span class="sidebar-link-text">
-                    Upload Data
-                </span>
-
-                <span
-                    class="sidebar-link-arrow"
-                    aria-hidden="true"
-                >
-                    &rarr;
-                </span>
-
+              <span class="sidebar-link-icon" aria-hidden="true">📈</span>
+              <span class="sidebar-link-text">Business Analytics</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
             </a>
 
-
-            <!-- 2. DATASETS -->
-
             <a
-                href="{% url 'data_management:dataset_management' %}"
-                class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'dataset_management' %}active{% endif %}"
+              href="{% url 'analytics:sales_intelligence' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'sales_intelligence' %}active{% endif %}"
             >
-
-                <span
-                    class="sidebar-link-icon"
-                    aria-hidden="true"
-                >
-                    🗄️
-                </span>
-
-                <span class="sidebar-link-text">
-                    Datasets
-                </span>
-
-                <span
-                    class="sidebar-link-arrow"
-                    aria-hidden="true"
-                >
-                    &rarr;
-                </span>
-
+              <span class="sidebar-link-icon" aria-hidden="true">💰</span>
+              <span class="sidebar-link-text">Sales Analytics</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
             </a>
 
-
-            <!-- 3. DATA QUALITY -->
-
             <a
-                href="{% url 'data_management:quality' %}"
-                class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'quality' %}active{% endif %}"
+              href="{% url 'analytics:customer_intelligence' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'customer_intelligence' %}active{% endif %}"
             >
-
-                <span
-                    class="sidebar-link-icon"
-                    aria-hidden="true"
-                >
-                    🛡️
-                </span>
-
-                <span class="sidebar-link-text">
-                    Data Quality
-                </span>
-
-                <span
-                    class="sidebar-link-arrow"
-                    aria-hidden="true"
-                >
-                    &rarr;
-                </span>
-
+              <span class="sidebar-link-icon" aria-hidden="true">👥</span>
+              <span class="sidebar-link-text">Customer Analytics</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
             </a>
 
-
-            <!-- 4. DATA CLEANING -->
-
             <a
-                href="{% url 'data_management:cleaning' %}"
-                class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'cleaning' %}active{% endif %}"
+              href="{% url 'analytics:product_intelligence' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'product_intelligence' %}active{% endif %}"
             >
-
-                <span
-                    class="sidebar-link-icon"
-                    aria-hidden="true"
-                >
-                    🧹
-                </span>
-
-                <span class="sidebar-link-text">
-                    Data Cleaning
-                </span>
-
-                <span
-                    class="sidebar-link-arrow"
-                    aria-hidden="true"
-                >
-                    &rarr;
-                </span>
-
+              <span class="sidebar-link-icon" aria-hidden="true">📦</span>
+              <span class="sidebar-link-text">Product Analytics</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
             </a>
 
-
-            <!-- 5. DATA VALIDATION -->
-
             <a
-                href="{% url 'data_management:validation' %}"
-                class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'validation' %}active{% endif %}"
+              href="{% url 'analytics:regional_intelligence' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'regional_intelligence' %}active{% endif %}"
             >
-
-                <span
-                    class="sidebar-link-icon"
-                    aria-hidden="true"
-                >
-                    ✅
-                </span>
-
-                <span class="sidebar-link-text">
-                    Data Validation
-                </span>
-
-                <span
-                    class="sidebar-link-arrow"
-                    aria-hidden="true"
-                >
-                    &rarr;
-                </span>
-
+              <span class="sidebar-link-icon" aria-hidden="true">🌍</span>
+              <span class="sidebar-link-text">Regional Analytics</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
             </a>
 
-
-            <!-- 6. DATA PROFILING -->
-
             <a
-                href="{% url 'data_management:profiling' %}"
-                class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'profiling' %}active{% endif %}"
+              href="{% url 'analytics:marketing_intelligence' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'marketing_intelligence' %}active{% endif %}"
             >
-
-                <span
-                    class="sidebar-link-icon"
-                    aria-hidden="true"
-                >
-                    📊
-                </span>
-
-                <span class="sidebar-link-text">
-                    Data Profiling
-                </span>
-
-                <span
-                    class="sidebar-link-arrow"
-                    aria-hidden="true"
-                >
-                    &rarr;
-                </span>
-
+              <span class="sidebar-link-icon" aria-hidden="true">📣</span>
+              <span class="sidebar-link-text">Marketing Analytics</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
             </a>
 
-
-            <!-- 7. VERSION HISTORY -->
-
             <a
-                href="{% url 'data_management:data_version_history' %}"
-                class="sidebar-link {% if request.resolver_match.app_name == 'data_management' and request.resolver_match.url_name == 'data_version_history' %}active{% endif %}"
+              href="{% url 'analytics:financial_intelligence' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'financial_intelligence' %}active{% endif %}"
             >
-
-                <span
-                    class="sidebar-link-icon"
-                    aria-hidden="true"
-                >
-                    📜
-                </span>
-
-                <span class="sidebar-link-text">
-                    Version History
-                </span>
-
-                <span
-                    class="sidebar-link-arrow"
-                    aria-hidden="true"
-                >
-                    &rarr;
-                </span>
-
+              <span class="sidebar-link-icon" aria-hidden="true">💵</span>
+              <span class="sidebar-link-text">Financial Analytics</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
             </a>
 
+            <a
+              href="{% url 'analytics:returns_intelligence' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'returns_intelligence' %}active{% endif %}"
+            >
+              <span class="sidebar-link-icon" aria-hidden="true">🔄</span>
+              <span class="sidebar-link-text">Returns Analytics</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
         </div>
+      </div>
 
-    </div>
+      <!-- SECTION: INSIGHTS -->
+      <div class="sidebar-section">
+        <div
+          class="sidebar-collapsible {% if request.resolver_match.app_name == 'advanced_insights' %}section-open{% endif %}"
+          data-section="insights"
+        >
+          <button
+            type="button"
+            class="sidebar-group-button"
+            data-toggle-section="insights"
+            aria-expanded="{% if request.resolver_match.app_name == 'advanced_insights' %}true{% else %}false{% endif %}"
+            aria-controls="section-content-insights"
+          >
+            <span class="group-title-wrap">
+              <span class="sidebar-section-title">INSIGHTS</span>
+            </span>
+            <span class="sidebar-group-chevron" aria-hidden="true">›</span>
+          </button>
 
-</div>
+          <div class="sidebar-group-content" id="section-content-insights">
+            <a
+              href="{% url 'advanced_insights:future_trends' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'future_trends' and request.resolver_match.app_name == 'advanced_insights' %}active{% endif %}"
+            >
+              <span class="sidebar-link-icon" aria-hidden="true">🔮</span>
+              <span class="sidebar-link-text">Future Trends</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
 
-            <!-- SECTION: INTELLIGENCE (COLLAPSIBLE) -->
-            <div class="sidebar-section">
-                <div
-                    class="sidebar-collapsible {% if request.resolver_match.app_name == 'analytics' %}section-open{% endif %}"
-                    data-section="analytics"
-                >
-                    <button
-                        type="button"
-                        class="sidebar-group-button"
-                        data-toggle-section="analytics"
-                        aria-expanded="{% if request.resolver_match.app_name == 'analytics' %}true{% else %}false{% endif %}"
-                        aria-controls="section-content-analytics"
-                    >
-                        <span class="group-title-wrap">
-                            <span class="sidebar-section-title">ANALYTICS</span>
-                        </span>
-                        <span class="sidebar-group-chevron" aria-hidden="true">›</span>
-                    </button>
+            <a
+              href="{% url 'advanced_insights:forecasting' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'forecasting' %}active{% endif %}"
+            >
+              <span class="sidebar-link-icon" aria-hidden="true">📈</span>
+              <span class="sidebar-link-text">Forecasting</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
 
-                    <div class="sidebar-group-content" id="section-content-analytics">
-                        <a
-                            href="{% url 'analytics:business_intelligence' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'business_intelligence' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">📈</span>
-                            <span class="sidebar-link-text">Business Analytics</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
+            <a
+              href="{% url 'advanced_insights:anomaly_detection' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'anomaly_detection' %}active{% endif %}"
+            >
+              <span class="sidebar-link-icon" aria-hidden="true">🚨</span>
+              <span class="sidebar-link-text">Anomaly Detection</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
 
-                        <a
-                            href="{% url 'analytics:sales_intelligence' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'sales_intelligence' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">💰</span>
-                            <span class="sidebar-link-text">Sales Analytics</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
+            <a
+              href="{% url 'advanced_insights:root_cause_analysis' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'root_cause_analysis' %}active{% endif %}"
+            >
+              <span class="sidebar-link-icon" aria-hidden="true">🔍</span>
+              <span class="sidebar-link-text">Root Cause Analysis</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
 
-                        <a
-                            href="{% url 'analytics:customer_intelligence' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'customer_intelligence' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">👥</span>
-                            <span class="sidebar-link-text">Customer Analytics</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
+            <a
+              href="{% url 'advanced_insights:customer_segmentation' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'customer_segmentation' %}active{% endif %}"
+            >
+              <span class="sidebar-link-icon" aria-hidden="true">👥</span>
+              <span class="sidebar-link-text">Customer Segmentation</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
 
-                        <a
-                            href="{% url 'analytics:product_intelligence' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'product_intelligence' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">📦</span>
-                            <span class="sidebar-link-text">Product Analytics</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
+            <a
+              href="{% url 'advanced_insights:churn_risk_analysis' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'churn_risk_analysis' %}active{% endif %}"
+            >
+              <span class="sidebar-link-icon" aria-hidden="true">⚠️</span>
+              <span class="sidebar-link-text">Churn/Risk Analysis</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
 
-                        <a
-                            href="{% url 'analytics:regional_intelligence' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'regional_intelligence' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">🌍</span>
-                            <span class="sidebar-link-text">Regional Analytics</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
-
-                        <a
-                            href="{% url 'analytics:marketing_intelligence' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'marketing_intelligence' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">📣</span>
-                            <span class="sidebar-link-text">Marketing Analytics</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
-
-                        <a
-                            href="{% url 'analytics:financial_intelligence' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'financial_intelligence' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">💵</span>
-                            <span class="sidebar-link-text">Financial Analytics</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
-
-                        <a
-                            href="{% url 'analytics:returns_intelligence' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'returns_intelligence' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">🔄</span>
-                            <span class="sidebar-link-text">Returns Analytics</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SECTION: INSIGHTS (COLLAPSIBLE) -->
-            <div class="sidebar-section">
-                <div
-                    class="sidebar-collapsible {% if request.resolver_match.app_name == 'advanced_insights' %}section-open{% endif %}"
-                    data-section="insights"
-                >
-                    <button
-                        type="button"
-                        class="sidebar-group-button"
-                        data-toggle-section="insights"
-                        aria-expanded="{% if request.resolver_match.app_name == 'advanced_insights' %}true{% else %}false{% endif %}"
-                        aria-controls="section-content-insights"
-                    >
-                        <span class="group-title-wrap">
-                            <span class="sidebar-section-title">INSIGHTS</span>
-                        </span>
-                        <span class="sidebar-group-chevron" aria-hidden="true">›</span>
-                    </button>
-
-                    <div class="sidebar-group-content" id="section-content-insights">
-                        <a
-                            href="{% url 'advanced_insights:future_trends' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'future_trends' and request.resolver_match.app_name == 'advanced_insights' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">🔮</span>
-                            <span class="sidebar-link-text">Future Trends</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
-
-                        <a
-                            href="{% url 'advanced_insights:forecasting' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'forecasting' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">📈</span>
-                            <span class="sidebar-link-text">Forecasting</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
-
-                        <a
-                            href="{% url 'advanced_insights:anomaly_detection' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'anomaly_detection' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">🚨</span>
-                            <span class="sidebar-link-text">Anomaly Detection</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
-
-                        <a
-                            href="{% url 'advanced_insights:root_cause_analysis' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'root_cause_analysis' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">🔍</span>
-                            <span class="sidebar-link-text">Root Cause Analysis</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
-
-                        <a
-                            href="{% url 'advanced_insights:customer_segmentation' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'customer_segmentation' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">👥</span>
-                            <span class="sidebar-link-text">Customer Segmentation</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
-                        <a
-                            href="{% url 'advanced_insights:churn_risk_analysis' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'churn_risk_analysis' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">⚠️</span>
-                            <span class="sidebar-link-text">Churn/Risk analysis</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
-                        <a
-                            href="{% url 'advanced_insights:opportunity_detection' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'opportunity_detection' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">💡</span>
-                            <span class="sidebar-link-text">Opportunity Detection</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SECTION: DECISION INTELLIGENCE (COLLAPSIBLE) -->
-            <div class="sidebar-section">
-                <div
-                    class="sidebar-collapsible {% if request.resolver_match.app_name == 'decision_intelligence' %}section-open{% endif %}"
-                    data-section="decision"
-                >
-                    <button
-                        type="button"
-                        class="sidebar-group-button"
-                        data-toggle-section="decision"
-                        aria-expanded="{% if request.resolver_match.app_name == 'decision_intelligence' %}true{% else %}false{% endif %}"
-                        aria-controls="section-content-decision"
-                    >
-                        <span class="group-title-wrap">
-                            <span class="sidebar-section-title">DECISION INTELLIGENCE</span>
-                        </span>
-                        <span class="sidebar-group-chevron" aria-hidden="true">›</span>
-                    </button>
-
-                    <div class="sidebar-group-content" id="section-content-decision">
-                        <a
-                            href="{% url 'decision_intelligence:recommendations' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'recommendations' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">💡</span>
-                            <span class="sidebar-link-text">Recommendations</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
-
-                        <a
-                            href="{% url 'decision_intelligence:what_if_simulator' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'what_if_simulator' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">🎲</span>
-                            <span class="sidebar-link-text">What-If Simulator</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
-
-                        <a
-                            href="{% url 'decision_intelligence:scenario_planning' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'scenario_planning' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">🧩</span>
-                            <span class="sidebar-link-text">Scenario Planning</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
-
-                        <a
-                            href="{% url 'decision_intelligence:business_alerts' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'business_alerts' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">🚨</span>
-                            <span class="sidebar-link-text">Business Alerts</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
-
-                        <a
-                            href="{% url 'decision_intelligence:action_center' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'action_center' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">✅</span>
-                            <span class="sidebar-link-text">Action Center</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
-
-                        <a
-                            href="{% url 'decision_intelligence:decision_impact_analysis' %}"
-                            class="sidebar-link {% if request.resolver_match.url_name == 'decision_impact_analysis' %}active{% endif %}"
-                        >
-                            <span class="sidebar-link-icon" aria-hidden="true">📊</span>
-                            <span class="sidebar-link-text">Decision Impact Analysis</span>
-                            <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- SECTION: REPORTING -->
-            <!-- <div class="sidebar-section">
-                <div class="sidebar-section-title">REPORTING</div>
-                <a
-                    href="#"
-                    class="sidebar-link {% if request.resolver_match.app_name == 'automated_reports' %}active{% endif %}"
-                >
-                    <span class="sidebar-link-icon" aria-hidden="true">▤</span>
-                    <span class="sidebar-link-text">Automted Reports</span>
-                    <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                </a>
-                <a
-                    href="#"
-                    class="sidebar-link {% if request.resolver_match.app_name == 'custom_reports' %}active{% endif %}"
-                >
-                    <span class="sidebar-link-icon" aria-hidden="true">▤</span>
-                    <span class="sidebar-link-text">Custom Reports</span>
-                    <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                </a>
-            </div> -->
-
-            <!-- SECTION: ADMINISTRATION (RESTRICTED TO STAFF & SUPERUSERS) -->
-            {% if user.is_staff or user.is_superuser %}
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">ADMINISTRATION</div>
-                <a
-                    href="{% url 'admin_dashboard:dashboard' %}"
-                    class="sidebar-link {% if request.resolver_match.app_name == 'admin_dashboard' and request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
-                >
-                    <span class="sidebar-link-icon" aria-hidden="true">🛡</span>
-                    <span class="sidebar-link-text">Admin Dashboard</span>
-                    <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                </a>
-
-                <a
-                    href="{% url 'admin_dashboard:users' %}"
-                    class="sidebar-link {% if request.resolver_match.app_name == 'admin_dashboard' and request.resolver_match.url_name == 'users' %}active{% endif %}"
-                >
-                    <span class="sidebar-link-icon" aria-hidden="true">👥</span>
-                    <span class="sidebar-link-text">User Management</span>
-                    <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
-                </a>
-
-                <a
-                    href="/admin/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="sidebar-link"
-                >
-                    <span class="sidebar-link-icon" aria-hidden="true">⚙</span>
-                    <span class="sidebar-link-text">Django Admin</span>
-                    <span class="sidebar-link-arrow external-arrow" aria-hidden="true">&#8599;</span>
-                </a>
-            </div>
-            {% endif %}
-
-            <!-- SECTION: SYSTEM -->
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">SYSTEM</div>
-                <a
-                    href="{% url 'accounts:settings'%}"
-                    class="sidebar-link {% if request.resolver_match.app_name == 'settings' and request.resolver_match.url_name == 'users' %}active{% endif %}"
-                    title="Platform Settings coming soon"
-                >
-                    <span class="sidebar-link-icon" aria-hidden="true">⚙</span>
-                    <span class="sidebar-link-text">Settings</span>
-                    <span class="sidebar-badge-coming-soon" aria-hidden="true"></span>
-                </a>
-            </div>
-
-        </nav>
-    </div>
-
-    <!-- 4. SIDEBAR FIXED BOTTOM AREA -->
-    <div class="sidebar-bottom">
-        <div class="sidebar-system-status">
-            <span class="system-status-indicator" aria-hidden="true"></span>
-            <div class="status-text-stack">
-                <span class="status-primary">System Online</span>
-                <span class="status-secondary">Intelligence Engine</span>
-            </div>
+            <a
+              href="{% url 'advanced_insights:opportunity_detection' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'opportunity_detection' %}active{% endif %}"
+            >
+              <span class="sidebar-link-icon" aria-hidden="true">💡</span>
+              <span class="sidebar-link-text">Opportunity Detection</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
         </div>
+      </div>
+
+      <!-- SECTION: DECISION INTELLIGENCE -->
+      <div class="sidebar-section">
+        <div
+          class="sidebar-collapsible {% if request.resolver_match.app_name == 'decision_intelligence' %}section-open{% endif %}"
+          data-section="decision"
+        >
+          <button
+            type="button"
+            class="sidebar-group-button"
+            data-toggle-section="decision"
+            aria-expanded="{% if request.resolver_match.app_name == 'decision_intelligence' %}true{% else %}false{% endif %}"
+            aria-controls="section-content-decision"
+          >
+            <span class="group-title-wrap">
+              <span class="sidebar-section-title">DECISION INTELLIGENCE</span>
+            </span>
+            <span class="sidebar-group-chevron" aria-hidden="true">›</span>
+          </button>
+
+          <div class="sidebar-group-content" id="section-content-decision">
+            <a
+              href="{% url 'decision_intelligence:recommendations' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'recommendations' %}active{% endif %}"
+            >
+              <span class="sidebar-link-icon" aria-hidden="true">💡</span>
+              <span class="sidebar-link-text">Recommendations</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+
+            <a
+              href="{% url 'decision_intelligence:what_if_simulator' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'what_if_simulator' %}active{% endif %}"
+            >
+              <span class="sidebar-link-icon" aria-hidden="true">🎲</span>
+              <span class="sidebar-link-text">What-If Simulator</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+
+            <a
+              href="{% url 'decision_intelligence:scenario_planning' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'scenario_planning' %}active{% endif %}"
+            >
+              <span class="sidebar-link-icon" aria-hidden="true">🧩</span>
+              <span class="sidebar-link-text">Scenario Planning</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+
+            <a
+              href="{% url 'decision_intelligence:business_alerts' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'business_alerts' %}active{% endif %}"
+            >
+              <span class="sidebar-link-icon" aria-hidden="true">🚨</span>
+              <span class="sidebar-link-text">Business Alerts</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+
+            <a
+              href="{% url 'decision_intelligence:action_center' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'action_center' %}active{% endif %}"
+            >
+              <span class="sidebar-link-icon" aria-hidden="true">✅</span>
+              <span class="sidebar-link-text">Action Center</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+
+            <a
+              href="{% url 'decision_intelligence:decision_impact_analysis' %}"
+              class="sidebar-link {% if request.resolver_match.url_name == 'decision_impact_analysis' %}active{% endif %}"
+            >
+              <span class="sidebar-link-icon" aria-hidden="true">📊</span>
+              <span class="sidebar-link-text">Decision Impact Analysis</span>
+              <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION: ADMINISTRATION -->
+      {% if user.is_staff or user.is_superuser %}
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">ADMINISTRATION</div>
+        <a
+          href="{% url 'admin_dashboard:dashboard' %}"
+          class="sidebar-link {% if request.resolver_match.app_name == 'admin_dashboard' and request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+        >
+          <span class="sidebar-link-icon" aria-hidden="true">🛡</span>
+          <span class="sidebar-link-text">Admin Dashboard</span>
+          <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+        </a>
 
         <a
-            href="{% url 'accounts:logout' %}"
-            class="sidebar-logout"
-            title="Log out of Smart BI"
+          href="{% url 'admin_dashboard:users' %}"
+          class="sidebar-link {% if request.resolver_match.app_name == 'admin_dashboard' and request.resolver_match.url_name == 'users' %}active{% endif %}"
         >
-            <span class="sidebar-logout-icon" aria-hidden="true">↪</span>
-            <span class="sidebar-logout-text">Logout</span>
+          <span class="sidebar-link-icon" aria-hidden="true">👥</span>
+          <span class="sidebar-link-text">User Management</span>
+          <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
         </a>
+
+        <a
+          href="/admin/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="sidebar-link"
+        >
+          <span class="sidebar-link-icon" aria-hidden="true">⚙</span>
+          <span class="sidebar-link-text">Django Admin</span>
+          <span class="sidebar-link-arrow external-arrow" aria-hidden="true">&#8599;</span>
+        </a>
+      </div>
+      {% endif %}
+
+      <!-- SECTION: SYSTEM -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">SYSTEM</div>
+        <a
+          href="{% url 'accounts:settings' %}"
+          class="sidebar-link {% if request.resolver_match.app_name == 'settings' and request.resolver_match.url_name == 'users' %}active{% endif %}"
+          title="Platform Settings"
+        >
+          <span class="sidebar-link-icon" aria-hidden="true">⚙</span>
+          <span class="sidebar-link-text">Settings</span>
+          <span class="sidebar-link-arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+
+    </nav>
+  </div>
+
+  <!-- 4. SIDEBAR FIXED BOTTOM AREA -->
+  <div class="sidebar-bottom">
+    <div class="sidebar-system-status">
+      <span class="system-status-indicator" aria-hidden="true"></span>
+      <div class="status-text-stack">
+        <span class="status-primary">System Online</span>
+        <span class="status-secondary">Intelligence Engine</span>
+      </div>
     </div>
+
+    <a
+      href="{% url 'accounts:logout' %}"
+      class="sidebar-logout"
+      title="Log out of Smart BI"
+    >
+      <span class="sidebar-logout-icon" aria-hidden="true">↪</span>
+      <span class="sidebar-logout-text">Logout</span>
+    </a>
+  </div>
 </aside>
 
 <!-- INITIALIZE SMART SIDEBAR SCRIPT -->

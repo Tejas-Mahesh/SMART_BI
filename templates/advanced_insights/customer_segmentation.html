@@ -9,38 +9,39 @@
     <!-- Google Fonts & Chart.js -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         :root {
-            --bg-base: #040911;
-            --bg-surface: #07111f;
-            --bg-card: rgba(11, 23, 42, 0.72);
-            --bg-card-hover: rgba(16, 32, 59, 0.85);
+            --bg-base: #030712;
+            --bg-surface: #0b1329;
+            --bg-card: rgba(15, 23, 42, 0.75);
+            --bg-card-hover: rgba(23, 37, 68, 0.85);
 
-            /* Deep Dark KPI Surfaces */
-            --bg-kpi-card: #050d18;
-            --border-kpi: rgba(255, 255, 255, 0.06);
+            --bg-kpi-card: rgba(11, 19, 41, 0.8);
+            --border-kpi: rgba(255, 255, 255, 0.08);
 
-            --border-subtle: rgba(79, 163, 255, 0.14);
-            --border-focus: rgba(79, 163, 255, 0.45);
+            --border-subtle: rgba(56, 189, 248, 0.15);
+            --border-focus: rgba(56, 189, 248, 0.45);
             
-            --accent-blue: #4fa3ff;
+            --accent-blue: #38bdf8;
             --accent-cyan: #22d3ee;
-            --accent-purple: #8b5cf6;
-            --accent-gradient: linear-gradient(135deg, #4fa3ff 0%, #22d3ee 100%);
+            --accent-purple: #a855f7;
+            --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #22d3ee 50%, #818cf8 100%);
+            --accent-glow: rgba(56, 189, 248, 0.25);
             
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --text-dim: rgba(190, 211, 235, 0.65);
+            --text-dim: rgba(203, 213, 225, 0.7);
             
             --status-green: #10b981;
             --status-yellow: #f59e0b;
-            --status-red: #ff5263;
+            --status-red: #f43f5e;
 
-            --radius-md: 12px;
-            --radius-lg: 16px;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
         }
 
         * {
@@ -55,21 +56,22 @@
             color: var(--text-main);
             min-height: 100vh;
             background-image: 
-                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(79, 163, 255, 0.12), transparent),
-                radial-gradient(circle 600px at 0% 100%, rgba(34, 211, 238, 0.04), transparent);
+                radial-gradient(ellipse 80% 60% at 50% -20%, rgba(56, 189, 248, 0.15), transparent),
+                radial-gradient(ellipse 60% 50% at 100% 100%, rgba(168, 85, 247, 0.08), transparent),
+                radial-gradient(circle 800px at 0% 50%, rgba(34, 211, 238, 0.05), transparent);
             background-attachment: fixed;
             display: flex;
             overflow-x: hidden;
         }
 
-        /* Ambient Glow & Entrance Animations */
+        /* Ambient Animations */
         @keyframes subtlePulse {
             0%, 100% { opacity: 0.6; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.08); }
+            50% { opacity: 1; transform: scale(1.1); }
         }
 
         @keyframes cardEntrance {
-            from { opacity: 0; transform: translateY(18px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -77,7 +79,7 @@
             animation: cardEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Shell & Independent Layout */
+        /* Shell Layout */
         .smart-workspace-shell {
             display: flex;
             width: 100%;
@@ -85,7 +87,7 @@
         }
 
         #smart-bi-sidebar {
-            width: 270px;
+            width: 280px;
             background: var(--bg-surface);
             border-right: 1px solid var(--border-subtle);
             flex-shrink: 0;
@@ -98,19 +100,20 @@
             overflow-x: hidden;
             z-index: 1000;
             padding: 1.75rem 1.25rem;
+            backdrop-filter: blur(12px);
         }
 
         .segmentation-main {
-            margin-left: 270px;
+            margin-left: 280px;
             flex: 1;
-            width: calc(100% - 270px);
+            width: calc(100% - 280px);
             min-height: 100vh;
             padding: 2.5rem 3.5rem;
             overflow-y: auto;
         }
 
         .segmentation-page {
-            max-width: 1400px;
+            max-width: 1440px;
             margin: 0 auto;
         }
 
@@ -118,15 +121,11 @@
         .page-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             padding-bottom: 2rem;
             border-bottom: 1px solid var(--border-subtle);
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
             gap: 24px;
-        }
-
-        .page-header-left {
-            max-width: 750px;
         }
 
         .eyebrow {
@@ -135,7 +134,7 @@
             gap: 8px;
             font-size: 0.75rem;
             font-weight: 700;
-            letter-spacing: 0.12em;
+            letter-spacing: 0.15em;
             color: var(--accent-cyan);
             margin-bottom: 0.65rem;
             text-transform: uppercase;
@@ -146,16 +145,19 @@
             height: 8px;
             border-radius: 50%;
             background: var(--accent-cyan);
-            box-shadow: 0 0 10px var(--accent-cyan);
+            box-shadow: 0 0 12px var(--accent-cyan);
             animation: subtlePulse 2.5s infinite;
         }
 
         .page-title {
-            font-size: 2.15rem;
+            font-size: 2.25rem;
             font-weight: 800;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.03em;
             color: #ffffff;
             margin-bottom: 0.4rem;
+            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .page-subtitle {
@@ -167,20 +169,22 @@
         .header-badge {
             display: inline-flex;
             align-items: center;
-            padding: 8px 16px;
+            gap: 8px;
+            padding: 8px 18px;
             border-radius: 999px;
-            background: rgba(79, 163, 255, 0.08);
+            background: rgba(56, 189, 248, 0.08);
             border: 1px solid var(--border-subtle);
             color: var(--accent-blue);
             font-size: 0.8rem;
             font-weight: 700;
             font-family: 'JetBrains Mono', monospace;
             white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         /* Messages */
         .messages {
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -190,104 +194,115 @@
             padding: 1rem 1.25rem;
             border-radius: var(--radius-md);
             font-size: 0.9rem;
-            background: rgba(79, 163, 255, 0.08);
+            background: rgba(56, 189, 248, 0.1);
             border: 1px solid var(--border-subtle);
-            color: #dbeafe;
+            color: #e0f2fe;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        /* Panels & Cards */
+        /* Panels & Modern Glass Cards */
         .panel {
             background: var(--bg-card);
-            backdrop-filter: blur(14px);
+            backdrop-filter: blur(16px);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-lg);
             position: relative;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            padding: 1.75rem;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 2rem;
         }
 
         .panel:hover {
             border-color: var(--border-focus);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.4), 0 0 15px var(--accent-glow);
         }
 
         .panel-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.75rem;
         }
 
         .panel-header h2 {
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             font-weight: 700;
+            letter-spacing: -0.01em;
         }
 
         .panel-header p {
             color: var(--text-muted);
             font-size: 0.85rem;
-            margin-top: 0.3rem;
+            margin-top: 0.25rem;
         }
 
         .panel-badge {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
+            font-size: 0.725rem;
             font-weight: 700;
-            padding: 0.25rem 0.65rem;
+            padding: 0.3rem 0.75rem;
             border-radius: 6px;
             background: rgba(34, 211, 238, 0.1);
             color: var(--accent-cyan);
             border: 1px solid rgba(34, 211, 238, 0.25);
+            letter-spacing: 0.05em;
         }
 
-        /* Control Panel */
+        /* Form Controls */
         .control-panel {
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
 
         .section-heading {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.75rem;
         }
 
         .section-heading h2 {
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             font-weight: 700;
         }
 
         .section-heading p {
             color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-top: 0.3rem;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
         }
 
         .controls-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.25rem;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 1.5rem;
             align-items: flex-start;
         }
 
         .field {
             min-width: 0;
+            grid-column: span 6;
         }
 
-        .field-wide {
-            grid-column: span 2;
+        .field-full {
+            grid-column: span 12;
+        }
+
+        .field-third {
+            grid-column: span 4;
         }
 
         .field label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.6rem;
             font-size: 0.85rem;
             font-weight: 600;
             color: var(--text-main);
+            letter-spacing: 0.01em;
         }
 
         .field select {
             width: 100%;
-            height: 44px;
-            padding: 0 1rem;
+            height: 48px;
+            padding: 0 1.25rem;
             border-radius: var(--radius-md);
             border: 1px solid var(--border-subtle);
             background-color: var(--bg-surface);
@@ -297,98 +312,123 @@
             outline: none;
             appearance: none;
             cursor: pointer;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234fa3ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 1rem center;
+            background-position: right 1.25rem center;
             transition: all 0.2s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .field select:focus {
             border-color: var(--accent-blue);
-            box-shadow: 0 0 0 3px rgba(79, 163, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2), inset 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .field select option {
-            background: #07111f;
+            background: var(--bg-surface);
             color: #f8fafc;
+            padding: 10px;
         }
 
         .multi-select {
             height: auto !important;
-            min-height: 110px !important;
-            padding: 8px 12px !important;
+            min-height: 120px !important;
+            padding: 10px !important;
             background-image: none !important;
         }
 
         .multi-select option {
-            padding: 8px 10px;
-            border-radius: 6px;
-            margin-bottom: 2px;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 4px;
+            transition: background-color 0.15s ease;
+        }
+
+        .multi-select option:hover, .multi-select option:checked {
+            background: rgba(56, 189, 248, 0.2) !important;
+            color: #ffffff !important;
         }
 
         .controls-actions {
             display: flex;
             justify-content: flex-end;
-            margin-top: 1.5rem;
-            padding-top: 1.25rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .run-button {
-            height: 44px;
-            padding: 0 24px;
+            height: 48px;
+            padding: 0 32px;
             border: none;
             border-radius: var(--radius-md);
             background: var(--accent-gradient);
-            color: #040911;
+            color: #030712;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             cursor: pointer;
-            box-shadow: 0 4px 18px rgba(34, 211, 238, 0.25);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 20px rgba(34, 211, 238, 0.3);
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .run-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 24px rgba(79, 163, 255, 0.35);
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.45);
+            filter: brightness(1.08);
         }
 
-        /* DARK THEME KPI CARDS */
+        /* Dynamic KPI Grid */
         .kpi-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.25rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
         }
 
         .kpi-card {
-            background-color: var(--bg-kpi-card);
+            background: var(--bg-kpi-card);
+            backdrop-filter: blur(12px);
             border: 1px solid var(--border-kpi);
             border-radius: var(--radius-md);
-            padding: 1.4rem;
+            padding: 1.5rem;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-            transition: transform 0.2s ease, border-color 0.2s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-gradient);
+            opacity: 0.7;
         }
 
         .kpi-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(79, 163, 255, 0.3);
+            transform: translateY(-3px);
+            border-color: rgba(56, 189, 248, 0.35);
         }
 
         .kpi-label {
             font-size: 0.75rem;
             font-weight: 700;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.1em;
             color: var(--text-dim);
             text-transform: uppercase;
         }
 
         .kpi-value {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 1.85rem;
-            font-weight: 800;
+            font-size: 2rem;
+            font-weight: 700;
             color: #ffffff;
             margin-top: 0.6rem;
             letter-spacing: -0.02em;
@@ -397,21 +437,35 @@
         .kpi-meta {
             font-size: 0.8rem;
             color: var(--text-muted);
-            margin-top: 0.45rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        /* Content Grid (Chart + Summary) */
+        /* Analytics Content Grid */
         .content-grid {
             display: grid;
-            grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 1.75rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .chart-panel {
+            grid-column: span 7;
+        }
+
+        .table-panel {
+            grid-column: span 5;
         }
 
         .chart-wrapper {
             position: relative;
-            height: 340px;
+            height: 350px;
             width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* Tables */
@@ -422,8 +476,9 @@
 
         table {
             width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.875rem;
             text-align: left;
         }
 
@@ -435,7 +490,7 @@
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.08em;
             white-space: nowrap;
         }
 
@@ -444,19 +499,21 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.04);
             color: var(--text-muted);
             white-space: nowrap;
+            transition: background 0.15s ease;
         }
 
-        tbody tr:hover {
-            background: rgba(79, 163, 255, 0.03);
+        tbody tr:hover td {
+            background: rgba(56, 189, 248, 0.04);
+            color: #ffffff;
         }
 
         .segment-pill {
             display: inline-flex;
             align-items: center;
-            padding: 0.25rem 0.65rem;
+            padding: 0.3rem 0.75rem;
             border-radius: 999px;
-            background: rgba(79, 163, 255, 0.1);
-            border: 1px solid rgba(79, 163, 255, 0.25);
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.25);
             color: var(--accent-blue);
             font-size: 0.75rem;
             font-weight: 700;
@@ -469,66 +526,84 @@
             font-weight: 700;
         }
 
-        /* Summary */
+        /* Summary & Detailed Data Panels */
         .summary-panel {
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
 
         .summary-box {
-            padding: 1.25rem;
+            padding: 1.5rem;
             border-radius: var(--radius-md);
-            background: rgba(7, 17, 31, 0.75);
+            background: rgba(7, 15, 29, 0.6);
             border: 1px solid var(--border-subtle);
-            color: #dbeafe;
-            font-size: 0.95rem;
-            line-height: 1.65;
+            color: #e2e8f0;
+            font-size: 0.975rem;
+            line-height: 1.7;
+            position: relative;
         }
 
         .customer-table-panel {
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
             overflow: hidden;
         }
 
-        /* Empty States */
+        /* Empty State Styling */
         .empty-state {
-            padding: 4rem 2rem;
+            padding: 4.5rem 2rem;
             text-align: center;
             border: 1px dashed var(--border-subtle);
             border-radius: var(--radius-lg);
-            background: rgba(7, 17, 31, 0.45);
-            margin-bottom: 2rem;
+            background: rgba(11, 19, 41, 0.4);
+            margin-bottom: 2.5rem;
+            backdrop-filter: blur(8px);
+        }
+
+        .empty-state-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            background: rgba(56, 189, 248, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-blue);
+            border: 1px solid rgba(56, 189, 248, 0.2);
         }
 
         .empty-state h3 {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: 700;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
         }
 
         .empty-state p {
-            max-width: 540px;
+            max-width: 500px;
             margin: 0 auto;
             color: var(--text-muted);
             font-size: 0.9rem;
             line-height: 1.6;
         }
 
+        /* Responsive Breakpoints */
         @media (max-width: 1200px) {
-            .controls-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-            .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-            .content-grid { grid-template-columns: 1fr; }
+            .chart-panel { grid-column: span 12; }
+            .table-panel { grid-column: span 12; }
+            .field-third { grid-column: span 6; }
         }
 
         @media (max-width: 992px) {
             #smart-bi-sidebar { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border-subtle); }
-            .segmentation-main { margin-left: 0; width: 100%; padding: 1.5rem; }
-            .page-header { flex-direction: column; }
+            .segmentation-main { margin-left: 0; width: 100%; padding: 2rem 1.5rem; }
+            .page-header { flex-direction: column; align-items: flex-start; }
+            .field { grid-column: span 12; }
         }
 
-        @media (max-width: 650px) {
-            .controls-grid { grid-template-columns: 1fr; }
-            .field-wide { grid-column: span 1; }
+        @media (max-width: 640px) {
             .kpi-grid { grid-template-columns: 1fr; }
+            .field-third { grid-column: span 12; }
+            .panel { padding: 1.25rem; }
         }
     </style>
 </head>
@@ -549,12 +624,13 @@
             <div class="page-header-left">
                 <div class="eyebrow">
                     <span class="eyebrow-dot"></span>
-                    Advanced Insights
+                    Advanced Analytics Engine
                 </div>
                 <h1 class="page-title">Customer Segmentation</h1>
-                <p class="page-subtitle">Group customers according to their measurable purchasing behavior and identify distinct customer-value tiers.</p>
+                <p class="page-subtitle">Partition your customer base using multi-dimensional behavioral parameters to reveal valuable target tiers.</p>
             </div>
             <div class="header-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                 Customer Intelligence
             </div>
         </header>
@@ -563,17 +639,20 @@
         {% if messages %}
             <div class="messages">
                 {% for message in messages %}
-                    <div class="message">{{ message }}</div>
+                    <div class="message">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                        {{ message }}
+                    </div>
                 {% endfor %}
             </div>
         {% endif %}
 
-        <!-- CONFIGURATION -->
+        <!-- CONFIGURATION PANEL -->
         {% if datasets and selected_dataset and selected_version %}
         <section class="panel control-panel fade-up">
             <div class="section-heading">
-                <h2>Segmentation Configuration</h2>
-                <p>Select the dataset version and customer metrics to use for segmentation.</p>
+                <h2>Segmentation Parameters</h2>
+                <p>Configure data source versions and behavior metrics to calibrate clustering models.</p>
             </div>
 
             <form method="post" action="">
@@ -581,8 +660,8 @@
                 <div class="controls-grid">
 
                     <!-- DATASET -->
-                    <div class="field field-wide">
-                        <label for="dataset_selector">Dataset</label>
+                    <div class="field field-third">
+                        <label for="dataset_selector">Dataset Source</label>
                         <select id="dataset_selector" onchange="changeDataset(this.value)">
                             {% for dataset in datasets %}
                                 <option value="{{ dataset.id }}" {% if dataset.id == selected_dataset.id %}selected{% endif %}>
@@ -593,7 +672,7 @@
                     </div>
 
                     <!-- VERSION -->
-                    <div class="field field-wide">
+                    <div class="field field-third">
                         <label for="version_selector">Data Version</label>
                         <select id="version_selector" onchange="changeVersion(this.value)">
                             {% for version in versions %}
@@ -605,11 +684,23 @@
                         </select>
                     </div>
 
+                    <!-- SEGMENTS COUNT -->
+                    <div class="field field-third">
+                        <label for="segments">Target Segments</label>
+                        <select id="segments" name="segments">
+                            {% for number in "2345" %}
+                                <option value="{{ number }}" {% if selected_segments|stringformat:"s" == number %}selected{% endif %}>
+                                    {{ number }} Customer Clusters
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
                     <!-- CUSTOMER COLUMN -->
-                    <div class="field field-wide">
-                        <label for="customer_column">Customer Column</label>
+                    <div class="field">
+                        <label for="customer_column">Customer Identifier Column</label>
                         <select id="customer_column" name="customer_column" required>
-                            <option value="">Select customer column</option>
+                            <option value="">Select identifier column...</option>
                             {% for column in customer_columns %}
                                 <option value="{{ column }}" {% if column == selected_customer_column %}selected{% endif %}>
                                     {{ column }}
@@ -618,21 +709,9 @@
                         </select>
                     </div>
 
-                    <!-- SEGMENTS -->
+                    <!-- METRICS MULTI-SELECT -->
                     <div class="field">
-                        <label for="segments">Number of Segments</label>
-                        <select id="segments" name="segments">
-                            {% for number in "2345" %}
-                                <option value="{{ number }}" {% if selected_segments|stringformat:"s" == number %}selected{% endif %}>
-                                    {{ number }} Segments
-                                </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <!-- METRICS -->
-                    <div class="field field-wide">
-                        <label for="metric_columns">Customer Metrics</label>
+                        <label for="metric_columns">Numerical Behavioral Metrics</label>
                         <select id="metric_columns" name="metric_columns" class="multi-select" multiple required>
                             {% for column in numeric_columns %}
                                 <option value="{{ column }}" {% if column in selected_metric_columns %}selected{% endif %}>
@@ -645,88 +724,110 @@
                 </div>
 
                 <div class="controls-actions">
-                    <button type="submit" class="run-button">Run Customer Segmentation</button>
+                    <button type="submit" class="run-button">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        Run Segmentation Model
+                    </button>
                 </div>
             </form>
         </section>
         {% endif %}
 
-        <!-- NO DATA STATES -->
+        <!-- EMPTY STATES -->
         {% if not datasets %}
             <section class="empty-state fade-up">
+                <div class="empty-state-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
                 <h3>No Dataset Available</h3>
-                <p>Please upload and process a dataset through Data Management before running Customer Segmentation.</p>
+                <p>Please upload and process a dataset through Data Management prior to running Customer Segmentation.</p>
             </section>
         {% elif not selected_version %}
             <section class="empty-state fade-up">
+                <div class="empty-state-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
                 <h3>No Data Version Available</h3>
-                <p>The selected dataset does not currently contain a usable data version.</p>
+                <p>The selected dataset active profile contains no processed version ready for execution.</p>
             </section>
         {% endif %}
 
-        <!-- RESULTS -->
+        <!-- RESULTS SECTION -->
         {% if segmentation_result %}
 
-            <!-- DARK THEME KPI CARDS -->
+            <!-- KPI HIGHLIGHT CARDS -->
             <section class="kpi-grid fade-up">
                 <div class="kpi-card">
                     <div class="kpi-label">Total Records</div>
                     <div class="kpi-value">{{ segmentation_result.total_records|default:0 }}</div>
-                    <div class="kpi-meta">Records analyzed</div>
+                    <div class="kpi-meta">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                        Dataset rows evaluated
+                    </div>
                 </div>
 
                 <div class="kpi-card">
                     <div class="kpi-label">Total Customers</div>
                     <div class="kpi-value">{{ segmentation_result.total_customers|default:0 }}</div>
-                    <div class="kpi-meta">Unique customers identified</div>
+                    <div class="kpi-meta">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                        Distinct profile entities
+                    </div>
                 </div>
 
                 <div class="kpi-card">
-                    <div class="kpi-label">Segmented Customers</div>
+                    <div class="kpi-label">Segmented Entities</div>
                     <div class="kpi-value">{{ segmentation_result.segmented_customers|default:0 }}</div>
-                    <div class="kpi-meta">Customers assigned to segments</div>
+                    <div class="kpi-meta">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        Assigned to cluster groups
+                    </div>
                 </div>
 
                 <div class="kpi-card">
-                    <div class="kpi-label">Segments</div>
+                    <div class="kpi-label">Clusters Generated</div>
                     <div class="kpi-value">{{ segmentation_result.segment_count|default:0 }}</div>
-                    <div class="kpi-meta">Customer groups generated</div>
+                    <div class="kpi-meta">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        Unique target segments
+                    </div>
                 </div>
             </section>
 
-            <!-- CHART + SEGMENT OVERVIEW -->
+            <!-- CHART & OVERVIEW GRID -->
             <section class="content-grid fade-up">
 
-                <!-- CHART -->
-                <div class="panel">
+                <!-- CHART PANEL -->
+                <div class="panel chart-panel">
                     <div class="panel-header">
                         <div>
-                            <h2>Customer Distribution</h2>
-                            <p>Customers by segment</p>
+                            <h2>Customer Proportion</h2>
+                            <p>Share of total audience per segment</p>
                         </div>
-                        <span class="panel-badge">SEGMENTS</span>
+                        <span class="panel-badge">DISTRIBUTION</span>
                     </div>
                     <div class="chart-wrapper">
                         <canvas id="segmentChart"></canvas>
                     </div>
                 </div>
 
-                <!-- SEGMENT TABLE -->
-                <div class="panel">
+                <!-- SEGMENT SUMMARY TABLE -->
+                <div class="panel table-panel">
                     <div class="panel-header">
                         <div>
-                            <h2>Segment Overview</h2>
-                            <p>Summary of each customer group</p>
+                            <h2>Segment Profiles</h2>
+                            <p>Averaged metrics across groups</p>
                         </div>
+                        <span class="panel-badge">SUMMARY</span>
                     </div>
                     <div class="table-wrapper">
                         <table>
                             <thead>
                                 <tr>
                                     <th>Segment</th>
-                                    <th>Customers</th>
+                                    <th>Count</th>
                                     <th>Share</th>
-                                    <th>Avg. Score</th>
+                                    <th>Avg Score</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -753,34 +854,34 @@
 
             </section>
 
-            <!-- SUMMARY -->
+            <!-- INSIGHTS SUMMARY -->
             <section class="panel summary-panel fade-up">
                 <div class="panel-header">
                     <div>
-                        <h2>Segmentation Summary</h2>
-                        <p>Generated from the selected dataset version</p>
+                        <h2>Analytical Insights Summary</h2>
+                        <p>Automated breakdown generated for current model parameters</p>
                     </div>
-                    <span class="panel-badge">INSIGHT</span>
+                    <span class="panel-badge">INTELLIGENCE</span>
                 </div>
                 <div class="summary-box">
                     {{ segmentation_result.summary }}
                 </div>
             </section>
 
-            <!-- CUSTOMER LEVEL RESULTS -->
+            <!-- CUSTOMER LEVEL BREAKDOWN -->
             <section class="panel customer-table-panel fade-up">
                 <div class="panel-header">
                     <div>
-                        <h2>Customer Segment Assignments</h2>
-                        <p>Customer-level segmentation results</p>
+                        <h2>Customer Assignments</h2>
+                        <p>Granular customer level classification and metrics</p>
                     </div>
-                    <span class="panel-badge">CUSTOMER DATA</span>
+                    <span class="panel-badge">RAW DATA</span>
                 </div>
                 <div class="table-wrapper">
                     <table>
                         <thead>
                             <tr>
-                                <th>Customer</th>
+                                <th>Customer Entity</th>
                                 {% for metric in segmentation_result.metric_columns %}
                                     <th>{{ metric }}</th>
                                 {% endfor %}
@@ -858,37 +959,42 @@
                     datasets: [{
                         data: segmentValues,
                         backgroundColor: [
-                            "#4fa3ff",
+                            "#38bdf8",
                             "#22d3ee",
-                            "#8b5cf6",
-                            "#48d597",
-                            "#f3c86b"
+                            "#a855f7",
+                            "#34d399",
+                            "#fbbf24"
                         ],
-                        borderColor: "#07111f",
-                        borderWidth: 3
+                        borderColor: "#0b1329",
+                        borderWidth: 4,
+                        hoverOffset: 6
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    cutout: "68%",
+                    cutout: "72%",
                     plugins: {
                         legend: {
                             position: "bottom",
                             labels: {
-                                color: "#dbe7f5",
-                                padding: 16,
+                                color: "#cbd5e1",
+                                padding: 20,
                                 boxWidth: 12,
-                                font: { size: 11, family: "'Plus Jakarta Sans', sans-serif" }
+                                boxHeight: 12,
+                                borderRadius: 3,
+                                font: { size: 12, family: "'Plus Jakarta Sans', sans-serif", weight: 500 }
                             }
                         },
                         tooltip: {
-                            backgroundColor: "rgba(4, 11, 21, 0.96)",
-                            borderColor: "rgba(255, 255, 255, 0.12)",
+                            backgroundColor: "rgba(3, 7, 18, 0.95)",
+                            borderColor: "rgba(56, 189, 248, 0.2)",
                             borderWidth: 1,
-                            titleColor: "#f8fafc",
-                            bodyColor: "#cfe4ff",
-                            padding: 12,
+                            titleColor: "#ffffff",
+                            bodyColor: "#e0f2fe",
+                            padding: 14,
+                            cornerRadius: 10,
+                            displayColors: true,
                             callbacks: {
                                 label: function(context) {
                                     const item = segmentChartData[context.dataIndex];

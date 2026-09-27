@@ -1,0 +1,1688 @@
+Order_ID,Order_Date,Customer_ID,Product_ID,Product_Name,Category,Quantity,Unit_Price,Discount,Sales_Amount,Sales_Channel,Salesperson,Region,Payment_Mode,Order_Status
+ORD001,05-01-2026,CUST001,P001,Laptop Pro 15,Electronics,1,85000,0,85000,Online,Rahul,North,Card,Completed
+ORD002,07-01-2026,CUST002,P002,Wireless Mouse,Electronics,5,1200,0,6000,Retail,Priya,South,UPI,Completed
+ORD003,10-01-2026,CUST003,P003,Office Chair,Furniture,2,8500,5,16150,Online,Amit,West,Card,Completed
+ORD004,15-01-2026,CUST004,P004,Notebook Pack,Stationery,10,250,0,2500,Retail,Neha,East,Cash,Completed
+ORD005,20-01-2026,CUST005,P005,Monitor 24inch,Electronics,3,14500,10,39150,Online,Rahul,North,Card,Completed
+ORD006,25-01-2026,CUST006,P006,Desk,Furniture,1,12000,0,12000,Retail,Priya,South,UPI,Completed
+ORD007,02-02-2026,CUST007,P007,Printer,Electronics,2,18500,5,35150,Online,Amit,West,Card,Completed
+ORD008,28-09-2025,CUST093,P008,Mechanical Keyboard,Electronics,5,3500,0,17500,Wholesale,Amit,West,Cash,Completed
+ORD009,28-09-2025,CUST088,P005,Monitor 24inch,Electronics,4,14500,5,55100,Online,Priya,South,UPI,Pending
+ORD010,28-09-2025,CUST038,P002,Wireless Mouse,Electronics,5,1200,0,6000,Retail,Neha,East,UPI,Cancelled
+ORD011,28-09-2025,CUST089,P001,Laptop Pro 15,Electronics,11,85000,5,888250,Retail,Amit,West,Net Banking,Pending
+ORD012,28-09-2025,CUST015,P003,Office Chair,Furniture,7,8500,10,53550,Online,Neha,East,Cash,Cancelled
+ORD013,29-09-2025,CUST135,P005,Monitor 24inch,Electronics,9,14500,0,130500,Online,Neha,East,Net Banking,Completed
+ORD014,29-09-2025,CUST009,P010,Filing Cabinet,Furniture,5,9500,0,47500,Direct,Neha,East,Cash,Pending
+ORD015,29-09-2025,CUST008,P003,Office Chair,Furniture,1,8500,10,7650,Direct,Priya,South,Net Banking,Completed
+ORD016,29-09-2025,CUST134,P006,Desk,Furniture,10,12000,10,108000,Online,Priya,South,Cash,Completed
+ORD017,29-09-2025,CUST044,P002,Wireless Mouse,Electronics,10,1200,10,10800,Wholesale,Priya,South,Net Banking,Pending
+ORD018,30-09-2025,CUST040,P005,Monitor 24inch,Electronics,2,14500,15,24650,Retail,Neha,East,Card,Pending
+ORD019,30-09-2025,CUST124,P009,Executive Pen Set,Stationery,1,800,0,800,Online,Amit,West,Net Banking,Completed
+ORD020,30-09-2025,CUST136,P008,Mechanical Keyboard,Electronics,11,3500,5,36575,Direct,Rahul,North,Cash,Completed
+ORD021,01-10-2025,CUST123,P005,Monitor 24inch,Electronics,10,14500,0,145000,Direct,Rahul,North,Cash,Completed
+ORD022,01-10-2025,CUST072,P002,Wireless Mouse,Electronics,1,1200,15,1020,Direct,Amit,West,Net Banking,Completed
+ORD023,01-10-2025,CUST035,P001,Laptop Pro 15,Electronics,3,85000,15,216750,Retail,Amit,West,Cash,Completed
+ORD024,02-10-2025,CUST142,P007,Printer,Electronics,11,18500,0,203500,Wholesale,Amit,West,UPI,Completed
+ORD025,02-10-2025,CUST124,P003,Office Chair,Furniture,7,8500,0,59500,Online,Neha,East,Net Banking,Pending
+ORD026,02-10-2025,CUST143,P004,Notebook Pack,Stationery,7,250,5,1662,Retail,Amit,West,Net Banking,Completed
+ORD027,03-10-2025,CUST045,P009,Executive Pen Set,Stationery,5,800,10,3600,Direct,Neha,East,Net Banking,Pending
+ORD028,03-10-2025,CUST030,P010,Filing Cabinet,Furniture,7,9500,10,59850,Wholesale,Rahul,North,UPI,Completed
+ORD029,03-10-2025,CUST129,P009,Executive Pen Set,Stationery,11,800,0,8800,Online,Neha,East,Card,Completed
+ORD030,03-10-2025,CUST103,P006,Desk,Furniture,8,12000,5,91200,Retail,Rahul,North,Card,Completed
+ORD031,04-10-2025,CUST059,P006,Desk,Furniture,8,12000,0,96000,Online,Neha,East,UPI,Completed
+ORD032,04-10-2025,CUST052,P007,Printer,Electronics,2,18500,5,35150,Online,Rahul,North,Card,Completed
+ORD033,04-10-2025,CUST113,P002,Wireless Mouse,Electronics,2,1200,10,2160,Wholesale,Priya,South,Card,Completed
+ORD034,04-10-2025,CUST129,P003,Office Chair,Furniture,2,8500,15,14450,Retail,Neha,East,Net Banking,Pending
+ORD035,04-10-2025,CUST123,P001,Laptop Pro 15,Electronics,6,85000,15,433500,Retail,Neha,East,UPI,Completed
+ORD036,05-10-2025,CUST144,P001,Laptop Pro 15,Electronics,9,85000,10,688500,Retail,Amit,West,Net Banking,Cancelled
+ORD037,05-10-2025,CUST003,P004,Notebook Pack,Stationery,11,250,10,2475,Retail,Amit,West,Cash,Completed
+ORD038,05-10-2025,CUST148,P007,Printer,Electronics,4,18500,0,74000,Direct,Rahul,North,Net Banking,Completed
+ORD039,05-10-2025,CUST104,P001,Laptop Pro 15,Electronics,11,85000,10,841500,Online,Rahul,North,UPI,Completed
+ORD040,05-10-2025,CUST099,P007,Printer,Electronics,10,18500,0,185000,Direct,Neha,East,Card,Completed
+ORD041,06-10-2025,CUST048,P005,Monitor 24inch,Electronics,5,14500,5,68875,Online,Amit,West,Card,Completed
+ORD042,06-10-2025,CUST147,P003,Office Chair,Furniture,4,8500,0,34000,Direct,Neha,East,Cash,Completed
+ORD043,06-10-2025,CUST104,P004,Notebook Pack,Stationery,3,250,0,750,Online,Amit,West,Card,Completed
+ORD044,07-10-2025,CUST110,P002,Wireless Mouse,Electronics,2,1200,5,2280,Online,Neha,East,Card,Pending
+ORD045,07-10-2025,CUST068,P001,Laptop Pro 15,Electronics,5,85000,10,382500,Direct,Neha,East,Net Banking,Completed
+ORD046,07-10-2025,CUST145,P001,Laptop Pro 15,Electronics,11,85000,5,888250,Wholesale,Priya,South,UPI,Cancelled
+ORD047,07-10-2025,CUST051,P006,Desk,Furniture,8,12000,5,91200,Retail,Amit,West,Card,Completed
+ORD048,07-10-2025,CUST028,P001,Laptop Pro 15,Electronics,5,85000,10,382500,Direct,Rahul,North,Cash,Pending
+ORD049,07-10-2025,CUST035,P001,Laptop Pro 15,Electronics,1,85000,10,76500,Retail,Neha,East,Card,Cancelled
+ORD050,08-10-2025,CUST099,P009,Executive Pen Set,Stationery,5,800,15,3400,Retail,Rahul,North,Card,Completed
+ORD051,08-10-2025,CUST116,P005,Monitor 24inch,Electronics,7,14500,0,101500,Wholesale,Neha,East,Net Banking,Completed
+ORD052,08-10-2025,CUST025,P010,Filing Cabinet,Furniture,6,9500,0,57000,Direct,Amit,West,UPI,Completed
+ORD053,08-10-2025,CUST032,P006,Desk,Furniture,7,12000,0,84000,Wholesale,Amit,West,UPI,Completed
+ORD054,09-10-2025,CUST017,P008,Mechanical Keyboard,Electronics,1,3500,0,3500,Retail,Amit,West,Net Banking,Cancelled
+ORD055,09-10-2025,CUST026,P003,Office Chair,Furniture,2,8500,0,17000,Online,Neha,East,Net Banking,Completed
+ORD056,09-10-2025,CUST135,P009,Executive Pen Set,Stationery,4,800,15,2720,Online,Neha,East,Net Banking,Pending
+ORD057,09-10-2025,CUST115,P007,Printer,Electronics,2,18500,0,37000,Wholesale,Neha,East,Cash,Completed
+ORD058,10-10-2025,CUST063,P006,Desk,Furniture,10,12000,0,120000,Online,Priya,South,Net Banking,Completed
+ORD059,10-10-2025,CUST070,P006,Desk,Furniture,11,12000,10,118800,Online,Rahul,North,Net Banking,Cancelled
+ORD060,10-10-2025,CUST060,P005,Monitor 24inch,Electronics,7,14500,10,91350,Online,Priya,South,Net Banking,Pending
+ORD061,11-10-2025,CUST047,P003,Office Chair,Furniture,7,8500,10,53550,Online,Neha,East,UPI,Pending
+ORD062,11-10-2025,CUST106,P003,Office Chair,Furniture,1,8500,5,8075,Retail,Neha,East,Cash,Completed
+ORD063,11-10-2025,CUST117,P007,Printer,Electronics,9,18500,10,149850,Online,Rahul,North,UPI,Completed
+ORD064,11-10-2025,CUST001,P002,Wireless Mouse,Electronics,6,1200,0,7200,Online,Neha,East,Card,Completed
+ORD065,12-10-2025,CUST069,P006,Desk,Furniture,7,12000,5,79800,Retail,Neha,East,Net Banking,Completed
+ORD066,12-10-2025,CUST086,P009,Executive Pen Set,Stationery,5,800,0,4000,Retail,Priya,South,UPI,Pending
+ORD067,12-10-2025,CUST144,P010,Filing Cabinet,Furniture,10,9500,15,80750,Direct,Amit,West,Card,Cancelled
+ORD068,12-10-2025,CUST023,P010,Filing Cabinet,Furniture,10,9500,15,80750,Retail,Neha,East,Net Banking,Completed
+ORD069,12-10-2025,CUST147,P010,Filing Cabinet,Furniture,1,9500,15,8075,Direct,Rahul,North,Net Banking,Completed
+ORD070,12-10-2025,CUST128,P004,Notebook Pack,Stationery,8,250,10,1800,Wholesale,Priya,South,Net Banking,Completed
+ORD071,13-10-2025,CUST101,P003,Office Chair,Furniture,1,8500,0,8500,Retail,Neha,East,Cash,Pending
+ORD072,13-10-2025,CUST029,P002,Wireless Mouse,Electronics,3,1200,0,3600,Wholesale,Amit,West,Card,Completed
+ORD073,13-10-2025,CUST008,P010,Filing Cabinet,Furniture,10,9500,0,95000,Retail,Priya,South,Cash,Completed
+ORD074,14-10-2025,CUST058,P005,Monitor 24inch,Electronics,2,14500,15,24650,Online,Amit,West,Net Banking,Pending
+ORD075,14-10-2025,CUST021,P009,Executive Pen Set,Stationery,4,800,0,3200,Online,Rahul,North,Net Banking,Completed
+ORD076,14-10-2025,CUST099,P004,Notebook Pack,Stationery,2,250,0,500,Direct,Amit,West,Net Banking,Cancelled
+ORD077,14-10-2025,CUST012,P001,Laptop Pro 15,Electronics,7,85000,15,505750,Online,Amit,West,Cash,Completed
+ORD078,14-10-2025,CUST030,P001,Laptop Pro 15,Electronics,1,85000,10,76500,Online,Neha,East,UPI,Cancelled
+ORD079,15-10-2025,CUST019,P001,Laptop Pro 15,Electronics,4,85000,10,306000,Online,Rahul,North,Cash,Pending
+ORD080,15-10-2025,CUST009,P007,Printer,Electronics,4,18500,5,70300,Wholesale,Priya,South,Net Banking,Cancelled
+ORD081,15-10-2025,CUST069,P003,Office Chair,Furniture,9,8500,10,68850,Online,Amit,West,Net Banking,Cancelled
+ORD082,15-10-2025,CUST144,P009,Executive Pen Set,Stationery,7,800,15,4760,Retail,Rahul,North,UPI,Completed
+ORD083,15-10-2025,CUST133,P003,Office Chair,Furniture,7,8500,15,50575,Wholesale,Amit,West,UPI,Pending
+ORD084,16-10-2025,CUST074,P010,Filing Cabinet,Furniture,1,9500,15,8075,Wholesale,Priya,South,UPI,Cancelled
+ORD085,16-10-2025,CUST137,P002,Wireless Mouse,Electronics,11,1200,0,13200,Online,Priya,South,Card,Cancelled
+ORD086,16-10-2025,CUST083,P008,Mechanical Keyboard,Electronics,1,3500,10,3150,Wholesale,Rahul,North,Cash,Completed
+ORD087,17-10-2025,CUST132,P004,Notebook Pack,Stationery,6,250,10,1350,Wholesale,Amit,West,Card,Pending
+ORD088,17-10-2025,CUST091,P010,Filing Cabinet,Furniture,10,9500,5,90250,Retail,Amit,West,Cash,Cancelled
+ORD089,17-10-2025,CUST141,P002,Wireless Mouse,Electronics,10,1200,10,10800,Direct,Neha,East,Card,Completed
+ORD090,18-10-2025,CUST001,P003,Office Chair,Furniture,9,8500,10,68850,Online,Rahul,North,Net Banking,Completed
+ORD091,18-10-2025,CUST117,P006,Desk,Furniture,10,12000,10,108000,Direct,Rahul,North,Card,Cancelled
+ORD092,18-10-2025,CUST047,P005,Monitor 24inch,Electronics,6,14500,15,73950,Direct,Amit,West,Card,Pending
+ORD093,18-10-2025,CUST147,P004,Notebook Pack,Stationery,9,250,0,2250,Online,Amit,West,Card,Completed
+ORD094,18-10-2025,CUST117,P006,Desk,Furniture,6,12000,5,68400,Wholesale,Neha,East,Card,Completed
+ORD095,19-10-2025,CUST074,P008,Mechanical Keyboard,Electronics,6,3500,10,18900,Direct,Neha,East,Card,Completed
+ORD096,19-10-2025,CUST092,P004,Notebook Pack,Stationery,10,250,0,2500,Retail,Neha,East,Net Banking,Pending
+ORD097,19-10-2025,CUST101,P009,Executive Pen Set,Stationery,4,800,5,3040,Wholesale,Priya,South,Card,Completed
+ORD098,19-10-2025,CUST141,P003,Office Chair,Furniture,6,8500,0,51000,Direct,Amit,West,Card,Completed
+ORD099,19-10-2025,CUST010,P008,Mechanical Keyboard,Electronics,2,3500,5,6650,Online,Rahul,North,Cash,Completed
+ORD100,19-10-2025,CUST118,P001,Laptop Pro 15,Electronics,2,85000,0,170000,Online,Amit,West,UPI,Completed
+ORD101,20-10-2025,CUST059,P001,Laptop Pro 15,Electronics,1,85000,0,85000,Wholesale,Rahul,North,Cash,Completed
+ORD102,20-10-2025,CUST149,P007,Printer,Electronics,6,18500,10,99900,Online,Rahul,North,Cash,Cancelled
+ORD103,20-10-2025,CUST102,P003,Office Chair,Furniture,5,8500,15,36125,Online,Rahul,North,UPI,Completed
+ORD104,20-10-2025,CUST083,P001,Laptop Pro 15,Electronics,5,85000,0,425000,Online,Priya,South,Cash,Cancelled
+ORD105,21-10-2025,CUST004,P001,Laptop Pro 15,Electronics,1,85000,0,85000,Wholesale,Neha,East,Net Banking,Completed
+ORD106,21-10-2025,CUST118,P003,Office Chair,Furniture,11,8500,0,93500,Online,Neha,East,UPI,Pending
+ORD107,21-10-2025,CUST133,P009,Executive Pen Set,Stationery,1,800,15,680,Retail,Rahul,North,UPI,Completed
+ORD108,22-10-2025,CUST103,P006,Desk,Furniture,2,12000,0,24000,Retail,Priya,South,UPI,Completed
+ORD109,22-10-2025,CUST052,P009,Executive Pen Set,Stationery,6,800,0,4800,Wholesale,Neha,East,Net Banking,Completed
+ORD110,22-10-2025,CUST051,P001,Laptop Pro 15,Electronics,5,85000,15,361250,Retail,Neha,East,Net Banking,Completed
+ORD111,22-10-2025,CUST074,P001,Laptop Pro 15,Electronics,4,85000,15,289000,Retail,Priya,South,Card,Completed
+ORD112,22-10-2025,CUST126,P003,Office Chair,Furniture,9,8500,5,72675,Direct,Priya,South,Net Banking,Pending
+ORD113,23-10-2025,CUST132,P008,Mechanical Keyboard,Electronics,9,3500,5,29925,Wholesale,Neha,East,Cash,Cancelled
+ORD114,23-10-2025,CUST061,P010,Filing Cabinet,Furniture,3,9500,5,27075,Online,Rahul,North,UPI,Pending
+ORD115,23-10-2025,CUST061,P006,Desk,Furniture,5,12000,0,60000,Online,Rahul,North,Net Banking,Completed
+ORD116,23-10-2025,CUST046,P002,Wireless Mouse,Electronics,1,1200,0,1200,Wholesale,Rahul,North,Card,Completed
+ORD117,23-10-2025,CUST047,P009,Executive Pen Set,Stationery,6,800,5,4560,Direct,Amit,West,Card,Completed
+ORD118,23-10-2025,CUST026,P004,Notebook Pack,Stationery,1,250,0,250,Online,Amit,West,Net Banking,Completed
+ORD119,24-10-2025,CUST078,P008,Mechanical Keyboard,Electronics,2,3500,15,5950,Retail,Priya,South,Cash,Completed
+ORD120,24-10-2025,CUST007,P003,Office Chair,Furniture,7,8500,5,56525,Direct,Amit,West,Card,Completed
+ORD121,24-10-2025,CUST038,P003,Office Chair,Furniture,3,8500,0,25500,Online,Amit,West,Net Banking,Completed
+ORD122,24-10-2025,CUST039,P009,Executive Pen Set,Stationery,1,800,0,800,Direct,Priya,South,Card,Completed
+ORD123,24-10-2025,CUST013,P004,Notebook Pack,Stationery,9,250,10,2025,Wholesale,Priya,South,Card,Cancelled
+ORD124,24-10-2025,CUST146,P004,Notebook Pack,Stationery,6,250,0,1500,Direct,Amit,West,Net Banking,Completed
+ORD125,25-10-2025,CUST083,P010,Filing Cabinet,Furniture,9,9500,15,72675,Direct,Priya,South,UPI,Completed
+ORD126,25-10-2025,CUST059,P006,Desk,Furniture,5,12000,0,60000,Online,Rahul,North,UPI,Cancelled
+ORD127,25-10-2025,CUST070,P007,Printer,Electronics,4,18500,5,70300,Retail,Priya,South,UPI,Completed
+ORD128,25-10-2025,CUST131,P003,Office Chair,Furniture,8,8500,15,57800,Direct,Neha,East,Cash,Completed
+ORD129,25-10-2025,CUST075,P004,Notebook Pack,Stationery,6,250,0,1500,Direct,Priya,South,UPI,Completed
+ORD130,25-10-2025,CUST062,P009,Executive Pen Set,Stationery,2,800,5,1520,Retail,Neha,East,Cash,Cancelled
+ORD131,26-10-2025,CUST133,P006,Desk,Furniture,10,12000,10,108000,Direct,Amit,West,Card,Pending
+ORD132,26-10-2025,CUST113,P001,Laptop Pro 15,Electronics,10,85000,15,722500,Wholesale,Priya,South,Cash,Pending
+ORD133,26-10-2025,CUST077,P003,Office Chair,Furniture,1,8500,0,8500,Retail,Neha,East,Card,Completed
+ORD134,26-10-2025,CUST130,P008,Mechanical Keyboard,Electronics,2,3500,10,6300,Wholesale,Rahul,North,Card,Completed
+ORD135,26-10-2025,CUST017,P009,Executive Pen Set,Stationery,11,800,5,8360,Wholesale,Priya,South,Card,Cancelled
+ORD136,26-10-2025,CUST062,P002,Wireless Mouse,Electronics,5,1200,5,5700,Retail,Rahul,North,Net Banking,Completed
+ORD137,27-10-2025,CUST001,P008,Mechanical Keyboard,Electronics,6,3500,10,18900,Online,Neha,East,Net Banking,Completed
+ORD138,27-10-2025,CUST105,P005,Monitor 24inch,Electronics,3,14500,15,36975,Online,Rahul,North,Cash,Completed
+ORD139,27-10-2025,CUST078,P010,Filing Cabinet,Furniture,4,9500,0,38000,Retail,Rahul,North,Card,Completed
+ORD140,27-10-2025,CUST040,P008,Mechanical Keyboard,Electronics,7,3500,5,23275,Retail,Rahul,North,Card,Completed
+ORD141,27-10-2025,CUST145,P001,Laptop Pro 15,Electronics,7,85000,0,595000,Online,Priya,South,Net Banking,Completed
+ORD142,28-10-2025,CUST134,P003,Office Chair,Furniture,7,8500,5,56525,Retail,Neha,East,Net Banking,Pending
+ORD143,28-10-2025,CUST015,P001,Laptop Pro 15,Electronics,4,85000,5,323000,Online,Neha,East,UPI,Completed
+ORD144,28-10-2025,CUST097,P005,Monitor 24inch,Electronics,11,14500,0,159500,Direct,Priya,South,UPI,Completed
+ORD145,28-10-2025,CUST010,P005,Monitor 24inch,Electronics,11,14500,0,159500,Retail,Rahul,North,UPI,Cancelled
+ORD146,28-10-2025,CUST047,P004,Notebook Pack,Stationery,8,250,10,1800,Wholesale,Neha,East,Card,Cancelled
+ORD147,29-10-2025,CUST047,P004,Notebook Pack,Stationery,2,250,5,475,Wholesale,Amit,West,Cash,Pending
+ORD148,29-10-2025,CUST036,P010,Filing Cabinet,Furniture,11,9500,5,99275,Direct,Rahul,North,Cash,Completed
+ORD149,29-10-2025,CUST104,P006,Desk,Furniture,6,12000,0,72000,Wholesale,Priya,South,Net Banking,Completed
+ORD150,30-10-2025,CUST104,P002,Wireless Mouse,Electronics,9,1200,0,10800,Direct,Amit,West,Net Banking,Completed
+ORD151,30-10-2025,CUST100,P004,Notebook Pack,Stationery,5,250,15,1062,Wholesale,Neha,East,UPI,Completed
+ORD152,30-10-2025,CUST092,P010,Filing Cabinet,Furniture,9,9500,5,81225,Retail,Rahul,North,Net Banking,Completed
+ORD153,31-10-2025,CUST011,P007,Printer,Electronics,1,18500,15,15725,Retail,Rahul,North,UPI,Pending
+ORD154,31-10-2025,CUST057,P001,Laptop Pro 15,Electronics,6,85000,5,484500,Wholesale,Neha,East,Card,Completed
+ORD155,31-10-2025,CUST053,P009,Executive Pen Set,Stationery,10,800,10,7200,Online,Rahul,North,UPI,Completed
+ORD156,31-10-2025,CUST035,P004,Notebook Pack,Stationery,9,250,0,2250,Retail,Amit,West,UPI,Completed
+ORD157,01-11-2025,CUST091,P001,Laptop Pro 15,Electronics,11,85000,5,888250,Wholesale,Neha,East,Cash,Completed
+ORD158,01-11-2025,CUST088,P001,Laptop Pro 15,Electronics,1,85000,15,72250,Wholesale,Amit,West,UPI,Completed
+ORD159,01-11-2025,CUST114,P005,Monitor 24inch,Electronics,1,14500,0,14500,Online,Neha,East,Card,Pending
+ORD160,01-11-2025,CUST118,P006,Desk,Furniture,8,12000,0,96000,Online,Amit,West,Net Banking,Cancelled
+ORD161,01-11-2025,CUST123,P008,Mechanical Keyboard,Electronics,3,3500,15,8925,Online,Rahul,North,Card,Completed
+ORD162,02-11-2025,CUST001,P003,Office Chair,Furniture,2,8500,0,17000,Direct,Priya,South,Card,Completed
+ORD163,02-11-2025,CUST063,P004,Notebook Pack,Stationery,1,250,15,212,Wholesale,Amit,West,Cash,Completed
+ORD164,02-11-2025,CUST110,P002,Wireless Mouse,Electronics,1,1200,10,1080,Retail,Neha,East,Cash,Cancelled
+ORD165,02-11-2025,CUST008,P001,Laptop Pro 15,Electronics,9,85000,5,726750,Wholesale,Neha,East,Cash,Cancelled
+ORD166,03-11-2025,CUST054,P009,Executive Pen Set,Stationery,5,800,5,3800,Online,Amit,West,Net Banking,Completed
+ORD167,03-11-2025,CUST035,P008,Mechanical Keyboard,Electronics,8,3500,5,26600,Direct,Neha,East,Net Banking,Cancelled
+ORD168,03-11-2025,CUST142,P007,Printer,Electronics,2,18500,0,37000,Online,Amit,West,Cash,Cancelled
+ORD169,03-11-2025,CUST147,P003,Office Chair,Furniture,4,8500,15,28900,Retail,Neha,East,UPI,Completed
+ORD170,03-11-2025,CUST047,P005,Monitor 24inch,Electronics,4,14500,5,55100,Wholesale,Priya,South,UPI,Completed
+ORD171,03-11-2025,CUST119,P004,Notebook Pack,Stationery,5,250,15,1062,Direct,Priya,South,UPI,Completed
+ORD172,04-11-2025,CUST053,P003,Office Chair,Furniture,4,8500,0,34000,Direct,Priya,South,Net Banking,Completed
+ORD173,04-11-2025,CUST120,P007,Printer,Electronics,1,18500,0,18500,Online,Amit,West,UPI,Completed
+ORD174,04-11-2025,CUST040,P002,Wireless Mouse,Electronics,9,1200,0,10800,Retail,Priya,South,Cash,Pending
+ORD175,04-11-2025,CUST029,P002,Wireless Mouse,Electronics,7,1200,15,7140,Retail,Amit,West,UPI,Cancelled
+ORD176,05-11-2025,CUST100,P009,Executive Pen Set,Stationery,6,800,0,4800,Online,Rahul,North,Card,Completed
+ORD177,05-11-2025,CUST076,P007,Printer,Electronics,5,18500,0,92500,Online,Priya,South,Cash,Completed
+ORD178,05-11-2025,CUST031,P006,Desk,Furniture,11,12000,0,132000,Online,Neha,East,Card,Cancelled
+ORD179,05-11-2025,CUST138,P001,Laptop Pro 15,Electronics,10,85000,15,722500,Retail,Neha,East,UPI,Completed
+ORD180,06-11-2025,CUST054,P001,Laptop Pro 15,Electronics,3,85000,15,216750,Wholesale,Neha,East,UPI,Cancelled
+ORD181,06-11-2025,CUST149,P008,Mechanical Keyboard,Electronics,11,3500,10,34650,Wholesale,Rahul,North,Cash,Completed
+ORD182,06-11-2025,CUST054,P002,Wireless Mouse,Electronics,7,1200,15,7140,Online,Neha,East,UPI,Pending
+ORD183,06-11-2025,CUST148,P003,Office Chair,Furniture,3,8500,10,22950,Online,Amit,West,UPI,Completed
+ORD184,06-11-2025,CUST109,P002,Wireless Mouse,Electronics,9,1200,0,10800,Online,Priya,South,Card,Completed
+ORD185,06-11-2025,CUST040,P001,Laptop Pro 15,Electronics,1,85000,0,85000,Wholesale,Rahul,North,Net Banking,Completed
+ORD186,07-11-2025,CUST039,P003,Office Chair,Furniture,3,8500,0,25500,Direct,Rahul,North,Net Banking,Completed
+ORD187,07-11-2025,CUST102,P002,Wireless Mouse,Electronics,3,1200,15,3060,Wholesale,Neha,East,Cash,Completed
+ORD188,07-11-2025,CUST017,P010,Filing Cabinet,Furniture,9,9500,0,85500,Direct,Amit,West,UPI,Completed
+ORD189,08-11-2025,CUST149,P001,Laptop Pro 15,Electronics,7,85000,15,505750,Direct,Priya,South,UPI,Completed
+ORD190,08-11-2025,CUST089,P010,Filing Cabinet,Furniture,9,9500,15,72675,Wholesale,Priya,South,Net Banking,Completed
+ORD191,08-11-2025,CUST016,P007,Printer,Electronics,1,18500,0,18500,Retail,Rahul,North,UPI,Cancelled
+ORD192,08-11-2025,CUST007,P009,Executive Pen Set,Stationery,3,800,0,2400,Wholesale,Amit,West,Card,Completed
+ORD193,08-11-2025,CUST116,P007,Printer,Electronics,3,18500,0,55500,Retail,Amit,West,Cash,Completed
+ORD194,08-11-2025,CUST014,P008,Mechanical Keyboard,Electronics,3,3500,10,9450,Online,Neha,East,UPI,Completed
+ORD195,09-11-2025,CUST108,P007,Printer,Electronics,8,18500,0,148000,Online,Neha,East,UPI,Completed
+ORD196,09-11-2025,CUST141,P002,Wireless Mouse,Electronics,1,1200,15,1020,Direct,Priya,South,UPI,Completed
+ORD197,09-11-2025,CUST055,P003,Office Chair,Furniture,10,8500,0,85000,Wholesale,Priya,South,Cash,Cancelled
+ORD198,10-11-2025,CUST018,P003,Office Chair,Furniture,11,8500,10,84150,Retail,Rahul,North,Card,Cancelled
+ORD199,10-11-2025,CUST062,P005,Monitor 24inch,Electronics,9,14500,10,117450,Online,Amit,West,UPI,Completed
+ORD200,10-11-2025,CUST103,P004,Notebook Pack,Stationery,5,250,0,1250,Online,Priya,South,Cash,Cancelled
+ORD201,11-11-2025,CUST120,P002,Wireless Mouse,Electronics,4,1200,0,4800,Online,Priya,South,Card,Completed
+ORD202,11-11-2025,CUST073,P001,Laptop Pro 15,Electronics,9,85000,10,688500,Wholesale,Neha,East,UPI,Cancelled
+ORD203,11-11-2025,CUST061,P005,Monitor 24inch,Electronics,11,14500,10,143550,Wholesale,Priya,South,Net Banking,Completed
+ORD204,11-11-2025,CUST062,P002,Wireless Mouse,Electronics,9,1200,10,9720,Wholesale,Neha,East,Net Banking,Pending
+ORD205,12-11-2025,CUST063,P006,Desk,Furniture,5,12000,5,57000,Retail,Rahul,North,UPI,Completed
+ORD206,12-11-2025,CUST057,P010,Filing Cabinet,Furniture,9,9500,0,85500,Wholesale,Priya,South,Net Banking,Cancelled
+ORD207,12-11-2025,CUST005,P006,Desk,Furniture,7,12000,0,84000,Wholesale,Rahul,North,Net Banking,Completed
+ORD208,13-11-2025,CUST061,P010,Filing Cabinet,Furniture,3,9500,0,28500,Retail,Priya,South,Card,Completed
+ORD209,13-11-2025,CUST013,P008,Mechanical Keyboard,Electronics,9,3500,0,31500,Retail,Neha,East,Card,Completed
+ORD210,13-11-2025,CUST011,P009,Executive Pen Set,Stationery,8,800,5,6080,Direct,Amit,West,Card,Completed
+ORD211,14-11-2025,CUST076,P010,Filing Cabinet,Furniture,9,9500,0,85500,Wholesale,Rahul,North,Cash,Completed
+ORD212,14-11-2025,CUST124,P006,Desk,Furniture,8,12000,5,91200,Direct,Rahul,North,UPI,Completed
+ORD213,14-11-2025,CUST037,P005,Monitor 24inch,Electronics,1,14500,0,14500,Online,Neha,East,Net Banking,Cancelled
+ORD214,14-11-2025,CUST115,P010,Filing Cabinet,Furniture,3,9500,0,28500,Wholesale,Neha,East,Card,Cancelled
+ORD215,14-11-2025,CUST033,P006,Desk,Furniture,8,12000,5,91200,Direct,Neha,East,Net Banking,Completed
+ORD216,15-11-2025,CUST059,P009,Executive Pen Set,Stationery,11,800,15,7480,Online,Rahul,North,UPI,Pending
+ORD217,15-11-2025,CUST007,P005,Monitor 24inch,Electronics,11,14500,15,135575,Online,Priya,South,Cash,Completed
+ORD218,15-11-2025,CUST138,P005,Monitor 24inch,Electronics,7,14500,0,101500,Retail,Neha,East,UPI,Cancelled
+ORD219,15-11-2025,CUST012,P007,Printer,Electronics,2,18500,15,31450,Wholesale,Priya,South,Card,Completed
+ORD220,15-11-2025,CUST017,P008,Mechanical Keyboard,Electronics,2,3500,10,6300,Direct,Neha,East,Card,Completed
+ORD221,16-11-2025,CUST070,P003,Office Chair,Furniture,7,8500,0,59500,Direct,Rahul,North,UPI,Pending
+ORD222,16-11-2025,CUST060,P005,Monitor 24inch,Electronics,6,14500,10,78300,Direct,Neha,East,Net Banking,Completed
+ORD223,16-11-2025,CUST068,P001,Laptop Pro 15,Electronics,6,85000,0,510000,Retail,Priya,South,Card,Completed
+ORD224,16-11-2025,CUST120,P002,Wireless Mouse,Electronics,2,1200,15,2040,Direct,Neha,East,Cash,Completed
+ORD225,16-11-2025,CUST125,P007,Printer,Electronics,11,18500,0,203500,Wholesale,Priya,South,Cash,Completed
+ORD226,16-11-2025,CUST058,P007,Printer,Electronics,10,18500,0,185000,Retail,Priya,South,Card,Pending
+ORD227,17-11-2025,CUST099,P009,Executive Pen Set,Stationery,7,800,15,4760,Wholesale,Rahul,North,Net Banking,Completed
+ORD228,17-11-2025,CUST084,P006,Desk,Furniture,11,12000,5,125400,Online,Amit,West,UPI,Pending
+ORD229,17-11-2025,CUST092,P005,Monitor 24inch,Electronics,5,14500,5,68875,Retail,Neha,East,Cash,Completed
+ORD230,18-11-2025,CUST131,P001,Laptop Pro 15,Electronics,10,85000,10,765000,Wholesale,Priya,South,UPI,Cancelled
+ORD231,18-11-2025,CUST064,P001,Laptop Pro 15,Electronics,9,85000,10,688500,Wholesale,Priya,South,Net Banking,Completed
+ORD232,18-11-2025,CUST072,P009,Executive Pen Set,Stationery,1,800,15,680,Direct,Rahul,North,Cash,Completed
+ORD233,19-11-2025,CUST050,P004,Notebook Pack,Stationery,7,250,5,1662,Direct,Rahul,North,Net Banking,Cancelled
+ORD234,19-11-2025,CUST024,P010,Filing Cabinet,Furniture,3,9500,10,25650,Wholesale,Priya,South,Card,Completed
+ORD235,19-11-2025,CUST126,P004,Notebook Pack,Stationery,4,250,0,1000,Direct,Priya,South,Card,Pending
+ORD236,19-11-2025,CUST063,P006,Desk,Furniture,6,12000,15,61200,Retail,Rahul,North,Net Banking,Completed
+ORD237,20-11-2025,CUST072,P005,Monitor 24inch,Electronics,2,14500,0,29000,Wholesale,Priya,South,Cash,Completed
+ORD238,20-11-2025,CUST045,P009,Executive Pen Set,Stationery,1,800,10,720,Online,Priya,South,Net Banking,Completed
+ORD239,20-11-2025,CUST088,P009,Executive Pen Set,Stationery,1,800,10,720,Retail,Rahul,North,Net Banking,Pending
+ORD240,20-11-2025,CUST148,P001,Laptop Pro 15,Electronics,10,85000,0,850000,Online,Neha,East,UPI,Completed
+ORD241,20-11-2025,CUST033,P009,Executive Pen Set,Stationery,1,800,15,680,Retail,Neha,East,UPI,Completed
+ORD242,20-11-2025,CUST103,P010,Filing Cabinet,Furniture,10,9500,0,95000,Retail,Amit,West,UPI,Pending
+ORD243,21-11-2025,CUST104,P003,Office Chair,Furniture,11,8500,0,93500,Online,Priya,South,Cash,Completed
+ORD244,21-11-2025,CUST114,P008,Mechanical Keyboard,Electronics,8,3500,0,28000,Retail,Neha,East,Net Banking,Completed
+ORD245,21-11-2025,CUST127,P007,Printer,Electronics,11,18500,10,183150,Direct,Neha,East,UPI,Completed
+ORD246,22-11-2025,CUST127,P003,Office Chair,Furniture,9,8500,10,68850,Retail,Priya,South,Cash,Completed
+ORD247,22-11-2025,CUST012,P007,Printer,Electronics,9,18500,15,141525,Retail,Amit,West,Cash,Pending
+ORD248,22-11-2025,CUST136,P007,Printer,Electronics,5,18500,5,87875,Retail,Neha,East,UPI,Completed
+ORD249,22-11-2025,CUST037,P008,Mechanical Keyboard,Electronics,9,3500,5,29925,Direct,Amit,West,UPI,Completed
+ORD250,23-11-2025,CUST093,P006,Desk,Furniture,1,12000,10,10800,Retail,Rahul,North,Card,Completed
+ORD251,23-11-2025,CUST024,P004,Notebook Pack,Stationery,5,250,10,1125,Direct,Neha,East,UPI,Pending
+ORD252,23-11-2025,CUST050,P001,Laptop Pro 15,Electronics,3,85000,0,255000,Retail,Neha,East,Card,Completed
+ORD253,23-11-2025,CUST066,P002,Wireless Mouse,Electronics,4,1200,0,4800,Wholesale,Amit,West,UPI,Cancelled
+ORD254,23-11-2025,CUST012,P003,Office Chair,Furniture,2,8500,15,14450,Online,Amit,West,Cash,Completed
+ORD255,24-11-2025,CUST100,P007,Printer,Electronics,10,18500,10,166500,Retail,Priya,South,UPI,Cancelled
+ORD256,24-11-2025,CUST069,P006,Desk,Furniture,9,12000,10,97200,Wholesale,Rahul,North,UPI,Completed
+ORD257,24-11-2025,CUST084,P002,Wireless Mouse,Electronics,7,1200,0,8400,Online,Amit,West,Card,Pending
+ORD258,24-11-2025,CUST066,P003,Office Chair,Furniture,5,8500,15,36125,Online,Amit,West,Net Banking,Pending
+ORD259,24-11-2025,CUST045,P007,Printer,Electronics,11,18500,0,203500,Retail,Amit,West,UPI,Completed
+ORD260,24-11-2025,CUST093,P010,Filing Cabinet,Furniture,9,9500,0,85500,Direct,Rahul,North,Net Banking,Completed
+ORD261,25-11-2025,CUST001,P009,Executive Pen Set,Stationery,6,800,10,4320,Online,Neha,East,Cash,Cancelled
+ORD262,25-11-2025,CUST049,P001,Laptop Pro 15,Electronics,8,85000,10,612000,Direct,Neha,East,Cash,Pending
+ORD263,25-11-2025,CUST148,P002,Wireless Mouse,Electronics,2,1200,0,2400,Online,Amit,West,Net Banking,Completed
+ORD264,25-11-2025,CUST029,P001,Laptop Pro 15,Electronics,7,85000,5,565250,Online,Priya,South,Card,Completed
+ORD265,25-11-2025,CUST069,P001,Laptop Pro 15,Electronics,1,85000,5,80750,Direct,Priya,South,UPI,Pending
+ORD266,25-11-2025,CUST043,P002,Wireless Mouse,Electronics,9,1200,0,10800,Online,Rahul,North,Cash,Completed
+ORD267,26-11-2025,CUST038,P004,Notebook Pack,Stationery,7,250,15,1487,Direct,Neha,East,UPI,Completed
+ORD268,26-11-2025,CUST124,P007,Printer,Electronics,8,18500,0,148000,Online,Rahul,North,Cash,Cancelled
+ORD269,26-11-2025,CUST096,P006,Desk,Furniture,5,12000,0,60000,Wholesale,Rahul,North,Cash,Completed
+ORD270,26-11-2025,CUST114,P002,Wireless Mouse,Electronics,1,1200,0,1200,Wholesale,Neha,East,Net Banking,Completed
+ORD271,27-11-2025,CUST072,P009,Executive Pen Set,Stationery,4,800,0,3200,Wholesale,Rahul,North,Cash,Cancelled
+ORD272,27-11-2025,CUST048,P005,Monitor 24inch,Electronics,9,14500,0,130500,Direct,Priya,South,UPI,Completed
+ORD273,27-11-2025,CUST063,P009,Executive Pen Set,Stationery,1,800,0,800,Direct,Rahul,North,Card,Completed
+ORD274,27-11-2025,CUST077,P009,Executive Pen Set,Stationery,11,800,10,7920,Online,Priya,South,UPI,Pending
+ORD275,27-11-2025,CUST102,P003,Office Chair,Furniture,6,8500,0,51000,Online,Priya,South,Card,Completed
+ORD276,27-11-2025,CUST109,P001,Laptop Pro 15,Electronics,8,85000,0,680000,Wholesale,Rahul,North,Card,Pending
+ORD277,28-11-2025,CUST143,P005,Monitor 24inch,Electronics,3,14500,10,39150,Online,Rahul,North,Card,Completed
+ORD278,28-11-2025,CUST035,P006,Desk,Furniture,10,12000,5,114000,Direct,Amit,West,UPI,Completed
+ORD279,28-11-2025,CUST009,P003,Office Chair,Furniture,5,8500,0,42500,Direct,Neha,East,UPI,Pending
+ORD280,28-11-2025,CUST117,P010,Filing Cabinet,Furniture,9,9500,10,76950,Retail,Rahul,North,Net Banking,Cancelled
+ORD281,29-11-2025,CUST044,P004,Notebook Pack,Stationery,11,250,0,2750,Wholesale,Neha,East,Cash,Cancelled
+ORD282,29-11-2025,CUST021,P007,Printer,Electronics,11,18500,15,172975,Wholesale,Neha,East,Card,Pending
+ORD283,29-11-2025,CUST051,P004,Notebook Pack,Stationery,5,250,15,1062,Wholesale,Priya,South,UPI,Cancelled
+ORD284,29-11-2025,CUST117,P004,Notebook Pack,Stationery,11,250,15,2337,Direct,Amit,West,Cash,Completed
+ORD285,29-11-2025,CUST146,P002,Wireless Mouse,Electronics,1,1200,15,1020,Retail,Neha,East,Card,Completed
+ORD286,30-11-2025,CUST095,P010,Filing Cabinet,Furniture,7,9500,15,56525,Wholesale,Amit,West,Cash,Completed
+ORD287,30-11-2025,CUST042,P008,Mechanical Keyboard,Electronics,4,3500,10,12600,Retail,Neha,East,Cash,Completed
+ORD288,30-11-2025,CUST120,P010,Filing Cabinet,Furniture,11,9500,15,88825,Retail,Amit,West,UPI,Cancelled
+ORD289,30-11-2025,CUST137,P010,Filing Cabinet,Furniture,9,9500,0,85500,Retail,Neha,East,Card,Cancelled
+ORD290,30-11-2025,CUST072,P008,Mechanical Keyboard,Electronics,1,3500,0,3500,Online,Amit,West,Net Banking,Completed
+ORD291,01-12-2025,CUST019,P004,Notebook Pack,Stationery,7,250,0,1750,Retail,Rahul,North,Cash,Pending
+ORD292,01-12-2025,CUST069,P001,Laptop Pro 15,Electronics,3,85000,10,229500,Online,Priya,South,Cash,Cancelled
+ORD293,01-12-2025,CUST037,P003,Office Chair,Furniture,7,8500,5,56525,Online,Priya,South,UPI,Cancelled
+ORD294,01-12-2025,CUST002,P003,Office Chair,Furniture,7,8500,15,50575,Wholesale,Priya,South,UPI,Cancelled
+ORD295,01-12-2025,CUST024,P003,Office Chair,Furniture,4,8500,0,34000,Retail,Priya,South,Net Banking,Cancelled
+ORD296,01-12-2025,CUST036,P008,Mechanical Keyboard,Electronics,5,3500,0,17500,Wholesale,Neha,East,Card,Completed
+ORD297,02-12-2025,CUST070,P009,Executive Pen Set,Stationery,7,800,10,5040,Online,Rahul,North,Net Banking,Completed
+ORD298,02-12-2025,CUST005,P005,Monitor 24inch,Electronics,8,14500,0,116000,Retail,Amit,West,Net Banking,Cancelled
+ORD299,02-12-2025,CUST058,P003,Office Chair,Furniture,6,8500,0,51000,Direct,Amit,West,UPI,Completed
+ORD300,02-12-2025,CUST035,P002,Wireless Mouse,Electronics,7,1200,10,7560,Retail,Neha,East,Net Banking,Completed
+ORD301,02-12-2025,CUST036,P005,Monitor 24inch,Electronics,9,14500,0,130500,Retail,Priya,South,Card,Pending
+ORD302,03-12-2025,CUST144,P008,Mechanical Keyboard,Electronics,4,3500,5,13300,Retail,Neha,East,Card,Pending
+ORD303,03-12-2025,CUST115,P008,Mechanical Keyboard,Electronics,6,3500,15,17850,Direct,Neha,East,Net Banking,Pending
+ORD304,03-12-2025,CUST065,P009,Executive Pen Set,Stationery,5,800,10,3600,Retail,Priya,South,UPI,Completed
+ORD305,04-12-2025,CUST016,P006,Desk,Furniture,4,12000,0,48000,Retail,Rahul,North,Net Banking,Completed
+ORD306,04-12-2025,CUST114,P002,Wireless Mouse,Electronics,9,1200,15,9180,Wholesale,Priya,South,Card,Completed
+ORD307,04-12-2025,CUST075,P003,Office Chair,Furniture,4,8500,0,34000,Retail,Neha,East,Cash,Completed
+ORD308,05-12-2025,CUST143,P006,Desk,Furniture,5,12000,10,54000,Direct,Priya,South,Cash,Completed
+ORD309,05-12-2025,CUST042,P006,Desk,Furniture,2,12000,15,20400,Retail,Amit,West,Net Banking,Completed
+ORD310,05-12-2025,CUST134,P003,Office Chair,Furniture,7,8500,10,53550,Online,Priya,South,Cash,Cancelled
+ORD311,05-12-2025,CUST066,P002,Wireless Mouse,Electronics,3,1200,0,3600,Direct,Priya,South,UPI,Completed
+ORD312,06-12-2025,CUST025,P006,Desk,Furniture,1,12000,10,10800,Retail,Amit,West,Card,Cancelled
+ORD313,06-12-2025,CUST131,P003,Office Chair,Furniture,9,8500,0,76500,Online,Rahul,North,UPI,Cancelled
+ORD314,06-12-2025,CUST025,P004,Notebook Pack,Stationery,4,250,0,1000,Direct,Rahul,North,Cash,Cancelled
+ORD315,07-12-2025,CUST130,P007,Printer,Electronics,3,18500,5,52725,Wholesale,Rahul,North,UPI,Completed
+ORD316,07-12-2025,CUST089,P002,Wireless Mouse,Electronics,11,1200,0,13200,Wholesale,Rahul,North,Net Banking,Completed
+ORD317,07-12-2025,CUST083,P009,Executive Pen Set,Stationery,3,800,15,2040,Direct,Rahul,North,UPI,Completed
+ORD318,07-12-2025,CUST007,P001,Laptop Pro 15,Electronics,4,85000,10,306000,Direct,Amit,West,Card,Cancelled
+ORD319,07-12-2025,CUST103,P004,Notebook Pack,Stationery,4,250,10,900,Retail,Neha,East,Cash,Completed
+ORD320,08-12-2025,CUST116,P003,Office Chair,Furniture,7,8500,5,56525,Retail,Neha,East,UPI,Cancelled
+ORD321,08-12-2025,CUST086,P005,Monitor 24inch,Electronics,7,14500,0,101500,Wholesale,Priya,South,Card,Cancelled
+ORD322,08-12-2025,CUST138,P007,Printer,Electronics,10,18500,15,157250,Online,Rahul,North,Card,Completed
+ORD323,08-12-2025,CUST082,P005,Monitor 24inch,Electronics,4,14500,0,58000,Online,Amit,West,Net Banking,Completed
+ORD324,08-12-2025,CUST149,P004,Notebook Pack,Stationery,7,250,15,1487,Retail,Priya,South,Net Banking,Completed
+ORD325,09-12-2025,CUST112,P002,Wireless Mouse,Electronics,8,1200,5,9120,Online,Rahul,North,Net Banking,Cancelled
+ORD326,09-12-2025,CUST042,P005,Monitor 24inch,Electronics,10,14500,15,123250,Online,Rahul,North,Net Banking,Completed
+ORD327,09-12-2025,CUST120,P009,Executive Pen Set,Stationery,9,800,0,7200,Direct,Priya,South,Net Banking,Cancelled
+ORD328,09-12-2025,CUST097,P010,Filing Cabinet,Furniture,2,9500,0,19000,Direct,Neha,East,Net Banking,Cancelled
+ORD329,09-12-2025,CUST028,P007,Printer,Electronics,2,18500,5,35150,Direct,Priya,South,Card,Completed
+ORD330,09-12-2025,CUST087,P008,Mechanical Keyboard,Electronics,3,3500,15,8925,Direct,Neha,East,Card,Cancelled
+ORD331,10-12-2025,CUST077,P008,Mechanical Keyboard,Electronics,9,3500,5,29925,Online,Rahul,North,Cash,Completed
+ORD332,10-12-2025,CUST017,P005,Monitor 24inch,Electronics,4,14500,15,49300,Retail,Neha,East,Cash,Pending
+ORD333,10-12-2025,CUST139,P004,Notebook Pack,Stationery,3,250,5,712,Wholesale,Neha,East,Cash,Completed
+ORD334,10-12-2025,CUST005,P005,Monitor 24inch,Electronics,6,14500,0,87000,Wholesale,Priya,South,Net Banking,Pending
+ORD335,10-12-2025,CUST081,P008,Mechanical Keyboard,Electronics,8,3500,0,28000,Retail,Rahul,North,Cash,Completed
+ORD336,10-12-2025,CUST049,P004,Notebook Pack,Stationery,4,250,0,1000,Online,Rahul,North,UPI,Completed
+ORD337,11-12-2025,CUST149,P004,Notebook Pack,Stationery,11,250,0,2750,Online,Priya,South,Card,Pending
+ORD338,11-12-2025,CUST011,P010,Filing Cabinet,Furniture,1,9500,0,9500,Online,Amit,West,Card,Completed
+ORD339,11-12-2025,CUST078,P010,Filing Cabinet,Furniture,9,9500,0,85500,Direct,Priya,South,UPI,Pending
+ORD340,11-12-2025,CUST032,P003,Office Chair,Furniture,1,8500,15,7225,Retail,Amit,West,Net Banking,Completed
+ORD341,12-12-2025,CUST018,P005,Monitor 24inch,Electronics,5,14500,10,65250,Wholesale,Neha,East,Net Banking,Completed
+ORD342,12-12-2025,CUST089,P006,Desk,Furniture,2,12000,0,24000,Online,Rahul,North,Cash,Pending
+ORD343,12-12-2025,CUST027,P002,Wireless Mouse,Electronics,3,1200,10,3240,Retail,Rahul,North,Cash,Cancelled
+ORD344,12-12-2025,CUST097,P008,Mechanical Keyboard,Electronics,3,3500,5,9975,Online,Amit,West,UPI,Pending
+ORD345,12-12-2025,CUST111,P009,Executive Pen Set,Stationery,5,800,0,4000,Direct,Priya,South,Net Banking,Completed
+ORD346,12-12-2025,CUST108,P005,Monitor 24inch,Electronics,3,14500,0,43500,Direct,Neha,East,Cash,Completed
+ORD347,13-12-2025,CUST010,P005,Monitor 24inch,Electronics,7,14500,5,96425,Retail,Amit,West,Card,Cancelled
+ORD348,13-12-2025,CUST137,P004,Notebook Pack,Stationery,4,250,0,1000,Retail,Priya,South,UPI,Pending
+ORD349,13-12-2025,CUST014,P009,Executive Pen Set,Stationery,2,800,15,1360,Direct,Rahul,North,Cash,Completed
+ORD350,13-12-2025,CUST070,P008,Mechanical Keyboard,Electronics,3,3500,15,8925,Direct,Priya,South,Cash,Cancelled
+ORD351,14-12-2025,CUST020,P010,Filing Cabinet,Furniture,8,9500,5,72200,Online,Priya,South,UPI,Cancelled
+ORD352,14-12-2025,CUST054,P008,Mechanical Keyboard,Electronics,7,3500,15,20825,Retail,Priya,South,UPI,Pending
+ORD353,14-12-2025,CUST057,P004,Notebook Pack,Stationery,1,250,10,225,Retail,Rahul,North,Cash,Cancelled
+ORD354,14-12-2025,CUST080,P010,Filing Cabinet,Furniture,7,9500,10,59850,Direct,Neha,East,UPI,Completed
+ORD355,14-12-2025,CUST082,P003,Office Chair,Furniture,3,8500,0,25500,Retail,Amit,West,Cash,Cancelled
+ORD356,14-12-2025,CUST076,P010,Filing Cabinet,Furniture,6,9500,15,48450,Direct,Amit,West,Net Banking,Completed
+ORD357,15-12-2025,CUST094,P007,Printer,Electronics,1,18500,0,18500,Wholesale,Priya,South,Net Banking,Completed
+ORD358,15-12-2025,CUST047,P009,Executive Pen Set,Stationery,6,800,15,4080,Online,Rahul,North,UPI,Pending
+ORD359,15-12-2025,CUST148,P006,Desk,Furniture,11,12000,0,132000,Direct,Priya,South,Card,Completed
+ORD360,15-12-2025,CUST061,P010,Filing Cabinet,Furniture,2,9500,5,18050,Wholesale,Rahul,North,Card,Cancelled
+ORD361,15-12-2025,CUST081,P003,Office Chair,Furniture,5,8500,5,40375,Wholesale,Priya,South,UPI,Completed
+ORD362,15-12-2025,CUST069,P005,Monitor 24inch,Electronics,4,14500,0,58000,Retail,Rahul,North,Net Banking,Cancelled
+ORD363,16-12-2025,CUST070,P010,Filing Cabinet,Furniture,4,9500,0,38000,Online,Amit,West,Net Banking,Completed
+ORD364,16-12-2025,CUST100,P006,Desk,Furniture,9,12000,10,97200,Direct,Neha,East,Card,Pending
+ORD365,16-12-2025,CUST036,P005,Monitor 24inch,Electronics,8,14500,10,104400,Retail,Priya,South,UPI,Pending
+ORD366,16-12-2025,CUST135,P003,Office Chair,Furniture,7,8500,10,53550,Direct,Priya,South,UPI,Completed
+ORD367,16-12-2025,CUST070,P009,Executive Pen Set,Stationery,4,800,5,3040,Retail,Neha,East,UPI,Completed
+ORD368,16-12-2025,CUST021,P004,Notebook Pack,Stationery,2,250,0,500,Wholesale,Amit,West,UPI,Completed
+ORD369,17-12-2025,CUST148,P008,Mechanical Keyboard,Electronics,7,3500,15,20825,Retail,Priya,South,Net Banking,Completed
+ORD370,17-12-2025,CUST058,P005,Monitor 24inch,Electronics,2,14500,15,24650,Wholesale,Amit,West,UPI,Cancelled
+ORD371,17-12-2025,CUST049,P003,Office Chair,Furniture,3,8500,0,25500,Direct,Rahul,North,Net Banking,Completed
+ORD372,17-12-2025,CUST117,P004,Notebook Pack,Stationery,10,250,0,2500,Retail,Amit,West,Cash,Completed
+ORD373,17-12-2025,CUST081,P008,Mechanical Keyboard,Electronics,2,3500,10,6300,Wholesale,Priya,South,Card,Completed
+ORD374,17-12-2025,CUST017,P002,Wireless Mouse,Electronics,6,1200,0,7200,Retail,Rahul,North,Card,Cancelled
+ORD375,18-12-2025,CUST022,P009,Executive Pen Set,Stationery,2,800,0,1600,Direct,Priya,South,Net Banking,Completed
+ORD376,18-12-2025,CUST125,P007,Printer,Electronics,6,18500,10,99900,Wholesale,Neha,East,Net Banking,Pending
+ORD377,18-12-2025,CUST059,P010,Filing Cabinet,Furniture,3,9500,5,27075,Online,Amit,West,Net Banking,Cancelled
+ORD378,18-12-2025,CUST020,P010,Filing Cabinet,Furniture,4,9500,10,34200,Wholesale,Priya,South,Net Banking,Cancelled
+ORD379,19-12-2025,CUST116,P009,Executive Pen Set,Stationery,8,800,0,6400,Retail,Neha,East,Card,Completed
+ORD380,19-12-2025,CUST131,P008,Mechanical Keyboard,Electronics,1,3500,0,3500,Wholesale,Neha,East,UPI,Pending
+ORD381,19-12-2025,CUST023,P009,Executive Pen Set,Stationery,11,800,0,8800,Wholesale,Amit,West,Card,Completed
+ORD382,19-12-2025,CUST011,P008,Mechanical Keyboard,Electronics,10,3500,10,31500,Online,Neha,East,Net Banking,Cancelled
+ORD383,19-12-2025,CUST085,P008,Mechanical Keyboard,Electronics,7,3500,0,24500,Wholesale,Amit,West,Net Banking,Completed
+ORD384,20-12-2025,CUST060,P004,Notebook Pack,Stationery,6,250,10,1350,Wholesale,Priya,South,Net Banking,Completed
+ORD385,20-12-2025,CUST109,P003,Office Chair,Furniture,11,8500,0,93500,Direct,Amit,West,UPI,Completed
+ORD386,20-12-2025,CUST129,P007,Printer,Electronics,8,18500,15,125800,Direct,Neha,East,Net Banking,Completed
+ORD387,20-12-2025,CUST101,P004,Notebook Pack,Stationery,6,250,5,1425,Online,Neha,East,Net Banking,Completed
+ORD388,21-12-2025,CUST119,P001,Laptop Pro 15,Electronics,7,85000,15,505750,Retail,Rahul,North,Card,Completed
+ORD389,21-12-2025,CUST004,P006,Desk,Furniture,10,12000,5,114000,Direct,Amit,West,Cash,Cancelled
+ORD390,21-12-2025,CUST025,P003,Office Chair,Furniture,1,8500,10,7650,Direct,Rahul,North,UPI,Completed
+ORD391,21-12-2025,CUST126,P005,Monitor 24inch,Electronics,3,14500,15,36975,Online,Neha,East,Card,Pending
+ORD392,22-12-2025,CUST134,P003,Office Chair,Furniture,9,8500,5,72675,Wholesale,Priya,South,Net Banking,Pending
+ORD393,22-12-2025,CUST131,P010,Filing Cabinet,Furniture,5,9500,10,42750,Retail,Neha,East,UPI,Completed
+ORD394,22-12-2025,CUST034,P009,Executive Pen Set,Stationery,3,800,0,2400,Wholesale,Priya,South,Card,Completed
+ORD395,22-12-2025,CUST069,P003,Office Chair,Furniture,1,8500,10,7650,Direct,Rahul,North,UPI,Completed
+ORD396,23-12-2025,CUST047,P007,Printer,Electronics,6,18500,0,111000,Direct,Neha,East,Card,Completed
+ORD397,23-12-2025,CUST004,P010,Filing Cabinet,Furniture,9,9500,15,72675,Online,Amit,West,Card,Cancelled
+ORD398,23-12-2025,CUST046,P004,Notebook Pack,Stationery,4,250,10,900,Wholesale,Rahul,North,Card,Completed
+ORD399,23-12-2025,CUST077,P002,Wireless Mouse,Electronics,3,1200,0,3600,Wholesale,Priya,South,Cash,Completed
+ORD400,23-12-2025,CUST091,P002,Wireless Mouse,Electronics,8,1200,10,8640,Direct,Rahul,North,UPI,Completed
+ORD401,24-12-2025,CUST030,P004,Notebook Pack,Stationery,1,250,0,250,Direct,Neha,East,UPI,Completed
+ORD402,24-12-2025,CUST102,P007,Printer,Electronics,6,18500,0,111000,Retail,Amit,West,Cash,Completed
+ORD403,24-12-2025,CUST019,P009,Executive Pen Set,Stationery,4,800,15,2720,Retail,Amit,West,Cash,Completed
+ORD404,24-12-2025,CUST124,P007,Printer,Electronics,9,18500,10,149850,Wholesale,Amit,West,Net Banking,Cancelled
+ORD405,24-12-2025,CUST061,P004,Notebook Pack,Stationery,8,250,0,2000,Online,Priya,South,Net Banking,Completed
+ORD406,25-12-2025,CUST052,P009,Executive Pen Set,Stationery,11,800,15,7480,Online,Amit,West,Cash,Completed
+ORD407,25-12-2025,CUST068,P008,Mechanical Keyboard,Electronics,2,3500,0,7000,Retail,Rahul,North,UPI,Completed
+ORD408,25-12-2025,CUST120,P007,Printer,Electronics,1,18500,10,16650,Wholesale,Amit,West,Net Banking,Completed
+ORD409,25-12-2025,CUST149,P005,Monitor 24inch,Electronics,4,14500,15,49300,Direct,Amit,West,Card,Cancelled
+ORD410,25-12-2025,CUST137,P004,Notebook Pack,Stationery,3,250,0,750,Direct,Priya,South,Net Banking,Completed
+ORD411,25-12-2025,CUST008,P007,Printer,Electronics,8,18500,10,133200,Direct,Priya,South,UPI,Completed
+ORD412,26-12-2025,CUST026,P004,Notebook Pack,Stationery,6,250,15,1275,Retail,Amit,West,Net Banking,Completed
+ORD413,26-12-2025,CUST132,P007,Printer,Electronics,7,18500,10,116550,Direct,Neha,East,UPI,Pending
+ORD414,26-12-2025,CUST067,P006,Desk,Furniture,2,12000,0,24000,Wholesale,Amit,West,Card,Completed
+ORD415,26-12-2025,CUST072,P007,Printer,Electronics,6,18500,0,111000,Online,Priya,South,Card,Pending
+ORD416,26-12-2025,CUST006,P010,Filing Cabinet,Furniture,11,9500,5,99275,Retail,Neha,East,Card,Completed
+ORD417,27-12-2025,CUST109,P001,Laptop Pro 15,Electronics,3,85000,5,242250,Online,Neha,East,Net Banking,Completed
+ORD418,27-12-2025,CUST141,P006,Desk,Furniture,1,12000,0,12000,Direct,Priya,South,Cash,Pending
+ORD419,27-12-2025,CUST124,P001,Laptop Pro 15,Electronics,10,85000,15,722500,Online,Rahul,North,Net Banking,Completed
+ORD420,28-12-2025,CUST054,P009,Executive Pen Set,Stationery,9,800,15,6120,Online,Rahul,North,Card,Cancelled
+ORD421,28-12-2025,CUST051,P007,Printer,Electronics,7,18500,0,129500,Online,Amit,West,Net Banking,Completed
+ORD422,28-12-2025,CUST147,P001,Laptop Pro 15,Electronics,8,85000,10,612000,Direct,Amit,West,Net Banking,Cancelled
+ORD423,28-12-2025,CUST109,P001,Laptop Pro 15,Electronics,10,85000,10,765000,Online,Priya,South,Net Banking,Completed
+ORD424,28-12-2025,CUST091,P007,Printer,Electronics,7,18500,0,129500,Direct,Amit,West,UPI,Completed
+ORD425,29-12-2025,CUST068,P001,Laptop Pro 15,Electronics,4,85000,0,340000,Wholesale,Rahul,North,Cash,Pending
+ORD426,29-12-2025,CUST084,P001,Laptop Pro 15,Electronics,1,85000,10,76500,Wholesale,Priya,South,Cash,Completed
+ORD427,29-12-2025,CUST002,P009,Executive Pen Set,Stationery,10,800,0,8000,Wholesale,Amit,West,Card,Completed
+ORD428,29-12-2025,CUST142,P002,Wireless Mouse,Electronics,3,1200,0,3600,Wholesale,Rahul,North,Net Banking,Completed
+ORD429,30-12-2025,CUST117,P002,Wireless Mouse,Electronics,6,1200,5,6840,Retail,Neha,East,Net Banking,Completed
+ORD430,30-12-2025,CUST081,P009,Executive Pen Set,Stationery,3,800,5,2280,Wholesale,Rahul,North,Card,Completed
+ORD431,30-12-2025,CUST101,P005,Monitor 24inch,Electronics,1,14500,0,14500,Direct,Amit,West,Card,Pending
+ORD432,30-12-2025,CUST021,P006,Desk,Furniture,11,12000,0,132000,Wholesale,Neha,East,Card,Completed
+ORD433,30-12-2025,CUST122,P002,Wireless Mouse,Electronics,3,1200,5,3420,Direct,Neha,East,Cash,Completed
+ORD434,30-12-2025,CUST063,P007,Printer,Electronics,8,18500,5,140600,Direct,Neha,East,UPI,Completed
+ORD435,31-12-2025,CUST118,P004,Notebook Pack,Stationery,1,250,0,250,Direct,Neha,East,Card,Pending
+ORD436,31-12-2025,CUST056,P001,Laptop Pro 15,Electronics,1,85000,10,76500,Online,Amit,West,UPI,Pending
+ORD437,31-12-2025,CUST146,P003,Office Chair,Furniture,11,8500,5,88825,Wholesale,Priya,South,Card,Completed
+ORD438,01-01-2026,CUST064,P005,Monitor 24inch,Electronics,8,14500,0,116000,Direct,Neha,East,Net Banking,Pending
+ORD439,01-01-2026,CUST065,P004,Notebook Pack,Stationery,1,250,15,212,Online,Priya,South,UPI,Completed
+ORD440,01-01-2026,CUST067,P004,Notebook Pack,Stationery,10,250,5,2375,Retail,Priya,South,Cash,Completed
+ORD441,01-01-2026,CUST051,P002,Wireless Mouse,Electronics,6,1200,5,6840,Wholesale,Rahul,North,Card,Completed
+ORD442,02-01-2026,CUST122,P005,Monitor 24inch,Electronics,10,14500,10,130500,Wholesale,Rahul,North,Cash,Pending
+ORD443,02-01-2026,CUST018,P009,Executive Pen Set,Stationery,1,800,15,680,Wholesale,Rahul,North,Cash,Pending
+ORD444,02-01-2026,CUST145,P006,Desk,Furniture,4,12000,15,40800,Online,Rahul,North,Card,Cancelled
+ORD445,03-01-2026,CUST109,P006,Desk,Furniture,5,12000,5,57000,Wholesale,Amit,West,Cash,Completed
+ORD446,03-01-2026,CUST098,P003,Office Chair,Furniture,10,8500,0,85000,Retail,Rahul,North,Cash,Pending
+ORD447,03-01-2026,CUST021,P007,Printer,Electronics,4,18500,5,70300,Direct,Rahul,North,Cash,Cancelled
+ORD448,03-01-2026,CUST141,P002,Wireless Mouse,Electronics,11,1200,10,11880,Online,Amit,West,Card,Completed
+ORD449,04-01-2026,CUST082,P008,Mechanical Keyboard,Electronics,6,3500,0,21000,Retail,Neha,East,Cash,Cancelled
+ORD450,04-01-2026,CUST085,P008,Mechanical Keyboard,Electronics,5,3500,0,17500,Direct,Rahul,North,UPI,Completed
+ORD451,04-01-2026,CUST064,P005,Monitor 24inch,Electronics,2,14500,5,27550,Online,Priya,South,Cash,Pending
+ORD452,04-01-2026,CUST149,P006,Desk,Furniture,11,12000,10,118800,Online,Rahul,North,Net Banking,Pending
+ORD453,04-01-2026,CUST046,P010,Filing Cabinet,Furniture,6,9500,0,57000,Wholesale,Amit,West,UPI,Pending
+ORD454,04-01-2026,CUST052,P006,Desk,Furniture,7,12000,0,84000,Retail,Neha,East,Cash,Completed
+ORD455,05-01-2026,CUST143,P009,Executive Pen Set,Stationery,3,800,0,2400,Wholesale,Rahul,North,Card,Completed
+ORD456,05-01-2026,CUST082,P003,Office Chair,Furniture,4,8500,15,28900,Direct,Amit,West,Cash,Completed
+ORD457,05-01-2026,CUST072,P004,Notebook Pack,Stationery,1,250,0,250,Online,Rahul,North,Net Banking,Completed
+ORD458,05-01-2026,CUST063,P006,Desk,Furniture,3,12000,5,34200,Online,Rahul,North,Cash,Cancelled
+ORD459,06-01-2026,CUST114,P006,Desk,Furniture,6,12000,5,68400,Retail,Amit,West,UPI,Completed
+ORD460,06-01-2026,CUST064,P005,Monitor 24inch,Electronics,2,14500,0,29000,Wholesale,Neha,East,Net Banking,Completed
+ORD461,06-01-2026,CUST047,P003,Office Chair,Furniture,3,8500,0,25500,Retail,Neha,East,Card,Completed
+ORD462,06-01-2026,CUST065,P004,Notebook Pack,Stationery,9,250,15,1912,Wholesale,Rahul,North,Card,Cancelled
+ORD463,06-01-2026,CUST136,P005,Monitor 24inch,Electronics,9,14500,0,130500,Wholesale,Neha,East,UPI,Completed
+ORD464,07-01-2026,CUST128,P004,Notebook Pack,Stationery,6,250,5,1425,Direct,Amit,West,Cash,Pending
+ORD465,07-01-2026,CUST034,P003,Office Chair,Furniture,11,8500,0,93500,Online,Neha,East,Cash,Completed
+ORD466,07-01-2026,CUST124,P006,Desk,Furniture,2,12000,0,24000,Online,Priya,South,Net Banking,Pending
+ORD467,07-01-2026,CUST034,P007,Printer,Electronics,3,18500,5,52725,Online,Priya,South,Cash,Cancelled
+ORD468,08-01-2026,CUST065,P001,Laptop Pro 15,Electronics,9,85000,15,650250,Online,Rahul,North,Cash,Cancelled
+ORD469,08-01-2026,CUST019,P009,Executive Pen Set,Stationery,9,800,0,7200,Wholesale,Amit,West,Net Banking,Completed
+ORD470,08-01-2026,CUST010,P004,Notebook Pack,Stationery,8,250,10,1800,Direct,Neha,East,UPI,Completed
+ORD471,08-01-2026,CUST110,P004,Notebook Pack,Stationery,5,250,10,1125,Wholesale,Rahul,North,Cash,Completed
+ORD472,08-01-2026,CUST012,P007,Printer,Electronics,2,18500,0,37000,Retail,Neha,East,Cash,Completed
+ORD473,09-01-2026,CUST049,P009,Executive Pen Set,Stationery,1,800,0,800,Retail,Rahul,North,UPI,Completed
+ORD474,09-01-2026,CUST087,P008,Mechanical Keyboard,Electronics,2,3500,0,7000,Online,Priya,South,Net Banking,Completed
+ORD475,09-01-2026,CUST064,P009,Executive Pen Set,Stationery,1,800,5,760,Online,Amit,West,Cash,Completed
+ORD476,10-01-2026,CUST100,P002,Wireless Mouse,Electronics,3,1200,15,3060,Online,Amit,West,UPI,Pending
+ORD477,10-01-2026,CUST145,P010,Filing Cabinet,Furniture,7,9500,0,66500,Online,Rahul,North,Net Banking,Completed
+ORD478,10-01-2026,CUST120,P007,Printer,Electronics,10,18500,15,157250,Wholesale,Rahul,North,Card,Cancelled
+ORD479,10-01-2026,CUST024,P001,Laptop Pro 15,Electronics,4,85000,0,340000,Online,Priya,South,Card,Pending
+ORD480,10-01-2026,CUST140,P005,Monitor 24inch,Electronics,10,14500,0,145000,Retail,Rahul,North,Net Banking,Pending
+ORD481,10-01-2026,CUST041,P003,Office Chair,Furniture,2,8500,5,16150,Online,Neha,East,Net Banking,Completed
+ORD482,11-01-2026,CUST141,P004,Notebook Pack,Stationery,2,250,0,500,Retail,Rahul,North,Cash,Completed
+ORD483,11-01-2026,CUST100,P007,Printer,Electronics,2,18500,0,37000,Direct,Neha,East,Cash,Pending
+ORD484,11-01-2026,CUST018,P003,Office Chair,Furniture,6,8500,10,45900,Online,Neha,East,Net Banking,Completed
+ORD485,12-01-2026,CUST021,P003,Office Chair,Furniture,9,8500,0,76500,Retail,Priya,South,UPI,Cancelled
+ORD486,12-01-2026,CUST044,P005,Monitor 24inch,Electronics,10,14500,15,123250,Retail,Rahul,North,Net Banking,Completed
+ORD487,12-01-2026,CUST081,P004,Notebook Pack,Stationery,10,250,5,2375,Wholesale,Rahul,North,Cash,Completed
+ORD488,12-01-2026,CUST012,P006,Desk,Furniture,4,12000,15,40800,Online,Amit,West,Net Banking,Completed
+ORD489,12-01-2026,CUST090,P006,Desk,Furniture,1,12000,10,10800,Direct,Amit,West,Net Banking,Completed
+ORD490,12-01-2026,CUST104,P010,Filing Cabinet,Furniture,11,9500,15,88825,Wholesale,Priya,South,Cash,Completed
+ORD491,13-01-2026,CUST134,P007,Printer,Electronics,5,18500,0,92500,Wholesale,Rahul,North,UPI,Pending
+ORD492,13-01-2026,CUST057,P005,Monitor 24inch,Electronics,4,14500,15,49300,Direct,Amit,West,Cash,Completed
+ORD493,13-01-2026,CUST075,P008,Mechanical Keyboard,Electronics,1,3500,0,3500,Direct,Neha,East,Card,Completed
+ORD494,13-01-2026,CUST132,P008,Mechanical Keyboard,Electronics,3,3500,15,8925,Online,Rahul,North,UPI,Completed
+ORD495,14-01-2026,CUST079,P007,Printer,Electronics,10,18500,10,166500,Direct,Priya,South,Card,Cancelled
+ORD496,14-01-2026,CUST056,P004,Notebook Pack,Stationery,2,250,5,475,Direct,Amit,West,Net Banking,Completed
+ORD497,14-01-2026,CUST017,P010,Filing Cabinet,Furniture,7,9500,0,66500,Retail,Rahul,North,Card,Completed
+ORD498,14-01-2026,CUST045,P003,Office Chair,Furniture,11,8500,15,79475,Direct,Rahul,North,Net Banking,Pending
+ORD499,14-01-2026,CUST095,P001,Laptop Pro 15,Electronics,1,85000,10,76500,Direct,Priya,South,UPI,Pending
+ORD500,14-01-2026,CUST057,P009,Executive Pen Set,Stationery,2,800,0,1600,Retail,Rahul,North,Card,Pending
+ORD501,15-01-2026,CUST105,P008,Mechanical Keyboard,Electronics,6,3500,0,21000,Retail,Priya,South,Cash,Completed
+ORD502,15-01-2026,CUST015,P010,Filing Cabinet,Furniture,5,9500,15,40375,Retail,Priya,South,UPI,Completed
+ORD503,15-01-2026,CUST078,P010,Filing Cabinet,Furniture,3,9500,15,24225,Direct,Neha,East,Card,Completed
+ORD504,15-01-2026,CUST108,P001,Laptop Pro 15,Electronics,1,85000,5,80750,Retail,Rahul,North,Cash,Pending
+ORD505,15-01-2026,CUST070,P009,Executive Pen Set,Stationery,4,800,5,3040,Direct,Neha,East,Net Banking,Completed
+ORD506,15-01-2026,CUST090,P009,Executive Pen Set,Stationery,11,800,15,7480,Retail,Rahul,North,Cash,Completed
+ORD507,16-01-2026,CUST134,P004,Notebook Pack,Stationery,3,250,15,637,Online,Amit,West,UPI,Completed
+ORD508,16-01-2026,CUST107,P005,Monitor 24inch,Electronics,2,14500,0,29000,Direct,Amit,West,Card,Completed
+ORD509,16-01-2026,CUST008,P004,Notebook Pack,Stationery,1,250,5,237,Online,Amit,West,Cash,Pending
+ORD510,16-01-2026,CUST088,P002,Wireless Mouse,Electronics,6,1200,15,6120,Direct,Priya,South,Card,Cancelled
+ORD511,17-01-2026,CUST036,P005,Monitor 24inch,Electronics,10,14500,5,137750,Direct,Rahul,North,UPI,Pending
+ORD512,17-01-2026,CUST104,P002,Wireless Mouse,Electronics,7,1200,5,7980,Online,Priya,South,Cash,Completed
+ORD513,17-01-2026,CUST093,P003,Office Chair,Furniture,10,8500,10,76500,Retail,Rahul,North,Net Banking,Completed
+ORD514,17-01-2026,CUST034,P003,Office Chair,Furniture,1,8500,0,8500,Wholesale,Rahul,North,Card,Completed
+ORD515,18-01-2026,CUST148,P005,Monitor 24inch,Electronics,3,14500,5,41325,Wholesale,Rahul,North,Cash,Completed
+ORD516,18-01-2026,CUST017,P002,Wireless Mouse,Electronics,4,1200,15,4080,Online,Neha,East,Cash,Completed
+ORD517,18-01-2026,CUST068,P001,Laptop Pro 15,Electronics,2,85000,0,170000,Retail,Priya,South,Card,Pending
+ORD518,18-01-2026,CUST116,P007,Printer,Electronics,10,18500,5,175750,Online,Amit,West,Card,Cancelled
+ORD519,18-01-2026,CUST122,P001,Laptop Pro 15,Electronics,1,85000,0,85000,Online,Neha,East,Card,Cancelled
+ORD520,18-01-2026,CUST068,P005,Monitor 24inch,Electronics,11,14500,5,151525,Wholesale,Rahul,North,Net Banking,Completed
+ORD521,19-01-2026,CUST147,P007,Printer,Electronics,7,18500,0,129500,Online,Neha,East,Card,Pending
+ORD522,19-01-2026,CUST023,P010,Filing Cabinet,Furniture,4,9500,0,38000,Online,Neha,East,Card,Completed
+ORD523,19-01-2026,CUST112,P003,Office Chair,Furniture,7,8500,10,53550,Online,Priya,South,Cash,Pending
+ORD524,19-01-2026,CUST122,P003,Office Chair,Furniture,5,8500,0,42500,Wholesale,Amit,West,Net Banking,Completed
+ORD525,19-01-2026,CUST040,P004,Notebook Pack,Stationery,2,250,15,425,Direct,Neha,East,UPI,Pending
+ORD526,20-01-2026,CUST034,P009,Executive Pen Set,Stationery,1,800,15,680,Direct,Neha,East,Cash,Cancelled
+ORD527,20-01-2026,CUST069,P005,Monitor 24inch,Electronics,9,14500,0,130500,Online,Rahul,North,Net Banking,Cancelled
+ORD528,20-01-2026,CUST057,P010,Filing Cabinet,Furniture,8,9500,15,64600,Direct,Rahul,North,Cash,Completed
+ORD529,20-01-2026,CUST086,P004,Notebook Pack,Stationery,6,250,5,1425,Direct,Amit,West,Cash,Completed
+ORD530,20-01-2026,CUST141,P007,Printer,Electronics,10,18500,0,185000,Retail,Priya,South,Card,Completed
+ORD531,21-01-2026,CUST126,P006,Desk,Furniture,4,12000,15,40800,Online,Priya,South,Net Banking,Completed
+ORD532,21-01-2026,CUST016,P007,Printer,Electronics,10,18500,0,185000,Wholesale,Neha,East,UPI,Completed
+ORD533,21-01-2026,CUST139,P010,Filing Cabinet,Furniture,6,9500,0,57000,Direct,Rahul,North,Net Banking,Pending
+ORD534,21-01-2026,CUST111,P009,Executive Pen Set,Stationery,11,800,15,7480,Retail,Rahul,North,Card,Completed
+ORD535,21-01-2026,CUST051,P004,Notebook Pack,Stationery,1,250,0,250,Direct,Amit,West,UPI,Completed
+ORD536,21-01-2026,CUST001,P007,Printer,Electronics,10,18500,15,157250,Online,Priya,South,Card,Completed
+ORD537,22-01-2026,CUST073,P006,Desk,Furniture,6,12000,10,64800,Online,Neha,East,Cash,Completed
+ORD538,22-01-2026,CUST063,P001,Laptop Pro 15,Electronics,7,85000,0,595000,Wholesale,Rahul,North,UPI,Pending
+ORD539,22-01-2026,CUST032,P004,Notebook Pack,Stationery,2,250,0,500,Wholesale,Amit,West,Net Banking,Completed
+ORD540,22-01-2026,CUST078,P010,Filing Cabinet,Furniture,1,9500,0,9500,Wholesale,Rahul,North,Net Banking,Completed
+ORD541,22-01-2026,CUST083,P006,Desk,Furniture,9,12000,0,108000,Direct,Rahul,North,Cash,Cancelled
+ORD542,23-01-2026,CUST027,P006,Desk,Furniture,8,12000,15,81600,Direct,Neha,East,UPI,Completed
+ORD543,23-01-2026,CUST147,P010,Filing Cabinet,Furniture,9,9500,10,76950,Direct,Amit,West,Net Banking,Completed
+ORD544,23-01-2026,CUST120,P006,Desk,Furniture,3,12000,0,36000,Direct,Rahul,North,Cash,Completed
+ORD545,24-01-2026,CUST016,P007,Printer,Electronics,3,18500,5,52725,Direct,Priya,South,Net Banking,Pending
+ORD546,24-01-2026,CUST113,P005,Monitor 24inch,Electronics,11,14500,15,135575,Direct,Amit,West,Card,Completed
+ORD547,24-01-2026,CUST005,P009,Executive Pen Set,Stationery,5,800,5,3800,Retail,Rahul,North,UPI,Completed
+ORD548,24-01-2026,CUST019,P006,Desk,Furniture,5,12000,5,57000,Retail,Priya,South,Cash,Pending
+ORD549,25-01-2026,CUST141,P004,Notebook Pack,Stationery,6,250,5,1425,Retail,Neha,East,Card,Pending
+ORD550,25-01-2026,CUST029,P008,Mechanical Keyboard,Electronics,2,3500,0,7000,Online,Rahul,North,Net Banking,Completed
+ORD551,25-01-2026,CUST062,P010,Filing Cabinet,Furniture,1,9500,0,9500,Retail,Priya,South,Card,Pending
+ORD552,26-01-2026,CUST082,P010,Filing Cabinet,Furniture,4,9500,0,38000,Wholesale,Rahul,North,Card,Pending
+ORD553,26-01-2026,CUST071,P003,Office Chair,Furniture,10,8500,0,85000,Wholesale,Rahul,North,Net Banking,Completed
+ORD554,26-01-2026,CUST124,P008,Mechanical Keyboard,Electronics,10,3500,0,35000,Wholesale,Amit,West,Cash,Completed
+ORD555,26-01-2026,CUST020,P009,Executive Pen Set,Stationery,6,800,10,4320,Wholesale,Neha,East,Net Banking,Completed
+ORD556,27-01-2026,CUST066,P005,Monitor 24inch,Electronics,2,14500,5,27550,Wholesale,Priya,South,Cash,Completed
+ORD557,27-01-2026,CUST073,P001,Laptop Pro 15,Electronics,6,85000,0,510000,Direct,Amit,West,Cash,Pending
+ORD558,27-01-2026,CUST002,P004,Notebook Pack,Stationery,1,250,5,237,Online,Priya,South,UPI,Cancelled
+ORD559,27-01-2026,CUST079,P006,Desk,Furniture,3,12000,15,30600,Direct,Amit,West,UPI,Pending
+ORD560,27-01-2026,CUST098,P009,Executive Pen Set,Stationery,1,800,0,800,Direct,Rahul,North,Cash,Completed
+ORD561,28-01-2026,CUST083,P001,Laptop Pro 15,Electronics,10,85000,10,765000,Online,Rahul,North,UPI,Completed
+ORD562,28-01-2026,CUST032,P006,Desk,Furniture,6,12000,0,72000,Retail,Priya,South,Cash,Completed
+ORD563,28-01-2026,CUST085,P009,Executive Pen Set,Stationery,4,800,15,2720,Online,Amit,West,Cash,Completed
+ORD564,29-01-2026,CUST092,P001,Laptop Pro 15,Electronics,11,85000,0,935000,Retail,Rahul,North,UPI,Pending
+ORD565,29-01-2026,CUST039,P001,Laptop Pro 15,Electronics,5,85000,10,382500,Direct,Amit,West,Cash,Completed
+ORD566,29-01-2026,CUST110,P005,Monitor 24inch,Electronics,11,14500,0,159500,Wholesale,Neha,East,Card,Completed
+ORD567,29-01-2026,CUST062,P010,Filing Cabinet,Furniture,1,9500,5,9025,Retail,Neha,East,UPI,Completed
+ORD568,29-01-2026,CUST082,P006,Desk,Furniture,3,12000,10,32400,Wholesale,Amit,West,Card,Completed
+ORD569,30-01-2026,CUST102,P001,Laptop Pro 15,Electronics,7,85000,5,565250,Direct,Priya,South,Cash,Completed
+ORD570,30-01-2026,CUST073,P006,Desk,Furniture,11,12000,0,132000,Online,Amit,West,Net Banking,Pending
+ORD571,30-01-2026,CUST097,P006,Desk,Furniture,5,12000,0,60000,Direct,Priya,South,Cash,Cancelled
+ORD572,30-01-2026,CUST002,P010,Filing Cabinet,Furniture,11,9500,5,99275,Retail,Neha,East,UPI,Pending
+ORD573,31-01-2026,CUST107,P005,Monitor 24inch,Electronics,2,14500,0,29000,Retail,Amit,West,Net Banking,Completed
+ORD574,31-01-2026,CUST004,P006,Desk,Furniture,7,12000,15,71400,Retail,Amit,West,Net Banking,Pending
+ORD575,31-01-2026,CUST129,P007,Printer,Electronics,3,18500,0,55500,Online,Rahul,North,UPI,Cancelled
+ORD576,31-01-2026,CUST133,P001,Laptop Pro 15,Electronics,10,85000,10,765000,Retail,Rahul,North,Cash,Completed
+ORD577,01-02-2026,CUST047,P004,Notebook Pack,Stationery,3,250,5,712,Online,Neha,East,Card,Pending
+ORD578,01-02-2026,CUST140,P008,Mechanical Keyboard,Electronics,10,3500,0,35000,Online,Rahul,North,Cash,Completed
+ORD579,01-02-2026,CUST052,P008,Mechanical Keyboard,Electronics,9,3500,15,26775,Retail,Amit,West,Net Banking,Cancelled
+ORD580,02-02-2026,CUST110,P010,Filing Cabinet,Furniture,1,9500,0,9500,Wholesale,Priya,South,Net Banking,Completed
+ORD581,02-02-2026,CUST113,P005,Monitor 24inch,Electronics,9,14500,5,123975,Wholesale,Rahul,North,Cash,Completed
+ORD582,02-02-2026,CUST118,P005,Monitor 24inch,Electronics,10,14500,0,145000,Wholesale,Neha,East,Net Banking,Completed
+ORD583,02-02-2026,CUST057,P006,Desk,Furniture,9,12000,15,91800,Online,Amit,West,Cash,Cancelled
+ORD584,02-02-2026,CUST046,P004,Notebook Pack,Stationery,7,250,15,1487,Wholesale,Rahul,North,Net Banking,Cancelled
+ORD585,02-02-2026,CUST134,P002,Wireless Mouse,Electronics,6,1200,0,7200,Online,Priya,South,UPI,Completed
+ORD586,03-02-2026,CUST122,P010,Filing Cabinet,Furniture,3,9500,10,25650,Online,Priya,South,UPI,Pending
+ORD587,03-02-2026,CUST011,P007,Printer,Electronics,7,18500,5,123025,Wholesale,Priya,South,UPI,Pending
+ORD588,03-02-2026,CUST072,P009,Executive Pen Set,Stationery,1,800,0,800,Wholesale,Amit,West,UPI,Completed
+ORD589,03-02-2026,CUST098,P003,Office Chair,Furniture,6,8500,0,51000,Online,Priya,South,Net Banking,Cancelled
+ORD590,03-02-2026,CUST048,P001,Laptop Pro 15,Electronics,5,85000,15,361250,Wholesale,Rahul,North,Net Banking,Completed
+ORD591,03-02-2026,CUST017,P007,Printer,Electronics,5,18500,0,92500,Wholesale,Rahul,North,Cash,Completed
+ORD592,04-02-2026,CUST103,P005,Monitor 24inch,Electronics,1,14500,0,14500,Online,Priya,South,Cash,Completed
+ORD593,04-02-2026,CUST131,P005,Monitor 24inch,Electronics,11,14500,0,159500,Direct,Neha,East,Card,Pending
+ORD594,04-02-2026,CUST073,P008,Mechanical Keyboard,Electronics,8,3500,0,28000,Online,Rahul,North,UPI,Completed
+ORD595,05-02-2026,CUST108,P003,Office Chair,Furniture,6,8500,0,51000,Retail,Amit,West,Card,Completed
+ORD596,05-02-2026,CUST147,P002,Wireless Mouse,Electronics,9,1200,15,9180,Wholesale,Amit,West,Cash,Cancelled
+ORD597,05-02-2026,CUST030,P009,Executive Pen Set,Stationery,8,800,0,6400,Direct,Amit,West,Net Banking,Completed
+ORD598,05-02-2026,CUST136,P006,Desk,Furniture,6,12000,10,64800,Online,Amit,West,Net Banking,Pending
+ORD599,05-02-2026,CUST079,P004,Notebook Pack,Stationery,9,250,0,2250,Retail,Rahul,North,UPI,Cancelled
+ORD600,06-02-2026,CUST079,P004,Notebook Pack,Stationery,11,250,0,2750,Wholesale,Rahul,North,Cash,Completed
+ORD601,06-02-2026,CUST064,P008,Mechanical Keyboard,Electronics,11,3500,10,34650,Direct,Amit,West,Net Banking,Completed
+ORD602,06-02-2026,CUST122,P002,Wireless Mouse,Electronics,1,1200,0,1200,Wholesale,Neha,East,Net Banking,Completed
+ORD603,07-02-2026,CUST048,P009,Executive Pen Set,Stationery,4,800,0,3200,Retail,Priya,South,Card,Cancelled
+ORD604,07-02-2026,CUST062,P007,Printer,Electronics,10,18500,10,166500,Wholesale,Rahul,North,Card,Completed
+ORD605,07-02-2026,CUST044,P007,Printer,Electronics,9,18500,10,149850,Online,Priya,South,UPI,Completed
+ORD606,08-02-2026,CUST131,P005,Monitor 24inch,Electronics,10,14500,10,130500,Online,Priya,South,Card,Completed
+ORD607,08-02-2026,CUST076,P010,Filing Cabinet,Furniture,11,9500,5,99275,Direct,Rahul,North,Card,Completed
+ORD608,08-02-2026,CUST130,P010,Filing Cabinet,Furniture,11,9500,0,104500,Retail,Priya,South,UPI,Pending
+ORD609,08-02-2026,CUST115,P010,Filing Cabinet,Furniture,7,9500,0,66500,Direct,Priya,South,Card,Completed
+ORD610,08-02-2026,CUST061,P001,Laptop Pro 15,Electronics,5,85000,0,425000,Online,Priya,South,Cash,Pending
+ORD611,08-02-2026,CUST135,P006,Desk,Furniture,10,12000,15,102000,Wholesale,Amit,West,Net Banking,Pending
+ORD612,09-02-2026,CUST101,P004,Notebook Pack,Stationery,1,250,10,225,Online,Neha,East,Card,Cancelled
+ORD613,09-02-2026,CUST149,P003,Office Chair,Furniture,5,8500,10,38250,Retail,Neha,East,UPI,Completed
+ORD614,09-02-2026,CUST056,P008,Mechanical Keyboard,Electronics,8,3500,15,23800,Direct,Amit,West,Card,Completed
+ORD615,09-02-2026,CUST002,P008,Mechanical Keyboard,Electronics,11,3500,0,38500,Online,Priya,South,Net Banking,Completed
+ORD616,10-02-2026,CUST140,P010,Filing Cabinet,Furniture,3,9500,15,24225,Wholesale,Amit,West,Cash,Cancelled
+ORD617,10-02-2026,CUST013,P001,Laptop Pro 15,Electronics,3,85000,10,229500,Wholesale,Amit,West,Card,Completed
+ORD618,10-02-2026,CUST048,P005,Monitor 24inch,Electronics,3,14500,0,43500,Direct,Rahul,North,Net Banking,Completed
+ORD619,10-02-2026,CUST099,P003,Office Chair,Furniture,5,8500,15,36125,Retail,Rahul,North,Cash,Completed
+ORD620,10-02-2026,CUST068,P003,Office Chair,Furniture,11,8500,0,93500,Online,Priya,South,Cash,Completed
+ORD621,10-02-2026,CUST020,P003,Office Chair,Furniture,7,8500,5,56525,Retail,Priya,South,Cash,Pending
+ORD622,11-02-2026,CUST059,P005,Monitor 24inch,Electronics,3,14500,15,36975,Retail,Neha,East,Net Banking,Completed
+ORD623,11-02-2026,CUST014,P002,Wireless Mouse,Electronics,11,1200,0,13200,Wholesale,Neha,East,Cash,Cancelled
+ORD624,11-02-2026,CUST133,P007,Printer,Electronics,9,18500,5,158175,Online,Amit,West,Card,Completed
+ORD625,12-02-2026,CUST083,P001,Laptop Pro 15,Electronics,7,85000,10,535500,Wholesale,Rahul,North,Net Banking,Pending
+ORD626,12-02-2026,CUST093,P002,Wireless Mouse,Electronics,4,1200,0,4800,Online,Neha,East,Cash,Completed
+ORD627,12-02-2026,CUST043,P008,Mechanical Keyboard,Electronics,6,3500,10,18900,Retail,Priya,South,Cash,Pending
+ORD628,12-02-2026,CUST090,P002,Wireless Mouse,Electronics,5,1200,0,6000,Retail,Priya,South,Net Banking,Completed
+ORD629,13-02-2026,CUST108,P008,Mechanical Keyboard,Electronics,11,3500,10,34650,Online,Neha,East,Net Banking,Completed
+ORD630,13-02-2026,CUST128,P004,Notebook Pack,Stationery,4,250,5,950,Direct,Amit,West,Card,Completed
+ORD631,13-02-2026,CUST088,P009,Executive Pen Set,Stationery,3,800,5,2280,Online,Neha,East,UPI,Completed
+ORD632,13-02-2026,CUST119,P009,Executive Pen Set,Stationery,8,800,15,5440,Retail,Priya,South,Net Banking,Pending
+ORD633,13-02-2026,CUST053,P007,Printer,Electronics,1,18500,0,18500,Retail,Neha,East,UPI,Cancelled
+ORD634,14-02-2026,CUST011,P002,Wireless Mouse,Electronics,2,1200,10,2160,Retail,Priya,South,Cash,Pending
+ORD635,14-02-2026,CUST050,P006,Desk,Furniture,8,12000,0,96000,Direct,Neha,East,Cash,Cancelled
+ORD636,14-02-2026,CUST084,P003,Office Chair,Furniture,5,8500,0,42500,Direct,Neha,East,Net Banking,Pending
+ORD637,14-02-2026,CUST056,P007,Printer,Electronics,8,18500,5,140600,Direct,Priya,South,Net Banking,Cancelled
+ORD638,14-02-2026,CUST094,P008,Mechanical Keyboard,Electronics,10,3500,10,31500,Direct,Rahul,North,Card,Cancelled
+ORD639,15-02-2026,CUST036,P005,Monitor 24inch,Electronics,10,14500,10,130500,Retail,Amit,West,Net Banking,Completed
+ORD640,15-02-2026,CUST031,P007,Printer,Electronics,11,18500,10,183150,Direct,Priya,South,UPI,Cancelled
+ORD641,15-02-2026,CUST010,P008,Mechanical Keyboard,Electronics,8,3500,5,26600,Direct,Neha,East,Net Banking,Completed
+ORD642,15-02-2026,CUST065,P007,Printer,Electronics,10,18500,0,185000,Retail,Amit,West,Card,Completed
+ORD643,15-02-2026,CUST009,P006,Desk,Furniture,9,12000,0,108000,Direct,Amit,West,Net Banking,Completed
+ORD644,15-02-2026,CUST143,P010,Filing Cabinet,Furniture,7,9500,15,56525,Direct,Rahul,North,Card,Pending
+ORD645,16-02-2026,CUST082,P009,Executive Pen Set,Stationery,6,800,5,4560,Wholesale,Neha,East,Card,Completed
+ORD646,16-02-2026,CUST048,P002,Wireless Mouse,Electronics,7,1200,10,7560,Online,Amit,West,Net Banking,Cancelled
+ORD647,16-02-2026,CUST109,P001,Laptop Pro 15,Electronics,1,85000,15,72250,Wholesale,Priya,South,Card,Completed
+ORD648,16-02-2026,CUST090,P006,Desk,Furniture,4,12000,10,43200,Direct,Amit,West,Card,Cancelled
+ORD649,17-02-2026,CUST120,P005,Monitor 24inch,Electronics,3,14500,10,39150,Online,Amit,West,UPI,Completed
+ORD650,17-02-2026,CUST096,P006,Desk,Furniture,8,12000,0,96000,Retail,Priya,South,Net Banking,Completed
+ORD651,17-02-2026,CUST138,P003,Office Chair,Furniture,11,8500,10,84150,Wholesale,Rahul,North,Cash,Cancelled
+ORD652,17-02-2026,CUST069,P004,Notebook Pack,Stationery,9,250,0,2250,Retail,Amit,West,Card,Completed
+ORD653,17-02-2026,CUST084,P007,Printer,Electronics,6,18500,10,99900,Online,Rahul,North,Cash,Completed
+ORD654,17-02-2026,CUST114,P001,Laptop Pro 15,Electronics,4,85000,10,306000,Online,Rahul,North,UPI,Pending
+ORD655,18-02-2026,CUST129,P001,Laptop Pro 15,Electronics,8,85000,0,680000,Retail,Neha,East,Cash,Cancelled
+ORD656,18-02-2026,CUST023,P008,Mechanical Keyboard,Electronics,8,3500,5,26600,Wholesale,Priya,South,Cash,Cancelled
+ORD657,18-02-2026,CUST016,P007,Printer,Electronics,2,18500,0,37000,Online,Amit,West,UPI,Cancelled
+ORD658,19-02-2026,CUST094,P002,Wireless Mouse,Electronics,11,1200,15,11220,Online,Priya,South,Net Banking,Completed
+ORD659,19-02-2026,CUST116,P009,Executive Pen Set,Stationery,4,800,0,3200,Wholesale,Neha,East,Card,Pending
+ORD660,19-02-2026,CUST057,P004,Notebook Pack,Stationery,9,250,0,2250,Wholesale,Neha,East,Cash,Completed
+ORD661,19-02-2026,CUST009,P001,Laptop Pro 15,Electronics,9,85000,0,765000,Direct,Neha,East,Cash,Pending
+ORD662,19-02-2026,CUST065,P008,Mechanical Keyboard,Electronics,10,3500,5,33250,Wholesale,Amit,West,Cash,Completed
+ORD663,19-02-2026,CUST085,P008,Mechanical Keyboard,Electronics,7,3500,0,24500,Online,Priya,South,Card,Completed
+ORD664,20-02-2026,CUST115,P008,Mechanical Keyboard,Electronics,1,3500,15,2975,Retail,Amit,West,Cash,Completed
+ORD665,20-02-2026,CUST103,P001,Laptop Pro 15,Electronics,6,85000,5,484500,Retail,Neha,East,Net Banking,Completed
+ORD666,20-02-2026,CUST038,P007,Printer,Electronics,5,18500,5,87875,Direct,Neha,East,UPI,Completed
+ORD667,20-02-2026,CUST043,P004,Notebook Pack,Stationery,10,250,15,2125,Retail,Neha,East,Net Banking,Completed
+ORD668,21-02-2026,CUST083,P010,Filing Cabinet,Furniture,3,9500,5,27075,Online,Neha,East,UPI,Completed
+ORD669,21-02-2026,CUST048,P008,Mechanical Keyboard,Electronics,1,3500,10,3150,Direct,Neha,East,Net Banking,Completed
+ORD670,21-02-2026,CUST132,P006,Desk,Furniture,11,12000,0,132000,Direct,Amit,West,Net Banking,Pending
+ORD671,22-02-2026,CUST119,P009,Executive Pen Set,Stationery,2,800,5,1520,Direct,Priya,South,UPI,Completed
+ORD672,22-02-2026,CUST073,P010,Filing Cabinet,Furniture,4,9500,0,38000,Wholesale,Amit,West,Net Banking,Cancelled
+ORD673,22-02-2026,CUST027,P001,Laptop Pro 15,Electronics,3,85000,10,229500,Online,Rahul,North,Net Banking,Completed
+ORD674,22-02-2026,CUST095,P002,Wireless Mouse,Electronics,4,1200,10,4320,Direct,Amit,West,Cash,Completed
+ORD675,22-02-2026,CUST089,P002,Wireless Mouse,Electronics,3,1200,0,3600,Online,Rahul,North,Net Banking,Completed
+ORD676,23-02-2026,CUST116,P006,Desk,Furniture,10,12000,0,120000,Direct,Priya,South,Cash,Completed
+ORD677,23-02-2026,CUST021,P008,Mechanical Keyboard,Electronics,9,3500,0,31500,Retail,Rahul,North,Card,Completed
+ORD678,23-02-2026,CUST112,P007,Printer,Electronics,4,18500,5,70300,Online,Priya,South,Net Banking,Completed
+ORD679,23-02-2026,CUST104,P007,Printer,Electronics,3,18500,0,55500,Online,Priya,South,Net Banking,Completed
+ORD680,23-02-2026,CUST061,P005,Monitor 24inch,Electronics,10,14500,15,123250,Wholesale,Rahul,North,Card,Completed
+ORD681,23-02-2026,CUST102,P005,Monitor 24inch,Electronics,9,14500,5,123975,Retail,Neha,East,Card,Pending
+ORD682,24-02-2026,CUST030,P007,Printer,Electronics,10,18500,15,157250,Direct,Amit,West,Cash,Cancelled
+ORD683,24-02-2026,CUST125,P006,Desk,Furniture,10,12000,0,120000,Wholesale,Amit,West,UPI,Cancelled
+ORD684,24-02-2026,CUST031,P004,Notebook Pack,Stationery,9,250,10,2025,Wholesale,Rahul,North,UPI,Cancelled
+ORD685,24-02-2026,CUST111,P001,Laptop Pro 15,Electronics,1,85000,0,85000,Retail,Amit,West,UPI,Completed
+ORD686,24-02-2026,CUST149,P001,Laptop Pro 15,Electronics,6,85000,5,484500,Direct,Rahul,North,Net Banking,Completed
+ORD687,25-02-2026,CUST090,P001,Laptop Pro 15,Electronics,6,85000,0,510000,Retail,Neha,East,Card,Completed
+ORD688,25-02-2026,CUST110,P008,Mechanical Keyboard,Electronics,6,3500,15,17850,Online,Amit,West,Card,Cancelled
+ORD689,25-02-2026,CUST060,P006,Desk,Furniture,5,12000,0,60000,Wholesale,Rahul,North,Card,Completed
+ORD690,26-02-2026,CUST047,P005,Monitor 24inch,Electronics,10,14500,10,130500,Retail,Priya,South,Cash,Completed
+ORD691,26-02-2026,CUST146,P004,Notebook Pack,Stationery,1,250,0,250,Retail,Priya,South,Card,Pending
+ORD692,26-02-2026,CUST119,P003,Office Chair,Furniture,11,8500,10,84150,Online,Amit,West,Cash,Completed
+ORD693,26-02-2026,CUST148,P004,Notebook Pack,Stationery,3,250,0,750,Direct,Neha,East,Net Banking,Cancelled
+ORD694,27-02-2026,CUST145,P007,Printer,Electronics,11,18500,0,203500,Wholesale,Rahul,North,Net Banking,Pending
+ORD695,27-02-2026,CUST141,P006,Desk,Furniture,10,12000,15,102000,Wholesale,Neha,East,Cash,Pending
+ORD696,27-02-2026,CUST040,P004,Notebook Pack,Stationery,10,250,10,2250,Online,Neha,East,UPI,Completed
+ORD697,28-02-2026,CUST136,P008,Mechanical Keyboard,Electronics,11,3500,0,38500,Online,Amit,West,UPI,Pending
+ORD698,28-02-2026,CUST115,P007,Printer,Electronics,10,18500,15,157250,Direct,Rahul,North,Cash,Completed
+ORD699,28-02-2026,CUST146,P002,Wireless Mouse,Electronics,5,1200,15,5100,Wholesale,Rahul,North,Net Banking,Completed
+ORD700,28-02-2026,CUST126,P007,Printer,Electronics,5,18500,0,92500,Retail,Rahul,North,Net Banking,Pending
+ORD701,01-03-2026,CUST006,P010,Filing Cabinet,Furniture,2,9500,0,19000,Online,Neha,East,Card,Completed
+ORD702,01-03-2026,CUST006,P008,Mechanical Keyboard,Electronics,11,3500,5,36575,Wholesale,Priya,South,Cash,Completed
+ORD703,01-03-2026,CUST096,P004,Notebook Pack,Stationery,4,250,0,1000,Wholesale,Rahul,North,Card,Completed
+ORD704,02-03-2026,CUST112,P007,Printer,Electronics,11,18500,15,172975,Retail,Amit,West,Cash,Completed
+ORD705,02-03-2026,CUST060,P007,Printer,Electronics,1,18500,0,18500,Wholesale,Rahul,North,Card,Completed
+ORD706,02-03-2026,CUST023,P010,Filing Cabinet,Furniture,3,9500,15,24225,Online,Amit,West,Cash,Pending
+ORD707,02-03-2026,CUST030,P009,Executive Pen Set,Stationery,2,800,15,1360,Direct,Neha,East,Cash,Completed
+ORD708,03-03-2026,CUST058,P007,Printer,Electronics,9,18500,0,166500,Wholesale,Priya,South,Net Banking,Completed
+ORD709,03-03-2026,CUST010,P003,Office Chair,Furniture,11,8500,5,88825,Online,Rahul,North,UPI,Cancelled
+ORD710,03-03-2026,CUST135,P007,Printer,Electronics,1,18500,0,18500,Online,Neha,East,UPI,Completed
+ORD711,03-03-2026,CUST054,P001,Laptop Pro 15,Electronics,3,85000,0,255000,Online,Amit,West,Cash,Completed
+ORD712,04-03-2026,CUST006,P009,Executive Pen Set,Stationery,11,800,0,8800,Direct,Neha,East,Card,Pending
+ORD713,04-03-2026,CUST130,P010,Filing Cabinet,Furniture,11,9500,5,99275,Wholesale,Amit,West,Cash,Pending
+ORD714,04-03-2026,CUST012,P001,Laptop Pro 15,Electronics,1,85000,10,76500,Direct,Rahul,North,Card,Completed
+ORD715,04-03-2026,CUST036,P006,Desk,Furniture,5,12000,0,60000,Online,Amit,West,Net Banking,Pending
+ORD716,04-03-2026,CUST125,P005,Monitor 24inch,Electronics,3,14500,10,39150,Retail,Amit,West,Net Banking,Completed
+ORD717,04-03-2026,CUST106,P005,Monitor 24inch,Electronics,5,14500,5,68875,Direct,Amit,West,Card,Pending
+ORD718,05-03-2026,CUST070,P004,Notebook Pack,Stationery,2,250,0,500,Retail,Rahul,North,Net Banking,Cancelled
+ORD719,05-03-2026,CUST019,P007,Printer,Electronics,2,18500,15,31450,Retail,Amit,West,UPI,Cancelled
+ORD720,05-03-2026,CUST100,P006,Desk,Furniture,4,12000,10,43200,Direct,Amit,West,Card,Completed
+ORD721,06-03-2026,CUST038,P006,Desk,Furniture,4,12000,0,48000,Online,Neha,East,Net Banking,Pending
+ORD722,06-03-2026,CUST050,P002,Wireless Mouse,Electronics,5,1200,10,5400,Retail,Amit,West,Cash,Cancelled
+ORD723,06-03-2026,CUST022,P010,Filing Cabinet,Furniture,4,9500,15,32300,Retail,Neha,East,Card,Completed
+ORD724,06-03-2026,CUST137,P010,Filing Cabinet,Furniture,7,9500,10,59850,Retail,Amit,West,UPI,Completed
+ORD725,06-03-2026,CUST085,P003,Office Chair,Furniture,5,8500,0,42500,Direct,Amit,West,UPI,Completed
+ORD726,07-03-2026,CUST060,P008,Mechanical Keyboard,Electronics,1,3500,15,2975,Wholesale,Amit,West,Net Banking,Completed
+ORD727,07-03-2026,CUST139,P007,Printer,Electronics,5,18500,10,83250,Retail,Amit,West,Cash,Completed
+ORD728,07-03-2026,CUST140,P001,Laptop Pro 15,Electronics,1,85000,5,80750,Direct,Neha,East,Card,Pending
+ORD729,07-03-2026,CUST106,P007,Printer,Electronics,2,18500,0,37000,Direct,Neha,East,Net Banking,Completed
+ORD730,08-03-2026,CUST040,P002,Wireless Mouse,Electronics,11,1200,5,12540,Wholesale,Rahul,North,Net Banking,Completed
+ORD731,08-03-2026,CUST027,P001,Laptop Pro 15,Electronics,6,85000,0,510000,Direct,Rahul,North,UPI,Pending
+ORD732,08-03-2026,CUST030,P004,Notebook Pack,Stationery,6,250,10,1350,Direct,Rahul,North,Card,Completed
+ORD733,08-03-2026,CUST042,P008,Mechanical Keyboard,Electronics,1,3500,15,2975,Online,Neha,East,UPI,Completed
+ORD734,09-03-2026,CUST022,P009,Executive Pen Set,Stationery,4,800,0,3200,Wholesale,Amit,West,Card,Completed
+ORD735,09-03-2026,CUST089,P002,Wireless Mouse,Electronics,8,1200,0,9600,Retail,Neha,East,Card,Completed
+ORD736,09-03-2026,CUST096,P009,Executive Pen Set,Stationery,2,800,10,1440,Direct,Amit,West,UPI,Completed
+ORD737,09-03-2026,CUST124,P004,Notebook Pack,Stationery,8,250,5,1900,Wholesale,Priya,South,Card,Completed
+ORD738,09-03-2026,CUST029,P005,Monitor 24inch,Electronics,4,14500,15,49300,Direct,Amit,West,Card,Completed
+ORD739,10-03-2026,CUST078,P005,Monitor 24inch,Electronics,2,14500,0,29000,Retail,Neha,East,Net Banking,Pending
+ORD740,10-03-2026,CUST022,P004,Notebook Pack,Stationery,8,250,0,2000,Online,Neha,East,Card,Pending
+ORD741,10-03-2026,CUST148,P002,Wireless Mouse,Electronics,6,1200,5,6840,Direct,Amit,West,Card,Completed
+ORD742,10-03-2026,CUST144,P005,Monitor 24inch,Electronics,4,14500,15,49300,Wholesale,Neha,East,UPI,Pending
+ORD743,11-03-2026,CUST081,P007,Printer,Electronics,7,18500,10,116550,Online,Rahul,North,UPI,Pending
+ORD744,11-03-2026,CUST098,P005,Monitor 24inch,Electronics,11,14500,10,143550,Direct,Amit,West,Net Banking,Completed
+ORD745,11-03-2026,CUST079,P001,Laptop Pro 15,Electronics,5,85000,5,403750,Direct,Rahul,North,Cash,Cancelled
+ORD746,11-03-2026,CUST035,P005,Monitor 24inch,Electronics,9,14500,15,110925,Wholesale,Priya,South,Card,Completed
+ORD747,11-03-2026,CUST069,P009,Executive Pen Set,Stationery,8,800,0,6400,Direct,Neha,East,Cash,Completed
+ORD748,11-03-2026,CUST054,P008,Mechanical Keyboard,Electronics,11,3500,15,32725,Retail,Priya,South,Net Banking,Completed
+ORD749,12-03-2026,CUST046,P003,Office Chair,Furniture,1,8500,0,8500,Wholesale,Rahul,North,Card,Completed
+ORD750,12-03-2026,CUST084,P006,Desk,Furniture,8,12000,15,81600,Wholesale,Neha,East,Card,Completed
+ORD751,12-03-2026,CUST108,P004,Notebook Pack,Stationery,4,250,0,1000,Direct,Amit,West,Cash,Completed
+ORD752,12-03-2026,CUST102,P009,Executive Pen Set,Stationery,6,800,10,4320,Wholesale,Neha,East,Card,Cancelled
+ORD753,12-03-2026,CUST086,P003,Office Chair,Furniture,8,8500,10,61200,Retail,Neha,East,UPI,Completed
+ORD754,12-03-2026,CUST026,P007,Printer,Electronics,11,18500,15,172975,Online,Neha,East,Net Banking,Completed
+ORD755,13-03-2026,CUST039,P003,Office Chair,Furniture,7,8500,5,56525,Retail,Priya,South,Cash,Completed
+ORD756,13-03-2026,CUST038,P002,Wireless Mouse,Electronics,11,1200,5,12540,Retail,Neha,East,UPI,Pending
+ORD757,13-03-2026,CUST113,P010,Filing Cabinet,Furniture,1,9500,5,9025,Direct,Neha,East,Cash,Pending
+ORD758,13-03-2026,CUST118,P008,Mechanical Keyboard,Electronics,7,3500,5,23275,Online,Amit,West,Net Banking,Completed
+ORD759,13-03-2026,CUST140,P010,Filing Cabinet,Furniture,6,9500,10,51300,Wholesale,Amit,West,Card,Cancelled
+ORD760,13-03-2026,CUST046,P005,Monitor 24inch,Electronics,8,14500,0,116000,Online,Rahul,North,Card,Completed
+ORD761,14-03-2026,CUST118,P004,Notebook Pack,Stationery,11,250,0,2750,Retail,Amit,West,UPI,Completed
+ORD762,14-03-2026,CUST092,P006,Desk,Furniture,9,12000,15,91800,Retail,Amit,West,Net Banking,Completed
+ORD763,14-03-2026,CUST111,P009,Executive Pen Set,Stationery,10,800,0,8000,Online,Priya,South,Cash,Completed
+ORD764,14-03-2026,CUST014,P003,Office Chair,Furniture,1,8500,5,8075,Retail,Neha,East,UPI,Pending
+ORD765,14-03-2026,CUST093,P008,Mechanical Keyboard,Electronics,9,3500,5,29925,Retail,Priya,South,Cash,Cancelled
+ORD766,14-03-2026,CUST064,P006,Desk,Furniture,4,12000,0,48000,Direct,Priya,South,Cash,Completed
+ORD767,15-03-2026,CUST007,P006,Desk,Furniture,1,12000,0,12000,Online,Rahul,North,UPI,Completed
+ORD768,15-03-2026,CUST135,P002,Wireless Mouse,Electronics,6,1200,5,6840,Online,Neha,East,Card,Pending
+ORD769,15-03-2026,CUST004,P001,Laptop Pro 15,Electronics,4,85000,5,323000,Retail,Priya,South,Net Banking,Completed
+ORD770,15-03-2026,CUST071,P002,Wireless Mouse,Electronics,9,1200,15,9180,Direct,Amit,West,Card,Completed
+ORD771,16-03-2026,CUST123,P009,Executive Pen Set,Stationery,2,800,10,1440,Online,Neha,East,Net Banking,Completed
+ORD772,16-03-2026,CUST047,P004,Notebook Pack,Stationery,5,250,0,1250,Direct,Amit,West,UPI,Completed
+ORD773,16-03-2026,CUST039,P009,Executive Pen Set,Stationery,4,800,5,3040,Direct,Priya,South,Net Banking,Pending
+ORD774,16-03-2026,CUST018,P010,Filing Cabinet,Furniture,5,9500,15,40375,Wholesale,Rahul,North,UPI,Completed
+ORD775,16-03-2026,CUST087,P010,Filing Cabinet,Furniture,6,9500,10,51300,Direct,Neha,East,UPI,Completed
+ORD776,16-03-2026,CUST101,P002,Wireless Mouse,Electronics,5,1200,0,6000,Online,Priya,South,UPI,Cancelled
+ORD777,17-03-2026,CUST118,P007,Printer,Electronics,9,18500,15,141525,Wholesale,Neha,East,Card,Completed
+ORD778,17-03-2026,CUST117,P002,Wireless Mouse,Electronics,4,1200,15,4080,Retail,Neha,East,UPI,Completed
+ORD779,17-03-2026,CUST135,P002,Wireless Mouse,Electronics,6,1200,15,6120,Online,Priya,South,Net Banking,Completed
+ORD780,17-03-2026,CUST095,P010,Filing Cabinet,Furniture,11,9500,10,94050,Retail,Amit,West,Net Banking,Completed
+ORD781,17-03-2026,CUST098,P008,Mechanical Keyboard,Electronics,6,3500,0,21000,Wholesale,Neha,East,UPI,Completed
+ORD782,17-03-2026,CUST025,P007,Printer,Electronics,9,18500,15,141525,Wholesale,Amit,West,Net Banking,Pending
+ORD783,18-03-2026,CUST119,P001,Laptop Pro 15,Electronics,9,85000,0,765000,Retail,Rahul,North,Net Banking,Cancelled
+ORD784,18-03-2026,CUST042,P005,Monitor 24inch,Electronics,11,14500,0,159500,Wholesale,Amit,West,UPI,Cancelled
+ORD785,18-03-2026,CUST123,P003,Office Chair,Furniture,3,8500,0,25500,Online,Neha,East,Cash,Completed
+ORD786,18-03-2026,CUST006,P006,Desk,Furniture,3,12000,5,34200,Direct,Neha,East,Cash,Completed
+ORD787,18-03-2026,CUST084,P004,Notebook Pack,Stationery,3,250,15,637,Online,Amit,West,Net Banking,Cancelled
+ORD788,18-03-2026,CUST009,P005,Monitor 24inch,Electronics,9,14500,0,130500,Retail,Rahul,North,Net Banking,Completed
+ORD789,19-03-2026,CUST001,P010,Filing Cabinet,Furniture,11,9500,0,104500,Retail,Rahul,North,Net Banking,Completed
+ORD790,19-03-2026,CUST112,P009,Executive Pen Set,Stationery,4,800,0,3200,Wholesale,Amit,West,UPI,Cancelled
+ORD791,19-03-2026,CUST025,P002,Wireless Mouse,Electronics,11,1200,10,11880,Wholesale,Priya,South,Net Banking,Completed
+ORD792,20-03-2026,CUST056,P009,Executive Pen Set,Stationery,8,800,10,5760,Online,Neha,East,Net Banking,Completed
+ORD793,20-03-2026,CUST067,P010,Filing Cabinet,Furniture,8,9500,15,64600,Online,Rahul,North,Card,Pending
+ORD794,20-03-2026,CUST118,P002,Wireless Mouse,Electronics,2,1200,0,2400,Wholesale,Priya,South,Card,Completed
+ORD795,20-03-2026,CUST063,P002,Wireless Mouse,Electronics,9,1200,5,10260,Wholesale,Amit,West,Cash,Cancelled
+ORD796,20-03-2026,CUST026,P006,Desk,Furniture,8,12000,0,96000,Wholesale,Rahul,North,Cash,Completed
+ORD797,20-03-2026,CUST082,P007,Printer,Electronics,11,18500,0,203500,Direct,Amit,West,Cash,Pending
+ORD798,21-03-2026,CUST126,P001,Laptop Pro 15,Electronics,5,85000,0,425000,Retail,Amit,West,Cash,Completed
+ORD799,21-03-2026,CUST080,P006,Desk,Furniture,7,12000,10,75600,Retail,Priya,South,Net Banking,Pending
+ORD800,21-03-2026,CUST046,P008,Mechanical Keyboard,Electronics,7,3500,15,20825,Direct,Priya,South,Card,Completed
+ORD801,22-03-2026,CUST065,P006,Desk,Furniture,7,12000,5,79800,Wholesale,Neha,East,Cash,Completed
+ORD802,22-03-2026,CUST096,P002,Wireless Mouse,Electronics,7,1200,0,8400,Online,Rahul,North,Cash,Completed
+ORD803,22-03-2026,CUST045,P002,Wireless Mouse,Electronics,8,1200,5,9120,Direct,Amit,West,Cash,Completed
+ORD804,23-03-2026,CUST050,P004,Notebook Pack,Stationery,11,250,5,2612,Online,Rahul,North,Card,Completed
+ORD805,23-03-2026,CUST031,P005,Monitor 24inch,Electronics,10,14500,15,123250,Online,Rahul,North,Cash,Pending
+ORD806,23-03-2026,CUST101,P006,Desk,Furniture,5,12000,10,54000,Direct,Rahul,North,Card,Completed
+ORD807,23-03-2026,CUST025,P010,Filing Cabinet,Furniture,2,9500,0,19000,Wholesale,Priya,South,Card,Cancelled
+ORD808,23-03-2026,CUST038,P006,Desk,Furniture,11,12000,0,132000,Wholesale,Neha,East,Cash,Cancelled
+ORD809,24-03-2026,CUST019,P002,Wireless Mouse,Electronics,1,1200,10,1080,Direct,Rahul,North,Card,Completed
+ORD810,24-03-2026,CUST001,P004,Notebook Pack,Stationery,9,250,15,1912,Direct,Rahul,North,UPI,Completed
+ORD811,24-03-2026,CUST089,P002,Wireless Mouse,Electronics,3,1200,5,3420,Direct,Rahul,North,UPI,Completed
+ORD812,24-03-2026,CUST073,P001,Laptop Pro 15,Electronics,10,85000,5,807500,Retail,Rahul,North,Net Banking,Pending
+ORD813,24-03-2026,CUST104,P007,Printer,Electronics,2,18500,0,37000,Online,Rahul,North,Card,Cancelled
+ORD814,25-03-2026,CUST070,P009,Executive Pen Set,Stationery,11,800,0,8800,Retail,Priya,South,Card,Pending
+ORD815,25-03-2026,CUST018,P008,Mechanical Keyboard,Electronics,4,3500,15,11900,Wholesale,Rahul,North,Cash,Pending
+ORD816,25-03-2026,CUST009,P009,Executive Pen Set,Stationery,10,800,10,7200,Direct,Rahul,North,Cash,Completed
+ORD817,25-03-2026,CUST121,P004,Notebook Pack,Stationery,5,250,15,1062,Wholesale,Neha,East,UPI,Completed
+ORD818,26-03-2026,CUST013,P004,Notebook Pack,Stationery,10,250,15,2125,Online,Priya,South,Cash,Completed
+ORD819,26-03-2026,CUST008,P003,Office Chair,Furniture,9,8500,15,65025,Wholesale,Amit,West,Card,Cancelled
+ORD820,26-03-2026,CUST042,P004,Notebook Pack,Stationery,8,250,15,1700,Online,Neha,East,UPI,Pending
+ORD821,27-03-2026,CUST073,P004,Notebook Pack,Stationery,7,250,0,1750,Direct,Priya,South,Net Banking,Cancelled
+ORD822,27-03-2026,CUST089,P002,Wireless Mouse,Electronics,4,1200,10,4320,Online,Amit,West,Card,Completed
+ORD823,27-03-2026,CUST013,P010,Filing Cabinet,Furniture,7,9500,10,59850,Wholesale,Priya,South,UPI,Completed
+ORD824,27-03-2026,CUST099,P002,Wireless Mouse,Electronics,11,1200,10,11880,Online,Neha,East,Cash,Completed
+ORD825,27-03-2026,CUST126,P008,Mechanical Keyboard,Electronics,9,3500,10,28350,Online,Amit,West,Net Banking,Completed
+ORD826,27-03-2026,CUST014,P001,Laptop Pro 15,Electronics,3,85000,10,229500,Retail,Amit,West,Cash,Completed
+ORD827,28-03-2026,CUST144,P006,Desk,Furniture,8,12000,5,91200,Retail,Neha,East,Net Banking,Pending
+ORD828,28-03-2026,CUST083,P010,Filing Cabinet,Furniture,1,9500,15,8075,Wholesale,Rahul,North,Cash,Completed
+ORD829,28-03-2026,CUST034,P004,Notebook Pack,Stationery,9,250,0,2250,Retail,Amit,West,Card,Completed
+ORD830,29-03-2026,CUST081,P008,Mechanical Keyboard,Electronics,11,3500,0,38500,Wholesale,Amit,West,UPI,Completed
+ORD831,29-03-2026,CUST028,P003,Office Chair,Furniture,11,8500,15,79475,Wholesale,Priya,South,UPI,Cancelled
+ORD832,29-03-2026,CUST054,P008,Mechanical Keyboard,Electronics,7,3500,5,23275,Wholesale,Neha,East,Net Banking,Completed
+ORD833,29-03-2026,CUST071,P009,Executive Pen Set,Stationery,1,800,15,680,Direct,Amit,West,Net Banking,Pending
+ORD834,29-03-2026,CUST035,P003,Office Chair,Furniture,6,8500,15,43350,Wholesale,Neha,East,Cash,Completed
+ORD835,30-03-2026,CUST087,P009,Executive Pen Set,Stationery,11,800,5,8360,Online,Priya,South,Card,Completed
+ORD836,30-03-2026,CUST063,P004,Notebook Pack,Stationery,5,250,0,1250,Wholesale,Amit,West,Card,Completed
+ORD837,30-03-2026,CUST133,P003,Office Chair,Furniture,4,8500,5,32300,Retail,Neha,East,Cash,Cancelled
+ORD838,30-03-2026,CUST061,P001,Laptop Pro 15,Electronics,8,85000,10,612000,Retail,Amit,West,UPI,Completed
+ORD839,30-03-2026,CUST079,P006,Desk,Furniture,11,12000,0,132000,Wholesale,Neha,East,Net Banking,Completed
+ORD840,31-03-2026,CUST047,P009,Executive Pen Set,Stationery,2,800,15,1360,Direct,Neha,East,UPI,Pending
+ORD841,31-03-2026,CUST013,P001,Laptop Pro 15,Electronics,2,85000,10,153000,Online,Priya,South,Card,Completed
+ORD842,31-03-2026,CUST082,P006,Desk,Furniture,7,12000,15,71400,Wholesale,Amit,West,Net Banking,Cancelled
+ORD843,31-03-2026,CUST038,P008,Mechanical Keyboard,Electronics,11,3500,0,38500,Online,Rahul,North,UPI,Completed
+ORD844,01-04-2026,CUST094,P004,Notebook Pack,Stationery,5,250,15,1062,Retail,Rahul,North,Cash,Cancelled
+ORD845,01-04-2026,CUST016,P002,Wireless Mouse,Electronics,10,1200,0,12000,Online,Amit,West,Net Banking,Completed
+ORD846,01-04-2026,CUST130,P004,Notebook Pack,Stationery,5,250,0,1250,Retail,Priya,South,Card,Completed
+ORD847,01-04-2026,CUST069,P005,Monitor 24inch,Electronics,4,14500,5,55100,Online,Rahul,North,Net Banking,Completed
+ORD848,01-04-2026,CUST066,P009,Executive Pen Set,Stationery,11,800,10,7920,Direct,Priya,South,UPI,Completed
+ORD849,01-04-2026,CUST110,P001,Laptop Pro 15,Electronics,2,85000,0,170000,Online,Amit,West,Card,Pending
+ORD850,02-04-2026,CUST125,P002,Wireless Mouse,Electronics,11,1200,5,12540,Direct,Amit,West,Card,Pending
+ORD851,02-04-2026,CUST106,P009,Executive Pen Set,Stationery,7,800,10,5040,Retail,Neha,East,UPI,Completed
+ORD852,02-04-2026,CUST087,P002,Wireless Mouse,Electronics,10,1200,0,12000,Direct,Rahul,North,UPI,Cancelled
+ORD853,02-04-2026,CUST113,P005,Monitor 24inch,Electronics,11,14500,15,135575,Online,Priya,South,Cash,Completed
+ORD854,02-04-2026,CUST030,P010,Filing Cabinet,Furniture,2,9500,0,19000,Wholesale,Neha,East,Cash,Completed
+ORD855,02-04-2026,CUST106,P007,Printer,Electronics,8,18500,0,148000,Direct,Rahul,North,UPI,Completed
+ORD856,03-04-2026,CUST114,P005,Monitor 24inch,Electronics,10,14500,0,145000,Wholesale,Amit,West,Net Banking,Completed
+ORD857,03-04-2026,CUST128,P004,Notebook Pack,Stationery,8,250,5,1900,Direct,Priya,South,Card,Completed
+ORD858,03-04-2026,CUST113,P008,Mechanical Keyboard,Electronics,7,3500,5,23275,Wholesale,Priya,South,Card,Pending
+ORD859,03-04-2026,CUST099,P006,Desk,Furniture,11,12000,10,118800,Online,Priya,South,Cash,Completed
+ORD860,03-04-2026,CUST042,P002,Wireless Mouse,Electronics,1,1200,0,1200,Retail,Amit,West,Card,Completed
+ORD861,03-04-2026,CUST110,P008,Mechanical Keyboard,Electronics,6,3500,5,19950,Wholesale,Neha,East,Cash,Completed
+ORD862,04-04-2026,CUST035,P002,Wireless Mouse,Electronics,1,1200,10,1080,Online,Rahul,North,UPI,Cancelled
+ORD863,04-04-2026,CUST065,P003,Office Chair,Furniture,1,8500,5,8075,Online,Rahul,North,Net Banking,Pending
+ORD864,04-04-2026,CUST123,P006,Desk,Furniture,8,12000,0,96000,Direct,Neha,East,Card,Pending
+ORD865,04-04-2026,CUST074,P001,Laptop Pro 15,Electronics,9,85000,5,726750,Wholesale,Amit,West,Net Banking,Cancelled
+ORD866,04-04-2026,CUST071,P002,Wireless Mouse,Electronics,4,1200,5,4560,Retail,Priya,South,UPI,Cancelled
+ORD867,04-04-2026,CUST081,P005,Monitor 24inch,Electronics,6,14500,0,87000,Online,Neha,East,UPI,Cancelled
+ORD868,05-04-2026,CUST146,P006,Desk,Furniture,1,12000,0,12000,Wholesale,Rahul,North,Cash,Pending
+ORD869,05-04-2026,CUST027,P010,Filing Cabinet,Furniture,1,9500,10,8550,Wholesale,Rahul,North,Net Banking,Completed
+ORD870,05-04-2026,CUST069,P002,Wireless Mouse,Electronics,7,1200,0,8400,Direct,Rahul,North,Cash,Cancelled
+ORD871,05-04-2026,CUST035,P003,Office Chair,Furniture,7,8500,15,50575,Online,Priya,South,Card,Completed
+ORD872,06-04-2026,CUST071,P003,Office Chair,Furniture,10,8500,0,85000,Wholesale,Amit,West,Card,Completed
+ORD873,06-04-2026,CUST061,P004,Notebook Pack,Stationery,6,250,0,1500,Retail,Amit,West,UPI,Pending
+ORD874,06-04-2026,CUST149,P001,Laptop Pro 15,Electronics,1,85000,0,85000,Wholesale,Amit,West,Cash,Completed
+ORD875,06-04-2026,CUST051,P008,Mechanical Keyboard,Electronics,9,3500,5,29925,Online,Neha,East,Net Banking,Completed
+ORD876,06-04-2026,CUST130,P004,Notebook Pack,Stationery,2,250,15,425,Online,Amit,West,Cash,Pending
+ORD877,07-04-2026,CUST074,P009,Executive Pen Set,Stationery,5,800,5,3800,Retail,Rahul,North,Card,Cancelled
+ORD878,07-04-2026,CUST088,P008,Mechanical Keyboard,Electronics,8,3500,0,28000,Direct,Rahul,North,Card,Completed
+ORD879,07-04-2026,CUST130,P009,Executive Pen Set,Stationery,8,800,0,6400,Online,Neha,East,Card,Cancelled
+ORD880,07-04-2026,CUST050,P008,Mechanical Keyboard,Electronics,10,3500,5,33250,Online,Rahul,North,UPI,Cancelled
+ORD881,08-04-2026,CUST074,P001,Laptop Pro 15,Electronics,2,85000,0,170000,Direct,Neha,East,Card,Cancelled
+ORD882,08-04-2026,CUST082,P001,Laptop Pro 15,Electronics,9,85000,0,765000,Wholesale,Rahul,North,Net Banking,Completed
+ORD883,08-04-2026,CUST148,P008,Mechanical Keyboard,Electronics,8,3500,5,26600,Online,Neha,East,Card,Completed
+ORD884,08-04-2026,CUST015,P005,Monitor 24inch,Electronics,7,14500,5,96425,Direct,Priya,South,UPI,Completed
+ORD885,08-04-2026,CUST092,P001,Laptop Pro 15,Electronics,2,85000,15,144500,Retail,Amit,West,Card,Completed
+ORD886,08-04-2026,CUST019,P001,Laptop Pro 15,Electronics,1,85000,10,76500,Direct,Rahul,North,Cash,Completed
+ORD887,09-04-2026,CUST049,P007,Printer,Electronics,10,18500,5,175750,Direct,Neha,East,Net Banking,Cancelled
+ORD888,09-04-2026,CUST118,P007,Printer,Electronics,4,18500,15,62900,Retail,Priya,South,Card,Completed
+ORD889,09-04-2026,CUST025,P010,Filing Cabinet,Furniture,6,9500,0,57000,Online,Neha,East,Cash,Pending
+ORD890,09-04-2026,CUST134,P004,Notebook Pack,Stationery,7,250,0,1750,Wholesale,Priya,South,UPI,Completed
+ORD891,09-04-2026,CUST078,P007,Printer,Electronics,1,18500,0,18500,Online,Rahul,North,Net Banking,Completed
+ORD892,10-04-2026,CUST068,P010,Filing Cabinet,Furniture,11,9500,0,104500,Direct,Priya,South,UPI,Completed
+ORD893,10-04-2026,CUST140,P010,Filing Cabinet,Furniture,1,9500,15,8075,Direct,Priya,South,UPI,Completed
+ORD894,10-04-2026,CUST026,P005,Monitor 24inch,Electronics,4,14500,0,58000,Online,Priya,South,Cash,Cancelled
+ORD895,10-04-2026,CUST023,P001,Laptop Pro 15,Electronics,2,85000,10,153000,Wholesale,Neha,East,UPI,Completed
+ORD896,10-04-2026,CUST012,P008,Mechanical Keyboard,Electronics,2,3500,10,6300,Direct,Priya,South,Cash,Completed
+ORD897,10-04-2026,CUST044,P006,Desk,Furniture,4,12000,0,48000,Direct,Neha,East,Cash,Cancelled
+ORD898,11-04-2026,CUST071,P003,Office Chair,Furniture,6,8500,10,45900,Online,Amit,West,Cash,Cancelled
+ORD899,11-04-2026,CUST048,P007,Printer,Electronics,11,18500,15,172975,Wholesale,Amit,West,Net Banking,Completed
+ORD900,11-04-2026,CUST122,P005,Monitor 24inch,Electronics,7,14500,15,86275,Online,Rahul,North,Cash,Completed
+ORD901,11-04-2026,CUST093,P006,Desk,Furniture,1,12000,0,12000,Direct,Rahul,North,Card,Completed
+ORD902,11-04-2026,CUST011,P006,Desk,Furniture,8,12000,0,96000,Online,Neha,East,Cash,Completed
+ORD903,12-04-2026,CUST038,P007,Printer,Electronics,2,18500,0,37000,Retail,Priya,South,Card,Completed
+ORD904,12-04-2026,CUST115,P001,Laptop Pro 15,Electronics,7,85000,10,535500,Online,Priya,South,UPI,Completed
+ORD905,12-04-2026,CUST085,P006,Desk,Furniture,9,12000,10,97200,Online,Priya,South,Cash,Completed
+ORD906,12-04-2026,CUST012,P001,Laptop Pro 15,Electronics,10,85000,0,850000,Direct,Priya,South,Card,Completed
+ORD907,12-04-2026,CUST011,P009,Executive Pen Set,Stationery,9,800,0,7200,Retail,Neha,East,Cash,Pending
+ORD908,12-04-2026,CUST053,P004,Notebook Pack,Stationery,10,250,15,2125,Direct,Neha,East,Net Banking,Pending
+ORD909,13-04-2026,CUST106,P006,Desk,Furniture,2,12000,15,20400,Online,Priya,South,Net Banking,Completed
+ORD910,13-04-2026,CUST020,P008,Mechanical Keyboard,Electronics,7,3500,0,24500,Retail,Rahul,North,UPI,Cancelled
+ORD911,13-04-2026,CUST044,P006,Desk,Furniture,10,12000,0,120000,Online,Priya,South,Cash,Completed
+ORD912,14-04-2026,CUST051,P010,Filing Cabinet,Furniture,8,9500,15,64600,Retail,Neha,East,Card,Completed
+ORD913,14-04-2026,CUST126,P007,Printer,Electronics,8,18500,0,148000,Retail,Amit,West,Net Banking,Pending
+ORD914,14-04-2026,CUST057,P004,Notebook Pack,Stationery,10,250,5,2375,Retail,Priya,South,Card,Pending
+ORD915,14-04-2026,CUST032,P010,Filing Cabinet,Furniture,10,9500,0,95000,Wholesale,Amit,West,UPI,Completed
+ORD916,15-04-2026,CUST126,P007,Printer,Electronics,7,18500,0,129500,Retail,Rahul,North,UPI,Completed
+ORD917,15-04-2026,CUST084,P003,Office Chair,Furniture,3,8500,0,25500,Retail,Rahul,North,UPI,Cancelled
+ORD918,15-04-2026,CUST030,P005,Monitor 24inch,Electronics,10,14500,10,130500,Wholesale,Rahul,North,UPI,Completed
+ORD919,15-04-2026,CUST013,P008,Mechanical Keyboard,Electronics,9,3500,10,28350,Wholesale,Priya,South,UPI,Cancelled
+ORD920,15-04-2026,CUST094,P003,Office Chair,Furniture,10,8500,5,80750,Direct,Priya,South,Card,Pending
+ORD921,15-04-2026,CUST024,P002,Wireless Mouse,Electronics,5,1200,0,6000,Retail,Neha,East,Card,Cancelled
+ORD922,16-04-2026,CUST013,P003,Office Chair,Furniture,3,8500,0,25500,Wholesale,Neha,East,UPI,Completed
+ORD923,16-04-2026,CUST076,P002,Wireless Mouse,Electronics,11,1200,10,11880,Retail,Neha,East,Card,Cancelled
+ORD924,16-04-2026,CUST002,P005,Monitor 24inch,Electronics,7,14500,0,101500,Direct,Priya,South,Net Banking,Pending
+ORD925,16-04-2026,CUST073,P005,Monitor 24inch,Electronics,5,14500,5,68875,Direct,Priya,South,Card,Completed
+ORD926,17-04-2026,CUST110,P002,Wireless Mouse,Electronics,10,1200,10,10800,Wholesale,Neha,East,Cash,Pending
+ORD927,17-04-2026,CUST085,P006,Desk,Furniture,1,12000,10,10800,Direct,Amit,West,UPI,Cancelled
+ORD928,17-04-2026,CUST085,P001,Laptop Pro 15,Electronics,11,85000,15,794750,Wholesale,Amit,West,Net Banking,Cancelled
+ORD929,18-04-2026,CUST068,P008,Mechanical Keyboard,Electronics,5,3500,0,17500,Direct,Rahul,North,Net Banking,Completed
+ORD930,18-04-2026,CUST101,P001,Laptop Pro 15,Electronics,9,85000,10,688500,Retail,Rahul,North,Net Banking,Pending
+ORD931,18-04-2026,CUST056,P003,Office Chair,Furniture,5,8500,0,42500,Retail,Priya,South,Card,Completed
+ORD932,18-04-2026,CUST109,P010,Filing Cabinet,Furniture,11,9500,0,104500,Direct,Priya,South,Card,Completed
+ORD933,18-04-2026,CUST071,P008,Mechanical Keyboard,Electronics,9,3500,15,26775,Wholesale,Neha,East,UPI,Completed
+ORD934,19-04-2026,CUST143,P006,Desk,Furniture,5,12000,15,51000,Retail,Amit,West,Cash,Completed
+ORD935,19-04-2026,CUST140,P006,Desk,Furniture,4,12000,0,48000,Direct,Neha,East,Net Banking,Completed
+ORD936,19-04-2026,CUST098,P004,Notebook Pack,Stationery,5,250,5,1187,Online,Rahul,North,Card,Completed
+ORD937,20-04-2026,CUST063,P009,Executive Pen Set,Stationery,7,800,0,5600,Retail,Rahul,North,Net Banking,Cancelled
+ORD938,20-04-2026,CUST028,P010,Filing Cabinet,Furniture,4,9500,15,32300,Retail,Priya,South,Card,Completed
+ORD939,20-04-2026,CUST017,P008,Mechanical Keyboard,Electronics,3,3500,0,10500,Wholesale,Priya,South,UPI,Completed
+ORD940,20-04-2026,CUST038,P007,Printer,Electronics,6,18500,10,99900,Wholesale,Rahul,North,Card,Pending
+ORD941,20-04-2026,CUST130,P001,Laptop Pro 15,Electronics,8,85000,5,646000,Retail,Amit,West,Cash,Completed
+ORD942,21-04-2026,CUST080,P009,Executive Pen Set,Stationery,11,800,10,7920,Direct,Neha,East,UPI,Pending
+ORD943,21-04-2026,CUST113,P006,Desk,Furniture,2,12000,0,24000,Wholesale,Priya,South,Net Banking,Completed
+ORD944,21-04-2026,CUST076,P007,Printer,Electronics,5,18500,10,83250,Direct,Amit,West,Cash,Completed
+ORD945,21-04-2026,CUST087,P006,Desk,Furniture,5,12000,10,54000,Wholesale,Amit,West,Net Banking,Cancelled
+ORD946,21-04-2026,CUST149,P001,Laptop Pro 15,Electronics,2,85000,15,144500,Wholesale,Rahul,North,UPI,Cancelled
+ORD947,21-04-2026,CUST146,P004,Notebook Pack,Stationery,4,250,10,900,Wholesale,Neha,East,Card,Pending
+ORD948,22-04-2026,CUST117,P004,Notebook Pack,Stationery,11,250,0,2750,Online,Priya,South,Cash,Completed
+ORD949,22-04-2026,CUST042,P009,Executive Pen Set,Stationery,7,800,15,4760,Retail,Priya,South,UPI,Completed
+ORD950,22-04-2026,CUST128,P003,Office Chair,Furniture,5,8500,0,42500,Online,Neha,East,Cash,Cancelled
+ORD951,22-04-2026,CUST030,P005,Monitor 24inch,Electronics,1,14500,0,14500,Online,Rahul,North,UPI,Completed
+ORD952,22-04-2026,CUST062,P004,Notebook Pack,Stationery,8,250,5,1900,Wholesale,Amit,West,Net Banking,Completed
+ORD953,23-04-2026,CUST141,P008,Mechanical Keyboard,Electronics,1,3500,15,2975,Online,Amit,West,Net Banking,Completed
+ORD954,23-04-2026,CUST108,P010,Filing Cabinet,Furniture,6,9500,0,57000,Wholesale,Rahul,North,UPI,Completed
+ORD955,23-04-2026,CUST021,P008,Mechanical Keyboard,Electronics,7,3500,10,22050,Retail,Neha,East,UPI,Completed
+ORD956,24-04-2026,CUST005,P008,Mechanical Keyboard,Electronics,5,3500,0,17500,Retail,Amit,West,Card,Cancelled
+ORD957,24-04-2026,CUST019,P001,Laptop Pro 15,Electronics,1,85000,15,72250,Retail,Amit,West,Card,Completed
+ORD958,24-04-2026,CUST040,P003,Office Chair,Furniture,9,8500,15,65025,Online,Priya,South,Cash,Pending
+ORD959,24-04-2026,CUST109,P002,Wireless Mouse,Electronics,5,1200,5,5700,Online,Rahul,North,Card,Completed
+ORD960,24-04-2026,CUST081,P002,Wireless Mouse,Electronics,3,1200,5,3420,Wholesale,Neha,East,UPI,Completed
+ORD961,24-04-2026,CUST042,P004,Notebook Pack,Stationery,9,250,0,2250,Wholesale,Amit,West,UPI,Pending
+ORD962,25-04-2026,CUST017,P005,Monitor 24inch,Electronics,7,14500,0,101500,Retail,Rahul,North,Cash,Completed
+ORD963,25-04-2026,CUST039,P004,Notebook Pack,Stationery,8,250,15,1700,Retail,Neha,East,Card,Cancelled
+ORD964,25-04-2026,CUST029,P009,Executive Pen Set,Stationery,4,800,5,3040,Retail,Neha,East,Card,Completed
+ORD965,25-04-2026,CUST057,P003,Office Chair,Furniture,2,8500,0,17000,Direct,Priya,South,Cash,Completed
+ORD966,25-04-2026,CUST023,P001,Laptop Pro 15,Electronics,1,85000,10,76500,Wholesale,Rahul,North,Net Banking,Pending
+ORD967,26-04-2026,CUST027,P003,Office Chair,Furniture,4,8500,0,34000,Online,Rahul,North,Card,Completed
+ORD968,26-04-2026,CUST010,P007,Printer,Electronics,6,18500,0,111000,Retail,Neha,East,Net Banking,Completed
+ORD969,26-04-2026,CUST018,P007,Printer,Electronics,1,18500,15,15725,Direct,Priya,South,Net Banking,Completed
+ORD970,27-04-2026,CUST146,P006,Desk,Furniture,11,12000,0,132000,Online,Amit,West,UPI,Completed
+ORD971,27-04-2026,CUST035,P002,Wireless Mouse,Electronics,5,1200,10,5400,Direct,Priya,South,Cash,Pending
+ORD972,27-04-2026,CUST023,P004,Notebook Pack,Stationery,6,250,10,1350,Direct,Amit,West,Card,Completed
+ORD973,27-04-2026,CUST135,P009,Executive Pen Set,Stationery,10,800,15,6800,Retail,Neha,East,UPI,Pending
+ORD974,27-04-2026,CUST140,P007,Printer,Electronics,2,18500,0,37000,Wholesale,Priya,South,UPI,Pending
+ORD975,28-04-2026,CUST017,P004,Notebook Pack,Stationery,7,250,0,1750,Wholesale,Amit,West,Net Banking,Completed
+ORD976,28-04-2026,CUST119,P002,Wireless Mouse,Electronics,6,1200,0,7200,Online,Priya,South,UPI,Completed
+ORD977,28-04-2026,CUST126,P002,Wireless Mouse,Electronics,6,1200,0,7200,Retail,Rahul,North,Net Banking,Completed
+ORD978,28-04-2026,CUST003,P006,Desk,Furniture,6,12000,0,72000,Wholesale,Amit,West,Card,Pending
+ORD979,29-04-2026,CUST145,P007,Printer,Electronics,8,18500,0,148000,Retail,Neha,East,Cash,Completed
+ORD980,29-04-2026,CUST052,P006,Desk,Furniture,3,12000,15,30600,Retail,Neha,East,Card,Completed
+ORD981,29-04-2026,CUST021,P008,Mechanical Keyboard,Electronics,6,3500,10,18900,Wholesale,Neha,East,Cash,Completed
+ORD982,30-04-2026,CUST101,P008,Mechanical Keyboard,Electronics,6,3500,5,19950,Direct,Amit,West,Net Banking,Completed
+ORD983,30-04-2026,CUST040,P004,Notebook Pack,Stationery,11,250,0,2750,Direct,Neha,East,Card,Completed
+ORD984,30-04-2026,CUST081,P009,Executive Pen Set,Stationery,2,800,0,1600,Direct,Rahul,North,UPI,Pending
+ORD985,30-04-2026,CUST092,P010,Filing Cabinet,Furniture,6,9500,5,54150,Wholesale,Amit,West,Cash,Pending
+ORD986,30-04-2026,CUST140,P008,Mechanical Keyboard,Electronics,5,3500,10,15750,Wholesale,Amit,West,Card,Completed
+ORD987,30-04-2026,CUST057,P005,Monitor 24inch,Electronics,8,14500,0,116000,Online,Rahul,North,Net Banking,Cancelled
+ORD988,01-05-2026,CUST003,P008,Mechanical Keyboard,Electronics,5,3500,0,17500,Retail,Amit,West,Cash,Cancelled
+ORD989,01-05-2026,CUST138,P010,Filing Cabinet,Furniture,4,9500,0,38000,Direct,Amit,West,Cash,Completed
+ORD990,01-05-2026,CUST071,P002,Wireless Mouse,Electronics,6,1200,0,7200,Direct,Amit,West,Net Banking,Completed
+ORD991,01-05-2026,CUST140,P007,Printer,Electronics,7,18500,0,129500,Wholesale,Rahul,North,UPI,Cancelled
+ORD992,01-05-2026,CUST091,P006,Desk,Furniture,6,12000,0,72000,Retail,Neha,East,Net Banking,Completed
+ORD993,02-05-2026,CUST113,P008,Mechanical Keyboard,Electronics,5,3500,0,17500,Online,Neha,East,UPI,Completed
+ORD994,02-05-2026,CUST133,P007,Printer,Electronics,2,18500,15,31450,Retail,Rahul,North,Cash,Completed
+ORD995,02-05-2026,CUST079,P010,Filing Cabinet,Furniture,11,9500,10,94050,Wholesale,Priya,South,Card,Completed
+ORD996,02-05-2026,CUST098,P002,Wireless Mouse,Electronics,9,1200,5,10260,Wholesale,Rahul,North,Net Banking,Cancelled
+ORD997,02-05-2026,CUST045,P004,Notebook Pack,Stationery,8,250,15,1700,Retail,Amit,West,UPI,Cancelled
+ORD998,03-05-2026,CUST128,P007,Printer,Electronics,10,18500,15,157250,Retail,Amit,West,Card,Pending
+ORD999,03-05-2026,CUST053,P010,Filing Cabinet,Furniture,3,9500,0,28500,Online,Neha,East,UPI,Cancelled
+ORD1000,03-05-2026,CUST039,P004,Notebook Pack,Stationery,3,250,15,637,Wholesale,Neha,East,Card,Completed
+ORD1001,03-05-2026,CUST021,P007,Printer,Electronics,6,18500,0,111000,Direct,Amit,West,Cash,Completed
+ORD1002,03-05-2026,CUST123,P001,Laptop Pro 15,Electronics,3,85000,5,242250,Direct,Amit,West,Cash,Completed
+ORD1003,04-05-2026,CUST043,P006,Desk,Furniture,4,12000,5,45600,Wholesale,Amit,West,UPI,Completed
+ORD1004,04-05-2026,CUST126,P010,Filing Cabinet,Furniture,5,9500,0,47500,Retail,Priya,South,Net Banking,Cancelled
+ORD1005,04-05-2026,CUST010,P002,Wireless Mouse,Electronics,4,1200,15,4080,Wholesale,Rahul,North,UPI,Completed
+ORD1006,05-05-2026,CUST133,P010,Filing Cabinet,Furniture,5,9500,15,40375,Retail,Priya,South,Cash,Pending
+ORD1007,05-05-2026,CUST026,P008,Mechanical Keyboard,Electronics,5,3500,5,16625,Online,Neha,East,Net Banking,Cancelled
+ORD1008,05-05-2026,CUST003,P004,Notebook Pack,Stationery,8,250,5,1900,Retail,Rahul,North,UPI,Completed
+ORD1009,05-05-2026,CUST090,P010,Filing Cabinet,Furniture,11,9500,0,104500,Direct,Amit,West,Net Banking,Completed
+ORD1010,05-05-2026,CUST117,P007,Printer,Electronics,6,18500,15,94350,Wholesale,Neha,East,UPI,Cancelled
+ORD1011,06-05-2026,CUST020,P008,Mechanical Keyboard,Electronics,10,3500,0,35000,Online,Rahul,North,Net Banking,Completed
+ORD1012,06-05-2026,CUST015,P010,Filing Cabinet,Furniture,10,9500,15,80750,Direct,Priya,South,Net Banking,Pending
+ORD1013,06-05-2026,CUST109,P006,Desk,Furniture,5,12000,0,60000,Online,Neha,East,Net Banking,Pending
+ORD1014,06-05-2026,CUST014,P005,Monitor 24inch,Electronics,1,14500,0,14500,Online,Rahul,North,Cash,Completed
+ORD1015,06-05-2026,CUST090,P003,Office Chair,Furniture,1,8500,5,8075,Direct,Neha,East,Net Banking,Cancelled
+ORD1016,06-05-2026,CUST133,P010,Filing Cabinet,Furniture,7,9500,0,66500,Online,Neha,East,Cash,Completed
+ORD1017,07-05-2026,CUST066,P009,Executive Pen Set,Stationery,9,800,15,6120,Online,Amit,West,Cash,Completed
+ORD1018,07-05-2026,CUST125,P003,Office Chair,Furniture,6,8500,15,43350,Retail,Priya,South,Card,Completed
+ORD1019,07-05-2026,CUST058,P010,Filing Cabinet,Furniture,2,9500,0,19000,Retail,Neha,East,Card,Pending
+ORD1020,07-05-2026,CUST103,P008,Mechanical Keyboard,Electronics,4,3500,0,14000,Online,Rahul,North,Cash,Completed
+ORD1021,08-05-2026,CUST116,P009,Executive Pen Set,Stationery,3,800,5,2280,Retail,Neha,East,Net Banking,Pending
+ORD1022,08-05-2026,CUST045,P010,Filing Cabinet,Furniture,1,9500,0,9500,Direct,Amit,West,Net Banking,Pending
+ORD1023,08-05-2026,CUST016,P001,Laptop Pro 15,Electronics,3,85000,0,255000,Wholesale,Priya,South,Card,Completed
+ORD1024,09-05-2026,CUST068,P005,Monitor 24inch,Electronics,3,14500,15,36975,Wholesale,Priya,South,UPI,Completed
+ORD1025,09-05-2026,CUST103,P009,Executive Pen Set,Stationery,10,800,0,8000,Wholesale,Amit,West,Cash,Completed
+ORD1026,09-05-2026,CUST007,P001,Laptop Pro 15,Electronics,10,85000,0,850000,Direct,Rahul,North,Cash,Completed
+ORD1027,09-05-2026,CUST127,P007,Printer,Electronics,4,18500,10,66600,Online,Priya,South,Net Banking,Pending
+ORD1028,09-05-2026,CUST077,P001,Laptop Pro 15,Electronics,8,85000,5,646000,Retail,Neha,East,UPI,Pending
+ORD1029,10-05-2026,CUST080,P010,Filing Cabinet,Furniture,3,9500,0,28500,Direct,Rahul,North,Cash,Completed
+ORD1030,10-05-2026,CUST109,P004,Notebook Pack,Stationery,5,250,15,1062,Direct,Neha,East,Net Banking,Pending
+ORD1031,10-05-2026,CUST146,P006,Desk,Furniture,2,12000,15,20400,Direct,Neha,East,Net Banking,Cancelled
+ORD1032,11-05-2026,CUST090,P005,Monitor 24inch,Electronics,1,14500,10,13050,Wholesale,Amit,West,Card,Completed
+ORD1033,11-05-2026,CUST101,P002,Wireless Mouse,Electronics,4,1200,5,4560,Wholesale,Rahul,North,UPI,Completed
+ORD1034,11-05-2026,CUST002,P003,Office Chair,Furniture,9,8500,5,72675,Online,Amit,West,UPI,Pending
+ORD1035,11-05-2026,CUST140,P007,Printer,Electronics,7,18500,10,116550,Online,Amit,West,Card,Completed
+ORD1036,12-05-2026,CUST032,P010,Filing Cabinet,Furniture,11,9500,0,104500,Online,Rahul,North,UPI,Completed
+ORD1037,12-05-2026,CUST100,P002,Wireless Mouse,Electronics,9,1200,0,10800,Online,Rahul,North,UPI,Completed
+ORD1038,12-05-2026,CUST143,P006,Desk,Furniture,8,12000,0,96000,Wholesale,Rahul,North,Card,Pending
+ORD1039,12-05-2026,CUST082,P002,Wireless Mouse,Electronics,9,1200,0,10800,Wholesale,Neha,East,Net Banking,Completed
+ORD1040,13-05-2026,CUST131,P003,Office Chair,Furniture,2,8500,0,17000,Retail,Neha,East,Card,Completed
+ORD1041,13-05-2026,CUST020,P010,Filing Cabinet,Furniture,9,9500,0,85500,Online,Priya,South,Net Banking,Completed
+ORD1042,13-05-2026,CUST092,P004,Notebook Pack,Stationery,5,250,10,1125,Direct,Priya,South,Card,Cancelled
+ORD1043,13-05-2026,CUST045,P009,Executive Pen Set,Stationery,10,800,0,8000,Wholesale,Priya,South,UPI,Completed
+ORD1044,14-05-2026,CUST029,P003,Office Chair,Furniture,10,8500,0,85000,Retail,Rahul,North,Card,Completed
+ORD1045,14-05-2026,CUST130,P003,Office Chair,Furniture,4,8500,0,34000,Online,Amit,West,Cash,Pending
+ORD1046,14-05-2026,CUST055,P007,Printer,Electronics,9,18500,0,166500,Retail,Rahul,North,Card,Pending
+ORD1047,14-05-2026,CUST064,P002,Wireless Mouse,Electronics,2,1200,15,2040,Online,Priya,South,UPI,Completed
+ORD1048,14-05-2026,CUST044,P010,Filing Cabinet,Furniture,8,9500,5,72200,Online,Amit,West,UPI,Cancelled
+ORD1049,14-05-2026,CUST030,P007,Printer,Electronics,6,18500,5,105450,Wholesale,Rahul,North,UPI,Completed
+ORD1050,15-05-2026,CUST053,P006,Desk,Furniture,11,12000,10,118800,Online,Priya,South,UPI,Pending
+ORD1051,15-05-2026,CUST011,P007,Printer,Electronics,2,18500,0,37000,Online,Priya,South,Net Banking,Pending
+ORD1052,15-05-2026,CUST046,P006,Desk,Furniture,5,12000,5,57000,Retail,Priya,South,Cash,Cancelled
+ORD1053,15-05-2026,CUST124,P008,Mechanical Keyboard,Electronics,2,3500,0,7000,Online,Amit,West,Cash,Pending
+ORD1054,16-05-2026,CUST025,P003,Office Chair,Furniture,5,8500,5,40375,Direct,Amit,West,Net Banking,Completed
+ORD1055,16-05-2026,CUST040,P010,Filing Cabinet,Furniture,11,9500,5,99275,Retail,Neha,East,UPI,Cancelled
+ORD1056,16-05-2026,CUST033,P003,Office Chair,Furniture,5,8500,5,40375,Wholesale,Rahul,North,Net Banking,Completed
+ORD1057,16-05-2026,CUST096,P008,Mechanical Keyboard,Electronics,5,3500,0,17500,Online,Neha,East,Card,Completed
+ORD1058,16-05-2026,CUST026,P005,Monitor 24inch,Electronics,6,14500,15,73950,Online,Neha,East,Cash,Completed
+ORD1059,16-05-2026,CUST018,P002,Wireless Mouse,Electronics,5,1200,0,6000,Online,Neha,East,Cash,Completed
+ORD1060,17-05-2026,CUST130,P001,Laptop Pro 15,Electronics,6,85000,0,510000,Retail,Priya,South,Net Banking,Completed
+ORD1061,17-05-2026,CUST072,P010,Filing Cabinet,Furniture,1,9500,15,8075,Retail,Priya,South,UPI,Completed
+ORD1062,17-05-2026,CUST140,P003,Office Chair,Furniture,6,8500,5,48450,Direct,Amit,West,Cash,Completed
+ORD1063,17-05-2026,CUST089,P005,Monitor 24inch,Electronics,9,14500,0,130500,Wholesale,Rahul,North,Cash,Completed
+ORD1064,18-05-2026,CUST052,P002,Wireless Mouse,Electronics,9,1200,15,9180,Wholesale,Priya,South,UPI,Completed
+ORD1065,18-05-2026,CUST035,P006,Desk,Furniture,3,12000,0,36000,Wholesale,Neha,East,UPI,Completed
+ORD1066,18-05-2026,CUST147,P003,Office Chair,Furniture,2,8500,0,17000,Direct,Neha,East,Card,Completed
+ORD1067,18-05-2026,CUST139,P009,Executive Pen Set,Stationery,4,800,15,2720,Wholesale,Rahul,North,Net Banking,Cancelled
+ORD1068,18-05-2026,CUST012,P009,Executive Pen Set,Stationery,2,800,15,1360,Direct,Rahul,North,Net Banking,Completed
+ORD1069,19-05-2026,CUST100,P007,Printer,Electronics,10,18500,15,157250,Direct,Amit,West,UPI,Pending
+ORD1070,19-05-2026,CUST095,P010,Filing Cabinet,Furniture,9,9500,5,81225,Retail,Neha,East,Card,Completed
+ORD1071,19-05-2026,CUST002,P008,Mechanical Keyboard,Electronics,7,3500,0,24500,Wholesale,Priya,South,Cash,Completed
+ORD1072,19-05-2026,CUST029,P003,Office Chair,Furniture,10,8500,0,85000,Online,Neha,East,Card,Completed
+ORD1073,20-05-2026,CUST090,P002,Wireless Mouse,Electronics,9,1200,15,9180,Online,Rahul,North,Card,Completed
+ORD1074,20-05-2026,CUST106,P006,Desk,Furniture,7,12000,10,75600,Direct,Neha,East,Card,Completed
+ORD1075,20-05-2026,CUST127,P008,Mechanical Keyboard,Electronics,10,3500,10,31500,Direct,Amit,West,Cash,Pending
+ORD1076,20-05-2026,CUST046,P006,Desk,Furniture,7,12000,15,71400,Online,Rahul,North,Cash,Cancelled
+ORD1077,21-05-2026,CUST091,P001,Laptop Pro 15,Electronics,2,85000,0,170000,Retail,Amit,West,UPI,Cancelled
+ORD1078,21-05-2026,CUST115,P007,Printer,Electronics,9,18500,0,166500,Online,Neha,East,Cash,Completed
+ORD1079,21-05-2026,CUST002,P007,Printer,Electronics,5,18500,15,78625,Online,Priya,South,Net Banking,Cancelled
+ORD1080,21-05-2026,CUST085,P004,Notebook Pack,Stationery,6,250,10,1350,Online,Priya,South,UPI,Completed
+ORD1081,21-05-2026,CUST026,P006,Desk,Furniture,9,12000,0,108000,Online,Amit,West,Card,Completed
+ORD1082,22-05-2026,CUST013,P003,Office Chair,Furniture,9,8500,0,76500,Wholesale,Amit,West,Net Banking,Cancelled
+ORD1083,22-05-2026,CUST022,P007,Printer,Electronics,9,18500,5,158175,Online,Neha,East,Net Banking,Cancelled
+ORD1084,22-05-2026,CUST104,P006,Desk,Furniture,1,12000,0,12000,Direct,Neha,East,Net Banking,Completed
+ORD1085,23-05-2026,CUST076,P010,Filing Cabinet,Furniture,7,9500,0,66500,Direct,Priya,South,Net Banking,Pending
+ORD1086,23-05-2026,CUST137,P008,Mechanical Keyboard,Electronics,2,3500,0,7000,Direct,Rahul,North,Cash,Completed
+ORD1087,23-05-2026,CUST015,P004,Notebook Pack,Stationery,1,250,15,212,Direct,Priya,South,Card,Completed
+ORD1088,23-05-2026,CUST024,P002,Wireless Mouse,Electronics,1,1200,0,1200,Direct,Amit,West,UPI,Cancelled
+ORD1089,23-05-2026,CUST060,P007,Printer,Electronics,3,18500,0,55500,Online,Priya,South,Cash,Cancelled
+ORD1090,23-05-2026,CUST014,P001,Laptop Pro 15,Electronics,1,85000,0,85000,Online,Rahul,North,Cash,Completed
+ORD1091,24-05-2026,CUST142,P004,Notebook Pack,Stationery,3,250,15,637,Direct,Amit,West,Card,Completed
+ORD1092,24-05-2026,CUST033,P007,Printer,Electronics,8,18500,0,148000,Online,Rahul,North,Net Banking,Cancelled
+ORD1093,24-05-2026,CUST017,P003,Office Chair,Furniture,11,8500,5,88825,Online,Neha,East,UPI,Pending
+ORD1094,24-05-2026,CUST074,P010,Filing Cabinet,Furniture,8,9500,15,64600,Wholesale,Amit,West,Net Banking,Completed
+ORD1095,24-05-2026,CUST127,P001,Laptop Pro 15,Electronics,7,85000,5,565250,Direct,Priya,South,Net Banking,Pending
+ORD1096,25-05-2026,CUST021,P002,Wireless Mouse,Electronics,11,1200,10,11880,Online,Neha,East,Net Banking,Completed
+ORD1097,25-05-2026,CUST134,P008,Mechanical Keyboard,Electronics,11,3500,10,34650,Retail,Rahul,North,Card,Pending
+ORD1098,25-05-2026,CUST061,P006,Desk,Furniture,3,12000,10,32400,Wholesale,Priya,South,Card,Completed
+ORD1099,25-05-2026,CUST101,P006,Desk,Furniture,2,12000,15,20400,Online,Priya,South,UPI,Completed
+ORD1100,25-05-2026,CUST046,P010,Filing Cabinet,Furniture,8,9500,5,72200,Online,Amit,West,UPI,Completed
+ORD1101,26-05-2026,CUST024,P006,Desk,Furniture,11,12000,0,132000,Direct,Amit,West,Net Banking,Completed
+ORD1102,26-05-2026,CUST110,P002,Wireless Mouse,Electronics,5,1200,0,6000,Direct,Rahul,North,Cash,Pending
+ORD1103,26-05-2026,CUST106,P006,Desk,Furniture,3,12000,15,30600,Wholesale,Neha,East,Cash,Completed
+ORD1104,26-05-2026,CUST031,P001,Laptop Pro 15,Electronics,7,85000,10,535500,Wholesale,Priya,South,Cash,Pending
+ORD1105,27-05-2026,CUST101,P005,Monitor 24inch,Electronics,2,14500,5,27550,Direct,Priya,South,UPI,Pending
+ORD1106,27-05-2026,CUST015,P004,Notebook Pack,Stationery,4,250,0,1000,Wholesale,Priya,South,Cash,Completed
+ORD1107,27-05-2026,CUST115,P008,Mechanical Keyboard,Electronics,2,3500,5,6650,Online,Neha,East,Cash,Cancelled
+ORD1108,27-05-2026,CUST018,P007,Printer,Electronics,2,18500,0,37000,Online,Amit,West,Cash,Completed
+ORD1109,27-05-2026,CUST108,P003,Office Chair,Furniture,5,8500,10,38250,Wholesale,Amit,West,Card,Cancelled
+ORD1110,28-05-2026,CUST015,P003,Office Chair,Furniture,6,8500,15,43350,Direct,Neha,East,Net Banking,Completed
+ORD1111,28-05-2026,CUST141,P005,Monitor 24inch,Electronics,4,14500,10,52200,Direct,Priya,South,Card,Completed
+ORD1112,28-05-2026,CUST115,P003,Office Chair,Furniture,5,8500,15,36125,Retail,Priya,South,Card,Completed
+ORD1113,28-05-2026,CUST081,P002,Wireless Mouse,Electronics,6,1200,5,6840,Direct,Neha,East,Net Banking,Cancelled
+ORD1114,29-05-2026,CUST002,P007,Printer,Electronics,1,18500,10,16650,Direct,Priya,South,UPI,Completed
+ORD1115,29-05-2026,CUST070,P003,Office Chair,Furniture,8,8500,5,64600,Direct,Priya,South,Card,Completed
+ORD1116,29-05-2026,CUST047,P006,Desk,Furniture,6,12000,0,72000,Direct,Priya,South,Net Banking,Completed
+ORD1117,29-05-2026,CUST107,P008,Mechanical Keyboard,Electronics,7,3500,15,20825,Wholesale,Priya,South,UPI,Completed
+ORD1118,30-05-2026,CUST116,P010,Filing Cabinet,Furniture,11,9500,0,104500,Retail,Priya,South,Net Banking,Completed
+ORD1119,30-05-2026,CUST118,P005,Monitor 24inch,Electronics,8,14500,10,104400,Direct,Amit,West,Card,Completed
+ORD1120,30-05-2026,CUST049,P002,Wireless Mouse,Electronics,8,1200,0,9600,Online,Rahul,North,UPI,Pending
+ORD1121,30-05-2026,CUST103,P005,Monitor 24inch,Electronics,2,14500,10,26100,Retail,Priya,South,Net Banking,Completed
+ORD1122,30-05-2026,CUST007,P006,Desk,Furniture,5,12000,5,57000,Wholesale,Neha,East,Cash,Completed
+ORD1123,31-05-2026,CUST148,P003,Office Chair,Furniture,11,8500,5,88825,Wholesale,Amit,West,Cash,Cancelled
+ORD1124,31-05-2026,CUST110,P002,Wireless Mouse,Electronics,10,1200,5,11400,Online,Priya,South,Net Banking,Completed
+ORD1125,31-05-2026,CUST041,P010,Filing Cabinet,Furniture,9,9500,10,76950,Direct,Priya,South,Card,Completed
+ORD1126,31-05-2026,CUST039,P007,Printer,Electronics,11,18500,0,203500,Direct,Amit,West,Cash,Completed
+ORD1127,01-06-2026,CUST028,P005,Monitor 24inch,Electronics,11,14500,0,159500,Retail,Neha,East,Cash,Completed
+ORD1128,01-06-2026,CUST101,P009,Executive Pen Set,Stationery,2,800,5,1520,Retail,Neha,East,Net Banking,Completed
+ORD1129,01-06-2026,CUST123,P002,Wireless Mouse,Electronics,9,1200,0,10800,Online,Rahul,North,UPI,Completed
+ORD1130,01-06-2026,CUST101,P006,Desk,Furniture,1,12000,10,10800,Direct,Amit,West,Card,Completed
+ORD1131,01-06-2026,CUST001,P004,Notebook Pack,Stationery,1,250,15,212,Retail,Rahul,North,Net Banking,Completed
+ORD1132,02-06-2026,CUST098,P009,Executive Pen Set,Stationery,8,800,5,6080,Wholesale,Priya,South,Cash,Cancelled
+ORD1133,02-06-2026,CUST054,P004,Notebook Pack,Stationery,2,250,0,500,Direct,Amit,West,UPI,Completed
+ORD1134,02-06-2026,CUST046,P006,Desk,Furniture,11,12000,5,125400,Online,Amit,West,UPI,Cancelled
+ORD1135,02-06-2026,CUST092,P008,Mechanical Keyboard,Electronics,2,3500,10,6300,Online,Amit,West,Card,Pending
+ORD1136,03-06-2026,CUST009,P001,Laptop Pro 15,Electronics,1,85000,15,72250,Online,Rahul,North,UPI,Cancelled
+ORD1137,03-06-2026,CUST010,P006,Desk,Furniture,8,12000,5,91200,Online,Rahul,North,Card,Pending
+ORD1138,03-06-2026,CUST057,P008,Mechanical Keyboard,Electronics,10,3500,0,35000,Online,Rahul,North,Cash,Completed
+ORD1139,03-06-2026,CUST012,P010,Filing Cabinet,Furniture,9,9500,0,85500,Online,Rahul,North,Cash,Pending
+ORD1140,04-06-2026,CUST053,P010,Filing Cabinet,Furniture,7,9500,0,66500,Retail,Neha,East,Net Banking,Cancelled
+ORD1141,04-06-2026,CUST030,P008,Mechanical Keyboard,Electronics,3,3500,15,8925,Wholesale,Neha,East,UPI,Completed
+ORD1142,04-06-2026,CUST087,P004,Notebook Pack,Stationery,4,250,15,850,Direct,Amit,West,Card,Completed
+ORD1143,04-06-2026,CUST093,P007,Printer,Electronics,7,18500,5,123025,Wholesale,Amit,West,UPI,Completed
+ORD1144,04-06-2026,CUST098,P007,Printer,Electronics,7,18500,10,116550,Direct,Rahul,North,Net Banking,Completed
+ORD1145,05-06-2026,CUST141,P002,Wireless Mouse,Electronics,11,1200,0,13200,Retail,Neha,East,Net Banking,Cancelled
+ORD1146,05-06-2026,CUST023,P008,Mechanical Keyboard,Electronics,11,3500,0,38500,Wholesale,Rahul,North,Card,Cancelled
+ORD1147,05-06-2026,CUST031,P005,Monitor 24inch,Electronics,10,14500,5,137750,Online,Priya,South,Card,Pending
+ORD1148,05-06-2026,CUST043,P009,Executive Pen Set,Stationery,3,800,5,2280,Wholesale,Amit,West,Cash,Completed
+ORD1149,06-06-2026,CUST109,P007,Printer,Electronics,5,18500,0,92500,Retail,Priya,South,Net Banking,Completed
+ORD1150,06-06-2026,CUST052,P001,Laptop Pro 15,Electronics,1,85000,0,85000,Direct,Neha,East,UPI,Completed
+ORD1151,06-06-2026,CUST136,P007,Printer,Electronics,10,18500,15,157250,Direct,Rahul,North,Cash,Cancelled
+ORD1152,06-06-2026,CUST114,P004,Notebook Pack,Stationery,1,250,5,237,Direct,Neha,East,Net Banking,Cancelled
+ORD1153,07-06-2026,CUST105,P004,Notebook Pack,Stationery,10,250,10,2250,Direct,Neha,East,Cash,Completed
+ORD1154,07-06-2026,CUST079,P009,Executive Pen Set,Stationery,7,800,0,5600,Direct,Neha,East,Net Banking,Completed
+ORD1155,07-06-2026,CUST103,P002,Wireless Mouse,Electronics,6,1200,0,7200,Wholesale,Neha,East,Net Banking,Completed
+ORD1156,08-06-2026,CUST062,P005,Monitor 24inch,Electronics,2,14500,0,29000,Retail,Neha,East,UPI,Pending
+ORD1157,08-06-2026,CUST086,P010,Filing Cabinet,Furniture,8,9500,0,76000,Online,Neha,East,Net Banking,Completed
+ORD1158,08-06-2026,CUST148,P005,Monitor 24inch,Electronics,7,14500,0,101500,Wholesale,Priya,South,Card,Completed
+ORD1159,08-06-2026,CUST020,P003,Office Chair,Furniture,7,8500,15,50575,Retail,Priya,South,Cash,Completed
+ORD1160,09-06-2026,CUST123,P006,Desk,Furniture,2,12000,0,24000,Retail,Amit,West,Card,Completed
+ORD1161,09-06-2026,CUST131,P006,Desk,Furniture,4,12000,0,48000,Direct,Rahul,North,Net Banking,Pending
+ORD1162,09-06-2026,CUST017,P010,Filing Cabinet,Furniture,3,9500,10,25650,Retail,Neha,East,Card,Pending
+ORD1163,09-06-2026,CUST062,P001,Laptop Pro 15,Electronics,4,85000,0,340000,Retail,Amit,West,UPI,Completed
+ORD1164,09-06-2026,CUST034,P004,Notebook Pack,Stationery,5,250,0,1250,Direct,Neha,East,UPI,Pending
+ORD1165,10-06-2026,CUST040,P003,Office Chair,Furniture,3,8500,0,25500,Wholesale,Rahul,North,Net Banking,Completed
+ORD1166,10-06-2026,CUST047,P006,Desk,Furniture,8,12000,0,96000,Direct,Neha,East,Cash,Completed
+ORD1167,10-06-2026,CUST113,P010,Filing Cabinet,Furniture,7,9500,0,66500,Direct,Rahul,North,Card,Cancelled
+ORD1168,11-06-2026,CUST024,P007,Printer,Electronics,9,18500,0,166500,Online,Rahul,North,UPI,Completed
+ORD1169,11-06-2026,CUST122,P008,Mechanical Keyboard,Electronics,11,3500,0,38500,Wholesale,Neha,East,Cash,Pending
+ORD1170,11-06-2026,CUST141,P007,Printer,Electronics,3,18500,0,55500,Wholesale,Rahul,North,Net Banking,Completed
+ORD1171,11-06-2026,CUST140,P002,Wireless Mouse,Electronics,7,1200,5,7980,Online,Amit,West,Net Banking,Cancelled
+ORD1172,11-06-2026,CUST031,P002,Wireless Mouse,Electronics,7,1200,0,8400,Retail,Amit,West,Cash,Pending
+ORD1173,11-06-2026,CUST075,P002,Wireless Mouse,Electronics,7,1200,15,7140,Online,Rahul,North,Card,Pending
+ORD1174,12-06-2026,CUST019,P007,Printer,Electronics,6,18500,15,94350,Retail,Rahul,North,Card,Completed
+ORD1175,12-06-2026,CUST061,P010,Filing Cabinet,Furniture,7,9500,0,66500,Wholesale,Amit,West,UPI,Completed
+ORD1176,12-06-2026,CUST107,P007,Printer,Electronics,2,18500,5,35150,Retail,Neha,East,UPI,Completed
+ORD1177,12-06-2026,CUST057,P005,Monitor 24inch,Electronics,7,14500,0,101500,Online,Rahul,North,Cash,Completed
+ORD1178,12-06-2026,CUST115,P006,Desk,Furniture,2,12000,0,24000,Wholesale,Neha,East,Card,Completed
+ORD1179,12-06-2026,CUST077,P005,Monitor 24inch,Electronics,4,14500,0,58000,Wholesale,Neha,East,UPI,Completed
+ORD1180,13-06-2026,CUST031,P001,Laptop Pro 15,Electronics,7,85000,15,505750,Online,Neha,East,UPI,Cancelled
+ORD1181,13-06-2026,CUST145,P006,Desk,Furniture,9,12000,0,108000,Retail,Amit,West,Card,Pending
+ORD1182,13-06-2026,CUST006,P004,Notebook Pack,Stationery,5,250,15,1062,Online,Priya,South,Cash,Completed
+ORD1183,13-06-2026,CUST014,P008,Mechanical Keyboard,Electronics,4,3500,0,14000,Retail,Rahul,North,Net Banking,Pending
+ORD1184,14-06-2026,CUST008,P008,Mechanical Keyboard,Electronics,3,3500,0,10500,Online,Amit,West,UPI,Pending
+ORD1185,14-06-2026,CUST046,P001,Laptop Pro 15,Electronics,11,85000,15,794750,Online,Rahul,North,UPI,Cancelled
+ORD1186,14-06-2026,CUST121,P008,Mechanical Keyboard,Electronics,3,3500,5,9975,Online,Amit,West,UPI,Completed
+ORD1187,15-06-2026,CUST012,P001,Laptop Pro 15,Electronics,8,85000,0,680000,Online,Rahul,North,Cash,Pending
+ORD1188,15-06-2026,CUST121,P002,Wireless Mouse,Electronics,10,1200,0,12000,Direct,Amit,West,UPI,Pending
+ORD1189,15-06-2026,CUST043,P007,Printer,Electronics,7,18500,5,123025,Online,Priya,South,Card,Cancelled
+ORD1190,15-06-2026,CUST134,P001,Laptop Pro 15,Electronics,6,85000,0,510000,Online,Priya,South,Net Banking,Completed
+ORD1191,15-06-2026,CUST125,P010,Filing Cabinet,Furniture,8,9500,5,72200,Direct,Neha,East,UPI,Cancelled
+ORD1192,15-06-2026,CUST106,P001,Laptop Pro 15,Electronics,4,85000,0,340000,Retail,Neha,East,Cash,Pending
+ORD1193,16-06-2026,CUST039,P007,Printer,Electronics,11,18500,10,183150,Wholesale,Neha,East,Card,Cancelled
+ORD1194,16-06-2026,CUST146,P009,Executive Pen Set,Stationery,10,800,0,8000,Wholesale,Neha,East,Cash,Cancelled
+ORD1195,16-06-2026,CUST010,P002,Wireless Mouse,Electronics,6,1200,5,6840,Wholesale,Amit,West,UPI,Completed
+ORD1196,16-06-2026,CUST056,P004,Notebook Pack,Stationery,10,250,0,2500,Retail,Priya,South,Cash,Completed
+ORD1197,17-06-2026,CUST116,P009,Executive Pen Set,Stationery,8,800,0,6400,Direct,Neha,East,UPI,Completed
+ORD1198,17-06-2026,CUST071,P006,Desk,Furniture,10,12000,15,102000,Online,Amit,West,UPI,Completed
+ORD1199,17-06-2026,CUST130,P005,Monitor 24inch,Electronics,4,14500,15,49300,Online,Amit,West,Net Banking,Pending
+ORD1200,17-06-2026,CUST127,P006,Desk,Furniture,4,12000,0,48000,Retail,Rahul,North,UPI,Completed
+ORD1201,18-06-2026,CUST014,P004,Notebook Pack,Stationery,5,250,5,1187,Direct,Neha,East,Cash,Cancelled
+ORD1202,18-06-2026,CUST024,P008,Mechanical Keyboard,Electronics,6,3500,0,21000,Direct,Priya,South,UPI,Completed
+ORD1203,18-06-2026,CUST075,P003,Office Chair,Furniture,3,8500,5,24225,Online,Rahul,North,Card,Completed
+ORD1204,18-06-2026,CUST054,P007,Printer,Electronics,10,18500,10,166500,Wholesale,Rahul,North,Cash,Pending
+ORD1205,18-06-2026,CUST138,P010,Filing Cabinet,Furniture,10,9500,0,95000,Retail,Neha,East,Cash,Completed
+ORD1206,18-06-2026,CUST056,P010,Filing Cabinet,Furniture,10,9500,0,95000,Retail,Rahul,North,Net Banking,Pending
+ORD1207,19-06-2026,CUST137,P006,Desk,Furniture,2,12000,0,24000,Online,Rahul,North,Net Banking,Cancelled
+ORD1208,19-06-2026,CUST100,P008,Mechanical Keyboard,Electronics,4,3500,0,14000,Direct,Rahul,North,UPI,Completed
+ORD1209,19-06-2026,CUST106,P007,Printer,Electronics,9,18500,5,158175,Retail,Neha,East,Cash,Cancelled
+ORD1210,19-06-2026,CUST016,P001,Laptop Pro 15,Electronics,3,85000,15,216750,Wholesale,Amit,West,UPI,Cancelled
+ORD1211,19-06-2026,CUST125,P001,Laptop Pro 15,Electronics,10,85000,15,722500,Online,Rahul,North,UPI,Pending
+ORD1212,20-06-2026,CUST082,P009,Executive Pen Set,Stationery,10,800,10,7200,Direct,Rahul,North,Card,Completed
+ORD1213,20-06-2026,CUST146,P008,Mechanical Keyboard,Electronics,2,3500,0,7000,Wholesale,Priya,South,Card,Pending
+ORD1214,20-06-2026,CUST035,P009,Executive Pen Set,Stationery,7,800,15,4760,Online,Priya,South,UPI,Cancelled
+ORD1215,20-06-2026,CUST137,P003,Office Chair,Furniture,9,8500,15,65025,Retail,Rahul,North,UPI,Completed
+ORD1216,20-06-2026,CUST071,P008,Mechanical Keyboard,Electronics,7,3500,10,22050,Wholesale,Rahul,North,Card,Completed
+ORD1217,20-06-2026,CUST009,P001,Laptop Pro 15,Electronics,1,85000,5,80750,Retail,Neha,East,Card,Completed
+ORD1218,21-06-2026,CUST062,P010,Filing Cabinet,Furniture,4,9500,10,34200,Wholesale,Rahul,North,Net Banking,Completed
+ORD1219,21-06-2026,CUST036,P005,Monitor 24inch,Electronics,4,14500,10,52200,Wholesale,Neha,East,Net Banking,Completed
+ORD1220,21-06-2026,CUST101,P002,Wireless Mouse,Electronics,10,1200,0,12000,Retail,Amit,West,Card,Cancelled
+ORD1221,22-06-2026,CUST015,P004,Notebook Pack,Stationery,4,250,0,1000,Online,Amit,West,UPI,Pending
+ORD1222,22-06-2026,CUST110,P001,Laptop Pro 15,Electronics,2,85000,15,144500,Retail,Priya,South,Net Banking,Completed
+ORD1223,22-06-2026,CUST077,P001,Laptop Pro 15,Electronics,5,85000,0,425000,Wholesale,Neha,East,Cash,Cancelled
+ORD1224,23-06-2026,CUST145,P001,Laptop Pro 15,Electronics,2,85000,15,144500,Wholesale,Priya,South,Net Banking,Completed
+ORD1225,23-06-2026,CUST099,P001,Laptop Pro 15,Electronics,9,85000,0,765000,Online,Neha,East,Card,Completed
+ORD1226,23-06-2026,CUST030,P001,Laptop Pro 15,Electronics,11,85000,10,841500,Online,Neha,East,UPI,Cancelled
+ORD1227,23-06-2026,CUST129,P004,Notebook Pack,Stationery,4,250,0,1000,Wholesale,Rahul,North,Card,Pending
+ORD1228,23-06-2026,CUST034,P010,Filing Cabinet,Furniture,6,9500,0,57000,Retail,Priya,South,UPI,Completed
+ORD1229,24-06-2026,CUST001,P005,Monitor 24inch,Electronics,8,14500,0,116000,Wholesale,Rahul,North,Card,Pending
+ORD1230,24-06-2026,CUST008,P010,Filing Cabinet,Furniture,5,9500,0,47500,Wholesale,Amit,West,UPI,Completed
+ORD1231,24-06-2026,CUST139,P005,Monitor 24inch,Electronics,11,14500,10,143550,Online,Neha,East,UPI,Completed
+ORD1232,24-06-2026,CUST074,P002,Wireless Mouse,Electronics,10,1200,0,12000,Wholesale,Priya,South,Cash,Completed
+ORD1233,24-06-2026,CUST068,P006,Desk,Furniture,4,12000,0,48000,Direct,Amit,West,Cash,Completed
+ORD1234,24-06-2026,CUST019,P003,Office Chair,Furniture,1,8500,15,7225,Direct,Amit,West,UPI,Completed
+ORD1235,25-06-2026,CUST075,P007,Printer,Electronics,10,18500,0,185000,Wholesale,Amit,West,UPI,Completed
+ORD1236,25-06-2026,CUST023,P009,Executive Pen Set,Stationery,2,800,0,1600,Online,Neha,East,Net Banking,Cancelled
+ORD1237,25-06-2026,CUST031,P005,Monitor 24inch,Electronics,6,14500,0,87000,Wholesale,Neha,East,Card,Completed
+ORD1238,25-06-2026,CUST096,P006,Desk,Furniture,8,12000,0,96000,Online,Neha,East,Card,Completed
+ORD1239,25-06-2026,CUST074,P007,Printer,Electronics,4,18500,5,70300,Retail,Priya,South,Cash,Completed
+ORD1240,25-06-2026,CUST014,P006,Desk,Furniture,1,12000,5,11400,Wholesale,Priya,South,Card,Completed
+ORD1241,26-06-2026,CUST029,P002,Wireless Mouse,Electronics,4,1200,0,4800,Retail,Rahul,North,Cash,Completed
+ORD1242,26-06-2026,CUST104,P010,Filing Cabinet,Furniture,10,9500,0,95000,Online,Priya,South,Cash,Cancelled
+ORD1243,26-06-2026,CUST019,P008,Mechanical Keyboard,Electronics,8,3500,5,26600,Direct,Amit,West,Cash,Completed
+ORD1244,26-06-2026,CUST145,P003,Office Chair,Furniture,9,8500,15,65025,Online,Neha,East,Net Banking,Completed
+ORD1245,26-06-2026,CUST020,P003,Office Chair,Furniture,5,8500,5,40375,Direct,Neha,East,Net Banking,Completed
+ORD1246,27-06-2026,CUST102,P005,Monitor 24inch,Electronics,4,14500,10,52200,Direct,Neha,East,Cash,Cancelled
+ORD1247,27-06-2026,CUST125,P009,Executive Pen Set,Stationery,4,800,10,2880,Online,Rahul,North,Net Banking,Completed
+ORD1248,27-06-2026,CUST102,P010,Filing Cabinet,Furniture,7,9500,10,59850,Wholesale,Priya,South,Net Banking,Completed
+ORD1249,27-06-2026,CUST113,P010,Filing Cabinet,Furniture,5,9500,0,47500,Retail,Priya,South,UPI,Cancelled
+ORD1250,27-06-2026,CUST058,P009,Executive Pen Set,Stationery,1,800,15,680,Direct,Neha,East,Cash,Completed
+ORD1251,27-06-2026,CUST145,P008,Mechanical Keyboard,Electronics,11,3500,0,38500,Direct,Rahul,North,Cash,Pending
+ORD1252,28-06-2026,CUST125,P004,Notebook Pack,Stationery,11,250,15,2337,Wholesale,Rahul,North,UPI,Completed
+ORD1253,28-06-2026,CUST049,P003,Office Chair,Furniture,6,8500,0,51000,Wholesale,Priya,South,Net Banking,Completed
+ORD1254,28-06-2026,CUST092,P007,Printer,Electronics,1,18500,15,15725,Wholesale,Priya,South,Cash,Pending
+ORD1255,28-06-2026,CUST046,P006,Desk,Furniture,8,12000,0,96000,Direct,Priya,South,Cash,Cancelled
+ORD1256,28-06-2026,CUST052,P006,Desk,Furniture,8,12000,0,96000,Retail,Amit,West,UPI,Pending
+ORD1257,29-06-2026,CUST072,P009,Executive Pen Set,Stationery,9,800,0,7200,Wholesale,Rahul,North,Card,Cancelled
+ORD1258,29-06-2026,CUST089,P008,Mechanical Keyboard,Electronics,6,3500,15,17850,Online,Neha,East,Cash,Completed
+ORD1259,29-06-2026,CUST131,P006,Desk,Furniture,6,12000,10,64800,Wholesale,Priya,South,Card,Completed
+ORD1260,30-06-2026,CUST010,P001,Laptop Pro 15,Electronics,7,85000,0,595000,Online,Amit,West,Cash,Completed
+ORD1261,30-06-2026,CUST113,P005,Monitor 24inch,Electronics,7,14500,5,96425,Direct,Rahul,North,Card,Completed
+ORD1262,30-06-2026,CUST111,P005,Monitor 24inch,Electronics,7,14500,10,91350,Direct,Priya,South,Card,Completed
+ORD1263,30-06-2026,CUST073,P010,Filing Cabinet,Furniture,9,9500,0,85500,Wholesale,Priya,South,Cash,Completed
+ORD1264,30-06-2026,CUST144,P009,Executive Pen Set,Stationery,11,800,5,8360,Direct,Neha,East,Card,Pending
+ORD1265,01-07-2026,CUST146,P003,Office Chair,Furniture,9,8500,15,65025,Wholesale,Neha,East,Card,Completed
+ORD1266,01-07-2026,CUST044,P004,Notebook Pack,Stationery,1,250,10,225,Direct,Amit,West,Card,Completed
+ORD1267,01-07-2026,CUST100,P004,Notebook Pack,Stationery,9,250,15,1912,Wholesale,Neha,East,Net Banking,Completed
+ORD1268,02-07-2026,CUST063,P004,Notebook Pack,Stationery,9,250,10,2025,Online,Rahul,North,Cash,Completed
+ORD1269,02-07-2026,CUST126,P002,Wireless Mouse,Electronics,9,1200,5,10260,Direct,Neha,East,Card,Completed
+ORD1270,02-07-2026,CUST025,P008,Mechanical Keyboard,Electronics,5,3500,15,14875,Wholesale,Rahul,North,Cash,Completed
+ORD1271,02-07-2026,CUST118,P002,Wireless Mouse,Electronics,1,1200,0,1200,Retail,Priya,South,Card,Completed
+ORD1272,03-07-2026,CUST089,P010,Filing Cabinet,Furniture,8,9500,5,72200,Retail,Neha,East,UPI,Completed
+ORD1273,03-07-2026,CUST074,P003,Office Chair,Furniture,7,8500,0,59500,Direct,Neha,East,Cash,Pending
+ORD1274,03-07-2026,CUST142,P005,Monitor 24inch,Electronics,10,14500,15,123250,Direct,Rahul,North,Net Banking,Completed
+ORD1275,03-07-2026,CUST113,P010,Filing Cabinet,Furniture,1,9500,10,8550,Online,Amit,West,Net Banking,Completed
+ORD1276,04-07-2026,CUST147,P008,Mechanical Keyboard,Electronics,8,3500,5,26600,Retail,Amit,West,Cash,Completed
+ORD1277,04-07-2026,CUST041,P009,Executive Pen Set,Stationery,4,800,10,2880,Online,Rahul,North,Cash,Pending
+ORD1278,04-07-2026,CUST138,P005,Monitor 24inch,Electronics,2,14500,0,29000,Direct,Priya,South,Net Banking,Cancelled
+ORD1279,04-07-2026,CUST119,P010,Filing Cabinet,Furniture,6,9500,10,51300,Wholesale,Amit,West,Cash,Completed
+ORD1280,04-07-2026,CUST105,P010,Filing Cabinet,Furniture,10,9500,15,80750,Direct,Amit,West,UPI,Cancelled
+ORD1281,04-07-2026,CUST119,P003,Office Chair,Furniture,2,8500,5,16150,Online,Amit,West,Net Banking,Cancelled
+ORD1282,05-07-2026,CUST076,P004,Notebook Pack,Stationery,9,250,0,2250,Direct,Rahul,North,Cash,Cancelled
+ORD1283,05-07-2026,CUST061,P008,Mechanical Keyboard,Electronics,6,3500,5,19950,Retail,Priya,South,UPI,Completed
+ORD1284,05-07-2026,CUST016,P006,Desk,Furniture,1,12000,0,12000,Retail,Priya,South,Cash,Completed
+ORD1285,05-07-2026,CUST071,P002,Wireless Mouse,Electronics,10,1200,0,12000,Online,Amit,West,Card,Completed
+ORD1286,05-07-2026,CUST031,P007,Printer,Electronics,9,18500,15,141525,Wholesale,Priya,South,Cash,Completed
+ORD1287,05-07-2026,CUST021,P004,Notebook Pack,Stationery,2,250,0,500,Wholesale,Amit,West,Net Banking,Cancelled
+ORD1288,06-07-2026,CUST097,P004,Notebook Pack,Stationery,3,250,0,750,Wholesale,Neha,East,Card,Completed
+ORD1289,06-07-2026,CUST079,P003,Office Chair,Furniture,11,8500,10,84150,Online,Rahul,North,Net Banking,Completed
+ORD1290,06-07-2026,CUST026,P002,Wireless Mouse,Electronics,7,1200,5,7980,Direct,Rahul,North,Cash,Cancelled
+ORD1291,07-07-2026,CUST078,P010,Filing Cabinet,Furniture,8,9500,15,64600,Wholesale,Rahul,North,Net Banking,Completed
+ORD1292,07-07-2026,CUST019,P005,Monitor 24inch,Electronics,11,14500,0,159500,Direct,Amit,West,UPI,Cancelled
+ORD1293,07-07-2026,CUST120,P002,Wireless Mouse,Electronics,4,1200,0,4800,Online,Rahul,North,Net Banking,Pending
+ORD1294,07-07-2026,CUST061,P004,Notebook Pack,Stationery,10,250,0,2500,Wholesale,Amit,West,Cash,Completed
+ORD1295,07-07-2026,CUST089,P001,Laptop Pro 15,Electronics,6,85000,0,510000,Wholesale,Neha,East,Cash,Completed
+ORD1296,07-07-2026,CUST146,P006,Desk,Furniture,1,12000,15,10200,Wholesale,Neha,East,Cash,Pending
+ORD1297,08-07-2026,CUST051,P008,Mechanical Keyboard,Electronics,6,3500,0,21000,Direct,Amit,West,Cash,Completed
+ORD1298,08-07-2026,CUST103,P010,Filing Cabinet,Furniture,6,9500,0,57000,Wholesale,Rahul,North,UPI,Cancelled
+ORD1299,08-07-2026,CUST119,P007,Printer,Electronics,3,18500,10,49950,Wholesale,Priya,South,Net Banking,Completed
+ORD1300,09-07-2026,CUST023,P008,Mechanical Keyboard,Electronics,6,3500,0,21000,Wholesale,Neha,East,Cash,Cancelled
+ORD1301,09-07-2026,CUST057,P001,Laptop Pro 15,Electronics,4,85000,5,323000,Online,Amit,West,Cash,Cancelled
+ORD1302,09-07-2026,CUST139,P010,Filing Cabinet,Furniture,6,9500,10,51300,Online,Neha,East,Card,Completed
+ORD1303,10-07-2026,CUST113,P008,Mechanical Keyboard,Electronics,2,3500,5,6650,Online,Neha,East,Card,Pending
+ORD1304,10-07-2026,CUST010,P009,Executive Pen Set,Stationery,11,800,10,7920,Online,Neha,East,Cash,Completed
+ORD1305,10-07-2026,CUST143,P002,Wireless Mouse,Electronics,8,1200,10,8640,Direct,Priya,South,Cash,Cancelled
+ORD1306,10-07-2026,CUST091,P007,Printer,Electronics,10,18500,0,185000,Direct,Neha,East,Card,Completed
+ORD1307,10-07-2026,CUST001,P002,Wireless Mouse,Electronics,6,1200,5,6840,Wholesale,Priya,South,UPI,Completed
+ORD1308,10-07-2026,CUST056,P010,Filing Cabinet,Furniture,5,9500,15,40375,Wholesale,Rahul,North,Cash,Completed
+ORD1309,11-07-2026,CUST056,P006,Desk,Furniture,5,12000,5,57000,Direct,Priya,South,UPI,Completed
+ORD1310,11-07-2026,CUST069,P010,Filing Cabinet,Furniture,4,9500,0,38000,Wholesale,Neha,East,UPI,Completed
+ORD1311,11-07-2026,CUST081,P005,Monitor 24inch,Electronics,1,14500,0,14500,Online,Amit,West,UPI,Completed
+ORD1312,11-07-2026,CUST059,P001,Laptop Pro 15,Electronics,5,85000,0,425000,Online,Priya,South,Card,Completed
+ORD1313,12-07-2026,CUST056,P001,Laptop Pro 15,Electronics,5,85000,0,425000,Online,Rahul,North,Card,Completed
+ORD1314,12-07-2026,CUST131,P001,Laptop Pro 15,Electronics,3,85000,10,229500,Online,Amit,West,UPI,Completed
+ORD1315,12-07-2026,CUST073,P008,Mechanical Keyboard,Electronics,1,3500,10,3150,Direct,Priya,South,Card,Completed
+ORD1316,12-07-2026,CUST049,P004,Notebook Pack,Stationery,2,250,5,475,Online,Amit,West,UPI,Pending
+ORD1317,12-07-2026,CUST037,P010,Filing Cabinet,Furniture,1,9500,5,9025,Direct,Amit,West,UPI,Cancelled
+ORD1318,13-07-2026,CUST118,P002,Wireless Mouse,Electronics,1,1200,0,1200,Direct,Priya,South,Card,Completed
+ORD1319,13-07-2026,CUST061,P003,Office Chair,Furniture,11,8500,0,93500,Retail,Rahul,North,Cash,Completed
+ORD1320,13-07-2026,CUST012,P009,Executive Pen Set,Stationery,11,800,15,7480,Online,Amit,West,Card,Cancelled
+ORD1321,13-07-2026,CUST080,P007,Printer,Electronics,4,18500,5,70300,Wholesale,Neha,East,Card,Completed
+ORD1322,13-07-2026,CUST112,P004,Notebook Pack,Stationery,4,250,0,1000,Wholesale,Rahul,North,UPI,Completed
+ORD1323,13-07-2026,CUST105,P006,Desk,Furniture,6,12000,15,61200,Direct,Amit,West,Cash,Completed
+ORD1324,14-07-2026,CUST046,P001,Laptop Pro 15,Electronics,3,85000,10,229500,Direct,Neha,East,Card,Completed
+ORD1325,14-07-2026,CUST121,P004,Notebook Pack,Stationery,3,250,0,750,Online,Rahul,North,UPI,Completed
+ORD1326,14-07-2026,CUST063,P008,Mechanical Keyboard,Electronics,1,3500,10,3150,Wholesale,Neha,East,Card,Completed
+ORD1327,15-07-2026,CUST085,P009,Executive Pen Set,Stationery,11,800,15,7480,Direct,Neha,East,Cash,Completed
+ORD1328,15-07-2026,CUST106,P008,Mechanical Keyboard,Electronics,11,3500,0,38500,Online,Rahul,North,Card,Completed
+ORD1329,15-07-2026,CUST141,P003,Office Chair,Furniture,7,8500,0,59500,Online,Amit,West,UPI,Completed
+ORD1330,16-07-2026,CUST087,P002,Wireless Mouse,Electronics,2,1200,0,2400,Wholesale,Amit,West,Card,Completed
+ORD1331,16-07-2026,CUST128,P007,Printer,Electronics,5,18500,5,87875,Wholesale,Neha,East,Card,Completed
+ORD1332,16-07-2026,CUST134,P001,Laptop Pro 15,Electronics,9,85000,0,765000,Wholesale,Rahul,North,Net Banking,Cancelled
+ORD1333,17-07-2026,CUST059,P004,Notebook Pack,Stationery,3,250,0,750,Wholesale,Neha,East,Card,Completed
+ORD1334,17-07-2026,CUST090,P004,Notebook Pack,Stationery,7,250,15,1487,Online,Neha,East,Card,Completed
+ORD1335,17-07-2026,CUST021,P004,Notebook Pack,Stationery,2,250,5,475,Wholesale,Neha,East,Card,Completed
+ORD1336,17-07-2026,CUST044,P010,Filing Cabinet,Furniture,8,9500,15,64600,Retail,Neha,East,Net Banking,Cancelled
+ORD1337,17-07-2026,CUST116,P003,Office Chair,Furniture,5,8500,10,38250,Online,Amit,West,Net Banking,Completed
+ORD1338,18-07-2026,CUST023,P002,Wireless Mouse,Electronics,1,1200,5,1140,Online,Neha,East,UPI,Completed
+ORD1339,18-07-2026,CUST001,P003,Office Chair,Furniture,3,8500,15,21675,Online,Amit,West,Card,Completed
+ORD1340,18-07-2026,CUST100,P010,Filing Cabinet,Furniture,10,9500,10,85500,Retail,Rahul,North,UPI,Completed
+ORD1341,18-07-2026,CUST131,P007,Printer,Electronics,5,18500,0,92500,Direct,Amit,West,Card,Cancelled
+ORD1342,19-07-2026,CUST026,P009,Executive Pen Set,Stationery,10,800,5,7600,Direct,Priya,South,Cash,Completed
+ORD1343,19-07-2026,CUST029,P007,Printer,Electronics,3,18500,0,55500,Online,Neha,East,UPI,Completed
+ORD1344,19-07-2026,CUST022,P001,Laptop Pro 15,Electronics,9,85000,5,726750,Direct,Priya,South,Net Banking,Completed
+ORD1345,19-07-2026,CUST077,P006,Desk,Furniture,1,12000,10,10800,Wholesale,Amit,West,UPI,Completed
+ORD1346,19-07-2026,CUST029,P005,Monitor 24inch,Electronics,6,14500,0,87000,Retail,Neha,East,Card,Cancelled
+ORD1347,20-07-2026,CUST138,P008,Mechanical Keyboard,Electronics,10,3500,0,35000,Online,Amit,West,Cash,Completed
+ORD1348,20-07-2026,CUST114,P004,Notebook Pack,Stationery,2,250,0,500,Wholesale,Neha,East,Cash,Cancelled
+ORD1349,20-07-2026,CUST141,P001,Laptop Pro 15,Electronics,2,85000,0,170000,Online,Neha,East,Net Banking,Completed
+ORD1350,20-07-2026,CUST061,P007,Printer,Electronics,8,18500,15,125800,Wholesale,Rahul,North,UPI,Pending
+ORD1351,20-07-2026,CUST146,P008,Mechanical Keyboard,Electronics,5,3500,0,17500,Online,Rahul,North,Net Banking,Cancelled
+ORD1352,20-07-2026,CUST132,P002,Wireless Mouse,Electronics,5,1200,0,6000,Online,Rahul,North,UPI,Completed
+ORD1353,21-07-2026,CUST026,P001,Laptop Pro 15,Electronics,4,85000,0,340000,Online,Rahul,North,Net Banking,Pending
+ORD1354,21-07-2026,CUST016,P005,Monitor 24inch,Electronics,7,14500,0,101500,Retail,Amit,West,UPI,Pending
+ORD1355,21-07-2026,CUST042,P001,Laptop Pro 15,Electronics,10,85000,0,850000,Direct,Amit,West,Cash,Completed
+ORD1356,21-07-2026,CUST137,P010,Filing Cabinet,Furniture,3,9500,0,28500,Online,Priya,South,Cash,Completed
+ORD1357,22-07-2026,CUST141,P002,Wireless Mouse,Electronics,7,1200,15,7140,Online,Amit,West,Cash,Completed
+ORD1358,22-07-2026,CUST085,P007,Printer,Electronics,4,18500,0,74000,Online,Rahul,North,Card,Completed
+ORD1359,22-07-2026,CUST002,P003,Office Chair,Furniture,4,8500,0,34000,Retail,Rahul,North,Card,Completed
+ORD1360,23-07-2026,CUST089,P006,Desk,Furniture,4,12000,10,43200,Wholesale,Amit,West,Cash,Completed
+ORD1361,23-07-2026,CUST008,P001,Laptop Pro 15,Electronics,5,85000,15,361250,Online,Rahul,North,Cash,Cancelled
+ORD1362,23-07-2026,CUST004,P006,Desk,Furniture,10,12000,5,114000,Direct,Rahul,North,Cash,Completed
+ORD1363,23-07-2026,CUST031,P007,Printer,Electronics,11,18500,0,203500,Direct,Priya,South,UPI,Completed
+ORD1364,23-07-2026,CUST019,P004,Notebook Pack,Stationery,4,250,0,1000,Direct,Priya,South,Net Banking,Pending
+ORD1365,23-07-2026,CUST092,P004,Notebook Pack,Stationery,1,250,5,237,Retail,Rahul,North,Card,Completed
+ORD1366,24-07-2026,CUST027,P001,Laptop Pro 15,Electronics,9,85000,15,650250,Direct,Neha,East,UPI,Cancelled
+ORD1367,24-07-2026,CUST123,P001,Laptop Pro 15,Electronics,1,85000,10,76500,Online,Priya,South,Cash,Cancelled
+ORD1368,24-07-2026,CUST080,P002,Wireless Mouse,Electronics,1,1200,0,1200,Wholesale,Rahul,North,UPI,Cancelled
+ORD1369,25-07-2026,CUST131,P010,Filing Cabinet,Furniture,9,9500,0,85500,Wholesale,Rahul,North,Net Banking,Completed
+ORD1370,25-07-2026,CUST082,P002,Wireless Mouse,Electronics,5,1200,0,6000,Retail,Amit,West,Card,Completed
+ORD1371,25-07-2026,CUST016,P006,Desk,Furniture,9,12000,5,102600,Wholesale,Rahul,North,Net Banking,Completed
+ORD1372,25-07-2026,CUST038,P006,Desk,Furniture,11,12000,10,118800,Direct,Rahul,North,Net Banking,Completed
+ORD1373,25-07-2026,CUST064,P009,Executive Pen Set,Stationery,8,800,15,5440,Online,Neha,East,Cash,Completed
+ORD1374,25-07-2026,CUST033,P009,Executive Pen Set,Stationery,6,800,0,4800,Direct,Neha,East,Card,Completed
+ORD1375,26-07-2026,CUST029,P007,Printer,Electronics,11,18500,10,183150,Online,Rahul,North,Net Banking,Completed
+ORD1376,26-07-2026,CUST046,P003,Office Chair,Furniture,5,8500,5,40375,Wholesale,Amit,West,UPI,Completed
+ORD1377,26-07-2026,CUST054,P010,Filing Cabinet,Furniture,9,9500,15,72675,Online,Neha,East,UPI,Cancelled
+ORD1378,26-07-2026,CUST061,P006,Desk,Furniture,1,12000,10,10800,Online,Rahul,North,Net Banking,Completed
+ORD1379,27-07-2026,CUST120,P002,Wireless Mouse,Electronics,5,1200,5,5700,Wholesale,Priya,South,Card,Completed
+ORD1380,27-07-2026,CUST012,P004,Notebook Pack,Stationery,5,250,15,1062,Online,Amit,West,Card,Completed
+ORD1381,27-07-2026,CUST007,P007,Printer,Electronics,8,18500,15,125800,Online,Rahul,North,UPI,Completed
+ORD1382,27-07-2026,CUST006,P009,Executive Pen Set,Stationery,3,800,15,2040,Retail,Priya,South,Net Banking,Cancelled
+ORD1383,27-07-2026,CUST077,P008,Mechanical Keyboard,Electronics,11,3500,0,38500,Direct,Neha,East,UPI,Completed
+ORD1384,27-07-2026,CUST097,P005,Monitor 24inch,Electronics,1,14500,5,13775,Wholesale,Amit,West,Net Banking,Completed
+ORD1385,28-07-2026,CUST093,P007,Printer,Electronics,2,18500,5,35150,Online,Amit,West,Net Banking,Completed
+ORD1386,28-07-2026,CUST074,P009,Executive Pen Set,Stationery,3,800,5,2280,Wholesale,Neha,East,Cash,Completed
+ORD1387,28-07-2026,CUST115,P010,Filing Cabinet,Furniture,4,9500,0,38000,Online,Neha,East,Card,Cancelled
+ORD1388,28-07-2026,CUST078,P007,Printer,Electronics,8,18500,10,133200,Direct,Amit,West,Cash,Pending
+ORD1389,28-07-2026,CUST095,P009,Executive Pen Set,Stationery,5,800,15,3400,Wholesale,Priya,South,Net Banking,Completed
+ORD1390,29-07-2026,CUST095,P005,Monitor 24inch,Electronics,7,14500,5,96425,Retail,Priya,South,UPI,Cancelled
+ORD1391,29-07-2026,CUST077,P003,Office Chair,Furniture,2,8500,10,15300,Online,Amit,West,Net Banking,Cancelled
+ORD1392,29-07-2026,CUST040,P006,Desk,Furniture,7,12000,5,79800,Wholesale,Rahul,North,Cash,Completed
+ORD1393,29-07-2026,CUST008,P006,Desk,Furniture,4,12000,5,45600,Online,Neha,East,UPI,Completed
+ORD1394,29-07-2026,CUST080,P006,Desk,Furniture,5,12000,15,51000,Wholesale,Priya,South,Cash,Pending
+ORD1395,29-07-2026,CUST072,P008,Mechanical Keyboard,Electronics,5,3500,0,17500,Direct,Amit,West,Cash,Completed
+ORD1396,30-07-2026,CUST025,P004,Notebook Pack,Stationery,2,250,0,500,Direct,Rahul,North,Card,Pending
+ORD1397,30-07-2026,CUST137,P004,Notebook Pack,Stationery,9,250,10,2025,Online,Priya,South,UPI,Cancelled
+ORD1398,30-07-2026,CUST089,P002,Wireless Mouse,Electronics,6,1200,0,7200,Direct,Neha,East,Cash,Cancelled
+ORD1399,31-07-2026,CUST043,P009,Executive Pen Set,Stationery,7,800,0,5600,Direct,Priya,South,UPI,Completed
+ORD1400,31-07-2026,CUST013,P007,Printer,Electronics,6,18500,15,94350,Online,Priya,South,Card,Cancelled
+ORD1401,31-07-2026,CUST101,P007,Printer,Electronics,3,18500,15,47175,Retail,Rahul,North,UPI,Pending
+ORD1402,31-07-2026,CUST025,P008,Mechanical Keyboard,Electronics,7,3500,5,23275,Retail,Priya,South,Card,Cancelled
+ORD1403,31-07-2026,CUST021,P001,Laptop Pro 15,Electronics,11,85000,5,888250,Direct,Rahul,North,Card,Pending
+ORD1404,01-08-2026,CUST003,P004,Notebook Pack,Stationery,9,250,5,2137,Retail,Neha,East,UPI,Completed
+ORD1405,01-08-2026,CUST108,P007,Printer,Electronics,1,18500,15,15725,Retail,Rahul,North,Card,Pending
+ORD1406,01-08-2026,CUST069,P005,Monitor 24inch,Electronics,2,14500,10,26100,Wholesale,Amit,West,UPI,Completed
+ORD1407,01-08-2026,CUST115,P002,Wireless Mouse,Electronics,1,1200,0,1200,Wholesale,Neha,East,Card,Completed
+ORD1408,02-08-2026,CUST130,P001,Laptop Pro 15,Electronics,7,85000,15,505750,Wholesale,Amit,West,Cash,Completed
+ORD1409,02-08-2026,CUST145,P002,Wireless Mouse,Electronics,7,1200,0,8400,Online,Priya,South,Cash,Pending
+ORD1410,02-08-2026,CUST035,P009,Executive Pen Set,Stationery,4,800,0,3200,Direct,Neha,East,Net Banking,Completed
+ORD1411,02-08-2026,CUST132,P006,Desk,Furniture,6,12000,15,61200,Wholesale,Amit,West,Card,Completed
+ORD1412,02-08-2026,CUST086,P001,Laptop Pro 15,Electronics,9,85000,5,726750,Online,Priya,South,Cash,Completed
+ORD1413,02-08-2026,CUST130,P008,Mechanical Keyboard,Electronics,3,3500,0,10500,Online,Amit,West,Net Banking,Completed
+ORD1414,03-08-2026,CUST042,P009,Executive Pen Set,Stationery,7,800,10,5040,Wholesale,Neha,East,Cash,Cancelled
+ORD1415,03-08-2026,CUST112,P007,Printer,Electronics,8,18500,0,148000,Wholesale,Amit,West,Cash,Completed
+ORD1416,03-08-2026,CUST080,P010,Filing Cabinet,Furniture,8,9500,10,68400,Retail,Rahul,North,Net Banking,Pending
+ORD1417,03-08-2026,CUST114,P002,Wireless Mouse,Electronics,4,1200,0,4800,Retail,Amit,West,Net Banking,Completed
+ORD1418,04-08-2026,CUST041,P008,Mechanical Keyboard,Electronics,3,3500,0,10500,Wholesale,Priya,South,UPI,Cancelled
+ORD1419,04-08-2026,CUST114,P004,Notebook Pack,Stationery,6,250,10,1350,Direct,Rahul,North,UPI,Completed
+ORD1420,04-08-2026,CUST139,P010,Filing Cabinet,Furniture,1,9500,10,8550,Wholesale,Amit,West,Card,Completed
+ORD1421,04-08-2026,CUST144,P002,Wireless Mouse,Electronics,5,1200,0,6000,Wholesale,Rahul,North,Cash,Completed
+ORD1422,04-08-2026,CUST116,P006,Desk,Furniture,3,12000,10,32400,Online,Amit,West,UPI,Completed
+ORD1423,05-08-2026,CUST143,P005,Monitor 24inch,Electronics,4,14500,5,55100,Online,Priya,South,Cash,Completed
+ORD1424,05-08-2026,CUST055,P007,Printer,Electronics,1,18500,5,17575,Direct,Rahul,North,Net Banking,Completed
+ORD1425,05-08-2026,CUST092,P008,Mechanical Keyboard,Electronics,6,3500,5,19950,Wholesale,Amit,West,Card,Completed
+ORD1426,05-08-2026,CUST049,P009,Executive Pen Set,Stationery,10,800,15,6800,Online,Amit,West,Net Banking,Completed
+ORD1427,05-08-2026,CUST071,P006,Desk,Furniture,4,12000,5,45600,Direct,Rahul,North,Cash,Completed
+ORD1428,05-08-2026,CUST114,P005,Monitor 24inch,Electronics,8,14500,0,116000,Retail,Neha,East,Net Banking,Cancelled
+ORD1429,06-08-2026,CUST109,P008,Mechanical Keyboard,Electronics,6,3500,0,21000,Wholesale,Amit,West,Cash,Cancelled
+ORD1430,06-08-2026,CUST029,P006,Desk,Furniture,8,12000,0,96000,Online,Priya,South,Card,Completed
+ORD1431,06-08-2026,CUST145,P001,Laptop Pro 15,Electronics,8,85000,10,612000,Retail,Rahul,North,Net Banking,Completed
+ORD1432,06-08-2026,CUST055,P003,Office Chair,Furniture,2,8500,10,15300,Wholesale,Amit,West,UPI,Completed
+ORD1433,06-08-2026,CUST102,P002,Wireless Mouse,Electronics,7,1200,5,7980,Retail,Priya,South,Cash,Pending
+ORD1434,07-08-2026,CUST024,P004,Notebook Pack,Stationery,7,250,10,1575,Online,Neha,East,Net Banking,Cancelled
+ORD1435,07-08-2026,CUST055,P010,Filing Cabinet,Furniture,3,9500,0,28500,Wholesale,Rahul,North,UPI,Completed
+ORD1436,07-08-2026,CUST003,P010,Filing Cabinet,Furniture,11,9500,15,88825,Online,Rahul,North,Card,Cancelled
+ORD1437,08-08-2026,CUST106,P006,Desk,Furniture,5,12000,15,51000,Wholesale,Amit,West,Cash,Pending
+ORD1438,08-08-2026,CUST064,P010,Filing Cabinet,Furniture,3,9500,15,24225,Direct,Priya,South,Card,Completed
+ORD1439,08-08-2026,CUST149,P002,Wireless Mouse,Electronics,2,1200,0,2400,Retail,Priya,South,Cash,Completed
+ORD1440,09-08-2026,CUST087,P009,Executive Pen Set,Stationery,2,800,10,1440,Retail,Rahul,North,UPI,Completed
+ORD1441,09-08-2026,CUST139,P001,Laptop Pro 15,Electronics,10,85000,0,850000,Direct,Amit,West,Net Banking,Pending
+ORD1442,09-08-2026,CUST002,P008,Mechanical Keyboard,Electronics,11,3500,0,38500,Retail,Rahul,North,Net Banking,Completed
+ORD1443,09-08-2026,CUST141,P004,Notebook Pack,Stationery,3,250,10,675,Direct,Priya,South,Cash,Completed
+ORD1444,09-08-2026,CUST134,P006,Desk,Furniture,10,12000,10,108000,Retail,Rahul,North,UPI,Completed
+ORD1445,09-08-2026,CUST148,P010,Filing Cabinet,Furniture,9,9500,10,76950,Retail,Amit,West,UPI,Cancelled
+ORD1446,10-08-2026,CUST061,P008,Mechanical Keyboard,Electronics,7,3500,5,23275,Direct,Neha,East,UPI,Completed
+ORD1447,10-08-2026,CUST021,P003,Office Chair,Furniture,2,8500,0,17000,Direct,Amit,West,Cash,Completed
+ORD1448,10-08-2026,CUST114,P010,Filing Cabinet,Furniture,3,9500,10,25650,Retail,Rahul,North,Card,Completed
+ORD1449,10-08-2026,CUST076,P006,Desk,Furniture,9,12000,5,102600,Online,Rahul,North,Net Banking,Pending
+ORD1450,10-08-2026,CUST063,P001,Laptop Pro 15,Electronics,3,85000,10,229500,Online,Rahul,North,UPI,Pending
+ORD1451,10-08-2026,CUST039,P007,Printer,Electronics,4,18500,10,66600,Retail,Neha,East,Cash,Completed
+ORD1452,11-08-2026,CUST105,P002,Wireless Mouse,Electronics,11,1200,0,13200,Online,Neha,East,Net Banking,Completed
+ORD1453,11-08-2026,CUST087,P002,Wireless Mouse,Electronics,11,1200,0,13200,Retail,Rahul,North,UPI,Cancelled
+ORD1454,11-08-2026,CUST063,P007,Printer,Electronics,9,18500,0,166500,Direct,Priya,South,Cash,Completed
+ORD1455,12-08-2026,CUST042,P009,Executive Pen Set,Stationery,7,800,5,5320,Direct,Rahul,North,Card,Completed
+ORD1456,12-08-2026,CUST036,P009,Executive Pen Set,Stationery,4,800,5,3040,Wholesale,Rahul,North,Cash,Completed
+ORD1457,12-08-2026,CUST080,P004,Notebook Pack,Stationery,6,250,15,1275,Direct,Neha,East,UPI,Cancelled
+ORD1458,12-08-2026,CUST006,P010,Filing Cabinet,Furniture,11,9500,15,88825,Direct,Amit,West,UPI,Cancelled
+ORD1459,12-08-2026,CUST065,P004,Notebook Pack,Stationery,11,250,0,2750,Direct,Priya,South,UPI,Completed
+ORD1460,13-08-2026,CUST068,P007,Printer,Electronics,10,18500,5,175750,Retail,Rahul,North,Net Banking,Completed
+ORD1461,13-08-2026,CUST090,P005,Monitor 24inch,Electronics,2,14500,0,29000,Retail,Neha,East,Cash,Completed
+ORD1462,13-08-2026,CUST110,P006,Desk,Furniture,4,12000,5,45600,Wholesale,Priya,South,Card,Pending
+ORD1463,13-08-2026,CUST147,P006,Desk,Furniture,9,12000,0,108000,Online,Amit,West,Card,Completed
+ORD1464,13-08-2026,CUST039,P009,Executive Pen Set,Stationery,4,800,0,3200,Direct,Amit,West,UPI,Cancelled
+ORD1465,13-08-2026,CUST123,P010,Filing Cabinet,Furniture,9,9500,15,72675,Wholesale,Neha,East,UPI,Completed
+ORD1466,14-08-2026,CUST002,P006,Desk,Furniture,5,12000,15,51000,Direct,Neha,East,UPI,Cancelled
+ORD1467,14-08-2026,CUST068,P009,Executive Pen Set,Stationery,6,800,5,4560,Direct,Priya,South,UPI,Cancelled
+ORD1468,14-08-2026,CUST061,P003,Office Chair,Furniture,10,8500,0,85000,Retail,Rahul,North,UPI,Completed
+ORD1469,14-08-2026,CUST063,P009,Executive Pen Set,Stationery,11,800,5,8360,Online,Priya,South,Net Banking,Completed
+ORD1470,14-08-2026,CUST048,P008,Mechanical Keyboard,Electronics,3,3500,10,9450,Retail,Amit,West,UPI,Pending
+ORD1471,14-08-2026,CUST070,P005,Monitor 24inch,Electronics,3,14500,0,43500,Wholesale,Rahul,North,Card,Completed
+ORD1472,15-08-2026,CUST103,P006,Desk,Furniture,7,12000,5,79800,Wholesale,Priya,South,Card,Completed
+ORD1473,15-08-2026,CUST065,P004,Notebook Pack,Stationery,2,250,0,500,Wholesale,Neha,East,Cash,Pending
+ORD1474,15-08-2026,CUST134,P001,Laptop Pro 15,Electronics,8,85000,0,680000,Wholesale,Amit,West,Card,Completed
+ORD1475,16-08-2026,CUST083,P005,Monitor 24inch,Electronics,10,14500,10,130500,Direct,Rahul,North,Cash,Completed
+ORD1476,16-08-2026,CUST122,P010,Filing Cabinet,Furniture,6,9500,0,57000,Online,Priya,South,UPI,Completed
+ORD1477,16-08-2026,CUST118,P008,Mechanical Keyboard,Electronics,8,3500,15,23800,Direct,Rahul,North,Net Banking,Completed
+ORD1478,16-08-2026,CUST134,P003,Office Chair,Furniture,1,8500,0,8500,Online,Rahul,North,UPI,Cancelled
+ORD1479,16-08-2026,CUST090,P001,Laptop Pro 15,Electronics,1,85000,0,85000,Wholesale,Priya,South,UPI,Pending
+ORD1480,17-08-2026,CUST056,P005,Monitor 24inch,Electronics,1,14500,10,13050,Direct,Priya,South,Cash,Completed
+ORD1481,17-08-2026,CUST012,P005,Monitor 24inch,Electronics,10,14500,15,123250,Online,Priya,South,UPI,Completed
+ORD1482,17-08-2026,CUST007,P003,Office Chair,Furniture,1,8500,0,8500,Online,Amit,West,UPI,Completed
+ORD1483,17-08-2026,CUST079,P006,Desk,Furniture,11,12000,10,118800,Direct,Amit,West,Card,Completed
+ORD1484,17-08-2026,CUST093,P005,Monitor 24inch,Electronics,11,14500,15,135575,Direct,Priya,South,UPI,Completed
+ORD1485,18-08-2026,CUST081,P002,Wireless Mouse,Electronics,2,1200,0,2400,Retail,Rahul,North,UPI,Cancelled
+ORD1486,18-08-2026,CUST131,P005,Monitor 24inch,Electronics,5,14500,15,61625,Wholesale,Amit,West,Cash,Pending
+ORD1487,18-08-2026,CUST124,P002,Wireless Mouse,Electronics,10,1200,10,10800,Online,Neha,East,Net Banking,Completed
+ORD1488,18-08-2026,CUST048,P008,Mechanical Keyboard,Electronics,1,3500,0,3500,Direct,Neha,East,Card,Completed
+ORD1489,18-08-2026,CUST058,P003,Office Chair,Furniture,10,8500,10,76500,Online,Neha,East,Net Banking,Completed
+ORD1490,19-08-2026,CUST116,P006,Desk,Furniture,10,12000,5,114000,Online,Amit,West,UPI,Cancelled
+ORD1491,19-08-2026,CUST073,P004,Notebook Pack,Stationery,10,250,5,2375,Wholesale,Neha,East,Card,Completed
+ORD1492,19-08-2026,CUST097,P002,Wireless Mouse,Electronics,8,1200,0,9600,Direct,Amit,West,Cash,Completed
+ORD1493,19-08-2026,CUST139,P010,Filing Cabinet,Furniture,10,9500,15,80750,Wholesale,Neha,East,Card,Completed
+ORD1494,19-08-2026,CUST020,P002,Wireless Mouse,Electronics,4,1200,10,4320,Online,Neha,East,Card,Cancelled
+ORD1495,20-08-2026,CUST140,P010,Filing Cabinet,Furniture,3,9500,15,24225,Retail,Neha,East,UPI,Completed
+ORD1496,20-08-2026,CUST041,P007,Printer,Electronics,10,18500,0,185000,Direct,Priya,South,UPI,Cancelled
+ORD1497,20-08-2026,CUST001,P006,Desk,Furniture,6,12000,5,68400,Direct,Amit,West,Cash,Completed
+ORD1498,20-08-2026,CUST087,P010,Filing Cabinet,Furniture,11,9500,0,104500,Online,Priya,South,UPI,Completed
+ORD1499,20-08-2026,CUST067,P010,Filing Cabinet,Furniture,7,9500,5,63175,Online,Amit,West,Cash,Completed
+ORD1500,20-08-2026,CUST063,P004,Notebook Pack,Stationery,7,250,0,1750,Direct,Priya,South,Net Banking,Completed
+ORD1501,21-08-2026,CUST094,P005,Monitor 24inch,Electronics,3,14500,15,36975,Direct,Neha,East,Net Banking,Cancelled
+ORD1502,21-08-2026,CUST100,P008,Mechanical Keyboard,Electronics,7,3500,15,20825,Online,Priya,South,Card,Completed
+ORD1503,21-08-2026,CUST004,P008,Mechanical Keyboard,Electronics,8,3500,5,26600,Retail,Rahul,North,Card,Completed
+ORD1504,21-08-2026,CUST107,P007,Printer,Electronics,10,18500,15,157250,Wholesale,Rahul,North,Net Banking,Pending
+ORD1505,22-08-2026,CUST071,P002,Wireless Mouse,Electronics,5,1200,5,5700,Online,Neha,East,UPI,Completed
+ORD1506,22-08-2026,CUST012,P006,Desk,Furniture,3,12000,5,34200,Online,Rahul,North,Card,Completed
+ORD1507,22-08-2026,CUST089,P009,Executive Pen Set,Stationery,8,800,0,6400,Direct,Neha,East,Net Banking,Cancelled
+ORD1508,22-08-2026,CUST132,P002,Wireless Mouse,Electronics,6,1200,0,7200,Online,Neha,East,UPI,Completed
+ORD1509,22-08-2026,CUST065,P004,Notebook Pack,Stationery,9,250,0,2250,Retail,Amit,West,UPI,Completed
+ORD1510,22-08-2026,CUST042,P008,Mechanical Keyboard,Electronics,3,3500,5,9975,Online,Priya,South,Card,Completed
+ORD1511,23-08-2026,CUST140,P001,Laptop Pro 15,Electronics,6,85000,10,459000,Direct,Neha,East,Card,Completed
+ORD1512,23-08-2026,CUST108,P003,Office Chair,Furniture,7,8500,15,50575,Direct,Priya,South,Cash,Completed
+ORD1513,23-08-2026,CUST115,P009,Executive Pen Set,Stationery,11,800,10,7920,Direct,Priya,South,Cash,Cancelled
+ORD1514,23-08-2026,CUST048,P005,Monitor 24inch,Electronics,5,14500,0,72500,Online,Amit,West,Card,Completed
+ORD1515,23-08-2026,CUST014,P007,Printer,Electronics,4,18500,15,62900,Retail,Rahul,North,Cash,Pending
+ORD1516,24-08-2026,CUST129,P004,Notebook Pack,Stationery,3,250,10,675,Wholesale,Amit,West,Cash,Completed
+ORD1517,24-08-2026,CUST060,P010,Filing Cabinet,Furniture,4,9500,10,34200,Direct,Neha,East,Cash,Completed
+ORD1518,24-08-2026,CUST131,P005,Monitor 24inch,Electronics,4,14500,10,52200,Retail,Neha,East,Cash,Completed
+ORD1519,24-08-2026,CUST051,P005,Monitor 24inch,Electronics,1,14500,15,12325,Retail,Amit,West,Cash,Cancelled
+ORD1520,25-08-2026,CUST032,P008,Mechanical Keyboard,Electronics,3,3500,10,9450,Wholesale,Neha,East,Cash,Pending
+ORD1521,25-08-2026,CUST062,P005,Monitor 24inch,Electronics,9,14500,10,117450,Retail,Rahul,North,Card,Pending
+ORD1522,25-08-2026,CUST142,P008,Mechanical Keyboard,Electronics,1,3500,0,3500,Wholesale,Amit,West,Net Banking,Completed
+ORD1523,25-08-2026,CUST127,P003,Office Chair,Furniture,7,8500,15,50575,Direct,Rahul,North,Net Banking,Completed
+ORD1524,25-08-2026,CUST058,P003,Office Chair,Furniture,8,8500,0,68000,Direct,Neha,East,Card,Cancelled
+ORD1525,25-08-2026,CUST040,P001,Laptop Pro 15,Electronics,6,85000,5,484500,Retail,Rahul,North,Card,Completed
+ORD1526,26-08-2026,CUST080,P003,Office Chair,Furniture,6,8500,0,51000,Retail,Neha,East,Net Banking,Pending
+ORD1527,26-08-2026,CUST148,P008,Mechanical Keyboard,Electronics,11,3500,15,32725,Retail,Priya,South,UPI,Completed
+ORD1528,26-08-2026,CUST047,P006,Desk,Furniture,9,12000,10,97200,Wholesale,Rahul,North,Net Banking,Cancelled
+ORD1529,26-08-2026,CUST071,P008,Mechanical Keyboard,Electronics,5,3500,0,17500,Retail,Priya,South,Net Banking,Pending
+ORD1530,26-08-2026,CUST116,P008,Mechanical Keyboard,Electronics,1,3500,15,2975,Retail,Rahul,North,Cash,Completed
+ORD1531,27-08-2026,CUST068,P008,Mechanical Keyboard,Electronics,5,3500,0,17500,Online,Amit,West,Card,Completed
+ORD1532,27-08-2026,CUST051,P006,Desk,Furniture,10,12000,15,102000,Wholesale,Amit,West,UPI,Cancelled
+ORD1533,27-08-2026,CUST017,P005,Monitor 24inch,Electronics,6,14500,15,73950,Online,Rahul,North,Cash,Completed
+ORD1534,27-08-2026,CUST139,P008,Mechanical Keyboard,Electronics,7,3500,0,24500,Online,Amit,West,Net Banking,Cancelled
+ORD1535,27-08-2026,CUST057,P005,Monitor 24inch,Electronics,2,14500,5,27550,Wholesale,Neha,East,Card,Cancelled
+ORD1536,27-08-2026,CUST076,P007,Printer,Electronics,5,18500,15,78625,Wholesale,Priya,South,UPI,Completed
+ORD1537,28-08-2026,CUST008,P009,Executive Pen Set,Stationery,11,800,10,7920,Wholesale,Rahul,North,Card,Completed
+ORD1538,28-08-2026,CUST143,P005,Monitor 24inch,Electronics,3,14500,0,43500,Online,Amit,West,Card,Completed
+ORD1539,28-08-2026,CUST042,P004,Notebook Pack,Stationery,5,250,10,1125,Direct,Priya,South,Card,Pending
+ORD1540,28-08-2026,CUST030,P008,Mechanical Keyboard,Electronics,11,3500,10,34650,Direct,Priya,South,Net Banking,Pending
+ORD1541,28-08-2026,CUST143,P001,Laptop Pro 15,Electronics,5,85000,0,425000,Direct,Neha,East,Cash,Completed
+ORD1542,28-08-2026,CUST063,P004,Notebook Pack,Stationery,11,250,15,2337,Online,Rahul,North,Net Banking,Completed
+ORD1543,29-08-2026,CUST057,P008,Mechanical Keyboard,Electronics,4,3500,5,13300,Wholesale,Amit,West,Card,Completed
+ORD1544,29-08-2026,CUST004,P005,Monitor 24inch,Electronics,5,14500,5,68875,Online,Amit,West,Net Banking,Completed
+ORD1545,29-08-2026,CUST132,P002,Wireless Mouse,Electronics,3,1200,0,3600,Retail,Rahul,North,Cash,Cancelled
+ORD1546,30-08-2026,CUST108,P005,Monitor 24inch,Electronics,9,14500,10,117450,Retail,Neha,East,UPI,Completed
+ORD1547,30-08-2026,CUST131,P009,Executive Pen Set,Stationery,4,800,0,3200,Wholesale,Rahul,North,Cash,Completed
+ORD1548,30-08-2026,CUST105,P009,Executive Pen Set,Stationery,5,800,5,3800,Direct,Amit,West,Cash,Pending
+ORD1549,30-08-2026,CUST088,P005,Monitor 24inch,Electronics,1,14500,0,14500,Retail,Rahul,North,Card,Completed
+ORD1550,31-08-2026,CUST026,P005,Monitor 24inch,Electronics,10,14500,0,145000,Direct,Neha,East,Card,Completed
+ORD1551,31-08-2026,CUST105,P008,Mechanical Keyboard,Electronics,9,3500,0,31500,Online,Neha,East,Cash,Cancelled
+ORD1552,31-08-2026,CUST129,P002,Wireless Mouse,Electronics,10,1200,5,11400,Retail,Priya,South,Net Banking,Pending
+ORD1553,31-08-2026,CUST027,P005,Monitor 24inch,Electronics,1,14500,10,13050,Direct,Amit,West,Card,Completed
+ORD1554,31-08-2026,CUST115,P002,Wireless Mouse,Electronics,4,1200,10,4320,Direct,Priya,South,Card,Completed
+ORD1555,01-09-2026,CUST019,P006,Desk,Furniture,10,12000,15,102000,Retail,Rahul,North,Net Banking,Cancelled
+ORD1556,01-09-2026,CUST035,P003,Office Chair,Furniture,3,8500,0,25500,Wholesale,Amit,West,Cash,Completed
+ORD1557,01-09-2026,CUST024,P005,Monitor 24inch,Electronics,4,14500,15,49300,Online,Rahul,North,Card,Completed
+ORD1558,01-09-2026,CUST120,P005,Monitor 24inch,Electronics,7,14500,0,101500,Retail,Neha,East,Net Banking,Cancelled
+ORD1559,01-09-2026,CUST139,P003,Office Chair,Furniture,10,8500,10,76500,Retail,Neha,East,UPI,Completed
+ORD1560,01-09-2026,CUST025,P004,Notebook Pack,Stationery,4,250,0,1000,Retail,Neha,East,Card,Completed
+ORD1561,02-09-2026,CUST134,P003,Office Chair,Furniture,11,8500,15,79475,Wholesale,Neha,East,Net Banking,Completed
+ORD1562,02-09-2026,CUST029,P007,Printer,Electronics,7,18500,0,129500,Wholesale,Priya,South,Net Banking,Completed
+ORD1563,02-09-2026,CUST010,P004,Notebook Pack,Stationery,7,250,0,1750,Wholesale,Amit,West,Cash,Completed
+ORD1564,02-09-2026,CUST019,P001,Laptop Pro 15,Electronics,3,85000,15,216750,Direct,Amit,West,Card,Cancelled
+ORD1565,02-09-2026,CUST043,P001,Laptop Pro 15,Electronics,6,85000,0,510000,Wholesale,Neha,East,Net Banking,Cancelled
+ORD1566,03-09-2026,CUST034,P001,Laptop Pro 15,Electronics,10,85000,0,850000,Retail,Neha,East,Cash,Pending
+ORD1567,03-09-2026,CUST074,P006,Desk,Furniture,1,12000,0,12000,Wholesale,Amit,West,Net Banking,Pending
+ORD1568,03-09-2026,CUST076,P003,Office Chair,Furniture,1,8500,10,7650,Retail,Rahul,North,UPI,Completed
+ORD1569,03-09-2026,CUST108,P005,Monitor 24inch,Electronics,11,14500,5,151525,Online,Neha,East,UPI,Pending
+ORD1570,03-09-2026,CUST060,P002,Wireless Mouse,Electronics,10,1200,15,10200,Retail,Amit,West,Cash,Completed
+ORD1571,04-09-2026,CUST112,P009,Executive Pen Set,Stationery,4,800,0,3200,Online,Neha,East,UPI,Pending
+ORD1572,04-09-2026,CUST030,P003,Office Chair,Furniture,9,8500,0,76500,Direct,Neha,East,Net Banking,Completed
+ORD1573,04-09-2026,CUST139,P008,Mechanical Keyboard,Electronics,10,3500,10,31500,Online,Neha,East,Cash,Pending
+ORD1574,04-09-2026,CUST130,P009,Executive Pen Set,Stationery,11,800,15,7480,Wholesale,Rahul,North,Net Banking,Completed
+ORD1575,04-09-2026,CUST023,P002,Wireless Mouse,Electronics,3,1200,10,3240,Online,Neha,East,Net Banking,Pending
+ORD1576,04-09-2026,CUST069,P003,Office Chair,Furniture,9,8500,5,72675,Direct,Priya,South,Card,Completed
+ORD1577,05-09-2026,CUST028,P006,Desk,Furniture,10,12000,5,114000,Retail,Neha,East,Net Banking,Completed
+ORD1578,05-09-2026,CUST048,P007,Printer,Electronics,5,18500,10,83250,Online,Amit,West,Net Banking,Completed
+ORD1579,05-09-2026,CUST149,P001,Laptop Pro 15,Electronics,5,85000,15,361250,Retail,Rahul,North,Card,Completed
+ORD1580,05-09-2026,CUST047,P005,Monitor 24inch,Electronics,7,14500,5,96425,Retail,Priya,South,Net Banking,Cancelled
+ORD1581,06-09-2026,CUST090,P005,Monitor 24inch,Electronics,9,14500,10,117450,Retail,Amit,West,UPI,Pending
+ORD1582,06-09-2026,CUST116,P010,Filing Cabinet,Furniture,5,9500,15,40375,Wholesale,Rahul,North,Cash,Cancelled
+ORD1583,06-09-2026,CUST106,P003,Office Chair,Furniture,5,8500,5,40375,Retail,Neha,East,Card,Completed
+ORD1584,06-09-2026,CUST102,P010,Filing Cabinet,Furniture,4,9500,10,34200,Direct,Neha,East,UPI,Pending
+ORD1585,06-09-2026,CUST111,P002,Wireless Mouse,Electronics,1,1200,0,1200,Online,Rahul,North,Cash,Pending
+ORD1586,06-09-2026,CUST006,P007,Printer,Electronics,2,18500,10,33300,Retail,Priya,South,Card,Completed
+ORD1587,07-09-2026,CUST034,P007,Printer,Electronics,7,18500,5,123025,Retail,Priya,South,Net Banking,Completed
+ORD1588,07-09-2026,CUST033,P004,Notebook Pack,Stationery,5,250,10,1125,Direct,Amit,West,Net Banking,Completed
+ORD1589,07-09-2026,CUST024,P006,Desk,Furniture,6,12000,0,72000,Wholesale,Neha,East,Net Banking,Cancelled
+ORD1590,07-09-2026,CUST061,P006,Desk,Furniture,8,12000,0,96000,Direct,Rahul,North,Cash,Pending
+ORD1591,07-09-2026,CUST027,P006,Desk,Furniture,2,12000,15,20400,Direct,Amit,West,Cash,Cancelled
+ORD1592,07-09-2026,CUST117,P008,Mechanical Keyboard,Electronics,5,3500,0,17500,Direct,Rahul,North,Card,Completed
+ORD1593,08-09-2026,CUST125,P009,Executive Pen Set,Stationery,2,800,10,1440,Online,Priya,South,Cash,Completed
+ORD1594,08-09-2026,CUST018,P009,Executive Pen Set,Stationery,5,800,0,4000,Online,Rahul,North,UPI,Cancelled
+ORD1595,08-09-2026,CUST145,P009,Executive Pen Set,Stationery,8,800,10,5760,Retail,Priya,South,Net Banking,Cancelled
+ORD1596,08-09-2026,CUST019,P009,Executive Pen Set,Stationery,7,800,5,5320,Retail,Priya,South,Net Banking,Pending
+ORD1597,08-09-2026,CUST046,P005,Monitor 24inch,Electronics,8,14500,5,110200,Online,Neha,East,Card,Completed
+ORD1598,08-09-2026,CUST077,P002,Wireless Mouse,Electronics,5,1200,5,5700,Wholesale,Priya,South,Cash,Completed
+ORD1599,09-09-2026,CUST047,P001,Laptop Pro 15,Electronics,10,85000,0,850000,Online,Rahul,North,UPI,Pending
+ORD1600,09-09-2026,CUST120,P006,Desk,Furniture,6,12000,10,64800,Wholesale,Rahul,North,Net Banking,Pending
+ORD1601,09-09-2026,CUST095,P008,Mechanical Keyboard,Electronics,7,3500,10,22050,Wholesale,Rahul,North,Card,Completed
+ORD1602,09-09-2026,CUST087,P005,Monitor 24inch,Electronics,7,14500,10,91350,Retail,Rahul,North,Card,Completed
+ORD1603,09-09-2026,CUST132,P004,Notebook Pack,Stationery,2,250,5,475,Wholesale,Neha,East,UPI,Cancelled
+ORD1604,10-09-2026,CUST140,P009,Executive Pen Set,Stationery,6,800,0,4800,Retail,Priya,South,Cash,Completed
+ORD1605,10-09-2026,CUST128,P008,Mechanical Keyboard,Electronics,1,3500,0,3500,Direct,Rahul,North,Net Banking,Completed
+ORD1606,10-09-2026,CUST013,P003,Office Chair,Furniture,9,8500,5,72675,Online,Rahul,North,Net Banking,Completed
+ORD1607,10-09-2026,CUST087,P006,Desk,Furniture,9,12000,10,97200,Direct,Amit,West,Card,Pending
+ORD1608,10-09-2026,CUST103,P002,Wireless Mouse,Electronics,6,1200,0,7200,Direct,Priya,South,Net Banking,Cancelled
+ORD1609,10-09-2026,CUST008,P008,Mechanical Keyboard,Electronics,1,3500,0,3500,Wholesale,Neha,East,Net Banking,Pending
+ORD1610,11-09-2026,CUST022,P007,Printer,Electronics,8,18500,15,125800,Wholesale,Amit,West,UPI,Cancelled
+ORD1611,11-09-2026,CUST095,P010,Filing Cabinet,Furniture,4,9500,0,38000,Retail,Neha,East,Card,Completed
+ORD1612,11-09-2026,CUST007,P006,Desk,Furniture,5,12000,15,51000,Retail,Neha,East,UPI,Cancelled
+ORD1613,12-09-2026,CUST087,P006,Desk,Furniture,11,12000,0,132000,Retail,Amit,West,Card,Completed
+ORD1614,12-09-2026,CUST089,P001,Laptop Pro 15,Electronics,5,85000,0,425000,Direct,Amit,West,UPI,Completed
+ORD1615,12-09-2026,CUST087,P001,Laptop Pro 15,Electronics,4,85000,15,289000,Online,Amit,West,UPI,Cancelled
+ORD1616,12-09-2026,CUST020,P001,Laptop Pro 15,Electronics,9,85000,10,688500,Direct,Neha,East,UPI,Cancelled
+ORD1617,12-09-2026,CUST135,P008,Mechanical Keyboard,Electronics,11,3500,0,38500,Direct,Rahul,North,Net Banking,Completed
+ORD1618,12-09-2026,CUST011,P003,Office Chair,Furniture,2,8500,15,14450,Wholesale,Rahul,North,Card,Cancelled
+ORD1619,13-09-2026,CUST064,P004,Notebook Pack,Stationery,7,250,10,1575,Wholesale,Neha,East,Net Banking,Cancelled
+ORD1620,13-09-2026,CUST085,P001,Laptop Pro 15,Electronics,8,85000,15,578000,Retail,Neha,East,Net Banking,Cancelled
+ORD1621,13-09-2026,CUST079,P001,Laptop Pro 15,Electronics,9,85000,0,765000,Online,Priya,South,Net Banking,Completed
+ORD1622,13-09-2026,CUST020,P009,Executive Pen Set,Stationery,11,800,15,7480,Online,Amit,West,UPI,Completed
+ORD1623,13-09-2026,CUST057,P003,Office Chair,Furniture,1,8500,0,8500,Retail,Rahul,North,Cash,Completed
+ORD1624,14-09-2026,CUST097,P003,Office Chair,Furniture,7,8500,0,59500,Wholesale,Amit,West,Cash,Pending
+ORD1625,14-09-2026,CUST087,P004,Notebook Pack,Stationery,4,250,5,950,Wholesale,Priya,South,Card,Completed
+ORD1626,14-09-2026,CUST062,P007,Printer,Electronics,7,18500,0,129500,Retail,Neha,East,UPI,Completed
+ORD1627,14-09-2026,CUST009,P004,Notebook Pack,Stationery,10,250,15,2125,Direct,Priya,South,UPI,Completed
+ORD1628,15-09-2026,CUST141,P010,Filing Cabinet,Furniture,1,9500,15,8075,Retail,Priya,South,UPI,Pending
+ORD1629,15-09-2026,CUST009,P003,Office Chair,Furniture,6,8500,0,51000,Retail,Rahul,North,Net Banking,Pending
+ORD1630,15-09-2026,CUST026,P002,Wireless Mouse,Electronics,8,1200,0,9600,Wholesale,Neha,East,Cash,Completed
+ORD1631,15-09-2026,CUST054,P008,Mechanical Keyboard,Electronics,7,3500,0,24500,Retail,Rahul,North,Net Banking,Completed
+ORD1632,16-09-2026,CUST143,P005,Monitor 24inch,Electronics,8,14500,10,104400,Direct,Neha,East,Net Banking,Completed
+ORD1633,16-09-2026,CUST141,P009,Executive Pen Set,Stationery,2,800,0,1600,Online,Amit,West,Card,Completed
+ORD1634,16-09-2026,CUST086,P003,Office Chair,Furniture,8,8500,0,68000,Direct,Neha,East,Cash,Completed
+ORD1635,16-09-2026,CUST121,P007,Printer,Electronics,6,18500,15,94350,Wholesale,Priya,South,Card,Completed
+ORD1636,16-09-2026,CUST133,P009,Executive Pen Set,Stationery,6,800,15,4080,Direct,Neha,East,Cash,Cancelled
+ORD1637,17-09-2026,CUST128,P002,Wireless Mouse,Electronics,5,1200,0,6000,Direct,Neha,East,Cash,Cancelled
+ORD1638,17-09-2026,CUST116,P009,Executive Pen Set,Stationery,11,800,10,7920,Direct,Priya,South,UPI,Pending
+ORD1639,17-09-2026,CUST095,P003,Office Chair,Furniture,7,8500,0,59500,Retail,Amit,West,Net Banking,Completed
+ORD1640,17-09-2026,CUST145,P001,Laptop Pro 15,Electronics,6,85000,15,433500,Online,Rahul,North,Net Banking,Completed
+ORD1641,17-09-2026,CUST093,P007,Printer,Electronics,3,18500,0,55500,Direct,Amit,West,Net Banking,Pending
+ORD1642,17-09-2026,CUST147,P008,Mechanical Keyboard,Electronics,7,3500,10,22050,Retail,Amit,West,Card,Completed
+ORD1643,18-09-2026,CUST011,P010,Filing Cabinet,Furniture,11,9500,0,104500,Wholesale,Neha,East,Net Banking,Completed
+ORD1644,18-09-2026,CUST017,P004,Notebook Pack,Stationery,5,250,10,1125,Retail,Amit,West,Net Banking,Completed
+ORD1645,18-09-2026,CUST097,P010,Filing Cabinet,Furniture,7,9500,0,66500,Online,Neha,East,Cash,Completed
+ORD1646,18-09-2026,CUST104,P010,Filing Cabinet,Furniture,10,9500,0,95000,Retail,Rahul,North,UPI,Cancelled
+ORD1647,18-09-2026,CUST102,P003,Office Chair,Furniture,8,8500,0,68000,Online,Rahul,North,UPI,Completed
+ORD1648,19-09-2026,CUST113,P010,Filing Cabinet,Furniture,2,9500,0,19000,Online,Neha,East,Net Banking,Cancelled
+ORD1649,19-09-2026,CUST075,P010,Filing Cabinet,Furniture,5,9500,0,47500,Direct,Rahul,North,Card,Completed
+ORD1650,19-09-2026,CUST146,P003,Office Chair,Furniture,8,8500,0,68000,Wholesale,Neha,East,Card,Completed
+ORD1651,19-09-2026,CUST123,P008,Mechanical Keyboard,Electronics,1,3500,15,2975,Direct,Rahul,North,Cash,Cancelled
+ORD1652,19-09-2026,CUST024,P001,Laptop Pro 15,Electronics,5,85000,10,382500,Online,Amit,West,UPI,Completed
+ORD1653,20-09-2026,CUST136,P003,Office Chair,Furniture,1,8500,0,8500,Online,Amit,West,UPI,Completed
+ORD1654,20-09-2026,CUST034,P009,Executive Pen Set,Stationery,8,800,5,6080,Online,Rahul,North,Card,Cancelled
+ORD1655,20-09-2026,CUST001,P009,Executive Pen Set,Stationery,4,800,10,2880,Direct,Amit,West,UPI,Pending
+ORD1656,20-09-2026,CUST121,P006,Desk,Furniture,11,12000,10,118800,Direct,Priya,South,Net Banking,Completed
+ORD1657,20-09-2026,CUST074,P007,Printer,Electronics,4,18500,5,70300,Online,Rahul,North,UPI,Completed
+ORD1658,20-09-2026,CUST067,P006,Desk,Furniture,3,12000,5,34200,Retail,Neha,East,Card,Completed
+ORD1659,21-09-2026,CUST141,P003,Office Chair,Furniture,3,8500,5,24225,Retail,Neha,East,Net Banking,Completed
+ORD1660,21-09-2026,CUST083,P006,Desk,Furniture,8,12000,15,81600,Retail,Neha,East,UPI,Completed
+ORD1661,21-09-2026,CUST033,P008,Mechanical Keyboard,Electronics,4,3500,5,13300,Wholesale,Amit,West,Net Banking,Completed
+ORD1662,22-09-2026,CUST140,P009,Executive Pen Set,Stationery,9,800,0,7200,Wholesale,Amit,West,Net Banking,Pending
+ORD1663,22-09-2026,CUST107,P008,Mechanical Keyboard,Electronics,6,3500,10,18900,Direct,Amit,West,Net Banking,Completed
+ORD1664,22-09-2026,CUST021,P002,Wireless Mouse,Electronics,6,1200,5,6840,Retail,Amit,West,Net Banking,Cancelled
+ORD1665,22-09-2026,CUST146,P005,Monitor 24inch,Electronics,5,14500,0,72500,Direct,Amit,West,Net Banking,Pending
+ORD1666,23-09-2026,CUST111,P003,Office Chair,Furniture,10,8500,10,76500,Wholesale,Priya,South,Cash,Completed
+ORD1667,23-09-2026,CUST104,P006,Desk,Furniture,4,12000,15,40800,Wholesale,Amit,West,Cash,Completed
+ORD1668,23-09-2026,CUST120,P001,Laptop Pro 15,Electronics,3,85000,5,242250,Online,Neha,East,Card,Completed
+ORD1669,23-09-2026,CUST014,P002,Wireless Mouse,Electronics,10,1200,15,10200,Wholesale,Amit,West,Net Banking,Cancelled
+ORD1670,23-09-2026,CUST056,P009,Executive Pen Set,Stationery,4,800,10,2880,Direct,Neha,East,Card,Pending
+ORD1671,24-09-2026,CUST080,P004,Notebook Pack,Stationery,6,250,15,1275,Retail,Neha,East,Card,Completed
+ORD1672,24-09-2026,CUST036,P004,Notebook Pack,Stationery,8,250,0,2000,Direct,Amit,West,UPI,Cancelled
+ORD1673,24-09-2026,CUST141,P002,Wireless Mouse,Electronics,1,1200,15,1020,Wholesale,Neha,East,UPI,Completed
+ORD1674,24-09-2026,CUST069,P006,Desk,Furniture,6,12000,5,68400,Direct,Neha,East,Net Banking,Completed
+ORD1675,25-09-2026,CUST149,P008,Mechanical Keyboard,Electronics,8,3500,15,23800,Direct,Priya,South,Net Banking,Completed
+ORD1676,25-09-2026,CUST066,P006,Desk,Furniture,1,12000,5,11400,Direct,Neha,East,Card,Completed
+ORD1677,25-09-2026,CUST001,P009,Executive Pen Set,Stationery,10,800,10,7200,Online,Neha,East,Cash,Completed
+ORD1678,25-09-2026,CUST008,P004,Notebook Pack,Stationery,2,250,5,475,Direct,Priya,South,UPI,Cancelled
+ORD1679,25-09-2026,CUST082,P003,Office Chair,Furniture,11,8500,0,93500,Retail,Neha,East,Cash,Completed
+ORD1680,25-09-2026,CUST142,P006,Desk,Furniture,8,12000,0,96000,Wholesale,Amit,West,Card,Completed
+ORD1681,26-09-2026,CUST133,P005,Monitor 24inch,Electronics,6,14500,0,87000,Retail,Priya,South,Cash,Pending
+ORD1682,26-09-2026,CUST056,P009,Executive Pen Set,Stationery,9,800,5,6840,Direct,Priya,South,Cash,Completed
+ORD1683,26-09-2026,CUST100,P001,Laptop Pro 15,Electronics,9,85000,15,650250,Direct,Priya,South,Cash,Completed
+ORD1684,27-09-2026,CUST104,P007,Printer,Electronics,1,18500,0,18500,Online,Neha,East,UPI,Completed
+ORD1685,27-09-2026,CUST108,P006,Desk,Furniture,8,12000,0,96000,Retail,Rahul,North,Cash,Completed
+ORD1686,27-09-2026,CUST025,P006,Desk,Furniture,5,12000,10,54000,Wholesale,Neha,East,UPI,Completed
+ORD1687,27-09-2026,CUST142,P005,Monitor 24inch,Electronics,10,14500,10,130500,Wholesale,Neha,East,Net Banking,Completed

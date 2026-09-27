@@ -9,7 +9,7 @@
 
     <style>
         /* ============================================================
-           SMART BI — PROFILE SETTINGS
+           SMART BI — PROFILE SETTINGS (SMA ENHANCED)
            ============================================================ */
         :root {
             --bg: #06111f;
@@ -27,6 +27,8 @@
             --border: rgba(255, 255, 255, 0.08);
             --page-glow-purple: rgba(117, 103, 248, 0.18);
             --page-glow-blue: rgba(63, 169, 245, 0.12);
+            --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         /* ============================================================
@@ -73,7 +75,8 @@
             background: radial-gradient(circle, rgba(117, 103, 248, 0.18), transparent 68%);
             filter: blur(25px);
             pointer-events: none;
-            animation: ambientFloat 8s ease-in-out infinite;
+            will-change: transform;
+            animation: ambientFloat 12s ease-in-out infinite;
         }
 
         .profile-settings-main::after {
@@ -86,17 +89,18 @@
             background: radial-gradient(circle, rgba(63, 169, 245, 0.10), transparent 68%);
             filter: blur(30px);
             pointer-events: none;
-            animation: ambientFloatReverse 10s ease-in-out infinite;
+            will-change: transform;
+            animation: ambientFloatReverse 14s ease-in-out infinite;
         }
 
         @keyframes ambientFloat {
-            0%, 100% { transform: translate3d(0, 0, 0); }
-            50% { transform: translate3d(-30px, 25px, 0); }
+            0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+            50% { transform: translate3d(-35px, 30px, 0) rotate(5deg); }
         }
 
         @keyframes ambientFloatReverse {
-            0%, 100% { transform: translate3d(0, 0, 0); }
-            50% { transform: translate3d(25px, -20px, 0); }
+            0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+            50% { transform: translate3d(30px, -25px, 0) rotate(-5deg); }
         }
 
         .profile-settings-container {
@@ -112,12 +116,12 @@
            ============================================================ */
         .profile-settings-header {
             margin-bottom: 28px;
-            animation: profileHeaderEnter 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation: profileHeaderEnter 0.8s var(--ease-out-expo) both;
         }
 
         @keyframes profileHeaderEnter {
-            from { opacity: 0; transform: translateY(-18px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translate3d(0, -20px, 0); }
+            to { opacity: 1; transform: translate3d(0, 0, 0); }
         }
 
         .profile-settings-header-top {
@@ -167,14 +171,19 @@
             font-size: 0.82rem;
             font-weight: 700;
             text-decoration: none;
-            transition: all 0.25s ease;
+            transition: all 0.3s var(--ease-out-expo);
         }
 
         .btn-account-settings:hover {
             background: rgba(117, 103, 248, 0.22);
             border-color: rgba(117, 103, 248, 0.55);
             color: #ffffff;
-            transform: translateY(-2px);
+            transform: translate3d(0, -3px, 0);
+            box-shadow: 0 8px 20px rgba(117, 103, 248, 0.2);
+        }
+
+        .btn-account-settings:active {
+            transform: translate3d(0, -1px, 0);
         }
 
         /* Status Pill */
@@ -190,6 +199,11 @@
             font-size: 0.76rem;
             font-weight: 700;
             white-space: nowrap;
+            transition: transform 0.3s var(--ease-out-back);
+        }
+
+        .profile-status-pill:hover {
+            transform: scale(1.03);
         }
 
         .profile-status-dot {
@@ -203,7 +217,7 @@
 
         @keyframes statusPulse {
             0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.45; transform: scale(1.35); }
+            50% { opacity: 0.45; transform: scale(1.4); }
         }
 
         /* ============================================================
@@ -219,12 +233,12 @@
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
             overflow: hidden;
-            animation: cardEnter 0.75s 0.08s cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation: cardEnter 0.85s 0.08s var(--ease-out-expo) both;
         }
 
         @keyframes cardEnter {
-            from { opacity: 0; transform: translateY(24px) scale(0.985); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            from { opacity: 0; transform: translate3d(0, 30px, 0) scale(0.98); }
+            to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
         }
 
         .profile-settings-card::before {
@@ -260,11 +274,16 @@
             font-size: 1.35rem;
             box-shadow: 0 0 25px rgba(117, 103, 248, 0.10);
             animation: iconGlow 3s ease-in-out infinite;
+            transition: transform 0.4s var(--ease-out-back);
+        }
+
+        .profile-card-heading:hover .profile-card-icon {
+            transform: rotate(15deg) scale(1.08);
         }
 
         @keyframes iconGlow {
             0%, 100% { box-shadow: 0 0 18px rgba(117, 103, 248, 0.08); }
-            50% { box-shadow: 0 0 30px rgba(117, 103, 248, 0.22); }
+            50% { box-shadow: 0 0 30px rgba(117, 103, 248, 0.25); }
         }
 
         .profile-card-heading-text h2 {
@@ -290,7 +309,13 @@
             border-radius: 15px;
             background: rgba(6, 17, 31, 0.42);
             border: 1px solid rgba(255, 255, 255, 0.07);
-            animation: formItemEnter 0.65s 0.12s cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation: formItemEnter 0.65s 0.12s var(--ease-out-expo) both;
+            transition: border-color 0.3s ease, background 0.3s ease;
+        }
+
+        .business-logo-section:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+            background: rgba(6, 17, 31, 0.55);
         }
 
         .business-logo-heading {
@@ -345,13 +370,13 @@
             border: 1px solid rgba(117, 103, 248, 0.25);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.04);
             overflow: hidden;
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.4s var(--ease-out-back), border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .business-logo-preview:hover {
-            transform: translateY(-3px);
+            transform: translate3d(0, -4px, 0) scale(1.02);
             border-color: rgba(117, 103, 248, 0.55);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35), 0 0 30px rgba(117, 103, 248, 0.10);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35), 0 0 30px rgba(117, 103, 248, 0.15);
         }
 
         .business-logo-image {
@@ -360,11 +385,11 @@
             object-fit: contain;
             padding: 12px;
             display: block;
-            animation: logoAppear 0.5s ease both;
+            animation: logoAppear 0.5s var(--ease-out-back) both;
         }
 
         @keyframes logoAppear {
-            from { opacity: 0; transform: scale(0.85); }
+            from { opacity: 0; transform: scale(0.8); }
             to { opacity: 1; transform: scale(1); }
         }
 
@@ -376,6 +401,11 @@
             align-items: center;
             justify-content: center;
             color: var(--muted);
+            transition: transform 0.3s ease;
+        }
+
+        .business-logo-preview:hover .business-logo-placeholder {
+            transform: scale(1.08);
         }
 
         .business-logo-placeholder span {
@@ -406,13 +436,15 @@
             border: 1px dashed rgba(117, 103, 248, 0.35);
             background: rgba(117, 103, 248, 0.035);
             cursor: pointer;
-            transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+            transition: all 0.3s var(--ease-out-expo);
         }
 
-        .business-logo-upload-label:hover {
-            border-color: rgba(117, 103, 248, 0.70);
-            background: rgba(117, 103, 248, 0.08);
-            transform: translateY(-2px);
+        .business-logo-upload-label:hover,
+        .business-logo-upload-label.drag-over {
+            border-color: rgba(117, 103, 248, 0.85);
+            background: rgba(117, 103, 248, 0.12);
+            transform: translate3d(0, -3px, 0);
+            box-shadow: 0 10px 25px rgba(117, 103, 248, 0.12);
         }
 
         .upload-icon {
@@ -426,6 +458,12 @@
             background: rgba(117, 103, 248, 0.14);
             color: var(--purple-light);
             font-size: 1.1rem;
+            transition: transform 0.3s var(--ease-out-back), background 0.3s ease;
+        }
+
+        .business-logo-upload-label:hover .upload-icon {
+            transform: translate3d(0, -3px, 0) scale(1.1);
+            background: rgba(117, 103, 248, 0.28);
         }
 
         .upload-title {
@@ -453,6 +491,7 @@
             font-size: 0.70rem;
             overflow: hidden;
             text-overflow: ellipsis;
+            animation: fadeIn 0.4s ease;
         }
 
         .current-logo-name strong {
@@ -464,6 +503,13 @@
             margin-top: 8px;
             color: #ff8290;
             font-size: 0.74rem;
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
         }
 
         /* ============================================================
@@ -477,7 +523,7 @@
 
         .form-group {
             position: relative;
-            animation: formItemEnter 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation: formItemEnter 0.65s var(--ease-out-expo) both;
         }
 
         .form-group:nth-child(1) { animation-delay: 0.12s; }
@@ -487,8 +533,8 @@
         .form-group:nth-child(5) { animation-delay: 0.28s; }
 
         @keyframes formItemEnter {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translate3d(0, 16px, 0); }
+            to { opacity: 1; transform: translate3d(0, 0, 0); }
         }
 
         .form-group label {
@@ -498,6 +544,11 @@
             font-size: 0.82rem;
             font-weight: 700;
             letter-spacing: 0.01em;
+            transition: color 0.25s ease;
+        }
+
+        .form-group:focus-within label {
+            color: var(--purple-light);
         }
 
         .form-group input {
@@ -511,21 +562,21 @@
             outline: none;
             font-family: inherit;
             font-size: 0.9rem;
-            transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+            transition: all 0.3s var(--ease-out-expo);
         }
 
         .form-group input::placeholder { color: #61758a; }
 
         .form-group input:hover {
-            border-color: rgba(255, 255, 255, 0.15);
-            background: rgba(6, 17, 31, 0.78);
+            border-color: rgba(255, 255, 255, 0.18);
+            background: rgba(6, 17, 31, 0.82);
         }
 
         .form-group input:focus {
-            border-color: rgba(117, 103, 248, 0.65);
+            border-color: rgba(117, 103, 248, 0.75);
             background: rgba(8, 24, 39, 0.95);
-            box-shadow: 0 0 0 3px rgba(117, 103, 248, 0.10), 0 0 22px rgba(117, 103, 248, 0.08);
-            transform: translateY(-1px);
+            box-shadow: 0 0 0 4px rgba(117, 103, 248, 0.15), 0 0 25px rgba(117, 103, 248, 0.12);
+            transform: translate3d(0, -2px, 0);
         }
 
         .form-group ul.errorlist,
@@ -535,6 +586,7 @@
             list-style: none;
             color: #ff8290;
             font-size: 0.75rem;
+            animation: fadeIn 0.3s ease;
         }
 
         .profile-form-errors {
@@ -545,6 +597,7 @@
             border: 1px solid rgba(255, 92, 112, 0.20);
             color: #ff9aa6;
             font-size: 0.82rem;
+            animation: shake 0.4s ease-in-out;
         }
 
         .profile-form-errors ul {
@@ -553,7 +606,7 @@
         }
 
         /* ============================================================
-           ACTIONS
+           ACTIONS & BUTTONS
            ============================================================ */
         .profile-settings-actions {
             display: flex;
@@ -578,7 +631,9 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+            transition: all 0.3s var(--ease-out-expo);
+            position: relative;
+            overflow: hidden;
         }
 
         .profile-settings-actions button {
@@ -589,13 +644,37 @@
         }
 
         .profile-settings-actions button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(117, 103, 248, 0.32);
+            transform: translate3d(0, -3px, 0);
+            box-shadow: 0 12px 30px rgba(117, 103, 248, 0.38);
             background: linear-gradient(135deg, var(--purple-light), var(--purple));
         }
 
         .profile-settings-actions button:active {
-            transform: translateY(0);
+            transform: translate3d(0, -1px, 0);
+        }
+
+        .profile-settings-actions button.loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .profile-settings-actions button.loading .btn-text {
+            visibility: hidden;
+        }
+
+        .profile-settings-actions button.loading::after {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border: 2px solid transparent;
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         .profile-settings-actions a {
@@ -605,10 +684,15 @@
         }
 
         .profile-settings-actions a:hover {
-            transform: translateY(-2px);
-            background: rgba(255, 255, 255, 0.07);
-            border-color: rgba(255, 255, 255, 0.18);
+            transform: translate3d(0, -2px, 0);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.22);
             color: #ffffff;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         /* ============================================================
@@ -722,7 +806,7 @@
                 </div>
 
                 <!-- FORM -->
-                <form method="post" enctype="multipart/form-data">
+                <form method="post" enctype="multipart/form-data" id="profileForm">
                     {% csrf_token %}
 
                     <!-- FORM ERRORS -->
@@ -744,11 +828,11 @@
 
                         <div class="business-logo-content">
                             <!-- CURRENT LOGO PREVIEW -->
-                            <div class="business-logo-preview">
+                            <div class="business-logo-preview" id="logoPreviewContainer">
                                 {% if request.user.business_logo %}
-                                    <img src="{{ request.user.business_logo.url }}" alt="Business Logo" class="business-logo-image">
+                                    <img src="{{ request.user.business_logo.url }}" alt="Business Logo" class="business-logo-image" id="logoPreviewImage">
                                 {% else %}
-                                    <div class="business-logo-placeholder">
+                                    <div class="business-logo-placeholder" id="logoPlaceholder">
                                         <span>🏢</span>
                                         <small>No Logo</small>
                                     </div>
@@ -757,7 +841,7 @@
 
                             <!-- UPLOAD AREA -->
                             <div class="business-logo-upload">
-                                <label for="{{ form.business_logo.id_for_label }}" class="business-logo-upload-label">
+                                <label for="{{ form.business_logo.id_for_label }}" class="business-logo-upload-label" id="dropzoneLabel">
                                     <span class="upload-icon">↑</span>
                                     <span class="upload-title">Change Business Logo</span>
                                     <span class="upload-description">PNG, JPG or JPEG</span>
@@ -777,11 +861,11 @@
                                     Recommended: PNG, JPG or JPEG. Use a clear square logo for the best appearance.
                                 </div>
 
-                                {% if request.user.business_logo %}
-                                    <div class="current-logo-name">
+                                <div class="current-logo-name" id="selectedFileName">
+                                    {% if request.user.business_logo %}
                                         Currently: <strong>{{ request.user.business_logo.name }}</strong>
-                                    </div>
-                                {% endif %}
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -829,7 +913,9 @@
                     <!-- ACTIONS -->
                     <div class="profile-settings-actions">
                         <a href="{% url 'core:dashboard' %}">Cancel</a>
-                        <button type="submit">Save Changes</button>
+                        <button type="submit" id="btnSubmit">
+                            <span class="btn-text">Save Changes</span>
+                        </button>
                     </div>
 
                 </form>
@@ -837,6 +923,70 @@
 
         </div>
     </main>
+
+    <!-- SMA INTERACTION SCRIPT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fileInput = document.querySelector('input[type="file"]');
+            const dropzoneLabel = document.getElementById('dropzoneLabel');
+            const previewContainer = document.getElementById('logoPreviewContainer');
+            const fileNameContainer = document.getElementById('selectedFileName');
+            const form = document.getElementById('profileForm');
+            const submitBtn = document.getElementById('btnSubmit');
+
+            if (fileInput) {
+                // Live image preview transition on select
+                fileInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        updatePreview(file);
+                    }
+                });
+
+                // Drag & Drop SMA Micro-interactions
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    dropzoneLabel.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        dropzoneLabel.classList.add('drag-over');
+                    }, false);
+                });
+
+                ['dragleave', 'drop'].forEach(eventName => {
+                    dropzoneLabel.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        dropzoneLabel.classList.remove('drag-over');
+                    }, false);
+                });
+
+                dropzoneLabel.addEventListener('drop', (e) => {
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    if (files.length > 0) {
+                        fileInput.files = files;
+                        updatePreview(files[0]);
+                    }
+                });
+            }
+
+            function updatePreview(file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewContainer.innerHTML = `<img src="${e.target.result}" alt="Preview Logo" class="business-logo-image">`;
+                    if (fileNameContainer) {
+                        fileNameContainer.innerHTML = `Selected: <strong>${file.name}</strong>`;
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+
+            // Smooth form submit loading state
+            if (form && submitBtn) {
+                form.addEventListener('submit', () => {
+                    submitBtn.classList.add('loading');
+                });
+            }
+        });
+    </script>
 
 </body>
 </html>
