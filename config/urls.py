@@ -1,54 +1,106 @@
+
 from django.contrib import admin
-from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.urls import include, path
+
 
 urlpatterns = [
 
+    # ========================================================
+    # Django Admin
+    # ========================================================
+
     path(
         "admin/",
-        admin.site.urls
+        admin.site.urls,
     ),
+
+    # ========================================================
+    # Core / Dashboard / Public Pages
+    # ========================================================
 
     path(
         "",
-        include("core.urls")
+        include("core.urls"),
     ),
+
+    # ========================================================
+    # Authentication
+    # ========================================================
 
     path(
         "accounts/",
-        include("accounts.urls")
+        include("accounts.urls"),
     ),
+
+    # ========================================================
+    # Data Management
+    # ========================================================
 
     path(
         "data/",
-        include("data_management.urls")
+        include("data_management.urls"),
     ),
+
+    # ========================================================
+    # Business Analytics
+    # ========================================================
 
     path(
         "analytics/",
-        include("analytics.urls")
+        include("analytics.urls"),
     ),
+
+    # ========================================================
+    # Admin Dashboard
+    # ========================================================
 
     path(
         "admin-dashboard/",
-        include("admin_dashboard.urls")
+        include("admin_dashboard.urls"),
     ),
-      path(
+
+    # ========================================================
+    # Advanced Insights
+    # ========================================================
+
+    path(
         "advanced-insights/",
-        include(
-            "advanced_insights.urls"
-        ),
+        include("advanced_insights.urls"),
     ),
+
+    # ========================================================
+    # Decision Intelligence
+    # ========================================================
 
     path(
         "decision-intelligence/",
-        include(
-            "decision_intelligence.urls"
-        ),
+        include("decision_intelligence.urls"),
     ),
-path("reporting/", include("reporting.urls")),
+
+    # ========================================================
+    # Reporting
+    # ========================================================
+
+    path(
+        "reporting/",
+        include("reporting.urls"),
+    ),
 ]
+
+
+# ============================================================
+# DEVELOPMENT MEDIA FILES
+# ============================================================
+#
+# Django serves uploaded media locally while DEBUG=True.
+#
+# In production, uploaded files should use persistent/external
+# storage rather than relying on the web service filesystem.
+#
+# ============================================================
+
 if settings.DEBUG:
     urlpatterns += static(
         settings.MEDIA_URL,
