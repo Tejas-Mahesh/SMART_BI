@@ -1,43 +1,46 @@
 /* ==========================================================================
    SMART BI — FEATURES DESIGN SYSTEM
    File: static/css/features.css
-   Completely scoped under .smart-features for strict isolation.
+   Aligned with the About Page cybernetic intelligence engine aesthetic
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
    1. COLOR FOUNDATIONS & CSS VARIABLES
    -------------------------------------------------------------------------- */
 .smart-features {
-  --feat-bg: #06111f;
-  --feat-bg-deep: #071522;
-  --feat-bg-soft: #081827;
+  --feat-bg: #030712;
+  --feat-bg-deep: #020617;
+  --feat-bg-soft: #071525;
 
-  --feat-card: #0d2033;
-  --feat-card-elevated: #102840;
-  --feat-card-glass: rgba(13, 32, 51, 0.72);
+  --feat-card: #0B1B2D;
+  --feat-card-elevated: #10243A;
+  --feat-card-glass: rgba(11, 27, 45, 0.72);
+  --feat-card-glass-subtle: rgba(16, 36, 58, 0.45);
 
-  --feat-purple: #7567f8;
-  --feat-purple-light: #9b91ff;
-  --feat-purple-glow: rgba(117, 103, 248, 0.35);
+  --feat-purple: #7C5CFF;
+  --feat-purple-light: #A99CFF;
+  --feat-purple-glow: rgba(124, 92, 255, 0.35);
 
-  --feat-blue: #3fa9f5;
-  --feat-blue-glow: rgba(63, 169, 245, 0.32);
+  --feat-blue: #35B8FF;
+  --feat-blue-glow: rgba(53, 184, 255, 0.3);
+  --feat-cyan: #22D3EE;
+  --feat-cyan-glow: rgba(34, 211, 238, 0.28);
 
-  --feat-green: #39d98a;
-  --feat-green-glow: rgba(57, 217, 138, 0.28);
+  --feat-green: #39E58C;
+  --feat-green-glow: rgba(57, 229, 140, 0.25);
+  --feat-orange: #FFB454;
+  --feat-orange-glow: rgba(255, 180, 84, 0.25);
+  --feat-red: #FF5C70;
+  --feat-red-glow: rgba(255, 92, 112, 0.25);
 
-  --feat-orange: #ff9f43;
-  --feat-orange-glow: rgba(255, 159, 67, 0.3);
-
-  --feat-red: #ff5c70;
-  --feat-red-glow: rgba(255, 92, 112, 0.3);
-
-  --feat-text: #f4f7fb;
-  --feat-muted: #8ea1b5;
-  --feat-subtle: #566c82;
+  --feat-text: #F7FAFF;
+  --feat-muted: #8294A8;
+  --feat-subtle: #4D6277;
 
   --feat-border: rgba(255, 255, 255, 0.08);
   --feat-border-bright: rgba(255, 255, 255, 0.16);
+  --feat-border-cyan: rgba(34, 211, 238, 0.35);
+  --feat-border-purple: rgba(124, 92, 255, 0.35);
 
   --feat-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --feat-ease: cubic-bezier(0.16, 1, 0.3, 1);
@@ -54,7 +57,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Universal Reset inside Root */
 .smart-features *,
 .smart-features *::before,
 .smart-features *::after {
@@ -71,16 +73,16 @@
   text-align: center;
 }
 
+/* --------------------------------------------------------------------------
+   2. GRADIENTS, AMBIENT GLOWS & CANVAS
+   -------------------------------------------------------------------------- */
 .feat-gradient-text {
-  background: linear-gradient(135deg, #ffffff 15%, var(--feat-blue) 55%, var(--feat-purple) 100%);
+  background: linear-gradient(135deg, #FFFFFF 15%, var(--feat-blue) 55%, var(--feat-purple) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
 }
 
-/* --------------------------------------------------------------------------
-   2. AMBIENT GLOWS & BACKGROUND CYBER GRID
-   -------------------------------------------------------------------------- */
 .feat-ambient-glow {
   position: absolute;
   border-radius: 50%;
@@ -92,10 +94,10 @@
 
 .feat-glow-top {
   width: 650px;
-  height: 550px;
+  height: 520px;
   top: -120px;
   left: -80px;
-  background: radial-gradient(circle, var(--feat-purple-glow) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(124, 92, 255, 0.28) 0%, transparent 70%);
 }
 
 .feat-glow-mid {
@@ -103,7 +105,7 @@
   height: 650px;
   top: 40%;
   right: -100px;
-  background: radial-gradient(circle, var(--feat-blue-glow) 0%, rgba(57, 217, 138, 0.08) 60%, transparent 75%);
+  background: radial-gradient(circle, rgba(53, 184, 255, 0.25) 0%, rgba(34, 211, 238, 0.12) 50%, transparent 75%);
 }
 
 .feat-glow-bottom {
@@ -112,7 +114,7 @@
   bottom: 4%;
   left: 50%;
   transform: translateX(-50%);
-  background: radial-gradient(circle, var(--feat-purple-glow) 0%, var(--feat-blue-glow) 50%, transparent 75%);
+  background: radial-gradient(circle, rgba(53, 184, 255, 0.18) 0%, rgba(124, 92, 255, 0.12) 60%, transparent 80%);
 }
 
 .feat-ambient-grid {
@@ -131,6 +133,16 @@
   z-index: 0;
 }
 
+.feat-particle-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
 /* --------------------------------------------------------------------------
    3. BUTTON & BADGE PRIMITIVES
    -------------------------------------------------------------------------- */
@@ -138,25 +150,25 @@
   display: inline-flex;
   align-items: center;
   gap: 0.65rem;
-  padding: 0.45rem 1rem;
-  background: rgba(117, 103, 248, 0.1);
-  border: 1px solid rgba(117, 103, 248, 0.4);
+  padding: 0.45rem 0.95rem;
+  background: rgba(34, 211, 238, 0.08);
+  border: 1px solid var(--feat-border-cyan);
   border-radius: 9999px;
   backdrop-filter: blur(8px);
   margin-bottom: 1.5rem;
-  box-shadow: 0 0 20px rgba(117, 103, 248, 0.15);
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.15);
 }
 
 .feat-pulse-dot {
   width: 8px;
   height: 8px;
-  background-color: var(--feat-purple-light);
+  background-color: var(--feat-cyan);
   border-radius: 50%;
-  box-shadow: 0 0 8px var(--feat-purple-light);
-  animation: featPulse 2.2s infinite ease-in-out;
+  box-shadow: 0 0 10px var(--feat-cyan);
+  animation: featPulseBeacon 2.2s infinite ease-in-out;
 }
 
-@keyframes featPulse {
+@keyframes featPulseBeacon {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.4); opacity: 0.4; }
 }
@@ -165,7 +177,7 @@
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.12em;
-  color: var(--feat-purple-light);
+  color: var(--feat-cyan);
   text-transform: uppercase;
 }
 
@@ -174,8 +186,8 @@
   align-items: center;
   justify-content: center;
   gap: 0.65rem;
-  background: linear-gradient(135deg, var(--feat-purple) 0%, #5a48eb 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--feat-purple) 0%, #5a38ef 100%);
+  color: #FFFFFF;
   padding: 0.85rem 1.85rem;
   border-radius: 12px;
   font-weight: 600;
@@ -187,8 +199,8 @@
 
 .feat-btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(117, 103, 248, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.3) inset;
-  color: #ffffff;
+  box-shadow: 0 8px 32px rgba(124, 92, 255, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+  color: #FFFFFF;
 }
 
 .feat-btn-primary .feat-btn-icon {
@@ -251,8 +263,8 @@
 }
 
 .feat-hero-headline {
-  font-size: clamp(2.3rem, 4.2vw, 3.9rem);
-  line-height: 1.12;
+  font-size: clamp(2.4rem, 4.4vw, 4.1rem);
+  line-height: 1.1;
   font-weight: 800;
   letter-spacing: -0.03em;
   margin-bottom: 1.5rem;
@@ -263,7 +275,7 @@
 }
 
 .feat-hero-lead {
-  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  font-size: clamp(1rem, 1.25vw, 1.2rem);
   line-height: 1.65;
   color: var(--feat-muted);
   max-width: 560px;
@@ -281,9 +293,9 @@
 .feat-hero-metrics {
   display: flex;
   align-items: center;
-  gap: clamp(1rem, 2vw, 2rem);
-  padding: 0.95rem 1.4rem;
-  background: rgba(13, 32, 51, 0.5);
+  gap: clamp(1rem, 2.5vw, 2rem);
+  padding: 1rem 1.4rem;
+  background: var(--feat-card-glass-subtle);
   border: 1px solid var(--feat-border);
   border-radius: 14px;
   backdrop-filter: blur(12px);
@@ -296,18 +308,18 @@
 }
 
 .feat-metric-val {
-  font-size: 1.35rem;
+  font-size: 1.3rem;
   font-weight: 800;
-  color: #ffffff;
+  color: #FFFFFF;
   line-height: 1.1;
 }
 
 .feat-metric-lbl {
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-weight: 600;
   color: var(--feat-muted);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
 }
 
 .feat-metric-divider {
@@ -322,15 +334,17 @@
 .feat-hero-visual-col {
   position: relative;
   z-index: 5;
+  perspective: 1200px;
 }
 
 .feat-arch-tower {
-  background: linear-gradient(145deg, rgba(16, 40, 64, 0.8) 0%, rgba(8, 24, 39, 0.92) 100%);
+  background: linear-gradient(145deg, rgba(16, 36, 58, 0.8) 0%, rgba(7, 21, 37, 0.95) 100%);
   border: 1px solid var(--feat-border-bright);
   border-radius: 20px;
-  padding: 1.75rem;
+  padding: 1.85rem;
   backdrop-filter: blur(16px);
   box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.8), 0 0 40px -10px var(--feat-purple-glow);
+  will-change: transform;
 }
 
 .feat-tower-header {
@@ -348,24 +362,24 @@
   gap: 0.5rem;
   font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #ffffff;
+  letter-spacing: 0.1em;
+  color: #FFFFFF;
 }
 
 .feat-tower-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--feat-purple);
-  box-shadow: 0 0 8px var(--feat-purple);
+  background: var(--feat-cyan);
+  box-shadow: 0 0 8px var(--feat-cyan);
 }
 
 .feat-tower-tag {
-  font-size: 0.62rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  color: var(--feat-blue);
-  background: rgba(63, 169, 245, 0.1);
-  border: 1px solid rgba(63, 169, 245, 0.3);
+  color: var(--feat-cyan);
+  background: rgba(34, 211, 238, 0.1);
+  border: 1px solid var(--feat-border-cyan);
   padding: 0.2rem 0.6rem;
   border-radius: 6px;
 }
@@ -393,8 +407,8 @@
   left: 0;
   width: 100%;
   height: 80px;
-  background: linear-gradient(180deg, transparent, var(--feat-blue), var(--feat-purple), transparent);
-  box-shadow: 0 0 10px var(--feat-blue);
+  background: linear-gradient(180deg, transparent, var(--feat-blue), var(--feat-cyan), transparent);
+  box-shadow: 0 0 10px var(--feat-cyan);
   animation: featWirePulse 4.5s infinite linear;
 }
 
@@ -411,14 +425,14 @@
   z-index: 2;
   padding: 0.6rem 0.85rem;
   border-radius: 12px;
-  background: rgba(13, 32, 51, 0.4);
+  background: var(--feat-card-glass-subtle);
   border: 1px solid transparent;
   transition: all 0.3s ease;
 }
 
 .feat-tower-node:hover {
   background: rgba(255, 255, 255, 0.04);
-  border-color: var(--feat-border);
+  border-color: var(--feat-border-bright);
   transform: translateX(4px);
 }
 
@@ -444,38 +458,39 @@
 .feat-node-idx-badge.red { color: var(--feat-red); }
 
 .feat-tower-node.active {
-  background: rgba(16, 40, 64, 0.8);
-  border-color: var(--feat-border-bright);
+  background: rgba(16, 36, 58, 0.8);
+  border-color: var(--feat-border-cyan);
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.15);
 }
 
 .feat-tower-node.active .feat-node-idx-badge.purple {
   background: var(--feat-purple);
-  color: #ffffff;
-  box-shadow: 0 0 15px var(--feat-purple);
+  color: #FFFFFF;
+  box-shadow: 0 0 15px var(--feat-purple-glow);
 }
 
 .feat-tower-node.active .feat-node-idx-badge.blue {
   background: var(--feat-blue);
-  color: #ffffff;
-  box-shadow: 0 0 15px var(--feat-blue);
+  color: #FFFFFF;
+  box-shadow: 0 0 15px var(--feat-blue-glow);
 }
 
 .feat-tower-node.active .feat-node-idx-badge.green {
   background: var(--feat-green);
-  color: #081827;
-  box-shadow: 0 0 15px var(--feat-green);
+  color: #030712;
+  box-shadow: 0 0 15px var(--feat-green-glow);
 }
 
 .feat-tower-node.active .feat-node-idx-badge.orange {
   background: var(--feat-orange);
-  color: #081827;
-  box-shadow: 0 0 15px var(--feat-orange);
+  color: #030712;
+  box-shadow: 0 0 15px var(--feat-orange-glow);
 }
 
 .feat-tower-node.active .feat-node-idx-badge.red {
   background: var(--feat-red);
-  color: #ffffff;
-  box-shadow: 0 0 15px var(--feat-red);
+  color: #FFFFFF;
+  box-shadow: 0 0 15px var(--feat-red-glow);
 }
 
 .feat-node-meta {
@@ -487,7 +502,7 @@
   font-size: 0.85rem;
   font-weight: 800;
   letter-spacing: 0.05em;
-  color: #ffffff;
+  color: #FFFFFF;
 }
 
 .feat-node-sub {
@@ -496,7 +511,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   6. STICKY FEATURE QUICK NAVIGATION BAR
+   6. STICKY QUICK NAVIGATION BAR
    -------------------------------------------------------------------------- */
 .feat-layer-nav {
   position: sticky;
@@ -510,7 +525,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  background: rgba(8, 24, 39, 0.88);
+  background: rgba(11, 27, 45, 0.85);
   border: 1px solid var(--feat-border-bright);
   padding: 0.45rem;
   border-radius: 16px;
@@ -540,24 +555,24 @@
 }
 
 .feat-nav-link:hover {
-  color: #ffffff;
+  color: #FFFFFF;
   background: rgba(255, 255, 255, 0.04);
 }
 
 .feat-nav-link.active {
   background: var(--feat-card-elevated);
-  color: #ffffff;
-  border: 1px solid var(--feat-border-bright);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  color: #FFFFFF;
+  border: 1px solid var(--feat-border-cyan);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), 0 0 15px rgba(34, 211, 238, 0.2);
 }
 
 .feat-nav-link.active .nav-step {
   opacity: 1;
-  color: var(--feat-blue);
+  color: var(--feat-cyan);
 }
 
 /* --------------------------------------------------------------------------
-   7. ARCHITECTURE SECTION INTRO
+   7. ARCHITECTURE INTRO
    -------------------------------------------------------------------------- */
 .feat-arch-intro {
   padding: clamp(4rem, 8vh, 6rem) 0 2rem;
@@ -580,7 +595,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   8. FEATURE LAYER SECTIONS & MOCKUP PANELS
+   8. FEATURE LAYER SECTIONS & MOCKUPS
    -------------------------------------------------------------------------- */
 .feat-layer-section {
   position: relative;
@@ -619,17 +634,17 @@
 }
 
 .layer-accent-purple .feat-layer-tag { color: var(--feat-purple-light); }
-.layer-accent-blue .feat-layer-tag { color: var(--feat-blue); }
-.layer-accent-green .feat-layer-tag { color: var(--feat-green); }
+.layer-accent-blue   .feat-layer-tag { color: var(--feat-blue); }
+.layer-accent-green  .feat-layer-tag { color: var(--feat-green); }
 .layer-accent-orange .feat-layer-tag { color: var(--feat-orange); }
-.layer-accent-red .feat-layer-tag { color: var(--feat-red); }
+.layer-accent-red    .feat-layer-tag { color: var(--feat-red); }
 
 .feat-layer-title {
   font-size: clamp(1.8rem, 2.8vw, 2.6rem);
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.2;
-  color: #ffffff;
+  color: #FFFFFF;
   margin-bottom: 1.1rem;
 }
 
@@ -639,20 +654,21 @@
   line-height: 1.65;
 }
 
-/* Mockup Container */
+/* Mockup Base Card */
 .feat-mockup-card {
-  background: linear-gradient(145deg, rgba(16, 40, 64, 0.8) 0%, rgba(8, 24, 39, 0.92) 100%);
+  background: linear-gradient(145deg, rgba(16, 36, 58, 0.8) 0%, rgba(7, 21, 37, 0.95) 100%);
   border: 1px solid var(--feat-border-bright);
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(14px);
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .feat-mockup-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(255, 255, 255, 0.25);
+  border-color: var(--feat-border-cyan);
+  box-shadow: 0 30px 70px -10px rgba(0, 0, 0, 0.85), 0 0 25px rgba(34, 211, 238, 0.2);
 }
 
 .feat-mockup-topbar {
@@ -676,9 +692,9 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
-.feat-mockup-lights span:nth-child(1) { background: #ff5f56; }
-.feat-mockup-lights span:nth-child(2) { background: #ffbd2e; }
-.feat-mockup-lights span:nth-child(3) { background: #27c93f; }
+.feat-mockup-lights span:nth-child(1) { background: #FF5C70; }
+.feat-mockup-lights span:nth-child(2) { background: #FFB454; }
+.feat-mockup-lights span:nth-child(3) { background: #39E58C; }
 
 .feat-mockup-header-title {
   font-size: 0.68rem;
@@ -695,10 +711,10 @@
   letter-spacing: 0.06em;
 }
 
-.chip-green { background: rgba(57, 217, 138, 0.12); color: var(--feat-green); }
-.chip-blue { background: rgba(63, 169, 245, 0.12); color: var(--feat-blue); }
-.chip-orange { background: rgba(255, 159, 67, 0.12); color: var(--feat-orange); }
-.chip-red { background: rgba(255, 92, 112, 0.12); color: var(--feat-red); }
+.chip-green  { background: rgba(57, 229, 140, 0.12); color: var(--feat-green); }
+.chip-blue   { background: rgba(53, 184, 255, 0.12); color: var(--feat-blue); }
+.chip-orange { background: rgba(255, 180, 84, 0.12); color: var(--feat-orange); }
+.chip-red    { background: rgba(255, 92, 112, 0.12); color: var(--feat-red); }
 
 .feat-mockup-footer-note {
   font-size: 0.62rem;
@@ -708,7 +724,7 @@
   font-style: italic;
 }
 
-/* Layer 1 Mockup: Dataset Body */
+/* Layer 1: Dataset Body */
 .feat-dataset-body {
   padding: 1.25rem;
 }
@@ -717,7 +733,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(8, 24, 39, 0.6);
+  background: rgba(7, 21, 37, 0.6);
   border: 1px solid var(--feat-border);
   padding: 0.6rem 0.85rem;
   border-radius: 10px;
@@ -730,7 +746,7 @@
   gap: 0.45rem;
   font-size: 0.8rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #FFFFFF;
 }
 
 .ds-verified-tag {
@@ -747,7 +763,7 @@
 }
 
 .ds-metric-cell {
-  background: rgba(13, 32, 51, 0.6);
+  background: rgba(11, 27, 45, 0.6);
   border: 1px solid var(--feat-border);
   padding: 0.6rem;
   border-radius: 8px;
@@ -764,7 +780,7 @@
 .ds-cell-val {
   font-size: 1rem;
   font-weight: 800;
-  color: #ffffff;
+  color: #FFFFFF;
   margin-top: 2px;
 }
 
@@ -776,7 +792,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 0.85rem;
-  background: rgba(8, 24, 39, 0.4);
+  background: rgba(7, 21, 37, 0.4);
   border-radius: 10px;
 }
 
@@ -789,11 +805,11 @@
 }
 
 .tree-step.done { color: var(--feat-green); }
-.tree-step.active { color: var(--feat-purple-light); }
+.tree-step.active { color: var(--feat-cyan); }
 .tree-step.pending { color: var(--feat-subtle); }
 .tree-wire { flex-grow: 1; height: 1.5px; background: rgba(255, 255, 255, 0.08); margin: 0 0.5rem; }
 
-/* Layer 2 Mockup: Analytics Telemetry */
+/* Layer 2: Analytics Telemetry */
 .feat-analytics-body {
   padding: 1.25rem;
 }
@@ -806,7 +822,7 @@
 }
 
 .feat-kpi-quad-cell {
-  background: rgba(8, 24, 39, 0.6);
+  background: rgba(7, 21, 37, 0.6);
   border: 1px solid var(--feat-border);
   padding: 0.65rem;
   border-radius: 10px;
@@ -815,12 +831,12 @@
 }
 
 .quad-lbl { font-size: 0.6rem; color: var(--feat-muted); font-weight: 600; }
-.quad-val { font-size: 1.15rem; font-weight: 800; color: #ffffff; margin: 0.15rem 0; }
+.quad-val { font-size: 1.15rem; font-weight: 800; color: #FFFFFF; margin: 0.15rem 0; }
 .quad-chg { font-size: 0.65rem; font-weight: 700; }
 .quad-chg.positive { color: var(--feat-green); }
 
 .feat-analytics-chart-box {
-  background: rgba(8, 24, 39, 0.5);
+  background: rgba(7, 21, 37, 0.5);
   border: 1px solid var(--feat-border);
   padding: 0.85rem;
   border-radius: 10px;
@@ -834,10 +850,10 @@
   margin-bottom: 0.4rem;
 }
 
-.chart-sub-tag { color: var(--feat-blue); font-weight: 600; }
+.chart-sub-tag { color: var(--feat-cyan); font-weight: 600; }
 .feat-spark-svg { width: 100%; height: 80px; overflow: visible; }
 
-/* Layer 3 Mockup: Advanced Insights */
+/* Layer 3: Advanced Insights */
 .feat-insights-body {
   padding: 1.25rem;
 }
@@ -853,14 +869,14 @@
 .fc-state-tag { font-size: 0.68rem; color: var(--feat-muted); }
 
 .feat-fc-canvas-box {
-  background: rgba(8, 24, 39, 0.5);
+  background: rgba(7, 21, 37, 0.5);
   border: 1px solid var(--feat-border);
   padding: 0.85rem;
   border-radius: 10px;
 }
 
 .feat-fc-svg { width: 100%; height: 110px; overflow: visible; }
-.pulse-node { animation: featPulse 2s infinite ease-in-out; }
+.pulse-node { animation: featPulseBeacon 2s infinite ease-in-out; }
 
 .fc-labels-line {
   display: flex;
@@ -870,9 +886,9 @@
   margin-top: 0.5rem;
 }
 
-.active-today { color: #ffffff; font-weight: 800; }
+.active-today { color: #FFFFFF; font-weight: 800; }
 
-/* Layer 4 Mockup: Decision Simulator */
+/* Layer 4: Decision Simulator */
 .feat-sim-body {
   padding: 1.25rem;
 }
@@ -922,7 +938,7 @@
   background: var(--feat-orange);
   cursor: pointer;
   box-shadow: 0 0 10px var(--feat-orange);
-  border: 2px solid #ffffff;
+  border: 2px solid #FFFFFF;
   transition: transform 0.15s ease;
 }
 
@@ -934,14 +950,14 @@
   background: var(--feat-orange);
   cursor: pointer;
   box-shadow: 0 0 10px var(--feat-orange);
-  border: 2px solid #ffffff;
+  border: 2px solid #FFFFFF;
 }
 
 .feat-sim-results-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.75rem;
-  background: rgba(8, 24, 39, 0.6);
+  background: rgba(7, 21, 37, 0.6);
   border: 1px solid var(--feat-border);
   padding: 0.75rem;
   border-radius: 10px;
@@ -952,15 +968,15 @@
 .sim-res-calc { display: flex; align-items: center; gap: 0.4rem; margin-top: 2px; }
 .calc-old { font-size: 0.85rem; color: var(--feat-muted); text-decoration: line-through; }
 .calc-arrow { font-size: 0.8rem; color: var(--feat-subtle); }
-.calc-new { font-size: 1.15rem; font-weight: 800; color: #ffffff; }
+.calc-new { font-size: 1.15rem; font-weight: 800; color: #FFFFFF; }
 
-/* Layer 5 Mockup: Reporting Dossier */
+/* Layer 5: Reporting Dossier */
 .feat-report-body {
   padding: 1.25rem;
 }
 
 .feat-doc-preview {
-  background: rgba(8, 24, 39, 0.75);
+  background: rgba(7, 21, 37, 0.75);
   border: 1px solid var(--feat-border);
   border-radius: 12px;
   padding: 1.15rem;
@@ -972,7 +988,7 @@
   margin-bottom: 0.85rem;
 }
 
-.doc-corp-title { font-size: 0.75rem; font-weight: 800; color: #ffffff; display: block; }
+.doc-corp-title { font-size: 0.75rem; font-weight: 800; color: #FFFFFF; display: block; }
 .doc-date-stamp { font-size: 0.62rem; color: var(--feat-subtle); font-weight: 600; }
 
 .feat-doc-table-strip {
@@ -992,7 +1008,7 @@
   border-radius: 4px;
 }
 
-.strip-val { font-weight: 700; color: #ffffff; }
+.strip-val { font-weight: 700; color: #FFFFFF; }
 
 .feat-doc-insights-summary {
   margin-bottom: 1rem;
@@ -1016,10 +1032,10 @@
 }
 
 .red-tag { background: rgba(255, 92, 112, 0.12); color: var(--feat-red); border: 1px solid rgba(255, 92, 112, 0.3); }
-.green-tag { background: rgba(57, 217, 138, 0.12); color: var(--feat-green); border: 1px solid rgba(57, 217, 138, 0.3); }
+.green-tag { background: rgba(57, 229, 140, 0.12); color: var(--feat-green); border: 1px solid rgba(57, 229, 140, 0.3); }
 
 /* --------------------------------------------------------------------------
-   9. FEATURE CARDS GRID & HOVER TREATMENT
+   9. FEATURE CARDS GRID & HOVER
    -------------------------------------------------------------------------- */
 .feat-grid-cards {
   display: grid;
@@ -1029,7 +1045,7 @@
 
 .feat-card {
   position: relative;
-  background: linear-gradient(145deg, rgba(16, 40, 64, 0.55) 0%, rgba(8, 24, 39, 0.7) 100%);
+  background: linear-gradient(145deg, rgba(16, 36, 58, 0.55) 0%, rgba(7, 21, 37, 0.7) 100%);
   border: 1px solid var(--feat-border);
   border-radius: 16px;
   padding: 1.6rem 1.4rem;
@@ -1046,22 +1062,22 @@
 }
 
 .layer-accent-purple .feat-card:hover {
-  border-color: rgba(117, 103, 248, 0.45);
+  border-color: var(--feat-border-purple);
   box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.7), 0 0 20px var(--feat-purple-glow);
 }
 
 .layer-accent-blue .feat-card:hover {
-  border-color: rgba(63, 169, 245, 0.45);
+  border-color: rgba(53, 184, 255, 0.45);
   box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.7), 0 0 20px var(--feat-blue-glow);
 }
 
 .layer-accent-green .feat-card:hover {
-  border-color: rgba(57, 217, 138, 0.45);
+  border-color: rgba(57, 229, 140, 0.45);
   box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.7), 0 0 20px var(--feat-green-glow);
 }
 
 .layer-accent-orange .feat-card:hover {
-  border-color: rgba(255, 159, 67, 0.45);
+  border-color: rgba(255, 180, 84, 0.45);
   box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.7), 0 0 20px var(--feat-orange-glow);
 }
 
@@ -1090,17 +1106,17 @@
   transform: scale(1.08);
 }
 
-.icon-purple { background: rgba(117, 103, 248, 0.12); color: var(--feat-purple-light); border: 1px solid rgba(117, 103, 248, 0.3); }
-.icon-blue { background: rgba(63, 169, 245, 0.12); color: var(--feat-blue); border: 1px solid rgba(63, 169, 245, 0.3); }
-.icon-green { background: rgba(57, 217, 138, 0.12); color: var(--feat-green); border: 1px solid rgba(57, 217, 138, 0.3); }
-.icon-orange { background: rgba(255, 159, 67, 0.12); color: var(--feat-orange); border: 1px solid rgba(255, 159, 67, 0.3); }
-.icon-red { background: rgba(255, 92, 112, 0.12); color: var(--feat-red); border: 1px solid rgba(255, 92, 112, 0.3); }
+.icon-purple { background: rgba(124, 92, 255, 0.12); color: var(--feat-purple-light); border: 1px solid rgba(124, 92, 255, 0.3); }
+.icon-blue   { background: rgba(53, 184, 255, 0.12); color: var(--feat-blue); border: 1px solid rgba(53, 184, 255, 0.3); }
+.icon-green  { background: rgba(57, 229, 140, 0.12); color: var(--feat-green); border: 1px solid rgba(57, 229, 140, 0.3); }
+.icon-orange { background: rgba(255, 180, 84, 0.12); color: var(--feat-orange); border: 1px solid rgba(255, 180, 84, 0.3); }
+.icon-red    { background: rgba(255, 92, 112, 0.12); color: var(--feat-red); border: 1px solid rgba(255, 92, 112, 0.3); }
 
 .feat-card-title {
   font-size: 1.12rem;
   font-weight: 800;
   letter-spacing: -0.01em;
-  color: #ffffff;
+  color: #FFFFFF;
   margin-bottom: 0.6rem;
 }
 
@@ -1111,7 +1127,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   10. COMPLETE FEATURE MATRIX SECTION
+   10. FEATURE MATRIX SECTION
    -------------------------------------------------------------------------- */
 .feat-matrix-section {
   position: relative;
@@ -1129,7 +1145,7 @@
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.14em;
-  color: var(--feat-blue);
+  color: var(--feat-cyan);
   text-transform: uppercase;
   margin-bottom: 0.75rem;
 }
@@ -1155,7 +1171,7 @@
 }
 
 .feat-matrix-row {
-  background: linear-gradient(145deg, rgba(16, 40, 64, 0.65) 0%, rgba(8, 24, 39, 0.8) 100%);
+  background: linear-gradient(145deg, rgba(16, 36, 58, 0.65) 0%, rgba(7, 21, 37, 0.8) 100%);
   border: 1px solid var(--feat-border);
   border-radius: 16px;
   padding: 1.35rem 1.75rem;
@@ -1175,11 +1191,11 @@
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
 }
 
-.row-purple:hover, .row-purple:focus-visible { border-color: rgba(117, 103, 248, 0.45); }
-.row-blue:hover, .row-blue:focus-visible { border-color: rgba(63, 169, 245, 0.45); }
-.row-green:hover, .row-green:focus-visible { border-color: rgba(57, 217, 138, 0.45); }
-.row-orange:hover, .row-orange:focus-visible { border-color: rgba(255, 159, 67, 0.45); }
-.row-red:hover, .row-red:focus-visible { border-color: rgba(255, 92, 112, 0.45); }
+.row-purple:hover, .row-purple:focus-visible { border-color: rgba(124, 92, 255, 0.45); }
+.row-blue:hover,   .row-blue:focus-visible   { border-color: rgba(53, 184, 255, 0.45); }
+.row-green:hover,  .row-green:focus-visible  { border-color: rgba(57, 229, 140, 0.45); }
+.row-orange:hover, .row-orange:focus-visible { border-color: rgba(255, 180, 84, 0.45); }
+.row-red:hover,    .row-red:focus-visible    { border-color: rgba(255, 92, 112, 0.45); }
 
 .matrix-layer-col {
   display: flex;
@@ -1198,14 +1214,14 @@
   justify-content: center;
   font-size: 0.8rem;
   font-weight: 800;
-  color: #ffffff;
+  color: #FFFFFF;
   flex-shrink: 0;
 }
 
 .matrix-layer-name {
   font-size: 1.1rem;
   font-weight: 800;
-  color: #ffffff;
+  color: #FFFFFF;
 }
 
 .matrix-capabilities-col {
@@ -1226,7 +1242,7 @@
 }
 
 .feat-matrix-row:hover .cap-tag {
-  color: #ffffff;
+  color: #FFFFFF;
   border-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -1243,7 +1259,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(13, 32, 51, 0.6);
+  background: rgba(11, 27, 45, 0.6);
   border: 1px solid var(--feat-border);
   border-radius: 18px;
   padding: 1.75rem 2rem;
@@ -1269,7 +1285,7 @@
 .j-step-title {
   font-size: 0.85rem;
   font-weight: 800;
-  color: #ffffff;
+  color: #FFFFFF;
   letter-spacing: 0.05em;
 }
 
@@ -1289,19 +1305,19 @@
 .feat-final-cta-section {
   position: relative;
   z-index: 2;
-  padding: clamp(4rem, 8vh, 7rem) 0 clamp(4rem, 8vh, 6rem);
+  padding: clamp(5rem, 10vh, 8rem) 0 clamp(4rem, 8vh, 6rem);
 }
 
 .feat-cta-monolith {
   position: relative;
-  background: linear-gradient(135deg, rgba(16, 40, 64, 0.85) 0%, rgba(7, 21, 34, 0.95) 100%);
-  border: 1px solid rgba(117, 103, 248, 0.4);
+  background: linear-gradient(135deg, rgba(16, 36, 58, 0.85) 0%, rgba(7, 21, 37, 0.95) 100%);
+  border: 1px solid var(--feat-border-cyan);
   border-radius: 24px;
   padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 4vw, 3rem);
   overflow: hidden;
   box-shadow: 
-    0 30px 80px -10px rgba(0, 0, 0, 0.85),
-    0 0 50px rgba(117, 103, 248, 0.15),
+    0 30px 80px -10px rgba(0, 0, 0, 0.8),
+    0 0 50px rgba(34, 211, 238, 0.12),
     0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
 
@@ -1312,16 +1328,16 @@
   transform: translateX(-50%);
   width: 70%;
   height: 2px;
-  background: linear-gradient(90deg, transparent 0%, var(--feat-purple-light) 50%, transparent 100%);
-  filter: drop-shadow(0 0 10px var(--feat-purple));
+  background: linear-gradient(90deg, transparent 0%, var(--feat-cyan) 50%, transparent 100%);
+  filter: drop-shadow(0 0 10px var(--feat-cyan));
 }
 
 .feat-cta-headline {
   font-size: clamp(2rem, 3.8vw, 3.25rem);
   font-weight: 800;
   letter-spacing: -0.02em;
-  line-height: 1.18;
-  color: #ffffff;
+  line-height: 1.15;
+  color: #FFFFFF;
   max-width: 820px;
   margin: 0 auto 1.25rem;
 }
@@ -1344,11 +1360,11 @@
 }
 
 /* --------------------------------------------------------------------------
-   13. SCROLL REVEAL CLASS UTILITY
+   13. SCROLL REVEAL UTILITY
    -------------------------------------------------------------------------- */
 .feat-reveal {
   opacity: 0;
-  transform: translateY(26px);
+  transform: translateY(24px);
   transition: opacity 0.8s var(--feat-ease), transform 0.8s var(--feat-ease);
   will-change: opacity, transform;
 }
@@ -1384,10 +1400,8 @@
 }
 
 /* --------------------------------------------------------------------------
-   15. RESPONSIVE BREAKPOINTS (1280, 1024, 768, 480)
+   15. RESPONSIVE BREAKPOINTS
    -------------------------------------------------------------------------- */
-
-/* Tablet Landscape & Compact Desktop (<= 1280px) */
 @media (max-width: 1280px) {
   .feat-grid-cards {
     grid-template-columns: repeat(3, 1fr);
@@ -1399,7 +1413,6 @@
   }
 }
 
-/* Tablet Portrait (<= 1024px) */
 @media (max-width: 1024px) {
   .feat-hero-layout {
     grid-template-columns: 1fr;
@@ -1450,7 +1463,6 @@
   }
 }
 
-/* Mobile Devices (<= 768px) */
 @media (max-width: 768px) {
   .feat-hero-section {
     padding-top: 5rem;
@@ -1488,7 +1500,6 @@
   }
 }
 
-/* Micro Devices (<= 480px) */
 @media (max-width: 480px) {
   .feat-hero-headline {
     font-size: 2.1rem;
