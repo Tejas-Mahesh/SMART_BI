@@ -367,7 +367,27 @@
     width: 3px;
 
 }
+.sidebar-section {
 
+    margin-bottom: 20px;
+
+}
+
+
+.sidebar-section-title {
+
+    padding:
+        0 10px 8px;
+
+    color: #405a70;
+
+    font-size: 8px;
+
+    font-weight: 900;
+
+    letter-spacing: 1.5px;
+
+}
 
 .sidebar-navigation::-webkit-scrollbar-thumb {
 
