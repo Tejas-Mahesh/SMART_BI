@@ -398,7 +398,39 @@
     font-weight: 700;
 }
 
+.auth-brand {
+    display: flex;
+    align-items: center;
 
+    gap: 11px;
+
+    margin-bottom: 35px;
+}
+
+.auth-brand-icon {
+    display: grid;
+    place-items: center;
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--auth-purple),
+            #5547d7
+        );
+
+    color: white;
+
+    font-size: 19px;
+    font-weight: 900;
+
+    box-shadow:
+        0 10px 25px rgba(117, 103, 248, 0.2);
+}
 /* =========================================================
    INPUTS
 ========================================================= */
