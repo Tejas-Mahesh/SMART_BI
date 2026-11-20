@@ -190,6 +190,33 @@ body {
   text-transform: uppercase;
   margin-bottom: 0.75rem;
 }
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.smart-about-universe {
+  position: relative;
+  background-color: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+.about-shell {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.text-center {
+  text-align: center;
+}
 
 .section-title {
   font-size: clamp(1.85rem, 3.2vw, 2.75rem);
