@@ -333,6 +333,52 @@ box-shadow:
 
 
 }
+.nav-section {
+margin-bottom: 22px;
+}
+
+.nav-section-title {
+padding: 0 12px 8px;
+
+
+color: #52697f;
+
+font-size: 9px;
+
+font-weight: 800;
+
+letter-spacing: 1.5px;
+
+}
+
+.nav-item {
+position: relative;
+
+
+min-height: 42px;
+
+display: flex;
+align-items: center;
+
+gap: 11px;
+
+padding: 0 12px;
+
+margin-bottom: 4px;
+
+border-radius: 11px;
+
+color: #8da1b5;
+
+font-size: 12px;
+
+transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+
+
+}
 
 .disabled-item {
 opacity: 0.55;
