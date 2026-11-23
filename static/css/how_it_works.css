@@ -373,7 +373,29 @@
   background: var(--cyan);
   box-shadow: 0 0 8px var(--cyan);
 }
+.how-hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  align-items: center;
+  gap: clamp(2rem, 4vw, 4.5rem);
+}
 
+.how-hero-content {
+  position: relative;
+  z-index: 10;
+}
+
+.how-hero-title {
+  font-size: clamp(2.4rem, 4.4vw, 4.1rem);
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+}
+
+.how-title-line {
+  display: block;
+}
 .how-chip-live {
   font-size: 0.65rem;
   font-weight: 700;
