@@ -432,7 +432,53 @@ input {
         flex-direction: column;
         align-items: flex-start;
     }
+.primary-button {
+    border: 0;
+    border-radius: 10px;
+    padding: 13px 22px;
+    background: var(--purple);
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
 
+.primary-button:disabled {
+    opacity: .6;
+    cursor: wait;
+}
+
+.scenario-table-wrapper {
+    overflow-x: auto;
+}
+
+.scenario-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.scenario-table th {
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    text-align: left;
+    padding: 15px;
+}
+
+.scenario-table td {
+    padding: 17px 15px;
+    border-top: 1px solid var(--border);
+}
+
+.scenario-table small {
+    display: block;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+.rank {
+    color: var(--purple);
+    font-weight: 700;
+}
     .form-grid,
     .control-grid {
         grid-template-columns: 1fr;
