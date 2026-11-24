@@ -1319,6 +1319,95 @@
         corePulse 3s ease infinite;
 
 }
+.dashboard-welcome {
+
+    position: relative;
+
+    min-height: 290px;
+
+    overflow: hidden;
+
+    margin-bottom: 30px;
+
+    padding:
+        38px;
+
+    border:
+        1px solid rgba(117,103,248,0.16);
+
+    border-radius: 24px;
+
+    background:
+        radial-gradient(
+            circle at 75% 40%,
+            rgba(117,103,248,0.15),
+            transparent 27%
+        ),
+        linear-gradient(
+            120deg,
+            #0d2033,
+            #091b2c
+        );
+
+}
+
+
+.welcome-background-grid {
+
+    position: absolute;
+
+    inset: 0;
+
+    opacity: .45;
+
+    background-image:
+        linear-gradient(
+            rgba(117,103,248,.045) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(117,103,248,.045) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        35px 35px;
+
+    mask-image:
+        linear-gradient(
+            to right,
+            black,
+            transparent
+        );
+
+    animation:
+        gridMove 16s linear infinite;
+
+}
+
+
+@keyframes gridMove {
+
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: 35px 35px;
+    }
+
+}
+
+
+.welcome-content {
+
+    position: relative;
+
+    z-index: 3;
+
+    max-width: 650px;
+}
 
 
 @keyframes corePulse {
