@@ -508,7 +508,25 @@
 
     font-size: 28px;
 }
+.cleaning-action div:nth-child(2) {
+    flex: 1;
+}
 
+.cleaning-action strong {
+    display: block;
+    font-size: 13px;
+    color: #dce7ef;
+    margin-bottom: 4px;
+}
+
+.cleaning-action span {
+    color: #71899e;
+    font-size: 11px;
+}
+
+.cleaning-action > b {
+    font-size: 20px;
+}
 .empty-cleaning h2 {
     margin: 5px 0 8px;
 }
