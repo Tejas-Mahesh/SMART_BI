@@ -618,7 +618,73 @@
 
 }
 
+.workspace-message {
 
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 12px 14px;
+
+    border: 1px solid var(--workspace-border);
+
+    border-radius: 10px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    color: #dce5ee;
+
+    font-size: 11px;
+
+}
+
+
+.workspace-message-success {
+
+    border-color:
+        rgba(57,217,138,.25);
+
+}
+
+
+.workspace-message-error {
+
+    border-color:
+        rgba(255,92,112,.28);
+
+}
+
+
+.workspace-message-warning {
+
+    border-color:
+        rgba(255,159,67,.28);
+
+}
+
+
+.workspace-message-icon {
+
+    width: 25px;
+    height: 25px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 7px;
+
+    background:
+        rgba(117,103,248,.12);
+
+    color: #958cff;
+
+    font-weight: 900;
+
+}
 .workspace-breadcrumb {
 
     display: flex;
